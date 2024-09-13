@@ -1,13 +1,10 @@
-* {
-  text-align: left;
-  box-sizing: border-box; /* Ensure proper sizing */
-}
 body {
     font-family: helvetica, arial, sans-serif; 
     background: #340093; /* purple background   */
     }
     .header {
       padding: 1px; /* some padding */
+      text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
@@ -16,6 +13,7 @@ body {
       background-color: #340093;
       color: #ffb936; /* yellow text color */
       padding: 4px 5px;
+      text-align: center;
       text-decoration: none;
       display: inline-block;
     }
@@ -39,10 +37,17 @@ body {
     
     /* Style the navigation bar links */
     .navbar a {
+      float: left; /* Make sure that the links stay side-by-side */
       display: block; /* Change the display to block, for responsive reasons (see below) */
       color: #ffb936; /* yellow text color */
+      text-align: center; /* Center the text */
       padding: 7px 7px; /* Add some padding */
       text-decoration: none; /* Remove underline */
+    }
+    
+    /* Right-aligned link */
+    .navbar a.right {
+      float: right; /* Float a link to the right */
     }
     
     /* Change color on hover/mouse-over */
@@ -86,11 +91,13 @@ body {
     /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
     @media screen and (max-width: 400px) {
       .navbar a {
+        float: none;
         width: 100%;
       }
     }
     .footer {
       padding: 0px; /* some padding */
+      text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
