@@ -25,6 +25,10 @@ body {
     .header h1 {
       font-size: 20px;
     }
+     /* Increase the font size of the <h2> element */
+     .footer h2 {
+      font-size: 10px;
+    }
     /* Style the top navigation bar */
     .navbar {
       overflow: hidden; /* Hide overflow */
@@ -97,5 +101,4 @@ body {
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
-      font-size: 5px;
     }
