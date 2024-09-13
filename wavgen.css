@@ -97,4 +97,5 @@ body {
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
+      font-size: 10px;
     }
