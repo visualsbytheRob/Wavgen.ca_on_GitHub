@@ -28,14 +28,14 @@ body {
     /* Style the top navigation bar */
     .navbar {
       overflow: hidden; /* Hide overflow */
-      background-color: #333; /* Dark background color */
+      background: #340093; /* purple background */
     }
     
     /* Style the navigation bar links */
     .navbar a {
       float: left; /* Make sure that the links stay side-by-side */
       display: block; /* Change the display to block, for responsive reasons (see below) */
-      color: white; /* White text color */
+      color: #ffb936; /* yellow text color */
       text-align: center; /* Center the text */
       padding: 14px 20px; /* Add some padding */
       text-decoration: none; /* Remove underline */
@@ -48,8 +48,8 @@ body {
     
     /* Change color on hover/mouse-over */
     .navbar a:hover {
-      background-color: #ddd; /* Grey background color */
-      color: black; /* Black text color */
+      background-color: #200229; /* deeper purple background color */
+      color: #faa405; /* deeper yellow text color */
     }
     /* Ensure proper sizing */
     * {
@@ -66,14 +66,14 @@ body {
     /* Sidebar/left column */
     .side {
       flex: 20%; /* Set the width of the sidebar */
-      background-color: #f1f1f1; /* Grey background color */
+      background-color: #340093;
       padding: 20px; /* Some padding */
     }
     
     /* Main column */
     .main {
       flex: 80%; /* Set the width of the main content */
-      background-color: white; /* White background color */
+      background: #340093; /* purple background */
       padding: 20px; /* Some padding */
     }
     
@@ -94,6 +94,6 @@ body {
     .footer {
       padding: 2px; /* Some padding */
       text-align: center; /* Center text*/
-      background: #ddd; /* Grey background */
+      background: #340093; /* purple background */
       font-size: 10px;
     }
