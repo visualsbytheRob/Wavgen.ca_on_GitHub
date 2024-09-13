@@ -92,9 +92,9 @@ body {
       }
     }
     .footer {
-      padding: 2px; /* Some padding */
-      text-align: center; /* Center text*/
+      padding: 1px; /* Some padding */
+      text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
-      font-size: 10px;
+      font-size: 20px;
     }
