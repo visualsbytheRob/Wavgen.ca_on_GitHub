@@ -1,10 +1,13 @@
+* {
+  text-align: left;
+  box-sizing: border-box; /* Ensure proper sizing */
+}
 body {
     font-family: helvetica, arial, sans-serif; 
     background: #340093; /* purple background   */
     }
     .header {
       padding: 1px; /* some padding */
-      text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
@@ -13,7 +16,6 @@ body {
       background-color: #340093;
       color: #ffb936; /* yellow text color */
       padding: 4px 5px;
-      text-align: center;
       text-decoration: none;
       display: inline-block;
     }
@@ -40,7 +42,6 @@ body {
       float: left; /* Make sure that the links stay side-by-side */
       display: block; /* Change the display to block, for responsive reasons (see below) */
       color: #ffb936; /* yellow text color */
-      text-align: center; /* Center the text */
       padding: 7px 7px; /* Add some padding */
       text-decoration: none; /* Remove underline */
     }
@@ -97,7 +98,6 @@ body {
     }
     .footer {
       padding: 0px; /* some padding */
-      text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
       text-decoration: none; /* Remove underline */
