@@ -27,7 +27,7 @@ body {
     }
      /* Increase the font size of the <h2> element */
      .header h2 {
-      font-size: 2px;
+      font-size: 8px;
     }
     /* Style the top navigation bar */
     .navbar {
@@ -100,5 +100,5 @@ body {
       text-align: left; /* left align the text */
       background: #340093; /* purple background */
       color: #ffb936; /* yellow text color */
-      font-size: 2px;
+      font-size: 8px;
     }
