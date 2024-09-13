@@ -20,12 +20,16 @@
     a:hover, a:active {
       background-color: #340093;
     }
-    /* Increase the font size of the larger <h1> element in the header */
+    /* the font size of the larger <h1> element in the header */
     .header h1 {
       font-size: 20px;
     }
+    /* the font size of the smaller<h1> element in the header */
+    .header h2 {
+      font-size: 15px;
+    }
      /* Increase the font size of the smaller <h2> element in the footer */
-    .footer h2 {
+    .header h2 {
       font-size: 10px;
     }
     /* Style the top navigation bar */
