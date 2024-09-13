@@ -41,7 +41,7 @@ body {
       display: block; /* Change the display to block, for responsive reasons (see below) */
       color: #ffb936; /* yellow text color */
       text-align: center; /* Center the text */
-      padding: 4px 5px; /* Add some padding */
+      padding: 4px 7px; /* Add some padding */
       text-decoration: none; /* Remove underline */
     }
     
