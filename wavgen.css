@@ -24,12 +24,16 @@
     .header h1 {
       font-size: 20px;
     }
+    /* the font size of the largest <h1> element in the header */
+    .header h2{
+    font-size: 15px;
+    }
     /* the font size of the smaller <h2> element in the side row */
-    .side h2 {
-      font-size: 17px;
+    .side h3 {
+      font-size: 12px;
     }
      /* the font size of the smaller <h3> element in the footer */
-    .footer h3 {
+    .footer h4 {
       font-size: 10px;
     }
     /* Style the top navigation bar */
@@ -43,6 +47,7 @@
       display: block; /* Change the display to block, for responsive reasons (see below) */
       color: #ffb936; /* yellow text color */
       text-align: center; /* Center the text */
+      font-size: 17px; /* Size of the text */
       padding: 7px 14px; /* Add some padding */
       text-decoration: none; /* Remove underline */
     }
