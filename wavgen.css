@@ -24,9 +24,9 @@
     .header h1 {
       font-size: 20px;
     }
-    /* the font size of the smaller <h2> element in the header */
-    .header h2 {
-      font-size: 15px;
+    /* the font size of the smaller <h2> element in the side row */
+    .side h2 {
+      font-size: 17px;
     }
      /* the font size of the smaller <h3> element in the footer */
     .footer h3 {
@@ -43,7 +43,7 @@
       display: block; /* Change the display to block, for responsive reasons (see below) */
       color: #ffb936; /* yellow text color */
       text-align: center; /* Center the text */
-      padding: 7px 7px; /* Add some padding */
+      padding: 7px 14px; /* Add some padding */
       text-decoration: none; /* Remove underline */
     }
     /* Right-aligned link */
