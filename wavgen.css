@@ -121,7 +121,8 @@ img:hover {opacity: 0.7;}
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -137,13 +138,6 @@ img:hover {opacity: 0.7;}
   display: block;
   width: 80%;
   max-width: 700px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-name: zoom;
-  animation-duration: 0.6s;
-  animation-timing-function: ease-in-out;
 }
 
 /* Caption of Modal Image (Image Text) */
@@ -159,9 +153,14 @@ img:hover {opacity: 0.7;}
 }
 
 /* Add Animation - Zoom in the Modal */
+.modal-content, #caption {  
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
 @keyframes zoom {
-  from {transform: scale(0.5);}
-  to {transform: scale(1);}
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
 }
 
 /* The Close Button */
