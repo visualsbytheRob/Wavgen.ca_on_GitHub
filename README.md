@@ -1,4 +1,4 @@
-# visualsbytherob.github.io
+# Wavgen.ca on Github
 This is the GitHub repo I am using to publish my site wavgen.ca
 My first commit was on January 15th 2022, which was the first time I ever used Github to build a website
 First learning to create a website in the 1990's using tools like Macromedia Dreamweaver and reading Orielly books
