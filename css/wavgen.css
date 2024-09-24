@@ -1,182 +1,142 @@
-    body {
-    font-family: helvetica, arial, sans-serif; 
-    background: #340093; /* purple background */
-    }
-    .header {
-      padding: 4; /* some padding */
-      text-align: left; /* left align the text */
-      background: #340093; /* purple background */
-      color: #ffb936; /* yellow text color */
-      text-decoration: none; /* Remove underline */
-    }
-    a:link, a:visited {
-      background-color: #340093;
-      color: #ffb936; /* yellow text color */
-      padding: 2px 6px;
-      text-align: left;
-      text-decoration: none;
-      display: inline-block;
-    }
-    a:hover, a:active {
-      background-color: #340093;
-    }
-    /* the font size of the largest <h1> element in the header */
-    .header h1 {
-      font-size: 22px;
-    }
-    /* the font size of the second largest <h1> element in the sub header */
-    .header h2 {
-    font-size: 20px;
-    }
-    /* the font size of the smaller <h3> element in the side row */
-    .side h3 {
-      font-size: 14px;
-    }
-     /* the font size of the smaller <h4> element in the main row */
-     .main h4 {
-      font-size: 14px;
-    }
-     /* the font size of the smaller <h5> element in the footer */
-    .footer h5 {
-      font-size: 8px;
-    }
-    /* Style the top navigation bar */
-    .navbar {
-      overflow: hidden; /* Hide overflow */
-      background: #340093; /* purple background */
-    }
-    /* Style the navigation bar links */
-    .navbar a {
-      float: left; /* Make sure that the links stay side-by-side */
-      display: block; /* Change the display to block, for responsive reasons (see below) */
-      color: #ffb936; /* yellow text color */
-      text-align: center; /* Center the text */
-      font-size: 17px; /* Size of the text */
-      padding: 7px 17px; /* Add some padding */
-      text-decoration: none; /* Remove underline */
-    }
-    /* Right-aligned link */
-    .navbar a.right {
-      float: right; /* Float a link to the right */
-    }
-    /* Change color on hover/mouse-over */
-    .navbar a:hover {
-      background-color: #200229; /* deeper purple background color */
-      color: #faa405; /* deeper yellow text color */
-    }
-    /* Ensure proper sizing */
-    * {
-      box-sizing: border-box;
-    }
-    /* Column container */
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    /* Create two unequal columns that sit next to each other */
-    /* Sidebar/left column */
-    .side {
-      flex: 20%; /* Set the width of the sidebar */
-      color: #ffb936; /* yellow text color */
-      background-color: #340093;
-      padding: 8px; /* Some padding */
-    }
-    /* Main column */
-    .main {
-      flex: 80%; /* Set the width of the main content */
-      color: #ffb936; /* yellow text color */
-      background: #340093; /* purple background */
-      padding: 8px; /* Some padding */
-    }
-    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-    @media screen and (max-width: 700px) {
-      .row {
-        flex-direction: column;
-      }
-    }
-    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-    @media screen and (max-width: 400px) {
-      .navbar a {
-        float: none;
-        width: 100%;
-      }
-    }
-    .footer {
-      padding: 4px; /* some padding */
-      text-align: left; /* left align the text */
-      background: #340093; /* purple background */
-      color: #ffb936; /* yellow text color */
-      text-decoration: none; /* Remove underline */
-    }
+/* wavgen.css */
 
-    /* Style the Image Used to Trigger the Modal */
-img {
-  cursor: pointer;
-  transition: 0.3s;
+/* General styling for body and page setup */
+body {
+  font-family: Arial, sans-serif; /* Sets default font */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  background-color: #520d67; /* Light gray background for the entire page */
 }
 
-img:hover {opacity: 0.7;}
+/* Styling for the header section */
+.header {
+  background-color: #333; /* Dark background for the header */
+  color: white; /* White text color */
+  padding: 20px; /* Padding inside the header */
+  text-align: center; /* Centers the text inside the header */
+}
 
-/* The Modal (background) */
+.header h1, .header h2 {
+  margin: 0; /* Removes margin around the h1 and h2 elements */
+}
+
+.header h1 a, .header h2 a {
+  color: white; /* Ensures links in the header are white */
+  text-decoration: none; /* Removes underline from header links */
+}
+
+/* Navbar styling - the horizontal navigation bar */
+.navbar {
+  display: flex; /* Displays the navbar links in a row */
+  justify-content: center; /* Centers the navbar links */
+  background-color: #333; /* Dark background for the navbar */
+}
+
+.navbar a {
+  padding: 14px 20px; /* Adds padding around each link */
+  color: white; /* White link text */
+  text-decoration: none; /* Removes underline from links */
+  text-align: center; /* Centers the text inside the links */
+}
+
+.navbar a:hover {
+  background-color: #575757; /* Changes background on hover for visual feedback */
+  color: #9a64ff; /* Highlight link color when hovered */
+}
+
+/* General layout for the row, side, and main content sections */
+.row {
+  display: flex; /* Creates a flexible layout to align side and main content horizontally */
+  flex-wrap: wrap; /* Ensures content wraps when screen size is too small */
+}
+
+.side {
+  flex: 30%; /* Takes up 30% of the row space for the side section */
+  background-color: #f1f1f1; /* Light background for the side section */
+  padding: 20px; /* Padding inside the side section */
+}
+
+.main {
+  flex: 70%; /* Takes up 70% of the row space for the main content */
+  background-color: #fff; /* White background for main content */
+  padding: 20px; /* Padding inside the main content */
+}
+
+/* Modal styling (used for displaying images in full screen) */
 .modal {
   display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 500; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  position: fixed; /* Fixed position to stay in place when scrolling */
+  z-index: 1; /* Sits on top of other content */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
 }
 
-/* Modal Content (Image) */
+/* Styling for the modal image */
 .modal-content {
   margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
+  display: block; /* Center the image */
+  max-width: 80%; /* Max width of image */
+  max-height: 80%; /* Max height of image */
 }
 
-/* Caption of Modal Image (Image Text) */
+/* Caption text for the modal */
 #caption {
   margin: auto;
   display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
+  text-align: center; /* Centers the caption */
+  color: #fff; /* White text */
   padding: 10px 0;
-  height: 150px;
 }
 
-/* Add Animation - Zoom in the Modal */
-.modal-content, #caption {  
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
-
-@keyframes zoom {
-  from {transform:scale(0)} 
-  to {transform:scale(1)}
-}
-
-/* The Close Button */
+/* Close button for the modal */
 .close {
   position: absolute;
   top: 15px;
   right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
+  color: #fff; /* White close button */
+  font-size: 40px; /* Large close button */
   font-weight: bold;
-  transition: 0.3s;
+  cursor: pointer; /* Cursor changes to pointer when hovering */
 }
 
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
+/* Footer styling */
+.footer {
+  background-color: #333; /* Dark background for the footer */
+  color: white; /* White text for footer */
+  padding: 10px 0; /* Adds padding inside footer */
+  text-align: center; /* Centers the footer text */
+}
+
+.footer h5 a {
+  color: white; /* Ensures footer link is white */
+  text-decoration: none; /* Removes underline from footer link */
+}
+
+.footer h5 a:hover {
+  color: #9a64ff; /* Link color changes on hover */
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .row {
+      flex-direction: column; /* Stacks side and main content vertically on smaller screens */
+  }
+
+  .navbar {
+      flex-direction: column; /* Stacks navbar links vertically on smaller screens */
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .modal-content {
+      max-width: 100%; /* Ensures modal image scales properly on very small screens */
+      max-height: 100%;
+  }
+
+  .close {
+      font-size: 30px; /* Makes the close button smaller on small screens */
+  }
 }
