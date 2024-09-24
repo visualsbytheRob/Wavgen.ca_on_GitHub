@@ -1,42 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>The Waveform Generation - Data</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/wavgen.css">
+<title>The Waveform Generation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/wavgen.css">
 </head>
 <body>
-    <!-- Include Header -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main content -->
-    <div class="content">
-        <h2>Creative Gen AI Coding</h2>
-        <div class="row">
-            <div class="side">
-                <h3>Development Log</h3>
-                <p><a href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/wiki">Visit our Github Wiki</a></p>
-            </div>
-            <div class="main">
-                <h4>- In September 2024, began enhancements on this site.</h4>
-                <h4>- Cleaned up the code, improved CSS, and added new features.</h4>
-            </div>
-        </div>
+    <!-- The Modal -->
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>
+  <div class="header">
+      <h1><a href="index.html">The Waveform Generation</a></h1>
+      </div>
+  <div class="navbar">
+      <a href="music.html">Music</a>
+      <a href="video.html">Video</a>
+      <a href="data.html">Data</a>
+      <a href="art.html">Art</a>
     </div>
-
-    <!-- Include Footer -->
-    <div id="footer-placeholder"></div>
-
-    <!-- Include Modal -->
-    <div id="modal-placeholder"></div>
-
-    <!-- JavaScript -->
-    <script src="js/modal.js"></script>
-    <script>
-        document.getElementById("header-placeholder").innerHTML = await fetch('header.html').then(res => res.text());
-        document.getElementById("footer-placeholder").innerHTML = await fetch('footer.html').then(res => res.text());
-        document.getElementById("modal-placeholder").innerHTML = await fetch('modal.html').then(res => res.text());
-    </script>
-</body>
+    <div class="header">
+      <h2><a href="data.html">Creative Gen AI Coding</a></h2>
+      </div>
+  <div class="row">
+      <div class="side">
+          <h3>Let's use this page as a little Dev log</h3>
+          <h3>A technical or exploration Journal of sorts</h3>
+          <h3>I will make these my Github Statuses</h3>
+          <h3><a href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/wiki">The Github Wiki is a good place too</a></h3>
+          <h3></h3>
+      </div>
+      <div class="main">
+          <h4>- Haven't touched the site since 2021 where it just sat waiting for love </h4>  
+          <h4>- In April 2024 I added an animated GIF made in TouchDesigner as a teaser</h4>
+          <h4>- In September 2024 the real action began when I decided to make this my main site</h4>
+          <h4>- I cleaned up the code on my Github Pages and made it's CSS look nicer</h4>
+          <h4>- Gathered over 1000 repos to use in future site and projects</h4>
+          <h4>- Enhanced my Github page with descriptions and my readme</h4>
+          <h4>- I discovered I didn’t need html5-boilerplate as my site had it already lol</h4>
+          <h4>- Added a Wiki on the Github which will mirror this info</h4>
+          <h4>- Going to try to merge Tailwind CSS with my wavgen CSS using Chat GPT</h4>
+      </div>
+  </div>
+    <div class="footer">
+      <h5><a href="index.html">All Rights Reserved. The Waveform Generation</a></h5>
+        </div>
+        <script>
+          // Get the modal
+          var modal = document.getElementById("myModal");
+          
+          // Get the image and insert it inside the modal - use its "alt" text as a caption
+          var imgs = document.querySelectorAll("img");
+          var modalImg = document.getElementById("img01");
+          var captionText = document.getElementById("caption");
+          
+          imgs.forEach(img => {
+            img.onclick = function(){
+              modal.style.display = "block";
+              modalImg.src = this.src;
+              captionText.innerHTML = this.alt;
+            }
+          });
+          
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+          
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() { 
+            modal.style.display = "none";
+          }
+          </script>
+  </body>
 </html>
