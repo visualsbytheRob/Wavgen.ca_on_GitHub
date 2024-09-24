@@ -5,8 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS Example</title>
     <link rel="stylesheet" href="css/wavgen.css"> <!-- Link to the CSS file -->
+    <div class="burger-menu">
+        <button class="burger" onclick="toggleMenu()">☰</button>
+        <div class="navbar" id="navbar">
+          <a href="index.html">Home</a>
+          <a href="music.html">Music</a>
+          <a href="video.html">Video</a>
+          <a href="data.html">Data</a>
+          <a href="art.html">Art</a>
+        </div>
+      </div>
 </head>
 <body>
+    <!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+  </div>
     <!-- Header Section -->
     <div class="header">
         <h1><a href="index.html">The Waveform Generation</a></h1> <!-- Main title -->
@@ -42,5 +58,39 @@
     <div class="footer">
         <h5>Footer Content © 2024</h5>
     </div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var imgs = document.querySelectorAll("img");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    
+    imgs.forEach(img => {
+      img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+      }
+    });
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() { 
+      modal.style.display = "none";
+    }
+</script>
+
+<script>    // JavaScript to toggle the menu
+    function toggleMenu() {
+      const navbar = document.getElementById('navbar');
+      navbar.classList.toggle('show'); // Toggle the visibility of the navbar
+    }</script>
+
+    
 </body>
 </html>
