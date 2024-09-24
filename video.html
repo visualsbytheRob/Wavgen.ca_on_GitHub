@@ -1,70 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Waveform Generation</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/wavgen.css">
+    <title>The Waveform Generation - Video</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/wavgen.css">
 </head>
 <body>
-    <!-- The Modal -->
-<div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01">
-  <div id="caption"></div>
-</div>
-  <div class="header">
-      <h1><a href="index.html">The Waveform Generation</a></h1>
-      </div>
-  <div class="navbar">
-      <a href="music.html">Music</a>
-      <a href="video.html">Video</a>
-      <a href="data.html">Data</a>
-      <a href="art.html">Art</a>
-    </div>
-    <div class="header">
-      <h2><a href="video.html">Real-time Generative 3D AV</a></h2>
-      </div>
-  <div class="row">
-      <div class="side">
-          <h3>Audio Visual Exploration</h3>
-          <p><iframe width="320" height="180" src="https://www.youtube.com/embed/zkfQY9ct3yE?si=CsW3cEVnDt0Vl4de" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
-      </div>
-      <div class="main">
-          <h4>TouchDesigner</h4>
-          <h4>Unreal Engine</h4>
-      </div>
-  </div>
-    <div class="footer">
-      <h5><a href="index.html">All Rights Reserved. The Waveform Generation</a></h5>
+    <!-- Include Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main content -->
+    <div class="content">
+        <h2>Real-time Generative 3D AV</h2>
+        <div class="row">
+            <div class="side">
+                <h3>Audio Visual Exploration</h3>
+                <iframe width="320" height="180" src="https://www.youtube.com/embed/zkfQY9ct3yE?si=CsW3cEVnDt0Vl4de" 
+                    frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="main">
+                <h4>TouchDesigner</h4>
+                <h4>Unreal Engine</h4>
+            </div>
         </div>
-        <script>
-          // Get the modal
-          var modal = document.getElementById("myModal");
-          
-          // Get the image and insert it inside the modal - use its "alt" text as a caption
-          var imgs = document.querySelectorAll("img");
-          var modalImg = document.getElementById("img01");
-          var captionText = document.getElementById("caption");
-          
-          imgs.forEach(img => {
-            img.onclick = function(){
-              modal.style.display = "block";
-              modalImg.src = this.src;
-              captionText.innerHTML = this.alt;
-            }
-          });
-          
-          // Get the <span> element that closes the modal
-          var span = document.getElementsByClassName("close")[0];
-          
-          // When the user clicks on <span> (x), close the modal
-          span.onclick = function() { 
-            modal.style.display = "none";
-          }
-          </script>
-  </body>
+    </div>
+
+    <!-- Include Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Include Modal -->
+    <div id="modal-placeholder"></div>
+
+    <!-- JavaScript -->
+    <script src="js/modal.js"></script>
+    <script>
+        document.getElementById("header-placeholder").innerHTML = await fetch('header.html').then(res => res.text());
+        document.getElementById("footer-placeholder").innerHTML = await fetch('footer.html').then(res => res.text());
+        document.getElementById("modal-placeholder").innerHTML = await fetch('modal.html').then(res => res.text());
+    </script>
+</body>
 </html>
