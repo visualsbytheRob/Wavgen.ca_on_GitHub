@@ -43,41 +43,6 @@ a:hover, a:active {
 .footer h5 {
   font-size: 8px; /* Size for footer text */
 }
-
-/* Burger button style */
-.burger {
-  font-size: 30px; /* Font size for the burger icon */
-  background-color: transparent; /* No background color */
-  color: #ffb936; /* Yellow text color to match the site */
-  border: none; /* No border */
-  cursor: pointer; /* Pointer cursor for better UX */
-  padding: 14px; /* Add padding for better touch area */
-}
-
-/* Navbar styles for mobile */
-#navbar {
-  display: none; /* Hidden by default */
-  flex-direction: column; /* Stack links vertically */
-  background-color: #340093; /* Purple background to match the site */
-  position: absolute; /* Positioning to overlay the content */
-  width: 100%; /* Full width */
-  z-index: 1000; /* Sit on top of other elements */
-}
-
-/* Links inside the navbar */
-#navbar a {
-  color: #ffb936; /* Yellow text color */
-  text-decoration: none; /* Remove underline */
-  padding: 10px 16px; /* Padding for links */
-  text-align: center; /* Center the text */
-  display: block; /* Make links block elements */
-}
-
-/* Show navbar on menu toggle */
-.show {
-  display: flex; /* Show the navbar when toggled */
-}
-
 /* Navigation Bar Styles */
 .navbar {
   overflow: hidden; /* Hide overflow */
