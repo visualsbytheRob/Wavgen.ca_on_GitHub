@@ -1,182 +1,187 @@
-    body {
-    font-family: helvetica, arial, sans-serif; 
-    background: #340093; /* purple background */
-    }
-    .header {
-      padding: 4; /* some padding */
-      text-align: left; /* left align the text */
-      background: #340093; /* purple background */
-      color: #ffb936; /* yellow text color */
-      text-decoration: none; /* Remove underline */
-    }
-    a:link, a:visited {
-      background-color: #340093;
-      color: #ffb936; /* yellow text color */
-      padding: 2px 6px;
-      text-align: left;
-      text-decoration: none;
-      display: inline-block;
-    }
-    a:hover, a:active {
-      background-color: #340093;
-    }
-    /* the font size of the largest <h1> element in the header */
-    .header h1 {
-      font-size: 22px;
-    }
-    /* the font size of the second largest <h1> element in the sub header */
-    .header h2 {
-    font-size: 20px;
-    }
-    /* the font size of the smaller <h3> element in the side row */
-    .side h3 {
-      font-size: 14px;
-    }
-     /* the font size of the smaller <h4> element in the main row */
-     .main h4 {
-      font-size: 14px;
-    }
-     /* the font size of the smaller <h5> element in the footer */
-    .footer h5 {
-      font-size: 8px;
-    }
-    /* Style the top navigation bar */
-    .navbar {
-      overflow: hidden; /* Hide overflow */
-      background: #340093; /* purple background */
-    }
-    /* Style the navigation bar links */
-    .navbar a {
-      float: left; /* Make sure that the links stay side-by-side */
-      display: block; /* Change the display to block, for responsive reasons (see below) */
-      color: #ffb936; /* yellow text color */
-      text-align: center; /* Center the text */
-      font-size: 17px; /* Size of the text */
-      padding: 7px 17px; /* Add some padding */
-      text-decoration: none; /* Remove underline */
-    }
-    /* Right-aligned link */
-    .navbar a.right {
-      float: right; /* Float a link to the right */
-    }
-    /* Change color on hover/mouse-over */
-    .navbar a:hover {
-      background-color: #200229; /* deeper purple background color */
-      color: #faa405; /* deeper yellow text color */
-    }
-    /* Ensure proper sizing */
-    * {
-      box-sizing: border-box;
-    }
-    /* Column container */
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    /* Create two unequal columns that sit next to each other */
-    /* Sidebar/left column */
-    .side {
-      flex: 20%; /* Set the width of the sidebar */
-      color: #ffb936; /* yellow text color */
-      background-color: #340093;
-      padding: 8px; /* Some padding */
-    }
-    /* Main column */
-    .main {
-      flex: 80%; /* Set the width of the main content */
-      color: #ffb936; /* yellow text color */
-      background: #340093; /* purple background */
-      padding: 8px; /* Some padding */
-    }
-    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-    @media screen and (max-width: 700px) {
-      .row {
-        flex-direction: column;
-      }
-    }
-    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-    @media screen and (max-width: 400px) {
-      .navbar a {
-        float: none;
-        width: 100%;
-      }
-    }
-    .footer {
-      padding: 4px; /* some padding */
-      text-align: left; /* left align the text */
-      background: #340093; /* purple background */
-      color: #ffb936; /* yellow text color */
-      text-decoration: none; /* Remove underline */
-    }
-
-    /* Style the Image Used to Trigger the Modal */
-img {
-  cursor: pointer;
-  transition: 0.3s;
+/* General Body Styles */
+body {
+  font-family: helvetica, arial, sans-serif; 
+  background: #340093; /* Purple background */
 }
 
-img:hover {opacity: 0.7;}
+/* Header Styles */
+.header {
+  padding: 4px; /* Some padding */
+  text-align: left; /* Left-align the text */
+  background: #340093; /* Purple background */
+  color: #ffb936; /* Yellow text color */
+}
 
-/* The Modal (background) */
+/* Anchor Link Styles */
+a:link, a:visited {
+  background-color: #340093;
+  color: #ffb936; /* Yellow text color */
+  padding: 2px 6px;
+  text-align: left;
+  text-decoration: none; /* Remove underline */
+  display: inline-block;
+}
+a:hover, a:active {
+  background-color: #340093;
+}
+
+/* Header Font Sizes */
+.header h1 {
+  font-size: 22px; /* Size for main heading */
+}
+.header h2 {
+  font-size: 20px; /* Size for sub heading */
+}
+
+/* Font Sizes for Smaller Headings */
+.side h3 {
+  font-size: 14px; /* Size for sidebar heading */
+}
+.main h4 {
+  font-size: 14px; /* Size for main content subheading */
+}
+.footer h5 {
+  font-size: 8px; /* Size for footer text */
+}
+
+/* Navigation Bar Styles */
+.navbar {
+  overflow: hidden; /* Hide overflow */
+  background: #340093; /* Purple background */
+}
+.navbar a {
+  float: left; /* Links side-by-side */
+  display: block; /* Change to block for responsiveness */
+  color: #ffb936; /* Yellow text color */
+  text-align: center; /* Center text */
+  font-size: 17px; /* Text size */
+  padding: 7px 17px; /* Padding around links */
+  text-decoration: none; /* Remove underline */
+}
+.navbar a.right {
+  float: right; /* Float right */
+}
+.navbar a:hover {
+  background-color: #200229; /* Darker purple on hover */
+  color: #faa405; /* Different yellow on hover */
+}
+
+/* Box Sizing */
+* {
+  box-sizing: border-box; /* Ensures padding doesn't affect total width */
+}
+
+/* Flexbox for Row Layout */
+.row {
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Allow wrapping */
+}
+
+/* Sidebar Styles */
+.side {
+  flex: 20%; /* Width of the sidebar */
+  color: #ffb936; /* Yellow text color */
+  background-color: #340093; /* Purple background */
+  padding: 8px; /* Padding inside the sidebar */
+}
+
+/* Main Content Styles */
+.main {
+  flex: 80%; /* Width of the main content area */
+  color: #ffb936; /* Yellow text color */
+  background: #340093; /* Purple background */
+  padding: 8px; /* Padding inside the main content */
+}
+
+/* Responsive Layout for Small Screens */
+@media screen and (max-width: 700px) {
+  .row {
+      flex-direction: column; /* Stack columns on small screens */
+  }
+}
+@media screen and (max-width: 400px) {
+  .navbar a {
+      float: none; /* Stack navbar links */
+      width: 100%; /* Full width */
+  }
+}
+
+/* Footer Styles */
+.footer {
+  padding: 4px; /* Some padding */
+  text-align: left; /* Left-align the text */
+  background: #340093; /* Purple background */
+  color: #ffb936; /* Yellow text color */
+}
+
+/* Image Styles for Modal Trigger */
+img {
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: 0.3s; /* Smooth transition for effects */
+}
+img:hover {
+  opacity: 0.7; /* Slightly fade image on hover */
+}
+
+/* Modal Styles */
 .modal {
   display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
+  position: fixed; /* Fixed position */
   z-index: 500; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 100px; /* Location of modal */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.9); /* Black with opacity */
 }
 
-/* Modal Content (Image) */
+/* Modal Content */
 .modal-content {
   margin: auto;
   display: block;
   width: 80%;
-  max-width: 700px;
+  max-width: 700px; /* Limit width */
 }
 
-/* Caption of Modal Image (Image Text) */
+/* Caption for Modal Image */
 #caption {
   margin: auto;
   display: block;
   width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
+  max-width: 700px; /* Limit width */
+  text-align: center; /* Center text */
+  color: #ccc; /* Caption text color */
+  padding: 10px 0; /* Padding around caption */
+  height: 150px; /* Fixed height for caption area */
 }
 
-/* Add Animation - Zoom in the Modal */
+/* Animation for Modal */
 .modal-content, #caption {  
-  animation-name: zoom;
-  animation-duration: 0.6s;
+  animation-name: zoom; /* Use zoom animation */
+  animation-duration: 0.6s; /* Animation duration */
 }
 
 @keyframes zoom {
-  from {transform:scale(0)} 
-  to {transform:scale(1)}
+  from {transform: scale(0)} /* Start from scaled down */
+  to {transform: scale(1)} /* End at original size */
 }
 
-/* The Close Button */
+/* Close Button Styles */
 .close {
   position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
+  top: 15px; /* Position from top */
+  right: 35px; /* Position from right */
+  color: #f1f1f1; /* Close button color */
+  font-size: 40px; /* Font size for close button */
+  font-weight: bold; /* Make bold */
+  transition: 0.3s; /* Transition effect */
 }
-
 .close:hover,
 .close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
+  color: #bbb; /* Change color on hover/focus */
+  text-decoration: none; /* Remove underline */
+  cursor: pointer; /* Pointer cursor on hover */
 }
