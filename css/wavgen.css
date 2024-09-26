@@ -10,6 +10,12 @@ body {
   text-align: left; /* Left-align the text */
   background: #340093; /* Purple background */
   color: #ffb936; /* Yellow text color */
+  transition: background-color 0.3s ease-in-out; /* smooth transition to reduce flickering */
+}
+
+/* Prevent Focus Outline on Click */
+a:focus {
+  outline: none; /* Browsers sometimes show an outline when an element is clicked, which might cause flickering. */
 }
 
 /* Anchor Link Styles */
@@ -56,6 +62,7 @@ a:hover, a:active {
   font-size: 17px; /* Text size */
   padding: 7px 17px; /* Padding around links */
   text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;  /* smooth transition to reduce flickering */
 }
 .navbar a.right {
   float: right; /* Float right */
@@ -183,4 +190,9 @@ img:hover {
   color: #bbb; /* Change color on hover/focus */
   text-decoration: none; /* Remove underline */
   cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Class to temporarily hide the navbar while components are loading */
+.hidden {
+  display: none; /* The navbar will be hidden during the loading phase */
 }
