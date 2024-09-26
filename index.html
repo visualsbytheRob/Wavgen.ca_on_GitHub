@@ -55,27 +55,10 @@
         span.onclick = function() { 
           modal.style.display = "none";
         }
-        // injected: Method 4 - Remove the 'hidden' class after components have loaded
-        function removeHiddenClass() {
-            document.getElementById('header-container').classList.remove('hidden');
-            document.getElementById('footer-container').classList.remove('hidden');
-        }
+        </script>
 
-        // injected: Method 5 - Ensure the header and footer are loaded first
-        window.addEventListener('DOMContentLoaded', () => {
-            loadComponent('components/header.html', 'header-container');
-            loadComponent('components/footer.html', 'footer-container');
-        });
-
-        // injected: Method 6 - Call removeHiddenClass after components have been loaded
-        window.onload = function() {
-            removeHiddenClass();
-        }
-    </script>
-
-    <!-- Placeholder for the footer component -->
-    <div id="footer-container" class="hidden"></div> <!-- injected: 'hidden' class to prevent flicker during load -->
-
+         <!-- Placeholder for the footer component -->
+    <div id="footer-container"></div>
 
     <!-- Load the component loader script -->
     <script src="js/loadComponents.js"></script>
