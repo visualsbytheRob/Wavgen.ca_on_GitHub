@@ -12,7 +12,7 @@ body {
   color: #ffb936; /* Yellow text color */
 }
 
-/* Sticky Header Styles */
+/* Sticky Header Styles */ 
 #header-container {
   position: sticky; /* Make the header sticky */
   top: 0; /* Stick to the top */
