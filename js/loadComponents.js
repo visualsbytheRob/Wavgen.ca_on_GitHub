@@ -15,18 +15,6 @@ function loadComponent(componentPath, targetElementId) {
         });
 }
 
-// Function to prevent flickering of navigation/header components on mobile
-function preventFlicker() {
-    // Add 'hidden' class to navigation to hide during page load
-    const navbar = document.getElementById('navbar-container');
-    navbar.classList.add('hidden');
-    
-    // Remove 'hidden' class after page is fully loaded
-    window.addEventListener('load', () => {
-        navbar.classList.remove('hidden');
-    });
-}
-
 // Load header and footer by calling the function
 window.addEventListener('DOMContentLoaded', () => {
     loadComponent('components/header.html', 'header-container');
