@@ -13,9 +13,9 @@ body {
   transition: background-color 0.3s ease-in-out; /* smooth transition to reduce flickering */
 }
 
-/* Prevent Focus Outline on Click */
+/* Header Styles */
 a:focus {
-  outline: none; /* Browsers sometimes show an outline when an element is clicked, which might cause flickering. */
+  outline: none;
 }
 
 /* Anchor Link Styles */
@@ -190,9 +190,4 @@ img:hover {
   color: #bbb; /* Change color on hover/focus */
   text-decoration: none; /* Remove underline */
   cursor: pointer; /* Pointer cursor on hover */
-}
-
-/* Class to temporarily hide the navbar while components are loading */
-.hidden {
-  display: none; /* The navbar will be hidden during the loading phase */
 }
