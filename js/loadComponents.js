@@ -15,8 +15,12 @@ function loadComponent(componentPath, targetElementId) {
         });
 }
 
-// Load header and footer by calling the function
+// Load header, footer and subnavs by calling the function
 window.addEventListener('DOMContentLoaded', () => {
     loadComponent('components/header.html', 'header-container');
     loadComponent('components/footer.html', 'footer-container');
+    loadComponent('components/musicsubnav.html', 'musicsubnav-container');
+    loadComponent('components/videosubnav.html', 'videosubnav-container');
+    loadComponent('components/datasubnav.html', 'datasubnav-container');
+    loadComponent('components/artsubnav.html', 'artsubnav-container');
 });
