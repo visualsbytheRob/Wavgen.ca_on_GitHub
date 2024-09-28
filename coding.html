@@ -1,140 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>The Waveform Generation</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/wavgen.css">
-</head>
-<body>
-<!-- Placeholder for the subnav component -->
-<div id="datasubnav-container"></div>
-    <!-- The Modal -->
-<div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01" alt="ball1">
-  <div id="caption"></div>
-</div>
-    <div class="header">
-      <h2><a href="coding.html">Coding</a></h2>
-      </div>
-  <div class="row">
-      <div class="side">
-          <h3>Let's use this page for now for some links</h3>
-          <h3></h3>
-      </div>
-      <div class="main">
-        <ul>
-          <li><a href="https://www.python.org/">Python</a></li>
-          <li><a href="https://www.java.com/">Java</a></li>
-          <li><a href="https://www.javascript.com/">JavaScript</a></li>
-          <li><a href="https://www.ruby-lang.org/">Ruby</a></li>
-          <li><a href="https://www.php.net/">PHP</a></li>
-          <li><a href="https://www.swift.org/">Swift</a></li>
-          <li><a href="https://www.kotlinc.com/">Kotlin</a></li>
-          <li><a href="https://www.go.dev/">Go</a></li>
-          <li><a href="https://www.rust-lang.org/">Rust</a></li>
-          <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
-          <li><a href="https://www.cplusplus.com/">C++</a></li>
-          <li><a href="https://www.csharp.net/">C#</a></li>
-          <li><a href="https://www.dartlang.org/">Dart</a></li>
-          <li><a href="https://www.scala-lang.org/">Scala</a></li>
-          <li><a href="https://www.perl.org/">Perl</a></li>
-          <li><a href="https://elixir-lang.org/">Elixir</a></li>
-          <li><a href="https://www.latex-project.org/">LaTeX</a></li>
-          <li><a href="https://www.nodejs.org/">Node.js</a></li>
-          <li><a href="https://reactjs.org/">React</a></li>
-          <li><a href="https://angular.io/">Angular</a></li>
-          <li><a href="https://vuejs.org/">Vue.js</a></li>
-          <li><a href="https://www.djangoproject.com/">Django</a></li>
-          <li><a href="https://flask.palletsprojects.com/">Flask</a></li>
-          <li><a href="https://www.ruby-on-rails.org/">Ruby on Rails</a></li>
-          <li><a href="https://www.laravel.com/">Laravel</a></li>
-          <li><a href="https://www.expressjs.com/">Express</a></li>
-          <li><a href="https://www.spring.io/">Spring</a></li>
-          <li><a href="https://www.adobe.com/devnet/air.html">Adobe AIR</a></li>
-          <li><a href="https://www.dotnetfoundation.org/">.NET</a></li>
-          <li><a href="https://www.w3schools.com/">W3Schools</a></li>
-          <li><a href="https://www.codecademy.com/">Codecademy</a></li>
-          <li><a href="https://www.udacity.com/">Udacity</a></li>
-          <li><a href="https://www.freecodecamp.org/">freeCodeCamp</a></li>
-          <li><a href="https://www.khanacademy.org/computing/computer-programming">Khan Academy</a></li>
-          <li><a href="https://www.udemy.com/">Udemy</a></li>
-          <li><a href="https://www.pluralsight.com/">Pluralsight</a></li>
-          <li><a href="https://www.coursera.org/">Coursera</a></li>
-          <li><a href="https://www.edx.org/">edX</a></li>
-          <li><a href="https://stackoverflow.com/">Stack Overflow</a></li>
-          <li><a href="https://github.com/">GitHub</a></li>
-          <li><a href="https://www.gitlab.com/">GitLab</a></li>
-          <li><a href="https://bitbucket.org/">Bitbucket</a></li>
-          <li><a href="https://www.heroku.com/">Heroku</a></li>
-          <li><a href="https://www.digitalocean.com/">DigitalOcean</a></li>
-          <li><a href="https://aws.amazon.com/">AWS</a></li>
-          <li><a href="https://www.azure.microsoft.com/">Microsoft Azure</a></li>
-          <li><a href="https://www.google.com/cloud/">Google Cloud</a></li>
-          <li><a href="https://www.heroku.com/">Heroku</a></li>
-          <li><a href="https://www.ionicframework.com/">Ionic</a></li>
-          <li><a href="https://www.flutter.dev/">Flutter</a></li>
-          <li><a href="https://www.reactnative.dev/">React Native</a></li>
-          <li><a href="https://www.tensorflow.org/">TensorFlow</a></li>
-          <li><a href="https://pytorch.org/">PyTorch</a></li>
-          <li><a href="https://scikit-learn.org/">scikit-learn</a></li>
-          <li><a href="https://www.r-project.org/">R</a></li>
-          <li><a href="https://www.kdnuggets.com/">KDnuggets</a></li>
-          <li><a href="https://towardsdatascience.com/">Towards Data Science</a></li>
-          <li><a href="https://www.analyticsvidhya.com/">Analytics Vidhya</a></li>
-          <li><a href="https://www.datacamp.com/">DataCamp</a></li>
-          <li><a href="https://www.kaggle.com/">Kaggle</a></li>
-          <li><a href="https://www.rapidapi.com/">RapidAPI</a></li>
-          <li><a href="https://www.apis.guru/">APIs.guru</a></li>
-          <li><a href="https://www.postman.com/">Postman</a></li>
-          <li><a href="https://www.tutorialspoint.com/">TutorialsPoint</a></li>
-          <li><a href="https://www.programiz.com/">Programiz</a></li>
-          <li><a href="https://www.learnpython.org/">Learn Python</a></li>
-          <li><a href="https://www.learnjavascript.online/">Learn JavaScript</a></li>
-          <li><a href="https://www.learnrubythehardway.org/">Learn Ruby the Hard Way</a></li>
-          <li><a href="https://www.learn-c.org/">Learn C</a></li>
-          <li><a href="https://www.learncpp.com/">Learn C++</a></li>
-          <li><a href="https://www.learnjavaonline.org/">Learn Java Online</a></li>
-          <li><a href="https://www.learnsqlonline.org/">Learn SQL Online</a></li>
-          <li><a href="https://www.learnhtml.com/">Learn HTML</a></li>
-          <li><a href="https://www.learncss.com/">Learn CSS</a></li>
-          <li><a href="https://www.learnruby.org/">Learn Ruby</a></li>
-          <li><a href="https://www.learnswift.org/">Learn Swift</a></li>
-          <li><a href="https://www.learnkotlin.com/">Learn Kotlin</a></li>
-        </ul>
-      </div>
-  </div>
-        <script>
-          // Get the modal
-          var modal = document.getElementById("myModal");
-          
-          // Get the image and insert it inside the modal - use its "alt" text as a caption
-          var imgs = document.querySelectorAll("img");
-          var modalImg = document.getElementById("img01");
-          var captionText = document.getElementById("caption");
-          
-          imgs.forEach(img => {
-            img.onclick = function(){
-              modal.style.display = "block";
-              modalImg.src = this.src;
-              captionText.innerHTML = this.alt;
-            }
-          });
-          
-          // Get the <span> element that closes the modal
-          var span = document.getElementsByClassName("close")[0];
-          
-          // When the user clicks on <span> (x), close the modal
-          span.onclick = function() { 
-            modal.style.display = "none";
-          }
-          </script>
-          
-         <!-- Placeholder for the footer component -->
-    <div id="footer-container"></div>
 
-    <!-- Load the component loader script -->
-    <script src="js/loadComponents.js"></script>
-  </body>
+<head>
+  <title>The Waveform Generation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/wavgen.css">
+</head>
+
+<body>
+  <!-- Placeholder for the subnav component -->
+  <div id="datasubnav-container"></div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01" alt="ball1">
+    <div id="caption"></div>
+  </div>
+
+  <div class="header">
+    <h2><a href="coding.html">Coding</a></h2>
+  </div>
+
+  <div class="row">
+    <div class="side">
+      <h3>Let's use this page for now for some links</h3>
+      <h3></h3>
+    </div>
+    <div class="main">
+      <ul>
+        <li><a href="https://www.python.org/" target="_blank">Python</a></li>
+        <li><a href="https://www.java.com/" target="_blank">Java</a></li>
+        <li><a href="https://www.javascript.com/" target="_blank">JavaScript</a></li>
+        <li><a href="https://www.ruby-lang.org/" target="_blank">Ruby</a></li>
+        <li><a href="https://www.php.net/" target="_blank">PHP</a></li>
+        <li><a href="https://swift.org/" target="_blank">Swift</a></li>
+        <li><a href="https://kotlinlang.org/" target="_blank">Kotlin</a></li>
+        <li><a href="https://golang.org/" target="_blank">Go</a></li>
+        <li><a href="https://www.rust-lang.org/" target="_blank">Rust</a></li>
+        <li><a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a></li>
+        <li><a href="https://www.cplusplus.com/" target="_blank">C++</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/" target="_blank">C#</a></li>
+        <li><a href="https://dart.dev/" target="_blank">Dart</a></li>
+        <li><a href="https://www.scala-lang.org/" target="_blank">Scala</a></li>
+        <li><a href="https://www.perl.org/" target="_blank">Perl</a></li>
+        <li><a href="https://elixir-lang.org/" target="_blank">Elixir</a></li>
+        <li><a href="https://www.latex-project.org/" target="_blank">LaTeX</a></li>
+        <li><a href="https://nodejs.org/" target="_blank">Node.js</a></li>
+        <li><a href="https://reactjs.org/" target="_blank">React</a></li>
+        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+        <li><a href="https://vuejs.org/" target="_blank">Vue.js</a></li>
+        <li><a href="https://www.djangoproject.com/" target="_blank">Django</a></li>
+        <li><a href="https://flask.palletsprojects.com/" target="_blank">Flask</a></li>
+        <li><a href="https://rubyonrails.org/" target="_blank">Ruby on Rails</a></li>
+        <li><a href="https://laravel.com/" target="_blank">Laravel</a></li>
+        <li><a href="https://expressjs.com/" target="_blank">Express</a></li>
+        <li><a href="https://spring.io/" target="_blank">Spring</a></li>
+        <li><a href="https://aws.amazon.com/" target="_blank">AWS</a></li>
+        <li><a href="https://azure.microsoft.com/" target="_blank">Microsoft Azure</a></li>
+        <li><a href="https://cloud.google.com/" target="_blank">Google Cloud</a></li>
+        <li><a href="https://www.heroku.com/" target="_blank">Heroku</a></li>
+        <li><a href="https://www.digitalocean.com/" target="_blank">DigitalOcean</a></li>
+        <li><a href="https://www.codecademy.com/" target="_blank">Codecademy</a></li>
+        <li><a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a></li>
+        <li><a href="https://www.udacity.com/" target="_blank">Udacity</a></li>
+        <li><a href="https://www.khanacademy.org/computing/computer-programming" target="_blank">Khan Academy</a></li>
+        <li><a href="https://www.udemy.com/" target="_blank">Udemy</a></li>
+        <li><a href="https://www.coursera.org/" target="_blank">Coursera</a></li>
+        <li><a href="https://www.edx.org/" target="_blank">edX</a></li>
+        <li><a href="https://stackoverflow.com/" target="_blank">Stack Overflow</a></li>
+        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+        <li><a href="https://gitlab.com/" target="_blank">GitLab</a></li>
+        <li><a href="https://bitbucket.org/" target="_blank">Bitbucket</a></li>
+        <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a></li>
+        <li><a href="https://pytorch.org/" target="_blank">PyTorch</a></li>
+        <li><a href="https://scikit-learn.org/" target="_blank">scikit-learn</a></li>
+        <li><a href="https://www.r-project.org/" target="_blank">R</a></li>
+        <li><a href="https://www.kdnuggets.com/" target="_blank">KDnuggets</a></li>
+        <li><a href="https://towardsdatascience.com/" target="_blank">Towards Data Science</a></li>
+        <li><a href="https://www.analyticsvidhya.com/" target="_blank">Analytics Vidhya</a></li>
+        <li><a href="https://www.datacamp.com/" target="_blank">DataCamp</a></li>
+        <li><a href="https://www.kaggle.com/" target="_blank">Kaggle</a></li>
+        <li><a href="https://www.postman.com/" target="_blank">Postman</a></li>
+        <li><a href="https://www.tutorialspoint.com/" target="_blank">TutorialsPoint</a></li>
+        <li><a href="https://www.learnpython.org/" target="_blank">Learn Python</a></li>
+        <li><a href="https://www.learnjavascript.online/" target="_blank">Learn JavaScript</a></li>
+        <li><a href="https://www.learnrubythehardway.org/" target="_blank">Learn Ruby the Hard Way</a></li>
+        <li><a href="https://www.learn-c.org/" target="_blank">Learn C</a></li>
+        <li><a href="https://www.learncpp.com/" target="_blank">Learn C++</a></li>
+      </ul>
+    </div>
+  </div>
+          <!-- Placeholder for the footer component -->
+          <div id="footer-container"></div>
+          
+          <!-- Load the component loader script -->
+          <script src="js/loadComponents.js"></script>
+</body>
+
 </html>
