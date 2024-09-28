@@ -17,6 +17,39 @@ body {
   position: sticky; /* Make the header sticky */
   top: 0; /* Stick to the top */
   z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
+  background-color: #340093; /* Ensure solid background */
+}
+
+/* Sticky Music Subnav Styles */ 
+#musicsubnav-container {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
+  background-color: #340093; /* Ensure solid background */
+}
+
+/* Sticky Video Subnav Styles */ 
+#videosubnav-container {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
+  background-color: #340093; /* Ensure solid background */
+}
+
+/* Sticky Data Subnav Styles */ 
+#datasubnav-container {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
+  background-color: #340093; /* Ensure solid background */
+}
+
+/* Sticky Art Subnav Styles */ 
+#subnav-container {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top */
+  z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
+  background-color: #340093; /* Ensure solid background */
 }
 
 /* Body Header Styles */
@@ -82,6 +115,29 @@ a:hover, a:active {
   float: right; /* Float right */
 }
 .navbar a:hover {
+  background-color: #200229; /* Darker purple on hover */
+  color: #faa405; /* Different yellow on hover */
+}
+
+/* Sub Navigation Bar Styles */
+.subnavbar {
+  overflow: hidden; /* Hide overflow */
+  background: #340093; /* Purple background */
+  padding-bottom: 10px; /* Padding below the navbar */
+}
+.subnavbar a {
+  float: left; /* Links side-by-side */
+  display: block; /* Change to block for responsiveness */
+  color: #ffb936; /* Yellow text color */
+  text-align: center; /* Center text */
+  font-size: 17px; /* Text size */
+  padding: 7px 17px; /* Padding around links */
+  text-decoration: none; /* Remove underline */
+}
+.subnavbar a.right {
+  float: right; /* Float right */
+}
+.subnavbar a:hover {
   background-color: #200229; /* Darker purple on hover */
   color: #faa405; /* Different yellow on hover */
 }
