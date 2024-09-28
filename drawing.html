@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>The Waveform Generation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/wavgen.css">
+</head>
+<body>
+<!-- Placeholder for the subnav component -->
+<div id="artsubnav-container"></div>
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01" alt="ball1">
+  <div id="caption"></div>
+</div>
+  <div class="header">
+    <h2><a href="drawing.html">Drawing</a></h2>
+    </div>
+<div class="row">
+    <div class="side">
+        <h3>Ball 1</h3>
+        <p><img src="images/1.gif" alt="Ball 1" style="width:320px;height:240px;"></p>
+    </div>
+    <div class="main">
+        <h4>3D Ball Gif</h4>
+        <h4>TouchDesigner 2024</h4>
+    </div>
+</div>
+<div class="row">
+  <div class="side">
+      <h3>Ball 1</h3>
+      <p><img src="images/1.gif" alt="Ball 1" style="width:320px;height:240px;"></p>
+  </div>
+  <div class="main">
+      <h4>3D Ball Gif</h4>
+      <h4>TouchDesigner 2024</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="side">
+      <h3>Ball 1</h3>
+      <p><img src="images/1.gif" alt="Ball 1" style="width:320px;height:240px;"></p>
+  </div>
+  <div class="main">
+      <h4>3D Ball Gif</h4>
+      <h4>TouchDesigner 2024</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="side">
+      <h3>Ball 1</h3>
+      <p><img src="images/1.gif" alt="Ball 1" style="width:320px;height:240px;"></p>
+  </div>
+  <div class="main">
+      <h4>3D Ball Gif</h4>
+      <h4>TouchDesigner 2024</h4>
+  </div>
+</div>
+      <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var imgs = document.querySelectorAll("img");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        
+        imgs.forEach(img => {
+          img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+          }
+        });
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+          modal.style.display = "none";
+        }
+        </script>
+         <!-- Placeholder for the footer component -->
+    <div id="footer-container"></div>
+
+    <!-- Load the component loader script -->
+    <script src="js/loadComponents.js"></script>
+</body>
+</html>
