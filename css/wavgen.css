@@ -88,13 +88,13 @@ a:hover, a:active {
 
 /* Font Sizes for Smaller Headings */
 .side h3 {
-  font-size: 14px; /* Size for sidebar heading */
+  font-size: 16px; /* Size for sidebar heading */
 }
 .main h4 {
-  font-size: 14px; /* Size for main content subheading */
+  font-size: 16px; /* Size for main content subheading */
 }
 .footer h5 {
-  font-size: 8px; /* Size for footer text */
+  font-size: 10px; /* Size for footer text */
 }
 /* Navigation Bar Styles */
 .navbar {
