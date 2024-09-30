@@ -52,6 +52,37 @@ body {
   background-color: #340093; /* Ensure solid background */
 }
 
+/* Parallax section */
+.parallax-section {
+  height: 260px; /* Set the height of the parallax section */
+  overflow: hidden; /* Prevent content from overflowing out of the section */
+  position: relative; /* Position relative to allow absolute positioning of child elements */
+}
+
+.parallax-background {
+  background-image: url('../images/parallax-background.jpg');  /* URL for the background image used in the parallax effect */
+  height: 1200px; /* Height of the background image to create a parallax effect */
+  width: 100%; /* Width of the background image, can be adjusted as needed */
+  background-position: -100px; /* Position the background image at the top of the section*/
+  background-size: 50%; /* Cover the entire section with the background image */
+  position: top; /* Position the background absolutely within the parallax section */
+  top: 0; /* Align to the top of the section */
+  left: 0; /* Align to the left of the section */
+  z-index: -1; /* Position behind other content within the section */
+}
+
+/* Infinite scrolling gallery */
+.gallery-container {
+  display: flex; /* Use flexbox to arrange gallery images in a row */
+  overflow: hidden; /* Hide overflow content to maintain layout */
+  white-space: nowrap; /* Prevent line breaks in the gallery */
+}
+
+.gallery-image {
+  flex-shrink: 0; /* Prevent the image from shrinking */
+  margin-right: 10px; /* Space between gallery images */
+}
+
 /* Body Header Styles */
 .body-header {
   padding: 4px; /* Some padding */
