@@ -292,12 +292,3 @@ img:hover {
   text-decoration: none; /* Remove underline */
   cursor: pointer; /* Pointer cursor on hover */
 }
-
-/* Style the iframe for responsive design */
-iframe {
-    width: 100%; /* Sets the iframe to take up the full width of the parent container */
-    height: 80vh; /* Sets the height to 80% of the viewport height for better scaling on different screen sizes */
-    border: none; /* Removes any visible borders from the iframe */
-    background-color: white; /* Sets the background color to white */
-    color: black; /* Optional: sets the text color to black for contrast */
-}
