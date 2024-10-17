@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Fonts Preview</title>
+    <title>Google Fonts and Pantone Colors</title>
     <!-- Google Fonts Links, if you want to use one of these fonts add this stuf to the page and it will link to the Google API and use the font there, you can download and link to these fonts on the web server if preferred -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
@@ -23,13 +23,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+    <!-- Additional Display Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+<style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             line-height: 1;
             background: #340093; /* Purple background */
-
         }
         h1, h2 {
             font-size: 22px;
@@ -62,100 +70,232 @@
         .work-sans { font-family: 'Work Sans', sans-serif; }
         .nunito { font-family: 'Nunito', sans-serif; }
         .libre-baskerville { font-family: 'Libre Baskerville', serif; }
+        .great-vibes-regular { font-family: "Great Vibes", cursive; font-weight: 400; font-style: normal; }
+        .shadows-into-light-regular { font-family: "Shadows Into Light", cursive; font-weight: 400; font-style: normal; }
+        .luckiest-guy-regular { font-family: "Luckiest Guy", cursive; font-weight: 400; font-style: normal; }
+        .cookie-regular { font-family: "Cookie", cursive; font-weight: 400; font-style: normal; }
+        .love-ya-like-a-sister-regular { font-family: "Love Ya Like A Sister", cursive; font-weight: 400; font-style: normal; }
+       .color-table {
+            width:40%;
+            border-collapse: collapse;
+        }
+        .color-table th, .color-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .color-table th {
+            background-color: #ffffff;
+        }
+        .color-palette-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .color-palette-table td {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            vertical-align: middle;
+            font-family: helvetica, arial, sans-serif;
+            font-size: 22px;
+            color: #fff; /* Default text color */
+        }
     </style>
 </head>
 <body>
     <h1>Google Fonts Test</h1>
     <br>
-<h1>Sans Serif - Top four</h1>
-                <h2 class="open-sans">Open Sans (Sans-Serif)</h2>
-                <p class="open-sans">Open Sans is a clean and modern sans-serif typeface. It has been optimized for print, web, and
-                    mobile interfaces, providing excellent readability.</p>
+    <h1>Sans Serif - Top four</h1>
+    <h2 class="open-sans">Open Sans (Sans-Serif)</h2>
+    <p class="open-sans">Open Sans is a clean and modern sans-serif typeface. It has been optimized for print, web, and mobile interfaces, providing excellent readability.</p>
 
-                <h2 class="poppins">Poppins (Sans-Serif)</h2>
-                <p class="poppins">Poppins is a geometric sans-serif typeface. Its clean design is ideal for web projects, offering both
-                beauty and legibility.</p>
+    <h2 class="poppins">Poppins (Sans-Serif)</h2>
+    <p class="poppins">Poppins is a geometric sans-serif typeface. Its clean design is ideal for web projects, offering both beauty and legibility.</p>
 
-                <h2 class="source-sans-pro">Source Sans Pro (Sans-Serif)</h2>
-                <p class="source-sans-pro">Source Sans Pro is Adobe's first open-source font. It's highly readable and works well for
-                    both body text and headings.</p>
+    <h2 class="source-sans-pro">Source Sans Pro (Sans-Serif)</h2>
+    <p class="source-sans-pro">Source Sans Pro is Adobe's first open-source font. It's highly readable and works well for both body text and headings.</p>
 
-                <h2 class="work-sans">Work Sans (Sans-Serif)</h2>
-                <p class="work-sans">Work Sans is optimized for on-screen use and is highly legible. It strikes a balance between
-                    elegance and functionality.</p>
+    <h2 class="work-sans">Work Sans (Sans-Serif)</h2>
+    <p class="work-sans">Work Sans is optimized for on-screen use and is highly legible. It strikes a balance between elegance and functionality.</p>
 
-                    <br><br><br>
-                    <h1>Serif</h1>
-                    <h2 class="libre-baskerville">Libre Baskerville (Serif)</h2>
-                    <p class="libre-baskerville">Libre Baskerville is a serif font optimized for body text and long-form reading on screens.
-                        It evokes a classic, traditional style, making it suitable for literature and formal documents.</p>
-                    
-                    <h2 class="merriweather">Merriweather (Serif)</h2>
-                    <p class="merriweather">Merriweather is a serif typeface with a very large x-height, making it great for reading on
-                        screens. It was designed to be comfortable for reading at small sizes.</p>
-                    
-                    <h2 class="playfair-display">Playfair Display (Serif)</h2>
-                    <p class="playfair-display">Playfair Display is a serif typeface that evokes a classic, elegant style. It's often used
-                        for large text, such as titles or quotes.</p>
-                    
-                    <h2 class="arvo">Arvo (Slab Serif)</h2>
-                    <p class="arvo">Arvo is a slab-serif typeface known for its geometric structure. It’s ideal for both headings and body
-                        text due to its legibility.</p>
-                    <br>
-
-        <br><br><br>
-                    <h1>Sans Serif - Other options</h1>
+    <br><br><br>
+    <h1>Serif</h1>
+    <h2 class="libre-baskerville">Libre Baskerville (Serif)</h2>
+    <p class="libre-baskerville">Libre Baskerville is a serif font optimized for body text and long-form reading on screens. It evokes a classic, traditional style, making it suitable for literature and formal documents.</p>
     
-                <h2 class="roboto">Roboto (Sans-Serif)</h2>
-                <p class="roboto">Roboto has a mechanical skeleton and the forms are largely geometric. It has a friendly and open curve
-                    structure that makes it highly readable.</p>
-                
-                <h2 class="lato">Lato (Sans-Serif)</h2>
-                <p class="lato">Lato is a sans-serif typeface family designed in the summer of 2010. Its semi-rounded details give it a
-                    feeling of warmth.</p>
-                
-                <h2 class="pt-sans">PT Sans (Sans-Serif)</h2>
-                <p class="pt-sans">PT Sans is based on Russian sans-serif types and has a contemporary appearance. It's neutral yet
-                    distinctive in its forms.</p>
-                
-                <h2 class="montserrat">Montserrat (Sans-Serif)</h2>
-                <p class="montserrat">Montserrat is a geometric sans-serif typeface. Its letters are bold and distinct, suitable for
-                    titles and headers.</p>
-                
-                <h2 class="raleway">Raleway (Sans-Serif)</h2>
-                <p class="raleway">Raleway is an elegant sans-serif typeface family. It is best suited for headings and larger text
-                    sizes.</p>
-                
+    <h2 class="merriweather">Merriweather (Serif)</h2>
+    <p class="merriweather">Merriweather is a serif typeface with a very large x-height, making it great for reading on screens. It was designed to be comfortable for reading at small sizes.</p>
+    
+    <h2 class="playfair-display">Playfair Display (Serif)</h2>
+    <p class="playfair-display">Playfair Display is a serif typeface that evokes a classic, elegant style. It's often used for large text, such as titles or quotes.</p>
+    
+    <h2 class="arvo">Arvo (Slab Serif)</h2>
+    <p class="arvo">Arvo is a slab-serif typeface known for its geometric structure. It’s ideal for both headings and body text due to its legibility.</p>
+    <br>
 
-                
+    <br><br><br>
+    <h1>Sans Serif - Other options</h1>
 
-                
-                <h2 class="ubuntu">Ubuntu (Sans-Serif)</h2>
-                <p class="ubuntu">The Ubuntu typeface is inspired by the brand of the same name. It has a strong and modern design that
-                    makes it ideal for headings and body text.</p>
-                
+    <h2 class="roboto">Roboto (Sans-Serif)</h2>
+    <p class="roboto">Roboto has a mechanical skeleton and the forms are largely geometric. It has a friendly and open curve structure that makes it highly readable.</p>
+    
+    <h2 class="lato">Lato (Sans-Serif)</h2>
+    <p class="lato">Lato is a sans-serif typeface family designed in the summer of 2010. Its semi-rounded details give it a feeling of warmth.</p>
+    
+    <h2 class="pt-sans">PT Sans (Sans-Serif)</h2>
+    <p class="pt-sans">PT Sans is based on Russian sans-serif types and has a contemporary appearance. It's neutral yet distinctive in its forms.</p>
+    
+    <h2 class="montserrat">Montserrat (Sans-Serif)</h2>
+    <p class="montserrat">Montserrat is a geometric sans-serif typeface. Its letters are bold and distinct, suitable for titles and headers.</p>
+    
+    <h2 class="raleway">Raleway (Sans-Serif)</h2>
+    <p class="raleway">Raleway is an elegant sans-serif typeface family. It is best suited for headings and larger text sizes.</p>
+    
+    <h2 class="ubuntu">Ubuntu (Sans-Serif)</h2>
+    <p class="ubuntu">The Ubuntu typeface is inspired by the brand of the same name. It has a strong and modern design that makes it ideal for headings and body text.</p>
+    
+    <h2 class="oswald">Oswald (Sans-Serif)</h2>
+    <p class="oswald">Oswald is a modern sans-serif typeface designed for web use. It's condensed and works great for titles and headlines.</p>
+    
+    <h2 class="fira-sans">Fira Sans (Sans-Serif)</h2>
+    <p class="fira-sans">Fira Sans is a clean sans-serif font optimized for screen readability, ideal for web and app interfaces.</p>
+    
+    <h2 class="nunito">Nunito (Sans-Serif)</h2>
+    <p class="nunito">Nunito is a well-balanced sans-serif typeface.</p>
 
-                
-                <h2 class="oswald">Oswald (Sans-Serif)</h2>
-                <p class="oswald">Oswald is a modern sans-serif typeface designed for web use. It's condensed and works great for titles
-                    and headlines.</p>
-                
-                <h2 class="fira-sans">Fira Sans (Sans-Serif)</h2>
-                <p class="fira-sans">Fira Sans is a clean sans-serif font optimized for screen readability, ideal for web and app
-                    interfaces.</p>
-                
+    <br><br><br>
+    <h1>Monospace</h1>
+    <h2 class="inconsolata">Inconsolata (Monospace)</h2>
+    <p class="inconsolata">Inconsolata is a monospace font designed for code snippets and developer tools. Its clean and clear design ensures legibility even at small sizes.</p>
 
-                
-                <h2 class="nunito">Nunito (Sans-Serif)</h2>
-                <p class="nunito">Nunito is a well-balanced sans-serif typeface.
-        <br><br><br>
-                <h1>Monospace</h1>
-                                    <h2 class="inconsolata">Inconsolata (Monospace)</h2>
-                                    <p class="inconsolata">Inconsolata is a monospace font designed for code snippets and developer tools. Its clean and
-                                        clear design ensures legibility even at small sizes.</p>
+    <br><br><br>
+    <h1>Display Fonts</h1>
+    <h2 class="great-vibes-regular">Great Vibes (Display)</h2>
+    <p class="great-vibes-regular">Great Vibes is a cursive font with elegant and flowing characters, perfect for invitations and formal occasions.</p>
 
+    <h2 class="shadows-into-light-regular">Shadows Into Light (Display)</h2>
+    <p class="shadows-into-light-regular">Shadows Into Light is a casual handwritten font, great for personal notes and informal designs.</p>
 
+    <h2 class="luckiest-guy-regular">Luckiest Guy (Display)</h2>
+    <p class="luckiest-guy-regular">Luckiest Guy is a bold and playful font, ideal for fun and energetic designs.</p>
 
-    </body>
-            
-    </html>
+    <h2 class="cookie-regular">Cookie (Display)</h2>
+    <p class="cookie-regular">Cookie is a sweet and friendly cursive font, perfect for playful and whimsical designs.</p>
+
+    <h2 class="love-ya-like-a-sister-regular">Love Ya Like A Sister (Display)</h2>
+    <p class="love-ya-like-a-sister-regular">Love Ya Like A Sister is a quirky and fun font, great for creative and unique projects.</p>
+
+    <br>...<br>
+
+    <h1>Color Images - The images are correct yet the hex conversion wasn't so I corrected in the table below</h1>
+    <table class="color-table" id="colorTable">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Color</th>
+                <th>HEX</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here by JavaScript -->
+        </tbody>
+    </table>
+    
+    <script>
+        const images = [
+            { src: "images/colors/black_c.jpg", alt: "Black color" },
+            { src: "images/colors/blue_0821_c_pastel.jpg", alt: "Blue pastel color" },
+            { src: "images/colors/blue_iris.jpg", alt: "Blue iris color" },
+            { src: "images/colors/bright_red_c.jpg", alt: "Bright red color" },
+            { src: "images/colors/bright_white.jpg", alt: "Bright white color" },
+            { src: "images/colors/brilliant_white.jpg", alt: "Brilliant white color" },
+            { src: "images/colors/bronze_medal.jpg", alt: "Bronze medal color" },
+            { src: "images/colors/buffed_beige.jpg", alt: "Buffed beige color" },
+            { src: "images/colors/classic_blue.jpg", alt: "Classic blue color" },
+            { src: "images/colors/dark_blue_c.jpg", alt: "Dark blue color" },
+            { src: "images/colors/emerald.jpg", alt: "Emerald color" },
+            { src: "images/colors/gadget_grey.jpg", alt: "Gadget grey color" },
+            { src: "images/colors/gold_leaf.jpg", alt: "Gold leaf color" },
+            { src: "images/colors/greenery.jpg", alt: "Greenery color" },
+            { src: "images/colors/medium_purple_c.jpg", alt: "Medium purple color" },
+            { src: "images/colors/medium_purple_u.jpg", alt: "Medium purple U color" },
+            { src: "images/colors/orange_clown_fish.jpg", alt: "Orange clown fish color" },
+            { src: "images/colors/orange_pop.jpg", alt: "Orange pop color" },
+            { src: "images/colors/red_0331_c_pastel.jpg", alt: "Red pastel color" },
+            { src: "images/colors/silver_10077_c.jpg", alt: "Silver color" },
+            { src: "images/colors/steel_plate.jpg", alt: "Steel plate color" },
+            { src: "images/colors/true_red.jpg", alt: "True red color" },
+            { src: "images/colors/whispy_blue.jpg", alt: "Whispy blue color" },
+            { src: "images/colors/yellow_c.jpg", alt: "Yellow color" },
+            { src: "images/colors/yellow_up.jpg", alt: "Yellow up color" }
+        ];
+
+        const colorThief = new ColorThief();
+        const tableBody = document.getElementById('colorTable').getElementsByTagName('tbody')[0];
+
+        images.forEach(image => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = image.src;
+            img.alt = image.alt;
+
+            img.onload = function () {
+                const rgb = colorThief.getColor(img);
+                const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+
+                const row = tableBody.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+
+                cell1.innerHTML = `<img src="${img.src}" alt="${img.alt}" style="width:320px;height:240px;">`;
+                cell2.style.backgroundColor = hex;
+                cell3.innerText = hex;
+            };
+        });
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+    </script>
+    <br>...<br>
+    <h1>Color Palette</h1>
+    <table class="color-palette-table">
+        <tr>
+            <td style="background-color: #000000; color: #FFFFFF;">Black C color - #000000</td>
+            <td style="background-color: #74D1EA; color: #000000;">Blue 0821 C pastel color - #74D1EA</td>
+            <td style="background-color: #5A5B9F; color: #FFFFFF;">Blue iris color - #5A5B9F</td>
+            <td style="background-color: #F93822; color: #FFFFFF;">Bright red color - #F93822</td>
+            <td style="background-color: #FFFFFF; color: #000000;">Bright white color - #FFFFFF</td>
+        </tr>
+        <tr>
+            <td style="background-color: #EDF1FF; color: #000000;">Brilliant white color - #EDF1FF</td>
+            <td style="background-color: #A17652; color: #FFFFFF;">Bronze medal color - #A17652</td>
+            <td style="background-color: #BDA182; color: #000000;">Buffed beige color - #BDA182</td>
+            <td style="background-color: #0F4C81; color: #FFFFFF;">Classic blue color - #0F4C81</td>
+            <td style="background-color: #00249C; color: #FFFFFF;">Dark blue C color - #00249C</td>
+        </tr>
+        <tr>
+            <td style="background-color: #009473; color: #000000;">Emerald color - #009473</td>
+            <td style="background-color: #454A4C; color: #000000;">Gadget grey color - #454A4C</td>
+            <td style="background-color: #C59F7B; color: #000000;">Gold leaf color - #C59F7B</td>
+            <td style="background-color: #88B04B; color: #000000;">Greenery color - #88B04B</td>
+            <td style="background-color: #4E008E; color: #FFFFFF;">Medium purple C color - #4E008E</td>
+        </tr>
+        <tr>
+            <td style="background-color: #65428A; color: #FFFFFF;">Medium purple U color - #65428A</td>
+            <td style="background-color: #FF6F1D; color: #FFFFFF;">Orange clown fish color - #FF6F1D</td>
+            <td style="background-color: #FFBA52; color: #FFFFFF;">Orange pop color - #FFBA52</td>
+            <td style="background-color: #FCAEBB; color: #FFFFFF;">Red 0331 C pastel color - #FCAEBB</td>
+            <td style="background-color: #A6A9AA; color: #000000;">Silver 10077 C color - #A6A9AA</td>
+        </tr>
+        <tr>
+            <td style="background-color: #6E767A; color: #000000;">Steel plate color - #6E767A</td>
+            <td style="background-color: #BF1932; color: #FFFFFF;">True red color - #BF1932</td>
+            <td style="background-color: #B0CBE7; color: #000000;">Whispy blue color - #B0CBE7</td>
+            <td style="background-color: #FEDD00; color: #000000;">Yellow C color - #FEDD00</td>
+            <td style="background-color: #FFEB2F; color: #000000;">Yellow up color - #FFEB2F</td>
+        </tr>
+    </table>
+</body>
+</html>
