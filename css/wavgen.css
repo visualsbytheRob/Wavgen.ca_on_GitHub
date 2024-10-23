@@ -44,7 +44,7 @@ body {
   background-color: #340093; /* Ensure solid background */
 }
 
-/* Sticky Art Subnav Styles */ 
+/* Sticky Art Subnav Styles */  
 #artsubnav-container {
   position: sticky; /* Make the header sticky */
   top: 0; /* Stick to the top */
