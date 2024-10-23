@@ -45,7 +45,7 @@ body {
 }
 
 /* Sticky Art Subnav Styles */ 
-#subnav-container {
+#artsubnav-container {
   position: sticky; /* Make the header sticky */
   top: 0; /* Stick to the top */
   z-index: 499; /* Ensure it's above other elements yet not above the modal whic has a z-index of 500*/
