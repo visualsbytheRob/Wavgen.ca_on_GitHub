@@ -1,0 +1,53 @@
+/* Google Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+
+/* Font Classes */
+.roboto { font-family: 'Roboto', sans-serif; }
+.merriweather { font-family: 'Merriweather', serif; }
+.lato { font-family: 'Lato', sans-serif; }
+.pt-sans { font-family: 'PT Sans', sans-serif; }
+.montserrat { font-family: 'Montserrat', sans-serif; }
+.raleway { font-family: 'Raleway', sans-serif; }
+.open-sans { font-family: 'Open Sans', sans-serif; }
+.poppins { font-family: 'Poppins', sans-serif; }
+.ubuntu { font-family: 'Ubuntu', sans-serif; }
+.playfair-display { font-family: 'Playfair Display', serif; }
+.inconsolata { font-family: 'Inconsolata', monospace; }
+.source-sans-pro { font-family: 'Source Sans Pro', sans-serif; }
+.oswald { font-family: 'Oswald', sans-serif; }
+.fira-sans { font-family: 'Fira Sans', sans-serif; }
+.arvo { font-family: 'Arvo', serif; }
+.work-sans { font-family: 'Work Sans', sans-serif; }
+.nunito { font-family: 'Nunito', sans-serif; }
+.libre-baskerville { font-family: 'Libre Baskerville', serif; }
+
+/* Default text styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
