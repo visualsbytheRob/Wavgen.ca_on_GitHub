@@ -1,0 +1,87 @@
+<!-- Mobile Navigation Overlay -->
+<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+<!-- Mobile Navigation Drawer -->
+<nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="h-full flex flex-col">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
+            <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
+            <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Scrollable Menu -->
+        <div class="flex-1 overflow-y-auto py-1">
+            <div class="px-3 space-y-0">
+                {% for item in navigation.main %}
+                    {% if item.children %}
+                        <!-- Section with Children -->
+                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
+                            <a href="{{ item.url }}" class="mobile-nav-link-compact font-semibold{% if item.url | isActiveSection(page.url) %} bg-wavgen-purple{% endif %}">{{ item.title }}</a>
+                            <div class="pl-3 bg-wavgen-dark-purple">
+                                {% for child in item.children %}
+                                    <a href="{{ child.url }}" class="mobile-nav-link-compact text-sm{% if child.url | isCurrentPage(page.url) %} bg-wavgen-purple{% endif %}">{{ child.title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Single Item -->
+                        <a href="{{ item.url }}" class="mobile-nav-link-compact{% if item.url | isCurrentPage(page.url) %} bg-wavgen-purple{% endif %}">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Desktop Navigation -->
+<header class="bg-wavgen-dark-purple shadow-lg relative z-30">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-yellow-300 transition-colors">
+                    The Waveform Generation
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white hover:text-wavgen-yellow">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                {% for item in navigation.main %}
+                    {% if item.children %}
+                        <!-- Dropdown Menu -->
+                        <div class="relative group">
+                            <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors flex items-center{% if item.url | isActiveSection(page.url) %} text-wavgen-yellow{% endif %}">
+                                {{ item.title }}
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                {% for child in item.children %}
+                                    <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors{% if child.url | isCurrentPage(page.url) %} bg-wavgen-dark-purple text-wavgen-yellow{% endif %}">
+                                        {{ child.title }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Single Item -->
+                        <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors{% if item.url | isCurrentPage(page.url) %} text-wavgen-yellow{% endif %}">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+</header>

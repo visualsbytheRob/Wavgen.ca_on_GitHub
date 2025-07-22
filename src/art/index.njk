@@ -1,0 +1,108 @@
+---
+layout: base.njk
+title: Art
+description: Traditional and digital art including painting, drawing, sculpture, and 3D printing by Rob McDonald in Toronto.
+footerDescription: Visual Art & Creative Expression • Toronto, Canada
+footerTagline: Exploring creativity through traditional and digital mediums.
+---
+
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">></span>
+            <span class="text-gray-300">Art</span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-pink-900 via-wavgen-dark-purple to-purple-900 py-20">
+    <div class="absolute inset-0 bg-black opacity-30"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                Traditional & Digital <span class="text-wavgen-yellow">Art</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-pink-200 mb-8">
+                Bridging Classical & Modern Techniques
+            </p>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                Exploring the art of creation through both traditional and digital mediums. From clay sculpture 
+                to 3D printing, each piece bridges classical craftsmanship with modern technology.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Art Mediums Grid -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Painting -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/art/painting/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Painting</h3>
+                    <p class="text-gray-300 mb-4">Traditional and digital painting techniques exploring color, form, and expression</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Acrylic • Digital • Mixed Media
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drawing -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/art/drawing/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Drawing</h3>
+                    <p class="text-gray-300 mb-4">Sketching, illustration, and digital drawing across various subjects and styles</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Pencil • Charcoal • Digital Illustration
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modelling -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/art/modelling/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">3D Modelling</h3>
+                    <p class="text-gray-300 mb-4">Physical and digital 3D creation from clay sculpture to digital modeling</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Clay • Balsa Wood • Digital 3D
+                    </div>
+                </div>
+            </div>
+
+            <!-- Printing -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/art/printing/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">3D Printing</h3>
+                    <p class="text-gray-300 mb-4">Modern fabrication techniques bringing digital designs into physical reality</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        FDM • SLA • Design to Print
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

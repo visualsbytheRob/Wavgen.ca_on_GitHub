@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600;700;800&display=swap');
+
+@layer components {
+  .nav-link {
+    @apply text-white hover:text-wavgen-yellow transition-colors duration-300 font-medium;
+  }
+  
+  .mobile-nav-link {
+    @apply block px-6 py-4 text-white hover:text-wavgen-yellow hover:bg-wavgen-dark-purple transition-all duration-300 border-b border-wavgen-dark-purple;
+  }
+  
+  .mobile-nav-link-compact {
+    @apply block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-dark-purple transition-all duration-300;
+  }
+  
+  .section-card {
+    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+  }
+  
+  .hero-text {
+    @apply text-4xl md:text-6xl font-bold text-white mb-6 leading-tight;
+  }
+  
+  .subtitle-text {
+    @apply text-xl md:text-2xl text-wavgen-yellow mb-8 font-light;
+  }
+}

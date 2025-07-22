@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painting - The Waveform Generation</title>
+    <meta name="description" content="Traditional and digital painting techniques exploring color, form, and expression by Rob McDonald in Toronto.">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white font-roboto">
+    <!-- Mobile Navigation Overlay -->
+<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+<!-- Mobile Navigation Drawer -->
+<nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="h-full flex flex-col">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
+            <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
+            <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Scrollable Menu -->
+        <div class="flex-1 overflow-y-auto py-1">
+            <div class="px-3 space-y-0">
+                
+                    
+                        <!-- Single Item -->
+                        <a href="/" class="mobile-nav-link-compact">Home</a>
+                    
+                
+                    
+                        <!-- Section with Children -->
+                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
+                            <a href="/music/" class="mobile-nav-link-compact font-semibold">Music</a>
+                            <div class="pl-3 bg-wavgen-dark-purple">
+                                
+                                    <a href="/music/electro/" class="mobile-nav-link-compact text-sm">Electro</a>
+                                
+                                    <a href="/music/ambient/" class="mobile-nav-link-compact text-sm">Ambient</a>
+                                
+                                    <a href="/music/melodic/" class="mobile-nav-link-compact text-sm">Melodic</a>
+                                
+                                    <a href="/music/breaks/" class="mobile-nav-link-compact text-sm">Breaks</a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Section with Children -->
+                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
+                            <a href="/video/" class="mobile-nav-link-compact font-semibold">Video</a>
+                            <div class="pl-3 bg-wavgen-dark-purple">
+                                
+                                    <a href="/video/realtime/" class="mobile-nav-link-compact text-sm">Realtime</a>
+                                
+                                    <a href="/video/mapping/" class="mobile-nav-link-compact text-sm">Mapping</a>
+                                
+                                    <a href="/video/mixing/" class="mobile-nav-link-compact text-sm">Mixing</a>
+                                
+                                    <a href="/video/editing/" class="mobile-nav-link-compact text-sm">Editing</a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Section with Children -->
+                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
+                            <a href="/data/" class="mobile-nav-link-compact font-semibold">Data &amp; Tech</a>
+                            <div class="pl-3 bg-wavgen-dark-purple">
+                                
+                                    <a href="/data/webdev/" class="mobile-nav-link-compact text-sm">Web Dev</a>
+                                
+                                    <a href="/data/coding/" class="mobile-nav-link-compact text-sm">Coding</a>
+                                
+                                    <a href="/data/genai/" class="mobile-nav-link-compact text-sm">Gen AI</a>
+                                
+                                    <a href="/data/cloud/" class="mobile-nav-link-compact text-sm">Cloud</a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Section with Children -->
+                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
+                            <a href="/art/" class="mobile-nav-link-compact font-semibold bg-wavgen-purple">Art</a>
+                            <div class="pl-3 bg-wavgen-dark-purple">
+                                
+                                    <a href="/art/painting/" class="mobile-nav-link-compact text-sm">Painting</a>
+                                
+                                    <a href="/art/drawing/" class="mobile-nav-link-compact text-sm">Drawing</a>
+                                
+                                    <a href="/art/modelling/" class="mobile-nav-link-compact text-sm">Modelling</a>
+                                
+                                    <a href="/art/printing/" class="mobile-nav-link-compact text-sm">Printing</a>
+                                
+                            </div>
+                        </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Desktop Navigation -->
+<header class="bg-wavgen-dark-purple shadow-lg relative z-30">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-yellow-300 transition-colors">
+                    The Waveform Generation
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white hover:text-wavgen-yellow">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                
+                    
+                        <!-- Single Item -->
+                        <a href="/" class="text-white hover:text-wavgen-yellow transition-colors">Home</a>
+                    
+                
+                    
+                        <!-- Dropdown Menu -->
+                        <div class="relative group">
+                            <a href="/music/" class="text-white hover:text-wavgen-yellow transition-colors flex items-center">
+                                Music
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                
+                                    <a href="/music/electro/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Electro
+                                    </a>
+                                
+                                    <a href="/music/ambient/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Ambient
+                                    </a>
+                                
+                                    <a href="/music/melodic/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Melodic
+                                    </a>
+                                
+                                    <a href="/music/breaks/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Breaks
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Dropdown Menu -->
+                        <div class="relative group">
+                            <a href="/video/" class="text-white hover:text-wavgen-yellow transition-colors flex items-center">
+                                Video
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                
+                                    <a href="/video/realtime/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Realtime
+                                    </a>
+                                
+                                    <a href="/video/mapping/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Mapping
+                                    </a>
+                                
+                                    <a href="/video/mixing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Mixing
+                                    </a>
+                                
+                                    <a href="/video/editing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Editing
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Dropdown Menu -->
+                        <div class="relative group">
+                            <a href="/data/" class="text-white hover:text-wavgen-yellow transition-colors flex items-center">
+                                Data &amp; Tech
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                
+                                    <a href="/data/webdev/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Web Dev
+                                    </a>
+                                
+                                    <a href="/data/coding/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Coding
+                                    </a>
+                                
+                                    <a href="/data/genai/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Gen AI
+                                    </a>
+                                
+                                    <a href="/data/cloud/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Cloud
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <!-- Dropdown Menu -->
+                        <div class="relative group">
+                            <a href="/art/" class="text-white hover:text-wavgen-yellow transition-colors flex items-center text-wavgen-yellow">
+                                Art
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                
+                                    <a href="/art/painting/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Painting
+                                    </a>
+                                
+                                    <a href="/art/drawing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Drawing
+                                    </a>
+                                
+                                    <a href="/art/modelling/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Modelling
+                                    </a>
+                                
+                                    <a href="/art/printing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors">
+                                        Printing
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                
+            </nav>
+        </div>
+    </div>
+</header>
+
+    
+    <main>
+        
+<!-- Breadcrumb -->
+<div class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="/art/" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Art</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-1 text-wavgen-yellow md:ml-2">Painting</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-900 via-red-900 to-pink-900 py-20">
+    <div class="absolute inset-0 bg-black opacity-40"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                Traditional & Digital <span class="text-wavgen-yellow">Painting</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-red-200 mb-8">
+                Color, Form & Artistic Expression
+            </p>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                Traditional and digital painting techniques that explore color theory, composition, and artistic expression. 
+                From acrylic on canvas to digital brushwork, each piece investigates the relationship between 
+                medium and message, technique and emotion.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Painting Mediums -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-4">Painting Mediums</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                The diverse mediums and techniques that bring color and form to life.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Acrylic -->
+            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors">
+                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4 text-center">Acrylic</h3>
+                <p class="text-gray-300 text-center">
+                    Fast-drying acrylic paints on canvas for vibrant colors and versatile techniques.
+                </p>
+            </div>
+
+            <!-- Digital -->
+            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors">
+                <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4 text-center">Digital</h3>
+                <p class="text-gray-300 text-center">
+                    Digital painting using tablets and software for unlimited color palettes and editing flexibility.
+                </p>
+            </div>
+
+            <!-- Mixed Media -->
+            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4 text-center">Mixed Media</h3>
+                <p class="text-gray-300 text-center">
+                    Combining traditional and digital techniques for unique textural and visual effects.
+                </p>
+            </div>
+
+            <!-- Transcendent Mastery -->
+            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors border-2 border-wavgen-yellow relative overflow-hidden">
+                <div class="absolute top-2 right-2 text-wavgen-yellow text-xs font-bold bg-wavgen-dark-purple px-2 py-1 rounded">LEGENDARY</div>
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-wavgen-yellow mb-4 text-center">Transcendent Mastery</h3>
+                <p class="text-gray-300 text-center text-sm">
+                    <span class="text-wavgen-yellow font-semibold">The unholy trinity reborn:</span> Warhol's pop culture genius, Picasso's revolutionary cubism, and Michelangelo's divine technique. 
+                    <span class="italic">Each brushstroke channels 500+ years of artistic evolution.</span> 
+                    <span class="text-yellow-300">Warning: Viewing may cause spontaneous art appreciation.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Philosophy Section -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-white mb-8">Painting Philosophy</h2>
+            <p class="text-xl text-gray-300 leading-relaxed mb-8">
+                "Painting is about capturing not just what we see, but what we feel - 
+                translating emotion and experience into color, form, and composition."
+            </p>
+            <p class="text-lg text-gray-400 leading-relaxed">
+                My approach to painting bridges traditional techniques with digital possibilities. 
+                Each piece explores the unique properties of its medium while focusing on fundamental principles 
+                of color theory, composition, and emotional expression that transcend the tools used to create them.
+            </p>
+        </div>
+    </div>
+</section>
+
+    </main>
+    
+    <!-- Footer -->
+<footer class="bg-wavgen-dark-purple py-12">
+    <div class="container mx-auto px-4">
+        <div class="text-center">
+            <h3 class="text-2xl font-bold text-wavgen-yellow mb-4">The Waveform Generation</h3>
+            <p class="text-gray-300 mb-6">Traditional &amp; Digital Painting • Toronto, Canada</p>
+            <div class="border-t border-wavgen-purple pt-6">
+                <p class="text-gray-400 text-sm">
+                    &copy; 2025 Rob McDonald. Exploring color, form, and expression through traditional and digital painting mediums.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>

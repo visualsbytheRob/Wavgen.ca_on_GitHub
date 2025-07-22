@@ -1,0 +1,151 @@
+---
+layout: base.njk
+title: Home
+description: Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.
+footerDescription: Creative Technology • Toronto, Canada
+footerTagline: Exploring the intersection of creativity and technology.
+---
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
+    <div class="absolute inset-0 bg-black opacity-20"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Hero Content -->
+            <div class="animate-fade-in">
+                <h1 class="hero-text">
+                    Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
+                </h1>
+                <p class="subtitle-text">
+                    Creative technologist exploring the intersection of music, visual art, and emerging technology
+                </p>
+                <div class="space-y-4 text-lg text-gray-300 mb-8">
+                    <p>📍 Based in Toronto, Ontario, Canada</p>
+                    <p>🎵 Electronic music producer and sound designer</p>
+                    <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
+                    <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#portfolio" class="bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">
+                        Explore My Work
+                    </a>
+                    <a href="#about" class="border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Visual -->
+            <div class="relative">
+                <div class="w-full max-w-md mx-auto">
+                    <div class="relative">
+                        <!-- Animated background elements -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-wavgen-purple to-wavgen-yellow rounded-full opacity-20 animate-pulse-slow"></div>
+                        <div class="relative bg-wavgen-dark-purple rounded-lg p-8 border-2 border-wavgen-yellow">
+                            <div class="grid grid-cols-4 gap-2 mb-4">
+                                <div class="h-8 bg-wavgen-yellow rounded animate-pulse"></div>
+                                <div class="h-12 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.1s"></div>
+                                <div class="h-6 bg-wavgen-yellow rounded animate-pulse" style="animation-delay: 0.2s"></div>
+                                <div class="h-10 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.3s"></div>
+                            </div>
+                            <div class="text-center">
+                                <h3 class="text-wavgen-yellow font-bold text-lg mb-2">The Waveform Generation</h3>
+                                <p class="text-gray-300 text-sm">Where creativity meets technology</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section id="portfolio" class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-4">Creative Portfolio</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Exploring the boundaries between traditional artistry and cutting-edge technology through music, visual art, and interactive experiences.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Music Card -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/music/'">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 12a7.971 7.971 0 00-1.343-4.243 1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Music</h3>
+                    <p class="text-gray-300 text-sm mb-4">Electronic music production spanning electro, ambient, melodic, and breakbeat genres</p>
+                    <div class="flex flex-wrap gap-1 justify-center">
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Electro</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Ambient</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Melodic</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Breaks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Card -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/video/'">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Video</h3>
+                    <p class="text-gray-300 text-sm mb-4">Real-time graphics, projection mapping, and immersive visual experiences</p>
+                    <div class="flex flex-wrap gap-1 justify-center">
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Realtime</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Mapping</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Mixing</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Editing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data & Tech Card -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/data/'">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Data & Tech</h3>
+                    <p class="text-gray-300 text-sm mb-4">Web development, coding, AI integration, and cloud technologies</p>
+                    <div class="flex flex-wrap gap-1 justify-center">
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Web Dev</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Coding</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Gen AI</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Cloud</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Art Card -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/art/'">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Art</h3>
+                    <p class="text-gray-300 text-sm mb-4">Traditional and digital art bridging classical techniques with modern technology</p>
+                    <div class="flex flex-wrap gap-1 justify-center">
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Painting</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Drawing</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">3D Modelling</span>
+                        <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Printing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
