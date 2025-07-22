@@ -13,62 +13,63 @@
     <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
     
     <!-- Mobile Navigation Drawer -->
-    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold text-wavgen-yellow">Navigation</h2>
-                <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu Items -->
-            <div class="space-y-2">
-                <a href="/" class="mobile-nav-link">Home</a>
+    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Sticky Header -->
+        <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple bg-wavgen-purple">
+            <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
+            <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-4">
+            <div class="space-y-1">
+                <a href="/" class="mobile-nav-link py-2">Home</a>
                 
                 <!-- Music Section -->
-                <div class="border-b border-wavgen-dark-purple">
-                    <a href="/music.html" class="mobile-nav-link font-semibold">Music</a>
-                    <div class="pl-4 bg-wavgen-dark-purple">
-                        <a href="/electro.html" class="mobile-nav-link text-sm">Electro</a>
-                        <a href="/ambient.html" class="mobile-nav-link text-sm">Ambient</a>
-                        <a href="/melodic.html" class="mobile-nav-link text-sm">Melodic</a>
-                        <a href="/breaks.html" class="mobile-nav-link text-sm">Breaks</a>
+                <div class="border-b border-wavgen-dark-purple pb-1">
+                    <a href="/music.html" class="mobile-nav-link font-semibold py-2">Music</a>
+                    <div class="pl-3 bg-wavgen-dark-purple">
+                        <a href="/electro.html" class="mobile-nav-link text-sm py-1">Electro</a>
+                        <a href="/ambient.html" class="mobile-nav-link text-sm py-1">Ambient</a>
+                        <a href="/melodic.html" class="mobile-nav-link text-sm py-1">Melodic</a>
+                        <a href="/breaks.html" class="mobile-nav-link text-sm py-1">Breaks</a>
                     </div>
                 </div>
                 
                 <!-- Video Section -->
-                <div class="border-b border-wavgen-dark-purple">
-                    <a href="/video.html" class="mobile-nav-link font-semibold">Video</a>
-                    <div class="pl-4 bg-wavgen-dark-purple">
-                        <a href="/realtime.html" class="mobile-nav-link text-sm bg-wavgen-purple">Realtime</a>
-                        <a href="/mapping.html" class="mobile-nav-link text-sm">Mapping</a>
-                        <a href="/mixing.html" class="mobile-nav-link text-sm">Mixing</a>
-                        <a href="/editing.html" class="mobile-nav-link text-sm">Editing</a>
+                <div class="border-b border-wavgen-dark-purple pb-1">
+                    <a href="/video.html" class="mobile-nav-link font-semibold py-2">Video</a>
+                    <div class="pl-3 bg-wavgen-dark-purple">
+                        <a href="/realtime.html" class="mobile-nav-link text-sm py-1 bg-wavgen-purple">Realtime</a>
+                        <a href="/mapping.html" class="mobile-nav-link text-sm py-1">Mapping</a>
+                        <a href="/mixing.html" class="mobile-nav-link text-sm py-1">Mixing</a>
+                        <a href="/editing.html" class="mobile-nav-link text-sm py-1">Editing</a>
                     </div>
                 </div>
                 
                 <!-- Data Section -->
-                <div class="border-b border-wavgen-dark-purple">
-                    <a href="/data.html" class="mobile-nav-link font-semibold">Data & Tech</a>
-                    <div class="pl-4 bg-wavgen-dark-purple">
-                        <a href="/webdev.html" class="mobile-nav-link text-sm">Web Dev</a>
-                        <a href="/coding.html" class="mobile-nav-link text-sm">Coding</a>
-                        <a href="/genai.html" class="mobile-nav-link text-sm">Gen AI</a>
-                        <a href="/cloud.html" class="mobile-nav-link text-sm">Cloud</a>
+                <div class="border-b border-wavgen-dark-purple pb-1">
+                    <a href="/data.html" class="mobile-nav-link font-semibold py-2">Data & Tech</a>
+                    <div class="pl-3 bg-wavgen-dark-purple">
+                        <a href="/webdev.html" class="mobile-nav-link text-sm py-1">Web Dev</a>
+                        <a href="/coding.html" class="mobile-nav-link text-sm py-1">Coding</a>
+                        <a href="/genai.html" class="mobile-nav-link text-sm py-1">Gen AI</a>
+                        <a href="/cloud.html" class="mobile-nav-link text-sm py-1">Cloud</a>
                     </div>
                 </div>
                 
                 <!-- Art Section -->
-                <div class="border-b border-wavgen-dark-purple">
-                    <a href="/art.html" class="mobile-nav-link font-semibold">Art</a>
-                    <div class="pl-4 bg-wavgen-dark-purple">
-                        <a href="/painting.html" class="mobile-nav-link text-sm">Painting</a>
-                        <a href="/drawing.html" class="mobile-nav-link text-sm">Drawing</a>
-                        <a href="/modelling.html" class="mobile-nav-link text-sm">Modelling</a>
-                        <a href="/printing.html" class="mobile-nav-link text-sm">Printing</a>
+                <div class="pb-1">
+                    <a href="/art.html" class="mobile-nav-link font-semibold py-2">Art</a>
+                    <div class="pl-3 bg-wavgen-dark-purple">
+                        <a href="/painting.html" class="mobile-nav-link text-sm py-1">Painting</a>
+                        <a href="/drawing.html" class="mobile-nav-link text-sm py-1">Drawing</a>
+                        <a href="/modelling.html" class="mobile-nav-link text-sm py-1">Modelling</a>
+                        <a href="/printing.html" class="mobile-nav-link text-sm py-1">Printing</a>
                     </div>
                 </div>
             </div>
