@@ -1,92 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Waveform Generation</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/wavgen.css">
-<link rel="stylesheet" href="css/fonts.css">
-<style>
-  @media screen and (max-width: 700px) {
-    .responsive-div {
-      width: 95%;
-    }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen AI - The Waveform Generation</title>
+    <meta name="description" content="Generative AI and machine learning applications by Rob McDonald.">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
-<body>
-<!-- Placeholder for the subnav component -->
-<div id="datasubnav-container"></div>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-wavgen-yellow">Navigation</h2>
+                <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Items -->
+            <div class="space-y-2">
+                <a href="/" class="mobile-nav-link">Home</a>
+                
+                <!-- Music Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/music.html" class="mobile-nav-link font-semibold">Music</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/electro.html" class="mobile-nav-link text-sm">Electro</a>
+                        <a href="/ambient.html" class="mobile-nav-link text-sm">Ambient</a>
+                        <a href="/melodic.html" class="mobile-nav-link text-sm">Melodic</a>
+                        <a href="/breaks.html" class="mobile-nav-link text-sm">Breaks</a>
+                    </div>
+                </div>
+                
+                <!-- Video Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/video.html" class="mobile-nav-link font-semibold">Video</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/realtime.html" class="mobile-nav-link text-sm">Realtime</a>
+                        <a href="/mapping.html" class="mobile-nav-link text-sm">Mapping</a>
+                        <a href="/mixing.html" class="mobile-nav-link text-sm">Mixing</a>
+                        <a href="/editing.html" class="mobile-nav-link text-sm">Editing</a>
+                    </div>
+                </div>
+                
+                <!-- Data Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/data.html" class="mobile-nav-link font-semibold">Data & Tech</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/webdev.html" class="mobile-nav-link text-sm">Web Dev</a>
+                        <a href="/coding.html" class="mobile-nav-link text-sm">Coding</a>
+                        <a href="/genai.html" class="mobile-nav-link text-sm bg-wavgen-purple">Gen AI</a>
+                        <a href="/cloud.html" class="mobile-nav-link text-sm">Cloud</a>
+                    </div>
+                </div>
+                
+                <!-- Art Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/art.html" class="mobile-nav-link font-semibold">Art</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/painting.html" class="mobile-nav-link text-sm">Painting</a>
+                        <a href="/drawing.html" class="mobile-nav-link text-sm">Drawing</a>
+                        <a href="/modelling.html" class="mobile-nav-link text-sm">Modelling</a>
+                        <a href="/printing.html" class="mobile-nav-link text-sm">Printing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01" alt="ball1">
-  <div id="caption"></div>
-</div>
+    <!-- Header -->
+    <header class="bg-wavgen-purple shadow-lg relative z-30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-white transition-colors duration-300">
+                        The Waveform Generation
+                    </a>
+                </div>
 
-<div class="header">
-  <h2><a href="genai.html">Generative AI Development</a></h2>
-</div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-8">
+                    <div class="relative group">
+                        <a href="/music.html" class="nav-link">Music</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/electro.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Electro</a>
+                            <a href="/ambient.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Ambient</a>
+                            <a href="/melodic.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Melodic</a>
+                            <a href="/breaks.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Breaks</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/video.html" class="nav-link">Video</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/realtime.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Realtime</a>
+                            <a href="/mapping.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mapping</a>
+                            <a href="/mixing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mixing</a>
+                            <a href="/editing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Editing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/data.html" class="nav-link text-wavgen-yellow">Data & Tech</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/webdev.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Web Dev</a>
+                            <a href="/coding.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Coding</a>
+                            <a href="/genai.html" class="block px-4 py-2 text-wavgen-yellow bg-wavgen-purple">Gen AI</a>
+                            <a href="/cloud.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Cloud</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/art.html" class="nav-link">Art</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/painting.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Painting</a>
+                            <a href="/drawing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Drawing</a>
+                            <a href="/modelling.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Modelling</a>
+                            <a href="/printing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Printing</a>
+                        </div>
+                    </div>
+                </nav>
 
-<a href="genai.html" style="text-decoration: none; background-color: #340093;">
-  <div class="responsive-div" style="width: 90%; background-color: #009473; color: #E0FFE0; font-family: 'Arvo'; padding: 20px; margin: 20px left; border: 5px solid #009473;
-background-image: url('images/textures/greencolumncard.jpg'); background-blend-mode: normal; background-size: cover;">
-    <h1 style="font-family: 'Arvo'; color: #E0FFE0;">AI-Powered Development & Creative Generation</h1>
-    <h2 style="font-family: 'Arvo'; color: #E0FFE0;">Exploring the Frontiers of AI-Assisted Creation</h2>
-    <p style="font-family: 'Arvo'; color: #E0FFE0;">
-      Leveraging cutting-edge AI coding assistants to revolutionize development workflows. Our toolkit includes GitHub Copilot 
-      paired with Claude 3.5 Sonnet and TabNine with GPT-4o in Visual Studio Code, enabling intelligent code completion and 
-      generation across Next.js, Python, and Ruby on Rails projects. This AI-augmented development approach dramatically 
-      enhances productivity while maintaining code quality and creative control.
-    </p>
-    <p style="font-family: 'Arvo'; color: #E0FFE0;">
-      Venturing beyond coding assistance, we're exploring machine learning frameworks like TensorFlow and PyTorch to build 
-      custom generative models. Our research encompasses generative AI tools from OpenAI and Runway ML, pushing the boundaries 
-      of AI-driven content creation across text, data, images, video, and 3D modeling. This comprehensive approach combines 
-      development efficiency with creative exploration in the rapidly evolving AI landscape.
-    </p>
-  </div>
-</a>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div class="row">
-    <div class="side">
-        <h3>AI Development Tools & Platforms</h3>
+    <!-- Breadcrumb -->
+    <div class="bg-gray-800 py-4">
+        <div class="container mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="/data.html" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Data & Tech</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-1 text-wavgen-yellow md:ml-2">Gen AI</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
     </div>
-    <div class="main">
-        <ul>
-            <li><a href="https://github.com/features/copilot" target="_blank">GitHub Copilot</a></li>
-            <li><a href="https://www.tabnine.com/" target="_blank">TabNine</a></li>
-            <li><a href="https://anthropic.com/claude" target="_blank">Claude 3.5 Sonnet</a></li>
-            <li><a href="https://openai.com/" target="_blank">OpenAI</a></li>
-            <li><a href="https://runwayml.com/" target="_blank">Runway ML</a></li>
-            <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a></li>
-            <li><a href="https://pytorch.org/" target="_blank">PyTorch</a></li>
-            <li><a href="https://huggingface.co/" target="_blank">Hugging Face</a></li>
-            <li><a href="https://stability.ai/" target="_blank">Stability AI</a></li>
-            <li><a href="https://midjourney.com/" target="_blank">Midjourney</a></li>
-            <li><a href="https://replicate.com/" target="_blank">Replicate</a></li>
-            <li><a href="https://www.langchain.com/" target="_blank">LangChain</a></li>
-        </ul>
-    </div>
-</div>
 
-<div class="row">
-    <div class="side">
-        <h3>Future AI Generations</h3>
-        <p><img src="images/1.gif" alt="AI 1" style="width:320px;height:240px;"></p>
-    </div>
-    <div class="main">
-        <h4>AI Generation Project</h4>
-        <h4>TensorFlow + PyTorch 2024</h4>
-    </div>
-</div>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 py-20">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                    Generative <span class="text-wavgen-yellow">AI</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-purple-200 mb-8">
+                    Machine Learning & Artificial Intelligence
+                </p>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Generative AI and machine learning applications that explore the creative potential of artificial 
+                    intelligence. These projects investigate neural networks, deep learning, and AI-driven content 
+                    generation across text, image, audio, and interactive media domains.
+                </p>
+            </div>
+        </div>
+    </section>
 
-<!-- Placeholder for the footer component -->
-<div id="footer-container"></div>
+    <!-- Gen AI Elements -->
+    <section class="py-20 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">AI Technology Stack</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    The essential technologies and frameworks that power generative AI and machine learning applications.
+                </p>
+            </div>
 
-<!-- Load the component loader script -->
-<script src="js/loadComponents.js"></script>
-<script src="js/modal.js"></script>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Neural Networks -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Neural Networks</h3>
+                        <p class="text-gray-300 text-sm">Deep learning architectures including transformers, CNNs, and generative models.</p>
+                    </div>
+                </div>
+
+                <!-- Large Language Models -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm2 2a1 1 0 000 2h.01a1 1 0 100-2H5zm3 0a1 1 0 000 2h3a1 1 0 100-2H8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Large Language Models</h3>
+                        <p class="text-gray-300 text-sm">Working with GPT, BERT, and other transformer-based language models.</p>
+                    </div>
+                </div>
+
+                <!-- Computer Vision -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Computer Vision</h3>
+                        <p class="text-gray-300 text-sm">Image generation, object detection, and visual AI using diffusion models and GANs.</p>
+                    </div>
+                </div>
+
+                <!-- Audio AI -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 11-1.414-1.414A7.971 7.971 0 0017 12c0-2.043-.777-3.908-2.071-5.314a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Audio AI</h3>
+                        <p class="text-gray-300 text-sm">Music generation, speech synthesis, and audio processing using neural networks.</p>
+                    </div>
+                </div>
+
+                <!-- ML Frameworks -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">ML Frameworks</h3>
+                        <p class="text-gray-300 text-sm">TensorFlow, PyTorch, and other frameworks for building and training AI models.</p>
+                    </div>
+                </div>
+
+                <!-- Quantum Computing -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Quantum Computing</h3>
+                        <p class="text-gray-300 text-sm">Exploring quantum machine learning and quantum-enhanced AI algorithms.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Philosophy -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-white mb-8">The Generative AI Approach</h2>
+                <div class="text-lg text-gray-300 space-y-6 leading-relaxed">
+                    <p>
+                        Generative AI represents a fundamental shift in how we create and interact with digital content, 
+                        offering unprecedented possibilities for creative expression and problem-solving. These projects 
+                        explore the intersection of artificial intelligence and human creativity, investigating how AI 
+                        can augment and inspire rather than replace human ingenuity.
+                    </p>
+                    <p>
+                        The development process emphasizes responsible AI practices, including ethical considerations, 
+                        bias mitigation, and transparency in model behavior. Using cutting-edge frameworks and techniques, 
+                        the goal is always to create AI systems that are not only technically sophisticated but also 
+                        aligned with human values and creative intent.
+                    </p>
+                    <p>
+                        These explorations span multiple domains—from language and image generation to audio synthesis 
+                        and interactive systems—always with a focus on understanding the underlying principles and 
+                        pushing the boundaries of what's possible when human creativity meets artificial intelligence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-wavgen-dark-purple py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-wavgen-yellow mb-4">The Waveform Generation</h3>
+                <p class="text-gray-300 mb-6">Generative AI & Machine Learning • Toronto, Canada</p>
+                <div class="border-t border-wavgen-purple pt-6">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Rob McDonald. Exploring AI-driven creativity.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>

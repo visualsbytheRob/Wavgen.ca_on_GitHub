@@ -1,503 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>The Waveform Generation</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/wavgen.css">
-  <link rel="stylesheet" href="css/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Waveform Generation - Rob McDonald</title>
+    <meta name="description" content="Creative and technical work at the intersection of music, visual art, and technology by Rob McDonald in Toronto, Canada.">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-wavgen-yellow">Navigation</h2>
+                <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Items -->
+            <div class="space-y-2">
+                <a href="/" class="mobile-nav-link">Home</a>
+                
+                <!-- Music Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/music.html" class="mobile-nav-link font-semibold">Music</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/electro.html" class="mobile-nav-link text-sm">Electro</a>
+                        <a href="/ambient.html" class="mobile-nav-link text-sm">Ambient</a>
+                        <a href="/melodic.html" class="mobile-nav-link text-sm">Melodic</a>
+                        <a href="/breaks.html" class="mobile-nav-link text-sm">Breaks</a>
+                    </div>
+                </div>
+                
+                <!-- Video Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/video.html" class="mobile-nav-link font-semibold">Video</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/realtime.html" class="mobile-nav-link text-sm">Realtime</a>
+                        <a href="/mapping.html" class="mobile-nav-link text-sm">Mapping</a>
+                        <a href="/mixing.html" class="mobile-nav-link text-sm">Mixing</a>
+                        <a href="/editing.html" class="mobile-nav-link text-sm">Editing</a>
+                    </div>
+                </div>
+                
+                <!-- Data Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/data.html" class="mobile-nav-link font-semibold">Data & Tech</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/webdev.html" class="mobile-nav-link text-sm">Web Dev</a>
+                        <a href="/coding.html" class="mobile-nav-link text-sm">Coding</a>
+                        <a href="/genai.html" class="mobile-nav-link text-sm">Gen AI</a>
+                        <a href="/cloud.html" class="mobile-nav-link text-sm">Cloud</a>
+                    </div>
+                </div>
+                
+                <!-- Art Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/art.html" class="mobile-nav-link font-semibold">Art</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/painting.html" class="mobile-nav-link text-sm">Painting</a>
+                        <a href="/drawing.html" class="mobile-nav-link text-sm">Drawing</a>
+                        <a href="/modelling.html" class="mobile-nav-link text-sm">Modelling</a>
+                        <a href="/printing.html" class="mobile-nav-link text-sm">Printing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<body>
-  <!-- Header -->
-  <div id="header-container"></div>
+    <!-- Header -->
+    <header class="bg-wavgen-purple shadow-lg relative z-30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-white transition-colors duration-300">
+                        The Waveform Generation
+                    </a>
+                </div>
 
-  <!-- Parallax Sections -->
-  <div class="parallax-section">
-    <div class="parallax-background"></div>
-  </div>
-  <div class="parallax-section">
-    <div class="parallax-background"></div>
-  </div>
-  <div class="parallax-section">
-    <div class="parallax-background"></div>
-  </div>
-  <div class="parallax-section">
-    <div class="parallax-background"></div>
-  </div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-8">
+                    <div class="relative group">
+                        <a href="/music.html" class="nav-link">Music</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/electro.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Electro</a>
+                            <a href="/ambient.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Ambient</a>
+                            <a href="/melodic.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Melodic</a>
+                            <a href="/breaks.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Breaks</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/video.html" class="nav-link">Video</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/realtime.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Realtime</a>
+                            <a href="/mapping.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mapping</a>
+                            <a href="/mixing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mixing</a>
+                            <a href="/editing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Editing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/data.html" class="nav-link">Data & Tech</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/webdev.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Web Dev</a>
+                            <a href="/coding.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Coding</a>
+                            <a href="/genai.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Gen AI</a>
+                            <a href="/cloud.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Cloud</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/art.html" class="nav-link">Art</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/painting.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Painting</a>
+                            <a href="/drawing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Drawing</a>
+                            <a href="/modelling.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Modelling</a>
+                            <a href="/printing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Printing</a>
+                        </div>
+                    </div>
+                </nav>
 
-  <!-- Modal -->
-  <div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="img01" alt="">
-    <div id="caption"></div>
-  </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-  <!-- Body Header -->
-  <div class="body-header">
-    <h2><a href="index.html">Hello World, This page is under development in 2025, so think of everything you see here as an aspirational creative work in progress</a></h2>
-    <h2><a href="index.html">I am using Chat GPT to help build the site using VS Code and GitHub Pages</a></h2>
-  </div>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Hero Content -->
+                <div class="animate-fade-in">
+                    <h1 class="hero-text">
+                        Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
+                    </h1>
+                    <p class="subtitle-text">
+                        Creative technologist exploring the intersection of music, visual art, and emerging technology
+                    </p>
+                    <div class="space-y-4 text-lg text-gray-300 mb-8">
+                        <p>📍 Based in Toronto, Ontario, Canada</p>
+                        <p>🎵 Electronic music producer and sound designer</p>
+                        <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
+                        <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#portfolio" class="bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">
+                            Explore My Work
+                        </a>
+                        <a href="#about" class="border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
 
-  <!-- Main Content -->
-  <div class="row">
-    <div class="side">
-      <h2>My name is Rob McDonald, it's nice to meet you</h2>
-      <div class="gallery-container">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-        <img src="images/1.gif" alt="Ball 1" class="gallery-image" style="width:320px;height:240px;">
-      </div>
-    </div>
-    <div class="main">
-      <h4>I am creative and technical:</h4>
-      <h4>- I live in Toronto, Ontario, Canada</h4>
-      <h4>- I seek to create immersive experiences at the intersection of music, visual art, and technology</h4>
-      <h4>- My work combines electronic music production, real-time graphics, projection mapping, and AI-assisted development</h4>
-      <h4>- Through The Waveform Generation, I explore the creative possibilities of emerging technologies while honoring the roots of electronic music and digital art</h4>
-      <h4>- I aim to push boundaries in audiovisual design, blending traditional artistry with cutting-edge tools like TouchDesigner, machine learning, and quantum computing</h4>
-    </div>
-  </div>
+                <!-- Hero Visual -->
+                <div class="relative">
+                    <div class="w-full max-w-md mx-auto">
+                        <div class="relative">
+                            <!-- Animated background elements -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-wavgen-purple to-wavgen-yellow rounded-full opacity-20 animate-pulse-slow"></div>
+                            <div class="relative bg-wavgen-dark-purple rounded-lg p-8 border-2 border-wavgen-yellow">
+                                <div class="grid grid-cols-4 gap-2 mb-4">
+                                    <div class="h-8 bg-wavgen-yellow rounded animate-pulse"></div>
+                                    <div class="h-12 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.1s"></div>
+                                    <div class="h-6 bg-wavgen-yellow rounded animate-pulse" style="animation-delay: 0.2s"></div>
+                                    <div class="h-10 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.3s"></div>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="text-wavgen-yellow font-bold text-lg mb-2">The Waveform Generation</h3>
+                                    <p class="text-gray-300 text-sm">Where creativity meets technology</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Content Sections -->
-  <div class="content-sections">
-    <!-- Index -->
-    <a href="index.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #2c0077; color: #FEDD00; font-family: 'Roboto'; padding: 20px; margin: 20px left; border: 5px solid #FEDD00;">
-        <h1 style="font-family: helvetica, arial, sans-serif; color: #FEDD00;">The Waveform Generation</h1>
-        <h2 style="font-family: helvetica, arial, sans-serif; color: #FEDD00;">Creative Technology Portfolio - Exploring Digital Arts & Innovation</h2>
-        <p style="font-family: helvetica, arial, sans-serif; color: #FEDD00;"></p>
-        Welcome to a multifaceted exploration of digital creativity and technology. This portfolio showcases diverse works 
-        across multiple creative and technical disciplines, demonstrating the convergence of art, music, and cutting-edge technology.
-        </p>
-        <p style="font-family: helvetica, arial, sans-serif; color: #FEDD00;">
-          • Electronic Music Production - From immersive ambient soundscapes to energetic Detroit electro and soulful melodic house<br>
-          • Digital Video & Visual Arts - Pushing boundaries with real-time graphics, projection mapping, and innovative video mixing<br>
-          • Software Development - Embracing modern web development with AI assistance and seamless cloud integration<br>
-          • Creative Technology - Pioneering explorations in AI, quantum computing, and generative art systems<br>
-          • Traditional Arts - Bridging classical and digital through painting, drawing, 3D modeling, and advanced print design
-        </p>
-      </div>
-    </a>
+    <!-- Portfolio Grid -->
+    <section id="portfolio" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Creative Portfolio</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Exploring the boundaries between traditional artistry and cutting-edge technology through music, visual art, and interactive experiences.
+                </p>
+            </div>
 
-    <!-- Music -->
-    <a href="music.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #00249C; color: #99CCFF; font-family: 'Playfair Display'; padding: 20px; margin: 20px left; border: 5px solid #99CCFF; background-image: url('images/textures/bluecolumntall.jpg'); background-blend-mode: multiply; background-size: cover;">
-        <h1 style="font-family: 'Playfair Display'; color: #99CCFF;">Electronic Music Studio</h1>
-        <h2 style="font-family: 'Playfair Display'; color: #99CCFF;">Digital Audio Production & Sound Design</h2>
-        <p style="font-family: 'Playfair Display'; color: #99CCFF;">Creating electronic music across multiple genres and
-          styles</p>
-        <p style="font-family: 'Playfair Display'; color: #99CCFF;">Explore our collection of electronic music productions,
-          from ambient soundscapes to driving rhythms. Each track showcases different approaches to synthesis, sampling,
-          and digital audio production, blending modern techniques with creative sound design.</p>
-      </div>
-    </a>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Music Card -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/music.html'">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 12a7.971 7.971 0 00-1.343-4.243 1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Music</h3>
+                        <p class="text-gray-300 text-sm mb-4">Electronic music production spanning electro, ambient, melodic, and breakbeat genres</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Electro</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Ambient</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Melodic</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Breaks</span>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Electro -->
-    <a href="electro.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #3D2B1F; color: #ffffff; font-family: 'Montserrat'; padding: 20px; margin: 20px left; border: 5px solid #4E008E; background-image: url('images/textures/bluecolumntall.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Montserrat'; color: #ffffff">Futuristic Detroit Electro</h1>
-        <h2 style="font-family: 'Montserrat'; color: #ffffff">Machine Funk & Robotic Rhythms</h2>
-        <p style="font-family: 'Montserrat'; color: #ffffff">Exploring the intersection of future funk and mechanical
-          precision</p>
-        <p style="font-family: 'Montserrat'; color: #ffffff;">Dive into our collection of Detroit-inspired electro tracks,
-          where mechanical rhythms meet soulful synthlines. Each composition pays homage to the innovative spirit of
-          Detroit's
-          electronic music legacy while pushing forward into new sonic territories with modern production techniques.</p>
-      </div>
-    </a>
+                <!-- Video Card -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/video.html'">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Video</h3>
+                        <p class="text-gray-300 text-sm mb-4">Real-time graphics, projection mapping, and immersive visual experiences</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Realtime</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Mapping</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Mixing</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Editing</span>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Ambient -->
-    <a href="ambient.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #A6A9AA; color: #FFFFFF; font-family: 'Raleway'; padding: 20px; margin: 20px left; border: 5px solid #00249C; background-image: url('images/textures/bluetallrowmedium.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Raleway'; color: #ffffff;">Ambient Sound Design</h1>
-        <h2 style="font-family: 'Raleway'; color: #ffffff;">Exploring Atmospheric Soundscapes</h2>
-        <p style="font-family: 'Raleway'; color: #ffffff;">Immersive ambient compositions created using digital synthesis
-          and sound design</p>
-        <p style="font-family: 'Raleway'; color: #ffffff;">Welcome to our ambient music collection, featuring atmospheric
-          soundscapes
-          and evolving textures. Each piece explores the subtle interplay between space, texture, and harmony, creating
-          immersive
-          sonic environments that blend organic and electronic elements.</p>
-      </div>
-    </a>
+                <!-- Data & Tech Card -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/data.html'">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Data & Tech</h3>
+                        <p class="text-gray-300 text-sm mb-4">Web development, coding, AI integration, and cloud technologies</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Web Dev</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Coding</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Gen AI</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Cloud</span>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Melodic -->
-    <a href="melodic.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #A17652; color: #FFE6CC; font-family: 'Open Sans'; padding: 20px; margin: 20px left; border: 5px solid #4E008E; background-image: url('images/textures/bluecolumnsquare.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Open Sans'; color: #ffffff;">Melodic House Music</h1>
-        <h2 style="font-family: 'Open Sans'; color: #ffffff;">Chicago-Style Soulful House</h2>
-        <p style="font-family: 'Open Sans'; color: #ffffff">Crafting Deep & Emotional Dance Music</p>
-        <p style="font-family: 'Open Sans'; color: #ffffff;">Experience our collection of Chicago-inspired house tracks,
-          where warm analog synthesis meets deep emotional chord progressions. Each track celebrates the soulful heritage
-          of Chicago house music while incorporating contemporary production elements and melodic arrangements that speak
-          to the heart of dance music culture.</p>
-      </div>
-    </a>
+                <!-- Art Card -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/art.html'">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Art</h3>
+                        <p class="text-gray-300 text-sm mb-4">Traditional and digital art bridging classical techniques with modern technology</p>
+                        <div class="flex flex-wrap gap-1 justify-center">
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Painting</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Drawing</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">3D Modelling</span>
+                            <span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">Printing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Breaks -->
-    <a href="breaks.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #3D2B1F; color: #ffffff; font-family: 'Poppins'; padding: 20px; margin: 20px left; border: 5px solid #2c0077; background-image: url('images/textures/bluearcsquare.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Poppins'; color: #ffffff;">Breakbeat Innovation</h1>
-        <h2 style="font-family: 'Poppins'; color: #ffffff;">From Motown Funk to Bristol Bass</h2>
-        <p style="font-family: 'Poppins'; color: #ffffff">Exploring the Evolution of Break-Driven Music</p>
-        <p style="font-family: 'Poppins'; color: #ffffff;">Journey through our collection of breakbeat-driven productions,
-          from funk-infused Motown-style breaks to sophisticated Bristol-school drum & bass. Each track explores the art of
-          break
-          manipulation and rhythm design, bridging the gap between classic break sampling and modern production techniques
-          while
-          maintaining the essential funk and energy that drives the breakbeat sound.</p>
-      </div>
-    </a>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-white mb-8">About The Waveform Generation</h2>
+                <div class="text-lg text-gray-300 space-y-6 leading-relaxed">
+                    <p>
+                        The Waveform Generation represents a creative exploration at the intersection of music, visual art, and technology. 
+                        Based in Toronto, I seek to create immersive experiences that blend traditional artistry with cutting-edge tools.
+                    </p>
+                    <p>
+                        My work spans electronic music production, real-time graphics, projection mapping, and AI-assisted development. 
+                        Through this multidisciplinary approach, I explore the creative possibilities of emerging technologies while 
+                        honoring the roots of electronic music and digital art.
+                    </p>
+                    <p>
+                        Whether working with TouchDesigner for live visuals, crafting electronic soundscapes, or developing interactive 
+                        applications, each project aims to push boundaries and create meaningful connections between technology and human expression.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Video -->
-    <a href="video.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #5A5B9F; color: #E0E0FF; font-family: 'Lato'; padding: 20px; margin: 20px left; border: 5px solid #E0D1FF; background-image: url('images/textures/purplerowlong.jpg'); background-blend-mode: multiply; background-size: cover;">
-        <h1 style="font-family: 'Lato'; color: #ffffff;">Digital Video Innovation</h1>
-        <h2 style="font-family: 'Lato'; color: #ffffff;">Real-time Graphics & Visual Technology</h2>
-        <p style="font-family: 'Lato'; color: #ffffff;">Exploring the frontiers of digital video art and technology</p>
-        <p style="font-family: 'Lato'; color: #ffffff;">Discover our digital video laboratory where real-time 3D graphics
-          meet projection mapping and live video mixing. Each project pushes the boundaries of visual technology, combining
-          generative art, real-time rendering, and innovative editing techniques to create immersive visual experiences that
-          blend the digital and physical worlds.</p>
-      </div>
-    </a>
+    <!-- Footer -->
+    <footer class="bg-wavgen-dark-purple py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-wavgen-yellow mb-4">The Waveform Generation</h3>
+                <p class="text-gray-300 mb-6">Creative technology • Toronto, Canada</p>
+                <div class="border-t border-wavgen-purple pt-6">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Rob McDonald. Exploring the intersection of creativity and technology.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <!-- Realtime -->
-    <a href="realtime.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #65428A; color: #E0D1FF; font-family: 'Ubuntu'; padding: 20px; margin: 20px left; border: 5px solid #4E008E; background-image: url('images/textures/purplecardrow.jpg'); background-blend-mode: multiply; background-size: cover;">
-        <h1 style="font-family: 'Ubuntu'; color: #E0D1FF;">Realtime Generative 3D Audio and Video</h1>
-        <h2 style="font-family: 'Ubuntu'; color: #E0D1FF;">Creating real-time interactive 3D environments and generative
-          audio-visual experiences using TouchDesigner and Unreal Engine</h2>
-        <p style="font-family: 'Ubuntu'; color: #E0D1FF;">
-          Real-time generative art and interactive environments represent the cutting edge of digital creativity. Using
-          powerful engines like TouchDesigner and Unreal, we can create responsive 3D worlds and audio-visual experiences
-          that react instantly to inputs and data. These tools enable seamless integration of procedural generation,
-          dynamic lighting, particle systems, and real-time audio processing to craft immersive experiences.
-          <br><br>
-          From interactive installations and live performances to dynamic visualizations and virtual environments,
-          real-time systems open up endless possibilities for creative expression and audience engagement. The ability to
-          modify and manipulate content on the fly allows for truly dynamic and adaptable experiences that evolve with
-          user interaction.
-        </p>
-      </div>
-    </a>
-
-    <!-- Mapping -->
-    <a href="mapping.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #00249C; color: #ffffff; font-family: 'Playfair Display'; padding: 20px; margin: 20px left; border: 5px solid #2c0077; background-image: url('images/textures/purplerowlong.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Playfair Display'; color: #ffffff;">3D Projection Mapping</h1>
-        <h2 style="font-family: 'Playfair Display'; color: #ffffff;">Digital Light on Physical Forms</h2>
-        <p style="font-family: 'Playfair Display'; color: #ffffff;">Merging Real-time 3D with Custom-Printed Objects</p>
-        <p style="font-family: 'Playfair Display'; color: #ffffff;">Explore our projection mapping experiments where digital
-          artistry meets physical sculpture. Using real-time generative 3D graphics created in TouchDesigner, we transform
-          custom 3D-printed objects into dynamic visual canvases. Each project demonstrates the seamless integration of
-          digital content with physical form, creating immersive experiences that blur the line between virtual and real.
-        </p>
-      </div>
-    </a>
-
-    <!-- Mixing -->
-    <a href="mixing.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #4E008E; color: #ffffff; font-family: 'Inconsolata'; padding: 20px; margin: 20px left; border: 5px solid #4E008E; background-image: url('images/textures/purplecolumnsquare.jpg'); background-blend-mode: multiply; background-size: cover;">
-        <h1 style="font-family: 'Inconsolata'; color: #ffffff;">Video Mixing</h1>
-        <h2 style="font-family: 'Inconsolata'; color: #ffffff;">Mixing and blending video sources using a combination of
-          Resolume software and outboard analog and digital video mixing equiptment</h2>
-        <p style="font-family: 'Inconsolata'; color: #ffffff;">I have been exploring Video Mixing since the 90s at large
-          events, in school and in my creative endeavours
-          and have found immense satisfaction in mastering the art of video mixing. As a result, I've developed a solid
-          understanding of the various techniques and tools
-          available for creating captivating visuals and engaging content for various platforms.</p>
-        <p style="font-family: 'Inconsolata'; color: #ffffff;">Video mixing is a dynamic process that combines multiple
-          video sources into a single output stream.
-          Using professional mixing equipment and software, creators can seamlessly blend different camera feeds, graphics,
-          and effects in real-time. This essential
-          technique enables live switching between scenes, adding transitions, and creating engaging visual compositions
-          that enhance the overall production quality.
-          Whether for live events, broadcasts, or creative projects, video mixing forms the backbone of modern video
-          production workflows.</p>
-      </div>
-    </a>
-
-    <!-- Editing -->
-    <a href="editing.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #0F4C81; color: #ffffff; font-family: 'Work Sans'; padding: 20px; margin: 20px left; border: 5px solid #2c0077; background-image: url('images/textures/purplerowlong.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Work Sans'; color: #ffffff;">Video Editing & Post Production</h1>
-        <h2 style="font-family: 'Work Sans'; color: #ffffff;">The Evolution of Video Editing: From Linear to Non-Linear,
-          Analog to Digital</h2>
-        <p style="font-family: 'Work Sans'; color: #ffffff;">
-          Video editing has undergone a remarkable transformation, from physical tape-based linear systems to today's
-          sophisticated digital workflows. This evolution spans analog editing rooms with multiple decks and switchers, to
-          modern non-linear editing suites where content can be manipulated instantly and non-destructively. Each era brings
-          its own unique approach to crafting visual stories, from the precise timing required in live editing to the
-          extensive creative possibilities in post-production.
-        </p>
-        <p style="font-family: 'Work Sans'; color: #ffffff;">
-          Contemporary editing combines multiple disciplines: traditional cut-and-splice techniques, real-time live
-          switching for immediate output, and comprehensive post-production including color grading, visual effects, and
-          sound design. Working with industry-standard tools like Adobe Premiere Pro, DaVinci Resolve, and Final Cut Pro,
-          alongside specialized hardware for live production, enables the creation of compelling content across various
-          formats and platforms. This versatility supports both immediate live production needs and meticulously crafted
-          post-production pieces.
-        </p>
-      </div>
-    </a>
-
-    <!-- Data -->
-    <a href="data.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #000000; color: #FFFFFF; font-family: 'Roboto'; padding: 20px; margin: 20px left; border: 5px solid #E0FFE0; background-image: url('images/textures/greenarccard.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Roboto'; color: #FFFFFF;">Creative Coding & Artificial Intelligence</h1>
-        <h2 style="font-family: 'Roboto'; color: #FFFFFF;">Exploring Next-Generation Technologies: Python, Next.js, Gen AI,
-          Cloud and Quantum Computing</h2>
-        <p style="font-family: 'Roboto'; color: #FFFFFF;">
-          At the intersection of creativity and computation, we explore cutting-edge technologies that shape the future of
-          digital expression. From Python's versatile ecosystem for data manipulation and machine learning to Next.js's
-          powerful web development framework, our creative coding journey embraces modern tools and methodologies. We delve
-          into generative AI models, experimenting with neural networks and machine learning algorithms to create innovative
-          digital experiences.
-        </p>
-        <p style="font-family: 'Roboto'; color: #FFFFFF;">
-          The frontier of quantum computing opens new possibilities for complex computations and algorithmic exploration. By
-          combining these technologies with creative vision, we push the boundaries of what's possible in digital art, data
-          visualization, and interactive experiences. Our approach integrates traditional programming paradigms with
-          emerging technologies, creating a bridge between conventional development and future technological innovations.
-        </p>
-      </div>
-    </a>
-
-    <!-- Web Development -->
-    <a href="webdev.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FFFFFF; color: #333333; font-family: 'Roboto'; padding: 20px; margin: 20px left; border: 5px solid #333333; background-image: url('images/textures/greenarctall.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Roboto'; color: #333333;">Modern Web Development with AI Assistance</h1>
-        <h2 style="font-family: 'Roboto'; color: #333333;">Leveraging Next-Gen Tools & AI Coding Partners</h2>
-        <p style="font-family: 'Roboto'; color: #333333;">
-          Exploring the future of web development through the synergy of human creativity and AI assistance. Our development
-          workflow
-          combines powerful AI coding partners like GitHub Copilot with Claude 3.5 Sonnet and TabNine with GPT-4o, enabling
-          faster,
-          more efficient coding while maintaining creative control and code quality.
-        </p>
-        <p style="font-family: 'Roboto'; color: #333333;">
-          We're pushing the boundaries of web interactivity with GSAP animations, building dynamic applications with
-          Next.js, and
-          creating Python-powered backend services. Our projects seamlessly integrate across platforms, embedding
-          applications from
-          various cloud services directly into GitHub Pages. This modern approach to web development combines the best of AI
-          assistance,
-          cloud computing, and cutting-edge frameworks to create engaging, responsive web experiences.
-        </p>
-      </div>
-    </a>
-
-    <!-- Coding -->
-    <a href="coding.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FFFFFF; color: #000000; font-family: 'Fira Sans'; padding: 20px; margin: 20px left; border: 5px solid #000000; background-image: url('images/textures/greenarcsquare.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Fira Sans'; color: #000000;">Modern Application Development</h1>
-        <h2 style="font-family: 'Fira Sans'; color: #000000;">AI-Assisted Coding Across Multiple Platforms</h2>
-        <p style="font-family: 'Fira Sans'; color: #000000;">
-          Embracing the future of software development through AI-enhanced coding practices. Our development ecosystem
-          leverages
-          cutting-edge AI assistants like GitHub Copilot paired with Claude 3.5 Sonnet and TabNine with GPT-4o in Visual
-          Studio Code,
-          revolutionizing how we write and maintain code across multiple platforms and languages.
-        </p>
-        <p style="font-family: 'Fira Sans'; color: #000000;">
-          From building sophisticated web applications with Next.js to crafting robust backend services with Python and Ruby
-          on Rails,
-          our projects seamlessly deploy across leading cloud platforms including Vercel, Heroku, Azure, AWS, Google Cloud,
-          and IBM Cloud.
-          This multi-platform approach allows us to leverage the best features of each service while maintaining a unified
-          presence through
-          GitHub Pages integration.
-        </p>
-      </div>
-    </a>
-
-    <!-- GenAI -->
-    <a href="genai.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #009473; color: #E0FFE0; font-family: 'Arvo'; padding: 20px; margin: 20px left; border: 5px solid #009473; background-image: url('images/textures/greencolumncard.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Arvo'; color: #E0FFE0;">AI-Powered Development & Creative Generation</h1>
-        <h2 style="font-family: 'Arvo'; color: #E0FFE0;">Exploring the Frontiers of AI-Assisted Creation</h2>
-        <p style="font-family: 'Arvo'; color: #E0FFE0;">
-          Leveraging cutting-edge AI coding assistants to revolutionize development workflows. Our toolkit includes GitHub
-          Copilot
-          paired with Claude 3.5 Sonnet and TabNine with GPT-4o in Visual Studio Code, enabling intelligent code completion
-          and
-          generation across Next.js, Python, and Ruby on Rails projects. This AI-augmented development approach dramatically
-          enhances productivity while maintaining code quality and creative control.
-        </p>
-        <p style="font-family: 'Arvo'; color: #E0FFE0;">
-          Venturing beyond coding assistance, we're exploring machine learning frameworks like TensorFlow and PyTorch to
-          build
-          custom generative models. Our research encompasses generative AI tools from OpenAI and Runway ML, pushing the
-          boundaries
-          of AI-driven content creation across text, data, images, video, and 3D modeling. This comprehensive approach
-          combines
-          development efficiency with creative exploration in the rapidly evolving AI landscape.
-        </p>
-      </div>
-    </a>
-
-    <!-- Cloud -->
-    <a href="cloud.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: rgba(69, 74, 76, 0.85); color: #FFFFFF; font-family: 'Source Sans Pro'; padding: 20px; margin: 20px left; border: 5px solid #000000; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/textures/greenarctall.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Source Sans Pro'; color: #FFFFFF;">Cloud Computing & Quantum Technologies</h1>
-        <h2 style="font-family: 'Source Sans Pro'; color: #FFFFFF;">From Cloud Platforms to Quantum Computing</h2>
-        <p style="font-family: 'Source Sans Pro'; color: #FFFFFF;">
-          Exploring the vast ecosystem of cloud computing platforms and services. Our infrastructure leverages multiple
-          providers
-          including Vercel for Next.js deployments, Azure for enterprise solutions, Paperspace for GPU computing, AWS for
-          comprehensive
-          services, Google Cloud for AI/ML workloads, and IBM Cloud for hybrid solutions. We're building and deploying
-          applications
-          using Next.js, Python, and Ruby on Rails across these platforms to create scalable, resilient solutions.
-        </p>
-        <p style="font-family: 'Source Sans Pro'; color: #FFFFFF;">
-          Venturing into quantum computing through cloud-accessible platforms, we're exploring revolutionary technologies
-          like IBM's
-          Granite and Q systems, Azure Quantum's diverse offerings, Amazon Braket's quantum services, and Google's Quantum
-          AI platform.
-          We're particularly excited about Canadian innovations in quantum computing, working with Xanadu's photonic quantum
-          computers
-          through PennyLane and D-Wave's quantum annealing systems via Leap.
-        </p>
-      </div>
-    </a>
-
-    <!-- Art -->
-    <a href="art.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #F26710; color: #000000; font-family: 'PT Sans'; padding: 20px; margin: 20px left; border: 5px solid #FFFFFF; background-image: url('images/textures/redrowmedium.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'PT Sans'; color: #000000;">Visual Art Gallery</h1>
-        <h2 style="font-family: 'PT Sans'; color: #000000;">Exploring Digital Art & Animation</h2>
-        <p style="font-family: 'PT Sans'; color: #000000;">Creative works generated using TouchDesigner and other digital
-          tools</p>
-        <p style="font-family: 'PT Sans'; color: #000000;">Welcome to our digital art gallery, showcasing a collection of
-          generative art,
-          3D animations, and interactive visual experiments. Each piece demonstrates the fusion of technology and
-          creativity,
-          exploring new possibilities in digital expression.</p>
-      </div>
-    </a>
-
-    <!-- Painting -->
-    <a href="painting.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FF6F1D; color: #00264D; font-family: 'Nunito'; font-weight: bold; padding: 20px; margin: 20px left; border: 5px solid #333366; background-image: url('images/textures/redarcsquare.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Nunito'; color: #00264D; font-weight: bold;">The Art of Acrylic Painting</h1>
-        <h2 style="font-family: 'Nunito'; color: #00264D; font-weight: bold;">Exploring Color & Composition</h2>
-        <p style="font-family: 'Nunito'; color: #00264D; font-weight: bold;"></p>
-        Discovering the joy of acrylic painting through vibrant colors and dynamic compositions. Each canvas becomes a
-        journey
-        of expression, where color theory principles guide the creation of harmonious and striking visual narratives. The
-        fluid
-        nature of acrylics allows for both bold statements and subtle nuances, perfect for exploring various artistic styles
-        and techniques.
-        </p>
-        <p style="font-family: 'Nunito'; color: #00264D; font-weight: bold;"></p>
-        Music from The Waveform Generation and other inspiring artists provides the perfect backdrop for these creative
-        sessions,
-        influencing the rhythm and flow of each brushstroke. The synthesis of audio and visual elements creates a meditative
-        space
-        where artistic exploration flourishes, resulting in pieces that capture both movement and emotion on canvas.
-        </p>
-      </div>
-    </a>
-
-    <!-- Drawing -->
-    <a href="drawing.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FFBA52; color: #FFFFFF; font-family: 'Libre Baskerville'; padding: 20px; margin: 20px left; border: 5px solid #4E008E; background-image: url('images/textures/redcolumnmedium.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Libre Baskerville'; color: #FFFFFF;">The Art of Drawing & Illustration</h1>
-        <h2 style="font-family: 'Libre Baskerville'; color: #FFFFFF;">Visual Development Through Sketching</h2>
-        <p style="font-family: 'Libre Baskerville'; color: #FFFFFF;">
-          Exploring the foundational art of sketching and drawing as a means of visual development and creative expression.
-          Each
-          stroke and line builds upon the last, developing ideas from simple concepts into fully realized illustrations.
-          Through
-          various techniques and mediums - from pencil and charcoal to digital tablets - we capture the essence of form and
-          movement.
-        </p>
-        <p style="font-family: 'Libre Baskerville'; color: #FFFFFF;">
-          The process of illustration begins with rough sketches, evolving through iterations of refinement and detail. This
-          journey
-          from initial concept to finished piece reveals the power of drawing as both a planning tool and an art form in
-          itself.
-          Whether quick gestural studies or detailed technical illustrations, each drawing represents a step in the visual
-          development process.
-        </p>
-      </div>
-    </a>
-
-    <!-- Modelling -->
-    <a href="modelling.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FCAEBB; color: #660033; font-family: 'Arvo'; padding: 20px; margin: 20px left; border: 5px solid #660033; background-image: url('images/textures/redcolumntall.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Arvo'; color: #660033; font-weight: bold;">Physical & Digital 3D Modelling</h1>
-        <h2 style="font-family: 'Arvo'; color: #660033; font-weight: bold;">From Clay to Digital Creation</h2>
-        <p style="font-family: 'Arvo'; color: #660033; font-weight: bold;"></p>
-        Exploring the art of three-dimensional creation through both traditional and digital mediums. Working with clay
-        allows for
-        organic, tactile expression while balsa wood provides precision in architectural and structural models. These
-        physical
-        modeling techniques inform and complement our digital 3D work, creating a bridge between traditional craftsmanship
-        and
-        modern technology.
-        </p>
-        <p style="font-family: 'Arvo'; color: #660033; font-weight: bold;"></p>
-        In the digital realm, we utilize advanced 3D modeling software and 3D scanning hardware and software to create
-        precise, detailed models ready for
-        stereolithographic printing. This additive manufacturing process brings our digital designs into the physical world,
-        enabling rapid prototyping and the creation of complex geometries impossible through traditional methods. The
-        synthesis
-        of physical and digital modeling techniques opens new possibilities in sculptural and functional design.
-        </p>
-      </div>
-    </a>
-
-    <!-- Printing -->
-    <a href="printing.html" style="text-decoration: none; background-color: #340093;">
-      <div class="responsive-div" style="width: 90%; background-color: #FFB08F; color: #111111; font-family: 'Open Sans'; padding: 20px; margin: 20px left; border: 5px solid #333366; background-image: url('images/textures/redrowsquare.jpg'); background-blend-mode: normal; background-size: cover;">
-        <h1 style="font-family: 'Open Sans'; color: #111111; font-weight: 900;">Print Design & 3D Manufacturing</h1>
-        <h2 style="font-family: 'Open Sans'; color: #111111; font-weight: 900;">From Traditional Print to Additive
-          Manufacturing</h2>
-        <p style="font-family: 'Open Sans'; color: #111111; font-weight: 800;"></p>
-        Exploring the evolution of printing technology from traditional graphic design for paper-based media to modern
-        digital
-        printing processes. Our journey spans from creating compelling layouts and typography for lithographic printing to
-        developing precision digital files for contemporary printing systems. This fusion of classic design principles with
-        modern technology ensures optimal results across all print media.
-        </p>
-        <p style="font-family: 'Open Sans'; color: #111111; font-weight: 800;"></p>
-        Venturing into the third dimension, we embrace stereolithographic 3D printing technology, where digital designs
-        materialize layer by layer. This additive manufacturing process represents the next evolution in printing, enabling
-        the creation of complex three-dimensional objects with unprecedented precision. From prototype development to final
-        production, 3D printing opens new possibilities in design and manufacturing.
-        </p>
-      </div>
-    </a>
-  </div>
-
-  <!-- Footer -->
-  <div id="footer-container"></div>
-
-  <!-- Scripts -->
-  <script src="js/gsap/gsap.min.js"></script>
-  <script src="js/gsap/ScrollTrigger.min.js"></script>
-  <script src="js/loadComponents.js"></script>
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
-
 </html>

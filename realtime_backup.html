@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>The Waveform Generation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/wavgen.css">
+  <link rel="stylesheet" href="css/fonts.css">
+
+  <style>
+    @media screen and (max-width: 700px) {
+      .responsive-div {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Subnav Component -->
+  <div id="videosubnav-container"></div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01" alt="Ball1">
+    <div id="caption"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <h2><a href="realtime.html">Real-time Generative 3D Audio and Video</a></h2>
+  </div>
+
+  <!-- Main Content -->
+  <a href="realtime.html" style="text-decoration: none; background-color: #340093;">
+    <div class="responsive-div" style="
+      width: 90%;
+      background-color: #65428A;
+      color: #E0D1FF;
+      font-family: 'Ubuntu';
+      padding: 20px;
+      margin: 20px left;
+      border: 5px solid #4E008E;
+      background-image: url('images/textures/purplecardrow.jpg');
+      background-blend-mode: multiply;
+      background-size: cover;">
+
+      <h1 style="font-family: 'Ubuntu'; color: #E0D1FF;">Realtime Generative 3D Audio and Video</h1>
+      <h2 style="font-family: 'Ubuntu'; color: #E0D1FF;">Creating real-time interactive 3D environments and generative
+        audio-visual experiences using TouchDesigner and Unreal Engine</h2>
+
+      <p style="font-family: 'Ubuntu'; color: #E0D1FF;">
+        Real-time generative art and interactive environments represent the cutting edge of digital creativity. Using
+        powerful engines like TouchDesigner and Unreal, we can create responsive 3D worlds and audio-visual experiences
+        that react instantly to inputs and data. These tools enable seamless integration of procedural generation,
+        dynamic lighting, particle systems, and real-time audio processing to craft immersive experiences.
+        <br><br>
+        From interactive installations and live performances to dynamic visualizations and virtual environments,
+        real-time systems open up endless possibilities for creative expression and audience engagement. The ability to
+        modify and manipulate content on the fly allows for truly dynamic and adaptable experiences that evolve with
+        user interaction.
+      </p>
+    </div>
+  </a>
+
+  <!-- Video Section -->
+  <div class="row">
+    <div class="side">
+      <h3>Audio Visual Exploration</h3>
+      <p>
+        <iframe width="320" height="180" src="https://www.youtube.com/embed/mdsTboFatdQ?si=QfLpPlC5PVrgi_Pe"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+        </iframe>
+      </p>
+    </div>
+    <div class="main">
+      <h4>Alpha - Music by Not a Scientist - Realtime Audio Visual by Rob McDonald</h4>
+      <h4>TouchDesigner</h4>
+      <h4>Unreal Engine</h4>
+      <h4>Ableton Live</h4>
+    </div>
+  </div>
+<div class="row">
+  <div class="side">
+    <h3>Future Generative Video</h3>
+    <p><img src="images/1.gif" alt="Mapping 1" style="width:320px;height:240px;"></p>
+  </div>
+  <div class="main">
+    <h4>POPs, RayTK, T3D, Gaussian Splatting and Stream Diffusion exploration</h4>
+    <h4>TouchDesigner 2024</h4>
+  </div>
+</div>
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <script src="js/modal.js"></script>
+  <script src="js/loadComponents.js"></script>
+</body>
+
+</html>

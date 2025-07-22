@@ -1,65 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Waveform Generation</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/wavgen.css">
-<link rel="stylesheet" href="css/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music - The Waveform Generation</title>
+    <meta name="description" content="Electronic music production spanning electro, ambient, melodic, and breakbeat genres by Rob McDonald.">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
-<body>
-<!-- Placeholder for the subnav component -->
-<div id="musicsubnav-container"></div>
-  <div class="header">
-    <h2><a href="music.html">Music Production</a></h2>
-  </div>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-wavgen-yellow">Navigation</h2>
+                <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Items -->
+            <div class="space-y-2">
+                <a href="/" class="mobile-nav-link">Home</a>
+                
+                <!-- Music Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/music.html" class="mobile-nav-link font-semibold bg-wavgen-dark-purple">Music</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/electro.html" class="mobile-nav-link text-sm">Electro</a>
+                        <a href="/ambient.html" class="mobile-nav-link text-sm">Ambient</a>
+                        <a href="/melodic.html" class="mobile-nav-link text-sm">Melodic</a>
+                        <a href="/breaks.html" class="mobile-nav-link text-sm">Breaks</a>
+                    </div>
+                </div>
+                
+                <!-- Video Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/video.html" class="mobile-nav-link font-semibold">Video</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/realtime.html" class="mobile-nav-link text-sm">Realtime</a>
+                        <a href="/mapping.html" class="mobile-nav-link text-sm">Mapping</a>
+                        <a href="/mixing.html" class="mobile-nav-link text-sm">Mixing</a>
+                        <a href="/editing.html" class="mobile-nav-link text-sm">Editing</a>
+                    </div>
+                </div>
+                
+                <!-- Data Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/data.html" class="mobile-nav-link font-semibold">Data & Tech</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/webdev.html" class="mobile-nav-link text-sm">Web Dev</a>
+                        <a href="/coding.html" class="mobile-nav-link text-sm">Coding</a>
+                        <a href="/genai.html" class="mobile-nav-link text-sm">Gen AI</a>
+                        <a href="/cloud.html" class="mobile-nav-link text-sm">Cloud</a>
+                    </div>
+                </div>
+                
+                <!-- Art Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/art.html" class="mobile-nav-link font-semibold">Art</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/painting.html" class="mobile-nav-link text-sm">Painting</a>
+                        <a href="/drawing.html" class="mobile-nav-link text-sm">Drawing</a>
+                        <a href="/modelling.html" class="mobile-nav-link text-sm">Modelling</a>
+                        <a href="/printing.html" class="mobile-nav-link text-sm">Printing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<a href="music.html" style="text-decoration: none; background-color: #340093;">
-  <div class="responsive-div" style="width: 90%; background-color: #00249C; color: #99CCFF; font-family: 'Playfair Display'; padding: 20px; margin: 20px left; border: 5px solid #99CCFF;
-background-image: url('images/textures/bluecolumntall.jpg'); background-blend-mode: multiply; background-size: cover;">
-    <h1 style="font-family: 'Playfair Display'; color: #99CCFF;">Electronic Music Studio</h1>
-    <h2 style="font-family: 'Playfair Display'; color: #99CCFF;">Digital Audio Production & Sound Design</h2>
-    <p style="font-family: 'Playfair Display'; color: #99CCFF;">Creating electronic music across multiple genres and styles</p>
-    <p style="font-family: 'Playfair Display'; color: #99CCFF;">Explore our collection of electronic music productions, 
-    from ambient soundscapes to driving rhythms. Each track showcases different approaches to synthesis, sampling, 
-    and digital audio production, blending modern techniques with creative sound design.</p>
-  </div>
-</a>
+    <!-- Header -->
+    <header class="bg-wavgen-purple shadow-lg relative z-30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-white transition-colors duration-300">
+                        The Waveform Generation
+                    </a>
+                </div>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01" alt="music1">
-  <div id="caption"></div>
-</div>
-<div class="row">
-    <div class="side">
-        <h3>Sunday Brunch</h3>
-        <p><iframe style="border: 0; width: 320px; height: 440px;" title="Achieve Satisfaction"
-          src="https://bandcamp.com/EmbeddedPlayer/album=2593241968/size=large/bgcol=333333/linkcol=9a64ff/tracklist=false/track=666141519/transparent=true/" 
-          seamless><a href="https://waveformgeneration.bandcamp.com/album/sunday-brunch">Sunday Brunch by The Waveform Generation</a></iframe></p>
-    </div>
-    <div class="main">
-        <h4>Album Track</h4>
-        <h4>The Waveform Generation</h4>
-    </div>
-</div>
-<div class="row">
-    <div class="side">
-        <h3>Track 1</h3>
-        <p><img src="images/1.gif" alt="Music 1" style="width:320px;height:240px;"></p>
-    </div>
-    <div class="main">
-        <h4>Electronic Composition</h4>
-        <h4>Ableton Live 2024</h4>
-    </div>
-</div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-8">
+                    <div class="relative group">
+                        <a href="/music.html" class="nav-link text-wavgen-yellow">Music</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/electro.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Electro</a>
+                            <a href="/ambient.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Ambient</a>
+                            <a href="/melodic.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Melodic</a>
+                            <a href="/breaks.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Breaks</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/video.html" class="nav-link">Video</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/realtime.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Realtime</a>
+                            <a href="/mapping.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mapping</a>
+                            <a href="/mixing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mixing</a>
+                            <a href="/editing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Editing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/data.html" class="nav-link">Data & Tech</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/webdev.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Web Dev</a>
+                            <a href="/coding.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Coding</a>
+                            <a href="/genai.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Gen AI</a>
+                            <a href="/cloud.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Cloud</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/art.html" class="nav-link">Art</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/painting.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Painting</a>
+                            <a href="/drawing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Drawing</a>
+                            <a href="/modelling.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Modelling</a>
+                            <a href="/printing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Printing</a>
+                        </div>
+                    </div>
+                </nav>
 
-<!-- Placeholder for the footer component -->
-<div id="footer-container"></div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<!-- Load the component loader script -->
-<script src="js/loadComponents.js"></script>
-<script src="js/modal.js"></script>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-blue-900 via-wavgen-dark-purple to-wavgen-purple py-20">
+        <div class="absolute inset-0 bg-black opacity-30"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                    Electronic Music <span class="text-wavgen-yellow">Studio</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-blue-200 mb-8">
+                    Digital Audio Production & Sound Design
+                </p>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Creating electronic music across multiple genres and styles. From ambient soundscapes to driving rhythms, 
+                    each track showcases different approaches to synthesis, sampling, and digital audio production.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Genres Grid -->
+    <section class="py-20 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Electro -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/electro.html'">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Electro</h3>
+                        <p class="text-gray-300 mb-4">Futuristic Detroit electro with machine funk and robotic rhythms</p>
+                        <div class="text-sm text-wavgen-yellow">
+                            Machine Funk • Robotic Rhythms • Future Sound
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ambient -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/ambient.html'">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Ambient</h3>
+                        <p class="text-gray-300 mb-4">Atmospheric soundscapes and immersive sonic environments</p>
+                        <div class="text-sm text-wavgen-yellow">
+                            Soundscapes • Textures • Atmospheric
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Melodic -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/melodic.html'">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Melodic</h3>
+                        <p class="text-gray-300 mb-4">Chicago-style soulful house with deep emotional progressions</p>
+                        <div class="text-sm text-wavgen-yellow">
+                            Soulful House • Deep Emotion • Chicago Style
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breaks -->
+                <div class="section-card group cursor-pointer" onclick="window.location.href='/breaks.html'">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Breaks</h3>
+                        <p class="text-gray-300 mb-4">Breakbeat innovation from Motown funk to Bristol bass</p>
+                        <div class="text-sm text-wavgen-yellow">
+                            Breakbeat • Funk • Bristol Bass
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Philosophy Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-white mb-8">Musical Philosophy</h2>
+                <div class="text-lg text-gray-300 space-y-6 leading-relaxed">
+                    <p>
+                        Electronic music production is a journey through sound design, rhythm, and emotional expression. 
+                        Each genre represents a different facet of digital creativity, from the mechanical precision of electro 
+                        to the flowing atmospheres of ambient soundscapes.
+                    </p>
+                    <p>
+                        My approach blends modern production techniques with creative sound design, honoring the roots of 
+                        electronic music while exploring new sonic territories. Whether crafting the driving rhythms of 
+                        Detroit electro or the soulful progressions of Chicago house, each track is a exploration in digital artistry.
+                    </p>
+                    <p>
+                        The studio becomes a laboratory for sonic experimentation, where synthesis, sampling, and digital 
+                        processing converge to create immersive musical experiences that speak to both the mind and the body.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-wavgen-dark-purple py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-wavgen-yellow mb-4">The Waveform Generation</h3>
+                <p class="text-gray-300 mb-6">Electronic Music Studio • Toronto, Canada</p>
+                <div class="border-t border-wavgen-purple pt-6">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Rob McDonald. Exploring electronic music and sound design.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>

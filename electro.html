@@ -1,65 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Waveform Generation</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/wavgen.css">
-<link rel="stylesheet" href="css/fonts.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electro - The Waveform Generation</title>
+    <meta name="description" content="Futuristic Detroit electro with machine funk and robotic rhythms by Rob McDonald.">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
-<body>
-<!-- Placeholder for the subnav component -->
-<div id="musicsubnav-container"></div>
-  <div class="header">
-    <h2><a href="electro.html">Detroit Electro</a></h2>
-  </div>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-wavgen-yellow">Navigation</h2>
+                <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Items -->
+            <div class="space-y-2">
+                <a href="/" class="mobile-nav-link">Home</a>
+                
+                <!-- Music Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/music.html" class="mobile-nav-link font-semibold">Music</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/electro.html" class="mobile-nav-link text-sm bg-wavgen-purple">Electro</a>
+                        <a href="/ambient.html" class="mobile-nav-link text-sm">Ambient</a>
+                        <a href="/melodic.html" class="mobile-nav-link text-sm">Melodic</a>
+                        <a href="/breaks.html" class="mobile-nav-link text-sm">Breaks</a>
+                    </div>
+                </div>
+                
+                <!-- Video Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/video.html" class="mobile-nav-link font-semibold">Video</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/realtime.html" class="mobile-nav-link text-sm">Realtime</a>
+                        <a href="/mapping.html" class="mobile-nav-link text-sm">Mapping</a>
+                        <a href="/mixing.html" class="mobile-nav-link text-sm">Mixing</a>
+                        <a href="/editing.html" class="mobile-nav-link text-sm">Editing</a>
+                    </div>
+                </div>
+                
+                <!-- Data Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/data.html" class="mobile-nav-link font-semibold">Data & Tech</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/webdev.html" class="mobile-nav-link text-sm">Web Dev</a>
+                        <a href="/coding.html" class="mobile-nav-link text-sm">Coding</a>
+                        <a href="/genai.html" class="mobile-nav-link text-sm">Gen AI</a>
+                        <a href="/cloud.html" class="mobile-nav-link text-sm">Cloud</a>
+                    </div>
+                </div>
+                
+                <!-- Art Section -->
+                <div class="border-b border-wavgen-dark-purple">
+                    <a href="/art.html" class="mobile-nav-link font-semibold">Art</a>
+                    <div class="pl-4 bg-wavgen-dark-purple">
+                        <a href="/painting.html" class="mobile-nav-link text-sm">Painting</a>
+                        <a href="/drawing.html" class="mobile-nav-link text-sm">Drawing</a>
+                        <a href="/modelling.html" class="mobile-nav-link text-sm">Modelling</a>
+                        <a href="/printing.html" class="mobile-nav-link text-sm">Printing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<a href="electro.html" style="text-decoration: none; background-color: #340093;">
-  <div class="responsive-div" style="width: 90%; background-color: #3D2B1F; color: #ffffff; font-family: 'Montserrat'; padding: 20px; margin: 20px left; border: 5px solid #4E008E;
-background-image: url('images/textures/bluecolumntall.jpg'); background-blend-mode: normal; background-size: cover;">
-    <h1 style="font-family: 'Montserrat'; color: #ffffff">Futuristic Detroit Electro</h1>
-    <h2 style="font-family: 'Montserrat'; color: #ffffff">Machine Funk & Robotic Rhythms</h2>
-    <p style="font-family: 'Montserrat'; color: #ffffff">Exploring the intersection of future funk and mechanical precision</p>
-    <p style="font-family: 'Montserrat'; color: #ffffff;">Dive into our collection of Detroit-inspired electro tracks, 
-    where mechanical rhythms meet soulful synthlines. Each composition pays homage to the innovative spirit of Detroit's 
-    electronic music legacy while pushing forward into new sonic territories with modern production techniques.</p>
-  </div>
-</a>
+    <!-- Header -->
+    <header class="bg-wavgen-purple shadow-lg relative z-30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-white transition-colors duration-300">
+                        The Waveform Generation
+                    </a>
+                </div>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01" alt="electro1">
-  <div id="caption"></div>
-</div>
-<div class="row">
-    <div class="side">
-        <h3>Robot Dreams</h3>
-        <p><iframe style="border: 0; width: 320px; height: 440px;" title="Achieve Satisfaction"
-          src="https://bandcamp.com/EmbeddedPlayer/album=2593241968/size=large/bgcol=333333/linkcol=9a64ff/tracklist=false/track=666141519/transparent=true/" 
-          seamless><a href="https://waveformgeneration.bandcamp.com/album/sunday-brunch">Sunday Brunch by The Waveform Generation</a></iframe></p>
-    </div>
-    <div class="main">
-        <h4>Detroit Electro Track</h4>
-        <h4>The Waveform Generation</h4>
-    </div>
-</div>
-<div class="row">
-    <div class="side">
-        <h3>Machine Funk</h3>
-        <p><img src="images/1.gif" alt="Electro 1" style="width:320px;height:240px;"></p>
-    </div>
-    <div class="main">
-        <h4>Electro Composition</h4>
-        <h4>Ableton Live 2024</h4>
-    </div>
-</div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-8">
+                    <div class="relative group">
+                        <a href="/music.html" class="nav-link text-wavgen-yellow">Music</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/electro.html" class="block px-4 py-2 text-wavgen-yellow bg-wavgen-purple rounded-t-lg">Electro</a>
+                            <a href="/ambient.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Ambient</a>
+                            <a href="/melodic.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Melodic</a>
+                            <a href="/breaks.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Breaks</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/video.html" class="nav-link">Video</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/realtime.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Realtime</a>
+                            <a href="/mapping.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mapping</a>
+                            <a href="/mixing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Mixing</a>
+                            <a href="/editing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Editing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/data.html" class="nav-link">Data & Tech</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/webdev.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Web Dev</a>
+                            <a href="/coding.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Coding</a>
+                            <a href="/genai.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Gen AI</a>
+                            <a href="/cloud.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Cloud</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <a href="/art.html" class="nav-link">Art</a>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-dark-purple rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="/painting.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-t-lg">Painting</a>
+                            <a href="/drawing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Drawing</a>
+                            <a href="/modelling.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple">Modelling</a>
+                            <a href="/printing.html" class="block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-purple rounded-b-lg">Printing</a>
+                        </div>
+                    </div>
+                </nav>
 
-<!-- Placeholder for the footer component -->
-<div id="footer-container"></div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<!-- Load the component loader script -->
-<script src="js/loadComponents.js"></script>
-<script src="js/modal.js"></script>
+    <!-- Breadcrumb -->
+    <div class="bg-gray-800 py-4">
+        <div class="container mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="/music.html" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Music</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-1 text-wavgen-yellow md:ml-2">Electro</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 py-20">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+                    Futuristic <span class="text-wavgen-yellow">Detroit Electro</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-purple-200 mb-8">
+                    Machine Funk & Robotic Rhythms
+                </p>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Exploring the intersection of future funk and mechanical precision. Detroit-inspired electro tracks 
+                    where mechanical rhythms meet soulful synthlines, paying homage to Detroit's electronic music legacy 
+                    while pushing forward into new sonic territories.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Electro Characteristics -->
+    <section class="py-20 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Electro Elements</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    The essential components that define the electro sound: mechanical precision meets human soul.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Machine Funk -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Machine Funk</h3>
+                        <p class="text-gray-300 text-sm">Mechanical precision with organic groove, creating the perfect balance between robotic and human elements.</p>
+                    </div>
+                </div>
+
+                <!-- Synthlines -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Soulful Synthlines</h3>
+                        <p class="text-gray-300 text-sm">Melodic synthesizer work that brings emotion and depth to the mechanical foundation of electro.</p>
+                    </div>
+                </div>
+
+                <!-- Detroit Legacy -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Detroit Heritage</h3>
+                        <p class="text-gray-300 text-sm">Honoring the innovative spirit of Detroit's electronic music pioneers while exploring new sonic territories.</p>
+                    </div>
+                </div>
+
+                <!-- Modern Production -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Modern Techniques</h3>
+                        <p class="text-gray-300 text-sm">Contemporary production methods and digital tools that enhance the classic electro sound.</p>
+                    </div>
+                </div>
+
+                <!-- Robotic Rhythms -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Robotic Rhythms</h3>
+                        <p class="text-gray-300 text-sm">Precise, programmed drum patterns that form the mechanical backbone of the electro sound.</p>
+                    </div>
+                </div>
+
+                <!-- Future Sound -->
+                <div class="section-card">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Future Vision</h3>
+                        <p class="text-gray-300 text-sm">Forward-thinking approach to electro that imagines the sound of tomorrow while respecting the past.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Production Philosophy -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-white mb-8">The Electro Approach</h2>
+                <div class="text-lg text-gray-300 space-y-6 leading-relaxed">
+                    <p>
+                        Electro music represents the perfect synthesis of human creativity and mechanical precision. 
+                        Each track is built on the foundation of robotic rhythms and synthesized sounds, but infused 
+                        with the soul and funk that makes electronic music truly compelling.
+                    </p>
+                    <p>
+                        Drawing inspiration from Detroit's pioneering electronic music scene, these productions honor 
+                        the innovative spirit of artists like Juan Atkins, Derrick May, and Kevin Saunderson while 
+                        pushing the boundaries of what electro can be in the modern era.
+                    </p>
+                    <p>
+                        The production process combines classic analog synthesizer sounds with contemporary digital 
+                        processing, creating tracks that feel both timeless and futuristic. Every element serves 
+                        the groove while maintaining the mechanical aesthetic that defines the electro sound.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-wavgen-dark-purple py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-wavgen-yellow mb-4">The Waveform Generation</h3>
+                <p class="text-gray-300 mb-6">Futuristic Detroit Electro • Toronto, Canada</p>
+                <div class="border-t border-wavgen-purple pt-6">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Rob McDonald. Machine funk meets human soul.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>
