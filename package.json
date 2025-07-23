@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
-    "build": "eleventy",
+    "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy"
   },
