@@ -57,7 +57,7 @@
       </button>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-8 overflow-x-auto">
+      <nav class="hidden lg:flex items-center space-x-8">
         {% for item in navigation.main %}
           <div class="relative group">
             <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center{% if item.url | isActiveSection(page.url) %} text-wavgen-yellow bg-wavgen-dark-purple{% endif %}">
