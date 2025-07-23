@@ -1,3 +1,5 @@
+_site
+
 # Dependencies
 node_modules/
 npm-debug.log*
