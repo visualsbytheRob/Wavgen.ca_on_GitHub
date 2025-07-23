@@ -1,94 +1,139 @@
-// Mobile Navigation Functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('[DEBUG] DOM fully loaded');
+  
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileNav = document.getElementById('mobile-nav');
     const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
     const closeMobileNav = document.getElementById('close-mobile-nav');
-
-    // Open mobile navigation
+  
+    console.log('[DEBUG] Element refs:', {
+      mobileMenuBtn,
+      mobileNav,
+      mobileNavOverlay,
+      closeMobileNav
+    });
+  
     function openMobileNav() {
+      console.log('[DEBUG] openMobileNav() triggered');
+      try {
         mobileNav.classList.remove('-translate-x-full');
         mobileNavOverlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        console.log('[DEBUG] Navigation drawer opened');
+      } catch (e) {
+        console.error('[ERROR] Failed to open nav:', e);
+      }
     }
-
-    // Close mobile navigation
+  
     function closeMobileNavigation() {
+      console.log('[DEBUG] closeMobileNavigation() triggered');
+      try {
         mobileNav.classList.add('-translate-x-full');
         mobileNavOverlay.classList.add('hidden');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        console.log('[DEBUG] Navigation drawer closed');
+      } catch (e) {
+        console.error('[ERROR] Failed to close nav:', e);
+      }
     }
-
-    // Event listeners
+  
+    // Click: Burger Menu Button
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', openMobileNav);
+      mobileMenuBtn.addEventListener('click', function () {
+        console.log('[DEBUG] Burger menu button clicked');
+        openMobileNav();
+      });
+    } else {
+      console.warn('[WARN] mobileMenuBtn not found');
     }
-
+  
+    // Click: Close Button (X)
     if (closeMobileNav) {
-        closeMobileNav.addEventListener('click', closeMobileNavigation);
+      closeMobileNav.addEventListener('click', function () {
+        console.log('[DEBUG] Close button clicked');
+        closeMobileNavigation();
+      });
+    } else {
+      console.warn('[WARN] closeMobileNav not found');
     }
-
+  
+    // Click: Overlay
     if (mobileNavOverlay) {
-        mobileNavOverlay.addEventListener('click', closeMobileNavigation);
+      mobileNavOverlay.addEventListener('click', function () {
+        console.log('[DEBUG] Overlay clicked');
+        closeMobileNavigation();
+      });
+    } else {
+      console.warn('[WARN] mobileNavOverlay not found');
     }
-
-    // Close mobile nav when pressing Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeMobileNavigation();
-        }
+  
+    // Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        console.log('[DEBUG] ESC key pressed');
+        closeMobileNavigation();
+      }
     });
-
-    // Smooth scrolling for anchor links
+  
+    // Nav link clicks
+    document.querySelectorAll('#mobile-nav a').forEach(link => {
+      link.addEventListener('click', function () {
+        console.log('[DEBUG] Nav link clicked:', this.href);
+        closeMobileNavigation();
+      });
+    });
+  
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                // Close mobile nav if open
-                closeMobileNavigation();
-            }
-        });
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          console.log('[DEBUG] Anchor smooth scroll to:', this.getAttribute('href'));
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          closeMobileNavigation();
+        }
+      });
     });
-
-    // Add scroll effect to header
+  
+    // Header scroll behavior
     let lastScrollTop = 0;
     const header = document.querySelector('header');
-    
-    window.addEventListener('scroll', function() {
+    if (header) {
+      window.addEventListener('scroll', function () {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
         if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Scrolling down
-            header.style.transform = 'translateY(-100%)';
+          header.style.transform = 'translateY(-100%)';
+          console.log('[DEBUG] Header hidden (scrolling down)');
         } else {
-            // Scrolling up
-            header.style.transform = 'translateY(0)';
+          header.style.transform = 'translateY(0)';
+          console.log('[DEBUG] Header visible (scrolling up)');
         }
-        
         lastScrollTop = scrollTop;
-    });
-
-    // Add fade-in animation on scroll
+      });
+    } else {
+      console.warn('[WARN] Header element not found');
+    }
+  
+    // IntersectionObserver for fade-in
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
     };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fade-in');
-            }
-        });
+  
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('[DEBUG] Element visible for fade-in:', entry.target);
+          entry.target.classList.add('animate-fade-in');
+        }
+      });
     }, observerOptions);
-
-    // Observe elements for animation
+  
     document.querySelectorAll('.section-card').forEach(card => {
-        observer.observe(card);
+      observer.observe(card);
     });
-});
+  });
+  

@@ -1,6 +1,33 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./public/**/*.{html,js}"],
+  content: [
+    "./src/**/*.{html,njk,js}",
+    "./public/**/*.{html,njk,js}"
+  ],
+  safelist: [
+    // Navigation drawer transitions
+    'transform',
+    'transition-transform',
+    'ease-in-out',
+    'duration-300',
+    '-translate-x-full',
+    'translate-x-0',
+    'hidden',
+
+    // Positioning for overlay and drawer
+    'fixed',
+    'inset-0',
+    'top-0',
+    'left-0',
+    'h-full',
+    'w-80',
+
+    // Z-index stacking
+    'z-[9999]',
+    'z-[10000]',
+    'z-30',
+    'z-50',
+  ],
   theme: {
     extend: {
       colors: {

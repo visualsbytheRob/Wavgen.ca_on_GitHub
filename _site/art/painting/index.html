@@ -1,282 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painting - The Waveform Generation</title>
-    <meta name="description" content="Traditional and digital painting techniques exploring color, form, and expression by Rob McDonald in Toronto.">
-    <link href="/css/style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painting - The Waveform Generation</title>
+  <meta name="description" content="Traditional and digital painting techniques exploring color, form, and expression by Rob McDonald in Toronto." />
+
+  <link href="/css/style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
 </head>
-<body class="bg-gray-900 text-white font-roboto">
-    <!-- Mobile Navigation Overlay -->
-<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[999] hidden lg:hidden"></div>
+<body class="relative z-0 bg-gray-900 text-white font-roboto">
+  
+  <!-- Mobile Navigation Overlay -->
+<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[9999] hidden lg:hidden"></div>
 
 <!-- Mobile Navigation Drawer -->
-<nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-[999] transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
-    <div class="h-full flex flex-col">
-        <!-- Header -->
-        <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
-            <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
-            <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
-        
-        <!-- Scrollable Menu -->
-        <div class="flex-1 overflow-y-auto py-2">
-            <nav class="flex flex-col space-y-1 px-4">
-                
-                    
-                        <a href="/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
-                            Home
-                        </a>
-                        
-                    
-                        <a href="/music/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
-                            Music
-                        </a>
-                        
-                            
-                                <a href="/music/electro/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Electro
-                                </a>
-                            
-                                <a href="/music/ambient/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Ambient
-                                </a>
-                            
-                                <a href="/music/melodic/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Melodic
-                                </a>
-                            
-                                <a href="/music/breaks/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Breaks
-                                </a>
-                            
-                        
-                    
-                        <a href="/video/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
-                            Video
-                        </a>
-                        
-                            
-                                <a href="/video/realtime/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Realtime
-                                </a>
-                            
-                                <a href="/video/mapping/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Mapping
-                                </a>
-                            
-                                <a href="/video/mixing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Mixing
-                                </a>
-                            
-                                <a href="/video/editing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Editing
-                                </a>
-                            
-                        
-                    
-                        <a href="/data/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
-                            Data
-                        </a>
-                        
-                            
-                                <a href="/data/webdev/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Web Dev
-                                </a>
-                            
-                                <a href="/data/coding/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Coding
-                                </a>
-                            
-                                <a href="/data/genai/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Gen AI
-                                </a>
-                            
-                                <a href="/data/cloud/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Cloud
-                                </a>
-                            
-                        
-                    
-                        <a href="/art/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200 bg-wavgen-dark-purple">
-                            Art
-                        </a>
-                        
-                            
-                                <a href="/art/painting/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Painting
-                                </a>
-                            
-                                <a href="/art/drawing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Drawing
-                                </a>
-                            
-                                <a href="/art/modelling/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Modelling
-                                </a>
-                            
-                                <a href="/art/printing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
-                                    Printing
-                                </a>
-                            
-                        
-                    
-                
-            </nav>
-        </div>
+<nav id="mobile-nav" class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-[10000] transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+  <div class="h-full flex flex-col">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
+      <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
+      <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
+
+    <!-- Scrollable Menu -->
+    <div class="flex-1 overflow-y-auto py-2">
+      <nav class="flex flex-col space-y-1 px-4">
+        
+          
+            <a href="/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+              Home
+            </a>
+            
+          
+            <a href="/music/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+              Music
+            </a>
+            
+              
+                <a href="/music/electro/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Electro
+                </a>
+              
+                <a href="/music/ambient/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Ambient
+                </a>
+              
+                <a href="/music/melodic/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Melodic
+                </a>
+              
+                <a href="/music/breaks/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Breaks
+                </a>
+              
+            
+          
+            <a href="/video/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+              Video
+            </a>
+            
+              
+                <a href="/video/realtime/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Realtime
+                </a>
+              
+                <a href="/video/mapping/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Mapping
+                </a>
+              
+                <a href="/video/mixing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Mixing
+                </a>
+              
+                <a href="/video/editing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Editing
+                </a>
+              
+            
+          
+            <a href="/data/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+              Data
+            </a>
+            
+              
+                <a href="/data/webdev/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Web Dev
+                </a>
+              
+                <a href="/data/coding/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Coding
+                </a>
+              
+                <a href="/data/genai/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Gen AI
+                </a>
+              
+                <a href="/data/cloud/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Cloud
+                </a>
+              
+            
+          
+            <a href="/art/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200 bg-wavgen-dark-purple">
+              Art
+            </a>
+            
+              
+                <a href="/art/painting/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Painting
+                </a>
+              
+                <a href="/art/drawing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Drawing
+                </a>
+              
+                <a href="/art/modelling/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Modelling
+                </a>
+              
+                <a href="/art/printing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                  Printing
+                </a>
+              
+            
+          
+        
+      </nav>
+    </div>
+  </div>
 </nav>
 
 <!-- Desktop Navigation -->
 <header class="bg-wavgen-dark-purple shadow-lg relative z-30">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center py-4">
-            <!-- Logo -->
-            <div class="flex items-center">
-                <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-yellow-300 transition-colors">
-                    The Waveform Generation
-                </a>
-            </div>
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center py-4">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-yellow-300 transition-colors">
+          The Waveform Generation
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-8 overflow-x-auto">
+        
+          <div class="relative group">
+            <a href="/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
+              Home
+            </a>
             
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
+          </div>
+        
+          <div class="relative group">
+            <a href="/music/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
+              Music
+            </a>
             
-            <!-- Desktop Navigation -->
-            <nav class="hidden lg:flex items-center space-x-8 overflow-x-auto">
+              <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 
-                    <div class="relative group">
-                        <a href="/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
-                            Home
-                        </a>
-                        
-                    </div>
+                  <a href="/music/electro/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Electro
+                  </a>
                 
-                    <div class="relative group">
-                        <a href="/music/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
-                            Music
-                        </a>
-                        
-                            <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                
-                                    <a href="/music/electro/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Electro
-                                    </a>
-                                
-                                    <a href="/music/ambient/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Ambient
-                                    </a>
-                                
-                                    <a href="/music/melodic/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Melodic
-                                    </a>
-                                
-                                    <a href="/music/breaks/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Breaks
-                                    </a>
-                                
-                            </div>
-                        
-                    </div>
+                  <a href="/music/ambient/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Ambient
+                  </a>
                 
-                    <div class="relative group">
-                        <a href="/video/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
-                            Video
-                        </a>
-                        
-                            <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                
-                                    <a href="/video/realtime/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Realtime
-                                    </a>
-                                
-                                    <a href="/video/mapping/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Mapping
-                                    </a>
-                                
-                                    <a href="/video/mixing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Mixing
-                                    </a>
-                                
-                                    <a href="/video/editing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Editing
-                                    </a>
-                                
-                            </div>
-                        
-                    </div>
+                  <a href="/music/melodic/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Melodic
+                  </a>
                 
-                    <div class="relative group">
-                        <a href="/data/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
-                            Data
-                        </a>
-                        
-                            <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                
-                                    <a href="/data/webdev/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Web Dev
-                                    </a>
-                                
-                                    <a href="/data/coding/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Coding
-                                    </a>
-                                
-                                    <a href="/data/genai/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Gen AI
-                                    </a>
-                                
-                                    <a href="/data/cloud/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Cloud
-                                    </a>
-                                
-                            </div>
-                        
-                    </div>
+                  <a href="/music/breaks/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Breaks
+                  </a>
                 
-                    <div class="relative group">
-                        <a href="/art/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center text-wavgen-yellow bg-wavgen-dark-purple">
-                            Art
-                        </a>
-                        
-                            <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                
-                                    <a href="/art/painting/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Painting
-                                    </a>
-                                
-                                    <a href="/art/drawing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Drawing
-                                    </a>
-                                
-                                    <a href="/art/modelling/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Modelling
-                                    </a>
-                                
-                                    <a href="/art/printing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
-                                        Printing
-                                    </a>
-                                
-                            </div>
-                        
-                    </div>
+              </div>
+            
+          </div>
+        
+          <div class="relative group">
+            <a href="/video/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
+              Video
+            </a>
+            
+              <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 
-            </nav>
-        </div>
+                  <a href="/video/realtime/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Realtime
+                  </a>
+                
+                  <a href="/video/mapping/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Mapping
+                  </a>
+                
+                  <a href="/video/mixing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Mixing
+                  </a>
+                
+                  <a href="/video/editing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Editing
+                  </a>
+                
+              </div>
+            
+          </div>
+        
+          <div class="relative group">
+            <a href="/data/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center">
+              Data
+            </a>
+            
+              <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                
+                  <a href="/data/webdev/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Web Dev
+                  </a>
+                
+                  <a href="/data/coding/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Coding
+                  </a>
+                
+                  <a href="/data/genai/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Gen AI
+                  </a>
+                
+                  <a href="/data/cloud/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Cloud
+                  </a>
+                
+              </div>
+            
+          </div>
+        
+          <div class="relative group">
+            <a href="/art/" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center text-wavgen-yellow bg-wavgen-dark-purple">
+              Art
+            </a>
+            
+              <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                
+                  <a href="/art/painting/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Painting
+                  </a>
+                
+                  <a href="/art/drawing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Drawing
+                  </a>
+                
+                  <a href="/art/modelling/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Modelling
+                  </a>
+                
+                  <a href="/art/printing/" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap">
+                    Printing
+                  </a>
+                
+              </div>
+            
+          </div>
+        
+      </nav>
     </div>
+  </div>
 </header>
 
+
+  <main class="relative z-10">
     
-    <main>
-        
 <!-- Breadcrumb -->
 <div class="bg-gray-800 py-4">
     <div class="container mx-auto px-4">
@@ -413,9 +415,9 @@
     </div>
 </section>
 
-    </main>
-    
-    <!-- Footer -->
+  </main>
+
+  <!-- Footer -->
 <footer class="bg-wavgen-dark-purple py-12">
     <div class="container mx-auto px-4">
         <div class="text-center">
@@ -430,7 +432,7 @@
     </div>
 </footer>
 
-    
-    <script src="/js/main.js"></script>
+
+  <script src="/js/main.js"></script>
 </body>
 </html>
