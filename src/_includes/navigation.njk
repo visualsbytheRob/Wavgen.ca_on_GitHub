@@ -50,23 +50,20 @@
             </div>
             
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-white hover:text-wavgen-yellow">
+            <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
             
             <!-- Desktop Navigation -->
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden lg:flex space-x-8">
                 {% for item in navigation.main %}
                     {% if item.children %}
                         <!-- Dropdown Menu -->
                         <div class="relative group">
-                            <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors flex items-center{% if item.url | isActiveSection(page.url) %} text-wavgen-yellow{% endif %}">
+                            <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors{% if item.url | isActiveSection(page.url) %} text-wavgen-yellow{% endif %}">
                                 {{ item.title }}
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
                             </a>
                             <div class="absolute top-full left-0 mt-2 w-48 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 {% for child in item.children %}

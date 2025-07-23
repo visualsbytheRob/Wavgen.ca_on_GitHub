@@ -28,7 +28,7 @@ module.exports = {
       ]
     },
     {
-      title: 'Data & Tech',
+      title: 'Data',
       url: '/data/',
       icon: 'data',
       children: [
