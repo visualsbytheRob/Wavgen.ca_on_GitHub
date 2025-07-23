@@ -26,87 +26,107 @@
         </div>
         
         <!-- Scrollable Menu -->
-        <div class="flex-1 overflow-y-auto py-1">
-            <div class="px-3 space-y-0">
+        <div class="flex-1 overflow-y-auto py-2">
+            <nav class="flex flex-col space-y-1 px-4">
                 
-                    
-                        <!-- Single Item -->
-                        <a href="/" class="mobile-nav-link-compact">Home</a>
-                    
-                
-                    
-                        <!-- Section with Children -->
-                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
-                            <a href="/music/" class="mobile-nav-link-compact font-semibold">Music</a>
-                            <div class="pl-3 bg-wavgen-dark-purple">
-                                
-                                    <a href="/music/electro/" class="mobile-nav-link-compact text-sm">Electro</a>
-                                
-                                    <a href="/music/ambient/" class="mobile-nav-link-compact text-sm">Ambient</a>
-                                
-                                    <a href="/music/melodic/" class="mobile-nav-link-compact text-sm">Melodic</a>
-                                
-                                    <a href="/music/breaks/" class="mobile-nav-link-compact text-sm">Breaks</a>
-                                
-                            </div>
-                        </div>
+                    <a href="/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+                        Home
+                    </a>
                     
                 
+                    <a href="/music/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+                        Music
+                    </a>
                     
-                        <!-- Section with Children -->
-                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
-                            <a href="/video/" class="mobile-nav-link-compact font-semibold">Video</a>
-                            <div class="pl-3 bg-wavgen-dark-purple">
-                                
-                                    <a href="/video/realtime/" class="mobile-nav-link-compact text-sm">Realtime</a>
-                                
-                                    <a href="/video/mapping/" class="mobile-nav-link-compact text-sm">Mapping</a>
-                                
-                                    <a href="/video/mixing/" class="mobile-nav-link-compact text-sm">Mixing</a>
-                                
-                                    <a href="/video/editing/" class="mobile-nav-link-compact text-sm">Editing</a>
-                                
-                            </div>
-                        </div>
-                    
-                
-                    
-                        <!-- Section with Children -->
-                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
-                            <a href="/data/" class="mobile-nav-link-compact font-semibold bg-wavgen-purple">Data</a>
-                            <div class="pl-3 bg-wavgen-dark-purple">
-                                
-                                    <a href="/data/webdev/" class="mobile-nav-link-compact text-sm">Web Dev</a>
-                                
-                                    <a href="/data/coding/" class="mobile-nav-link-compact text-sm">Coding</a>
-                                
-                                    <a href="/data/genai/" class="mobile-nav-link-compact text-sm">Gen AI</a>
-                                
-                                    <a href="/data/cloud/" class="mobile-nav-link-compact text-sm">Cloud</a>
-                                
-                            </div>
-                        </div>
+                        
+                            <a href="/music/electro/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Electro
+                            </a>
+                        
+                            <a href="/music/ambient/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Ambient
+                            </a>
+                        
+                            <a href="/music/melodic/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Melodic
+                            </a>
+                        
+                            <a href="/music/breaks/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Breaks
+                            </a>
+                        
                     
                 
+                    <a href="/video/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+                        Video
+                    </a>
                     
-                        <!-- Section with Children -->
-                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
-                            <a href="/art/" class="mobile-nav-link-compact font-semibold">Art</a>
-                            <div class="pl-3 bg-wavgen-dark-purple">
-                                
-                                    <a href="/art/painting/" class="mobile-nav-link-compact text-sm">Painting</a>
-                                
-                                    <a href="/art/drawing/" class="mobile-nav-link-compact text-sm">Drawing</a>
-                                
-                                    <a href="/art/modelling/" class="mobile-nav-link-compact text-sm">Modelling</a>
-                                
-                                    <a href="/art/printing/" class="mobile-nav-link-compact text-sm">Printing</a>
-                                
-                            </div>
-                        </div>
+                        
+                            <a href="/video/realtime/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Realtime
+                            </a>
+                        
+                            <a href="/video/mapping/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Mapping
+                            </a>
+                        
+                            <a href="/video/mixing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Mixing
+                            </a>
+                        
+                            <a href="/video/editing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Editing
+                            </a>
+                        
                     
                 
-            </div>
+                    <a href="/data/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200 bg-wavgen-dark-purple">
+                        Data
+                    </a>
+                    
+                        
+                            <a href="/data/webdev/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Web Dev
+                            </a>
+                        
+                            <a href="/data/coding/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Coding
+                            </a>
+                        
+                            <a href="/data/genai/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Gen AI
+                            </a>
+                        
+                            <a href="/data/cloud/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Cloud
+                            </a>
+                        
+                    
+                
+                    <a href="/art/" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200">
+                        Art
+                    </a>
+                    
+                        
+                            <a href="/art/painting/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Painting
+                            </a>
+                        
+                            <a href="/art/drawing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Drawing
+                            </a>
+                        
+                            <a href="/art/modelling/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Modelling
+                            </a>
+                        
+                            <a href="/art/printing/" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base">
+                                Printing
+                            </a>
+                        
+                    
+                
+            </nav>
         </div>
     </div>
 </nav>

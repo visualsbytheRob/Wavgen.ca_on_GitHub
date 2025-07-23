@@ -15,25 +15,21 @@
         </div>
         
         <!-- Scrollable Menu -->
-        <div class="flex-1 overflow-y-auto py-1">
-            <div class="px-3 space-y-0">
+        <div class="flex-1 overflow-y-auto py-2">
+            <nav class="flex flex-col space-y-1 px-4">
                 {% for item in navigation.main %}
+                    <a href="{{ item.url }}" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200{% if item.url | isActiveSection(page.url) %} bg-wavgen-dark-purple{% endif %}">
+                        {{ item.title }}
+                    </a>
                     {% if item.children %}
-                        <!-- Section with Children -->
-                        <div class="border-b border-wavgen-dark-purple pb-1 mb-1">
-                            <a href="{{ item.url }}" class="mobile-nav-link-compact font-semibold{% if item.url | isActiveSection(page.url) %} bg-wavgen-purple{% endif %}">{{ item.title }}</a>
-                            <div class="pl-3 bg-wavgen-dark-purple">
-                                {% for child in item.children %}
-                                    <a href="{{ child.url }}" class="mobile-nav-link-compact text-sm{% if child.url | isCurrentPage(page.url) %} bg-wavgen-purple{% endif %}">{{ child.title }}</a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% else %}
-                        <!-- Single Item -->
-                        <a href="{{ item.url }}" class="mobile-nav-link-compact{% if item.url | isCurrentPage(page.url) %} bg-wavgen-purple{% endif %}">{{ item.title }}</a>
+                        {% for child in item.children %}
+                            <a href="{{ child.url }}" class="block text-white hover:text-wavgen-yellow py-2 px-6 rounded transition-all duration-150 text-base{% if child.url | isCurrentPage(page.url) %} bg-wavgen-purple{% endif %}">
+                                {{ child.title }}
+                            </a>
+                        {% endfor %}
                     {% endif %}
                 {% endfor %}
-            </div>
+            </nav>
         </div>
     </div>
 </nav>
