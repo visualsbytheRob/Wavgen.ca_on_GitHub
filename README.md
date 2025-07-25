@@ -82,28 +82,6 @@ This repo is a model for code clarity:
 
 ---
 
-## 🤝 How to Explore & Contribute
-
-1. **Clone this repo:**
-   ```sh
-   git clone https://github.com/robmcdonald/wavgen.ca.git
-   cd wavgen.ca
-   ```
-2. **Install dependencies:**
-   ```sh
-   npm install
-   ```
-3. **Start the dev server:**
-   ```sh
-   npm run dev
-   ```
-4. **Open [localhost:8080](http://localhost:8080) and start exploring!**
-
-- PRs and issues are welcome — see the comments in each file for guidance.
-- Want to learn? Fork the repo and use the comments as your personal guide.
-
----
-
 ## ⭐ Explore My Curated Starred Repositories
 
 Looking for inspiration, advanced code, or the best in open-source creative technology? Check out my extensively curated and thoughtfully starred repositories:
