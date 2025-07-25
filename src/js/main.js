@@ -1,11 +1,27 @@
+/*
+ * main.js
+ * This script manages the interactive behavior for the Wavgen.ca site, including:
+ * - Mobile navigation drawer open/close logic
+ * - Overlay handling for mobile navigation
+ * - Debug logging for DOM and navigation events
+ * All event listeners and functions are initialized after the DOM is loaded.
+ * Comments below explain each meaningful line/block for teaching and clarity.
+ */
+
 document.addEventListener('DOMContentLoaded', function () {
+    // Log to console when the DOM is fully loaded (helps with debugging script timing)
     console.log('[DEBUG] DOM fully loaded');
   
+    // Get a reference to the mobile menu button (hamburger icon)
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    // Get a reference to the mobile navigation drawer element
     const mobileNav = document.getElementById('mobile-nav');
+    // Get a reference to the overlay that covers the page when mobile nav is open
     const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    // Get a reference to the close button for the mobile navigation drawer
     const closeMobileNav = document.getElementById('close-mobile-nav');
   
+    // Log all navigation-related element references for debugging
     console.log('[DEBUG] Element refs:', {
       mobileMenuBtn,
       mobileNav,
@@ -13,34 +29,53 @@ document.addEventListener('DOMContentLoaded', function () {
       closeMobileNav
     });
   
+    // Function to open the mobile navigation drawer
+    // This function is called when the burger menu button is clicked
     function openMobileNav() {
+      // Log when the openMobileNav function is called
       console.log('[DEBUG] openMobileNav() triggered');
       try {
+        // Remove the class that hides the mobile nav drawer (slide-in effect)
         mobileNav.classList.remove('-translate-x-full');
+        // Show the overlay behind the navigation drawer
         mobileNavOverlay.classList.remove('hidden');
+        // Prevent background page from scrolling while nav is open
         document.body.style.overflow = 'hidden';
+        // Also prevent scrolling on the root html element
         document.documentElement.style.overflow = 'hidden';
+        // Log that the navigation drawer is now open
         console.log('[DEBUG] Navigation drawer opened');
       } catch (e) {
+        // Log the error to the console with details
         console.error('[ERROR] Failed to open nav:', e);
       }
     }
   
+    // Function to close the mobile navigation drawer
+    // This function is called when the close button or overlay is clicked
     function closeMobileNavigation() {
+      // Log when the closeMobileNavigation function is called
       console.log('[DEBUG] closeMobileNavigation() triggered');
       try {
+        // Add the class that hides the mobile nav drawer (slide-out effect)
         mobileNav.classList.add('-translate-x-full');
+        // Hide the overlay behind the navigation drawer
         mobileNavOverlay.classList.add('hidden');
+        // Restore scrolling to the background page
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
+        // Log that the navigation drawer is now closed
         console.log('[DEBUG] Navigation drawer closed');
       } catch (e) {
+        // Log the error to the console with details
         console.error('[ERROR] Failed to close nav:', e);
       }
     }
   
     // Click: Burger Menu Button
     if (mobileMenuBtn) {
+      // Add an event listener to the burger menu button
+      // When clicked, call the openMobileNav function
       mobileMenuBtn.addEventListener('click', function () {
         console.log('[DEBUG] Burger menu button clicked');
         openMobileNav();
@@ -126,14 +161,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // Log a debug message when the element becomes visible
           console.log('[DEBUG] Element visible for fade-in:', entry.target);
+          // Add the 'animate-fade-in' class to the visible element
           entry.target.classList.add('animate-fade-in');
         }
       });
     }, observerOptions);
   
+    // For each element with the class 'section-card', attach the Intersection Observer
+    // This enables animations or effects when the card enters the viewport (e.g., fade-in)
     document.querySelectorAll('.section-card').forEach(card => {
+      // Start observing this card for intersection (visibility) changes
       observer.observe(card);
     });
   });
-  

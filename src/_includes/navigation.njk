@@ -1,3 +1,14 @@
+{#
+This template renders the navigation menus (both mobile and desktop) for the site.
+- It loops through navigation items and renders links for each main section.
+- If a section has children, it creates a dropdown or indented sublinks.
+
+Each navigation item uses the same structure:
+  - Main link
+  - Optional dropdown for children
+
+Only the first navigation item is commented in detail; all following items are analogous.
+#}
 <!-- Mobile Navigation Overlay -->
 <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[9999] hidden lg:hidden"></div>
 

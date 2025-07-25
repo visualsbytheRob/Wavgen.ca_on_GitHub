@@ -1,11 +1,25 @@
+<!--
+DEV_DEPLOY_FLOW.md
+This document is a developer reference for setting up local development and deployment for the Wavgen.ca Eleventy site.
+- Explains how to run Eleventy and Tailwind together
+- Shows recommended workflows and npm scripts
+- Each section is commented for teaching clarity
+-->
+
 ## 🚧 LOCAL DEVELOPMENT FLOW
 
+<!--
+Step 1: How to start the local dev server and Tailwind watcher for live CSS updates
+-->
 ### 1. **Start Dev Server with Tailwind Watcher**
 
 You need to run both the Eleventy server **and** the Tailwind compiler.
 
 There are two main ways to do this:
 
+<!--
+Option A: Manual setup using two terminals for Tailwind and Eleventy
+-->
 #### ✅ Option A (Manual, Two-Terminal Setup):
 
 ```bash
@@ -16,6 +30,9 @@ npm run build-css     # Tailwind watch mode
 npm run serve         # Eleventy dev server
 ```
 
+<!--
+Option B: Recommended setup using npm concurrently to run both commands in one terminal
+-->
 #### ✅ Option B (Recommended: One Command with `concurrently`)
 
 Install `concurrently` once:

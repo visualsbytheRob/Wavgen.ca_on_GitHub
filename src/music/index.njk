@@ -1,3 +1,17 @@
+{#
+This file defines the Music landing page for the site using Nunjucks templating.
+- The front matter block at the top sets page metadata for Eleventy.
+- The breadcrumb navigation shows the user's location on the site.
+- The Hero Section introduces the Music section with a headline and description.
+- The Music Genres Grid displays clickable cards for each music genre.
+
+Each genre card (Electro, Ambient, Melodic, Breaks) uses the same structure:
+  - A colored icon
+  - Genre title and description
+  - Keywords
+
+Only the first genre card is commented in detail; all following cards are analogous.
+#}
 ---
 layout: base.njk
 title: Music
@@ -40,17 +54,17 @@ footerTagline: Creating immersive sonic experiences through technology.
 <section class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Electro -->
-            <div class="section-card group cursor-pointer" onclick="window.location.href='/music/electro/'">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+            {# First genre card: Electro. All genre cards below use the same structure. #}
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/music/electro/'"> {# Card container, clickable to go to Electro page #}
+                <div class="text-center"> {# Centers card content #}
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"> {# Circular colored icon background with hover effect #}
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"> {# SVG icon representing Electro genre #}
                             <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Electro</h3>
-                    <p class="text-gray-300 mb-4">Futuristic Detroit electro with machine funk and robotic rhythms</p>
-                    <div class="text-sm text-wavgen-yellow">
+                    <h3 class="text-2xl font-bold text-white mb-3">Electro</h3> {# Genre title #}
+                    <p class="text-gray-300 mb-4">Futuristic Detroit electro with machine funk and robotic rhythms</p> {# Short genre description #}
+                    <div class="text-sm text-wavgen-yellow"> {# Keywords for this genre #}
                         Machine Funk • Robotic Rhythms • Future Sound
                     </div>
                 </div>

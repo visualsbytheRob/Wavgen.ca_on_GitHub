@@ -1,3 +1,9 @@
+{#
+This file defines the Ambient genre subpage for the Music section.
+- Sets up metadata and layout for the Ambient page.
+- Contains a hero/intro section and track listing.
+- Each track card uses the same structure; only the first is commented in detail.
+#}
 ---
 layout: base.njk
 title: Ambient
@@ -66,10 +72,10 @@ footerTagline: Creating immersive atmospheric soundscapes and evolving sonic tex
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Atmospheric Textures -->
-            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors">
-                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+            {# First characteristic card: Atmospheric Textures. All cards below use the same structure. #}
+            <div class="bg-gray-700 rounded-lg p-8 hover:bg-gray-600 transition-colors"> {# Card container with background, padding, and hover effect #}
+                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6"> {# Circular colored icon background #}
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20"> {# SVG icon for this characteristic #}
                         <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm2 2a1 1 0 000 2h.01a1 1 0 100-2H5zm3 0a1 1 0 000 2h3a1 1 0 100-2H8z" clip-rule="evenodd"></path>
                     </svg>
                 </div>

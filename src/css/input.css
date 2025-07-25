@@ -1,3 +1,12 @@
+/*
+ * input.css
+ * This file is the main stylesheet source for the Wavgen.ca site.
+ * - Uses Tailwind CSS directives to include base, component, and utility styles.
+ * - Imports Google Fonts for typography.
+ * - Defines custom component classes using @layer components and @apply for Tailwind utilities.
+ * All custom classes are commented in detail below for teaching clarity.
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,26 +14,65 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600;700;800&display=swap');
 
 @layer components {
+    /*
+   * .nav-link
+   * Styles navigation links in the desktop navigation bar.
+   * - White text by default
+   * - Yellow text on hover
+   * - Smooth color transition
+   * - Medium font weight
+   */
   .nav-link {
     @apply text-white hover:text-wavgen-yellow transition-colors duration-300 font-medium;
   }
   
+    /*
+   * .mobile-nav-link
+   * Styles links in the mobile navigation drawer.
+   * - Block display, padding for touch
+   * - White text, yellow on hover
+   * - Purple background highlight on hover
+   * - Smooth transitions
+   * - Bottom border for separation
+   */
   .mobile-nav-link {
     @apply block px-6 py-4 text-white hover:text-wavgen-yellow hover:bg-wavgen-dark-purple transition-all duration-300 border-b border-wavgen-dark-purple;
   }
   
+    /*
+   * .mobile-nav-link-compact
+   * A more compact version of mobile nav link for tighter mobile layouts.
+   * - Smaller padding, same color and hover effects as .mobile-nav-link
+   */
   .mobile-nav-link-compact {
     @apply block px-4 py-2 text-white hover:text-wavgen-yellow hover:bg-wavgen-dark-purple transition-all duration-300;
   }
   
+    /*
+   * .section-card
+   * Styles cards for each main section (e.g., Music, Video, Data, Art grids).
+   * - Purple gradient background, rounded corners
+   * - Yellow border, hover shadow and lift effect
+   * - Smooth transitions for interactivity
+   */
   .section-card {
     @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
   }
   
+    /*
+   * .hero-text
+   * Styles large hero section headings.
+   * - Large, bold white text with spacing
+   */
   .hero-text {
     @apply text-4xl md:text-6xl font-bold text-white mb-6 leading-tight;
   }
   
+    /*
+   * .subtitle-text
+   * Styles subtitle text in hero sections.
+   * - Yellow, lighter font, responsive sizing
+   */
   .subtitle-text {
     @apply text-xl md:text-2xl text-wavgen-yellow mb-8 font-light;
   }

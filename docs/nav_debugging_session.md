@@ -1,5 +1,16 @@
+<!--
+nav_debugging_session.md
+This document records a debugging session and key lessons for navigation, Tailwind, and deployment issues in the Wavgen.ca project.
+- Explains common pitfalls and fixes for Tailwind CSS and dynamic class handling
+- Documents tooling and setup for future reference
+- Each section is commented for teaching clarity
+-->
+
 # ✅ Wavgen Website — Debugging Summary & Tooling Guide
 
+<!--
+Key Takeaways: Summarizes the main lessons learned from the debugging session
+-->
 ## 🧠 Key Takeaways
 
 ### 🛠 1. Tailwind and JavaScript Were Working — the Problem Was CSS Purging
@@ -37,6 +48,9 @@
 
 ---
 
+<!--
+Tooling Stack Overview: Lists the main tools used in the project and their roles
+-->
 ## 📋 Tooling Stack Overview
 
 | Tool                     | Purpose                               |
