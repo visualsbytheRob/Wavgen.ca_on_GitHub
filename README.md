@@ -7,7 +7,7 @@
 
 ## 🚀 About This Project
 
-**Wavgen.ca** is a modern, meticulously crafted portfolio and creative technology playground by [Rob McDonald](https://github.com/robmcdonald) — a digital pioneer, artist, and developer based in Toronto. This site is more than a showcase: it is a living reference for web development, creative coding, and the intersection of music, art, data, and technology.
+**Wavgen.ca** is a modern, meticulously crafted portfolio and creative technology playground by [Rob McDonald](https://github.com/visualsbytheRob) — a digital pioneer, artist, and developer based in Toronto. This site is more than a showcase: it is a living reference for web development, creative coding, and the intersection of music, art, data, and technology.
 
 - **Fully open-source, Eleventy-powered static site** — fast, accessible, and easy to extend.
 - **Comprehensive, beginner-friendly code comments** — every meaningful line and block is explained for learning and onboarding.
