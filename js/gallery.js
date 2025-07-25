@@ -18,13 +18,23 @@
  * - Mobile-optimized interactions
  */
 
-// Utility function to wait for DOM and images to be ready
-function onReady(fn) {
-  if (document.readyState !== 'loading') fn();
-  else document.addEventListener('DOMContentLoaded', fn);
-}
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('[GALLERY] DOM loaded, initializing gallery system...');
 
-onReady(function () {
+  // Enhanced GSAP availability check with detailed logging
+  if (!window.gsap) {
+    console.error('[GALLERY] GSAP not found! Gallery animations will not work.');
+    console.error('[GALLERY] Check that /js/gsap/gsap.min.js is loading correctly.');
+    console.error('[GALLERY] Current window.gsap:', window.gsap);
+    return;
+  }
+  console.log('[GALLERY] GSAP detected successfully, version:', gsap.version);
+  console.log('[GALLERY] Available GSAP plugins:', {
+    ScrollTrigger: !!gsap.ScrollTrigger,
+    TextPlugin: !!gsap.TextPlugin,
+    Flip: !!gsap.Flip
+  });
+
   /**
    * HERO SLIDESHOW COMPONENT
    * 

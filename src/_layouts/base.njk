@@ -28,18 +28,19 @@ This is the main layout template for all pages in the Wavgen.ca site.
   {% include "footer.njk" %}
 
   <!-- GSAP Animation Library -->
-  <!-- Core GSAP library for all animations -->
-  <script src="/js/gsap/gsap.min.js" defer></script>
+  <!-- Core GSAP library - load immediately to ensure availability -->
+  <script src="/js/gsap/gsap.min.js"></script>
   
   <!-- GSAP Plugins for enhanced functionality -->
-  <script src="/js/gsap/ScrollTrigger.min.js" defer></script> <!-- Scroll-based animations -->
-  <script src="/js/gsap/Flip.min.js" defer></script>             <!-- Layout transitions -->
-  <script src="/js/gsap/TextPlugin.min.js" defer></script>        <!-- Text animations -->
+  <script src="/js/gsap/ScrollTrigger.min.js"></script> <!-- Scroll-based animations -->
+  <script src="/js/gsap/Flip.min.js"></script>             <!-- Layout transitions -->
+  <script src="/js/gsap/TextPlugin.min.js"></script>        <!-- Text animations -->
   
   <!-- Gallery System: Hero Slideshow + Infinite Marquee + Modal Gallery -->
   <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->
-  <script src="/js/gallery.js" defer></script>
-  <script src="/js/main.js" defer></script>
+  <!-- Load after GSAP to ensure GSAP is available -->
+  <script src="/js/gallery.js"></script>
+  <script src="/js/main.js"></script>
 
   <!-- Modal Markup for Gallery (hidden by default, shown by JS) -->
   <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
