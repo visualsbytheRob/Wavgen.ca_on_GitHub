@@ -11,9 +11,11 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
   eleventyConfig.addPassthroughCopy("src/images"); // Copy all images
   eleventyConfig.addPassthroughCopy("images"); // Also copy images from project root if present
-  eleventyConfig.addPassthroughCopy("src/js"); // Copy all JavaScript files
+  eleventyConfig.addPassthroughCopy("src/js"); // Copy all JavaScript files from src/js
   eleventyConfig.addPassthroughCopy("src/css"); // Copy all CSS files
-  eleventyConfig.addPassthroughCopy("js"); // Copy JavaScript files from project root (includes GSAP)
+  
+  // Copy GSAP files from root js directory to js/gsap/ to avoid main.js conflict
+  eleventyConfig.addPassthroughCopy({ "js/gsap": "js/gsap" }); // Copy only GSAP directory
   
   // Tell Eleventy to watch these files for changes and trigger rebuilds
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
