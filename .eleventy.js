@@ -10,13 +10,29 @@ module.exports = function(eleventyConfig) {
   // Copy static assets from source to output so they're available in the built site
   eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
   eleventyConfig.addPassthroughCopy("src/images"); // Copy all images
+  eleventyConfig.addPassthroughCopy("images"); // Also copy images from project root if present
   eleventyConfig.addPassthroughCopy("src/js"); // Copy all JavaScript files
   eleventyConfig.addPassthroughCopy("src/css"); // Copy all CSS files
+  eleventyConfig.addPassthroughCopy("js"); // Copy JavaScript files from project root (includes GSAP)
   
   // Tell Eleventy to watch these files for changes and trigger rebuilds
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
   eleventyConfig.addWatchTarget("src/input.css"); // Watch the main input.css
   
+  // Add a custom collection for all texture images in src/images/images/textures
+  const fs = require('fs');
+  const path = require('path');
+  eleventyConfig.addCollection("textures", function() {
+    const texturesDir = path.join(__dirname, "src", "images", "images", "textures");
+    if (!fs.existsSync(texturesDir)) return [];
+    return fs.readdirSync(texturesDir)
+      .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
+      .map(file => ({
+        url: `/images/images/textures/${file}`,
+        fileSlug: file.replace(/\.[^/.]+$/, "")
+      }));
+  });
+
   // Add a custom filter to check if a given URL matches the current page (for highlighting nav links)
   eleventyConfig.addFilter("isCurrentPage", function(url, page) {
     return url === page.url;

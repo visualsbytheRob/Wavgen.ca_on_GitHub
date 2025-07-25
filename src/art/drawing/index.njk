@@ -36,7 +36,11 @@ This file defines the Drawing subpage for the Art section.
                         <span class="ml-1 text-wavgen-yellow md:ml-2">Drawing</span>
                     </div>
                 </li>
-            </ol>
+                <!-- GSAP core -->
+    <script src="/js/gsap/gsap.min.js" defer></script>
+    <!-- Gallery Modal/Carousel logic -->
+    <script src="/js/gallery.js" defer></script>
+</body>
         </nav>
     </div>
 </div>
@@ -49,6 +53,25 @@ This file defines the Drawing subpage for the Art section.
             <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
                 Drawing & <span class="text-wavgen-yellow">Illustration</span>
             </h1>
+            
+            <!-- Hero Visual Slideshow -->
+            <div class="w-full max-w-md mx-auto mt-8">
+              <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="aspect-ratio: 4/3;">
+                <img src="/images/1.gif" alt="Demo GIF" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
+                {%- for texture in collections.textures %}
+                  <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+                {%- endfor %}
+              </div>
+            </div>
+            
+            <!-- Texture Marquee Carousel (Auto-Scrolling) -->
+            <div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden" style="height: 180px;">
+              <div class="marquee-track flex items-center" style="width: max-content;">
+                {%- for texture in collections.textures %}
+                  <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 150px; object-fit: cover;">
+                {%- endfor %}
+              </div>
+            </div>
             <p class="text-xl md:text-2xl text-yellow-200 mb-8">
                 Line, Form & Compositional Studies
             </p>

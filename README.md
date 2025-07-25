@@ -59,8 +59,50 @@
 - **Tailwind CSS** — utility-first styling
 - **Node.js** — for development server and build tools
 - **Express.js** — local preview and static serving
+- **GSAP (GreenSock)** — professional animation library for gallery system
 - **Custom JS** — for navigation, animation, and interactivity
 - **GitHub Actions** — for CI/CD and deployment
+
+---
+
+## 🎨 GSAP-Powered Gallery System
+
+The site features a sophisticated, fully-commented gallery system built with GSAP animations:
+
+### 🖼️ Hero Slideshow
+- **Auto-cycling slideshow** of featured images with smooth GSAP fade transitions
+- **Hover-to-pause** functionality for user control
+- **Click-to-modal** integration for fullscreen viewing
+- **Aspect ratio preservation** using CSS `object-contain` and `aspect-ratio: 4/3`
+- **3-second intervals** with power2.inOut easing for professional feel
+
+### 🎠 Infinite Marquee Carousel
+- **Seamless infinite scroll** using GSAP linear animation at 60px/second
+- **Dynamic image duplication** ensures smooth looping regardless of image count
+- **Responsive design** adapts to container width with proper image sizing
+- **Click-to-modal** integration for any carousel image
+- **Visual hierarchy** with yellow container border and purple image borders
+
+### 🔍 Unified Modal Gallery
+- **Fullscreen viewing** for all gallery images (slideshow + marquee)
+- **GSAP fade/scale animations** for smooth modal transitions
+- **Navigation controls** with next/previous buttons and keyboard support
+- **Multiple close methods** — close button, Escape key, click outside
+- **Optimized sizing** — modal images limited to 50vh height, 60vw width for better navigation
+- **Smart indexing** excludes cloned marquee images from navigation
+
+### 🎯 Key Features
+- **Comprehensive commenting** — every animation and interaction documented
+- **Responsive design** — works seamlessly across all device sizes
+- **Performance optimized** — efficient GSAP animations with proper cleanup
+- **Accessibility focused** — keyboard controls and screen reader friendly
+- **Cross-page consistency** — replicated across index and all art section pages
+
+### 📁 Gallery Files
+- **`/js/gallery.js`** — Main gallery system with detailed comments
+- **`/js/gsap/`** — GSAP core library and plugins
+- **`/src/images/images/textures/`** — Source images for carousel
+- **Template integration** — Hero slideshow and marquee markup in page templates
 
 ---
 
@@ -70,6 +112,7 @@ This repo is a model for code clarity:
 - **Every meaningful line is commented** in its native style (see [CODEBASE_COMMENTING_SUMMARY.md](CODEBASE_COMMENTING_SUMMARY.md)).
 - **Teaching blocks** at the top of each file explain structure and intent.
 - **Repeated sections** are commented once in detail, with notes for analogous code.
+- **GSAP gallery system** — extensively documented with animation explanations, event handling, and integration notes.
 - **No code execution impact** — comments are safe for production.
 
 ---

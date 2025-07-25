@@ -27,6 +27,81 @@ This is the main layout template for all pages in the Wavgen.ca site.
 
   {% include "footer.njk" %}
 
-  <script src="/js/main.js"></script>
+  <!-- GSAP Animation Library -->
+  <!-- Core GSAP library for all animations -->
+  <script src="/js/gsap/gsap.min.js" defer></script>
+  
+  <!-- GSAP Plugins for enhanced functionality -->
+  <script src="/js/gsap/ScrollTrigger.min.js" defer></script> <!-- Scroll-based animations -->
+  <script src="/js/gsap/Flip.min.js" defer></script>             <!-- Layout transitions -->
+  <script src="/js/gsap/TextPlugin.min.js" defer></script>        <!-- Text animations -->
+  
+  <!-- Gallery System: Hero Slideshow + Infinite Marquee + Modal Gallery -->
+  <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->
+  <script src="/js/gallery.js" defer></script>
+  <script src="/js/main.js" defer></script>
+
+  <!-- Modal Markup for Gallery (hidden by default, shown by JS) -->
+  <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
+    <span class="close absolute top-4 right-8 text-4xl text-wavgen-yellow cursor-pointer">&times;</span>
+    <button id="prevBtn" class="absolute left-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8592;</button>
+    <img class="modal-content max-h-[50vh] max-w-[60vw] mx-auto rounded shadow-2xl" id="img01">
+    <button id="nextBtn" class="absolute right-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8594;</button>
+    <div id="caption" class="text-center text-white mt-4"></div>
+  </div>
+
+  <style>
+    /* Mobile-specific spacing for hero text */
+    @media (max-width: 768px) {
+      .hero-text {
+        margin-top: 2rem !important;
+      }
+    }
+  </style>
+
+  <script defer>
+    // GSAP Animations: hero text, section cards, about section
+    document.addEventListener('DOMContentLoaded', function() {
+      // Modern hero text animation - fade in with slide up
+      if(window.gsap) {
+        gsap.fromTo('.hero-text', 
+          { opacity: 0, y: 30, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out", delay: 0.3 }
+        );
+      }
+      // Animate section cards with ScrollTrigger
+      if(window.gsap && window.ScrollTrigger) {
+        gsap.utils.toArray('.section-card').forEach(card => {
+          gsap.from(card, {
+            opacity: 0,
+            y: 60,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          });
+        });
+      }
+      // Animate about section paragraphs
+      if(window.gsap && window.ScrollTrigger) {
+        gsap.utils.toArray('#about p').forEach((p, i) => {
+          gsap.from(p, {
+            opacity: 0,
+            y: 40,
+            duration: 1,
+            delay: i * 0.2,
+            scrollTrigger: {
+              trigger: p,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
