@@ -1,34 +1,62 @@
 /**
- * WAVGEN MUSIC PLAYER - REAL STREAMING INTEGRATION
+ * WAVGEN MUSIC PLAYER - REAL SOUNDCLOUD STREAMING INTEGRATION
  * 
- * A modern music player integrated with Rob McDonald's actual streaming platforms:
- * - Bandcamp: https://waveformgeneration.bandcamp.com/
- * - SoundCloud: https://soundcloud.com/robmcd
- * - Apple Music: https://music.apple.com/us/artist/the-waveform-generation/1322780552
- * - YouTube: https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ
+ * EDUCATIONAL TEACHING BLOCK:
+ * This file demonstrates advanced JavaScript class-based architecture for a multimedia web application.
+ * Key learning concepts covered:
+ * - ES6 Class structure and constructor patterns
+ * - Real-time DOM manipulation and event handling
+ * - Third-party API integration (SoundCloud iframe embeds)
+ * - Data structure management and filtering
+ * - Responsive UI state management
+ * - Professional code organization and documentation
+ * 
+ * STREAMING PLATFORM INTEGRATION:
+ * - SoundCloud: https://soundcloud.com/robmcd (primary streaming with iframe embeds)
+ * - Bandcamp: https://waveformgeneration.bandcamp.com/ (backup platform link)
+ * - Apple Music: https://music.apple.com/us/artist/the-waveform-generation/1322780552 (backup platform link)
+ * - YouTube: https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ (backup platform link)
+ * 
+ * REAL CONTENT INTEGRATION:
+ * All 10 tracks use official SoundCloud iframe embed codes copied directly from
+ * SoundCloud's share/embed dialog, ensuring authentic streaming experience.
  */
 
-// Import real track data from the data file
-// Note: In browser environment, we'll fetch this data or include it directly
+// EDUCATIONAL: Data Structure Import and Management
+// This demonstrates how to organize and import real content data in a web application
+// In production, this data could come from a CMS, API, or external JSON file
+// Here we define it directly for educational clarity and immediate functionality
 const REAL_TRACKS = [
-  // Your actual SoundCloud tracks
+  // EDUCATIONAL: Track Data Model Structure
+  // Each track object demonstrates a comprehensive data model for multimedia content
+  // This pattern can be applied to any content management system or API design
   {
-    id: 1,
-    title: "Reel One",
-    artist: "The Waveform Generation",
-    genre: "electro",
-    duration: "4:32",
+    id: 1, // Unique identifier for database/array operations
+    title: "Reel One", // Display title for UI components
+    artist: "The Waveform Generation", // Artist name for metadata and display
+    genre: "electro", // Genre classification for filtering functionality
+    duration: "4:32", // Human-readable duration for UI display
+    
+    // EDUCATIONAL: Multi-platform URL management
+    // Demonstrates how to store multiple streaming platform links
+    // Allows users to choose their preferred platform while providing fallbacks
     platforms: {
-      bandcamp: "https://waveformgeneration.bandcamp.com/",
-      soundcloud: "https://soundcloud.com/robmcd/reel-one",
-      appleMusic: "https://music.apple.com/us/artist/the-waveform-generation/1322780552",
-      youtube: "https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ"
+      bandcamp: "https://waveformgeneration.bandcamp.com/", // Primary sales platform
+      soundcloud: "https://soundcloud.com/robmcd/reel-one", // Social streaming platform
+      appleMusic: "https://music.apple.com/us/artist/the-waveform-generation/1322780552", // Commercial streaming
+      youtube: "https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ" // Video platform backup
     },
+    
+    // EDUCATIONAL: Official SoundCloud Embed Integration
+    // This embedHtml contains the exact iframe code from SoundCloud's share/embed dialog
+    // Using official embed codes ensures compatibility and maintains platform features
+    // Template literals (backticks) allow multi-line HTML strings without concatenation
     embedHtml: `<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2109464157&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`,
-    cover: "/images/covers/reel-one-cover.jpg",
-    description: "Futuristic electro with machine funk and robotic rhythms",
-    releaseDate: "2024-01-01",
-    tags: ["Electro", "Machine Funk", "Robotic"]
+    
+    cover: "/images/covers/reel-one-cover.jpg", // Album artwork path for visual display
+    description: "Futuristic electro with machine funk and robotic rhythms", // Marketing description
+    releaseDate: "2024-01-01", // ISO date format for sorting and display
+    tags: ["Electro", "Machine Funk", "Robotic"] // Array of searchable/filterable tags
   },
   {
     id: 2,
@@ -194,23 +222,35 @@ const REAL_TRACKS = [
   }
 ];
 
+// EDUCATIONAL: ES6 Class Definition for Music Player
+// This demonstrates modern JavaScript class syntax and object-oriented programming
+// Classes provide a clean way to organize related functionality and maintain state
 class WavgenMusicPlayer {
+  // EDUCATIONAL: Constructor Method
+  // The constructor runs automatically when a new instance is created with 'new WavgenMusicPlayer()'
+  // It initializes all the properties (state variables) that the player will need
   constructor() {
-    this.tracks = REAL_TRACKS;
-    this.currentTrack = null;
-    this.currentIndex = 0;
-    this.isPlaying = false;
-    this.currentGenre = 'all';
-    this.currentEmbedPlayer = null;
+    this.tracks = REAL_TRACKS; // Store reference to our track data array
+    this.currentTrack = null; // Will hold the currently selected track object
+    this.currentIndex = 0; // Array index of the current track (starts at first track)
+    this.isPlaying = false; // Boolean flag to track playback state
+    this.currentGenre = 'all'; // Filter state for genre-based track filtering
+    this.currentEmbedPlayer = null; // Will store reference to active SoundCloud embed
     
+    // EDUCATIONAL: Initialization Pattern
+    // Call init() at the end of constructor to set up the player
+    // This separation allows for clean, organized startup sequence
     this.init();
   }
 
+  // EDUCATIONAL: Initialization Method
+  // This method orchestrates the player setup in a logical sequence
+  // Breaking initialization into steps makes debugging and maintenance easier
   init() {
-    this.createPlayerHTML();
-    this.bindEvents();
-    this.renderPlaylist();
-    this.loadTrack(0);
+    this.createPlayerHTML(); // Build the DOM structure for the player interface
+    this.bindEvents(); // Attach event listeners for user interactions
+    this.renderPlaylist(); // Generate the track list display
+    this.loadTrack(0); // Load the first track as the default selection
   }
 
   createPlayerHTML() {
@@ -391,12 +431,23 @@ class WavgenMusicPlayer {
     container.innerHTML = platformButtons.join('');
   }
 
+  // EDUCATIONAL: SoundCloud Iframe Embed Integration Method
+  // This method demonstrates how to integrate third-party streaming services
+  // Key concepts: DOM manipulation, error handling, iframe security, user experience
   loadEmbeddedPlayer() {
-    const container = document.getElementById('embedded-player');
-    const playerContainer = document.getElementById('embedded-player-container');
+    // EDUCATIONAL: DOM Element Selection
+    // Get references to the container elements where we'll inject the player
+    // Using getElementById is efficient for unique elements
+    const container = document.getElementById('embedded-player'); // Inner container for iframe
+    const playerContainer = document.getElementById('embedded-player-container'); // Outer container for visibility control
     
+    // EDUCATIONAL: Error Handling and Graceful Degradation
+    // Always check if required data exists before attempting to use it
+    // This prevents JavaScript errors and provides better user experience
     if (!this.currentTrack || !this.currentTrack.embedHtml) {
-      // Show helpful message if no embed HTML
+      // EDUCATIONAL: Fallback UI Pattern
+      // When primary functionality isn't available, show helpful alternatives
+      // This maintains user engagement and provides alternative paths to content
       container.innerHTML = `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
           <div class="text-wavgen-yellow mb-3">
@@ -411,13 +462,25 @@ class WavgenMusicPlayer {
           </div>
         </div>
       `;
+      // EDUCATIONAL: CSS Class Manipulation for UI State Management
+      // Remove 'hidden' class to make the player container visible
+      // This is a common pattern for showing/hiding UI elements
       playerContainer.classList.remove('hidden');
-      return;
+      return; // Exit early when no embed is available
     }
     
-    // Use the exact SoundCloud iframe HTML from the share/embed dialog
+    // EDUCATIONAL: Official Third-Party Embed Integration
+    // This demonstrates the proper way to integrate official embed codes
+    // Using innerHTML with official iframe HTML ensures:
+    // - Full platform functionality (play controls, comments, sharing)
+    // - Proper security attributes and permissions
+    // - Consistent visual design from the platform
+    // - Automatic updates when the platform updates their player
     container.innerHTML = this.currentTrack.embedHtml;
     
+    // EDUCATIONAL: UI State Management
+    // Show the player container now that we have content to display
+    // This creates a smooth user experience with content appearing when ready
     playerContainer.classList.remove('hidden');
   }
 

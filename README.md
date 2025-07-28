@@ -52,6 +52,34 @@
 
 ---
 
+## 🎵🎬 Real Multimedia Streaming Integration
+
+The site features fully functional music and video players with real content streaming:
+
+### 🎵 SoundCloud Music Player
+- **10 real tracks** from The Waveform Generation with official SoundCloud iframe embeds
+- **Direct streaming** on the site using exact embed codes from SoundCloud's share/embed dialog
+- **Genre filtering** (Electro, Ambient, Melodic, Breaks) with responsive playlist UI
+- **Multi-platform links** to Bandcamp, Apple Music, and YouTube as backup options
+- **Professional error handling** with graceful degradation and helpful user messaging
+
+### 🎬 YouTube Video Player
+- **5 real videos** from Rob McDonald's YouTube channel with quality optimization
+- **HD-prioritized playback** using YouTube embed parameters (vq=hd1080&hd=1)
+- **Clean presentation** with reduced YouTube branding (modestbranding=1)
+- **Category filtering** and responsive video playlist interface
+- **Fullscreen support** and professional video player controls
+
+### 📚 Educational Code Documentation
+- **Comprehensive commenting** on every meaningful line for teaching purposes
+- **ES6 class architecture** demonstrating modern JavaScript patterns
+- **Third-party API integration** patterns for SoundCloud and YouTube
+- **DOM manipulation** and event handling best practices
+- **Error handling** and user experience design principles
+- **Real-world streaming** integration without placeholder content
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Eleventy (11ty)** — static site generator

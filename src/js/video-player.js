@@ -1,23 +1,53 @@
 /**
- * WAVGEN VIDEO PLAYER - REAL STREAMING INTEGRATION
+ * WAVGEN VIDEO PLAYER - REAL YOUTUBE STREAMING INTEGRATION
  * 
- * A modern video player integrated with Rob McDonald's actual video platforms:
- * - YouTube: https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ
- * - Vimeo: https://vimeo.com/therob
+ * EDUCATIONAL TEACHING BLOCK:
+ * This file demonstrates advanced JavaScript video player architecture with third-party integrations.
+ * Key learning concepts covered:
+ * - ES6 Class-based component architecture
+ * - YouTube iframe API integration with quality optimization
+ * - Real-time DOM manipulation and event handling
+ * - Responsive video player design patterns
+ * - Multi-platform content management
+ * - Professional error handling and user experience design
+ * 
+ * VIDEO PLATFORM INTEGRATION:
+ * - YouTube: https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ (primary platform with optimized embeds)
+ * - Vimeo: https://vimeo.com/therob (backup platform for alternative hosting)
+ * 
+ * QUALITY OPTIMIZATION:
+ * All YouTube embeds include quality parameters (vq=hd1080&hd=1) to ensure
+ * the highest available resolution playback for professional presentation.
  */
 
-// Your actual 5 YouTube videos only
+// EDUCATIONAL: Video Content Data Management
+// This demonstrates how to structure and manage video content data for a multimedia application
+// Each video object contains all necessary metadata for display, streaming, and user interaction
 const REAL_VIDEOS = [
+  // EDUCATIONAL: Video Data Model Structure
+  // Each video object demonstrates comprehensive metadata management for video content
+  // This pattern scales well for content management systems and video platforms
   {
-    id: 1,
-    title: "Massive – The Waveform Generation",
-    description: "Official music video for the breakbeat anthem 'Massive' featuring heavy bass and intricate drum programming",
-    category: "realtime",
-    duration: "5:52",
+    id: 1, // Unique identifier for database operations and array management
+    title: "Massive – The Waveform Generation", // Display title for UI components
+    description: "Official music video for the breakbeat anthem 'Massive' featuring heavy bass and intricate drum programming", // SEO and user-friendly description
+    category: "realtime", // Classification for filtering and organization
+    duration: "5:52", // Human-readable duration for UI display
+    
+    // EDUCATIONAL: Multi-Platform URL Management
+    // Store both direct video URLs and platform links for user choice
+    // This provides flexibility and fallback options for content access
     platforms: {
-      youtube: "https://www.youtube.com/watch?v=FrNw6Z3c55U",
-      vimeo: "https://vimeo.com/therob"
+      youtube: "https://www.youtube.com/watch?v=FrNw6Z3c55U", // Direct YouTube video link
+      vimeo: "https://vimeo.com/therob" // Alternative platform for backup access
     },
+    
+    // EDUCATIONAL: YouTube Embed URL with Quality Optimization
+    // This embed URL includes specific parameters for enhanced viewing experience:
+    // - vq=hd1080: Request 1080p quality when available
+    // - hd=1: Enable HD playback preference
+    // - rel=0: Remove related videos at end for cleaner experience
+    // - modestbranding=1: Reduce YouTube branding for professional presentation
     embedUrl: "https://www.youtube.com/embed/FrNw6Z3c55U?vq=hd1080&hd=1&rel=0&modestbranding=1",
     poster: "/images/videos/massive-thumb.jpg",
     tags: ["Breaks", "Music Video", "Heavy Bass"],
