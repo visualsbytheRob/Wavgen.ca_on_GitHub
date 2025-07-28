@@ -113,6 +113,281 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
+   * HERO BACKGROUND SLIDESHOW COMPONENT
+   * 
+   * Creates a localized background slideshow that runs behind the hero text content.
+   * This is part of a dual slideshow system that creates layered visual depth:
+   * 1. This slideshow covers only the hero card area (left column)
+   * 2. The hero section slideshow (below) covers the entire hero section
+   * 
+   * Educational Notes:
+   * - Demonstrates advanced GSAP animation techniques
+   * - Shows how to create independent but coordinated slideshow systems
+   * - Illustrates DOM manipulation and event handling patterns
+   * - Example of performance-conscious animation with proper cleanup
+   * 
+   * Features:
+   * - Independent timing from main slideshow (3-second intervals)
+   * - 100% opacity for full visual impact behind text
+   * - Includes both 1.gif and background collection images
+   * - Hover pause functionality for better user experience
+   * - GSAP power2.inOut easing for professional feel
+   */
+  // DOM Element Selection and Safety Checks
+  // Look for the hero background slideshow container in the DOM
+  const heroBgSlideshow = document.querySelector('.hero-bg-slideshow');
+  
+  // Defensive programming: only initialize if both the container exists AND GSAP is loaded
+  // This prevents errors if the slideshow isn't present on a page or GSAP fails to load
+  if (heroBgSlideshow && window.gsap) {
+    // Collect all slide images within the slideshow container
+    // Array.from() converts NodeList to Array for better array methods
+    // Includes both 1.gif and all images from collections.backgrounds
+    const bgSlides = Array.from(heroBgSlideshow.querySelectorAll('.hero-bg-slide'));
+    
+    // State management variables for slideshow control
+    let currentBgSlide = 0; // Track which background slide is currently visible (0-based index)
+    let bgSlideshowInterval; // Store interval ID for pause/resume functionality
+    
+    /**
+     * SHOW SPECIFIC BACKGROUND SLIDE FUNCTION
+     * 
+     * Core animation function that handles the GSAP fade transitions between slides.
+     * Educational concepts demonstrated:
+     * - GSAP animation API usage
+     * - Array iteration with forEach
+     * - Conditional opacity based on active slide
+     * - Professional easing curves for smooth animations
+     * 
+     * @param {number} index - Index of background slide to show (0-based)
+     */
+    function showBgSlide(index) {
+      // Iterate through all slide images and set their opacity
+      bgSlides.forEach((slide, i) => {
+        // GSAP animation: fade each slide to appropriate opacity
+        // Active slide (i === index) gets 100% opacity, others get 0%
+        gsap.to(slide, {
+          opacity: i === index ? 1.0 : 0, // Ternary operator for conditional opacity
+          duration: 1, // 1 second fade duration for smooth transitions
+          ease: 'power2.inOut' // Professional easing curve (slow start, fast middle, slow end)
+        });
+      });
+    }
+    
+    /**
+     * ADVANCE TO NEXT SLIDE FUNCTION
+     * 
+     * Handles the logic for moving to the next slide in sequence.
+     * Educational concepts demonstrated:
+     * - Modulo operator (%) for circular array navigation
+     * - State management with currentBgSlide variable
+     * - Function composition (calls showBgSlide)
+     */
+    function nextBgSlide() {
+      // Increment slide index and wrap around using modulo operator
+      // Example: if currentBgSlide = 6 and bgSlides.length = 7, then (6 + 1) % 7 = 0
+      currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
+      
+      // Trigger the visual transition to the new slide
+      showBgSlide(currentBgSlide);
+    }
+    
+    /**
+     * START AUTOMATIC SLIDESHOW FUNCTION
+     * 
+     * Initializes the automatic slideshow with JavaScript setInterval.
+     * Educational concepts demonstrated:
+     * - setInterval for recurring function execution
+     * - Storing interval ID for later cleanup
+     * - 3-second timing different from main slideshow (4-second) for visual variety
+     */
+    function startBgSlideshow() {
+      // setInterval returns an ID that can be used to stop the interval later
+      bgSlideshowInterval = setInterval(nextBgSlide, 3000); // 3000ms = 3 seconds
+    }
+    
+    /**
+     * STOP AUTOMATIC SLIDESHOW FUNCTION
+     * 
+     * Stops the automatic slideshow, typically used for hover pause functionality.
+     * Educational concepts demonstrated:
+     * - clearInterval for stopping recurring execution
+     * - Defensive programming with existence check
+     * - Proper cleanup to prevent memory leaks
+     */
+    function stopBgSlideshow() {
+      // Only clear interval if one exists (defensive programming)
+      if (bgSlideshowInterval) {
+        clearInterval(bgSlideshowInterval);
+        // Note: We don't set bgSlideshowInterval to null here because
+        // startBgSlideshow() will overwrite it anyway
+      }
+    }
+    
+    // SLIDESHOW INITIALIZATION
+    // Start the automatic slideshow immediately when the page loads
+    startBgSlideshow();
+    
+    // HOVER PAUSE FUNCTIONALITY (OPTIONAL ENHANCEMENT)
+    // Add user interaction: pause slideshow when hovering over hero text
+    // This improves user experience by allowing them to read without distraction
+    const heroContent = document.querySelector('.hero-text');
+    if (heroContent) {
+      // Event listeners for mouse enter/leave on the hero text element
+      // mouseenter: user hovers over text → pause slideshow
+      // mouseleave: user moves away from text → resume slideshow
+      heroContent.addEventListener('mouseenter', stopBgSlideshow);
+      heroContent.addEventListener('mouseleave', startBgSlideshow);
+    }
+  }
+
+  /**
+   * HERO SECTION BACKGROUND SLIDESHOW COMPONENT
+   * 
+   * Creates a full-section background slideshow covering the entire hero area.
+   * This is the first part of the dual slideshow system that creates dramatic visual impact.
+   * 
+   * Educational Architecture Notes:
+   * This component demonstrates advanced web development concepts:
+   * - Dual slideshow coordination (section + card backgrounds)
+   * - Performance-optimized GSAP animations
+   * - Responsive full-screen image handling
+   * - Independent timing systems for visual variety
+   * - Clean separation of concerns in JavaScript modules
+   * 
+   * Key Differences from Hero Card Slideshow:
+   * - Covers entire hero section (not just text area)
+   * - Uses 40% opacity for dramatic but readable effect
+   * - 4-second intervals (vs 3-second for card slideshow)
+   * - Only uses high-resolution background images (no 1.gif)
+   * - No hover pause functionality (runs continuously)
+   * 
+   * Features:
+   * - Full viewport coverage with responsive image scaling
+   * - Optimized opacity for text readability
+   * - Staggered timing creates layered visual depth
+   * - Professional GSAP animations with power2.inOut easing
+   * - Defensive programming with existence checks
+   */
+  
+  // DOM ELEMENT SELECTION FOR FULL-SECTION SLIDESHOW
+  // Target the hero section background slideshow container
+  const heroSectionBgSlideshow = document.querySelector('.hero-section-bg-slideshow');
+  
+  // INITIALIZATION WITH SAFETY CHECKS
+  // Only proceed if both the DOM element exists and GSAP library is loaded
+  // This prevents JavaScript errors on pages without the slideshow or if GSAP fails
+  if (heroSectionBgSlideshow && window.gsap) {
+    
+    // COLLECT ALL SECTION BACKGROUND IMAGES
+    // Query for all images with the 'hero-section-bg-slide' class
+    // These come from the collections.backgrounds Eleventy collection
+    const sectionBgSlides = Array.from(heroSectionBgSlideshow.querySelectorAll('.hero-section-bg-slide'));
+    
+    // STATE MANAGEMENT VARIABLES
+    let currentSectionBgSlide = 0; // Track active slide index (0-based)
+    let sectionBgSlideshowInterval; // Store setInterval ID for cleanup
+    
+    /**
+     * SECTION BACKGROUND SLIDE DISPLAY FUNCTION
+     * 
+     * Handles GSAP animations for the full-section background slideshow.
+     * 
+     * Educational Concepts Demonstrated:
+     * - GSAP Timeline-free animations for simple fade effects
+     * - Conditional opacity assignment using ternary operators
+     * - Professional easing curves for smooth visual transitions
+     * - forEach iteration for batch DOM manipulation
+     * 
+     * Performance Notes:
+     * - Uses GSAP's optimized animation engine for smooth 60fps transitions
+     * - 40% opacity balances visual impact with text readability
+     * - 1-second duration provides smooth but not sluggish transitions
+     * 
+     * @param {number} index - Zero-based index of slide to show
+     */
+    function showSectionBgSlide(index) {
+      // Iterate through all section background slides
+      sectionBgSlides.forEach((slide, i) => {
+        // Animate each slide to appropriate opacity using GSAP
+        gsap.to(slide, {
+          // Conditional opacity: active slide gets 40%, others get 0%
+          // 40% provides dramatic visual impact while maintaining text readability
+          opacity: i === index ? 0.4 : 0,
+          duration: 1, // 1-second smooth transition
+          ease: 'power2.inOut' // Professional easing: slow start, fast middle, slow end
+        });
+      });
+    }
+    
+    /**
+     * ADVANCE TO NEXT SECTION SLIDE FUNCTION
+     * 
+     * Handles progression logic for the section background slideshow.
+     * 
+     * Educational Concepts:
+     * - Modulo arithmetic for circular array navigation
+     * - State management with global variables
+     * - Function composition and separation of concerns
+     */
+    function nextSectionBgSlide() {
+      // Calculate next slide index with wraparound using modulo operator
+      // This ensures seamless looping: when we reach the last slide, we go back to first
+      currentSectionBgSlide = (currentSectionBgSlide + 1) % sectionBgSlides.length;
+      
+      // Trigger the visual transition to the newly calculated slide
+      showSectionBgSlide(currentSectionBgSlide);
+    }
+    
+    /**
+     * START SECTION SLIDESHOW FUNCTION
+     * 
+     * Initializes the automatic slideshow with 4-second intervals.
+     * 
+     * Educational Concepts:
+     * - setInterval for recurring function execution
+     * - Timing coordination between multiple slideshow systems
+     * - Interval ID storage for proper cleanup
+     * 
+     * Design Decision: 4-second timing
+     * - Slightly slower than hero card slideshow (3 seconds)
+     * - Creates visual variety and prevents synchronization
+     * - Allows users time to appreciate each background image
+     */
+    function startSectionBgSlideshow() {
+      // Store interval ID for potential cleanup later
+      // 4000ms = 4 seconds between slide transitions
+      sectionBgSlideshowInterval = setInterval(nextSectionBgSlide, 4000);
+    }
+    
+    /**
+     * STOP SECTION SLIDESHOW FUNCTION
+     * 
+     * Stops the automatic slideshow (currently unused but available for future features).
+     * 
+     * Educational Concepts:
+     * - Proper interval cleanup to prevent memory leaks
+     * - Defensive programming with existence checks
+     * - API design for potential future hover pause functionality
+     */
+    function stopSectionBgSlideshow() {
+      // Only clear if interval exists (defensive programming)
+      if (sectionBgSlideshowInterval) {
+        clearInterval(sectionBgSlideshowInterval);
+      }
+    }
+    
+    // AUTOMATIC INITIALIZATION
+    // Start the section background slideshow immediately when page loads
+    // No user interaction required - provides immediate visual impact
+    startSectionBgSlideshow();
+    
+    // Note: No hover pause functionality for section slideshow
+    // This maintains consistent dramatic background effect
+    // Hero card slideshow handles user interaction pause instead
+  }
+
+  /**
    * INFINITE MARQUEE CAROUSEL COMPONENT
    * 
    * Creates a continuously scrolling horizontal carousel of texture images.

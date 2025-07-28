@@ -7,31 +7,130 @@ footerTagline: Exploring the intersection of creativity and technology.
 ---
 
 <!-- Hero Section -->
+{# 
+  HERO SECTION WITH DUAL BACKGROUND SLIDESHOW SYSTEM
+  
+  This section implements a sophisticated dual slideshow system:
+  1. Full-section background slideshow covering the entire hero area
+  2. Individual hero card background slideshow behind the text content
+  
+  The dual system creates visual depth and interest while maintaining excellent readability.
+  Technical implementation uses GSAP animations with staggered timing for visual variety.
+#}
 <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
+    <!-- Hero Section Background Slideshow -->
+    {# 
+      FULL-SECTION BACKGROUND SLIDESHOW
+      
+      This slideshow covers the entire hero section background with high-resolution images.
+      Key features:
+      - Uses collections.backgrounds from Eleventy (defined in .eleventy.js)
+      - Images are positioned absolutely to cover the full section
+      - First image starts visible (40% opacity), others start hidden (0% opacity)
+      - GSAP animations in gallery.js handle the slideshow transitions
+      - 4-second intervals create dramatic visual impact without being distracting
+    #}
+    <div class="hero-section-bg-slideshow absolute inset-0">
+        {%- for background in collections.backgrounds %}
+          {# Loop through all background images from the backgrounds collection #}
+          {# Each image is positioned absolutely to cover the full section area #}
+          <img src="{{ background.url }}" alt="Background" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.4{% else %}0{% endif %};">
+          {# 
+            CSS Classes Explained:
+            - hero-section-bg-slide: Target class for GSAP animations in gallery.js
+            - absolute inset-0: Positions image to cover entire parent container
+            - w-full h-full: Ensures image fills the container dimensions
+            - object-cover: Maintains aspect ratio while covering the area (like CSS background-size: cover)
+            - transition-opacity duration-1000: Smooth 1-second opacity transitions
+            
+            Inline Style Logic:
+            - First image (loop.first) starts at 40% opacity for immediate visual impact
+            - All other images start at 0% opacity and will be animated by GSAP
+            - 40% opacity provides dramatic effect while maintaining text readability
+          #}
+        {%- endfor %}
+    </div>
+    {# Semi-transparent overlay to enhance text readability and add visual depth #}
     <div class="absolute inset-0 bg-black opacity-20"></div>
     <div class="container mx-auto px-4 relative z-10">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
             <!-- Hero Content -->
-            <div class="animate-fade-in">
-                <h1 class="hero-text">
-                    Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
-                </h1>
-                <p class="subtitle-text">
-                    Creative technologist exploring the intersection of music, visual art, and emerging technology
-                </p>
-                <div class="space-y-4 text-lg text-gray-300 mb-8">
-                    <p>📍 Based in Toronto, Ontario, Canada</p>
-                    <p>🎵 Electronic music producer and sound designer</p>
-                    <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
-                    <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
+            {# 
+              HERO CARD WITH INDEPENDENT BACKGROUND SLIDESHOW
+              
+              This is the second part of the dual slideshow system - a localized slideshow
+              that runs behind the hero text content. It operates independently from the
+              full-section background slideshow above, creating layered visual depth.
+            #}
+            <div class="animate-fade-in relative">
+                <!-- Hero Background Slideshow -->
+                {# 
+                  HERO CARD BACKGROUND SLIDESHOW
+                  
+                  This slideshow runs behind the hero text content only (not the full section).
+                  Key differences from the section slideshow:
+                  - Covers only the hero card area (left column)
+                  - Runs at 100% opacity for full visual impact
+                  - 3-second intervals (different from section's 4-second timing)
+                  - Includes both 1.gif and background collection images
+                  - Creates layered depth effect with the section slideshow
+                #}
+                <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+                    {# 
+                      CSS Classes Explained:
+                      - hero-bg-slideshow: Target class for GSAP animations in gallery.js
+                      - absolute inset-0: Positions slideshow to cover the hero card area
+                      - rounded-lg: Matches the rounded corners of the text overlay
+                      - overflow-hidden: Ensures images don't extend beyond rounded corners
+                      - pointer-events-none: Allows clicks to pass through to text content
+                    #}
+                    
+                    {# Include the original 1.gif as the starting image #}
+                    <img src="/images/1.gif" alt="Background" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
+                    
+                    {# Loop through background collection images #}
+                    {%- for background in collections.backgrounds %}
+                      <img src="{{ background.url }}" alt="Background" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
+                      {# 
+                        Each background image starts hidden (opacity: 0) and will be
+                        animated to 100% opacity by GSAP when it's the active slide.
+                        The 1.gif starts at 10% opacity as the initial visible image.
+                      #}
+                    {%- endfor %}
                 </div>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#portfolio" class="bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">
-                        Explore My Work
-                    </a>
-                    <a href="#about" class="border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
-                        Learn More
-                    </a>
+                
+                <!-- Hero Text Content (now with relative positioning to appear above background) -->
+                {# 
+                  ENHANCED TEXT OVERLAY FOR READABILITY
+                  
+                  The text overlay has been strengthened to ensure excellent readability
+                  against the dynamic background slideshow. Multiple techniques are used:
+                  - Semi-transparent black background (bg-black/40 = 40% opacity)
+                  - Shadow for depth and separation (shadow-xl)
+                  - Subtle border for definition (border-white/10 = 10% white opacity)
+                  - High z-index to ensure it appears above background images
+                #}
+                <div class="relative z-10 bg-black/40 rounded-lg p-8 shadow-xl border border-white/10">
+                    <h1 class="hero-text">
+                        Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
+                    </h1>
+                    <p class="subtitle-text">
+                        Creative technologist exploring the intersection of music, visual art, and emerging technology
+                    </p>
+                    <div class="space-y-4 text-lg text-gray-300 mb-8">
+                        <p>📍 Based in Toronto, Ontario, Canada</p>
+                        <p>🎵 Electronic music producer and sound designer</p>
+                        <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
+                        <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#portfolio" class="bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">
+                            Explore My Work
+                        </a>
+                        <a href="#about" class="border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
+                            Learn More
+                        </a>
+                    </div>
                 </div>
             </div>
 

@@ -35,6 +35,34 @@ module.exports = function(eleventyConfig) {
       }));
   });
 
+  // Add a custom collection for all background images in src/images/images/backgrounds
+  // This collection powers the hero section background slideshow feature
+  // Similar to textures collection above, but specifically for high-resolution background images
+  eleventyConfig.addCollection("backgrounds", function() {
+    // Build the absolute path to the backgrounds directory
+    // Using path.join() ensures cross-platform compatibility (Windows/Mac/Linux)
+    const backgroundsDir = path.join(__dirname, "src", "images", "images", "backgrounds");
+    
+    // Safety check: if directory doesn't exist, return empty array to prevent errors
+    // This allows the site to build even if backgrounds folder is missing
+    if (!fs.existsSync(backgroundsDir)) return [];
+    
+    // Read all files in the backgrounds directory and process them
+    return fs.readdirSync(backgroundsDir)
+      // Filter to only include image files (jpg, jpeg, png, gif, webp)
+      // Case-insensitive regex ensures files like .JPG or .PNG are included
+      .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
+      // Transform each filename into an object with URL and slug
+      .map(file => ({
+        // Create the public URL path that will be used in templates
+        // This matches the passthrough copy structure defined above
+        url: `/images/images/backgrounds/${file}`,
+        // Create a clean slug by removing the file extension
+        // Useful for CSS classes, IDs, or alt text generation
+        fileSlug: file.replace(/\.[^/.]+$/, "")
+      }));
+  });
+
   // Add a custom filter to check if a given URL matches the current page (for highlighting nav links)
   eleventyConfig.addFilter("isCurrentPage", function(url, page) {
     return url === page.url;

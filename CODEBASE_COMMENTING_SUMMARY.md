@@ -19,6 +19,7 @@ Systematically add comprehensive, beginner-friendly comments to every meaningful
 - **Nunjucks templates/content pages:** All main and subpages, with teaching blocks and detailed comments on unique structures.
 - **JavaScript:** `main.js`, `server.js`, and data files — all logic commented.
 - **Media Players:** `music-player.js`, `video-player.js` — comprehensive educational comments covering ES6 classes, third-party API integration, DOM manipulation, error handling, and professional streaming integration patterns.
+- **GSAP Gallery System:** `gallery.js` — extensively documented gallery system with hero slideshow, hero background slideshow, infinite marquee carousel, and unified modal gallery. Includes detailed comments on GSAP animations, event handling, responsive design, and dual slideshow architecture.
 - **CSS:** `input.css`, `style.css` — teaching blocks clarify Tailwind vs. custom code, all custom classes commented.
 - **Config:** `.eleventy.js`, `tailwind.config.js` — all sections explained.
 - **Documentation:** All Markdown docs (`docs/`), with HTML teaching comments.

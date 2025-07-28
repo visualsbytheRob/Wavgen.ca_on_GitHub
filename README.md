@@ -104,6 +104,16 @@ The site features a sophisticated, fully-commented gallery system built with GSA
 - **Aspect ratio preservation** using CSS `object-contain` and `aspect-ratio: 4/3`
 - **3-second intervals** with power2.inOut easing for professional feel
 
+### 🌟 Hero Background Slideshow
+- **Full-section background slideshow** covering the entire hero area with dramatic visual impact
+- **Dual slideshow system** — independent hero section background + hero card background
+- **High-resolution image cycling** from dedicated backgrounds collection (7 optimized JPEG images)
+- **Smart opacity management** — 40% for section background, 100% for card background
+- **Enhanced text readability** with strengthened overlay (bg-black/40, shadow-xl, border)
+- **Performance optimized** for GitHub Pages with ~100KB images and efficient loading
+- **Crystal clear presentation** with blur effects removed for sharp, vibrant visuals
+- **Staggered timing** — 4-second intervals for section, 3-second for card to create visual variety
+
 ### 🎠 Infinite Marquee Carousel
 - **Seamless infinite scroll** using GSAP linear animation at 60px/second
 - **Dynamic image duplication** ensures smooth looping regardless of image count
@@ -127,10 +137,12 @@ The site features a sophisticated, fully-commented gallery system built with GSA
 - **Cross-page consistency** — replicated across index and all art section pages
 
 ### 📁 Gallery Files
-- **`/js/gallery.js`** — Main gallery system with detailed comments
+- **`/js/gallery.js`** — Main gallery system with detailed comments (includes hero background slideshow)
 - **`/js/gsap/`** — GSAP core library and plugins
 - **`/src/images/images/textures/`** — Source images for carousel
-- **Template integration** — Hero slideshow and marquee markup in page templates
+- **`/src/images/images/backgrounds/`** — High-resolution background images for hero slideshow
+- **Template integration** — Hero slideshow, background slideshow, and marquee markup in page templates
+- **Eleventy collections** — `collections.backgrounds` and `collections.textures` for dynamic image loading
 
 ---
 
