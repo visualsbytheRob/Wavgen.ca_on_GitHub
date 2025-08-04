@@ -129,6 +129,145 @@ This file defines the Web Dev subpage for the Data & Tech section.
     </div>
 </section>
 
+<!-- Interactive Code Playground -->
+{#
+This section contains the Interactive Code Playground feature - a professional-grade
+code editor with live preview capabilities that allows visitors to experiment with
+the technologies that power Wavgen.ca.
+
+Key Features:
+- Monaco Editor integration (VS Code experience)
+- Four interactive modes: Tailwind CSS, GSAP Animations, Eleventy Templates, Site Code Snippets
+- Real-time preview with split-screen layout
+- Educational examples and comprehensive commenting
+- Fixed height container to prevent endless scrolling
+
+The playground is loaded via JavaScript (code-playground.js) and provides hands-on
+learning that aligns with the site's educational mission.
+#}
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <!-- Playground Header Section -->
+        {# 
+        Header introduces the playground concept with clear value proposition
+        and visual hierarchy using large heading, descriptive text, and feature badges
+        #}
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-white mb-4">Interactive Code Playground</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                Experiment with the technologies that power this site. Try Tailwind CSS classes, 
+                test GSAP animations, explore Eleventy templates, and modify real code snippets.
+            </p>
+            <!-- Feature Badge with Icon -->
+            {# 
+            Visual badge highlighting key features with code icon and descriptive text
+            Uses wavgen-yellow brand color for emphasis and recognition
+            #}
+            <div class="inline-flex items-center space-x-2 text-wavgen-yellow">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-semibold">Live Code Editor • Real-time Preview • Educational Examples</span>
+            </div>
+        </div>
+        
+        <!-- Playground Container -->
+        {#
+        Main container for the Interactive Code Playground
+        - JavaScript will replace the loading content with the full Monaco Editor interface
+        - Uses a specific ID that the code-playground.js script looks for
+        - Loading state provides user feedback while Monaco Editor loads from CDN
+        #}
+        <div id="code-playground-container">
+            <!-- Playground will be rendered here by JavaScript -->
+            {# 
+            Loading state shown while Monaco Editor and playground components initialize
+            Provides visual feedback and sets user expectations
+            #}
+            <div class="bg-gray-800 rounded-lg p-8 text-center">
+                <div class="text-white text-lg mb-2">🚀 Loading Interactive Code Playground...</div>
+                <div class="text-gray-400">Please wait while we set up your coding environment</div>
+            </div>
+        </div>
+        
+        <!-- Feature highlights -->
+        {#
+        Grid of feature cards highlighting the four interactive modes available in the playground
+        Each card follows the same structure: icon, title, description
+        Uses responsive grid that adapts from 1 column on mobile to 4 columns on large screens
+        #}
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            <!-- Tailwind CSS Mode Feature Card -->
+            {#
+            First playground mode: Tailwind CSS experimentation
+            - Blue color scheme to represent CSS/styling
+            - Paint brush icon represents design/styling capabilities
+            - Emphasizes real-time visual feedback
+            #}
+            <div class="text-center">
+                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h4 class="text-white font-semibold mb-2">Tailwind CSS</h4>
+                <p class="text-gray-400 text-sm">Experiment with utility classes and see instant visual results</p>
+            </div>
+            
+            <!-- GSAP Animations Mode Feature Card -->
+            {#
+            Second playground mode: GSAP animation testing
+            - Green color scheme represents motion/animation
+            - User group icon represents interactive elements
+            - Emphasizes live animation preview capabilities
+            #}
+            <div class="text-center">
+                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                    </svg>
+                </div>
+                <h4 class="text-white font-semibold mb-2">GSAP Animations</h4>
+                <p class="text-gray-400 text-sm">Create and test smooth animations with live preview</p>
+            </div>
+            
+            <!-- Eleventy Templates Mode Feature Card -->
+            {#
+            Third playground mode: Eleventy/Nunjucks template exploration
+            - Purple color scheme (matches site's wavgen-purple brand)
+            - Server/terminal icon represents backend/templating
+            - Emphasizes static site generation and template syntax learning
+            #}
+            <div class="text-center">
+                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm2 2a1 1 0 000 2h.01a1 1 0 100-2H5zm3 0a1 1 0 000 2h3a1 1 0 100-2H8z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h4 class="text-white font-semibold mb-2">Eleventy Templates</h4>
+                <p class="text-gray-400 text-sm">Explore template syntax and static site generation</p>
+            </div>
+            
+            <!-- Site Code Snippets Mode Feature Card -->
+            {#
+            Fourth playground mode: Real site code exploration
+            - Yellow color scheme (matches site's wavgen-yellow brand)
+            - Code brackets icon represents actual code snippets
+            - Emphasizes real-world code examples from the site itself
+            #}
+            <div class="text-center">
+                <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h4 class="text-white font-semibold mb-2">Real Code Snippets</h4>
+                <p class="text-gray-400 text-sm">View and modify actual code from this website</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Philosophy Section -->
 <section class="py-20 bg-gray-900">
     <div class="container mx-auto px-4">
@@ -146,3 +285,5 @@ This file defines the Web Dev subpage for the Data & Tech section.
         </div>
     </div>
 </section>
+
+<script src="/js/code-playground.js"></script>

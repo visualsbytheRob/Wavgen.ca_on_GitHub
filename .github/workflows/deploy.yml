@@ -1,11 +1,11 @@
 name: Build and Deploy Eleventy Site
 
-# Only run on manual trigger for now to avoid breaking the site
+# Run on manual trigger and automatic push to main/master branches
 on:
   workflow_dispatch:
-  # Uncomment the lines below once we've tested the deployment
-  # push:
-  #   branches: [ main, master ]
+  # Enable automatic deployment on push to main branch
+  push:
+    branches: [ main, master ]
 
 jobs:
   build-and-deploy:
