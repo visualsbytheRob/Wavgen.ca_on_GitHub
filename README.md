@@ -93,6 +93,57 @@ The site features fully functional music and video players with real content str
 
 ---
 
+## 🎮 Interactive Code Playground
+
+The site features a professional-grade **Interactive Code Playground** in the Data & Tech > Web Dev section, providing hands-on learning with the technologies that power Wavgen.ca:
+
+### 🛠️ Monaco Editor Integration
+- **VS Code experience** — Full Monaco Editor with syntax highlighting, IntelliSense, and keyboard shortcuts
+- **Professional interface** — Split-screen layout with code editor and live preview
+- **Real-time updates** — Code changes reflected instantly with 500ms debouncing for performance
+- **Fixed height container** — Clean 600px interface that prevents endless scrolling
+
+### 🎯 Four Interactive Modes
+
+#### 1. **Tailwind CSS Mode**
+- **Live HTML preview** — Write HTML with Tailwind classes and see instant visual results
+- **Real-time rendering** — Changes appear immediately in the preview pane
+- **Site theme integration** — Uses actual Wavgen.ca color scheme (wavgen-purple, wavgen-yellow)
+- **Educational examples** — Pre-loaded with site-style components and layouts
+
+#### 2. **GSAP Animations Mode**
+- **Live animation testing** — Write GSAP code and watch animations execute in real-time
+- **Target element provided** — Interactive demo element for immediate visual feedback
+- **Safe execution environment** — Proper error handling and animation cleanup
+- **Performance optimized** — Efficient GSAP integration with proper memory management
+
+#### 3. **Eleventy Templates Mode**
+- **Nunjucks syntax exploration** — Learn template syntax with comprehensive examples
+- **Educational preview** — Dark theme code display with syntax explanations
+- **Template features showcase** — Variables, loops, conditionals, and filters demonstrated
+- **Real site examples** — Actual template patterns used throughout Wavgen.ca
+
+#### 4. **Site Code Snippets Mode**
+- **Live carousel demo** — Working infinite marquee with sample images
+- **Real site code** — Actual carousel implementation from Wavgen.ca gallery system
+- **Interactive demonstration** — See the code execute and create visual effects
+- **Modifiable examples** — Change speed, add animations, experiment with GSAP
+
+### 🎨 Educational Features
+- **Comprehensive commenting** — Every function and feature documented for learning
+- **Progressive complexity** — From basic Tailwind to advanced GSAP animations
+- **Visual feedback** — Immediate results help understand code impact
+- **Professional tools** — Same editor used by developers worldwide
+- **Error handling** — Helpful error messages and graceful degradation
+
+### 📁 Playground Files
+- **`/js/code-playground.js`** — Main playground system with Monaco Editor integration (1000+ lines of commented code)
+- **`/data/webdev/index.njk`** — Playground container and feature highlights
+- **Monaco Editor CDN** — Professional code editor loaded dynamically
+- **GSAP integration** — Live animation testing with site's GSAP library
+
+---
+
 ## 🎨 GSAP-Powered Gallery System
 
 The site features a sophisticated, fully-commented gallery system built with GSAP animations:
