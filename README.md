@@ -99,9 +99,10 @@ The site features a professional-grade **Interactive Code Playground** in the Da
 
 ### 🛠️ Monaco Editor Integration
 - **VS Code experience** — Full Monaco Editor with syntax highlighting, IntelliSense, and keyboard shortcuts
-- **Professional interface** — Split-screen layout with code editor and live preview
+- **Vertical stack layout** — Code editor above, live preview below for intuitive workflow
+- **Mobile-optimized design** — Natural vertical scrolling with responsive height management
 - **Real-time updates** — Code changes reflected instantly with 500ms debouncing for performance
-- **Fixed height container** — Clean 600px interface that prevents endless scrolling
+- **Flexible sizing** — Editor (384px) and preview (min 384px) adapt to content needs
 
 ### 🎯 Four Interactive Modes
 

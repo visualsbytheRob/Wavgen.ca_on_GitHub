@@ -24,4 +24,47 @@
   .subtitle-text {
     @apply text-xl md:text-2xl text-wavgen-yellow mb-8 font-light;
   }
+  
+  /* Interactive Code Playground responsive heights for mobile compatibility */
+  .playground-container-height {
+    height: 800px; /* Mobile: generous height for full visibility */
+  }
+  
+  .playground-editor-height {
+    height: 750px; /* Mobile: equal space for editor */
+  }
+  
+  .playground-preview-height {
+    height: 750px; /* Mobile: equal space for preview - prevents cutoff */
+  }
+  
+  /* Tablet responsive heights */
+  @media (min-width: 768px) {
+    .playground-container-height {
+      height: 900px; /* Tablet: even more generous height */
+    }
+    
+    .playground-editor-height {
+      height: 850px; /* Tablet: larger editor area */
+    }
+    
+    .playground-preview-height {
+      height: 850px; /* Tablet: larger preview area */
+    }
+  }
+  
+  /* Desktop optimized heights */
+  @media (min-width: 1024px) {
+    .playground-container-height {
+      height: 600px; /* Desktop: original optimized height */
+    }
+    
+    .playground-editor-height {
+      height: 550px; /* Desktop: original editor height */
+    }
+    
+    .playground-preview-height {
+      height: 550px; /* Desktop: original preview height */
+    }
+  }
 }

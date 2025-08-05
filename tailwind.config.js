@@ -42,6 +42,21 @@ module.exports = {
     'z-[10000]',
     'z-30',
     'z-50',
+
+    // Interactive Code Playground responsive heights
+    'h-[600px]',
+    'h-[650px]',
+    'h-[700px]',
+    'h-[750px]',
+    'h-[800px]',
+    'h-[850px]',
+    'h-[900px]',
+    'md:h-[700px]',
+    'md:h-[750px]',
+    'md:h-[850px]',
+    'md:h-[900px]',
+    'lg:h-[550px]',
+    'lg:h-[600px]',
   ],
   theme: {
     extend: {

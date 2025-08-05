@@ -252,6 +252,21 @@ createCarouselDemo();
     /*
      * Create the main playground UI structure
      * Builds the HTML layout with editor, preview, and controls
+     * 
+     * VERTICAL STACK DESIGN EXPLANATION:
+     * This layout uses flex-col (vertical flexbox) instead of a grid system.
+     * Benefits of this approach:
+     * - Mobile-friendly: Natural vertical scrolling behavior
+     * - No height constraints: Each section takes the space it needs
+     * - Intuitive workflow: Code above, results below
+     * - Responsive by default: Works perfectly on all screen sizes
+     * - Better UX: Follows natural developer thought process
+     * 
+     * LAYOUT STRUCTURE:
+     * 1. Header with mode switcher and description
+     * 2. Code Editor Panel (Top) - Dark theme, fixed height (384px)
+     * 3. Live Preview Panel (Bottom) - Light theme, flexible height (min 384px)
+     * 4. Footer with tips and shortcuts
      */
     createPlaygroundUI() {
         const container = document.getElementById('code-playground-container');
@@ -260,6 +275,7 @@ createCarouselDemo();
             return;
         }
         
+        // Generate the playground HTML with vertical stack layout
         container.innerHTML = `
             <div class="bg-gray-800 rounded-lg overflow-hidden shadow-2xl">
                 <!-- Header with mode switcher -->
@@ -284,28 +300,28 @@ createCarouselDemo();
                     </div>
                 </div>
                 
-                <!-- Main content area with responsive heights -->
-                <div class="grid lg:grid-cols-2 gap-0 h-[700px] md:h-[750px] lg:h-[600px]">
-                    <!-- Editor panel -->
-                    <div class="bg-gray-900 border-r border-gray-600">
+                <!-- Main content area with vertical stack layout -->
+                <div class="flex flex-col gap-0">
+                    <!-- Code Editor Panel (Top) -->
+                    <div class="bg-gray-900">
                         <div class="bg-gray-700 px-4 py-2 border-b border-gray-600 flex items-center justify-between">
-                            <span class="text-white font-medium">Code Editor</span>
+                            <span class="text-white font-medium">💻 Code Editor</span>
                             <button 
                                 id="reset-code-btn"
                                 class="text-xs bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded transition-colors"
                             >
-                                Reset
+                                🔄 Reset
                             </button>
                         </div>
-                        <div id="monaco-editor" class="h-[650px] md:h-[700px] lg:h-[550px]"></div>
+                        <div id="monaco-editor" class="h-96"></div>
                     </div>
                     
-                    <!-- Preview panel -->
-                    <div class="bg-white">
+                    <!-- Live Preview Panel (Bottom) -->
+                    <div class="bg-white border-t border-gray-300">
                         <div class="bg-gray-700 px-4 py-2 border-b border-gray-600">
-                            <span class="text-white font-medium">Live Preview</span>
+                            <span class="text-white font-medium">👁️ Live Preview</span>
                         </div>
-                        <div id="preview-area" class="h-[650px] md:h-[700px] lg:h-[550px] p-6 overflow-auto">
+                        <div id="preview-area" class="p-6 overflow-auto min-h-96">
                             <div class="text-gray-500 text-center mt-20">
                                 Preview will appear here...
                             </div>
@@ -354,7 +370,14 @@ createCarouselDemo();
             folding: true,
             lineDecorationsWidth: 10,
             lineNumbersMinChars: 3,
-            glyphMargin: false
+            glyphMargin: false,
+            // Mobile-friendly scroll settings
+            scrollbar: {
+                vertical: 'auto',
+                horizontal: 'auto',
+                handleMouseWheel: true,
+                alwaysConsumeMouseWheel: false // Allow page scroll when editor scroll is at limits
+            }
         });
         
         // Set up auto-save and live preview updates
@@ -370,6 +393,9 @@ createCarouselDemo();
         this.editor.addCommand(window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.KeyS, () => {
             this.updatePreview();
         });
+        
+        // Add mobile-friendly touch handling for page scrolling
+        this.setupMobileScrollHandling(editorElement);
     }
     
     /*
@@ -390,6 +416,47 @@ createCarouselDemo();
         if (resetBtn) {
             resetBtn.addEventListener('click', this.resetCode);
         }
+    }
+    
+    /*
+     * Set up mobile-friendly scroll handling
+     * Allows page scrolling over the Monaco Editor on mobile devices
+     */
+    setupMobileScrollHandling(editorElement) {
+        let startY = 0;
+        let isScrolling = false;
+        
+        // Handle touch start
+        editorElement.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            isScrolling = false;
+        }, { passive: true });
+        
+        // Handle touch move - allow page scroll if editor is at scroll limits
+        editorElement.addEventListener('touchmove', (e) => {
+            if (!isScrolling) {
+                const currentY = e.touches[0].clientY;
+                const deltaY = startY - currentY;
+                
+                // Check if editor is at scroll limits
+                const editorContainer = editorElement.querySelector('.monaco-scrollable-element');
+                if (editorContainer) {
+                    const atTop = editorContainer.scrollTop === 0;
+                    const atBottom = editorContainer.scrollTop >= (editorContainer.scrollHeight - editorContainer.clientHeight);
+                    
+                    // Allow page scroll if trying to scroll beyond editor limits
+                    if ((deltaY < 0 && atTop) || (deltaY > 0 && atBottom)) {
+                        // Don't prevent default - allow page scroll
+                        return;
+                    }
+                }
+                
+                isScrolling = true;
+            }
+        }, { passive: true });
+        
+        // Add CSS to improve touch scrolling
+        editorElement.style.touchAction = 'pan-y';
     }
     
     /*
