@@ -284,8 +284,8 @@ createCarouselDemo();
                     </div>
                 </div>
                 
-                <!-- Main content area -->
-                <div class="grid lg:grid-cols-2 gap-0 h-[600px]">
+                <!-- Main content area with responsive heights -->
+                <div class="grid lg:grid-cols-2 gap-0 h-[700px] md:h-[750px] lg:h-[600px]">
                     <!-- Editor panel -->
                     <div class="bg-gray-900 border-r border-gray-600">
                         <div class="bg-gray-700 px-4 py-2 border-b border-gray-600 flex items-center justify-between">
@@ -297,7 +297,7 @@ createCarouselDemo();
                                 Reset
                             </button>
                         </div>
-                        <div id="monaco-editor" class="h-[550px]"></div>
+                        <div id="monaco-editor" class="h-[650px] md:h-[700px] lg:h-[550px]"></div>
                     </div>
                     
                     <!-- Preview panel -->
@@ -305,7 +305,7 @@ createCarouselDemo();
                         <div class="bg-gray-700 px-4 py-2 border-b border-gray-600">
                             <span class="text-white font-medium">Live Preview</span>
                         </div>
-                        <div id="preview-area" class="h-[550px] p-6 overflow-auto">
+                        <div id="preview-area" class="h-[650px] md:h-[700px] lg:h-[550px] p-6 overflow-auto">
                             <div class="text-gray-500 text-center mt-20">
                                 Preview will appear here...
                             </div>
