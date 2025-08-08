@@ -42,24 +42,14 @@ This file defines the Gen AI subpage for the Data & Tech section.
 </div>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Generative <span class="text-wavgen-yellow">AI</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-purple-200 mb-8">
-                Machine Learning & Creative AI Applications
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Exploring the creative and practical applications of generative artificial intelligence and machine learning. 
-                From text generation to image synthesis, these projects investigate how AI can augment human creativity 
-                and solve complex problems across various domains.
-            </p>
-        </div>
-    </div>
-</section>
+{% set hero = {
+  title: 'Generative <span class="text-wavgen-yellow">AI</span>',
+  subtitle: 'Machine Learning & Creative AI Applications',
+  description: 'Exploring the creative and practical applications of generative artificial intelligence and machine learning. From text generation to image synthesis, these projects investigate how AI can augment human creativity and solve complex problems across various domains.',
+  gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-pink-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- AI Technologies -->
 <section class="py-20 bg-gray-800">

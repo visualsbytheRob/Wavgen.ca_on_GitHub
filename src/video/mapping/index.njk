@@ -41,24 +41,24 @@ This file defines the Mapping video technology subpage for the Video section.
     </div>
 </div>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Projection <span class="text-wavgen-yellow">Mapping</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-violet-200 mb-8">
-                Transforming Physical Spaces with Digital Content
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                3D projection mapping projects that transform physical objects and architectural surfaces into dynamic canvases. 
-                Using custom-printed objects and precise spatial calibration, these installations blur the boundaries 
-                between digital content and physical reality.
-            </p>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Projection <span class="text-wavgen-yellow">Mapping</span>',
+  subtitle: 'Transforming Physical Spaces with Digital Content',
+  description: '3D projection mapping projects that transform physical objects and architectural surfaces into dynamic canvases. Using custom-printed objects and precise spatial calibration, these installations blur the boundaries between digital content and physical reality.',
+  gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-violet-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
+
+<!-- Video Player -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div id="video-player-container" data-default-category="mapping">
+            <!-- Video player will be rendered here by JavaScript -->
         </div>
     </div>
+    
 </section>
 
 <!-- Mapping Elements -->

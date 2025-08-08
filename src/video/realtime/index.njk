@@ -41,24 +41,24 @@ This file defines the Realtime video technology subpage for the Video section.
     </div>
 </div>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-blue-900 to-cyan-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Realtime <span class="text-wavgen-yellow">Processing</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-cyan-200 mb-8">
-                Interactive Visual Systems & Live Performance
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Real-time video processing and interactive visual systems using TouchDesigner and custom software. 
-                These projects explore live visual performance, responsive environments, and the intersection 
-                of audio and visual processing in real-time computational systems.
-            </p>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Realtime <span class="text-wavgen-yellow">Processing</span>',
+  subtitle: 'Interactive Visual Systems & Live Performance',
+  description: 'Real-time video processing and interactive visual systems using TouchDesigner and custom software. These projects explore live visual performance, responsive environments, and the intersection of audio and visual processing in real-time computational systems.',
+  gradient: { from: 'from-gray-900', via: 'via-blue-900', to: 'to-cyan-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
+
+<!-- Video Player -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div id="video-player-container" data-default-category="realtime">
+            <!-- Video player will be rendered here by JavaScript -->
         </div>
     </div>
+    
 </section>
 
 <!-- Realtime Elements -->

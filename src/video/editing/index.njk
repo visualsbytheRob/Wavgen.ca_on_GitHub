@@ -41,24 +41,24 @@ This file defines the Editing video technology subpage for the Video section.
     </div>
 </div>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-emerald-900 to-teal-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Video <span class="text-wavgen-yellow">Editing</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-emerald-200 mb-8">
-                Post-production Workflows & Cinematic Techniques
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Professional video editing and post-production workflows that transform raw footage into compelling narratives. 
-                Using advanced editing techniques, color grading, and sound design to create polished, 
-                cinematic content that engages audiences and tells powerful stories.
-            </p>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Video <span class="text-wavgen-yellow">Editing</span>',
+  subtitle: 'Post-production Workflows & Cinematic Techniques',
+  description: 'Professional video editing and post-production workflows that transform raw footage into compelling narratives. Using advanced editing techniques, color grading, and sound design to create polished, cinematic content that engages audiences and tells powerful stories.',
+  gradient: { from: 'from-gray-900', via: 'via-emerald-900', to: 'to-teal-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
+
+<!-- Video Player -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div id="video-player-container" data-default-category="editing">
+            <!-- Video player will be rendered here by JavaScript -->
         </div>
     </div>
+    
 </section>
 
 <!-- Editing Elements -->

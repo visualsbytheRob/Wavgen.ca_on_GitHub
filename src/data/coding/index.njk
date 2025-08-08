@@ -42,24 +42,14 @@ This file defines the Coding subpage for the Data & Tech section.
 </div>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Software <span class="text-wavgen-yellow">Development</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-green-200 mb-8">
-                Multi-Language Programming & System Architecture
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Software development across multiple programming languages and platforms, from system-level programming 
-                to high-level application development. Creating efficient, maintainable code that solves complex problems 
-                and delivers robust solutions.
-            </p>
-        </div>
-    </div>
-</section>
+{% set hero = {
+  title: 'Software <span class="text-wavgen-yellow">Development</span>',
+  subtitle: 'Multi-Language Programming & System Architecture',
+  description: 'Software development across multiple programming languages and platforms, from system-level programming to high-level application development. Creating efficient, maintainable code that solves complex problems and delivers robust solutions.',
+  gradient: { from: 'from-gray-900', via: 'via-green-900', to: 'to-emerald-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Programming Languages -->
 <section class="py-20 bg-gray-800">

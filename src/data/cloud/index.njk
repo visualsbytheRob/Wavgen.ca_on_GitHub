@@ -42,24 +42,14 @@ This file defines the Cloud subpage for the Data & Tech section.
 </div>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-cyan-900 to-blue-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Cloud <span class="text-wavgen-yellow">Infrastructure</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-cyan-200 mb-8">
-                Scalable Deployment & Modern DevOps
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Cloud infrastructure and scalable deployment solutions using modern DevOps practices. 
-                From containerization to CI/CD pipelines, these projects focus on creating robust, 
-                scalable systems that can grow with demand and maintain high availability.
-            </p>
-        </div>
-    </div>
-</section>
+{% set hero = {
+  title: 'Cloud <span class="text-wavgen-yellow">Infrastructure</span>',
+  subtitle: 'Scalable Deployment & Modern DevOps',
+  description: 'Cloud infrastructure and scalable deployment solutions using modern DevOps practices. From containerization to CI/CD pipelines, these projects focus on creating robust, scalable systems that can grow with demand and maintain high availability.',
+  gradient: { from: 'from-gray-900', via: 'via-cyan-900', to: 'to-blue-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Cloud Technologies -->
 <section class="py-20 bg-gray-800">

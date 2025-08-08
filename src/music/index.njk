@@ -31,24 +31,15 @@ Only the first genre card is commented in detail; all following cards are analog
     </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-blue-900 via-wavgen-dark-purple to-wavgen-purple py-20">
-    <div class="absolute inset-0 bg-black opacity-30"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Electronic Music <span class="text-wavgen-yellow">Studio</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-200 mb-8">
-                Digital Audio Production & Sound Design
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Creating electronic music across multiple genres and styles. From ambient soundscapes to driving rhythms, 
-                each track showcases different approaches to synthesis, sampling, and digital audio production.
-            </p>
-        </div>
-    </div>
-</section>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Electronic Music <span class="text-wavgen-yellow">Studio</span>',
+  subtitle: 'Digital Audio Production & Sound Design',
+  description: 'Creating electronic music across multiple genres and styles. From ambient soundscapes to driving rhythms, each track showcases different approaches to synthesis, sampling, and digital audio production.',
+  gradient: { from: 'from-blue-900', via: 'via-wavgen-dark-purple', to: 'to-wavgen-purple' },
+  overlayOpacity: 'opacity-30'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Music Player -->
 <section class="py-20 bg-gray-900">

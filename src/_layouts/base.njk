@@ -14,14 +14,38 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <title>{% if title %}{{ title }} - {% endif %}The Waveform Generation</title>
   <meta name="description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
 
+  {# Canonical URL (assumes url filter or global site.url exists; fallback to path) #}
+  {% if page and page.url %}
+  <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
+  {% endif %}
+
+  {# Open Graph #}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ title or 'The Waveform Generation' }}" />
+  <meta property="og:description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  <meta property="og:url" content="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url or '' }}" />
+  <meta property="og:image" content="{{ site.ogImage | default('/images/og-default.jpg') }}" />
+
+  {# Twitter Card #}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ title or 'The Waveform Generation' }}" />
+  <meta name="twitter:description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  <meta name="twitter:image" content="{{ site.ogImage | default('/images/og-default.jpg') }}" />
+
+  <meta name="theme-color" content="#0f172a" />
+
+  {# Performance: preconnect to fonts and load CSS #}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="/css/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
 </head>
 <body class="relative z-0 bg-gray-900 text-white font-roboto">
   
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-wavgen-dark-purple text-wavgen-yellow px-3 py-2 rounded">Skip to content</a>
   {% include "navigation.njk" %}
 
-  <main class="relative z-10">
+  <main id="main" class="relative z-10" role="main">
     {{ content | safe }}
   </main>
 
@@ -40,13 +64,17 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->
   <!-- Load after GSAP to ensure GSAP is available -->
   <script src="/js/gallery.js"></script>
+  <!-- Interactive Components: load globally; each module self-initializes only if its container exists -->
+  <script src="/js/music-player.js"></script>
+  <script src="/js/video-player.js"></script>
+  <script src="/js/code-playground.js"></script>
   <script src="/js/main.js"></script>
 
   <!-- Modal Markup for Gallery (hidden by default, shown by JS) -->
-  <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
+  <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden" role="dialog" aria-modal="true" aria-labelledby="caption">
     <span class="close absolute top-4 right-8 text-4xl text-wavgen-yellow cursor-pointer">&times;</span>
     <button id="prevBtn" class="absolute left-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8592;</button>
-    <img class="modal-content max-h-[50vh] max-w-[60vw] mx-auto rounded shadow-2xl" id="img01">
+    <img class="modal-content max-h-[50vh] max-w-[60vw] mx-auto rounded shadow-2xl" id="img01" alt="Expanded gallery image" loading="lazy">
     <button id="nextBtn" class="absolute right-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8594;</button>
     <div id="caption" class="text-center text-white mt-4"></div>
   </div>

@@ -136,10 +136,37 @@ class WavgenVideoPlayer {
   }
 
   init() {
+    // Read default category from page container if provided
+    const containerEl = document.getElementById('video-player-container');
+    const defaultCategory = containerEl && containerEl.dataset ? containerEl.dataset.defaultCategory : null;
+    if (defaultCategory) {
+      this.currentCategory = defaultCategory;
+    }
+
     this.createPlayerHTML();
+
+    // Ensure the category dropdown reflects the current category
+    const categorySelect = document.getElementById('category-select');
+    if (categorySelect) {
+      categorySelect.value = this.currentCategory;
+    }
+
     this.bindEvents();
     this.renderPlaylist();
-    this.loadVideo(0);
+
+    // Load the first video of the current (possibly filtered) set,
+    // or gracefully fall back to 'all' if none exist for that category
+    const filtered = this.getFilteredVideos();
+    if (filtered.length > 0) {
+      this.loadVideo(0);
+    } else {
+      this.currentCategory = 'all';
+      if (categorySelect) categorySelect.value = 'all';
+      this.renderPlaylist();
+      if (this.videos.length > 0) {
+        this.loadVideo(0);
+      }
+    }
   }
 
   createPlayerHTML() {
@@ -152,7 +179,7 @@ class WavgenVideoPlayer {
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-white">Video Showcase</h3>
           <div class="category-filter">
-            <select id="category-select" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
+            <select id="category-select" aria-label="Filter videos by category" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
               <option value="all">All Categories</option>
               <option value="realtime">Real-time</option>
               <option value="mapping">Mapping</option>
@@ -209,23 +236,23 @@ class WavgenVideoPlayer {
 
         <!-- Player Controls -->
         <div class="player-controls flex items-center justify-center space-x-4 mb-6">
-          <button id="prev-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+          <button id="prev-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors" aria-label="Previous video">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path>
             </svg>
           </button>
           
-          <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors">
+          <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors" aria-label="Load selected video">
             Load Video
           </button>
           
-          <button id="next-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+          <button id="next-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors" aria-label="Next video">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z"></path>
             </svg>
           </button>
           
-          <button id="fullscreen-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors ml-4">
+          <button id="fullscreen-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors ml-4" aria-label="Toggle fullscreen">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd"></path>
             </svg>
@@ -266,6 +293,17 @@ class WavgenVideoPlayer {
     // Category filter
     document.getElementById('category-select').addEventListener('change', (e) => {
       this.filterByCategory(e.target.value);
+      // Auto-load the first item of the new filtered list (if any)
+      const filtered = this.getFilteredVideos();
+      if (filtered.length > 0) {
+        this.loadVideo(0);
+      } else {
+        // If selected category has no items, fall back to 'all'
+        this.currentCategory = 'all';
+        e.target.value = 'all';
+        this.renderPlaylist();
+        if (this.videos.length > 0) this.loadVideo(0);
+      }
     });
   }
 
@@ -344,7 +382,9 @@ class WavgenVideoPlayer {
       <iframe 
         width="100%" 
         height="100%" 
-        src="${this.currentVideo.embedUrl}" 
+        src="${this.currentVideo.embedUrl}"
+        title="${this.currentVideo.title}"
+        loading="lazy"
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen>
@@ -395,10 +435,17 @@ class WavgenVideoPlayer {
     const container = document.getElementById('video-playlist-container');
     const filteredVideos = this.getFilteredVideos();
     
+    // Accessibility: identify the playlist as a listbox
+    if (container) {
+      container.setAttribute('role', 'listbox');
+    }
+
     container.innerHTML = filteredVideos.map((video, index) => `
       <div class="video-playlist-item bg-gray-700 hover:bg-gray-600 rounded-lg p-4 cursor-pointer transition-colors ${
         this.currentVideo && this.currentVideo.id === video.id ? 'ring-2 ring-wavgen-yellow' : ''
-      }" data-index="${index}">
+      }" data-index="${index}" role="option" tabindex="0" aria-selected="${
+        this.currentVideo && this.currentVideo.id === video.id ? 'true' : 'false'
+      }">
         <div class="flex items-center space-x-3">
           <div class="video-thumbnail w-20 h-12 bg-gradient-to-br from-wavgen-purple to-wavgen-yellow rounded flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -425,6 +472,13 @@ class WavgenVideoPlayer {
       item.addEventListener('click', () => {
         this.loadVideo(index);
       });
+      // Keyboard accessibility: Enter/Space to activate list item
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.loadVideo(index);
+        }
+      });
     });
   }
 
@@ -433,8 +487,10 @@ class WavgenVideoPlayer {
     items.forEach((item, index) => {
       if (index === this.currentIndex) {
         item.classList.add('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'true');
       } else {
         item.classList.remove('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'false');
       }
     });
   }

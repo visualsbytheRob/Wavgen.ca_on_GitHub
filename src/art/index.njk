@@ -23,24 +23,15 @@ This file defines the Art landing page for the site.
     </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-pink-900 via-wavgen-dark-purple to-purple-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-30"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Traditional & Digital <span class="text-wavgen-yellow">Art</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-pink-200 mb-8">
-                Bridging Classical & Modern Techniques
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Exploring the art of creation through both traditional and digital mediums. From clay sculpture 
-                to 3D printing, each piece bridges classical craftsmanship with modern technology.
-            </p>
-        </div>
-    </div>
-</section>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Traditional & Digital <span class="text-wavgen-yellow">Art</span>',
+  subtitle: 'Bridging Classical & Modern Techniques',
+  description: 'Exploring the art of creation through both traditional and digital mediums. From clay sculpture to 3D printing, each piece bridges classical craftsmanship with modern technology.',
+  gradient: { from: 'from-pink-900', via: 'via-wavgen-dark-purple', to: 'to-purple-900' },
+  overlayOpacity: 'opacity-30'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Art Mediums Grid -->
 <section class="py-20 bg-gray-800">

@@ -42,24 +42,14 @@ This file defines the Web Dev subpage for the Data & Tech section.
 </div>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Web <span class="text-wavgen-yellow">Development</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-200 mb-8">
-                Modern Frameworks & Responsive Design
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Modern web development using cutting-edge frameworks and responsive design principles. 
-                Creating fast, accessible, and user-friendly web applications that work seamlessly 
-                across all devices and platforms.
-            </p>
-        </div>
-    </div>
-</section>
+{% set hero = {
+  title: 'Web <span class="text-wavgen-yellow">Development</span>',
+  subtitle: 'Modern Frameworks & Responsive Design',
+  description: 'Modern web development using cutting-edge frameworks and responsive design principles. Creating fast, accessible, and user-friendly web applications that work seamlessly across all devices and platforms.',
+  gradient: { from: 'from-gray-900', via: 'via-blue-900', to: 'to-indigo-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Web Dev Stack -->
 <section class="py-20 bg-gray-800">
