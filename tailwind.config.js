@@ -72,6 +72,12 @@ module.exports = {
     'outline-none',
     'ring-2',
     'ring-wavgen-yellow',
+    
+    // Ensure brand colors used in navigation/header are never purged
+    'bg-wavgen-dark-purple',
+    'bg-wavgen-purple',
+    'text-wavgen-yellow',
+    'text-white'
   ],
   theme: {
     extend: {

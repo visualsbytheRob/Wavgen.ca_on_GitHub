@@ -13,8 +13,6 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% if title %}{{ title }} - {% endif %}The Waveform Generation</title>
   <meta name="description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
-
-<<<<<<< HEAD
   {# Early theme init to avoid flash of incorrect theme. Sets 'dark' class on <html> if needed. #}
   <script>
     (function() {
@@ -30,7 +28,6 @@ This is the main layout template for all pages in the Wavgen.ca site.
     })();
   </script>
 
-=======
   {# Canonical URL (assumes url filter or global site.url exists; fallback to path) #}
   {% if page and page.url %}
   <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
@@ -54,21 +51,16 @@ This is the main layout template for all pages in the Wavgen.ca site.
   {# Performance: preconnect to fonts and load CSS #}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
->>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
   <link href="/css/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
 </head>
-<body class="relative z-0 bg-gray-900 text-white font-roboto dark:bg-gray-900 dark:text-white bg-white text-gray-900">
+<body class="relative z-0 font-roboto bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
   <!-- Skip to content removed per request -->
   
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-wavgen-dark-purple text-wavgen-yellow px-3 py-2 rounded">Skip to content</a>
   {% include "navigation.njk" %}
 
-<<<<<<< HEAD
-  <main id="main-content" class="relative z-10" role="main">
-=======
   <main id="main" class="relative z-10" role="main">
->>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
     {{ content | safe }}
   </main>
 
