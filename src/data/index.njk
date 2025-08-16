@@ -24,23 +24,14 @@ This file defines the Data & Tech landing page for the site.
 </nav>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-blue-900 to-wavgen-purple py-20">
-    <div class="absolute inset-0 bg-black opacity-30"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Data & <span class="text-wavgen-yellow">Technology</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-200 mb-8">
-                Modern Development & AI Integration
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Embracing modern web development with AI assistance and seamless cloud integration. 
-                Pioneering explorations in generative AI, quantum computing, and innovative software solutions.
-            </p>
-        </div>
-    </div>
-</section>
+{% set hero = {
+  title: 'Data & <span class="text-wavgen-yellow">Technology</span>',
+  subtitle: 'Modern Development & AI Integration',
+  description: 'Embracing modern web development with AI assistance and seamless cloud integration. Pioneering explorations in generative AI, quantum computing, and innovative software solutions.',
+  gradient: { from: 'from-gray-900', via: 'via-blue-900', to: 'to-wavgen-purple' },
+  overlayOpacity: 'opacity-30'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Data App Embed -->
 <section class="py-20 bg-gray-900">

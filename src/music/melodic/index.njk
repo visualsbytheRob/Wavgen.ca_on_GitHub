@@ -41,23 +41,22 @@ This file defines the Melodic genre subpage for the Music section.
     </div>
 </div>
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                Melodic <span class="text-wavgen-yellow">Compositions</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-purple-200 mb-8">
-                Harmonic Progressions & Musical Storytelling
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Electronic music compositions that emphasize melody, harmony, and emotional narrative. 
-                These tracks blend traditional musical structures with modern production techniques, 
-                creating memorable melodic journeys that balance complexity with accessibility.
-            </p>
-        </div>
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Melodic <span class="text-wavgen-yellow">Compositions</span>',
+  subtitle: 'Harmonic Progressions & Musical Storytelling',
+  description: 'Electronic music compositions that emphasize melody, harmony, and emotional narrative. These tracks blend traditional musical structures with modern production techniques, creating memorable melodic journeys that balance complexity with accessibility.',
+  gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-pink-900' },
+  overlayOpacity: 'opacity-40'
+} %}
+{% include "components/hero.njk" %}
+
+<!-- Listen Section: Mini Player -->
+<section class="py-16 bg-gray-900 border-t border-gray-800">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-white mb-6">Listen</h2>
+        <p class="text-gray-300 mb-4">Featured tracks from The Waveform Generation. Melodic-tagged tracks will be added shortly.</p>
+        <div id="music-player-container" data-genre="melodic"></div>
     </div>
 </section>
 

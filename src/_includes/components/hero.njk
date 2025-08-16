@@ -1,0 +1,30 @@
+{#
+Shared Hero Banner Component
+Usage:
+  {% set hero = {
+    title: 'Page Title with <span class="text-wavgen-yellow">Accent</span>',
+    subtitle: 'Optional subtitle text',
+    gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-indigo-900' },
+    overlayOpacity: 'opacity-40'
+  } %}
+  {% include "components/hero.njk" %}
+#}
+
+{% set _hero = hero or {} %}
+{% set _grad = _hero.gradient or {} %}
+<section class="relative bg-gradient-to-br {{ _grad.from or 'from-gray-900' }} {{ _grad.via or '' }} {{ _grad.to or 'to-indigo-900' }} py-20">
+  <div class="absolute inset-0 bg-black {{ _hero.overlayOpacity or 'opacity-30' }}"></div>
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center max-w-4xl mx-auto">
+      <h1 class="hero-text text-5xl md:text-7xl font-bold text-white mb-6">
+        {{ _hero.title | safe }}
+      </h1>
+      {% if _hero.subtitle %}
+      <p class="text-xl md:text-2xl text-gray-200 mb-8">{{ _hero.subtitle }}</p>
+      {% endif %}
+      {% if _hero.description %}
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto">{{ _hero.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

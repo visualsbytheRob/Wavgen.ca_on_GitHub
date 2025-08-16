@@ -136,9 +136,24 @@ class WavgenVideoPlayer {
   }
 
   init() {
+    // Read default category from page container if provided
+    const containerEl = document.getElementById('video-player-container');
+    const defaultCategory = containerEl && containerEl.dataset ? containerEl.dataset.defaultCategory : null;
+    if (defaultCategory) {
+      this.currentCategory = defaultCategory;
+    }
+
     this.createPlayerHTML();
+
+    // Ensure the category dropdown reflects the current category
+    const categorySelect = document.getElementById('category-select');
+    if (categorySelect) {
+      categorySelect.value = this.currentCategory;
+    }
+
     this.bindEvents();
     this.renderPlaylist();
+<<<<<<< HEAD
     // Apply deep-link (if present) or load first video
     const applied = this.applyDeepLinkFromUrl();
     if (!applied) {
@@ -171,6 +186,22 @@ class WavgenVideoPlayer {
         this.toggleFullscreen();
       }
     });
+=======
+
+    // Load the first video of the current (possibly filtered) set,
+    // or gracefully fall back to 'all' if none exist for that category
+    const filtered = this.getFilteredVideos();
+    if (filtered.length > 0) {
+      this.loadVideo(0);
+    } else {
+      this.currentCategory = 'all';
+      if (categorySelect) categorySelect.value = 'all';
+      this.renderPlaylist();
+      if (this.videos.length > 0) {
+        this.loadVideo(0);
+      }
+    }
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
   }
 
   createPlayerHTML() {
@@ -185,7 +216,7 @@ class WavgenVideoPlayer {
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-white">Video Showcase</h3>
           <div class="category-filter">
-            <select id="category-select" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
+            <select id="category-select" aria-label="Filter videos by category" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
               <option value="all">All Categories</option>
               <option value="realtime">Real-time</option>
               <option value="mapping">Mapping</option>
@@ -241,15 +272,23 @@ class WavgenVideoPlayer {
         </div>
 
         <!-- Player Controls -->
+<<<<<<< HEAD
         <p id="video-controls-help" class="sr-only">Keyboard shortcuts: J or Left Arrow for previous video, K or Right Arrow for next video, F for fullscreen. In the playlist, Enter or Space activates an item.</p>
         <div class="player-controls flex items-center justify-center space-x-4 mb-6" role="group" aria-label="Video player controls" aria-describedby="video-controls-help">
+=======
+        <div class="player-controls flex items-center justify-center space-x-4 mb-6">
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
           <button id="prev-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors" aria-label="Previous video">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path>
             </svg>
           </button>
           
+<<<<<<< HEAD
           <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors" aria-label="Load embedded video">
+=======
+          <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors" aria-label="Load selected video">
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
             Load Video
           </button>
           
@@ -384,6 +423,17 @@ class WavgenVideoPlayer {
     // Category filter
     document.getElementById('category-select').addEventListener('change', (e) => {
       this.filterByCategory(e.target.value);
+      // Auto-load the first item of the new filtered list (if any)
+      const filtered = this.getFilteredVideos();
+      if (filtered.length > 0) {
+        this.loadVideo(0);
+      } else {
+        // If selected category has no items, fall back to 'all'
+        this.currentCategory = 'all';
+        e.target.value = 'all';
+        this.renderPlaylist();
+        if (this.videos.length > 0) this.loadVideo(0);
+      }
     });
   }
 
@@ -475,7 +525,9 @@ class WavgenVideoPlayer {
       <iframe 
         width="100%" 
         height="100%" 
-        src="${this.currentVideo.embedUrl}" 
+        src="${this.currentVideo.embedUrl}"
+        title="${this.currentVideo.title}"
+        loading="lazy"
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         loading="lazy" allowfullscreen>
@@ -535,10 +587,21 @@ class WavgenVideoPlayer {
     const container = document.getElementById('video-playlist-container');
     const filteredVideos = this.getFilteredVideos();
     
+    // Accessibility: identify the playlist as a listbox
+    if (container) {
+      container.setAttribute('role', 'listbox');
+    }
+
     container.innerHTML = filteredVideos.map((video, index) => `
       <div class="video-playlist-item bg-gray-700 hover:bg-gray-600 rounded-lg p-4 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-wavgen-yellow ${
         this.currentVideo && this.currentVideo.id === video.id ? 'ring-2 ring-wavgen-yellow' : ''
+<<<<<<< HEAD
       }" data-index="${index}" role="option" aria-selected="${this.currentVideo && this.currentVideo.id === video.id ? 'true' : 'false'}" tabindex="0">
+=======
+      }" data-index="${index}" role="option" tabindex="0" aria-selected="${
+        this.currentVideo && this.currentVideo.id === video.id ? 'true' : 'false'
+      }">
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
         <div class="flex items-center space-x-3">
           <div class="video-thumbnail w-20 h-12 bg-gradient-to-br from-wavgen-purple to-wavgen-yellow rounded flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -565,6 +628,10 @@ class WavgenVideoPlayer {
       item.addEventListener('click', () => {
         this.loadVideo(index);
       });
+<<<<<<< HEAD
+=======
+      // Keyboard accessibility: Enter/Space to activate list item
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
       item.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();

@@ -287,11 +287,15 @@ createCarouselDemo();
                                 Experiment with code and see results in real-time
                             </p>
                         </div>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Playground Modes">
                             ${Object.keys(this.modes).map(mode => `
                                 <button 
                                     class="mode-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === this.currentMode ? 'bg-wavgen-yellow text-gray-900' : 'bg-gray-600 text-white hover:bg-gray-500'}"
                                     data-mode="${mode}"
+                                    id="tab-${mode}"
+                                    role="tab"
+                                    aria-selected="${mode === this.currentMode ? 'true' : 'false'}"
+                                    tabindex="${mode === this.currentMode ? '0' : '-1'}"
                                 >
                                     ${this.modes[mode].name}
                                 </button>
@@ -309,6 +313,7 @@ createCarouselDemo();
                             <button 
                                 id="reset-code-btn"
                                 class="text-xs bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded transition-colors"
+                                aria-label="Reset code to default"
                             >
                                 🔄 Reset
                             </button>
@@ -321,7 +326,7 @@ createCarouselDemo();
                         <div class="bg-gray-700 px-4 py-2 border-b border-gray-600">
                             <span class="text-white font-medium">👁️ Live Preview</span>
                         </div>
-                        <div id="preview-area" class="p-6 overflow-auto min-h-96">
+                        <div id="preview-area" class="p-6 overflow-auto min-h-96" aria-live="polite" aria-busy="false">
                             <div class="text-gray-500 text-center mt-20">
                                 Preview will appear here...
                             </div>
@@ -409,6 +414,21 @@ createCarouselDemo();
                 const mode = e.target.dataset.mode;
                 this.switchMode(mode);
             });
+            // Keyboard navigation for tabs: ArrowLeft/ArrowRight to move focus, Enter/Space to activate
+            btn.addEventListener('keydown', (e) => {
+                const buttons = Array.from(document.querySelectorAll('.mode-btn'));
+                const currentIndex = buttons.indexOf(e.currentTarget);
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const dir = e.key === 'ArrowRight' ? 1 : -1;
+                    let nextIndex = (currentIndex + dir + buttons.length) % buttons.length;
+                    buttons[nextIndex].focus();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const mode = e.currentTarget.dataset.mode;
+                    this.switchMode(mode);
+                }
+            });
         });
         
         // Reset code button
@@ -479,6 +499,11 @@ createCarouselDemo();
         
         // Update preview
         this.updatePreview();
+        // Move focus to active tab for accessibility if switch initiated via keyboard
+        const activeTab = document.getElementById(`tab-${mode}`);
+        if (activeTab) {
+            activeTab.focus();
+        }
         
         console.log(`🔄 Switched to ${modeConfig.name} mode`);
     }
@@ -496,6 +521,9 @@ createCarouselDemo();
                     ? 'bg-wavgen-yellow text-gray-900' 
                     : 'bg-gray-600 text-white hover:bg-gray-500'
             }`;
+            // Sync ARIA state for tabs
+            btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            btn.setAttribute('tabindex', isActive ? '0' : '-1');
         });
         
         // Update description
@@ -515,6 +543,8 @@ createCarouselDemo();
         const code = this.editor.getValue();
         const previewArea = document.getElementById('preview-area');
         if (!previewArea) return;
+        // Indicate loading state for assistive tech
+        previewArea.setAttribute('aria-busy', 'true');
         
         try {
             switch (this.currentMode) {
@@ -533,15 +563,12 @@ createCarouselDemo();
                 default:
                     previewArea.innerHTML = '<div class="text-gray-500 text-center mt-20">Preview not available for this mode</div>';
             }
-        } catch (error) {
-            console.error('Preview update error:', error);
-            previewArea.innerHTML = `
-                <div class="text-red-500 text-center mt-20">
-                    <div class="text-lg font-semibold mb-2">Preview Error</div>
-                    <div class="text-sm">${error.message}</div>
-                </div>
-            `;
+        } catch (err) {
+            console.error('Preview error:', err);
+            previewArea.innerHTML = `<div class="text-red-700 bg-red-100 border border-red-200 p-4 rounded">${this.escapeHtml(err.message || 'Error rendering preview')}</div>`;
         }
+        // Clear loading state
+        previewArea.setAttribute('aria-busy', 'false');
     }
     
     /*

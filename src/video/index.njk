@@ -23,6 +23,7 @@ This file defines the Video landing page for the site.
     </div>
 </nav>
 
+<<<<<<< HEAD
 <!-- Hero Section -->
 <section id="video-hero" class="relative bg-gradient-to-br from-purple-900 via-wavgen-dark-purple to-indigo-900 py-20">
     <div class="absolute inset-0 bg-black opacity-30"></div>
@@ -41,6 +42,17 @@ This file defines the Video landing page for the site.
         </div>
     </div>
 </section>
+=======
+{# Shared Hero Section #}
+{% set hero = {
+  title: 'Digital Video <span class="text-wavgen-yellow">Innovation</span>',
+  subtitle: 'Real-time Graphics & Visual Technology',
+  description: 'Exploring the frontiers of digital video art and technology. Real-time 3D graphics meet projection mapping and live video mixing to create immersive visual experiences that blend the digital and physical worlds.',
+  gradient: { from: 'from-purple-900', via: 'via-wavgen-dark-purple', to: 'to-indigo-900' },
+  overlayOpacity: 'opacity-30'
+} %}
+{% include "components/hero.njk" %}
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
 
 <!-- Video Player -->
 <section class="py-20 bg-gray-900">

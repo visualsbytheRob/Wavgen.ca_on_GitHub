@@ -543,6 +543,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
+  // Accessibility: configure modal dialog semantics and focus management
+  if (modal) {
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'caption');
+    // Make modal focusable for focus trapping
+    if (!modal.hasAttribute('tabindex')) {
+      modal.setAttribute('tabindex', '-1');
+    }
+  }
+  let lastFocusedElement = null;
+
   // Collect all gallery images from both slideshow and marquee
   // Note: Excludes cloned marquee images to prevent duplicate navigation
   const heroImages = Array.from(document.querySelectorAll('.hero-slide.gallery-img'));
@@ -562,9 +574,18 @@ document.addEventListener('DOMContentLoaded', function () {
     currentIndex = (index + imgs.length) % imgs.length;
     
     // Show modal and update content
+    // Save focus before opening only if opening from hidden state
+    if (modal && window.getComputedStyle(modal).display === 'none') {
+      lastFocusedElement = document.activeElement;
+    }
     modal.style.display = 'block';
     modalImg.src = imgs[currentIndex].src;
     captionText.innerHTML = imgs[currentIndex].alt;
+    // Update ARIA and focus modal for accessibility
+    modal.setAttribute('aria-hidden', 'false');
+    modal.focus();
+    // Prevent background scroll while modal open
+    document.body.style.overflow = 'hidden';
     
     // GSAP entrance animation: fade in with subtle scale effect
     if (window.gsap) {
@@ -572,6 +593,19 @@ document.addEventListener('DOMContentLoaded', function () {
         { opacity: 0, scale: 0.95 }, // Start: invisible and slightly smaller
         { opacity: 1, scale: 1, duration: 0.5 } // End: visible and normal size
       );
+    }
+  }
+
+  // Centralized modal close helper to ensure consistent cleanup and focus restore
+  function closeModal() {
+    if (!modal) return;
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    // Restore background scroll
+    document.body.style.overflow = '';
+    // Restore focus to the element that opened the modal
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
     }
   }
 
@@ -660,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function () {
    */
   if (span) {
     span.onclick = function () {
-      modal.style.display = 'none';
+      closeModal();
     };
   }
   /**
@@ -670,8 +704,40 @@ document.addEventListener('DOMContentLoaded', function () {
    * Provides accessible keyboard navigation
    */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.style.display === 'block') {
-      modal.style.display = 'none';
+    if (!modal) return;
+    const isOpen = modal.style.display === 'block';
+    if (!isOpen) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      // Next image
+      currentIndex = (currentIndex + 1) % imgs.length;
+      if (window.gsap) {
+        gsap.to(modalImg, {
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.2,
+          onComplete: () => showModal(currentIndex)
+        });
+      } else {
+        showModal(currentIndex);
+      }
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      // Previous image
+      currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+      if (window.gsap) {
+        gsap.to(modalImg, {
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.2,
+          onComplete: () => showModal(currentIndex)
+        });
+      } else {
+        showModal(currentIndex);
+      }
     }
   });
   
@@ -684,7 +750,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (modal) {
     modal.addEventListener('click', function (e) {
       if (e.target === modal) { // Only close if clicking the modal background, not the image
-        modal.style.display = 'none';
+        closeModal();
       }
     });
   }

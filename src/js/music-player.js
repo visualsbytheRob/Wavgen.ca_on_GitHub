@@ -249,6 +249,7 @@ class WavgenMusicPlayer {
     this.init();
   }
 
+<<<<<<< HEAD
   // EDUCATIONAL: Initialization Method
   // This method orchestrates the player setup in a logical sequence
   // Breaking initialization into steps makes debugging and maintenance easier
@@ -276,11 +277,33 @@ class WavgenMusicPlayer {
       this.loadTrack(0); // Load the first track as the default selection
     }
   }
+=======
+// EDUCATIONAL: Initialization Method
+// This method orchestrates the player setup in a logical sequence
+// Breaking initialization into steps makes debugging and maintenance easier
+init() {
+this.createPlayerHTML(); // Build the DOM structure for the player interface
+// If container has a data-genre attribute, use it as initial filter
+const container = document.getElementById('music-player-container');
+if (container && container.dataset && container.dataset.genre) {
+this.currentGenre = container.dataset.genre;
+}
+this.bindEvents(); // Attach event listeners for user interactions
+this.renderPlaylist(); // Generate the track list display
+// Sync the genre dropdown to currentGenre if present
+const genreSelect = document.getElementById('genre-select');
+if (genreSelect) {
+genreSelect.value = this.currentGenre;
+}
+this.loadTrack(0); // Load the first track as the default selection (respects filter)
+}
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
 
-  createPlayerHTML() {
-    const playerContainer = document.getElementById('music-player-container');
-    if (!playerContainer) return;
+createPlayerHTML() {
+const playerContainer = document.getElementById('music-player-container');
+if (!playerContainer) return;
 
+<<<<<<< HEAD
     const cardPadding = this.compact ? 'p-4' : 'p-6';
     const headerMb = this.compact ? 'mb-4' : 'mb-6';
     const playlistMaxH = this.compact ? 'max-h-48' : 'max-h-64';
@@ -347,17 +370,65 @@ class WavgenMusicPlayer {
             <!-- Track description will be rendered here -->
           </div>
         </div>
+=======
+playerContainer.innerHTML = `
+<div class="music-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-yellow p-6 shadow-2xl">
+<!-- Player Header -->
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-2xl font-bold text-white">Music Player</h3>
+<div class="genre-filter">
+<select id="genre-select" aria-label="Filter by genre" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
+<option value="all">All Genres</option>
+<option value="electro">Electro</option>
+<option value="ambient">Ambient</option>
+<option value="melodic">Melodic</option>
+<option value="breaks">Breaks</option>
+</select>
+</div>
+</div>
 
-        <!-- Embedded Player Container -->
-        <div id="embedded-player-container" class="mb-6 hidden">
-          <div class="bg-gray-800 rounded-lg p-4">
-            <h4 class="text-white font-semibold mb-3">Listen Now</h4>
-            <div id="embedded-player" class="w-full">
-              <!-- SoundCloud/Bandcamp embed will be loaded here -->
-            </div>
-          </div>
-        </div>
+<!-- Current Track Display -->
+<div class="current-track bg-gray-800 rounded-lg p-4 mb-6">
+<div class="flex items-center space-x-4">
+<div class="track-cover w-16 h-16 bg-gradient-to-br from-wavgen-purple to-wavgen-yellow rounded-lg flex items-center justify-center">
+<svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path>
+</svg>
+</div>
+<div class="flex-1">
+<h4 id="current-title" class="text-white font-semibold">Select a track</h4>
+<p id="current-artist" class="text-gray-400 text-sm">The Waveform Generation</p>
+<p id="current-genre" class="text-wavgen-yellow text-xs uppercase tracking-wide">Genre</p>
+</div>
+<div class="text-right">
+<span id="current-duration" class="text-wavgen-yellow font-medium">0:00</span>
+<p id="current-release-date" class="text-gray-400 text-xs mt-1">Release Date</p>
+</div>
+</div>
+  
+<!-- Streaming Platform Links -->
+<div id="streaming-links" class="mt-4 flex flex-wrap gap-2">
+<!-- Platform links will be rendered here -->
+</div>
+  
+<!-- Track Description -->
+<div id="track-description" class="mt-3 text-gray-300 text-sm">
+<!-- Track description will be rendered here -->
+</div>
+</div>
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
 
+<!-- Embedded Player Container -->
+<div id="embedded-player-container" class="mb-6 hidden">
+<div class="bg-gray-800 rounded-lg p-4">
+<h4 class="text-white font-semibold mb-3">Listen Now</h4>
+<div id="embedded-player" class="w-full">
+<!-- SoundCloud/Bandcamp embed will be loaded here -->
+</div>
+</div>
+</div>
+
+<<<<<<< HEAD
         <!-- Player Controls -->
         <div class="player-controls flex items-center justify-center flex-wrap gap-3 mb-2">
           <button id="prev-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
@@ -434,22 +505,54 @@ class WavgenMusicPlayer {
       </div>
     `;
   }
+=======
+<!-- Player Controls -->
+<div class="player-controls flex items-center justify-center space-x-4 mb-6">
+<button id="prev-btn" aria-label="Previous track" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+<path d="M8.445 14.832A1 1 0 0110 14v-2.798l5.445 3.63A1 1 0 0117 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path>
+</svg>
+</button>
+  
+<button id="load-embed-btn" aria-label="Load embedded player" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors">
+Load Player
+</button>
+  
+<button id="next-btn" aria-label="Next track" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+<path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z"></path>
+</svg>
+</button>
+</div>
 
-  bindEvents() {
-    // Previous/Next buttons
-    document.getElementById('prev-btn').addEventListener('click', () => {
-      this.previousTrack();
-    });
+<!-- Playlist -->
+<div class="playlist">
+<h4 class="text-white font-semibold mb-3">Playlist</h4>
+<div id="playlist-container" class="space-y-2 max-h-64 overflow-y-auto">
+<!-- Playlist items will be rendered here -->
+</div>
+</div>
+</div>
+`;
+}
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
 
-    document.getElementById('next-btn').addEventListener('click', () => {
-      this.nextTrack();
-    });
+bindEvents() {
+// Previous/Next buttons
+document.getElementById('prev-btn').addEventListener('click', () => {
+this.previousTrack();
+});
 
-    // Load embedded player
-    document.getElementById('load-embed-btn').addEventListener('click', () => {
-      this.loadEmbeddedPlayer();
-    });
+document.getElementById('next-btn').addEventListener('click', () => {
+this.nextTrack();
+});
 
+// Load embedded player
+document.getElementById('load-embed-btn').addEventListener('click', () => {
+this.loadEmbeddedPlayer();
+});
+
+<<<<<<< HEAD
     // Copy sharable link to clipboard (uses current URL state)
     document.getElementById('copy-link-btn').addEventListener('click', async () => {
       try {
@@ -626,8 +729,146 @@ class WavgenMusicPlayer {
       clearInterval(this._visTimer); this._visTimer = null;
       clearInterval(this._waveTimer); this._waveTimer = null;
     }
-  }
+=======
+// Genre filter
+document.getElementById('genre-select').addEventListener('change', (e) => {
+this.filterByGenre(e.target.value);
+});
+}
 
+loadTrack(index) {
+const filteredTracks = this.getFilteredTracks();
+if (index >= 0 && index < filteredTracks.length) {
+this.currentTrack = filteredTracks[index];
+this.currentIndex = index;
+  
+// Update UI
+document.getElementById('current-title').textContent = this.currentTrack.title;
+document.getElementById('current-artist').textContent = this.currentTrack.artist;
+document.getElementById('current-genre').textContent = this.currentTrack.genre.toUpperCase();
+document.getElementById('current-duration').textContent = this.currentTrack.duration;
+document.getElementById('current-release-date').textContent = this.currentTrack.releaseDate || 'Release Date';
+  
+// Update streaming platform links
+this.updateStreamingLinks();
+  
+// Update track description
+document.getElementById('track-description').textContent = this.currentTrack.description || '';
+  
+// Hide embedded player until loaded
+document.getElementById('embedded-player-container').classList.add('hidden');
+  
+this.updatePlaylistHighlight();
+}
+}
+
+updateStreamingLinks() {
+const container = document.getElementById('streaming-links');
+const platforms = this.currentTrack.platforms;
+  
+const platformButtons = [];
+  
+if (platforms.bandcamp) {
+platformButtons.push(`
+<a href="${platforms.bandcamp}" target="_blank" class="platform-btn bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+🎵 Bandcamp
+</a>
+`);
+}
+  
+if (platforms.soundcloud) {
+platformButtons.push(`
+<a href="${platforms.soundcloud}" target="_blank" class="platform-btn bg-orange-500 hover:bg-orange-400 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+🔊 SoundCloud
+</a>
+`);
+}
+  
+if (platforms.appleMusic) {
+platformButtons.push(`
+<a href="${platforms.appleMusic}" target="_blank" class="platform-btn bg-gray-900 hover:bg-gray-800 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+🍎 Apple Music
+</a>
+`);
+}
+  
+if (platforms.youtube) {
+platformButtons.push(`
+<a href="${platforms.youtube}" target="_blank" class="platform-btn bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+📺 YouTube
+</a>
+`);
+}
+  
+container.innerHTML = platformButtons.join('');
+}
+
+// EDUCATIONAL: SoundCloud Iframe Embed Integration Method
+// This method demonstrates how to integrate third-party streaming services
+// Key concepts: DOM manipulation, error handling, iframe security, user experience
+loadEmbeddedPlayer() {
+// EDUCATIONAL: DOM Element Selection
+// Get references to the container elements where we'll inject the player
+// Using getElementById is efficient for unique elements
+const container = document.getElementById('embedded-player'); // Inner container for iframe
+const playerContainer = document.getElementById('embedded-player-container'); // Outer container for visibility control
+  
+// EDUCATIONAL: Error Handling and Graceful Degradation
+// Always check if required data exists before attempting to use it
+// This prevents JavaScript errors and provides better user experience
+if (!this.currentTrack || !this.currentTrack.embedHtml) {
+// EDUCATIONAL: Fallback UI Pattern
+// When primary functionality isn't available, show helpful alternatives
+// This maintains user engagement and provides alternative paths to content
+container.innerHTML = `
+<div class="bg-gray-800 rounded-lg p-6 text-center">
+<div class="text-wavgen-yellow mb-3">
+<svg class="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+</svg>
+</div>
+<h4 class="text-white font-semibold mb-2">Embed Not Available</h4>
+<p class="text-gray-300 mb-4">Use the platform links above to listen on your preferred streaming service:</p>
+<div class="space-y-2">
+<p class="text-sm text-gray-400">🎵 Bandcamp • 🔊 SoundCloud • 🍎 Apple Music • 📺 YouTube</p>
+</div>
+</div>
+`;
+// EDUCATIONAL: CSS Class Manipulation for UI State Management
+// Remove 'hidden' class to make the player container visible
+// This is a common pattern for showing/hiding UI elements
+playerContainer.classList.remove('hidden');
+return; // Exit early when no embed is available
+}
+  
+// EDUCATIONAL: Official Third-Party Embed Integration
+// This demonstrates the proper way to integrate official embed codes
+// Using innerHTML with official iframe HTML ensures:
+// - Full platform functionality (play controls, comments, sharing)
+// - Proper security attributes and permissions
+// - Consistent visual design from the platform
+// - Automatic updates when the platform updates their player
+container.innerHTML = this.currentTrack.embedHtml;
+// Accessibility and performance: ensure iframe has descriptive title and lazy loading
+const iframe = container.querySelector('iframe');
+if (iframe) {
+  try {
+    const titleText = `SoundCloud player: ${this.currentTrack.title} by ${this.currentTrack.artist}`;
+    iframe.setAttribute('title', titleText);
+    iframe.setAttribute('loading', 'lazy');
+  } catch (e) {
+    // no-op: if attributes cannot be set, fail silently
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
+  }
+}
+  
+// EDUCATIONAL: UI State Management
+// Show the player container now that we have content to display
+// This creates a smooth user experience with content appearing when ready
+playerContainer.classList.remove('hidden');
+}
+
+<<<<<<< HEAD
   persistFilters() {
     try {
       const obj = { genre: this.currentGenre, year: this.selectedYear, preset: this.selectedPreset };
@@ -838,6 +1079,63 @@ class WavgenMusicPlayer {
           <div>
             <h5 class="text-white font-medium">${t.title}</h5>
             <p class="text-gray-400 text-xs">${t.artist} • ${(t.genre||'').toUpperCase()} • ${t.duration || ''}</p>
+=======
+previousTrack() {
+const filteredTracks = this.getFilteredTracks();
+let newIndex = this.currentIndex - 1;
+if (newIndex < 0) newIndex = filteredTracks.length - 1;
+this.loadTrack(newIndex);
+}
+
+nextTrack() {
+const filteredTracks = this.getFilteredTracks();
+let newIndex = this.currentIndex + 1;
+if (newIndex >= filteredTracks.length) newIndex = 0;
+this.loadTrack(newIndex);
+}
+
+filterByGenre(genre) {
+this.currentGenre = genre;
+// Sync dropdown in case the change originated elsewhere
+const genreSelect = document.getElementById('genre-select');
+if (genreSelect && genreSelect.value !== genre) {
+genreSelect.value = genre;
+}
+this.renderPlaylist();
+// After filtering, load the first track in the filtered list
+this.loadTrack(0);
+}
+
+getFilteredTracks() {
+if (this.currentGenre === 'all') {
+return this.tracks;
+}
+return this.tracks.filter(track => track.genre === this.currentGenre);
+}
+
+renderPlaylist() {
+const container = document.getElementById('playlist-container');
+const filteredTracks = this.getFilteredTracks();
+    
+    // Accessibility: identify the playlist as a listbox for assistive tech
+    if (container) {
+      container.setAttribute('role', 'listbox');
+    }
+
+    container.innerHTML = filteredTracks.map((track, index) => `
+      <div class="playlist-item bg-gray-700 hover:bg-gray-600 rounded-lg p-3 cursor-pointer transition-colors ${
+        this.currentTrack && this.currentTrack.id === track.id ? 'ring-2 ring-wavgen-yellow' : ''
+      }" data-index="${index}" role="option" tabindex="0" aria-selected="${
+        this.currentTrack && this.currentTrack.id === track.id ? 'true' : 'false'
+      }">
+        <div class="flex items-center justify-between">
+          <div class="flex-1">
+            <h5 class="text-white font-medium">${track.title}</h5>
+            <p class="text-gray-400 text-sm">${track.genre.toUpperCase()} • ${track.duration}</p>
+            <div class="flex flex-wrap gap-1 mt-1">
+              ${track.tags.map(tag => `<span class="text-wavgen-yellow text-xs">#${tag}</span>`).join(' ')}
+            </div>
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
           </div>
         </div>
         <button class="text-xs px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-600" data-index="${idx}">Play</button>
@@ -850,6 +1148,13 @@ class WavgenMusicPlayer {
         // Ignore clicks originating from the Play button (handled separately)
         if ((evt.target && evt.target.closest('button'))) return;
         this.loadTrack(idx);
+      });
+      // Keyboard accessibility: Enter/Space to activate list item
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.loadTrack(index);
+        }
       });
     });
     wrap.querySelectorAll('button[data-index]').forEach(btn => {
@@ -873,6 +1178,7 @@ class WavgenMusicPlayer {
     this.updateLiveRegions();
   }
 
+<<<<<<< HEAD
   // Change genre via select; respect forcedGenre
   filterByGenre(value) {
     if (this.forcedGenre) {
@@ -911,6 +1217,19 @@ class WavgenMusicPlayer {
     if (wrap) wrap.classList.remove('hidden');
     this.isPlaying = true;
     this.syncVisualizer();
+=======
+  updatePlaylistHighlight() {
+    const items = document.querySelectorAll('.playlist-item');
+    items.forEach((item, index) => {
+      if (index === this.currentIndex) {
+        item.classList.add('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'true');
+      } else {
+        item.classList.remove('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'false');
+      }
+    });
+>>>>>>> 75e6685704ad5cbe1ea6ae3a5c19d8a74dfde720
   }
 }
 
