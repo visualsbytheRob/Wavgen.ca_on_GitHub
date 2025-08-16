@@ -139,7 +139,38 @@ class WavgenVideoPlayer {
     this.createPlayerHTML();
     this.bindEvents();
     this.renderPlaylist();
-    this.loadVideo(0);
+    // Apply deep-link (if present) or load first video
+    const applied = this.applyDeepLinkFromUrl();
+    if (!applied) {
+      this.loadVideo(0);
+    }
+    // Handle browser navigation (back/forward)
+    window.addEventListener('popstate', () => {
+      this.applyDeepLinkFromUrl(true);
+    });
+
+    // Global keyboard shortcuts (J/Left = prev, K/Right = next, F = fullscreen)
+    document.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement && document.activeElement.tagName;
+      // Avoid interfering while typing in inputs/textareas
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
+      if (e.key === 'j' || e.key === 'J' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const live = document.getElementById('video-live');
+        if (live) live.textContent = 'Previous video';
+        this.previousVideo();
+      } else if (e.key === 'k' || e.key === 'K' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const live = document.getElementById('video-live');
+        if (live) live.textContent = 'Next video';
+        this.nextVideo();
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        const live = document.getElementById('video-live');
+        if (live) live.textContent = 'Toggling fullscreen';
+        this.toggleFullscreen();
+      }
+    });
   }
 
   createPlayerHTML() {
@@ -148,6 +179,8 @@ class WavgenVideoPlayer {
 
     playerContainer.innerHTML = `
       <div class="video-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-yellow p-6 shadow-2xl">
+        <!-- Live region for accessibility announcements -->
+        <div id="video-live" class="sr-only" aria-live="polite"></div>
         <!-- Player Header -->
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-white">Video Showcase</h3>
@@ -208,34 +241,54 @@ class WavgenVideoPlayer {
         </div>
 
         <!-- Player Controls -->
-        <div class="player-controls flex items-center justify-center space-x-4 mb-6">
-          <button id="prev-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+        <p id="video-controls-help" class="sr-only">Keyboard shortcuts: J or Left Arrow for previous video, K or Right Arrow for next video, F for fullscreen. In the playlist, Enter or Space activates an item.</p>
+        <div class="player-controls flex items-center justify-center space-x-4 mb-6" role="group" aria-label="Video player controls" aria-describedby="video-controls-help">
+          <button id="prev-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors" aria-label="Previous video">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path>
             </svg>
           </button>
           
-          <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors">
+          <button id="load-video-btn" class="control-btn bg-wavgen-yellow hover:bg-yellow-400 text-black px-6 py-3 rounded-full font-medium transition-colors" aria-label="Load embedded video">
             Load Video
           </button>
           
-          <button id="next-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors">
+          <button id="next-video-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors" aria-label="Next video">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z"></path>
             </svg>
           </button>
           
-          <button id="fullscreen-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors ml-4">
+          <button id="fullscreen-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full transition-colors ml-4" aria-label="Toggle fullscreen">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd"></path>
             </svg>
           </button>
+
+          <button id="copy-video-link-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-full transition-colors" aria-label="Copy link to current video">
+            Copy Link
+          </button>
+
+          <div class="relative inline-block">
+            <button id="video-help-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-full transition-colors" aria-haspopup="true" aria-expanded="false" aria-controls="video-help-popover">
+              <span aria-hidden="true" class="mr-1">❓</span> Help
+            </button>
+            <div id="video-help-popover" role="dialog" aria-label="Video player keyboard shortcuts" tabindex="-1" class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-gray-800 text-gray-200 text-sm rounded-lg border border-wavgen-yellow p-3 shadow-xl z-10">
+              <p class="font-semibold text-white mb-1">Keyboard shortcuts</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li><span class="text-wavgen-yellow">J</span> or <span class="text-wavgen-yellow">Left Arrow</span>: Previous video</li>
+                <li><span class="text-wavgen-yellow">K</span> or <span class="text-wavgen-yellow">Right Arrow</span>: Next video</li>
+                <li><span class="text-wavgen-yellow">F</span>: Toggle fullscreen</li>
+                <li><span class="text-wavgen-yellow">Enter/Space</span>: Activate focused playlist item</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Video Playlist -->
         <div class="video-playlist">
           <h4 class="text-white font-semibold mb-3">Video Playlist</h4>
-          <div id="video-playlist-container" class="grid md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+          <div id="video-playlist-container" class="grid md:grid-cols-2 gap-4 max-h-96 overflow-y-auto" role="listbox" aria-label="Video playlist">
             <!-- Playlist items will be rendered here -->
           </div>
         </div>
@@ -262,6 +315,71 @@ class WavgenVideoPlayer {
     document.getElementById('fullscreen-btn').addEventListener('click', () => {
       this.toggleFullscreen();
     });
+
+    // Copy link button
+    const copyBtn = document.getElementById('copy-video-link-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          const url = new URL(window.location.href);
+          if (this.currentVideo) url.searchParams.set('video', String(this.currentVideo.id));
+          if (this.currentCategory && this.currentCategory !== 'all') {
+            url.searchParams.set('category', this.currentCategory);
+          } else {
+            url.searchParams.delete('category');
+          }
+          await navigator.clipboard.writeText(url.toString());
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => (copyBtn.textContent = 'Copy Link'), 1200);
+        } catch (_) {
+          alert('Copy failed. You can copy the URL from the address bar.');
+        }
+      });
+    }
+
+    // Help popover toggle
+    const helpBtn = document.getElementById('video-help-btn');
+    const helpPopover = document.getElementById('video-help-popover');
+    if (helpBtn && helpPopover) {
+      const hideHelp = () => {
+        helpPopover.classList.add('hidden');
+        helpBtn.setAttribute('aria-expanded', 'false');
+      };
+      const showHelp = () => {
+        helpPopover.classList.remove('hidden');
+        helpBtn.setAttribute('aria-expanded', 'true');
+      };
+      helpBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = helpPopover.classList.contains('hidden');
+        if (isHidden) showHelp(); else hideHelp();
+      });
+      // Open on keyboard focus
+      helpBtn.addEventListener('focus', () => {
+        showHelp();
+      });
+      // Manage blur from button or popover: close if focus leaves both
+      const onPotentialBlur = () => {
+        setTimeout(() => {
+          const ae = document.activeElement;
+          const stillInside = ae === helpBtn || ae === helpPopover || (helpPopover.contains && helpPopover.contains(ae));
+          if (!stillInside) hideHelp();
+        }, 0);
+      };
+      helpBtn.addEventListener('blur', onPotentialBlur);
+      helpPopover.addEventListener('blur', onPotentialBlur, true);
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!helpPopover.classList.contains('hidden')) {
+          const target = e.target;
+          if (!helpPopover.contains(target) && target !== helpBtn) hideHelp();
+        }
+      });
+      // Close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideHelp();
+      });
+    }
 
     // Category filter
     document.getElementById('category-select').addEventListener('change', (e) => {
@@ -298,10 +416,23 @@ class WavgenVideoPlayer {
         <p><strong>Tools Used:</strong> ${this.currentVideo.tools.join(', ')}</p>
       `;
       
+      // Announce current selection via live region
+      try {
+        const live = document.getElementById('video-live');
+        if (live) {
+          live.textContent = `Selected video: ${this.currentVideo.title} (${this.currentVideo.category}).`;
+        }
+      } catch (_) { /* no-op */ }
+
       // Reset video container
-      document.getElementById('video-placeholder').style.display = 'flex';
-      
-      this.updatePlaylistHighlight();
+      // Ensure active playlist item is visible
+      try {
+        const items = document.querySelectorAll('.video-playlist-item');
+        const active = items[this.currentIndex];
+        if (active && typeof active.scrollIntoView === 'function') {
+          active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      } catch (_) { /* no-op */ }
     }
   }
 
@@ -347,7 +478,7 @@ class WavgenVideoPlayer {
         src="${this.currentVideo.embedUrl}" 
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
+        loading="lazy" allowfullscreen>
       </iframe>
     `;
     
@@ -382,6 +513,15 @@ class WavgenVideoPlayer {
   filterByCategory(category) {
     this.currentCategory = category;
     this.renderPlaylist();
+    // Adjust currentIndex to valid range after filtering
+    const filtered = this.getFilteredVideos();
+    if (filtered.length) {
+      // If currentVideo no longer in filtered set, reset to first
+      const idx = filtered.findIndex(v => this.currentVideo && v.id === this.currentVideo.id);
+      const nextIndex = idx >= 0 ? idx : 0;
+      this.loadVideo(nextIndex);
+    }
+    this.updateUrlDeepLink();
   }
 
   getFilteredVideos() {
@@ -396,9 +536,9 @@ class WavgenVideoPlayer {
     const filteredVideos = this.getFilteredVideos();
     
     container.innerHTML = filteredVideos.map((video, index) => `
-      <div class="video-playlist-item bg-gray-700 hover:bg-gray-600 rounded-lg p-4 cursor-pointer transition-colors ${
+      <div class="video-playlist-item bg-gray-700 hover:bg-gray-600 rounded-lg p-4 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-wavgen-yellow ${
         this.currentVideo && this.currentVideo.id === video.id ? 'ring-2 ring-wavgen-yellow' : ''
-      }" data-index="${index}">
+      }" data-index="${index}" role="option" aria-selected="${this.currentVideo && this.currentVideo.id === video.id ? 'true' : 'false'}" tabindex="0">
         <div class="flex items-center space-x-3">
           <div class="video-thumbnail w-20 h-12 bg-gradient-to-br from-wavgen-purple to-wavgen-yellow rounded flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -425,7 +565,28 @@ class WavgenVideoPlayer {
       item.addEventListener('click', () => {
         this.loadVideo(index);
       });
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.loadVideo(index);
+        }
+      });
     });
+
+    // GSAP entrance animation for playlist items (respect reduced motion)
+    try {
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const g = window.gsap || gsap;
+      if (!reduceMotion && g && typeof g.from === 'function') {
+        g.from('#video-playlist-container .video-playlist-item', {
+          opacity: 0,
+          y: 10,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: 'power2.out'
+        });
+      }
+    } catch (_) { /* no-op */ }
   }
 
   updatePlaylistHighlight() {
@@ -433,10 +594,84 @@ class WavgenVideoPlayer {
     items.forEach((item, index) => {
       if (index === this.currentIndex) {
         item.classList.add('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'true');
       } else {
         item.classList.remove('ring-2', 'ring-wavgen-yellow');
+        item.setAttribute('aria-selected', 'false');
       }
     });
+  }
+
+  // =============================
+  // Deep-linking: ?video=<id>&category=<name>
+  // =============================
+  getVideoById(id) {
+    return this.videos.find(v => String(v.id) === String(id));
+  }
+
+  applyDeepLinkFromUrl(isPop = false) {
+    try {
+      const url = new URL(window.location.href);
+      const vidParam = url.searchParams.get('video');
+      const catParam = url.searchParams.get('category');
+
+      if (catParam && ['all','realtime','mapping','mixing','editing'].includes(catParam)) {
+        this.currentCategory = catParam;
+        const select = document.getElementById('category-select');
+        if (select) select.value = catParam;
+        this.renderPlaylist();
+      }
+
+      if (vidParam) {
+        // Find index within filtered set
+        const filtered = this.getFilteredVideos();
+        const idx = filtered.findIndex(v => String(v.id) === String(vidParam));
+        if (idx >= 0) {
+          this.loadVideo(idx);
+          return true;
+        }
+      }
+
+      // If nothing applied from URL, try localStorage persistence
+      try {
+        const lastId = localStorage.getItem('wavgen_video_last_id');
+        const lastCat = localStorage.getItem('wavgen_video_last_category');
+        if (lastCat && ['all','realtime','mapping','mixing','editing'].includes(lastCat)) {
+          this.currentCategory = lastCat;
+          const select = document.getElementById('category-select');
+          if (select) select.value = lastCat;
+          this.renderPlaylist();
+        }
+        if (lastId) {
+          const filtered = this.getFilteredVideos();
+          const idx = filtered.findIndex(v => String(v.id) === String(lastId));
+          if (idx >= 0) {
+            this.loadVideo(idx);
+            return true;
+          }
+        }
+      } catch (_) { /* no-op */ }
+
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  updateUrlDeepLink() {
+    try {
+      const url = new URL(window.location.href);
+      if (this.currentVideo) {
+        url.searchParams.set('video', String(this.currentVideo.id));
+      }
+      if (this.currentCategory && this.currentCategory !== 'all') {
+        url.searchParams.set('category', this.currentCategory);
+      } else {
+        url.searchParams.delete('category');
+      }
+      // Avoid adding duplicate history entries during interaction
+      window.history.replaceState({}, '', url.toString());
+    } catch (_) { /* no-op */ }
   }
 }
 

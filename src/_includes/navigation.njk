@@ -18,7 +18,7 @@ Only the first navigation item is commented in detail; all following items are a
     <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
       <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
-      <button id="close-mobile-nav" class="text-white hover:text-wavgen-yellow">
+      <button id="close-mobile-nav" class="control-btn text-white hover:text-wavgen-yellow">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
@@ -44,6 +44,7 @@ Only the first navigation item is commented in detail; all following items are a
         {% else %}
           <span class="block text-red-400 py-4">Navigation data not found!</span>
         {% endif %}
+        <!-- Theme toggle and command palette hint removed per request -->
       </nav>
     </div>
   </div>
@@ -61,7 +62,7 @@ Only the first navigation item is commented in detail; all following items are a
       </div>
 
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-wavgen-yellow">
+      <button id="mobile-menu-btn" class="control-btn lg:hidden text-white hover:text-wavgen-yellow">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -85,6 +86,7 @@ Only the first navigation item is commented in detail; all following items are a
             {% endif %}
           </div>
         {% endfor %}
+        <!-- Theme toggle and Ctrl+K buttons removed per request -->
       </nav>
     </div>
   </div>

@@ -110,16 +110,16 @@ class WavgenDataAppEmbed {
 
           <!-- Tab Navigation -->
           <div class="tab-navigation flex space-x-1 mb-4 bg-gray-700 rounded-lg p-1">
-            <button id="preview-tab" class="tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-wavgen-yellow text-black">
+            <button id="preview-tab" class="control-btn tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-wavgen-yellow text-black">
               Preview
             </button>
-            <button id="code-tab" class="tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
+            <button id="code-tab" class="control-btn tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
               Code
             </button>
-            <button id="features-tab" class="tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
+            <button id="features-tab" class="control-btn tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
               Features
             </button>
-            <button id="demo-tab" class="tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
+            <button id="demo-tab" class="control-btn tab-btn flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white">
               Live Demo
             </button>
           </div>
@@ -168,7 +168,7 @@ class WavgenDataAppEmbed {
                     </svg>
                     <h5 class="text-lg font-semibold mb-2">Live Demo</h5>
                     <p class="text-gray-300 mb-4" id="demo-status-text">Demo will be available when project is live</p>
-                    <button id="launch-demo-btn" class="bg-wavgen-yellow text-black px-4 py-2 rounded-lg font-medium hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <button id="launch-demo-btn" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-lg font-medium hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                       Launch Demo
                     </button>
                   </div>
@@ -267,7 +267,7 @@ class WavgenDataAppEmbed {
     
     if (this.currentApp.liveUrl) {
       links.push(`
-        <a href="${this.currentApp.liveUrl}" target="_blank" class="platform-btn bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+        <a href="${this.currentApp.liveUrl}" target="_blank" class="control-btn platform-btn bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
           🚀 Live Demo
         </a>
       `);
@@ -275,7 +275,7 @@ class WavgenDataAppEmbed {
     
     if (this.currentApp.githubUrl) {
       links.push(`
-        <a href="${this.currentApp.githubUrl}" target="_blank" class="platform-btn bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+        <a href="${this.currentApp.githubUrl}" target="_blank" class="control-btn platform-btn bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
           💻 GitHub
         </a>
       `);

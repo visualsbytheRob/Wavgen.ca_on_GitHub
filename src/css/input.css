@@ -56,7 +56,17 @@
    * - Smooth transitions for interactivity
    */
   .section-card {
-    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow motion-reduce:transform-none motion-reduce:transition-none;
+  }
+
+  /*
+   * .control-btn
+   * Shared styles for interactive control buttons (e.g., player controls).
+   * - Ensures visible focus indicator for keyboard users
+   * - Smooth transitions and no outline artifacts
+   */
+  .control-btn {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow transition-colors duration-200;
   }
   
     /*

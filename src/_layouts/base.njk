@@ -14,14 +14,30 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <title>{% if title %}{{ title }} - {% endif %}The Waveform Generation</title>
   <meta name="description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
 
+  {# Early theme init to avoid flash of incorrect theme. Sets 'dark' class on <html> if needed. #}
+  <script>
+    (function() {
+      try {
+        var ls = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (ls === 'dark' || (!ls && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <link href="/css/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
 </head>
-<body class="relative z-0 bg-gray-900 text-white font-roboto">
+<body class="relative z-0 bg-gray-900 text-white font-roboto dark:bg-gray-900 dark:text-white bg-white text-gray-900">
+  <!-- Skip to content removed per request -->
   
   {% include "navigation.njk" %}
 
-  <main class="relative z-10">
+  <main id="main-content" class="relative z-10" role="main">
     {{ content | safe }}
   </main>
 
@@ -41,6 +57,9 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Load after GSAP to ensure GSAP is available -->
   <script src="/js/gallery.js"></script>
   <script src="/js/main.js"></script>
+  {% if page.url == '/' %}
+  <script defer src="/js/home.js"></script>
+  {% endif %}
 
   <!-- Modal Markup for Gallery (hidden by default, shown by JS) -->
   <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
@@ -49,6 +68,19 @@ This is the main layout template for all pages in the Wavgen.ca site.
     <img class="modal-content max-h-[50vh] max-w-[60vw] mx-auto rounded shadow-2xl" id="img01">
     <button id="nextBtn" class="absolute right-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8594;</button>
     <div id="caption" class="text-center text-white mt-4"></div>
+  </div>
+
+  <!-- Command Palette Modal -->
+  <div id="cmdk" class="fixed inset-0 z-[10001] hidden">
+    <div id="cmdk-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="relative mx-auto mt-24 w-11/12 max-w-2xl rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-white shadow-xl ring-1 ring-black/10">
+      <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+        <input id="cmdk-input" type="text" placeholder="Search pages, tracks, and actions... (Ctrl+K)" class="w-full bg-transparent outline-none text-lg px-2 py-1" />
+      </div>
+      <div id="cmdk-results" class="max-h-80 overflow-y-auto p-2 text-sm">
+        <!-- Results populated by JS -->
+      </div>
+    </div>
   </div>
 
   <style>

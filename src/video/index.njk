@@ -24,17 +24,17 @@ This file defines the Video landing page for the site.
 </nav>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-purple-900 via-wavgen-dark-purple to-indigo-900 py-20">
+<section id="video-hero" class="relative bg-gradient-to-br from-purple-900 via-wavgen-dark-purple to-indigo-900 py-20">
     <div class="absolute inset-0 bg-black opacity-30"></div>
     <div class="container mx-auto px-4 relative z-10">
         <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
+            <h1 class="video-hero-title text-5xl md:text-7xl font-bold text-white mb-6">
                 Digital Video <span class="text-wavgen-yellow">Innovation</span>
             </h1>
-            <p class="text-xl md:text-2xl text-purple-200 mb-8">
+            <p class="video-hero-sub text-xl md:text-2xl text-purple-200 mb-8">
                 Real-time Graphics & Visual Technology
             </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+            <p class="video-hero-desc text-lg text-gray-300 max-w-2xl mx-auto">
                 Exploring the frontiers of digital video art and technology. Real-time 3D graphics meet projection mapping 
                 and live video mixing to create immersive visual experiences that blend the digital and physical worlds.
             </p>
@@ -52,11 +52,11 @@ This file defines the Video landing page for the site.
 </section>
 
 <!-- Video Technologies Grid -->
-<section class="py-20 bg-gray-800">
+<section id="video-tech" class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {# First technology card: Realtime. All cards below use the same structure. #}
-            <div class="section-card group cursor-pointer" onclick="window.location.href='/video/realtime/'"> {# Card container, clickable, links to Realtime subpage #}
+            <a href="/video/realtime/" class="section-card video-card group block focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow transition-transform transition-shadow duration-300 hover:-translate-y-1 hover:shadow-2xl motion-reduce:transform-none motion-reduce:transition-none" aria-label="Realtime visuals" title="Realtime: Generative 3D AV with TouchDesigner and Unreal Engine">
                 <div class="text-center"> {# Centers content inside the card #}
                     <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"> {# Icon background: colored, circular, animated on hover #}
                         <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"> {# SVG icon for this technology #}
@@ -69,10 +69,10 @@ This file defines the Video landing page for the site.
                         TouchDesigner • Unreal Engine • Interactive
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Mapping -->
-            <div class="section-card group cursor-pointer" onclick="window.location.href='/video/mapping/'">
+            <a href="/video/mapping/" class="section-card video-card group block focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow transition-transform transition-shadow duration-300 hover:-translate-y-1 hover:shadow-2xl motion-reduce:transform-none motion-reduce:transition-none" aria-label="Projection mapping" title="Mapping: Projection on objects and architecture">
                 <div class="text-center">
                     <div class="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -85,10 +85,10 @@ This file defines the Video landing page for the site.
                         Projection • 3D Objects • Architecture
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Mixing -->
-            <div class="section-card group cursor-pointer" onclick="window.location.href='/video/mixing/'">
+            <a href="/video/mixing/" class="section-card video-card group block focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow transition-transform transition-shadow duration-300 hover:-translate-y-1 hover:shadow-2xl motion-reduce:transform-none motion-reduce:transition-none" aria-label="Live video mixing" title="Mixing: Live performance visuals and VJ sets">
                 <div class="text-center">
                     <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -101,10 +101,10 @@ This file defines the Video landing page for the site.
                         Live Performance • VJ Sets • Real-time
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Editing -->
-            <div class="section-card group cursor-pointer" onclick="window.location.href='/video/editing/'">
+            <a href="/video/editing/" class="section-card video-card group block focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow transition-transform transition-shadow duration-300 hover:-translate-y-1 hover:shadow-2xl motion-reduce:transform-none motion-reduce:transition-none" aria-label="Video editing" title="Editing: Post-production workflows and techniques">
                 <div class="text-center">
                     <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -117,9 +117,9 @@ This file defines the Video landing page for the site.
                         Post-production • Cinematic • Workflows
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
 
-<script src="/js/video-player.js"></script>
+<script src="/js/video-player.js" defer></script>

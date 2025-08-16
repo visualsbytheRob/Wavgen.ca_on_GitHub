@@ -9,6 +9,8 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Enable class-based dark mode so we can toggle theme via JS by adding/removing 'dark' on <html>
+  darkMode: 'class',
   // 'content': List of files and patterns Tailwind should scan for class names
   // This ensures all used classes are included in the final CSS
 
@@ -57,6 +59,19 @@ module.exports = {
     'md:h-[900px]',
     'lg:h-[550px]',
     'lg:h-[600px]',
+
+    // Theme toggle and command palette utilities that may be injected/toggled at runtime
+    'dark',
+    'bg-white',
+    'bg-gray-900',
+    'text-gray-900',
+    'text-white',
+    'backdrop-blur',
+    'backdrop-blur-sm',
+    'backdrop-blur-md',
+    'outline-none',
+    'ring-2',
+    'ring-wavgen-yellow',
   ],
   theme: {
     extend: {

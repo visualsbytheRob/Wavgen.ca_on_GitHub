@@ -34,7 +34,7 @@ footerTagline: Exploring the intersection of creativity and technology.
         {%- for background in collections.backgrounds %}
           {# Loop through all background images from the backgrounds collection #}
           {# Each image is positioned absolutely to cover the full section area #}
-          <img src="{{ background.url }}" alt="Background" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.4{% else %}0{% endif %};">
+          <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.4{% else %}0{% endif %};">
           {# 
             CSS Classes Explained:
             - hero-section-bg-slide: Target class for GSAP animations in gallery.js
@@ -86,11 +86,11 @@ footerTagline: Exploring the intersection of creativity and technology.
                     #}
                     
                     {# Include the original 1.gif as the starting image #}
-                    <img src="/images/1.gif" alt="Background" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
+                    <img src="/images/1.gif" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
                     
                     {# Loop through background collection images #}
                     {%- for background in collections.backgrounds %}
-                      <img src="{{ background.url }}" alt="Background" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
+                      <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
                       {# 
                         Each background image starts hidden (opacity: 0) and will be
                         animated to 100% opacity by GSAP when it's the active slide.
@@ -123,68 +123,201 @@ footerTagline: Exploring the intersection of creativity and technology.
                         <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
                         <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
                     </div>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#portfolio" class="bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <a id="hero-cta" href="#portfolio" class="control-btn bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300 relative overflow-hidden">
                             Explore My Work
                         </a>
-                        <a href="#about" class="border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
+                        <a href="#about" class="control-btn border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
                             Learn More
                         </a>
+                        <button id="cmdk-hint" class="control-btn text-sm px-3 py-2 rounded bg-black/30 text-white hover:bg-black/40" aria-haspopup="dialog" aria-controls="cmdk" aria-label="Open command palette (Ctrl+K)">Ctrl+K Tips</button>
                     </div>
                 </div>
             </div>
 
             <!-- Hero Visual Slideshow -->
-<div class="w-full max-w-md mx-auto mt-8">
-  <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="aspect-ratio: 4/3;">
-    <img src="/images/1.gif" alt="Demo GIF" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
+<div class="w-full mx-auto mt-8">
+  <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
+    <img src="/images/1.gif" alt="Demo GIF" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
     {%- for texture in collections.textures %}
-      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
     {%- endfor %}
   </div>
 </div>
 
 <!-- Texture Marquee Carousel (Auto-Scrolling) -->
-<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden" style="height: 180px;">
+<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 240px;">
   <div class="marquee-track flex items-center" style="width: max-content;">
     {%- for texture in collections.textures %}
-      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 150px; object-fit: cover;">
+      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 240px; height: 200px; object-fit: cover;">
     {%- endfor %}
   </div>
 </div>
-            <div class="relative">
-                <div class="w-full max-w-md mx-auto">
-                    <div class="relative">
-                        <!-- Animated background elements -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-wavgen-purple to-wavgen-yellow rounded-full opacity-20 animate-pulse-slow"></div>
-                        <div class="relative bg-wavgen-dark-purple rounded-lg p-8 border-2 border-wavgen-yellow">
-                            <div class="grid grid-cols-4 gap-2 mb-4">
-                                <div class="h-8 bg-wavgen-yellow rounded animate-pulse"></div>
-                                <div class="h-12 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.1s"></div>
-                                <div class="h-6 bg-wavgen-yellow rounded animate-pulse" style="animation-delay: 0.2s"></div>
-                                <div class="h-10 bg-wavgen-light-purple rounded animate-pulse" style="animation-delay: 0.3s"></div>
-                            </div>
-                            <div class="text-center">
-                                <h3 class="text-wavgen-yellow font-bold text-lg mb-2">The Waveform Generation</h3>
-                                <p class="text-gray-300 text-sm">Where creativity meets technology</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+<!-- What's New Panel: title on top, scrolling cards below -->
+<section aria-label="What's new" class="relative">
+  <div class="container mx-auto px-4">
+    <div id="whats-new" class="my-12 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 240px;">
+      <!-- Title header (separate from scroller to avoid overlap) -->
+      <div class="w-full border-b border-wavgen-yellow/40 bg-black/30" style="height: 56px;">
+        <h3 class="text-center text-wavgen-yellow font-bold text-2xl leading-[56px]">What's new</h3>
+      </div>
+      <!-- Scrolling track area (fixed height to form a square-ish block) -->
+      <div class="relative" style="height: calc(240px - 56px);">
+        <div class="whats-new-track absolute inset-0 flex items-center gap-6 px-4 will-change-transform"></div>
+      </div>
+    </div>
+  </div>
+  {# Server-side fallback if collections exist #}
+  <div class="sr-only">
+    {% if collections.music %}
+      {% for item in collections.music | reverse | slice(0,2) %}
+        <a href="{{ item.url }}">Music: {{ item.data.title or item.fileSlug }}</a>
+      {% endfor %}
+    {% endif %}
+    {% if collections.video %}
+      {% for item in collections.video | reverse | slice(0,2) %}
+        <a href="{{ item.url }}">Video: {{ item.data.title or item.fileSlug }}</a>
+      {% endfor %}
+    {% endif %}
+    {% if collections.data %}
+      {% for item in collections.data | reverse | slice(0,2) %}
+        <a href="{{ item.url }}">Data: {{ item.data.title or item.fileSlug }}</a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
         </div>
     </div>
+</section>
+
+<!-- Recent Releases -->
+<section class="py-40 bg-gray-900 border-t border-b border-white/10">
+  <div class="container mx-auto px-4">
+    <div class="h-px bg-white/10 mb-8"></div>
+    <h3 class="text-3xl font-bold mb-10">Recent releases</h3>
+    <div id="recent-releases" class="grid md:grid-cols-3 gap-8" aria-live="polite">
+      {% set m = collections.music | reverse | first %}
+      {% set v = collections.video | reverse | first %}
+      {% set d = collections.data | reverse | first %}
+
+      {% if m %}
+      <a href="{{ m.url }}" class="whats-new-card inline-flex items-center gap-4 bg-wavgen-purple/50 hover:bg-wavgen-purple/60 text-white no-underline border-2 border-wavgen-yellow rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+        <span class="inline-block w-4 h-4 rounded-full bg-wavgen-yellow"></span>
+        <span class="flex flex-col leading-tight">
+          <span class="text-sm opacity-80">Music</span>
+          <span class="text-lg font-semibold">{{ m.data.title or m.fileSlug }}</span>
+        </span>
+      </a>
+      {% endif %}
+
+      {% if v %}
+      <a href="{{ v.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/40 hover:bg-black/50 text-white no-underline border-2 border-wavgen-purple rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+        <span class="inline-block w-4 h-4 rounded-full bg-wavgen-light-purple"></span>
+        <span class="flex flex-col leading-tight">
+          <span class="text-sm opacity-80">Video</span>
+          <span class="text-lg font-semibold">{{ v.data.title or v.fileSlug }}</span>
+        </span>
+      </a>
+      {% endif %}
+
+      {% if d %}
+      <a href="{{ d.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/30 hover:bg-black/40 text-white no-underline border-2 border-wavgen-purple rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+        <span class="inline-block w-4 h-4 rounded-full bg-white"></span>
+        <span class="flex flex-col leading-tight">
+          <span class="text-sm opacity-80">Data</span>
+          <span class="text-lg font-semibold">{{ d.data.title or d.fileSlug }}</span>
+        </span>
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Explicit latest links -->
+    <div class="mt-12 grid md:grid-cols-2 gap-10">
+      <div>
+        <h4 class="text-2xl font-semibold mb-3">Latest tracks</h4>
+        <div class="md:flex md:items-start md:justify-between md:gap-6">
+          <ul class="space-y-2 list-disc list-inside md:flex-1">
+            {% if collections.music %}
+              {% for item in collections.music | reverse | slice(0,3) %}
+                <li>
+                  <a href="{{ item.url }}" class="underline text-wavgen-yellow hover:text-white">
+                    {{ item.data.title or item.fileSlug }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="text-gray-400">No tracks yet.</li>
+            {% endif %}
+          </ul>
+          <a href="/music/" class="mt-3 md:mt-0 md:ml-6 shrink-0 text-sm text-wavgen-yellow underline hover:text-white">See all Music →</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-2xl font-semibold mb-3">Latest videos</h4>
+        <div class="md:flex md:items-start md:justify-between md:gap-6">
+          <ul class="space-y-2 list-disc list-inside md:flex-1">
+            {% if collections.video %}
+              {% for item in collections.video | reverse | slice(0,3) %}
+                <li>
+                  <a href="{{ item.url }}" class="underline text-wavgen-yellow hover:text-white">
+                    {{ item.data.title or item.fileSlug }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="text-gray-400">No videos yet.</li>
+            {% endif %}
+          </ul>
+          <a href="/video/" class="mt-3 md:mt-0 md:ml-6 shrink-0 text-sm text-wavgen-yellow underline hover:text-white">See all Videos →</a>
+        </div>
+      </div>
+    </div>
+    <div class="h-px bg-white/10 mt-12"></div>
+  </div>
+  </section>
+
+<!-- Testimonials Carousel -->
+<section class="py-32 bg-wavgen-dark-purple border-t border-b border-white/10">
+  <div class="container mx-auto px-4">
+    <div class="h-px bg-white/10 mb-8"></div>
+    <h3 class="text-3xl font-bold mb-10 text-wavgen-yellow">What people say</h3>
+    <div id="testimonials" class="relative max-w-3xl mx-auto space-y-4">
+      <div class="testimonial-slide text-xl text-gray-200 italic">“A thing of beauty.” — Site User</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Inspires learning through clean, commented code.” — Developer</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Captivating visuals and sound.” — Artist</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Simplicity is the ultimate sophistication.” — Leonardo da Vinci</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Creativity is intelligence having fun.” — Albert Einstein</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Art is not what you see, but what you make others see.” — Edgar Degas</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Music is the shorthand of emotion.” — Leo Tolstoy</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“The details are not the details. They make the design.” — Charles Eames</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Design is how it works.” — Steve Jobs</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“First, solve the problem. Then, write the code.” — John Johnson</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Code is like humor. When you have to explain it, it’s bad.” — Cory House</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“The purpose of art is washing the dust of daily life off our souls.” — Pablo Picasso</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Music expresses that which cannot be put into words.” — Victor Hugo</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“To create one’s world in any of the arts takes courage.” — Georgia O’Keeffe</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Great design is eliminating all unnecessary details.” — Minsoo Kang</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Programs must be written for people to read.” — Harold Abelson</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Simplicity carried to an extreme becomes elegance.” — Jon Franklin</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Styles come and go. Good design is a language.” — Massimo Vignelli</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“If I don’t practice one day, I know it.” — Vladimir Horowitz</div>
+      <div class="testimonial-slide text-xl text-gray-200 italic hidden">“Art enables us to find ourselves and lose ourselves at the same time.” — Thomas Merton</div>
+    </div>
+    <div class="h-px bg-white/10 mt-12"></div>
+  </div>
 </section>
 
 <!-- Portfolio Grid -->
 <section id="portfolio" class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
+        <div class="text-center mb-10">
             <h2 class="text-4xl font-bold text-white mb-4">Creative Portfolio</h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-16 lg:mb-20">
                 Exploring the boundaries between traditional artistry and cutting-edge technology through music, visual art, and interactive experiences.
             </p>
         </div>
+        <!-- Explore by vibe tags removed per request -->
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Music Card -->
@@ -268,24 +401,12 @@ footerTagline: Exploring the intersection of creativity and technology.
 
 <!-- About Section -->
 <section id="about" class="py-20 bg-gray-900">
-    <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl font-bold text-white mb-8">About The Waveform Generation</h2>
-            <div class="text-lg text-gray-300 space-y-6 leading-relaxed">
-                <p>
-                    The Waveform Generation represents a creative exploration at the intersection of music, visual art, and technology. 
-                    Based in Toronto, I seek to create immersive experiences that blend traditional artistry with cutting-edge tools.
-                </p>
-                <p>
-                    My work spans electronic music production, real-time graphics, projection mapping, and AI-assisted development. 
-                    Through this multidisciplinary approach, I explore the creative possibilities of emerging technologies while 
-                    honoring the roots of electronic music and digital art.
-                </p>
-                <p>
-                    Whether working with TouchDesigner for live visuals, crafting electronic soundscapes, or developing interactive 
-                    applications, each project aims to push boundaries and create meaningful connections between technology and human expression.
-                </p>
-            </div>
-        </div>
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-white mb-4">About The Waveform Generation</h2>
+      <p class="text-lg text-gray-300">
+        Exploring music, visuals, and technology through clear, well-commented work. A place to learn, build, and be inspired.
+      </p>
     </div>
+  </div>
 </section>
