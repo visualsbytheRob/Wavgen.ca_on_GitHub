@@ -82,11 +82,12 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    // Helper: inject today's date and copy template
-    (function(){
-      var el = document.getElementById('entry-template');
-      var btn = document.getElementById('copy-entry-template');
-      if (el && btn) {
+    // Helper: inject today's date and copy template (isolated)
+    try {
+      (function(){
+        var el = document.getElementById('entry-template');
+        var btn = document.getElementById('copy-entry-template');
+        if (!el || !btn) return;
         try {
           var d = new Date();
           var yyyy = d.getFullYear();
@@ -97,8 +98,7 @@ but the content is a concise documentary/logbook about the site.
         } catch(e) {}
         btn.addEventListener('click', async function(){
           try {
-            var txt = el.textContent;
-            await navigator.clipboard.writeText(txt);
+            await navigator.clipboard.writeText(el.textContent);
             btn.textContent = 'Copied!';
             setTimeout(function(){ btn.textContent = 'Copy template'; }, 1500);
           } catch (err) {
@@ -113,280 +113,185 @@ but the content is a concise documentary/logbook about the site.
             setTimeout(function(){ btn.textContent = 'Copy template'; }, 1500);
           }
         });
-      }
+      })();
+    } catch(e) {}
 
-      // Draft persistence (localStorage)
-      var DRAFT_KEY = 'wavgen_diary_draft_v1';
-      function saveDraft(){
-        var draft = { title: tInput.value || '', date: dInput.value || '', body: bInput.value || '' };
-        try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(e) {}
-      }
-      function loadDraft(){
-        try {
-          var raw = localStorage.getItem(DRAFT_KEY);
-          if (!raw) return false;
-          var d = JSON.parse(raw);
-          if (d.title) tInput.value = d.title;
-          if (d.date) dInput.value = d.date;
-          if (d.body) { bInput.value = d.body; autosize.call(bInput); }
-          return true;
-        } catch(e) { return false; }
-      }
-      function clearDraft(){ try { localStorage.removeItem(DRAFT_KEY); } catch(e) {} }
-      tInput.addEventListener('input', saveDraft);
-      dInput.addEventListener('change', saveDraft);
-      bInput.addEventListener('input', saveDraft);
-      if (saveBtn) saveBtn.addEventListener('click', function(){ saveDraft(); saveBtn.textContent='Saved'; setTimeout(function(){ saveBtn.textContent='Save Draft'; }, 1200); });
-      if (loadDraftBtn) loadDraftBtn.addEventListener('click', function(){ loadDraft(); });
-      if (clearDraftBtn) clearDraftBtn.addEventListener('click', function(){ clearDraft(); tInput.value=''; dInput.value=''; bInput.value=''; autosize.call(bInput); });
-
-      // Share via Web Share API (if available)
-      if (shareBtn) {
-        if (!('share' in navigator)) { shareBtn.disabled = true; shareBtn.classList.add('opacity-50','cursor-not-allowed'); }
-        shareBtn.addEventListener('click', async function(){
-          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
-          var title = (tInput.value || 'Diary Entry');
-          try {
-            await navigator.share({ title: title, text: md });
-          } catch(e) {
-            // ignore if user cancels
-          }
-        });
-      }
-    })();
-
-    // GitHub commits widget (public API, no token)
-    (function(){
-      var ul = document.getElementById('commit-list');
-      if (!ul) return;
-      var owner = 'visualsbytheRob';
-      var repo = 'Wavgen.ca_on_GitHub';
-      var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/commits?per_page=5';
-      fetch(url)
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          if (!Array.isArray(data)) throw new Error('Unexpected response');
-          ul.innerHTML = '';
-          data.forEach(function(c){
-            var msg = (c.commit && c.commit.message ? c.commit.message.split('\n')[0] : 'Commit');
-            var when = (c.commit && c.commit.author && c.commit.author.date) ? new Date(c.commit.author.date) : null;
-            var dateStr = when ? when.toLocaleDateString() + ' ' + when.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
-            var sha = (c.sha || '').slice(0,7);
-            var url = c.html_url || ('https://github.com/' + owner + '/' + repo + '/commit/' + c.sha);
-            var li = document.createElement('li');
-            li.innerHTML = '<a class="text-wavgen-yellow hover:underline" target="_blank" rel="noopener" href="'+url+'">'+msg+'</a>' +
-                          (dateStr ? ' <span class="text-gray-400 text-xs">• ' + dateStr + '</span>' : '') +
-                          (sha ? ' <code class="text-xs bg-white/10 px-1 rounded">'+sha+'</code>' : '');
-            ul.appendChild(li);
+    // GitHub commits widget — isolated
+    try {
+      (function(){
+        var ul = document.getElementById('commit-list');
+        if (!ul) return;
+        var owner = 'visualsbytheRob';
+        var repo = 'Wavgen.ca_on_GitHub';
+        var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/commits?per_page=5';
+        fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } })
+          .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .then(function(data){
+            if (!Array.isArray(data)) throw new Error('Unexpected response');
+            ul.innerHTML = '';
+            data.forEach(function(c){
+              var msg = (c.commit && c.commit.message ? c.commit.message.split('\n')[0] : 'Commit');
+              var when = (c.commit && c.commit.author && c.commit.author.date) ? new Date(c.commit.author.date) : null;
+              var dateStr = when ? when.toLocaleDateString() + ' ' + when.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
+              var sha = (c.sha || '').slice(0,7);
+              var href = c.html_url || ('https://github.com/' + owner + '/' + repo + '/commit/' + c.sha);
+              var li = document.createElement('li');
+              li.innerHTML = '<a class="text-wavgen-yellow hover:underline" target="_blank" rel="noopener" href="'+href+'">'+msg+'</a>' +
+                            (dateStr ? ' <span class="text-gray-400 text-xs">• ' + dateStr + '</span>' : '') +
+                            (sha ? ' <code class="text-xs bg-white/10 px-1 rounded">'+sha+'</code>' : '');
+              ul.appendChild(li);
+            });
+            if (!ul.children.length) {
+              ul.innerHTML = '<li class="text-gray-400 text-sm">No recent commits found.</li>';
+            }
+          })
+          .catch(function(){
+            ul.innerHTML = '<li class="text-gray-400 text-sm">Could not load commits (rate limit or network). Try again later.</li>';
           });
-          if (!ul.children.length) {
-            ul.innerHTML = '<li class="text-gray-400 text-sm">No recent commits found.</li>';
-          }
-        })
-        .catch(function(){
-          ul.innerHTML = '<li class="text-gray-400 text-sm">Could not load commits (rate limit or network). Try again later.</li>';
-        });
-    })();
+      })();
+    } catch(e) {}
 
-    // Creative prompts generator
-    (function(){
-      var prompts = [
-        'Explain the dual hero slideshow architecture and why timings differ for bg vs card.',
-        'Document the GSAP gallery modal indexing and how clones are excluded.',
-        'Write about Eleventy collections used for backgrounds and textures, with examples.',
-        'Summarize the SoundCloud embed parameters and graceful error handling.',
-        'Add a note on YouTube embed optimization (vq=hd1080, modestbranding) and UX.',
-        'Describe the Interactive Code Playground modes and teaching goals.',
-        'Profile the Tailwind theme decisions (wavgen-purple/yellow) and accessibility.',
-        'Create a performance checklist for GitHub Pages static hosting.',
-        'Sketch a roadmap for adding light search or filtering across gallery entries.',
-        'Reflect on the navigation design (desktop dropdowns + mobile drawer).',
-        'Write a post-mortem on a tricky bug recently solved (real or synthetic).',
-        'Ideate data-driven visuals that could become live demos.',
-        'Brainstorm future Eleventy shortcodes or filters to simplify templates.',
-        'Outline a content calendar for Music, Video, Data, and Art updates.',
-        'Design an accessibility audit pass for keyboard and screen reader paths.'
-      ];
-      var list = document.getElementById('prompt-list');
-      var shuffleBtn = document.getElementById('shuffle-prompts');
-      var copyBtn = document.getElementById('copy-prompts');
-      if (!list || !shuffleBtn || !copyBtn) return;
-      function pick(n){
-        var arr = prompts.slice();
-        for (var i = arr.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
-        }
-        return arr.slice(0, n);
-      }
-      function render(){
-        var items = pick(5);
-        list.innerHTML = '';
-        items.forEach(function(p){
-          var li = document.createElement('li');
-          li.textContent = p;
-          list.appendChild(li);
+    // Creative prompts — isolated
+    try {
+      (function(){
+        var prompts = [
+          'Explain the dual hero slideshow architecture and why timings differ for bg vs card.',
+          'Document the GSAP gallery modal indexing and how clones are excluded.',
+          'Write about Eleventy collections used for backgrounds and textures, with examples.',
+          'Summarize the SoundCloud embed parameters and graceful error handling.',
+          'Add a note on YouTube embed optimization (vq=hd1080, modestbranding) and UX.',
+          'Describe the Interactive Code Playground modes and teaching goals.',
+          'Profile the Tailwind theme decisions (wavgen-purple/yellow) and accessibility.',
+          'Create a performance checklist for GitHub Pages static hosting.',
+          'Sketch a roadmap for adding light search or filtering across gallery entries.',
+          'Reflect on the navigation design (desktop dropdowns + mobile drawer).',
+          'Write a post-mortem on a tricky bug recently solved (real or synthetic).',
+          'Ideate data-driven visuals that could become live demos.',
+          'Brainstorm future Eleventy shortcodes or filters to simplify templates.',
+          'Outline a content calendar for Music, Video, Data, and Art updates.',
+          'Design an accessibility audit pass for keyboard and screen reader paths.'
+        ];
+        var list = document.getElementById('prompt-list');
+        var shuffleBtn = document.getElementById('shuffle-prompts');
+        var copyBtn = document.getElementById('copy-prompts');
+        if (!list || !shuffleBtn || !copyBtn) return;
+        function pick(n){ var arr = prompts.slice(); for (var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t;} return arr.slice(0,n); }
+        function render(){ var items = pick(5); list.innerHTML=''; items.forEach(function(p){ var li=document.createElement('li'); li.textContent=p; list.appendChild(li); }); }
+        render();
+        shuffleBtn.addEventListener('click', render);
+        copyBtn.addEventListener('click', async function(){
+          var txt = Array.from(list.querySelectorAll('li')).map(function(li){ return '- ' + li.textContent; }).join('\n');
+          try { await navigator.clipboard.writeText(txt); copyBtn.textContent='Copied!'; setTimeout(function(){ copyBtn.textContent='Copy'; }, 1500); }
+          catch(e){ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); copyBtn.textContent='Copied!'; setTimeout(function(){ copyBtn.textContent='Copy'; }, 1500); }
         });
-      }
-      render();
-      shuffleBtn.addEventListener('click', render);
-      copyBtn.addEventListener('click', async function(){
-        var txt = Array.from(list.querySelectorAll('li')).map(function(li){ return '- ' + li.textContent; }).join('\n');
+      })();
+    } catch(e) {}
+
+    // Minimal editor wiring — isolated
+    try {
+      (function(){
+        function todayStr(){ var d=new Date(); var yyyy=d.getFullYear(); var mm=String(d.getMonth()+1).padStart(2,'0'); var dd=String(d.getDate()).padStart(2,'0'); return yyyy+'-'+mm+'-'+dd; }
+        function slugify(str){ return String(str||'').trim().toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,80)||'entry'; }
+        function buildMarkdown(title,date,body){ var t=(title||'').trim()||'Untitled'; var d=(date||'').trim()||todayStr(); var b=(body||'').trim()||'- Point one\n- Point two\n\nNotes:\n- Context or links.'; return '---\n'+'title: '+t+'\n'+'date: '+d+'\n'+'---\n\n'+b+'\n'; }
+        var tInput=document.getElementById('entry-title');
+        var dInput=document.getElementById('entry-date');
+        var bInput=document.getElementById('entry-body');
+        var copyBtn=document.getElementById('copy-entry-md');
+        var dlBtn=document.getElementById('download-entry-md');
+        var saveBtn=document.getElementById('save-entry');
+        var statusEl=document.getElementById('save-status');
+        var listEl=document.getElementById('prev-entries-list');
+        var dataWrap=document.getElementById('prev-entries-data');
+        if (!tInput||!dInput||!bInput) return;
+        // Default date to today if empty
+        if (!dInput.value) { try { dInput.valueAsDate = new Date(); } catch(_) { dInput.value = todayStr(); } }
+        // Autosize body
+        function autosize(){ this.style.height='auto'; this.style.height=(this.scrollHeight+2)+'px'; }
+        bInput.addEventListener('input', autosize); setTimeout(function(){ autosize.call(bInput); },0);
+
+        // Prefill from URL params: title and ref
         try {
-          await navigator.clipboard.writeText(txt);
-          copyBtn.textContent = 'Copied!';
-          setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
-        } catch (e) {
-          var ta = document.createElement('textarea');
-          ta.value = txt; document.body.appendChild(ta); ta.select();
-          document.execCommand('copy'); document.body.removeChild(ta);
-          copyBtn.textContent = 'Copied!';
-          setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
-        }
-      });
-    })();
+          var params = new URLSearchParams(window.location.search);
+          var pTitle = params.get('title');
+          var pRef = params.get('ref');
+          if (pTitle && !tInput.value) tInput.value = decodeURIComponent(pTitle);
+          if (pRef && (!bInput.value || bInput.value.trim()==='')) {
+            var link = decodeURIComponent(pRef);
+            bInput.value = '- Point one\n- Point two\n\nNotes:\n- Context or links.\n\nRelated:\n- Source page: ' + link + '\n- README: https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/blob/main/README.md\n- Dev Deploy Flow: https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/blob/main/docs/DEV_DEPLOY_FLOW.md';
+            autosize.call(bInput);
+          }
+        } catch(e) {}
 
-    // New entry editor wiring
-    (function(){
-      var tInput = document.getElementById('entry-title');
-      var dInput = document.getElementById('entry-date');
-      var bInput = document.getElementById('entry-body');
-      var todayBtn = document.getElementById('entry-date-today');
-      var sel = document.getElementById('prev-entry-select');
-      var loadBtn = document.getElementById('load-prev-entry');
-      var copyBtn = document.getElementById('copy-entry-md');
-      var dlBtn = document.getElementById('download-entry-md');
-      var saveBtn = document.getElementById('save-draft');
-      var loadDraftBtn = document.getElementById('load-draft');
-      var clearDraftBtn = document.getElementById('clear-draft');
-      var shareBtn = document.getElementById('share-entry-md');
-      var dataWrap = document.getElementById('prev-entries-data');
-      var newTodayBtn = document.getElementById('new-today-btn');
-      if (!tInput || !dInput || !bInput) return;
+        // Copy
+        if (copyBtn) copyBtn.addEventListener('click', async function(){ var md=buildMarkdown(tInput.value,dInput.value,bInput.value); try{ await navigator.clipboard.writeText(md); copyBtn.textContent='Copied!'; setTimeout(function(){ copyBtn.textContent='Copy Markdown'; },1500);}catch(e){ var ta=document.createElement('textarea'); ta.value=md; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); copyBtn.textContent='Copied!'; setTimeout(function(){ copyBtn.textContent='Copy Markdown'; },1500);} });
+        // Download (more robust for iOS/Safari with setTimeout)
+        if (dlBtn) dlBtn.addEventListener('click', function(){ var date=(dInput.value||todayStr()).slice(0,10); var filename=date+'-'+slugify(tInput.value)+'.md'; var md=buildMarkdown(tInput.value,dInput.value,bInput.value); var blob=new Blob([md],{type:'text/markdown'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); setTimeout(function(){ a.click(); setTimeout(function(){ URL.revokeObjectURL(url); document.body.removeChild(a); }, 500); }, 0); });
 
-      function todayStr(){
-        var d = new Date();
-        var yyyy = d.getFullYear();
-        var mm = String(d.getMonth()+1).padStart(2,'0');
-        var dd = String(d.getDate()).padStart(2,'0');
-        return yyyy + '-' + mm + '-' + dd;
-      }
-      function slugify(str){
-        return String(str || '')
-          .trim().toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .slice(0, 80) || 'entry';
-      }
-      function buildMarkdown(title, date, body){
-        var safeTitle = (title || '').trim() || 'Untitled';
-        var safeDate = (date || '').trim() || todayStr();
-        var safeBody = (body || '').trim() || '- Point one\n- Point two\n\nNotes:\n- Context or links.';
-        return '---\n' +
-               'title: ' + safeTitle + '\n' +
-               'date: ' + safeDate + '\n' +
-               '---\n\n' +
-               safeBody + '\n';
-      }
-
-      // Initialize date placeholder with today
-      if (!dInput.value) dInput.valueAsDate = new Date();
-      if (todayBtn) todayBtn.addEventListener('click', function(){ dInput.valueAsDate = new Date(); });
-
-      // Autosize textarea for mobile typing
-      function autosize(){ this.style.height = 'auto'; this.style.height = (this.scrollHeight + 2) + 'px'; }
-      bInput.addEventListener('input', autosize); setTimeout(function(){ autosize.call(bInput); }, 0);
-
-      // One-tap New today: reset fields, set date, scaffold body, focus title
-      if (newTodayBtn) {
-        newTodayBtn.addEventListener('click', function(){
-          dInput.valueAsDate = new Date();
-          tInput.value = '';
-          bInput.value = '- Point one\n- Point two\n\nNotes:\n- Context or links.';
-          autosize.call(bInput);
-          tInput.focus();
+        // Save to site via local API
+        if (saveBtn) saveBtn.addEventListener('click', async function(){
+          var title = tInput.value; var date = dInput.value || todayStr(); var body = bInput.value;
+          var api = (window.DIARY_API || 'http://localhost:4321');
+          statusEl.textContent = 'Saving…';
+          saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+          try {
+            var res = await fetch(api + '/api/diary/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, date, body }) });
+            var json = await res.json();
+            if (!res.ok || !json.ok) throw new Error(json && json.error || ('HTTP ' + res.status));
+            statusEl.innerHTML = 'Saved as <code class="px-1">' + (json.filename || 'entry.md') + '</code>. Reloading…';
+            setTimeout(function(){ window.location.reload(); }, 700);
+          } catch (e) {
+            console.error(e);
+            statusEl.textContent = 'Save failed: ' + (e && e.message || e);
+            saveBtn.disabled = false; saveBtn.textContent = 'Save to site';
+          }
         });
-      }
 
-      // Populate previous entries dropdown
-      if (sel && dataWrap) {
-        var items = Array.from(dataWrap.querySelectorAll('.prev-entry-item'));
-        sel.innerHTML = '';
-        if (items.length === 0) {
-          var opt = document.createElement('option');
-          opt.textContent = 'No previous entries';
-          opt.value = '';
-          sel.appendChild(opt);
-          sel.disabled = true;
-        } else {
-          var def = document.createElement('option');
-          def.textContent = 'Select a previous entry…';
-          def.value = '';
-          sel.appendChild(def);
+        // Previous entries list (last 5) with Copy into editor
+        if (listEl && dataWrap) {
+          var items = Array.from(dataWrap.querySelectorAll('.prev-entry-item')).slice(-5).reverse();
+          listEl.innerHTML = '';
           items.forEach(function(div, idx){
             var title = div.getAttribute('data-title') || ('Entry #' + (idx+1));
             var date = (div.getAttribute('data-date') || '').slice(0,10);
-            var opt = document.createElement('option');
-            opt.value = String(idx);
-            opt.textContent = (date ? date + ' — ' : '') + title;
-            sel.appendChild(opt);
+            var text = (div.textContent || '').trim();
+            var li = document.createElement('li');
+            li.className = 'flex items-start gap-2';
+            var btn = document.createElement('button');
+            btn.className = 'text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20';
+            btn.textContent = 'Copy to editor';
+            btn.addEventListener('click', function(){
+              tInput.value = title;
+              dInput.value = date || todayStr();
+              bInput.value = text;
+              autosize.call(bInput);
+              tInput.focus();
+            });
+            var span = document.createElement('span');
+            span.className = 'text-sm text-gray-300';
+            span.textContent = (date ? date + ' — ' : '') + title;
+            li.appendChild(btn); li.appendChild(span);
+            listEl.appendChild(li);
           });
         }
-      }
+      })();
+    } catch(e) {}
 
-      if (loadBtn && sel && dataWrap) {
-        loadBtn.addEventListener('click', function(){
-          var idx = parseInt(sel.value, 10);
-          if (isNaN(idx)) return;
-          var node = dataWrap.querySelectorAll('.prev-entry-item')[idx];
-          if (!node) return;
-          var t = node.getAttribute('data-title') || '';
-          var dt = (node.getAttribute('data-date') || '').slice(0,10) || todayStr();
-          var txt = node.textContent || '';
-          tInput.value = t;
-          dInput.value = dt;
-          bInput.value = txt.trim();
+    // Auto-append related links to entries mentioning README or codebase commentary
+    try {
+      (function(){
+        var articles = document.querySelectorAll('#log article .prose');
+        if (!articles || !articles.length) return;
+        articles.forEach(function(prose){
+          var text = prose.textContent.toLowerCase();
+          var needs = (text.includes('readme') || text.includes('codebase') || text.includes('commentary'));
+          if (!needs) return;
+          var div = document.createElement('div');
+          div.className = 'mt-4 text-sm text-gray-300';
+          div.innerHTML = '<div class="text-gray-400">Related links:</div>\n<ul class="list-disc list-inside">\n<li><a class="text-wavgen-yellow hover:underline" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/blob/main/README.md" target="_blank" rel="noopener">Project README</a></li>\n<li><a class="text-wavgen-yellow hover:underline" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/blob/main/docs/DEV_DEPLOY_FLOW.md" target="_blank" rel="noopener">Dev Deploy Flow</a></li>\n<li><a class="text-wavgen-yellow hover:underline" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/blob/main/docs/nav_debugging_session.md" target="_blank" rel="noopener">Nav Debugging Session</a></li>\n</ul>';
+          prose.appendChild(div);
         });
-      }
-
-      // Copy Markdown
-      if (copyBtn) {
-        copyBtn.addEventListener('click', async function(){
-          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
-          try {
-            await navigator.clipboard.writeText(md);
-            copyBtn.textContent = 'Copied!';
-            setTimeout(function(){ copyBtn.textContent = 'Copy Markdown'; }, 1500);
-          } catch (e) {
-            var ta = document.createElement('textarea');
-            ta.value = md; document.body.appendChild(ta); ta.select();
-            document.execCommand('copy'); document.body.removeChild(ta);
-            copyBtn.textContent = 'Copied!';
-            setTimeout(function(){ copyBtn.textContent = 'Copy Markdown'; }, 1500);
-          }
-        });
-      }
-
-      // Download Markdown as file
-      if (dlBtn) {
-        dlBtn.addEventListener('click', function(){
-          var date = (dInput.value || todayStr()).slice(0,10);
-          var filename = date + '-' + slugify(tInput.value) + '.md';
-          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
-          var blob = new Blob([md], {type: 'text/markdown'});
-          var a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function(){
-            URL.revokeObjectURL(a.href);
-            document.body.removeChild(a);
-          }, 0);
-        });
-      }
-    })();
+      })();
+    } catch(e) {}
   });
 </script>
 
@@ -428,22 +333,16 @@ Notes:
 </code></pre>
       </div>
 
-      <!-- New Entry editor: create and download Markdown -->
+      <!-- New Entry editor: minimal, mobile-friendly -->
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-lg font-semibold text-white">New entry editor</h3>
-          <button id="new-today-btn" class="text-xs px-3 py-2 rounded bg-wavgen-yellow text-black font-semibold hover:bg-yellow-400">New today</button>
-        </div>
+        <h3 class="text-lg font-semibold text-white mb-3">New entry editor</h3>
         <div class="grid md:grid-cols-2 gap-3 mb-3">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Title</label>
             <input id="entry-title" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="Your title" />
           </div>
           <div>
-            <label class="block text-sm text-gray-400 mb-1 flex items-center justify-between">
-              <span>Date (YYYY-MM-DD)</span>
-              <button id="entry-date-today" class="text-xs px-3 py-2 rounded bg-white/10 hover:bg-white/20">Use today</button>
-            </label>
+            <label class="block text-sm text-gray-400 mb-1">Date</label>
             <input id="entry-date" type="date" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="YYYY-MM-DD" />
           </div>
         </div>
@@ -451,29 +350,22 @@ Notes:
           <label class="block text-sm text-gray-400 mb-1">Body</label>
           <textarea id="entry-body" rows="8" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="- Point one\n- Point two\n\nNotes:\n- Context or links."></textarea>
         </div>
-        <div class="grid md:grid-cols-2 gap-3 mb-4">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Previous entries</label>
-            <div class="flex gap-2">
-              <select id="prev-entry-select" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base"></select>
-              <button id="load-prev-entry" class="px-4 py-3 rounded bg-white/10 hover:bg-white/20 text-white">Load</button>
-            </div>
-          </div>
-          <div class="flex items-end gap-2">
-            <button id="copy-entry-md" class="flex-1 control-btn bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Copy Markdown</button>
-            <button id="download-entry-md" class="flex-1 control-btn bg-wavgen-yellow text-black px-4 py-3 rounded-md font-semibold hover:bg-yellow-400">Download .md</button>
-          </div>
+        <div class="flex items-end gap-2">
+          <button id="copy-entry-md" class="flex-1 control-btn bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Copy Markdown</button>
+          <button id="save-entry" class="flex-1 control-btn bg-green-500 text-black px-4 py-3 rounded-md font-semibold hover:bg-green-400">Save to site</button>
+          <button id="download-entry-md" class="flex-1 control-btn bg-wavgen-yellow text-black px-4 py-3 rounded-md font-semibold hover:bg-yellow-400">Download .md</button>
         </div>
+        <p id="save-status" class="mt-2 text-sm text-gray-300"></p>
+      </div>
 
-        <!-- Mobile action bar: Save/Load/Clear Draft + Share -->
-        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-2">
-          <button id="save-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Save Draft</button>
-          <button id="load-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Load Draft</button>
-          <button id="clear-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Clear Draft</button>
-          <button id="share-entry-md" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Share…</button>
+      <!-- Previous entries quick copy (last 5) -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">Previous entries</h3>
+          <span class="text-xs text-gray-400">Copy into editor</span>
         </div>
-
-        <!-- Hidden data: previous entries (title + plain text) -->
+        <ul id="prev-entries-list" class="space-y-2 text-gray-200"></ul>
+        <!-- Hidden data payload for previous entries -->
         <div id="prev-entries-data" class="hidden">
           {% for entry in collections.diary %}
             <div class="prev-entry-item" data-title="{{ entry.data.title | escape }}" data-date="{{ entry.date }}">{{ entry.templateContent | striptags | escape }}</div>

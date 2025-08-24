@@ -5,12 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"npm run build-css\" \"eleventy --serve\"",
+    "dev": "concurrently \"npm run build-css\" \"eleventy --serve\" \"node scripts/save-entry-server.js\"",
     "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "new:diary": "node scripts/new-diary-entry.js"
+    "new:diary": "node scripts/new-diary-entry.js",
+    "diary:api": "node scripts/save-entry-server.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
