@@ -1,0 +1,529 @@
+---
+layout: base.njk
+title: Site Log
+description: Rolling, concise documentary of how wavgen.ca is structured, configured, and evolving.
+footerDescription: Creative Technology • Toronto, Canada
+footerTagline: Quiet logbook of changes, objectives, and architecture.
+eleventyExcludeFromCollections: true
+noindex: true
+---
+
+{#
+This page mirrors the home page structure so it feels identical in layout and style,
+but the content is a concise documentary/logbook about the site.
+#}
+
+<!-- Lightweight gate: require easter-egg click in same session -->
+<script>
+  (function(){
+    try {
+      if (sessionStorage.getItem('siteLogUnlocked') !== '1') {
+        window.location.replace('/');
+      }
+    } catch (e) {
+      window.location.replace('/');
+    }
+  })();
+  // Optional: clear the flag after navigating here
+  try { sessionStorage.removeItem('siteLogUnlocked'); } catch (e) {}
+</script>
+<noscript>
+  <div class="p-4 bg-black/40 text-white text-center">This page requires JavaScript and a prior action to view.</div>
+</noscript>
+
+<!-- Hero Section (mirrors home) -->
+<section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
+  <!-- Background slides like home -->
+  <div class="hero-section-bg-slideshow absolute inset-0">
+    {%- for background in collections.backgrounds %}
+      <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.35{% else %}0{% endif %};">
+    {%- endfor %}
+  </div>
+  <div class="absolute inset-0 bg-black opacity-20"></div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left: text card with its own slideshow, like home -->
+      <div class="animate-fade-in relative">
+        <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+          <img src="/images/1.gif" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
+          {%- for background in collections.backgrounds %}
+            <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
+          {%- endfor %}
+        </div>
+
+      
+
+        <div class="relative z-10 bg-black/40 rounded-lg p-8 shadow-xl border border-white/10">
+          <h1 class="hero-text">Site Log • <span class="text-wavgen-yellow">The Waveform Generation</span></h1>
+          <p class="subtitle-text">A concise, rolling documentary of the website’s structure, code, and evolving objectives.</p>
+
+          <div class="space-y-4 text-lg text-gray-300 mb-6">
+            <p>Purpose: keep a living synopsis of how the site is built (Eleventy, GSAP, Tailwind styles), why decisions were made, and what we’re targeting next.</p>
+            <p>Format: brief entries. Highest signal, minimal fluff.</p>
+          </div>
+
+          <a href="#log" class="control-btn bg-wavgen-yellow text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">Jump to latest updates</a>
+        </div>
+      </div>
+
+      <!-- Right: hero slideshow of textures like home -->
+      <div class="w-full mx-auto mt-8">
+        <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
+          <img src="/images/1.gif" alt="Demo GIF" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
+          {%- for texture in collections.textures %}
+            <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+          {%- endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    // Helper: inject today's date and copy template
+    (function(){
+      var el = document.getElementById('entry-template');
+      var btn = document.getElementById('copy-entry-template');
+      if (el && btn) {
+        try {
+          var d = new Date();
+          var yyyy = d.getFullYear();
+          var mm = String(d.getMonth()+1).padStart(2,'0');
+          var dd = String(d.getDate()).padStart(2,'0');
+          var today = yyyy + '-' + mm + '-' + dd;
+          el.textContent = el.textContent.replace('YYYY-MM-DD', today);
+        } catch(e) {}
+        btn.addEventListener('click', async function(){
+          try {
+            var txt = el.textContent;
+            await navigator.clipboard.writeText(txt);
+            btn.textContent = 'Copied!';
+            setTimeout(function(){ btn.textContent = 'Copy template'; }, 1500);
+          } catch (err) {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            document.execCommand('copy');
+            sel.removeAllRanges();
+            btn.textContent = 'Copied!';
+            setTimeout(function(){ btn.textContent = 'Copy template'; }, 1500);
+          }
+        });
+      }
+
+      // Draft persistence (localStorage)
+      var DRAFT_KEY = 'wavgen_diary_draft_v1';
+      function saveDraft(){
+        var draft = { title: tInput.value || '', date: dInput.value || '', body: bInput.value || '' };
+        try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(e) {}
+      }
+      function loadDraft(){
+        try {
+          var raw = localStorage.getItem(DRAFT_KEY);
+          if (!raw) return false;
+          var d = JSON.parse(raw);
+          if (d.title) tInput.value = d.title;
+          if (d.date) dInput.value = d.date;
+          if (d.body) { bInput.value = d.body; autosize.call(bInput); }
+          return true;
+        } catch(e) { return false; }
+      }
+      function clearDraft(){ try { localStorage.removeItem(DRAFT_KEY); } catch(e) {} }
+      tInput.addEventListener('input', saveDraft);
+      dInput.addEventListener('change', saveDraft);
+      bInput.addEventListener('input', saveDraft);
+      if (saveBtn) saveBtn.addEventListener('click', function(){ saveDraft(); saveBtn.textContent='Saved'; setTimeout(function(){ saveBtn.textContent='Save Draft'; }, 1200); });
+      if (loadDraftBtn) loadDraftBtn.addEventListener('click', function(){ loadDraft(); });
+      if (clearDraftBtn) clearDraftBtn.addEventListener('click', function(){ clearDraft(); tInput.value=''; dInput.value=''; bInput.value=''; autosize.call(bInput); });
+
+      // Share via Web Share API (if available)
+      if (shareBtn) {
+        if (!('share' in navigator)) { shareBtn.disabled = true; shareBtn.classList.add('opacity-50','cursor-not-allowed'); }
+        shareBtn.addEventListener('click', async function(){
+          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
+          var title = (tInput.value || 'Diary Entry');
+          try {
+            await navigator.share({ title: title, text: md });
+          } catch(e) {
+            // ignore if user cancels
+          }
+        });
+      }
+    })();
+
+    // GitHub commits widget (public API, no token)
+    (function(){
+      var ul = document.getElementById('commit-list');
+      if (!ul) return;
+      var owner = 'visualsbytheRob';
+      var repo = 'Wavgen.ca_on_GitHub';
+      var url = 'https://api.github.com/repos/' + owner + '/' + repo + '/commits?per_page=5';
+      fetch(url)
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (!Array.isArray(data)) throw new Error('Unexpected response');
+          ul.innerHTML = '';
+          data.forEach(function(c){
+            var msg = (c.commit && c.commit.message ? c.commit.message.split('\n')[0] : 'Commit');
+            var when = (c.commit && c.commit.author && c.commit.author.date) ? new Date(c.commit.author.date) : null;
+            var dateStr = when ? when.toLocaleDateString() + ' ' + when.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
+            var sha = (c.sha || '').slice(0,7);
+            var url = c.html_url || ('https://github.com/' + owner + '/' + repo + '/commit/' + c.sha);
+            var li = document.createElement('li');
+            li.innerHTML = '<a class="text-wavgen-yellow hover:underline" target="_blank" rel="noopener" href="'+url+'">'+msg+'</a>' +
+                          (dateStr ? ' <span class="text-gray-400 text-xs">• ' + dateStr + '</span>' : '') +
+                          (sha ? ' <code class="text-xs bg-white/10 px-1 rounded">'+sha+'</code>' : '');
+            ul.appendChild(li);
+          });
+          if (!ul.children.length) {
+            ul.innerHTML = '<li class="text-gray-400 text-sm">No recent commits found.</li>';
+          }
+        })
+        .catch(function(){
+          ul.innerHTML = '<li class="text-gray-400 text-sm">Could not load commits (rate limit or network). Try again later.</li>';
+        });
+    })();
+
+    // Creative prompts generator
+    (function(){
+      var prompts = [
+        'Explain the dual hero slideshow architecture and why timings differ for bg vs card.',
+        'Document the GSAP gallery modal indexing and how clones are excluded.',
+        'Write about Eleventy collections used for backgrounds and textures, with examples.',
+        'Summarize the SoundCloud embed parameters and graceful error handling.',
+        'Add a note on YouTube embed optimization (vq=hd1080, modestbranding) and UX.',
+        'Describe the Interactive Code Playground modes and teaching goals.',
+        'Profile the Tailwind theme decisions (wavgen-purple/yellow) and accessibility.',
+        'Create a performance checklist for GitHub Pages static hosting.',
+        'Sketch a roadmap for adding light search or filtering across gallery entries.',
+        'Reflect on the navigation design (desktop dropdowns + mobile drawer).',
+        'Write a post-mortem on a tricky bug recently solved (real or synthetic).',
+        'Ideate data-driven visuals that could become live demos.',
+        'Brainstorm future Eleventy shortcodes or filters to simplify templates.',
+        'Outline a content calendar for Music, Video, Data, and Art updates.',
+        'Design an accessibility audit pass for keyboard and screen reader paths.'
+      ];
+      var list = document.getElementById('prompt-list');
+      var shuffleBtn = document.getElementById('shuffle-prompts');
+      var copyBtn = document.getElementById('copy-prompts');
+      if (!list || !shuffleBtn || !copyBtn) return;
+      function pick(n){
+        var arr = prompts.slice();
+        for (var i = arr.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+        }
+        return arr.slice(0, n);
+      }
+      function render(){
+        var items = pick(5);
+        list.innerHTML = '';
+        items.forEach(function(p){
+          var li = document.createElement('li');
+          li.textContent = p;
+          list.appendChild(li);
+        });
+      }
+      render();
+      shuffleBtn.addEventListener('click', render);
+      copyBtn.addEventListener('click', async function(){
+        var txt = Array.from(list.querySelectorAll('li')).map(function(li){ return '- ' + li.textContent; }).join('\n');
+        try {
+          await navigator.clipboard.writeText(txt);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
+        } catch (e) {
+          var ta = document.createElement('textarea');
+          ta.value = txt; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function(){ copyBtn.textContent = 'Copy'; }, 1500);
+        }
+      });
+    })();
+
+    // New entry editor wiring
+    (function(){
+      var tInput = document.getElementById('entry-title');
+      var dInput = document.getElementById('entry-date');
+      var bInput = document.getElementById('entry-body');
+      var todayBtn = document.getElementById('entry-date-today');
+      var sel = document.getElementById('prev-entry-select');
+      var loadBtn = document.getElementById('load-prev-entry');
+      var copyBtn = document.getElementById('copy-entry-md');
+      var dlBtn = document.getElementById('download-entry-md');
+      var saveBtn = document.getElementById('save-draft');
+      var loadDraftBtn = document.getElementById('load-draft');
+      var clearDraftBtn = document.getElementById('clear-draft');
+      var shareBtn = document.getElementById('share-entry-md');
+      var dataWrap = document.getElementById('prev-entries-data');
+      var newTodayBtn = document.getElementById('new-today-btn');
+      if (!tInput || !dInput || !bInput) return;
+
+      function todayStr(){
+        var d = new Date();
+        var yyyy = d.getFullYear();
+        var mm = String(d.getMonth()+1).padStart(2,'0');
+        var dd = String(d.getDate()).padStart(2,'0');
+        return yyyy + '-' + mm + '-' + dd;
+      }
+      function slugify(str){
+        return String(str || '')
+          .trim().toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .slice(0, 80) || 'entry';
+      }
+      function buildMarkdown(title, date, body){
+        var safeTitle = (title || '').trim() || 'Untitled';
+        var safeDate = (date || '').trim() || todayStr();
+        var safeBody = (body || '').trim() || '- Point one\n- Point two\n\nNotes:\n- Context or links.';
+        return '---\n' +
+               'title: ' + safeTitle + '\n' +
+               'date: ' + safeDate + '\n' +
+               '---\n\n' +
+               safeBody + '\n';
+      }
+
+      // Initialize date placeholder with today
+      if (!dInput.value) dInput.valueAsDate = new Date();
+      if (todayBtn) todayBtn.addEventListener('click', function(){ dInput.valueAsDate = new Date(); });
+
+      // Autosize textarea for mobile typing
+      function autosize(){ this.style.height = 'auto'; this.style.height = (this.scrollHeight + 2) + 'px'; }
+      bInput.addEventListener('input', autosize); setTimeout(function(){ autosize.call(bInput); }, 0);
+
+      // One-tap New today: reset fields, set date, scaffold body, focus title
+      if (newTodayBtn) {
+        newTodayBtn.addEventListener('click', function(){
+          dInput.valueAsDate = new Date();
+          tInput.value = '';
+          bInput.value = '- Point one\n- Point two\n\nNotes:\n- Context or links.';
+          autosize.call(bInput);
+          tInput.focus();
+        });
+      }
+
+      // Populate previous entries dropdown
+      if (sel && dataWrap) {
+        var items = Array.from(dataWrap.querySelectorAll('.prev-entry-item'));
+        sel.innerHTML = '';
+        if (items.length === 0) {
+          var opt = document.createElement('option');
+          opt.textContent = 'No previous entries';
+          opt.value = '';
+          sel.appendChild(opt);
+          sel.disabled = true;
+        } else {
+          var def = document.createElement('option');
+          def.textContent = 'Select a previous entry…';
+          def.value = '';
+          sel.appendChild(def);
+          items.forEach(function(div, idx){
+            var title = div.getAttribute('data-title') || ('Entry #' + (idx+1));
+            var date = (div.getAttribute('data-date') || '').slice(0,10);
+            var opt = document.createElement('option');
+            opt.value = String(idx);
+            opt.textContent = (date ? date + ' — ' : '') + title;
+            sel.appendChild(opt);
+          });
+        }
+      }
+
+      if (loadBtn && sel && dataWrap) {
+        loadBtn.addEventListener('click', function(){
+          var idx = parseInt(sel.value, 10);
+          if (isNaN(idx)) return;
+          var node = dataWrap.querySelectorAll('.prev-entry-item')[idx];
+          if (!node) return;
+          var t = node.getAttribute('data-title') || '';
+          var dt = (node.getAttribute('data-date') || '').slice(0,10) || todayStr();
+          var txt = node.textContent || '';
+          tInput.value = t;
+          dInput.value = dt;
+          bInput.value = txt.trim();
+        });
+      }
+
+      // Copy Markdown
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async function(){
+          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
+          try {
+            await navigator.clipboard.writeText(md);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function(){ copyBtn.textContent = 'Copy Markdown'; }, 1500);
+          } catch (e) {
+            var ta = document.createElement('textarea');
+            ta.value = md; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); document.body.removeChild(ta);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function(){ copyBtn.textContent = 'Copy Markdown'; }, 1500);
+          }
+        });
+      }
+
+      // Download Markdown as file
+      if (dlBtn) {
+        dlBtn.addEventListener('click', function(){
+          var date = (dInput.value || todayStr()).slice(0,10);
+          var filename = date + '-' + slugify(tInput.value) + '.md';
+          var md = buildMarkdown(tInput.value, dInput.value, bInput.value);
+          var blob = new Blob([md], {type: 'text/markdown'});
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function(){
+            URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+          }, 0);
+        });
+      }
+    })();
+  });
+</script>
+
+<!-- Compact marquee (optional, mirrors home for parity) -->
+<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 200px;">
+  <div class="marquee-track flex items-center" style="width: max-content;">
+    {%- for texture in collections.textures %}
+      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 160px; object-fit: cover;">
+    {%- endfor %}
+  </div>
+</div>
+
+<!-- Log Section -->
+<section id="log" class="py-20 bg-gray-900 border-t border-b border-white/10">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-10">
+      <h2 class="text-4xl font-bold text-white mb-4">Rolling updates</h2>
+      <p class="text-lg text-gray-300 max-w-3xl mx-auto">Key architecture notes, objectives, and changes. Latest first.</p>
+    </div>
+
+    <div class="space-y-8 max-w-3xl mx-auto">
+      <!-- New Entry helper: copy scaffold to clipboard -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">New entry helper</h3>
+          <button id="copy-entry-template" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400 transition-colors">Copy template</button>
+        </div>
+        <p class="text-gray-300 text-sm mb-3">Paste into a new file under <code>/src/diary/entries/</code> (e.g., <code>YYYY-MM-DD-your-title.md</code>), then commit and push.</p>
+        <pre id="entry-template" class="text-xs leading-5 overflow-x-auto bg-black/40 p-3 rounded border border-white/10"><code>---
+title: Your title here
+date: YYYY-MM-DD
+---
+
+- Point one
+- Point two
+
+Notes:
+- Optional context here.
+</code></pre>
+      </div>
+
+      <!-- New Entry editor: create and download Markdown -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">New entry editor</h3>
+          <button id="new-today-btn" class="text-xs px-3 py-2 rounded bg-wavgen-yellow text-black font-semibold hover:bg-yellow-400">New today</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Title</label>
+            <input id="entry-title" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="Your title" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1 flex items-center justify-between">
+              <span>Date (YYYY-MM-DD)</span>
+              <button id="entry-date-today" class="text-xs px-3 py-2 rounded bg-white/10 hover:bg-white/20">Use today</button>
+            </label>
+            <input id="entry-date" type="date" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="YYYY-MM-DD" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="block text-sm text-gray-400 mb-1">Body</label>
+          <textarea id="entry-body" rows="8" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="- Point one\n- Point two\n\nNotes:\n- Context or links."></textarea>
+        </div>
+        <div class="grid md:grid-cols-2 gap-3 mb-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Previous entries</label>
+            <div class="flex gap-2">
+              <select id="prev-entry-select" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base"></select>
+              <button id="load-prev-entry" class="px-4 py-3 rounded bg-white/10 hover:bg-white/20 text-white">Load</button>
+            </div>
+          </div>
+          <div class="flex items-end gap-2">
+            <button id="copy-entry-md" class="flex-1 control-btn bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Copy Markdown</button>
+            <button id="download-entry-md" class="flex-1 control-btn bg-wavgen-yellow text-black px-4 py-3 rounded-md font-semibold hover:bg-yellow-400">Download .md</button>
+          </div>
+        </div>
+
+        <!-- Mobile action bar: Save/Load/Clear Draft + Share -->
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-2">
+          <button id="save-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Save Draft</button>
+          <button id="load-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Load Draft</button>
+          <button id="clear-draft" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Clear Draft</button>
+          <button id="share-entry-md" class="flex-1 bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Share…</button>
+        </div>
+
+        <!-- Hidden data: previous entries (title + plain text) -->
+        <div id="prev-entries-data" class="hidden">
+          {% for entry in collections.diary %}
+            <div class="prev-entry-item" data-title="{{ entry.data.title | escape }}" data-date="{{ entry.date }}">{{ entry.templateContent | striptags | escape }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Recent GitHub commits (client-side) -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">Recent GitHub commits</h3>
+          <a href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/commits" target="_blank" rel="noopener" class="text-sm text-wavgen-yellow hover:underline">View on GitHub</a>
+        </div>
+        <ul id="commit-list" class="space-y-3 text-gray-200">
+          <li class="text-gray-400 text-sm">Loading commits…</li>
+        </ul>
+      </div>
+
+      <!-- Creative prompts for ideation -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">Creative prompts</h3>
+          <div class="space-x-2">
+            <button id="shuffle-prompts" class="control-btn bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-md">Shuffle</button>
+            <button id="copy-prompts" class="control-btn bg-wavgen-yellow text-black px-3 py-1.5 rounded-md font-semibold hover:bg-yellow-400">Copy</button>
+          </div>
+        </div>
+        <ul id="prompt-list" class="list-disc list-inside text-gray-200 space-y-1"></ul>
+      </div>
+
+      <!-- Dynamic entries: any Markdown file in src/diary/entries/ (tagged 'diary') -->
+      {% set entries = collections.diary | reverse %}
+      {% for entry in entries %}
+      <article class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="text-sm text-gray-400">{{ entry.date }}</div>
+        <h3 class="text-xl font-semibold text-wavgen-yellow">{{ entry.data.title }}</h3>
+        <div class="prose prose-invert max-w-none">
+          {{ entry.templateContent | safe }}
+        </div>
+      </article>
+      {% endfor %}
+
+      <!-- Helper note -->
+      <article class="bg-black/20 border border-dashed border-white/10 rounded-xl p-4">
+        <div class="text-sm text-gray-400">How to add entries</div>
+        <ul class="list-disc list-inside text-gray-300 mt-2 space-y-1">
+          <li>Create a Markdown file in <code>/src/diary/entries/</code> with front matter: <code>title</code> and <code>date</code>.</li>
+          <li>Commit and push via GitHub; GitHub Pages auto-deploys. Entries are auto-listed here, newest first.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>

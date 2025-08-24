@@ -18,6 +18,8 @@ Only the first navigation item is commented in detail; all following items are a
     <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
       <h2 class="text-lg font-bold text-wavgen-yellow">Navigation</h2>
+      <!-- Subtle easter egg: tiny link to Site Log (/diary/) in mobile drawer header -->
+      <a href="/diary/" aria-label="Open Site Log" title=" " class="ml-2 inline-flex items-center justify-center w-3 h-3 rounded-full bg-wavgen-yellow/70 opacity-30 hover:opacity-100 transition-opacity" onclick="try{sessionStorage.setItem('siteLogUnlocked','1');}catch(e){}"></a>
       <button id="close-mobile-nav" class="control-btn text-white hover:text-wavgen-yellow">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -86,6 +88,8 @@ Only the first navigation item is commented in detail; all following items are a
             {% endif %}
           </div>
         {% endfor %}
+        <!-- Subtle easter egg: tiny dot linking to hidden Site Log (/diary/) placed to the right of the nav links -->
+        <a href="/diary/" aria-label="Open Site Log" title=" " class="ml-2 inline-flex items-center justify-center w-2.5 h-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors" onclick="try{sessionStorage.setItem('siteLogUnlocked','1');}catch(e){}"></a>
         <!-- Theme toggle and Ctrl+K buttons removed per request -->
       </nav>
     </div>

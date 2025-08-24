@@ -13,6 +13,9 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% if title %}{{ title }} - {% endif %}The Waveform Generation</title>
   <meta name="description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  {% if noindex %}
+  <meta name="robots" content="noindex,nofollow" />
+  {% endif %}
   {# Early theme init to avoid flash of incorrect theme. Sets 'dark' class on <html> if needed. #}
   <script>
     (function() {

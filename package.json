@@ -9,7 +9,8 @@
     "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
-    "debug": "DEBUG=Eleventy* eleventy"
+    "debug": "DEBUG=Eleventy* eleventy",
+    "new:diary": "node scripts/new-diary-entry.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
