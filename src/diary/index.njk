@@ -199,6 +199,7 @@ but the content is a concise documentary/logbook about the site.
         var copyBtn=document.getElementById('copy-entry-md');
         var dlBtn=document.getElementById('download-entry-md');
         var saveBtn=document.getElementById('save-entry');
+        var emailBtn=document.getElementById('email-entry-md');
         var statusEl=document.getElementById('save-status');
         var listEl=document.getElementById('prev-entries-list');
         var dataWrap=document.getElementById('prev-entries-data');
@@ -227,22 +228,48 @@ but the content is a concise documentary/logbook about the site.
         // Download (more robust for iOS/Safari with setTimeout)
         if (dlBtn) dlBtn.addEventListener('click', function(){ var date=(dInput.value||todayStr()).slice(0,10); var filename=date+'-'+slugify(tInput.value)+'.md'; var md=buildMarkdown(tInput.value,dInput.value,bInput.value); var blob=new Blob([md],{type:'text/markdown'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); setTimeout(function(){ a.click(); setTimeout(function(){ URL.revokeObjectURL(url); document.body.removeChild(a); }, 500); }, 0); });
 
+        // Email .md (Web Share API with file when supported, fallback to mailto)
+        if (emailBtn) emailBtn.addEventListener('click', async function(){
+          try {
+            var date=(dInput.value||todayStr()).slice(0,10);
+            var filename=date+'-'+slugify(tInput.value)+'.md';
+            var md=buildMarkdown(tInput.value,dInput.value,bInput.value);
+            var subject = '[Diary] ' + (tInput.value||'Untitled') + ' ('+date+')';
+            // Try Web Share API with file attachment
+            if (window.File && navigator.canShare) {
+              var file = new File([md], filename, { type: 'text/markdown' });
+              if (navigator.canShare({ files: [file] })) {
+                await navigator.share({ title: subject, text: 'Markdown entry attached.', files: [file] });
+                statusEl.textContent = 'Shared via your OS share sheet.';
+                return;
+              }
+            }
+            // Fallback: open mailto with content in body (attachments not possible via mailto)
+            var mailto = 'mailto:robmcd@me.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(md);
+            window.location.href = mailto;
+            statusEl.textContent = 'Opened email client with Markdown in the message body. Attach the .md if needed (or use Download first).';
+          } catch (e) {
+            console.error(e);
+            statusEl.textContent = 'Email action failed: ' + (e && e.message || e);
+          }
+        });
+
         // Save to site via local API
         if (saveBtn) saveBtn.addEventListener('click', async function(){
           var title = tInput.value; var date = dInput.value || todayStr(); var body = bInput.value;
           var api = (window.DIARY_API || 'http://localhost:4321');
-          statusEl.textContent = 'Saving…';
-          saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+          statusEl.textContent = 'Saving locally…';
+          saveBtn.disabled = true; saveBtn.textContent = 'Saving locally…';
           try {
             var res = await fetch(api + '/api/diary/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, date, body }) });
             var json = await res.json();
             if (!res.ok || !json.ok) throw new Error(json && json.error || ('HTTP ' + res.status));
-            statusEl.innerHTML = 'Saved as <code class="px-1">' + (json.filename || 'entry.md') + '</code>. Reloading…';
+            statusEl.innerHTML = 'Saved locally as <code class="px-1">' + (json.filename || 'entry.md') + '</code>. Reloading…';
             setTimeout(function(){ window.location.reload(); }, 700);
           } catch (e) {
             console.error(e);
-            statusEl.textContent = 'Save failed: ' + (e && e.message || e);
-            saveBtn.disabled = false; saveBtn.textContent = 'Save to site';
+            statusEl.textContent = 'Local save failed: ' + (e && e.message || e);
+            saveBtn.disabled = false; saveBtn.textContent = 'Save to site (local)';
           }
         });
 
@@ -352,7 +379,8 @@ Notes:
         </div>
         <div class="flex items-end gap-2">
           <button id="copy-entry-md" class="flex-1 control-btn bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Copy Markdown</button>
-          <button id="save-entry" class="flex-1 control-btn bg-green-500 text-black px-4 py-3 rounded-md font-semibold hover:bg-green-400">Save to site</button>
+          <button id="save-entry" class="flex-1 control-btn bg-green-500 text-black px-4 py-3 rounded-md font-semibold hover:bg-green-400">Save to site (local)</button>
+          <button id="email-entry-md" class="flex-1 control-btn bg-blue-500 text-white px-4 py-3 rounded-md font-semibold hover:bg-blue-400">Email .md</button>
           <button id="download-entry-md" class="flex-1 control-btn bg-wavgen-yellow text-black px-4 py-3 rounded-md font-semibold hover:bg-yellow-400">Download .md</button>
         </div>
         <p id="save-status" class="mt-2 text-sm text-gray-300"></p>
