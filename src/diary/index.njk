@@ -228,26 +228,17 @@ but the content is a concise documentary/logbook about the site.
         // Download (more robust for iOS/Safari with setTimeout)
         if (dlBtn) dlBtn.addEventListener('click', function(){ var date=(dInput.value||todayStr()).slice(0,10); var filename=date+'-'+slugify(tInput.value)+'.md'; var md=buildMarkdown(tInput.value,dInput.value,bInput.value); var blob=new Blob([md],{type:'text/markdown'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); setTimeout(function(){ a.click(); setTimeout(function(){ URL.revokeObjectURL(url); document.body.removeChild(a); }, 500); }, 0); });
 
-        // Email .md (Web Share API with file when supported, fallback to mailto)
-        if (emailBtn) emailBtn.addEventListener('click', async function(){
+        // Email .md (simple mailto with Markdown in subject/body)
+        if (emailBtn) emailBtn.addEventListener('click', function(){
           try {
             var date=(dInput.value||todayStr()).slice(0,10);
-            var filename=date+'-'+slugify(tInput.value)+'.md';
             var md=buildMarkdown(tInput.value,dInput.value,bInput.value);
-            var subject = '[Diary] ' + (tInput.value||'Untitled') + ' ('+date+')';
-            // Try Web Share API with file attachment
-            if (window.File && navigator.canShare) {
-              var file = new File([md], filename, { type: 'text/markdown' });
-              if (navigator.canShare({ files: [file] })) {
-                await navigator.share({ title: subject, text: 'Markdown entry attached.', files: [file] });
-                statusEl.textContent = 'Shared via your OS share sheet.';
-                return;
-              }
-            }
-            // Fallback: open mailto with content in body (attachments not possible via mailto)
+            var rawSubject = '[Diary] ' + (tInput.value||'Untitled') + ' ('+date+')';
+            // Keep subject reasonably short
+            var subject = rawSubject.slice(0, 140);
             var mailto = 'mailto:robmcd@me.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(md);
             window.location.href = mailto;
-            statusEl.textContent = 'Opened email client with Markdown in the message body. Attach the .md if needed (or use Download first).';
+            statusEl.textContent = 'Opened email client with Markdown in the message body.';
           } catch (e) {
             console.error(e);
             statusEl.textContent = 'Email action failed: ' + (e && e.message || e);
