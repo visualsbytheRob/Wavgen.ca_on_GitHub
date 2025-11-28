@@ -35,8 +35,8 @@ but the content is a concise documentary/logbook about the site.
 <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
   <!-- Background slides like home -->
   <div class="hero-section-bg-slideshow absolute inset-0">
-    {%- for background in collections.backgrounds %}
-      <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.35{% else %}0{% endif %};">
+    {%- for img in collections.homeImages %}
+      <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.35{% else %}0{% endif %};">
     {%- endfor %}
   </div>
   <div class="absolute inset-0 bg-black opacity-20"></div>
@@ -45,12 +45,13 @@ but the content is a concise documentary/logbook about the site.
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Left: text card with its own slideshow, like home -->
       <div class="animate-fade-in relative">
+        {%- if collections.homeImages.length %}
         <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-          <img src="/images/1.gif" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
-          {%- for background in collections.backgrounds %}
-            <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
+          {%- for img in collections.homeImages %}
+            <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
           {%- endfor %}
         </div>
+        {%- endif %}
 
       
 
@@ -67,15 +68,16 @@ but the content is a concise documentary/logbook about the site.
         </div>
       </div>
 
-      <!-- Right: hero slideshow of textures like home -->
+      <!-- Right: hero slideshow like home -->
+      {%- if collections.homeImages.length %}
       <div class="w-full mx-auto mt-8">
         <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
-          <img src="/images/1.gif" alt="Demo GIF" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
-          {%- for texture in collections.textures %}
-            <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+          {%- for img in collections.homeImages %}
+            <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
           {%- endfor %}
         </div>
       </div>
+      {%- endif %}
     </div>
   </div>
 </section>

@@ -5,12 +5,19 @@ description: Electronic music compositions emphasizing melody, harmony, and emot
 footerDescription: Melodic Electronic Music • Toronto, Canada
 footerTagline: Creating memorable melodic journeys through electronic composition.
 ---
-{#
-This file defines the Melodic genre subpage for the Music section.
-- Sets up metadata and layout for the Melodic page.
-- Contains a hero/intro section and track listing.
-- Each track card uses the same structure; only the first is commented in detail.
-#}
+
+{# Shared Hero Section with Gallery #}
+{% set hero = {
+  title: 'Melodic',
+  subtitle: 'Melody, harmony, and emotion',
+  description: 'Electronic compositions emphasizing memorable melodic journeys and emotional narrative.',
+  gradient: { from: 'from-pink-900', via: 'via-purple-800', to: 'to-indigo-900' },
+  overlayOpacity: 'opacity-30',
+  images: collections.melodicImages,
+  folder: 'src/images/music/melodic/',
+  theme: 'music'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Breadcrumb -->
 <div class="bg-gray-800 py-4">
@@ -41,13 +48,15 @@ This file defines the Melodic genre subpage for the Music section.
     </div>
 </div>
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Melodic <span class="text-wavgen-yellow">Compositions</span>',
   subtitle: 'Harmonic Progressions & Musical Storytelling',
   description: 'Electronic music compositions that emphasize melody, harmony, and emotional narrative. These tracks blend traditional musical structures with modern production techniques, creating memorable melodic journeys that balance complexity with accessibility.',
   gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-pink-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  images: collections.melodicImages,
+  folder: 'src/images/music/melodic/'
 } %}
 {% include "components/hero.njk" %}
 

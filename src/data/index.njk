@@ -23,13 +23,16 @@ This file defines the Data & Tech landing page for the site.
     </div>
 </nav>
 
-<!-- Hero Section -->
+<!-- Hero Section with Gallery -->
 {% set hero = {
   title: 'Data & <span class="text-wavgen-yellow">Technology</span>',
   subtitle: 'Modern Development & AI Integration',
   description: 'Embracing modern web development with AI assistance and seamless cloud integration. Pioneering explorations in generative AI, quantum computing, and innovative software solutions.',
+  images: collections.genaiImages,
+  folder: 'src/images/data/genai/',
   gradient: { from: 'from-gray-900', via: 'via-blue-900', to: 'to-wavgen-purple' },
-  overlayOpacity: 'opacity-30'
+  overlayOpacity: 'opacity-30',
+  theme: 'data'
 } %}
 {% include "components/hero.njk" %}
 

@@ -22,13 +22,16 @@ This file defines the Video landing page for the site.
         </div>
     </div>
 </nav>
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Digital Video <span class="text-wavgen-yellow">Innovation</span>',
   subtitle: 'Real-time Graphics & Visual Technology',
-  description: 'Exploring the frontiers of digital video art and technology. Real-time 3D graphics meet projection mapping and live video mixing to create immersive visual experiences that blend the digital and physical worlds.',
+  description: 'Exploring the frontiers of digital video art and technology. Real-time 3D graphics meet projection mapping and live video mixing to create immersive visual experiences.',
+  images: collections.realtimeImages,
+  folder: 'src/images/video/realtime/',
   gradient: { from: 'from-purple-900', via: 'via-wavgen-dark-purple', to: 'to-indigo-900' },
-  overlayOpacity: 'opacity-30'
+  overlayOpacity: 'opacity-30',
+  theme: 'video'
 } %}
 {% include "components/hero.njk" %}
 

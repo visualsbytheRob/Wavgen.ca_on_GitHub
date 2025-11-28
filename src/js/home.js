@@ -140,6 +140,9 @@
   }
 
   function whatsNew() {
+    // DISABLED: Now using generative placeholder visuals from placeholder-visuals.js
+    return;
+    
     const container = document.querySelector('.whats-new-track');
     if (!container) return;
 

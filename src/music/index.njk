@@ -31,13 +31,16 @@ Only the first genre card is commented in detail; all following cards are analog
     </div>
 </nav>
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Electronic Music <span class="text-wavgen-yellow">Studio</span>',
   subtitle: 'Digital Audio Production & Sound Design',
   description: 'Creating electronic music across multiple genres and styles. From ambient soundscapes to driving rhythms, each track showcases different approaches to synthesis, sampling, and digital audio production.',
   gradient: { from: 'from-blue-900', via: 'via-wavgen-dark-purple', to: 'to-wavgen-purple' },
-  overlayOpacity: 'opacity-30'
+  overlayOpacity: 'opacity-30',
+  images: collections.electroImages,
+  folder: 'src/images/music/electro/',
+  theme: 'music'
 } %}
 {% include "components/hero.njk" %}
 

@@ -12,73 +12,31 @@ This file defines the 3D Modelling subpage for the Art section.
 - Each card uses the same structure; only the first is commented in detail.
 #}
 
-<!-- Breadcrumb -->
-<div class="bg-gray-800 py-4">
-    <div class="container mx-auto px-4">
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <a href="/art/" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Art</a>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="ml-1 text-wavgen-yellow md:ml-2">3D Modelling</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
+{# Shared Hero Section with Gallery #}
+{% set hero = {
+  title: '3D Modelling',
+  subtitle: 'Physical & Digital Sculpture',
+  description: 'Three-dimensional creation from traditional clay sculpture to digital modeling.',
+  gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-indigo-900' },
+  overlayOpacity: 'opacity-40',
+  images: collections.modellingImages,
+  folder: 'src/images/art/modelling/',
+  theme: 'art'
+} %}
+{% include "components/hero.njk" %}
 
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 py-20">
-    <div class="absolute inset-0 bg-black opacity-40"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                3D <span class="text-wavgen-yellow">Modelling</span>
-            </h1>
-            
-            <!-- Hero Visual Slideshow -->
-            <div class="w-full max-w-md mx-auto mt-8">
-              <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="aspect-ratio: 4/3;">
-                <img src="/images/1.gif" alt="Demo GIF" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
-                {%- for texture in collections.textures %}
-                  <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
-                {%- endfor %}
-              </div>
-            </div>
-            
-            <!-- Texture Marquee Carousel (Auto-Scrolling) -->
-            <div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden" style="height: 180px;">
-              <div class="marquee-track flex items-center" style="width: max-content;">
-                {%- for texture in collections.textures %}
-                  <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 150px; object-fit: cover;">
-                {%- endfor %}
-              </div>
-            </div>
-            <p class="text-xl md:text-2xl text-purple-200 mb-8">
-                Physical & Digital Sculpture
-            </p>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Three-dimensional creation spanning traditional clay sculpture to digital modeling. 
-                Each piece explores form, space, and materiality, investigating how objects occupy space 
-                and how digital tools can extend the possibilities of traditional sculpting techniques.
-            </p>
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">›</span>
+            <a href="/art/" class="text-wavgen-yellow hover:text-yellow-300">Art</a>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-300">Modelling</span>
         </div>
     </div>
-</section>
+</nav>
 
 <!-- Modelling Techniques -->
 <section class="py-20 bg-gray-800">

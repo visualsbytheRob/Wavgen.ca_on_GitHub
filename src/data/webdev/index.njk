@@ -12,44 +12,31 @@ This file defines the Web Dev subpage for the Data & Tech section.
 - Each card uses the same structure; only the first is commented in detail.
 #}
 
-<!-- Breadcrumb -->
-<div class="bg-gray-800 py-4">
-    <div class="container mx-auto px-4">
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <a href="/data/" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Data & Tech</a>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="ml-1 text-wavgen-yellow md:ml-2">Web Dev</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
-<!-- Hero Section -->
+<!-- Hero Section with Gallery -->
 {% set hero = {
-  title: 'Web <span class="text-wavgen-yellow">Development</span>',
+  title: 'Web Development',
   subtitle: 'Modern Frameworks & Responsive Design',
-  description: 'Modern web development using cutting-edge frameworks and responsive design principles. Creating fast, accessible, and user-friendly web applications that work seamlessly across all devices and platforms.',
+  description: 'Modern web development using cutting-edge frameworks and responsive design principles.',
+  images: collections.webdevImages,
+  folder: 'src/images/data/webdev/',
   gradient: { from: 'from-gray-900', via: 'via-blue-900', to: 'to-indigo-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  theme: 'data'
 } %}
 {% include "components/hero.njk" %}
+
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">›</span>
+            <a href="/data/" class="text-wavgen-yellow hover:text-yellow-300">Data</a>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-300">WebDev</span>
+        </div>
+    </div>
+</nav>
 
 <!-- Web Dev Stack -->
 <section class="py-20 bg-gray-800">

@@ -23,13 +23,16 @@ This file defines the Art landing page for the site.
     </div>
 </nav>
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Traditional & Digital <span class="text-wavgen-yellow">Art</span>',
   subtitle: 'Bridging Classical & Modern Techniques',
   description: 'Exploring the art of creation through both traditional and digital mediums. From clay sculpture to 3D printing, each piece bridges classical craftsmanship with modern technology.',
   gradient: { from: 'from-pink-900', via: 'via-wavgen-dark-purple', to: 'to-purple-900' },
-  overlayOpacity: 'opacity-30'
+  overlayOpacity: 'opacity-30',
+  images: collections.paintingImages,
+  folder: 'src/images/art/painting/',
+  theme: 'art'
 } %}
 {% include "components/hero.njk" %}
 

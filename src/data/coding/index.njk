@@ -12,44 +12,31 @@ This file defines the Coding subpage for the Data & Tech section.
 - Each card uses the same structure; only the first is commented in detail.
 #}
 
-<!-- Breadcrumb -->
-<div class="bg-gray-800 py-4">
-    <div class="container mx-auto px-4">
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <a href="/data/" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Data & Tech</a>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="ml-1 text-wavgen-yellow md:ml-2">Coding</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
-<!-- Hero Section -->
+<!-- Hero Section with Gallery -->
 {% set hero = {
-  title: 'Software <span class="text-wavgen-yellow">Development</span>',
+  title: 'Software Development',
   subtitle: 'Multi-Language Programming & System Architecture',
-  description: 'Software development across multiple programming languages and platforms, from system-level programming to high-level application development. Creating efficient, maintainable code that solves complex problems and delivers robust solutions.',
+  description: 'Software development across multiple programming languages and platforms.',
+  images: collections.codingImages,
+  folder: 'src/images/data/coding/',
   gradient: { from: 'from-gray-900', via: 'via-green-900', to: 'to-emerald-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  theme: 'data'
 } %}
 {% include "components/hero.njk" %}
+
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">›</span>
+            <a href="/data/" class="text-wavgen-yellow hover:text-yellow-300">Data</a>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-300">Coding</span>
+        </div>
+    </div>
+</nav>
 
 <!-- Programming Languages -->
 <section class="py-20 bg-gray-800">

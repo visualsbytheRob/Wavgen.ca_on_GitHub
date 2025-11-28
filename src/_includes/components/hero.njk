@@ -1,30 +1,86 @@
 {#
-Shared Hero Banner Component
+Enhanced Hero Banner Component with Side-by-Side Gallery Layout
 Usage:
   {% set hero = {
-    title: 'Page Title with <span class="text-wavgen-yellow">Accent</span>',
+    title: 'Page Title',
     subtitle: 'Optional subtitle text',
+    description: 'Page description text',
     gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-indigo-900' },
-    overlayOpacity: 'opacity-40'
+    overlayOpacity: 'opacity-40',
+    images: collections.someImages,
+    folder: 'src/images/section/',
+    theme: 'music'  // Theme for generative images: music, video, art, data
   } %}
   {% include "components/hero.njk" %}
 #}
 
 {% set _hero = hero or {} %}
 {% set _grad = _hero.gradient or {} %}
-<section class="relative bg-gradient-to-br {{ _grad.from or 'from-gray-900' }} {{ _grad.via or '' }} {{ _grad.to or 'to-indigo-900' }} py-20">
+{% set _images = _hero.images or [] %}
+{% set _folder = _hero.folder or 'src/images/' %}
+{% set _theme = _hero.theme or 'default' %}
+
+<section class="relative bg-gradient-to-br {{ _grad.from or 'from-gray-900' }} {{ _grad.via or '' }} {{ _grad.to or 'to-indigo-900' }} overflow-hidden" data-gallery-theme="{{ _theme }}">
+  
+  {# Background Slideshow Layer #}
+  <div class="hero-section-bg-slideshow absolute inset-0">
+    {%- for img in _images %}
+      <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
+    {%- endfor %}
+  </div>
+  
   <div class="absolute inset-0 bg-black {{ _hero.overlayOpacity or 'opacity-30' }}"></div>
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="text-center max-w-4xl mx-auto">
-      <h1 class="hero-text text-5xl md:text-7xl font-bold text-white mb-6">
-        {{ _hero.title | safe }}
-      </h1>
-      {% if _hero.subtitle %}
-      <p class="text-xl md:text-2xl text-gray-200 mb-8">{{ _hero.subtitle }}</p>
-      {% endif %}
-      {% if _hero.description %}
-      <p class="text-lg text-gray-300 max-w-2xl mx-auto">{{ _hero.description }}</p>
-      {% endif %}
+  
+  {# 2x2 Grid Layout matching home page #}
+  <div class="container mx-auto px-4 relative z-10 py-6" style="height: 70vh; min-height: 400px;">
+    <div class="h-full grid grid-cols-1 lg:grid-cols-2 gap-3" style="grid-template-rows: 65% 35%;">
+      
+      {# TOP LEFT: Title & Description #}
+      <div class="relative overflow-hidden">
+        <div class="h-full bg-black/40 rounded-lg p-4 shadow-xl border border-white/10 flex flex-col justify-center">
+          <h1 class="hero-text text-3xl lg:text-5xl font-bold text-white mb-3">
+            {{ _hero.title | safe }}
+          </h1>
+          {% if _hero.subtitle %}
+          <p class="text-lg lg:text-xl text-wavgen-yellow mb-3">{{ _hero.subtitle }}</p>
+          {% endif %}
+          {% if _hero.description %}
+          <p class="text-sm lg:text-base text-gray-300">{{ _hero.description }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {# TOP RIGHT: Image Gallery Slideshow #}
+      <div class="hidden lg:block overflow-hidden">
+        <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+          {%- for img in _images %}
+            <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
+          {%- endfor %}
+          {# Placeholder visuals injected by JS if no images #}
+        </div>
+      </div>
+
+      {# BOTTOM LEFT: Quick Links or Info #}
+      <div class="rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+        <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+          <h3 class="text-wavgen-yellow font-bold text-sm">Explore</h3>
+        </div>
+        <div class="relative flex-1 min-h-0 py-1">
+          <div class="subpage-links-track absolute inset-0 flex items-stretch gap-2 px-2 will-change-transform"></div>
+        </div>
+      </div>
+
+      {# BOTTOM RIGHT: Image Carousel #}
+      <div class="hidden lg:block overflow-hidden">
+        <div class="marquee-carousel h-full px-1 py-1 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex items-center">
+          <div class="marquee-track flex items-center h-full" style="width: max-content;">
+            {%- for img in _images %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded-lg shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-105 mx-2" style="height: calc(100% - 8px); aspect-ratio: 4/3; object-fit: cover;">
+            {%- endfor %}
+            {# Placeholder visuals injected by JS if no images #}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

@@ -12,44 +12,31 @@ This file defines the Editing video technology subpage for the Video section.
 - Each project card uses the same structure; only the first is commented in detail.
 #}
 
-<!-- Breadcrumb -->
-<div class="bg-gray-800 py-4">
-    <div class="container mx-auto px-4">
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="/" class="text-gray-400 hover:text-wavgen-yellow">Home</a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <a href="/video/" class="ml-1 text-gray-400 hover:text-wavgen-yellow md:ml-2">Video</a>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="ml-1 text-wavgen-yellow md:ml-2">Editing</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
-  title: 'Video <span class="text-wavgen-yellow">Editing</span>',
+  title: 'Video Editing',
   subtitle: 'Post-production Workflows & Cinematic Techniques',
-  description: 'Professional video editing and post-production workflows that transform raw footage into compelling narratives. Using advanced editing techniques, color grading, and sound design to create polished, cinematic content that engages audiences and tells powerful stories.',
+  description: 'Professional video editing and post-production workflows using advanced editing techniques, color grading, and sound design.',
+  images: collections.editingImages,
+  folder: 'src/images/video/editing/',
   gradient: { from: 'from-gray-900', via: 'via-emerald-900', to: 'to-teal-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  theme: 'video'
 } %}
 {% include "components/hero.njk" %}
+
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">›</span>
+            <a href="/video/" class="text-wavgen-yellow hover:text-yellow-300">Video</a>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-300">Editing</span>
+        </div>
+    </div>
+</nav>
 
 <!-- Video Player -->
 <section class="py-20 bg-gray-900">

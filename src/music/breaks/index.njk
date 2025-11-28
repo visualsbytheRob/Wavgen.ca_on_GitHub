@@ -5,12 +5,19 @@ description: High-energy breakbeat and drum & bass compositions with complex rhy
 footerDescription: Breakbeat & Drum Programming • Toronto, Canada
 footerTagline: Exploring complex rhythmic patterns and high-energy electronic beats.
 ---
-{#
-This file defines the Breaks genre subpage for the Music section.
-- Sets up metadata and layout for the Breaks page.
-- Contains a hero/intro section and track listing.
-- Each track card uses the same structure; only the first is commented in detail.
-#}
+
+{# Shared Hero Section with Gallery #}
+{% set hero = {
+  title: 'Breaks',
+  subtitle: 'Breakbeat and drum programming',
+  description: 'High-energy breakbeat compositions with complex rhythmic patterns and driving electronic beats.',
+  gradient: { from: 'from-red-900', via: 'via-orange-800', to: 'to-yellow-900' },
+  overlayOpacity: 'opacity-30',
+  images: collections.breaksImages,
+  folder: 'src/images/music/breaks/',
+  theme: 'music'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Breadcrumb -->
 <div class="bg-gray-800 py-4">
@@ -41,13 +48,15 @@ This file defines the Breaks genre subpage for the Music section.
     </div>
 </div>
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Breakbeat <span class="text-wavgen-yellow">Rhythms</span>',
   subtitle: 'Complex Rhythmic Patterns & Drum Programming',
   description: 'High-energy electronic music built around complex breakbeat patterns and intricate drum programming. These tracks explore the rhythmic possibilities of chopped-up drum breaks, layered percussion, and syncopated grooves that push the boundaries of traditional electronic dance music.',
   gradient: { from: 'from-gray-900', via: 'via-orange-900', to: 'to-red-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  images: collections.breaksImages,
+  folder: 'src/images/music/breaks/'
 } %}
 {% include "components/hero.njk" %}
 

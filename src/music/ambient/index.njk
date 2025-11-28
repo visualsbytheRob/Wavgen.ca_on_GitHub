@@ -5,12 +5,19 @@ description: Immersive ambient compositions and atmospheric soundscapes by Rob M
 footerDescription: Ambient Sound Design • Toronto, Canada
 footerTagline: Creating immersive atmospheric soundscapes and evolving sonic textures.
 ---
-{#
-This file defines the Ambient genre subpage for the Music section.
-- Sets up metadata and layout for the Ambient page.
-- Contains a hero/intro section and track listing.
-- Each track card uses the same structure; only the first is commented in detail.
-#}
+
+{# Shared Hero Section with Gallery #}
+{% set hero = {
+  title: 'Ambient',
+  subtitle: 'Atmospheric soundscapes and textures',
+  description: 'Immersive ambient compositions exploring atmospheric soundscapes and evolving sonic textures.',
+  gradient: { from: 'from-indigo-900', via: 'via-purple-800', to: 'to-blue-900' },
+  overlayOpacity: 'opacity-30',
+  images: collections.ambientImages,
+  folder: 'src/images/music/ambient/',
+  theme: 'music'
+} %}
+{% include "components/hero.njk" %}
 
 <!-- Breadcrumb -->
 <div class="bg-gray-800 py-4">
@@ -41,13 +48,15 @@ This file defines the Ambient genre subpage for the Music section.
     </div>
 </div>
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Ambient <span class="text-wavgen-yellow">Sound Design</span>',
   subtitle: 'Exploring Atmospheric Soundscapes',
-  description: 'Immersive ambient compositions created using digital synthesis and sound design. Atmospheric soundscapes and evolving textures that explore the subtle interplay between space, texture, and harmony, creating sonic environments that blend organic and electronic elements.',
+  description: 'Immersive ambient compositions created using digital synthesis and sound design. Atmospheric soundscapes and evolving textures that explore the subtle interplay between space, texture, and harmony.',
   gradient: { from: 'from-gray-900', via: 'via-teal-900', to: 'to-blue-900' },
-  overlayOpacity: 'opacity-40'
+  overlayOpacity: 'opacity-40',
+  images: collections.ambientImages,
+  folder: 'src/images/music/ambient/'
 } %}
 {% include "components/hero.njk" %}
 

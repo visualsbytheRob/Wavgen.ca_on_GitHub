@@ -12,13 +12,16 @@ This file defines the Electro genre subpage for the Music section.
 - Each repeated section (e.g., track or feature card) uses the same structure; only the first is commented in detail.
 #}
 
-{# Shared Hero Section #}
+{# Shared Hero Section with Gallery #}
 {% set hero = {
   title: 'Electro',
   subtitle: 'Electronic music production and synthesis',
-  description: 'Electronic music production and synthesis exploring digital soundscapes, rhythmic innovation, and the endless possibilities of electronic composition.',
+  description: 'Exploring digital soundscapes, rhythmic innovation, and the endless possibilities of electronic composition.',
   gradient: { from: 'from-wavgen-purple', via: 'via-purple-700', to: 'to-indigo-800' },
-  overlayOpacity: 'opacity-30'  
+  overlayOpacity: 'opacity-30',
+  images: collections.electroImages,
+  folder: 'src/images/music/electro/',
+  theme: 'music'
 } %}
 {% include "components/hero.njk" %}
 

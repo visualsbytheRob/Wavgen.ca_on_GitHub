@@ -17,176 +17,100 @@ footerTagline: Exploring the intersection of creativity and technology.
   The dual system creates visual depth and interest while maintaining excellent readability.
   Technical implementation uses GSAP animations with staggered timing for visual variety.
 #}
-<section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen flex items-center">
-    <!-- Hero Section Background Slideshow -->
-    {# 
-      FULL-SECTION BACKGROUND SLIDESHOW
-      
-      This slideshow covers the entire hero section background with high-resolution images.
-      Key features:
-      - Uses collections.backgrounds from Eleventy (defined in .eleventy.js)
-      - Images are positioned absolutely to cover the full section
-      - First image starts visible (40% opacity), others start hidden (0% opacity)
-      - GSAP animations in gallery.js handle the slideshow transitions
-      - 4-second intervals create dramatic visual impact without being distracting
-    #}
+{# 
+  HERO SECTION - 2x2 GRID LAYOUT
+  
+  Layout:
+  ┌─────────────────┬─────────────────┐
+  │  Hello Section  │  Image Gallery  │
+  │   (Top Left)    │   (Top Right)   │
+  ├─────────────────┼─────────────────┤
+  │   What's New    │ Image Carousel  │
+  │  (Bottom Left)  │ (Bottom Right)  │
+  └─────────────────┴─────────────────┘
+#}
+<section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen">
+    <!-- Background Slideshow -->
     <div class="hero-section-bg-slideshow absolute inset-0">
-        {%- for background in collections.backgrounds %}
-          {# Loop through all background images from the backgrounds collection #}
-          {# Each image is positioned absolutely to cover the full section area #}
-          <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.4{% else %}0{% endif %};">
-          {# 
-            CSS Classes Explained:
-            - hero-section-bg-slide: Target class for GSAP animations in gallery.js
-            - absolute inset-0: Positions image to cover entire parent container
-            - w-full h-full: Ensures image fills the container dimensions
-            - object-cover: Maintains aspect ratio while covering the area (like CSS background-size: cover)
-            - transition-opacity duration-1000: Smooth 1-second opacity transitions
-            
-            Inline Style Logic:
-            - First image (loop.first) starts at 40% opacity for immediate visual impact
-            - All other images start at 0% opacity and will be animated by GSAP
-            - 40% opacity provides dramatic effect while maintaining text readability
-          #}
+        {%- for img in collections.homeImages %}
+          <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
         {%- endfor %}
     </div>
-    {# Semi-transparent overlay to enhance text readability and add visual depth #}
     <div class="absolute inset-0 bg-black opacity-20"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <!-- Hero Content -->
-            {# 
-              HERO CARD WITH INDEPENDENT BACKGROUND SLIDESHOW
-              
-              This is the second part of the dual slideshow system - a localized slideshow
-              that runs behind the hero text content. It operates independently from the
-              full-section background slideshow above, creating layered visual depth.
-            #}
-            <div class="animate-fade-in relative">
-                <!-- Hero Background Slideshow -->
-                {# 
-                  HERO CARD BACKGROUND SLIDESHOW
-                  
-                  This slideshow runs behind the hero text content only (not the full section).
-                  Key differences from the section slideshow:
-                  - Covers only the hero card area (left column)
-                  - Runs at 100% opacity for full visual impact
-                  - 3-second intervals (different from section's 4-second timing)
-                  - Includes both 1.gif and background collection images
-                  - Creates layered depth effect with the section slideshow
-                #}
-                <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-                    {# 
-                      CSS Classes Explained:
-                      - hero-bg-slideshow: Target class for GSAP animations in gallery.js
-                      - absolute inset-0: Positions slideshow to cover the hero card area
-                      - rounded-lg: Matches the rounded corners of the text overlay
-                      - overflow-hidden: Ensures images don't extend beyond rounded corners
-                      - pointer-events-none: Allows clicks to pass through to text content
-                    #}
-                    
-                    {# Include the original 1.gif as the starting image #}
-                    <img src="/images/1.gif" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0.1;">
-                    
-                    {# Loop through background collection images #}
-                    {%- for background in collections.backgrounds %}
-                      <img src="{{ background.url }}" alt="Background" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: 0;">
-                      {# 
-                        Each background image starts hidden (opacity: 0) and will be
-                        animated to 100% opacity by GSAP when it's the active slide.
-                        The 1.gif starts at 10% opacity as the initial visible image.
-                      #}
-                    {%- endfor %}
+
+    <!-- 2x2 Grid Container: Reduced 54/36 split (10% smaller) -->
+    <div class="relative z-10 h-screen grid grid-cols-1 lg:grid-cols-2 gap-3 p-4 pt-2 pb-4" style="grid-template-rows: 54% 36%;">
+        
+        <!-- TOP LEFT: Hello Section -->
+        <div class="relative animate-fade-in overflow-hidden">
+            <!-- Background slideshow behind Hello text -->
+            <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+                {%- for img in collections.homeImages %}
+                  <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
+                {%- endfor %}
+                {# Placeholder will be injected here by JS if no images #}
+            </div>
+            <div class="relative z-10 h-full bg-black/40 rounded-lg p-4 shadow-xl border border-white/10 flex flex-col justify-start pt-6">
+                <h1 class="hero-text text-2xl lg:text-4xl mb-2">
+                    Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
+                </h1>
+                <p class="subtitle-text text-sm lg:text-base mb-3">
+                    Creative technologist exploring the intersection of music, visual art, and emerging technology
+                </p>
+                <div class="space-y-1 text-sm lg:text-base text-gray-300 mb-4">
+                    <p>📍 Based in Toronto, Ontario, Canada</p>
+                    <p>🎵 Electronic music producer and sound designer</p>
+                    <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
+                    <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
                 </div>
-                
-                <!-- Hero Text Content (now with relative positioning to appear above background) -->
-                {# 
-                  ENHANCED TEXT OVERLAY FOR READABILITY
-                  
-                  The text overlay has been strengthened to ensure excellent readability
-                  against the dynamic background slideshow. Multiple techniques are used:
-                  - Semi-transparent black background (bg-black/40 = 40% opacity)
-                  - Shadow for depth and separation (shadow-xl)
-                  - Subtle border for definition (border-white/10 = 10% white opacity)
-                  - High z-index to ensure it appears above background images
-                #}
-                <div class="relative z-10 bg-black/40 rounded-lg p-8 shadow-xl border border-white/10">
-                    <h1 class="hero-text">
-                        Hello, I'm <span class="text-wavgen-yellow">Rob McDonald</span>
-                    </h1>
-                    <p class="subtitle-text">
-                        Creative technologist exploring the intersection of music, visual art, and emerging technology
-                    </p>
-                    <div class="space-y-4 text-lg text-gray-300 mb-8">
-                        <p>📍 Based in Toronto, Ontario, Canada</p>
-                        <p>🎵 Electronic music producer and sound designer</p>
-                        <p>🎨 Visual artist working with TouchDesigner and real-time graphics</p>
-                        <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
-                    </div>
-                    <div class="flex flex-wrap gap-4 items-center">
-                        <a id="hero-cta" href="#portfolio" class="control-btn bg-wavgen-yellow text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300 relative overflow-hidden">
-                            Explore My Work
-                        </a>
-                        <a href="#about" class="control-btn border-2 border-wavgen-yellow text-wavgen-yellow px-8 py-3 rounded-lg font-semibold hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
-                            Learn More
-                        </a>
-                        <button id="cmdk-hint" class="control-btn text-sm px-3 py-2 rounded bg-black/30 text-white hover:bg-black/40" aria-haspopup="dialog" aria-controls="cmdk" aria-label="Open command palette (Ctrl+K)">Ctrl+K Tips</button>
-                    </div>
+                <div class="flex flex-wrap gap-2 items-center">
+                    <a id="hero-cta" href="#portfolio" class="control-btn bg-wavgen-yellow text-black px-4 py-1.5 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition-colors duration-300">
+                        Explore My Work
+                    </a>
+                    <a href="#about" class="control-btn border-2 border-wavgen-yellow text-wavgen-yellow px-4 py-1.5 rounded-lg font-semibold text-sm hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
+                        Learn More
+                    </a>
+                    <button id="cmdk-hint" class="control-btn text-xs px-2 py-1 rounded bg-black/30 text-white hover:bg-black/40">Ctrl+K</button>
                 </div>
             </div>
+        </div>
 
-            <!-- Hero Visual Slideshow -->
-<div class="w-full mx-auto mt-8">
-  <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
-    <img src="/images/1.gif" alt="Demo GIF" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 1;">
-    {%- for texture in collections.textures %}
-      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
-    {%- endfor %}
-  </div>
-</div>
+        <!-- TOP RIGHT: Image Gallery Slideshow -->
+        <div class="hidden lg:block overflow-hidden">
+          <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+            {%- for img in collections.homeImages %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
+            {%- endfor %}
+            {# Placeholder visuals will be injected here by JS if no images #}
+          </div>
+        </div>
 
-<!-- Texture Marquee Carousel (Auto-Scrolling) -->
-<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 240px;">
-  <div class="marquee-track flex items-center" style="width: max-content;">
-    {%- for texture in collections.textures %}
-      <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 240px; height: 200px; object-fit: cover;">
-    {%- endfor %}
-  </div>
-</div>
+        <!-- BOTTOM LEFT: What's New -->
+        <div id="whats-new" class="rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+            <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+              <h3 class="text-wavgen-yellow font-bold text-sm">What's new</h3>
+            </div>
+            <div class="relative flex-1 min-h-0 py-1">
+              <div class="whats-new-track absolute inset-0 flex items-stretch gap-2 px-2 will-change-transform"></div>
+            </div>
+            {# Server-side fallback #}
+            <div class="sr-only">
+              {% if collections.music %}{% for item in collections.music | reverse | slice(0,2) %}<a href="{{ item.url }}">Music: {{ item.data.title or item.fileSlug }}</a>{% endfor %}{% endif %}
+              {% if collections.video %}{% for item in collections.video | reverse | slice(0,2) %}<a href="{{ item.url }}">Video: {{ item.data.title or item.fileSlug }}</a>{% endfor %}{% endif %}
+              {% if collections.data %}{% for item in collections.data | reverse | slice(0,2) %}<a href="{{ item.url }}">Data: {{ item.data.title or item.fileSlug }}</a>{% endfor %}{% endif %}
+            </div>
+        </div>
 
-<!-- What's New Panel: title on top, scrolling cards below -->
-<section aria-label="What's new" class="relative">
-  <div class="container mx-auto px-4">
-    <div id="whats-new" class="my-12 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 240px;">
-      <!-- Title header (separate from scroller to avoid overlap) -->
-      <div class="w-full border-b border-wavgen-yellow/40 bg-black/30" style="height: 56px;">
-        <h3 class="text-center text-wavgen-yellow font-bold text-2xl leading-[56px]">What's new</h3>
-      </div>
-      <!-- Scrolling track area (fixed height to form a square-ish block) -->
-      <div class="relative" style="height: calc(240px - 56px);">
-        <div class="whats-new-track absolute inset-0 flex items-center gap-6 px-4 will-change-transform"></div>
-      </div>
-    </div>
-  </div>
-  {# Server-side fallback if collections exist #}
-  <div class="sr-only">
-    {% if collections.music %}
-      {% for item in collections.music | reverse | slice(0,2) %}
-        <a href="{{ item.url }}">Music: {{ item.data.title or item.fileSlug }}</a>
-      {% endfor %}
-    {% endif %}
-    {% if collections.video %}
-      {% for item in collections.video | reverse | slice(0,2) %}
-        <a href="{{ item.url }}">Video: {{ item.data.title or item.fileSlug }}</a>
-      {% endfor %}
-    {% endif %}
-    {% if collections.data %}
-      {% for item in collections.data | reverse | slice(0,2) %}
-        <a href="{{ item.url }}">Data: {{ item.data.title or item.fileSlug }}</a>
-      {% endfor %}
-    {% endif %}
-  </div>
-</section>
+        <!-- BOTTOM RIGHT: Image Carousel -->
+        <div class="hidden lg:block">
+          <div class="marquee-carousel h-full px-1 py-1 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex items-center">
+            <div class="marquee-track flex items-center h-full" style="width: max-content;">
+              {%- for img in collections.homeImages %}
+                <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded-lg shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-105 mx-2" style="height: calc(100% - 8px); aspect-ratio: 4/3; object-fit: cover;">
+              {%- endfor %}
+              {# Placeholder visuals will be injected here by JS if no images #}
+            </div>
+          </div>
         </div>
     </div>
 </section>

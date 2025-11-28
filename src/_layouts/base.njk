@@ -82,6 +82,8 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->
   <!-- Load after GSAP to ensure GSAP is available -->
   <script src="/js/gallery.js"></script>
+  <!-- Placeholder Visuals: Procedurally generated images when no real images exist -->
+  <script src="/js/placeholder-visuals.js"></script>
   <!-- Interactive Components: load globally; each module self-initializes only if its container exists -->
   <script src="/js/music-player.js"></script>
   <script src="/js/video-player.js"></script>
@@ -91,13 +93,13 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <script defer src="/js/home.js"></script>
   {% endif %}
 
-  <!-- Modal Markup for Gallery (hidden by default, shown by JS) -->
-  <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden" role="dialog" aria-modal="true" aria-labelledby="caption">
-    <span class="close absolute top-4 right-8 text-4xl text-wavgen-yellow cursor-pointer">&times;</span>
-    <button id="prevBtn" class="absolute left-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8592;</button>
-    <img class="modal-content max-h-[50vh] max-w-[60vw] mx-auto rounded shadow-2xl" id="img01" alt="Expanded gallery image" loading="lazy">
-    <button id="nextBtn" class="absolute right-8 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple text-wavgen-yellow p-3 rounded-full">&#8594;</button>
-    <div id="caption" class="text-center text-white mt-4"></div>
+  <!-- Modal Markup for Gallery (hidden by default, shown by JS) - FULL BROWSER SIZE -->
+  <div id="myModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-95 hidden p-16" role="dialog" aria-modal="true" aria-labelledby="caption">
+    <span class="close absolute top-4 right-6 text-5xl text-wavgen-yellow cursor-pointer hover:text-white z-20">&times;</span>
+    <button id="prevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple hover:bg-wavgen-purple text-wavgen-yellow p-4 rounded-full text-2xl z-20 shadow-lg">&#8592;</button>
+    <img class="modal-content w-full h-full object-contain rounded-lg shadow-2xl" id="img01" alt="Expanded gallery image" loading="lazy" style="max-width: calc(100vw - 120px); max-height: calc(100vh - 80px);">
+    <button id="nextBtn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-wavgen-dark-purple hover:bg-wavgen-purple text-wavgen-yellow p-4 rounded-full text-2xl z-20 shadow-lg">&#8594;</button>
+    <div id="caption" class="absolute bottom-2 left-0 right-0 text-center text-white text-lg z-20"></div>
   </div>
 
   <!-- Command Palette Modal -->
