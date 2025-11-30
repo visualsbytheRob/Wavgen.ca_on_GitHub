@@ -75,13 +75,28 @@ footerTagline: Exploring the intersection of creativity and technology.
             </div>
         </div>
 
-        <!-- TOP RIGHT: Image Gallery Slideshow -->
+        <!-- TOP RIGHT: Image Gallery Slideshow - Uses images from all sections -->
         <div class="hidden lg:block overflow-hidden">
           <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+            {# Home images #}
             {%- for img in collections.homeImages %}
               <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
             {%- endfor %}
-            {# Placeholder visuals will be injected here by JS if no images #}
+            {# Data section images #}
+            {%- for img in collections.codingImages %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+            {%- endfor %}
+            {%- for img in collections.genaiImages %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+            {%- endfor %}
+            {%- for img in collections.webdevImages %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+            {%- endfor %}
+            {# Art section images #}
+            {%- for img in collections.paintingImages %}
+              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+            {%- endfor %}
+            {# Ken Burns effect and transitions handled by JS #}
           </div>
         </div>
 
@@ -101,16 +116,12 @@ footerTagline: Exploring the intersection of creativity and technology.
             </div>
         </div>
 
-        <!-- BOTTOM RIGHT: Image Carousel -->
-        <div class="hidden lg:block">
-          <div class="marquee-carousel h-full px-1 py-1 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex items-center">
-            <div class="marquee-track flex items-center h-full" style="width: max-content;">
-              {%- for img in collections.homeImages %}
-                <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded-lg shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-105 mx-2" style="height: calc(100% - 8px); aspect-ratio: 4/3; object-fit: cover;">
-              {%- endfor %}
-              {# Placeholder visuals will be injected here by JS if no images #}
-            </div>
+        <!-- BOTTOM RIGHT: Gallery - Multiple scrolling rows (4 for homepage) -->
+        <div class="hidden lg:block rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+          <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+            <h3 class="text-wavgen-yellow font-bold text-sm">Gallery</h3>
           </div>
+          <div class="gallery-rows flex-1 flex flex-col justify-evenly gap-1 p-1 overflow-hidden" data-rows="5"></div>
         </div>
     </div>
 </section>

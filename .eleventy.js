@@ -6,6 +6,8 @@
  * All major sections and lines are commented below for teaching clarity.
  */
 
+const fs = require('fs');
+
 module.exports = function(eleventyConfig) {
   // Copy static assets from source to output so they're available in the built site
   eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
@@ -70,6 +72,37 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection("cloudImages", createImageCollection("data/cloud", "data/cloud"));
   eleventyConfig.addCollection("genaiImages", createImageCollection("data/genai", "data/genai"));
   eleventyConfig.addCollection("codingImages", createImageCollection("data/coding", "data/coding"));
+
+  // Combined collection of ALL images for homepage
+  eleventyConfig.addCollection("allImages", (collectionApi) => {
+    const allImages = [];
+    const folders = [
+      'home', 
+      'art/painting', 'art/drawing', 'art/modelling', 'art/printing',
+      'music/electro', 'music/ambient', 'music/melodic', 'music/breaks',
+      'video/realtime', 'video/mapping', 'video/mixing', 'video/editing',
+      'data/webdev', 'data/cloud', 'data/genai', 'data/coding'
+    ];
+    
+    folders.forEach(folder => {
+      const imgPath = `./src/images/${folder}`;
+      if (fs.existsSync(imgPath)) {
+        const files = fs.readdirSync(imgPath).filter(f => 
+          /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(f)
+        );
+        files.forEach(file => {
+          allImages.push({
+            url: `/images/${folder}/${file}`,
+            fileSlug: file.replace(/\.[^/.]+$/, ''),
+            folder: folder
+          });
+        });
+      }
+    });
+    
+    // Shuffle for variety
+    return allImages.sort(() => Math.random() - 0.5);
+  });
 
   // Add a custom filter to check if a given URL matches the current page (for highlighting nav links)
   eleventyConfig.addFilter("isCurrentPage", function(url, page) {

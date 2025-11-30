@@ -1821,7 +1821,7 @@
 
   // Initialize placeholders where needed
   function initPlaceholders() {
-    // Check if we need placeholders (no real images in hero slideshow)
+    // Check for real images in hero slideshow
     const heroSlideshow = document.querySelector('.hero-slideshow');
     const realImages = heroSlideshow ? heroSlideshow.querySelectorAll('img[src^="/images"]') : [];
     const hasRealImages = realImages.length > 0;
@@ -1829,25 +1829,198 @@
     // Get page theme for styled placeholders
     const theme = getPageTheme();
     
-    if (!hasRealImages) {
-      // Register all animation styles for modal browsing first
+    // Check if this is home page or subpage
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    
+    if (hasRealImages) {
+      // HYBRID MODE: Has real images
+      // Ken Burns slideshow between real image and generative animation
+      generateKenBurnsSlideshow(heroSlideshow, Array.from(realImages), theme);
+      // Gallery with mix of real images and generative animations
+      generateHybridGallery(Array.from(realImages), theme);
+    } else {
+      // NO IMAGES: Generate ALL animated placeholder visuals
       if (allAnimatedElements.length === 0) {
         registerAllAnimationStyles();
       }
-      
-      // Generate ALL ANIMATED placeholder visuals for all sections
       generateBackgroundPlaceholders(theme);
       generateSlideshowPlaceholders(theme);
       generateCarouselPlaceholders(theme);
-      
-      // Check if this is home page or subpage
-      const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
-      if (isHomePage) {
-        generateWhatsNewPlaceholders();
-      } else {
-        generateSubpageLinks(theme);
-      }
     }
+    
+    // ALWAYS generate navigation sections
+    if (isHomePage) {
+      generateWhatsNewPlaceholders();
+    } else {
+      generateSubpageLinks(theme);
+    }
+  }
+  
+  // KEN BURNS SLIDESHOW: Fade between real image and generative animation
+  function generateKenBurnsSlideshow(container, realImages, theme) {
+    if (!container || container.querySelector('.ken-burns-wrapper')) return;
+    
+    // Create wrapper for Ken Burns effect
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ken-burns-wrapper absolute inset-0 overflow-hidden';
+    container.appendChild(wrapper);
+    
+    const slides = [];
+    
+    // Add real images as slides with Ken Burns animation
+    realImages.forEach((img, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'ken-burns-slide absolute inset-0';
+      slide.style.cssText = `opacity: ${i === 0 ? '1' : '0'}; transition: opacity 2s ease-in-out;`;
+      
+      const clonedImg = img.cloneNode(true);
+      clonedImg.className = 'w-full h-full object-cover';
+      clonedImg.style.cssText = 'animation: kenBurns 20s ease-in-out infinite;';
+      slide.appendChild(clonedImg);
+      
+      wrapper.appendChild(slide);
+      slides.push({ element: slide, type: 'image' });
+    });
+    
+    // Add generative animation slide
+    const animSlide = document.createElement('div');
+    animSlide.className = 'ken-burns-slide absolute inset-0';
+    animSlide.style.cssText = 'opacity: 0; transition: opacity 2s ease-in-out;';
+    const animStyle = ['auroraFlow', 'flowingWaves', 'plasmaFlow'][Math.floor(Math.random() * 3)];
+    createAnimatedPlaceholder(animSlide, 800, 600, animStyle, Date.now());
+    wrapper.appendChild(animSlide);
+    slides.push({ element: animSlide, type: 'animation' });
+    
+    // Hide original images
+    realImages.forEach(img => img.style.display = 'none');
+    
+    // Alternate between images and animation
+    if (slides.length > 1) {
+      let current = 0;
+      setInterval(() => {
+        slides[current].element.style.opacity = '0';
+        current = (current + 1) % slides.length;
+        slides[current].element.style.opacity = '1';
+      }, 5000);
+    }
+  }
+  
+  // HYBRID GALLERY: Multiple scrolling rows with different directions
+  function generateHybridGallery(realImages, theme) {
+    const container = document.querySelector('.gallery-rows');
+    if (!container || container.querySelector('.gallery-row')) return;
+    
+    const numRows = parseInt(container.dataset.rows) || 3;
+    const cardsPerRow = 12; // Enough to scroll
+    const rowHeight = Math.floor(100 / numRows);
+    
+    // Create a card
+    const createCard = (rowIndex, cardIndex) => {
+      const card = document.createElement('div');
+      card.className = 'gallery-card flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105';
+      card.style.cssText = 'width: 75px; height: 60px;';
+      
+      const globalIndex = rowIndex * cardsPerRow + cardIndex;
+      const seed = globalIndex * 73 + 500;
+      
+      // Mix: some animated, some real images
+      if (cardIndex % 3 === 0 && realImages.length > 0) {
+        // Real image card
+        const imgIndex = Math.floor(cardIndex / 3) % realImages.length;
+        const img = document.createElement('img');
+        img.src = realImages[imgIndex].src;
+        img.className = 'absolute inset-0 w-full h-full object-cover';
+        card.appendChild(img);
+        card.dataset.imageSrc = realImages[imgIndex].src;
+        card.addEventListener('click', () => {
+          const modal = document.getElementById('myModal');
+          const modalImg = document.getElementById('img01');
+          if (modal && modalImg) {
+            modalImg.src = card.dataset.imageSrc;
+            modal.classList.remove('hidden');
+          }
+        });
+      } else {
+        // Animated generative card
+        const canvasWrapper = document.createElement('div');
+        canvasWrapper.className = 'absolute inset-0';
+        const subtleStyle = SUBTLE_STYLES[globalIndex % SUBTLE_STYLES.length];
+        createAnimatedPlaceholder(canvasWrapper, 75, 60, subtleStyle, seed);
+        card.appendChild(canvasWrapper);
+        card.addEventListener('click', () => {
+          const index = allAnimatedElements.findIndex(el => el.seed === seed);
+          if (index >= 0) openAnimatedModal(index);
+        });
+        // Register for modal
+        if (!allAnimatedElements.find(el => el.seed === seed)) {
+          allAnimatedElements.push({ style: subtleStyle, seed });
+        }
+      }
+      
+      return card;
+    };
+    
+    // Create rows with alternating scroll directions
+    for (let r = 0; r < numRows; r++) {
+      const row = document.createElement('div');
+      row.className = 'gallery-row relative overflow-hidden';
+      row.style.cssText = `height: ${rowHeight}%; min-height: 50px;`;
+      
+      const track = document.createElement('div');
+      track.className = 'gallery-row-track flex items-center gap-1 h-full';
+      track.style.width = 'max-content';
+      
+      // Add cards twice for seamless loop
+      for (let c = 0; c < cardsPerRow; c++) track.appendChild(createCard(r, c));
+      for (let c = 0; c < cardsPerRow; c++) track.appendChild(createCard(r, c + 100));
+      
+      row.appendChild(track);
+      container.appendChild(row);
+      
+      // Start marquee with alternating direction
+      startRowMarquee(track, r % 2 === 0 ? 1 : -1, 15 + r * 3);
+    }
+  }
+  
+  // Animate a single row marquee
+  function startRowMarquee(track, direction, duration) {
+    if (!track || !window.gsap) return;
+    
+    setTimeout(() => {
+      const cards = track.querySelectorAll('.gallery-card');
+      if (cards.length === 0) return;
+      
+      const cardWidth = 76; // 75px + 1px gap
+      const totalWidth = cardWidth * (cards.length / 2);
+      
+      if (direction > 0) {
+        // Scroll left
+        gsap.to(track, {
+          x: -totalWidth,
+          duration: duration,
+          ease: 'none',
+          repeat: -1,
+          modifiers: {
+            x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
+          }
+        });
+      } else {
+        // Scroll right (start offset, scroll back)
+        gsap.set(track, { x: -totalWidth });
+        gsap.to(track, {
+          x: 0,
+          duration: duration,
+          ease: 'none',
+          repeat: -1,
+          modifiers: {
+            x: gsap.utils.unitize(x => {
+              const val = parseFloat(x);
+              return val >= 0 ? val - totalWidth : val;
+            })
+          }
+        });
+      }
+    }, 100);
   }
 
   // Generate subpage explore links with generative backgrounds
@@ -2250,73 +2423,56 @@
     }, interval);
   }
 
-  // Generate carousel placeholders - ALL ANIMATED with subtle movements and clickable
+  // Generate gallery placeholders - ALL ANIMATED scrolling rows for pages without images
   function generateCarouselPlaceholders() {
-    const carousel = document.querySelector('.marquee-carousel .marquee-track');
-    if (!carousel || carousel.querySelectorAll('.placeholder-generated').length > 0) return;
+    const container = document.querySelector('.gallery-rows');
+    if (!container || container.querySelector('.gallery-row')) return;
 
-    const placeholder = carousel.closest('.marquee-carousel')?.querySelector('p');
-    if (placeholder) placeholder.remove();
-
-    // Generate animated cards twice for seamless loop
-    const createAnimatedCard = (i, offset = 0) => {
+    const numRows = parseInt(container.dataset.rows) || 3;
+    const cardsPerRow = 12;
+    const rowHeight = Math.floor(100 / numRows);
+    
+    // Create animated card
+    const createCard = (rowIndex, cardIndex) => {
       const card = document.createElement('div');
-      card.className = 'gallery-img placeholder-generated flex-shrink-0 relative overflow-hidden rounded-xl border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 mx-2';
-      card.style.cssText = 'height: calc(100% - 8px); aspect-ratio: 1.2;';
+      card.className = 'gallery-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105';
+      card.style.cssText = 'width: 75px; height: 60px;';
       
-      // Use subtle animation style for cards
-      const subtleStyle = SUBTLE_STYLES[i % SUBTLE_STYLES.length];
-      const seed = i * 73 + 500 + offset;
-      createAnimatedPlaceholder(card, 150, 120, subtleStyle, seed);
+      const globalIndex = rowIndex * cardsPerRow + cardIndex;
+      const seed = globalIndex * 73 + 500;
       
-      // Register for modal only for first set (avoid duplicates)
-      if (offset === 0) {
-        registerAnimatedElement(card, subtleStyle, seed);
-      } else {
-        // For duplicates, just make clickable with same index
-        const index = allAnimatedElements.findIndex(el => el.seed === (i * 73 + 500));
-        if (index >= 0) {
-          card.style.cursor = 'pointer';
-          card.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openAnimatedModal(index);
-          });
-        }
-      }
+      const canvasWrapper = document.createElement('div');
+      canvasWrapper.className = 'absolute inset-0';
+      const subtleStyle = SUBTLE_STYLES[globalIndex % SUBTLE_STYLES.length];
+      createAnimatedPlaceholder(canvasWrapper, 75, 60, subtleStyle, seed);
+      card.appendChild(canvasWrapper);
+      
+      // Register for modal
+      registerAnimatedElement(card, subtleStyle, seed);
       
       return card;
     };
 
-    // Add animated cards twice for seamless loop
-    for (let i = 0; i < 8; i++) carousel.appendChild(createAnimatedCard(i, 0));
-    for (let i = 0; i < 8; i++) carousel.appendChild(createAnimatedCard(i, 1000));
-
-    // Start carousel marquee animation
-    startCarouselMarquee(carousel);
-  }
-
-  // Animate carousel marquee
-  function startCarouselMarquee(track) {
-    if (!track || !window.gsap) return;
-    
-    const cards = track.querySelectorAll('.gallery-img');
-    if (cards.length === 0) return;
-
-    // Calculate total width of first set of cards
-    const cardWidth = cards[0].offsetWidth + 16; // including margin
-    const totalWidth = cardWidth * (cards.length / 2);
-
-    // GSAP infinite scroll (opposite direction from What's New)
-    gsap.to(track, {
-      x: -totalWidth,
-      duration: 25,
-      ease: 'none',
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
-      }
-    });
+    // Create rows with alternating scroll directions
+    for (let r = 0; r < numRows; r++) {
+      const row = document.createElement('div');
+      row.className = 'gallery-row relative overflow-hidden';
+      row.style.cssText = `height: ${rowHeight}%; min-height: 50px;`;
+      
+      const track = document.createElement('div');
+      track.className = 'gallery-row-track flex items-center gap-1 h-full';
+      track.style.width = 'max-content';
+      
+      // Add cards twice for seamless loop
+      for (let c = 0; c < cardsPerRow; c++) track.appendChild(createCard(r, c));
+      for (let c = 0; c < cardsPerRow; c++) track.appendChild(createCard(r, c + 100));
+      
+      row.appendChild(track);
+      container.appendChild(row);
+      
+      // Start marquee with alternating direction
+      startRowMarquee(track, r % 2 === 0 ? 1 : -1, 15 + r * 3);
+    }
   }
 
   // Generate What's New card placeholders - ALL ANIMATED links to actual pages
