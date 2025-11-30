@@ -68,12 +68,12 @@ class WavgenDataAppEmbed {
     if (!embedContainer) return;
 
     embedContainer.innerHTML = `
-      <div class="data-app-embed bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-yellow p-6 shadow-2xl">
+      <div class="data-app-embed bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors p-6 shadow-2xl">
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-white">Interactive Tech Projects</h3>
           <div class="category-filter">
-            <select id="app-category-select" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
+            <select id="app-category-select" class="bg-gray-800 text-white border border-wavgen-purple hover:border-wavgen-yellow transition-colors rounded px-3 py-1 text-sm">
               <option value="all">All Categories</option>
               <option value="genai">Gen AI</option>
               <option value="webdev">Web Dev</option>

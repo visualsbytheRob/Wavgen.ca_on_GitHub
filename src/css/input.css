@@ -56,7 +56,7 @@
    * - Smooth transitions for interactivity
    */
   .section-card {
-    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow motion-reduce:transform-none motion-reduce:transition-none;
+    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-purple hover:border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-wavgen-yellow motion-reduce:transform-none motion-reduce:transition-none;
   }
 
   /*

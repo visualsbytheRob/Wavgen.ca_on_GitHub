@@ -1917,7 +1917,7 @@
     // Create a card
     const createCard = (rowIndex, cardIndex) => {
       const card = document.createElement('div');
-      card.className = 'gallery-card flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105';
+      card.className = 'gallery-card flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';
       card.style.cssText = 'width: 75px; height: 60px;';
       
       const globalIndex = rowIndex * cardsPerRow + cardIndex;
@@ -2066,7 +2066,7 @@
     const createAnimatedCard = (item, i, offset = 0) => {
       const card = document.createElement('a');
       card.href = item.href;
-      card.className = 'subpage-link placeholder-generated flex-shrink-0 relative overflow-hidden rounded-xl border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 no-underline';
+      card.className = 'subpage-link placeholder-generated flex-shrink-0 relative overflow-hidden rounded-xl border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105 no-underline';
       card.style.cssText = 'height: calc(100% - 8px); aspect-ratio: 1.2;';
       
       // Create animated canvas background container
@@ -2435,7 +2435,7 @@
     // Create animated card
     const createCard = (rowIndex, cardIndex) => {
       const card = document.createElement('div');
-      card.className = 'gallery-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105';
+      card.className = 'gallery-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';
       card.style.cssText = 'width: 75px; height: 60px;';
       
       const globalIndex = rowIndex * cardsPerRow + cardIndex;
@@ -2496,7 +2496,7 @@
     const createAnimatedCard = (item, i, offset = 0) => {
       const card = document.createElement('a');
       card.href = item.href;
-      card.className = 'whats-new-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-xl border-2 border-wavgen-yellow shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105 no-underline';
+      card.className = 'whats-new-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-xl border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105 no-underline';
       card.style.cssText = 'height: calc(100% - 8px); aspect-ratio: 1.2;';
       
       // Create animated canvas background container

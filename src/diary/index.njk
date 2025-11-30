@@ -71,7 +71,7 @@ but the content is a concise documentary/logbook about the site.
       <!-- Right: hero slideshow like home -->
       {%- if collections.homeImages.length %}
       <div class="w-full mx-auto mt-8">
-        <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
+        <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="height: 360px;">
           {%- for img in collections.homeImages %}
             <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
           {%- endfor %}
@@ -316,7 +316,7 @@ but the content is a concise documentary/logbook about the site.
 </script>
 
 <!-- Compact marquee (optional, mirrors home for parity) -->
-<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 200px;">
+<div class="marquee-carousel my-12 px-2 py-4 rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden max-w-3xl mx-auto" style="height: 200px;">
   <div class="marquee-track flex items-center" style="width: max-content;">
     {%- for texture in collections.textures %}
       <img src="{{ texture.url }}" alt="{{ texture.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 160px; object-fit: cover;">

@@ -50,7 +50,7 @@ Usage:
 
       {# TOP RIGHT: Image Gallery Slideshow #}
       <div class="hidden lg:block overflow-hidden">
-        <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+        <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
           {%- for img in _images %}
             <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
           {%- endfor %}
@@ -59,8 +59,8 @@ Usage:
       </div>
 
       {# BOTTOM LEFT: Quick Links or Info #}
-      <div class="rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
-        <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+      <div class="rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+        <div class="w-full border-b border-wavgen-purple/40 bg-black/30 px-2 py-1 flex-shrink-0">
           <h3 class="text-wavgen-yellow font-bold text-sm">Explore</h3>
         </div>
         <div class="relative flex-1 min-h-0 py-1">
@@ -69,8 +69,8 @@ Usage:
       </div>
 
       {# BOTTOM RIGHT: Gallery - Multiple scrolling rows (3 for subpages) #}
-      <div class="hidden lg:block rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
-        <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+      <div class="hidden lg:block rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+        <div class="w-full border-b border-wavgen-purple/40 bg-black/30 px-2 py-1 flex-shrink-0">
           <h3 class="text-wavgen-yellow font-bold text-sm">Gallery</h3>
         </div>
         <div class="gallery-rows flex-1 flex flex-col justify-evenly gap-1 p-1 overflow-hidden" data-rows="3"></div>

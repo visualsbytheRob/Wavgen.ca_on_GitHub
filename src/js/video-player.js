@@ -192,14 +192,14 @@ class WavgenVideoPlayer {
     if (!playerContainer) return;
 
     playerContainer.innerHTML = `
-      <div class="video-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-yellow p-6 shadow-2xl">
+      <div class="video-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors p-6 shadow-2xl">
         <!-- Live region for accessibility announcements -->
         <div id="video-live" class="sr-only" aria-live="polite"></div>
         <!-- Player Header -->
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-2xl font-bold text-white">Video Showcase</h3>
           <div class="category-filter">
-            <select id="category-select" aria-label="Filter videos by category" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm">
+            <select id="category-select" aria-label="Filter videos by category" class="bg-gray-800 text-white border border-wavgen-purple hover:border-wavgen-yellow transition-colors rounded px-3 py-1 text-sm">
               <option value="all">All Categories</option>
               <option value="realtime">Real-time</option>
               <option value="mapping">Mapping</option>
@@ -287,7 +287,7 @@ class WavgenVideoPlayer {
             <button id="video-help-btn" class="control-btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-full transition-colors" aria-haspopup="true" aria-expanded="false" aria-controls="video-help-popover">
               <span aria-hidden="true" class="mr-1">❓</span> Help
             </button>
-            <div id="video-help-popover" role="dialog" aria-label="Video player keyboard shortcuts" tabindex="-1" class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-gray-800 text-gray-200 text-sm rounded-lg border border-wavgen-yellow p-3 shadow-xl z-10">
+            <div id="video-help-popover" role="dialog" aria-label="Video player keyboard shortcuts" tabindex="-1" class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-gray-800 text-gray-200 text-sm rounded-lg border border-wavgen-purple p-3 shadow-xl z-10">
               <p class="font-semibold text-white mb-1">Keyboard shortcuts</p>
               <ul class="list-disc list-inside space-y-1">
                 <li><span class="text-wavgen-yellow">J</span> or <span class="text-wavgen-yellow">Left Arrow</span>: Previous video</li>

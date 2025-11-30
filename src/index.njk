@@ -77,7 +77,7 @@ footerTagline: Exploring the intersection of creativity and technology.
 
         <!-- TOP RIGHT: Image Gallery Slideshow - Uses images from all sections -->
         <div class="hidden lg:block overflow-hidden">
-          <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+          <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
             {# Home images #}
             {%- for img in collections.homeImages %}
               <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
@@ -101,8 +101,8 @@ footerTagline: Exploring the intersection of creativity and technology.
         </div>
 
         <!-- BOTTOM LEFT: What's New -->
-        <div id="whats-new" class="rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
-            <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+        <div id="whats-new" class="rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+            <div class="w-full border-b border-wavgen-purple/40 bg-black/30 px-2 py-1 flex-shrink-0">
               <h3 class="text-wavgen-yellow font-bold text-sm">What's new</h3>
             </div>
             <div class="relative flex-1 min-h-0 py-1">
@@ -117,8 +117,8 @@ footerTagline: Exploring the intersection of creativity and technology.
         </div>
 
         <!-- BOTTOM RIGHT: Gallery - Multiple scrolling rows (4 for homepage) -->
-        <div class="hidden lg:block rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
-          <div class="w-full border-b border-wavgen-yellow/40 bg-black/30 px-2 py-1 flex-shrink-0">
+        <div class="hidden lg:block rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden flex flex-col">
+          <div class="w-full border-b border-wavgen-purple/40 bg-black/30 px-2 py-1 flex-shrink-0">
             <h3 class="text-wavgen-yellow font-bold text-sm">Gallery</h3>
           </div>
           <div class="gallery-rows flex-1 flex flex-col justify-evenly gap-1 p-1 overflow-hidden" data-rows="5"></div>
@@ -137,7 +137,7 @@ footerTagline: Exploring the intersection of creativity and technology.
       {% set d = collections.data | reverse | first %}
 
       {% if m %}
-      <a href="{{ m.url }}" class="whats-new-card inline-flex items-center gap-4 bg-wavgen-purple/50 hover:bg-wavgen-purple/60 text-white no-underline border-2 border-wavgen-yellow rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+      <a href="{{ m.url }}" class="whats-new-card inline-flex items-center gap-4 bg-wavgen-purple/50 hover:bg-wavgen-purple/60 text-white no-underline border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
         <span class="inline-block w-4 h-4 rounded-full bg-wavgen-yellow"></span>
         <span class="flex flex-col leading-tight">
           <span class="text-sm opacity-80">Music</span>
@@ -147,7 +147,7 @@ footerTagline: Exploring the intersection of creativity and technology.
       {% endif %}
 
       {% if v %}
-      <a href="{{ v.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/40 hover:bg-black/50 text-white no-underline border-2 border-wavgen-purple rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+      <a href="{{ v.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/40 hover:bg-black/50 text-white no-underline border-2 border-wavgen-purple hover:border-wavgen-yellow rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
         <span class="inline-block w-4 h-4 rounded-full bg-wavgen-light-purple"></span>
         <span class="flex flex-col leading-tight">
           <span class="text-sm opacity-80">Video</span>
@@ -157,7 +157,7 @@ footerTagline: Exploring the intersection of creativity and technology.
       {% endif %}
 
       {% if d %}
-      <a href="{{ d.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/30 hover:bg-black/40 text-white no-underline border-2 border-wavgen-purple rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
+      <a href="{{ d.url }}" class="whats-new-card inline-flex items-center gap-4 bg-black/30 hover:bg-black/40 text-white no-underline border-2 border-wavgen-purple hover:border-wavgen-yellow rounded-2xl shadow-lg px-6 h-40 min-w-[300px] transition-colors duration-200">
         <span class="inline-block w-4 h-4 rounded-full bg-white"></span>
         <span class="flex flex-col leading-tight">
           <span class="text-sm opacity-80">Data</span>

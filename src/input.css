@@ -14,7 +14,7 @@
   }
   
   .section-card {
-    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+    @apply bg-gradient-to-br from-wavgen-purple to-wavgen-dark-purple rounded-lg p-6 border-2 border-wavgen-purple hover:border-wavgen-yellow hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
   }
   
   .hero-text {

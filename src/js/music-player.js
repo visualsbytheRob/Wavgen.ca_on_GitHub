@@ -303,12 +303,12 @@ class WavgenMusicPlayer {
     ].map(o => `<option value="${o.value}" ${this.currentGenre===o.value? 'selected':''}>${o.label}</option>`).join('');
 
     playerContainer.innerHTML = `
-      <div class="music-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-yellow ${cardPadding} shadow-2xl">
+      <div class="music-player bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors ${cardPadding} shadow-2xl">
         <!-- Player Header -->
         <div class="flex items-center justify-between ${headerMb}">
           <h3 class="text-2xl font-bold text-white">Music Player</h3>
           <div class="genre-filter" aria-describedby="playlist-help">
-            <select id="genre-select" class="bg-gray-800 text-white border border-wavgen-yellow rounded px-3 py-1 text-sm" aria-label="Filter by genre">${genreOptions}</select>
+            <select id="genre-select" class="bg-gray-800 text-white border border-wavgen-purple hover:border-wavgen-yellow transition-colors rounded px-3 py-1 text-sm" aria-label="Filter by genre">${genreOptions}</select>
           </div>
         </div>
 
@@ -426,7 +426,7 @@ class WavgenMusicPlayer {
       </div>
       
       <!-- Sticky Mini Player (appears when main player scrolled off-screen) -->
-      <div id="mini-player" class="hidden fixed bottom-4 right-4 z-40 bg-gray-900/90 backdrop-blur border border-wavgen-yellow rounded-xl shadow-xl px-4 py-3 flex items-center gap-3">
+      <div id="mini-player" class="hidden fixed bottom-4 right-4 z-40 bg-gray-900/90 backdrop-blur border border-wavgen-purple rounded-xl shadow-xl px-4 py-3 flex items-center gap-3">
         <button id="mini-prev" class="control-btn bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full" title="Previous (k)">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path></svg>
         </button>

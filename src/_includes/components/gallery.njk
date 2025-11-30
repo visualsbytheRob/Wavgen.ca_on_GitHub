@@ -20,7 +20,7 @@ Usage:
   {# Hero Visual Slideshow #}
   {% if _showSlideshow %}
   <div class="w-full max-w-lg mx-auto my-8">
-    <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="aspect-ratio: 4/3;">
+    <div class="hero-slideshow relative w-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple" style="aspect-ratio: 4/3;">
       {%- for img in _images %}
         <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
       {%- endfor %}
@@ -30,7 +30,7 @@ Usage:
 
   {# Marquee Carousel #}
   {% if _showCarousel %}
-  <div class="marquee-carousel my-8 px-2 py-4 rounded-lg border-2 border-wavgen-yellow bg-wavgen-dark-purple/80 overflow-hidden" style="height: 180px;">
+  <div class="marquee-carousel my-8 px-2 py-4 rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors bg-wavgen-dark-purple/80 overflow-hidden" style="height: 180px;">
     <div class="marquee-track flex items-center" style="width: max-content;">
       {%- for img in _images %}
         <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="gallery-img inline-block rounded shadow-lg border-2 border-wavgen-purple cursor-pointer transition-transform duration-300 hover:scale-110 mx-2" style="width: 200px; height: 150px; object-fit: cover;">
@@ -42,7 +42,7 @@ Usage:
 {% else %}
   {# Placeholder when no images #}
   <div class="w-full max-w-lg mx-auto my-8">
-    <div class="relative w-full rounded-lg shadow-xl border-2 border-wavgen-yellow/50 overflow-hidden bg-wavgen-dark-purple/50 flex items-center justify-center" style="aspect-ratio: 4/3;">
+    <div class="relative w-full rounded-lg shadow-xl border-2 border-wavgen-purple/50 overflow-hidden bg-wavgen-dark-purple/50 flex items-center justify-center" style="aspect-ratio: 4/3;">
       <p class="text-gray-500 text-center px-4">Add images to <code class="text-wavgen-yellow/70">{{ _folder }}</code></p>
     </div>
   </div>
