@@ -156,7 +156,7 @@ class WavgenVideoPlayer {
     // Apply deep-link (if present) or load first video
     const applied = this.applyDeepLinkFromUrl();
     if (!applied) {
-      this.loadVideo(0);
+      this.loadVideo(0, true); // skipScroll on initial load
     }
     // Handle browser navigation (back/forward)
     window.addEventListener('popstate', () => {
@@ -412,7 +412,7 @@ class WavgenVideoPlayer {
     });
   }
 
-  loadVideo(index) {
+  loadVideo(index, skipScroll = false) {
     const filteredVideos = this.getFilteredVideos();
     if (index >= 0 && index < filteredVideos.length) {
       this.currentVideo = filteredVideos[index];
@@ -449,15 +449,16 @@ class WavgenVideoPlayer {
         }
       } catch (_) { /* no-op */ }
 
-      // Reset video container
-      // Ensure active playlist item is visible
-      try {
-        const items = document.querySelectorAll('.video-playlist-item');
-        const active = items[this.currentIndex];
-        if (active && typeof active.scrollIntoView === 'function') {
-          active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        }
-      } catch (_) { /* no-op */ }
+      // Ensure active playlist item is visible (skip on initial load)
+      if (!skipScroll) {
+        try {
+          const items = document.querySelectorAll('.video-playlist-item');
+          const active = items[this.currentIndex];
+          if (active && typeof active.scrollIntoView === 'function') {
+            active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        } catch (_) { /* no-op */ }
+      }
     }
   }
 
@@ -647,6 +648,8 @@ class WavgenVideoPlayer {
       const url = new URL(window.location.href);
       const vidParam = url.searchParams.get('video');
       const catParam = url.searchParams.get('category');
+      // Skip scroll on initial page load (not popstate)
+      const skipScroll = !isPop;
 
       if (catParam && ['all','realtime','mapping','mixing','editing'].includes(catParam)) {
         this.currentCategory = catParam;
@@ -660,7 +663,7 @@ class WavgenVideoPlayer {
         const filtered = this.getFilteredVideos();
         const idx = filtered.findIndex(v => String(v.id) === String(vidParam));
         if (idx >= 0) {
-          this.loadVideo(idx);
+          this.loadVideo(idx, skipScroll);
           return true;
         }
       }
@@ -679,7 +682,7 @@ class WavgenVideoPlayer {
           const filtered = this.getFilteredVideos();
           const idx = filtered.findIndex(v => String(v.id) === String(lastId));
           if (idx >= 0) {
-            this.loadVideo(idx);
+            this.loadVideo(idx, skipScroll);
             return true;
           }
         }

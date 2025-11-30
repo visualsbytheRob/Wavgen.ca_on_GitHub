@@ -48,18 +48,6 @@ footerTagline: Exploring complex rhythmic patterns and high-energy electronic be
     </div>
 </div>
 
-{# Shared Hero Section with Gallery #}
-{% set hero = {
-  title: 'Breakbeat <span class="text-wavgen-yellow">Rhythms</span>',
-  subtitle: 'Complex Rhythmic Patterns & Drum Programming',
-  description: 'High-energy electronic music built around complex breakbeat patterns and intricate drum programming. These tracks explore the rhythmic possibilities of chopped-up drum breaks, layered percussion, and syncopated grooves that push the boundaries of traditional electronic dance music.',
-  gradient: { from: 'from-gray-900', via: 'via-orange-900', to: 'to-red-900' },
-  overlayOpacity: 'opacity-40',
-  images: collections.breaksImages,
-  folder: 'src/images/music/breaks/'
-} %}
-{% include "components/hero.njk" %}
-
 <!-- Listen Section: Mini Player -->
 <section class="py-16 bg-gray-900 border-t border-gray-800">
     <div class="container mx-auto px-4">

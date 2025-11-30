@@ -1988,11 +1988,6 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), #9a3412 var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
-.via-orange-900 {
-  --tw-gradient-to: rgb(124 45 18 / 0)  var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), #7c2d12 var(--tw-gradient-via-position), var(--tw-gradient-to);
-}
-
 .via-pink-900 {
   --tw-gradient-to: rgb(131 24 67 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #831843 var(--tw-gradient-via-position), var(--tw-gradient-to);

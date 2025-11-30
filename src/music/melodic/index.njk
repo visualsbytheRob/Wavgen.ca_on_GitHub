@@ -48,18 +48,6 @@ footerTagline: Creating memorable melodic journeys through electronic compositio
     </div>
 </div>
 
-{# Shared Hero Section with Gallery #}
-{% set hero = {
-  title: 'Melodic <span class="text-wavgen-yellow">Compositions</span>',
-  subtitle: 'Harmonic Progressions & Musical Storytelling',
-  description: 'Electronic music compositions that emphasize melody, harmony, and emotional narrative. These tracks blend traditional musical structures with modern production techniques, creating memorable melodic journeys that balance complexity with accessibility.',
-  gradient: { from: 'from-gray-900', via: 'via-purple-900', to: 'to-pink-900' },
-  overlayOpacity: 'opacity-40',
-  images: collections.melodicImages,
-  folder: 'src/images/music/melodic/'
-} %}
-{% include "components/hero.njk" %}
-
 <!-- Listen Section: Mini Player -->
 <section class="py-16 bg-gray-900 border-t border-gray-800">
     <div class="container mx-auto px-4">

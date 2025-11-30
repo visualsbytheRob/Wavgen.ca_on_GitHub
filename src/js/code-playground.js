@@ -191,6 +191,9 @@ createCarouselDemo();
     async init() {
         if (this.isInitialized) return;
         
+        // Save initial scroll position before any DOM changes
+        const initialScrollY = window.scrollY;
+        
         try {
             // Load Monaco Editor from CDN
             await this.loadMonacoEditor();
@@ -209,6 +212,11 @@ createCarouselDemo();
             
             this.isInitialized = true;
             console.log('🎮 Code Playground initialized successfully');
+            
+            // Restore scroll position after everything is initialized
+            window.scrollTo(0, initialScrollY);
+            setTimeout(() => window.scrollTo(0, initialScrollY), 100);
+            setTimeout(() => window.scrollTo(0, initialScrollY), 500);
             
         } catch (error) {
             console.error('❌ Failed to initialize Code Playground:', error);
@@ -357,6 +365,9 @@ createCarouselDemo();
         const editorElement = document.getElementById('monaco-editor');
         if (!editorElement) return;
         
+        // Save scroll position before Monaco creation (it auto-focuses and can scroll page)
+        const scrollY = window.scrollY;
+        
         // Create Monaco editor instance
         this.editor = window.monaco.editor.create(editorElement, {
             value: '',
@@ -384,6 +395,14 @@ createCarouselDemo();
                 alwaysConsumeMouseWheel: false // Allow page scroll when editor scroll is at limits
             }
         });
+        
+        // Restore scroll position after Monaco is created (prevent auto-scroll to editor)
+        // Use multiple attempts to ensure it works after Monaco finishes all its async operations
+        window.scrollTo(0, scrollY);
+        requestAnimationFrame(() => window.scrollTo(0, scrollY));
+        setTimeout(() => window.scrollTo(0, scrollY), 0);
+        setTimeout(() => window.scrollTo(0, scrollY), 100);
+        setTimeout(() => window.scrollTo(0, scrollY), 300);
         
         // Set up auto-save and live preview updates
         let updateTimeout;
