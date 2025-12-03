@@ -36,18 +36,51 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
   {% endif %}
 
+  {#
+    Open Graph Image Logic:
+    1. Use page-specific ogImage if set in frontmatter
+    2. Auto-detect section image based on URL path (e.g., /music/ambient/ -> /images/music/ambient/ambient.webp)
+    3. Fall back to site default
+  #}
+  {%- set baseUrl = site.url | default('https://www.wavgen.ca') -%}
+  {%- set pageUrl = page.url | default('/') -%}
+  {%- set urlParts = pageUrl | replace('//', '/') | split('/') -%}
+  {%- set section = urlParts[1] if urlParts | length > 1 else '' -%}
+  {%- set subsection = urlParts[2] if urlParts | length > 2 else '' -%}
+  
+  {# Auto-detect section image from URL path #}
+  {%- set autoImage = '' -%}
+  {%- if subsection and (section == 'music' or section == 'video' or section == 'art' or section == 'data') -%}
+    {%- set autoImage = '/images/' + section + '/' + subsection + '/' + subsection + '.webp' -%}
+  {%- elif section == 'music' -%}
+    {%- set autoImage = '/images/music/electro/electro.webp' -%}
+  {%- elif section == 'video' -%}
+    {%- set autoImage = '/images/video/realtime/realtime.webp' -%}
+  {%- elif section == 'art' -%}
+    {%- set autoImage = '/images/art/painting/painting.webp' -%}
+  {%- elif section == 'data' -%}
+    {%- set autoImage = '/images/data/genai/genai.webp' -%}
+  {%- endif -%}
+  
+  {# Determine final OG image: frontmatter > auto-detect > site default #}
+  {%- set ogImagePath = ogImage or autoImage or site.ogImage or '/images/home/studio.webp' -%}
+  {%- set ogImageFull = baseUrl + ogImagePath -%}
+  
   {# Open Graph #}
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="{{ title or 'The Waveform Generation' }}" />
-  <meta property="og:description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
-  <meta property="og:url" content="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url or '' }}" />
-  <meta property="og:image" content="{{ site.ogImage | default('/images/og-default.jpg') }}" />
+  <meta property="og:site_name" content="The Waveform Generation" />
+  <meta property="og:title" content="{{ title or site.title or 'The Waveform Generation' }}" />
+  <meta property="og:description" content="{{ description or site.description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  <meta property="og:url" content="{{ baseUrl }}{{ pageUrl }}" />
+  <meta property="og:image" content="{{ ogImageFull }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
   {# Twitter Card #}
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{{ title or 'The Waveform Generation' }}" />
-  <meta name="twitter:description" content="{{ description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
-  <meta name="twitter:image" content="{{ site.ogImage | default('/images/og-default.jpg') }}" />
+  <meta name="twitter:title" content="{{ title or site.title or 'The Waveform Generation' }}" />
+  <meta name="twitter:description" content="{{ description or site.description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  <meta name="twitter:image" content="{{ ogImageFull }}" />
 
   <meta name="theme-color" content="#0f172a" />
 

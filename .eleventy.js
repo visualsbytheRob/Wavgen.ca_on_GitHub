@@ -104,6 +104,12 @@ module.exports = function(eleventyConfig) {
     return allImages.sort(() => Math.random() - 0.5);
   });
 
+  // Add a split filter for string manipulation (used in OG image path detection)
+  eleventyConfig.addFilter("split", function(str, separator) {
+    if (!str) return [];
+    return str.split(separator);
+  });
+
   // Add a custom filter to check if a given URL matches the current page (for highlighting nav links)
   eleventyConfig.addFilter("isCurrentPage", function(url, page) {
     return url === page.url;
