@@ -1,0 +1,64 @@
+/**
+ * WORLDS.CSS
+ * Shared structural CSS for immersive learning worlds integrated into Wavgen.ca.
+ * Each world has its own inline CSS for visual identity.
+ * This file handles the Wavgen-integration bridge: back links, world wrapper.
+ */
+
+/* ── World nav back link ──────────────────────────── */
+/* Sits inside the world's own fixed nav, left of the brand */
+.nav-back {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  opacity: 0.65;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.nav-back:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* ── World nav brand wrapper ─────────────────────── */
+/* Flex container for back link + brand side by side */
+.nav-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ── World content wrapper ───────────────────────── */
+/* Replaces <main> in world pages to avoid nested <main> elements */
+.world-main {
+  position: relative;
+  z-index: 1;
+  padding-top: 60px; /* offset for world's fixed jump nav */
+}
+
+/* ── World return footer ─────────────────────────── */
+.world-return-footer {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+.world-return-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid currentColor;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+  text-decoration: none;
+  margin-top: 0.75rem;
+}
+.world-return-link:hover {
+  opacity: 1;
+  text-decoration: none;
+}

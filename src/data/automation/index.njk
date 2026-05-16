@@ -1,0 +1,1642 @@
+﻿---
+layout: immersive.njk
+title: Automation — Visual Learning World
+description: Master IT automation from scripts to enterprise orchestration. Explore landscapes, tool ecosystems, pipeline builders, and career roadmaps.
+worldJs: /js/worlds/automation.js
+---
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --orange: #FF6B00;
+  --orange-bright: #FF8C00;
+  --orange-glow: rgba(255,107,0,0.3);
+  --orange-pale: rgba(255,107,0,0.08);
+  --charcoal: #0D0D0D;
+  --charcoal2: #141414;
+  --charcoal3: #1A1A1A;
+  --charcoal4: #222222;
+  --charcoal5: #2A2A2A;
+  --border: rgba(255,107,0,0.2);
+  --border-dim: rgba(255,255,255,0.07);
+  --text: #E8E8E8;
+  --text-muted: #888;
+  --text-dim: #555;
+  --white: #FFFFFF;
+  --green: #00C896;
+  --blue: #4A9EFF;
+  --purple: #9B6DFF;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-orange: 0 0 30px rgba(255,107,0,0.25);
+}
+
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--charcoal);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--orange);text-decoration:none}
+a:hover{color:var(--orange-bright)}
+ul{list-style:none}
+img{max-width:100%}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--charcoal2)}
+::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 60px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.1rem; font-weight: 800; color: var(--white);
+  letter-spacing: -0.5px;
+}
+.nav-logo .gear-icon { font-size: 1.4rem; animation: spin-slow 6s linear infinite; }
+.nav-links {
+  display: flex; gap: 0.2rem;
+}
+.nav-links a {
+  color: var(--text-muted); font-size: 0.82rem; font-weight: 500;
+  padding: 6px 12px; border-radius: 6px; transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--orange); background: var(--orange-pale); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 80px 2rem 4rem;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.12) 0%, transparent 60%),
+              var(--charcoal);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,0,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+  color: var(--orange); text-transform: uppercase; margin-bottom: 1rem;
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-weight: 900; line-height: 1.05;
+  letter-spacing: -2px; color: var(--white);
+  margin-bottom: 1.2rem;
+}
+.hero h1 span { color: var(--orange); }
+.hero-sub {
+  font-size: 1.1rem; color: var(--text-muted); max-width: 560px;
+  margin: 0 auto 3rem; font-weight: 400;
+}
+
+/* ===== WORKFLOW ANIMATION ===== */
+.workflow-anim {
+  display: flex; align-items: center; gap: 0;
+  margin: 0 auto 3rem;
+  background: var(--charcoal3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  max-width: 700px; width: 100%;
+  position: relative; overflow: hidden;
+}
+.workflow-anim::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,107,0,0.05), transparent);
+  animation: sweep 3s ease-in-out infinite;
+}
+.wf-step {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; flex: 1;
+}
+.wf-icon {
+  width: 56px; height: 56px;
+  background: var(--charcoal4);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  position: relative; z-index: 1;
+  transition: all 0.3s;
+}
+.wf-step.active .wf-icon {
+  border-color: var(--orange);
+  background: rgba(255,107,0,0.15);
+  box-shadow: 0 0 20px rgba(255,107,0,0.3);
+}
+.wf-label {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--text-muted); text-transform: uppercase;
+}
+.wf-step.active .wf-label { color: var(--orange); }
+.wf-arrow {
+  font-size: 1.4rem; color: var(--text-dim);
+  animation: pulse-arrow 2s ease-in-out infinite;
+  flex-shrink: 0; padding: 0 4px;
+}
+.wf-arrow.live { color: var(--orange); }
+
+/* spinning gear in workflow */
+.wf-gear { animation: spin-slow 3s linear infinite; display: inline-block; }
+.wf-gear-rev { animation: spin-rev 4s linear infinite; display: inline-block; }
+
+/* ===== HERO STATS ===== */
+.hero-stats {
+  display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-size: 2rem; font-weight: 900; color: var(--orange);
+  line-height: 1; letter-spacing: -1px;
+}
+.stat-lbl { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+/* ===== SECTION BASE ===== */
+section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 3px;
+  color: var(--orange); text-transform: uppercase; margin-bottom: 0.6rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800;
+  color: var(--white); line-height: 1.15; letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+.section-sub { color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
+
+/* ===== PYRAMID ===== */
+.pyramid-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 4rem; }
+.pyramid-level {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 1.1rem 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-dim);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+}
+.pyramid-level:hover { border-color: var(--orange); transform: scale(1.01); z-index: 2; }
+.pyr-l1 { background: rgba(255,107,0,0.05); width: 38%; }
+.pyr-l2 { background: rgba(255,107,0,0.08); width: 54%; }
+.pyr-l3 { background: rgba(255,107,0,0.11); width: 70%; }
+.pyr-l4 { background: rgba(255,107,0,0.15); width: 86%; }
+.pyr-l5 { background: rgba(255,107,0,0.2); width: 100%; }
+.pyr-badge {
+  min-width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+  border: 2px solid var(--orange);
+}
+.pyr-content { flex: 1; }
+.pyr-name { font-weight: 700; color: var(--white); font-size: 0.95rem; }
+.pyr-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.pyr-tools { font-size: 0.72rem; color: var(--orange); margin-top: 4px; font-weight: 500; }
+.pyr-when {
+  font-size: 0.7rem; color: var(--text-dim);
+  background: var(--charcoal4); border-radius: 6px;
+  padding: 4px 10px; flex-shrink: 0; text-align: right;
+  max-width: 180px;
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spin-rev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes pulse-arrow {
+  0%, 100% { opacity: 0.4; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(3px); }
+}
+@keyframes sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,107,0,0.2); }
+  50% { box-shadow: 0 0 30px rgba(255,107,0,0.5); }
+}
+@keyframes bot-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.fade-up { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+
+/* ===== CONCEPT CARDS ===== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.concept-card {
+  background: var(--charcoal3);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem;
+  transition: all 0.3s; cursor: pointer;
+}
+.concept-card:hover {
+  border-color: var(--orange);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-3px);
+}
+.card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+.card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(255,107,0,0.15); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.card-title { font-size: 1rem; font-weight: 700; color: var(--white); }
+.card-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.card-body { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+
+/* ===== DIAGRAM COMPONENTS ===== */
+.diag-box {
+  background: var(--charcoal4); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px;
+  font-size: 0.72rem; font-weight: 600; color: var(--text);
+  text-align: center; white-space: nowrap;
+}
+.diag-box.orange { border-color: var(--orange); color: var(--orange); background: rgba(255,107,0,0.1); }
+.diag-box.green { border-color: var(--green); color: var(--green); background: rgba(0,200,150,0.1); }
+.diag-box.blue { border-color: var(--blue); color: var(--blue); background: rgba(74,158,255,0.1); }
+.diag-box.purple { border-color: var(--purple); color: var(--purple); background: rgba(155,109,255,0.1); }
+.diag-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.diag-arrow { color: var(--orange); font-size: 0.9rem; }
+.diag-vert { display: flex; flex-direction: column; gap: 6px; }
+
+/* ===== RPA BOT DIAGRAM ===== */
+.bot-diagram { display: flex; gap: 1rem; justify-content: space-around; align-items: flex-start; flex-wrap: wrap; }
+.bot-type { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 120px; }
+.bot-figure {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; animation: bot-pulse 3s ease-in-out infinite;
+  border: 2px solid var(--border);
+}
+.bot-figure.attended { border-color: var(--green); background: rgba(0,200,150,0.1); }
+.bot-figure.unattended { border-color: var(--blue); background: rgba(74,158,255,0.1); animation-delay: 1s; }
+.bot-name { font-size: 0.72rem; font-weight: 700; }
+.bot-name.attended { color: var(--green); }
+.bot-name.unattended { color: var(--blue); }
+.bot-trait { font-size: 0.65rem; color: var(--text-muted); text-align: center; }
+
+/* ===== TOOLS GRID ===== */
+.tools-section { background: var(--charcoal2); padding: 5rem 0; }
+.tools-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.tools-cats { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.cat-btn {
+  padding: 6px 16px; border-radius: 20px;
+  background: var(--charcoal4); border: 1px solid var(--border-dim);
+  color: var(--text-muted); font-size: 0.78rem; font-weight: 600;
+  transition: all 0.2s;
+}
+.cat-btn:hover, .cat-btn.active {
+  background: var(--orange); border-color: var(--orange); color: var(--white);
+}
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.tool-card {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius); padding: 1rem;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: all 0.25s; cursor: pointer;
+}
+.tool-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+.tool-icon { font-size: 1.6rem; }
+.tool-name { font-size: 0.85rem; font-weight: 700; color: var(--white); }
+.tool-cat { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.tool-cat.rpa { color: var(--orange); }
+.tool-cat.workflow { color: var(--green); }
+.tool-cat.it { color: var(--blue); }
+.tool-cat.ai { color: var(--purple); }
+.tool-cat.bpm { color: #FFD700; }
+.tool-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ===== PIPELINE BUILDER ===== */
+.pipeline-section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.pipeline-builder {
+  background: var(--charcoal3); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 2rem; margin-top: 2rem;
+}
+.pb-components { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.pb-chip {
+  padding: 8px 16px; border-radius: 8px;
+  background: var(--charcoal4); border: 1px solid var(--border-dim);
+  font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+  transition: all 0.2s; cursor: pointer; user-select: none;
+}
+.pb-chip:hover { border-color: var(--orange); color: var(--orange); }
+.pb-chip.selected { background: rgba(255,107,0,0.15); border-color: var(--orange); color: var(--orange); }
+.pb-canvas {
+  min-height: 80px; background: var(--charcoal);
+  border: 2px dashed var(--border-dim); border-radius: var(--radius);
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 1rem 1.5rem; flex-wrap: wrap;
+  transition: border-color 0.3s;
+}
+.pb-canvas.has-items { border-color: var(--orange); border-style: solid; }
+.pb-node {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--charcoal4); border: 1px solid var(--orange);
+  border-radius: 8px; padding: 6px 14px;
+  font-size: 0.78rem; font-weight: 600; color: var(--orange);
+  animation: fadeUp 0.3s ease;
+}
+.pb-conn { color: var(--text-dim); font-size: 1.2rem; }
+.pb-btn {
+  padding: 8px 20px; border-radius: 8px;
+  background: var(--orange); color: var(--white);
+  font-size: 0.8rem; font-weight: 700;
+  transition: all 0.2s;
+}
+.pb-btn:hover { background: var(--orange-bright); transform: scale(1.02); }
+.pb-btn.clear { background: var(--charcoal4); color: var(--text-muted); margin-left: 0.5rem; }
+.pb-hint { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.75rem; }
+
+/* ===== TABS ===== */
+.tabs-section { background: var(--charcoal2); padding: 5rem 0; }
+.tabs-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.tab-nav {
+  display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 2rem; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 20px; font-size: 0.85rem; font-weight: 600;
+  color: var(--text-muted); background: transparent;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--orange); }
+.tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeUp 0.3s ease; }
+
+/* ===== RESOURCE CARDS ===== */
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.res-card {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius); padding: 1.2rem;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: all 0.25s;
+}
+.res-card:hover { border-color: var(--orange); }
+.res-card-top { display: flex; align-items: center; gap: 10px; }
+.res-icon { font-size: 1.2rem; }
+.res-title { font-size: 0.88rem; font-weight: 700; color: var(--white); }
+.res-source { font-size: 0.7rem; color: var(--text-muted); }
+.res-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+.res-link {
+  font-size: 0.72rem; font-weight: 600; color: var(--orange);
+  display: flex; align-items: center; gap: 4px;
+}
+.res-link:hover { color: var(--orange-bright); }
+
+/* ===== ROADMAP ===== */
+.roadmap-section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.roadmap { display: flex; gap: 0; position: relative; flex-wrap: wrap; }
+.roadmap::before {
+  content: ''; position: absolute; top: 28px; left: 28px; right: 28px;
+  height: 2px; background: linear-gradient(90deg, var(--orange), var(--purple));
+  z-index: 0;
+}
+.rm-step {
+  flex: 1; min-width: 150px; display: flex; flex-direction: column;
+  align-items: center; gap: 12px; text-align: center;
+  position: relative; z-index: 1; padding: 0 0.5rem;
+}
+.rm-dot {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 800;
+  background: var(--charcoal3); border: 2px solid var(--border-dim);
+  transition: all 0.3s;
+}
+.rm-step.done .rm-dot { border-color: var(--orange); background: rgba(255,107,0,0.15); }
+.rm-step-title { font-size: 0.8rem; font-weight: 700; color: var(--white); }
+.rm-step-sub { font-size: 0.68rem; color: var(--text-muted); }
+.rm-step-badge {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 10px;
+  background: rgba(255,107,0,0.15); color: var(--orange); border: 1px solid var(--border);
+}
+
+/* ===== CHEAT SHEET ===== */
+.cheat-section { background: var(--charcoal2); padding: 5rem 0; }
+.cheat-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.cheat-card {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius); padding: 1.1rem;
+  transition: all 0.25s;
+}
+.cheat-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+.cheat-term {
+  font-size: 0.82rem; font-weight: 800; color: var(--orange);
+  letter-spacing: 0.5px; margin-bottom: 4px;
+}
+.cheat-def { font-size: 0.74rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center; padding: 3rem 2rem;
+  border-top: 1px solid var(--border-dim);
+  color: var(--text-dim); font-size: 0.78rem;
+}
+footer .f-logo { font-size: 1.5rem; font-weight: 900; color: var(--orange); margin-bottom: 0.5rem; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .workflow-anim { padding: 1rem; gap: 0; }
+  .wf-label { display: none; }
+  .pyr-l1,.pyr-l2,.pyr-l3 { width: 100%; }
+  .roadmap::before { display: none; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Wavgen back link inside world nav ── */
+.nav-brand-group { display:flex; align-items:center; gap:0.9rem; }
+.nav-back { color:var(--text-dim,rgba(255,255,255,.5)); font-size:0.7rem; font-weight:600; letter-spacing:.05em; opacity:.7; transition:opacity 0.2s; text-decoration:none; white-space:nowrap; }
+.nav-back:hover { opacity:1; text-decoration:none; }
+</style>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-logo">
+    <span class="gear-icon">⚙️</span>
+    <span>AutomateEverything</span>
+  </div>
+  <div class="nav-links">
+    <a href="#top">Home</a>
+    <a href="#landscape">Landscape</a>
+    <a href="#concepts">Concepts</a>
+    <a href="#tools">Tools</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#resources">Resources</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#industry-frameworks">Research</a>
+    <a href="#key-terms">Terms</a>
+    <a href="#knowledge-check">Quiz</a>
+    <a href="#cheatsheet">Cheat Sheet</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <p class="hero-eyebrow">⚡ Enterprise AI &amp; Automation Learning Guide</p>
+  <h1>Automate<br><span>Everything</span></h1>
+  <p class="hero-sub">From scripts and RPA bots to AI agents and hyperautomation — master the full automation stack used in enterprise IT and AI programs.</p>
+
+  <!-- Workflow Animation -->
+  <div class="workflow-anim">
+    <div class="wf-step" id="wf0">
+      <div class="wf-icon">🧑‍💼</div>
+      <div class="wf-label">Human Task</div>
+    </div>
+    <div class="wf-arrow" id="wfa0">→</div>
+    <div class="wf-step" id="wf1">
+      <div class="wf-icon"><span class="wf-gear">⚙️</span></div>
+      <div class="wf-label">Bot Triggers</div>
+    </div>
+    <div class="wf-arrow" id="wfa1">→</div>
+    <div class="wf-step" id="wf2">
+      <div class="wf-icon">🤖</div>
+      <div class="wf-label">AI Processes</div>
+    </div>
+    <div class="wf-arrow" id="wfa2">→</div>
+    <div class="wf-step" id="wf3">
+      <div class="wf-icon">✅</div>
+      <div class="wf-label">Output Delivered</div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">85%</div>
+      <div class="stat-lbl">Tasks Automatable</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-lbl">Automation Levels</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$25T</div>
+      <div class="stat-lbl">Market by 2030</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">20+</div>
+      <div class="stat-lbl">Tools Covered</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUTOMATION LANDSCAPE ===== -->
+<div style="background:var(--charcoal2); padding: 5rem 0;" id="landscape">
+<section style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+  <p class="section-label">🗺️ The Automation Stack</p>
+  <h2 class="section-title">Automation Landscape</h2>
+  <p class="section-sub">Five levels of automation maturity — from simple scripts to fully autonomous AI agents. Each level builds on the one below it.</p>
+
+  <div class="pyramid-wrap">
+
+    <!-- Level 5 — Agentic AI (top = most advanced) -->
+    <div class="pyramid-level pyr-l1" onclick="togglePyr(this)">
+      <div class="pyr-badge">🧠</div>
+      <div class="pyr-content">
+        <div class="pyr-name">Level 5 — Agentic AI</div>
+        <div class="pyr-desc">Autonomous LLM-powered agents that perceive, reason, plan, and act across complex multi-step goals with minimal human oversight.</div>
+        <div class="pyr-tools">AutoGen · CrewAI · LangGraph · OpenAI Agents SDK · AutoGPT</div>
+      </div>
+      <div class="pyr-when">When: Complex, unstructured goals requiring reasoning &amp; adaptation</div>
+    </div>
+
+    <!-- Level 4 — Hyperautomation -->
+    <div class="pyramid-level pyr-l2" onclick="togglePyr(this)">
+      <div class="pyr-badge">🌐</div>
+      <div class="pyr-content">
+        <div class="pyr-name">Level 4 — Hyperautomation</div>
+        <div class="pyr-desc">Gartner's framework: orchestrated automation across the enterprise. RPA + AI + BPM + analytics combined into an integrated platform. Discover → Analyze → Design → Automate → Measure.</div>
+        <div class="pyr-tools">UiPath Platform · Automation Anywhere 360 · ServiceNow · Pega Infinity</div>
+      </div>
+      <div class="pyr-when">When: Enterprise-scale transformation, cross-department automation</div>
+    </div>
+
+    <!-- Level 3 — Intelligent Process Automation -->
+    <div class="pyramid-level pyr-l3" onclick="togglePyr(this)">
+      <div class="pyr-badge">🤖</div>
+      <div class="pyr-content">
+        <div class="pyr-name">Level 3 — Intelligent Process Automation (IPA)</div>
+        <div class="pyr-desc">RPA enhanced with AI/ML — OCR, NLP, computer vision, and decision engines allow bots to handle unstructured data and edge cases. Moves beyond rule-based to judgment-based automation.</div>
+        <div class="pyr-tools">UiPath AI Center · AA AARI · Blue Prism Decipher · Google CCAI</div>
+      </div>
+      <div class="pyr-when">When: Processes with unstructured inputs (PDFs, emails, images)</div>
+    </div>
+
+    <!-- Level 2 — RPA -->
+    <div class="pyramid-level pyr-l4" onclick="togglePyr(this)">
+      <div class="pyr-badge">⚙️</div>
+      <div class="pyr-content">
+        <div class="pyr-name">Level 2 — Robotic Process Automation (RPA)</div>
+        <div class="pyr-desc">Software bots that mimic human interaction with UIs — clicking, typing, copying data. Attended bots work alongside humans; unattended bots run autonomously on servers. Rule-based, deterministic.</div>
+        <div class="pyr-tools">UiPath · Automation Anywhere · Blue Prism · Power Automate Desktop · WorkFusion</div>
+      </div>
+      <div class="pyr-when">When: Repetitive, rule-based tasks using existing UIs</div>
+    </div>
+
+    <!-- Level 1 — Basic Automation (widest base) -->
+    <div class="pyramid-level pyr-l5" onclick="togglePyr(this)">
+      <div class="pyr-badge">📜</div>
+      <div class="pyr-content">
+        <div class="pyr-name">Level 1 — Basic Automation</div>
+        <div class="pyr-desc">Macros, shell scripts, scheduled jobs, and simple workflow tools. Reduces manual effort through hard-coded logic and task scheduling. Foundation of all automation.</div>
+        <div class="pyr-tools">Excel Macros · Bash/PowerShell · Cron · Zapier · GitHub Actions (basic) · IFTTT</div>
+      </div>
+      <div class="pyr-when">When: Simple, well-defined repetitive tasks with stable inputs</div>
+    </div>
+
+  </div>
+
+  <!-- Automation Maturity Comparison Table -->
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+      <thead>
+        <tr style="background:var(--charcoal4);">
+          <th style="padding:10px 14px;text-align:left;color:var(--orange);border:1px solid var(--border-dim);">Dimension</th>
+          <th style="padding:10px 14px;text-align:center;color:var(--text);border:1px solid var(--border-dim);">Basic</th>
+          <th style="padding:10px 14px;text-align:center;color:var(--text);border:1px solid var(--border-dim);">RPA</th>
+          <th style="padding:10px 14px;text-align:center;color:var(--text);border:1px solid var(--border-dim);">IPA</th>
+          <th style="padding:10px 14px;text-align:center;color:var(--text);border:1px solid var(--border-dim);">Hyperauto</th>
+          <th style="padding:10px 14px;text-align:center;color:var(--orange);border:1px solid var(--border-dim);">AI Agents</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:8px 14px;color:var(--text-muted);border:1px solid var(--border-dim);">Data Type</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Structured</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Structured</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Semi-structured</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Mixed</td>
+          <td style="padding:8px 14px;text-align:center;color:var(--orange);border:1px solid var(--border-dim);">Any</td>
+        </tr>
+        <tr style="background:var(--charcoal4);">
+          <td style="padding:8px 14px;color:var(--text-muted);border:1px solid var(--border-dim);">Decision-making</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">None</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Rules only</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">ML models</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">AI + rules</td>
+          <td style="padding:8px 14px;text-align:center;color:var(--orange);border:1px solid var(--border-dim);">LLM reasoning</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 14px;color:var(--text-muted);border:1px solid var(--border-dim);">Human involvement</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Setup only</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Low–Medium</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Low</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Oversight</td>
+          <td style="padding:8px 14px;text-align:center;color:var(--orange);border:1px solid var(--border-dim);">Goal setting</td>
+        </tr>
+        <tr style="background:var(--charcoal4);">
+          <td style="padding:8px 14px;color:var(--text-muted);border:1px solid var(--border-dim);">Complexity handled</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Very low</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Low</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">Medium</td>
+          <td style="padding:8px 14px;text-align:center;border:1px solid var(--border-dim);">High</td>
+          <td style="padding:8px 14px;text-align:center;color:var(--orange);border:1px solid var(--border-dim);">Very High</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</div>
+
+
+
+<!-- ===== CORE CONCEPTS ===== -->
+<section id="concepts" style="padding:5rem 2rem;max-width:1200px;margin:0 auto;">
+  <p class="section-label">🔬 Deep Dives</p>
+  <h2 class="section-title">Core Automation Concepts</h2>
+  <p class="section-sub">Six foundational concepts you need to master — with visual diagrams showing how each one actually works.</p>
+
+  <div class="cards-grid">
+
+    <!-- Card 1: RPA Deep Dive -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🤖</div>
+        <div>
+          <div class="card-title">RPA Deep Dive</div>
+          <div class="card-subtitle">Robotic Process Automation</div>
+        </div>
+      </div>
+      <div class="card-body">Software robots that interact with applications through the UI layer — the same way a human would. No API needed. Works on top of legacy systems.</div>
+      <div class="bot-diagram">
+        <div class="bot-type">
+          <div class="bot-figure attended">🧑</div>
+          <div class="bot-name attended">Attended</div>
+          <div class="bot-trait">Works alongside<br>human on desktop.<br>Human triggers it.</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:1.2rem;color:var(--text-dim);">VS</div>
+        <div class="bot-type">
+          <div class="bot-figure unattended">🤖</div>
+          <div class="bot-name unattended">Unattended</div>
+          <div class="bot-trait">Runs on server.<br>Fully autonomous.<br>Scheduled/triggered.</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;" class="diag-vert">
+        <div class="diag-row"><span class="diag-box orange">Screen Scrape</span><span class="diag-arrow">→</span><span class="diag-box">Parse Data</span><span class="diag-arrow">→</span><span class="diag-box green">Enter to System</span></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Workflow Automation -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🔗</div>
+        <div>
+          <div class="card-title">Workflow Automation</div>
+          <div class="card-subtitle">Trigger → Filter → Action → Notify</div>
+        </div>
+      </div>
+      <div class="card-body">Event-driven integration: when something happens in System A, do something in System B. No-code tools connect thousands of apps via APIs and webhooks.</div>
+      <div class="diag-vert" style="margin-top:8px;">
+        <div class="diag-row"><span class="diag-box orange">⚡ Trigger</span><span class="diag-arrow">→</span><span class="diag-box blue">🔍 Filter</span></div>
+        <div style="padding-left:10px;color:var(--text-dim);font-size:0.7rem;">e.g. New email received / if contains "invoice"</div>
+        <div class="diag-row"><span class="diag-box green">⚙️ Action</span><span class="diag-arrow">→</span><span class="diag-box purple">🔔 Notify</span></div>
+        <div style="padding-left:10px;color:var(--text-dim);font-size:0.7rem;">Add to sheet &amp; CRM / Slack message sent</div>
+      </div>
+      <div style="margin-top:10px;font-size:0.72rem;color:var(--text-muted);">
+        <strong style="color:var(--orange);">Tools:</strong> Zapier · Make (Integromat) · n8n · Power Automate
+      </div>
+    </div>
+
+    <!-- Card 3: IT Automation -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🖥️</div>
+        <div>
+          <div class="card-title">IT Automation</div>
+          <div class="card-subtitle">Infrastructure as Code (IaC)</div>
+        </div>
+      </div>
+      <div class="card-body">Treat infrastructure like software. Define servers, networks, and configs in code. Version-controlled, repeatable, testable deployments — no manual SSH needed.</div>
+      <div class="diag-vert" style="margin-top:8px;">
+        <div class="diag-row">
+          <span class="diag-box orange">📄 Code/Playbook</span><span class="diag-arrow">→</span><span class="diag-box blue">🔧 Provision</span>
+        </div>
+        <div class="diag-row" style="padding-left:20px;">
+          <span class="diag-box">Servers</span><span class="diag-arrow">+</span><span class="diag-box">Networks</span><span class="diag-arrow">+</span><span class="diag-box green">Configs</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:0.72rem;color:var(--text-muted);">
+        <strong style="color:var(--orange);">Ansible:</strong> Agentless, YAML playbooks &nbsp;|&nbsp; <strong style="color:var(--orange);">Terraform:</strong> Cloud provisioning &nbsp;|&nbsp; <strong style="color:var(--orange);">Puppet/Chef:</strong> Config management
+      </div>
+    </div>
+
+    <!-- Card 4: AI Agents -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🧠</div>
+        <div>
+          <div class="card-title">AI Agents</div>
+          <div class="card-subtitle">Perception → Reasoning → Action</div>
+        </div>
+      </div>
+      <div class="card-body">LLM-based agents that can use tools, browse the web, write code, and take actions to accomplish goals. The loop runs until the task is complete or a human intervenes.</div>
+      <div style="display:flex;justify-content:center;margin:10px 0;">
+        <div style="position:relative;width:180px;height:180px;">
+          <!-- circular diagram using CSS -->
+          <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);text-align:center;">
+            <div class="diag-box orange" style="font-size:0.65rem;padding:4px 8px;">👁️ Perceive</div>
+          </div>
+          <div style="position:absolute;top:50%;right:0;transform:translateY(-50%);">
+            <div class="diag-box blue" style="font-size:0.65rem;padding:4px 8px;">💭 Reason</div>
+          </div>
+          <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);">
+            <div class="diag-box green" style="font-size:0.65rem;padding:4px 8px;">⚡ Act</div>
+          </div>
+          <div style="position:absolute;top:50%;left:0;transform:translateY(-50%);">
+            <div class="diag-box purple" style="font-size:0.65rem;padding:4px 8px;">🔧 Use Tools</div>
+          </div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.8rem;animation:bot-pulse 2s infinite;">🧠</div>
+        </div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;">LangChain · LangGraph · AutoGen · CrewAI · OpenAI Agents</div>
+    </div>
+
+    <!-- Card 5: Multi-Agent Systems -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🕸️</div>
+        <div>
+          <div class="card-title">Multi-Agent Systems</div>
+          <div class="card-subtitle">Orchestrator + Specialist Agents</div>
+        </div>
+      </div>
+      <div class="card-body">Multiple AI agents collaborate to solve complex tasks. An orchestrator agent breaks down goals and delegates to specialist agents — each with its own tools and expertise.</div>
+      <div class="diag-vert" style="margin-top:8px;">
+        <div style="display:flex;justify-content:center;margin-bottom:8px;">
+          <div class="diag-box orange" style="padding:8px 16px;">🎯 Orchestrator Agent</div>
+        </div>
+        <div style="display:flex;justify-content:space-around;">
+          <div class="diag-box blue" style="font-size:0.65rem;">🔍 Research<br>Agent</div>
+          <div class="diag-box green" style="font-size:0.65rem;">💻 Coder<br>Agent</div>
+          <div class="diag-box purple" style="font-size:0.65rem;">✍️ Writer<br>Agent</div>
+          <div class="diag-box" style="font-size:0.65rem;">📊 Analyst<br>Agent</div>
+        </div>
+        <div style="text-align:center;font-size:0.65rem;color:var(--text-dim);margin-top:6px;">Each agent has its own memory, tools &amp; context</div>
+      </div>
+    </div>
+
+    <!-- Card 6: Hyperautomation -->
+    <div class="concept-card">
+      <div class="card-header">
+        <div class="card-icon">🌐</div>
+        <div>
+          <div class="card-title">Hyperautomation</div>
+          <div class="card-subtitle">Gartner's Enterprise Framework</div>
+        </div>
+      </div>
+      <div class="card-body">Not a single tool — a strategy. Systematically automating as many business processes as possible using a combination of RPA, AI, BPM, and analytics.</div>
+      <div class="diag-row" style="margin-top:10px;flex-wrap:wrap;gap:4px;">
+        <div class="diag-box orange" style="font-size:0.65rem;padding:5px 8px;">🔍 Discover</div>
+        <span class="diag-arrow" style="font-size:0.8rem;">→</span>
+        <div class="diag-box blue" style="font-size:0.65rem;padding:5px 8px;">📊 Analyze</div>
+        <span class="diag-arrow" style="font-size:0.8rem;">→</span>
+        <div class="diag-box" style="font-size:0.65rem;padding:5px 8px;">🎨 Design</div>
+        <span class="diag-arrow" style="font-size:0.8rem;">→</span>
+        <div class="diag-box green" style="font-size:0.65rem;padding:5px 8px;">⚙️ Automate</div>
+        <span class="diag-arrow" style="font-size:0.8rem;">→</span>
+        <div class="diag-box purple" style="font-size:0.65rem;padding:5px 8px;">📈 Measure</div>
+      </div>
+      <div style="margin-top:10px;font-size:0.72rem;color:var(--text-muted);">
+        <strong style="color:var(--orange);">Key:</strong> Process mining identifies automation candidates → bots execute → AI handles exceptions → analytics drive improvement
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== TOOLS LANDSCAPE ===== -->
+<div class="tools-section" id="tools">
+  <div class="tools-inner">
+    <p class="section-label">🛠️ Tool Ecosystem</p>
+    <h2 class="section-title">Tools Landscape</h2>
+    <p class="section-sub">Every major automation tool categorized — click a category to filter.</p>
+
+    <div class="tools-cats">
+      <button class="cat-btn active" onclick="filterTools('all',this)">All Tools</button>
+      <button class="cat-btn" onclick="filterTools('rpa',this)">🤖 RPA</button>
+      <button class="cat-btn" onclick="filterTools('workflow',this)">🔗 Workflow</button>
+      <button class="cat-btn" onclick="filterTools('it',this)">🖥️ IT / IaC</button>
+      <button class="cat-btn" onclick="filterTools('ai',this)">🧠 AI Agents</button>
+      <button class="cat-btn" onclick="filterTools('bpm',this)">📋 BPM</button>
+    </div>
+
+    <div class="tools-grid" id="toolsGrid">
+      <!-- RPA Tools -->
+      <div class="tool-card" data-cat="rpa">
+        <div class="tool-icon">🟦</div>
+        <div class="tool-name">UiPath</div>
+        <div class="tool-cat rpa">RPA</div>
+        <div class="tool-desc">Market-leading RPA platform. Studio IDE for bot design, Orchestrator for deployment. Attended + unattended. Now with AI Center for ML integration.</div>
+      </div>
+      <div class="tool-card" data-cat="rpa">
+        <div class="tool-icon">🟧</div>
+        <div class="tool-name">Automation Anywhere</div>
+        <div class="tool-cat rpa">RPA</div>
+        <div class="tool-desc">Cloud-native RPA with A360 platform. AARI for attended automation, IQ Bot for document AI. Strong enterprise security posture.</div>
+      </div>
+      <div class="tool-card" data-cat="rpa">
+        <div class="tool-icon">🔵</div>
+        <div class="tool-name">Blue Prism</div>
+        <div class="tool-cat rpa">RPA</div>
+        <div class="tool-desc">Enterprise-focused RPA. Strong governance, audit trails, and compliance features. Favored in banking and regulated industries.</div>
+      </div>
+      <div class="tool-card" data-cat="rpa">
+        <div class="tool-icon">🪟</div>
+        <div class="tool-name">Power Automate Desktop</div>
+        <div class="tool-cat rpa">RPA</div>
+        <div class="tool-desc">Microsoft's RPA tool. Free for Windows 10/11. Tight M365 integration. UI flows for desktop + cloud flows for API-based automation.</div>
+      </div>
+      <!-- Workflow Tools -->
+      <div class="tool-card" data-cat="workflow">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-name">Zapier</div>
+        <div class="tool-cat workflow">Workflow</div>
+        <div class="tool-desc">No-code automation for 6000+ apps. Zaps = trigger + action. Multi-step Zaps with filters, paths, and formatters. Best for non-technical users.</div>
+      </div>
+      <div class="tool-card" data-cat="workflow">
+        <div class="tool-icon">🟣</div>
+        <div class="tool-name">Make (Integromat)</div>
+        <div class="tool-cat workflow">Workflow</div>
+        <div class="tool-desc">Visual scenario builder with 1500+ app connectors. More powerful than Zapier — handles complex data transformations, iterators, aggregators.</div>
+      </div>
+      <div class="tool-card" data-cat="workflow">
+        <div class="tool-icon">🟤</div>
+        <div class="tool-name">n8n</div>
+        <div class="tool-cat workflow">Workflow</div>
+        <div class="tool-desc">Open-source, self-hostable workflow automation. Code nodes for custom logic. 400+ integrations. Developer-friendly with fair-code license.</div>
+      </div>
+      <div class="tool-card" data-cat="workflow">
+        <div class="tool-icon">☁️</div>
+        <div class="tool-name">Power Automate</div>
+        <div class="tool-cat workflow">Workflow</div>
+        <div class="tool-desc">Microsoft's cloud workflow tool. Premium connectors for Dynamics, SharePoint, Teams. DPA (Digital Process Automation) with approval flows.</div>
+      </div>
+      <div class="tool-card" data-cat="workflow">
+        <div class="tool-icon">🌀</div>
+        <div class="tool-name">Apache Airflow</div>
+        <div class="tool-cat workflow">Workflow</div>
+        <div class="tool-desc">Python-based DAG orchestration for data pipelines. Schedule, monitor, and manage complex workflows. Industry standard for data engineering.</div>
+      </div>
+      <!-- IT Tools -->
+      <div class="tool-card" data-cat="it">
+        <div class="tool-icon">🔴</div>
+        <div class="tool-name">Ansible</div>
+        <div class="tool-cat it">IT Automation</div>
+        <div class="tool-desc">Agentless IT automation using YAML playbooks. SSH-based. Idempotent tasks for config management, app deployment, and orchestration.</div>
+      </div>
+      <div class="tool-card" data-cat="it">
+        <div class="tool-icon">🟪</div>
+        <div class="tool-name">Terraform</div>
+        <div class="tool-cat it">IT Automation</div>
+        <div class="tool-desc">HashiCorp's IaC tool. Declarative HCL syntax. Plan → Apply workflow. Multi-cloud: AWS, Azure, GCP. State management for drift detection.</div>
+      </div>
+      <div class="tool-card" data-cat="it">
+        <div class="tool-icon">🟡</div>
+        <div class="tool-name">Puppet</div>
+        <div class="tool-cat it">IT Automation</div>
+        <div class="tool-desc">Declarative config management. Agent-based (Puppet agent pulls from Puppet server). Enforces desired state across large server fleets.</div>
+      </div>
+      <div class="tool-card" data-cat="it">
+        <div class="tool-icon">🍴</div>
+        <div class="tool-name">Chef</div>
+        <div class="tool-cat it">IT Automation</div>
+        <div class="tool-desc">Ruby-based config management. Recipes and Cookbooks define infrastructure. Test Kitchen for testing. Strong compliance with InSpec.</div>
+      </div>
+      <div class="tool-card" data-cat="it">
+        <div class="tool-icon">🐱</div>
+        <div class="tool-name">GitHub Actions</div>
+        <div class="tool-cat it">IT Automation</div>
+        <div class="tool-desc">CI/CD + workflow automation built into GitHub. YAML-based pipelines. 10,000+ community actions. Triggers on push, PR, schedule, or webhook.</div>
+      </div>
+      <!-- AI Agent Tools -->
+      <div class="tool-card" data-cat="ai">
+        <div class="tool-icon">🦜</div>
+        <div class="tool-name">LangChain</div>
+        <div class="tool-cat ai">AI Agents</div>
+        <div class="tool-desc">Python/JS framework for building LLM apps. Chains, agents, tools, memory, and RAG. Most popular LLM application framework. Large ecosystem.</div>
+      </div>
+      <div class="tool-card" data-cat="ai">
+        <div class="tool-icon">🤝</div>
+        <div class="tool-name">AutoGen (Microsoft)</div>
+        <div class="tool-cat ai">AI Agents</div>
+        <div class="tool-desc">Multi-agent conversation framework. Agents communicate via messages. Human-in-the-loop support. GroupChat for coordinating multiple agents.</div>
+      </div>
+      <div class="tool-card" data-cat="ai">
+        <div class="tool-icon">👥</div>
+        <div class="tool-name">CrewAI</div>
+        <div class="tool-cat ai">AI Agents</div>
+        <div class="tool-desc">Role-based multi-agent framework. Define agents with roles, goals, and backstory. Tasks flow through crews with sequential or hierarchical processes.</div>
+      </div>
+      <div class="tool-card" data-cat="ai">
+        <div class="tool-icon">🕸️</div>
+        <div class="tool-name">LangGraph</div>
+        <div class="tool-cat ai">AI Agents</div>
+        <div class="tool-desc">Graph-based stateful agent orchestration. Nodes + edges define agent workflows. Supports cycles, branching, human-in-loop, and persistent state.</div>
+      </div>
+      <!-- BPM Tools -->
+      <div class="tool-card" data-cat="bpm">
+        <div class="tool-icon">🐪</div>
+        <div class="tool-name">Camunda</div>
+        <div class="tool-cat bpm">BPM</div>
+        <div class="tool-desc">Open-source BPMN workflow engine. Model processes visually, execute them in code. Strong for long-running human+automated workflows.</div>
+      </div>
+      <div class="tool-card" data-cat="bpm">
+        <div class="tool-icon">📊</div>
+        <div class="tool-name">Appian</div>
+        <div class="tool-cat bpm">BPM</div>
+        <div class="tool-desc">Low-code BPM platform. Process modeling, case management, RPA, and AI integrated. Strong government and financial services presence.</div>
+      </div>
+      <div class="tool-card" data-cat="bpm">
+        <div class="tool-icon">🦁</div>
+        <div class="tool-name">Pega</div>
+        <div class="tool-cat bpm">BPM</div>
+        <div class="tool-desc">Enterprise BPM + CRM + AI. "Next Best Action" AI. Case management, decisioning, and RPA. Large-scale customer engagement automation.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PIPELINE BUILDER ===== -->
+<div class="pipeline-section" id="pipeline">
+  <p class="section-label">🔨 Interactive</p>
+  <h2 class="section-title">Pipeline Builder</h2>
+  <p class="section-sub">Assemble a simple automation pipeline by clicking the components below. See how triggers, filters, actions, and notifications connect.</p>
+
+  <div class="pipeline-builder">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Available Components — Click to Add:</div>
+    <div class="pb-components">
+      <button class="pb-chip" onclick="addPipelineNode('⏰ Schedule Trigger','trigger')">⏰ Schedule Trigger</button>
+      <button class="pb-chip" onclick="addPipelineNode('📧 Email Trigger','trigger')">📧 Email Trigger</button>
+      <button class="pb-chip" onclick="addPipelineNode('🔔 Webhook Event','trigger')">🔔 Webhook Event</button>
+      <button class="pb-chip" onclick="addPipelineNode('🔍 Filter / Condition','filter')">🔍 Filter / Condition</button>
+      <button class="pb-chip" onclick="addPipelineNode('🔄 Transform Data','filter')">🔄 Transform Data</button>
+      <button class="pb-chip" onclick="addPipelineNode('📝 Update Database','action')">📝 Update Database</button>
+      <button class="pb-chip" onclick="addPipelineNode('📊 Create Report','action')">📊 Create Report</button>
+      <button class="pb-chip" onclick="addPipelineNode('🤖 Run AI Model','action')">🤖 Run AI Model</button>
+      <button class="pb-chip" onclick="addPipelineNode('💬 Slack Message','notify')">💬 Slack Notify</button>
+      <button class="pb-chip" onclick="addPipelineNode('📧 Send Email','notify')">📧 Email Notify</button>
+      <button class="pb-chip" onclick="addPipelineNode('📱 SMS Alert','notify')">📱 SMS Alert</button>
+    </div>
+
+    <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Your Pipeline:</div>
+    <div class="pb-canvas" id="pbCanvas">
+      <span style="color:var(--text-dim);font-size:0.8rem;">← Click components above to build your pipeline</span>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;">
+      <button class="pb-btn" onclick="runPipeline()">▶ Run Pipeline</button>
+      <button class="pb-btn clear" onclick="clearPipeline()">✕ Clear</button>
+    </div>
+    <div class="pb-hint" id="pbHint"></div>
+  </div>
+</div>
+
+<!-- ===== RESOURCES TABS ===== -->
+<div class="tabs-section" id="resources">
+  <div class="tabs-inner">
+    <p class="section-label">📚 Learning Materials</p>
+    <h2 class="section-title">Resources</h2>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('videos',this)">🎬 Videos</button>
+      <button class="tab-btn" onclick="switchTab('interactive',this)">💻 Interactive</button>
+      <button class="tab-btn" onclick="switchTab('reading',this)">📖 Reading</button>
+      <button class="tab-btn" onclick="switchTab('listening',this)">🎧 Podcasts</button>
+    </div>
+
+    <!-- Videos Tab -->
+    <div class="tab-pane active" id="tab-videos">
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">UiPath Academy</div><div class="res-source">UiPath — Free Official Courses</div></div></div>
+          <div class="res-desc">Free certification courses for RPA Developer, Solution Architect, and AI/ML integration. Hands-on practice with UiPath Studio.</div>
+          <a class="res-link" href="https://academy.uipath.com" target="_blank">↗ academy.uipath.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">Automation Anywhere University</div><div class="res-source">Automation Anywhere — Learning Portal</div></div></div>
+          <div class="res-desc">Role-based learning paths for bot developers, business analysts, and admins. Free A360 trial environment included.</div>
+          <a class="res-link" href="https://university.automationanywhere.com" target="_blank">↗ university.automationanywhere.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">Power Automate Tutorials</div><div class="res-source">Microsoft Learn</div></div></div>
+          <div class="res-desc">Official Microsoft learning paths covering cloud flows, desktop flows, and RPA. Free with Microsoft account. Includes hands-on labs.</div>
+          <a class="res-link" href="https://learn.microsoft.com/en-us/power-automate/" target="_blank">↗ Microsoft Learn — Power Automate</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">AI Agents Deep Dive</div><div class="res-source">Anthropic / DeepLearning.AI</div></div></div>
+          <div class="res-desc">Short courses on building AI agents with tool use, memory, and multi-agent architectures. Taught by AI researchers.</div>
+          <a class="res-link" href="https://www.deeplearning.ai/courses/" target="_blank">↗ deeplearning.ai/courses</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">n8n Crash Course</div><div class="res-source">n8n YouTube Channel</div></div></div>
+          <div class="res-desc">Official walkthroughs for building workflows in n8n. Covers HTTP requests, webhooks, and AI integrations.</div>
+          <a class="res-link" href="https://www.youtube.com/@n8n-io" target="_blank">↗ YouTube: n8n-io</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎬</span><div><div class="res-title">Terraform Fundamentals</div><div class="res-source">HashiCorp Learn</div></div></div>
+          <div class="res-desc">Free interactive tutorials for Terraform from beginner to advanced. Real cloud provisioning in a browser-based environment.</div>
+          <a class="res-link" href="https://developer.hashicorp.com/terraform/tutorials" target="_blank">↗ HashiCorp Developer</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Tab -->
+    <div class="tab-pane" id="tab-interactive">
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">UiPath Community</div><div class="res-source">Free — UiPath Studio Community Edition</div></div></div>
+          <div class="res-desc">Download UiPath Studio Community Edition free. Build and run real RPA bots on your desktop. Access to forums, templates, and activities.</div>
+          <a class="res-link" href="https://www.uipath.com/developers/community-edition-download" target="_blank">↗ Free Download</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">Make Free Tier</div><div class="res-source">1,000 ops/month free</div></div></div>
+          <div class="res-desc">Visual workflow builder with 1,500+ app integrations. Free tier lets you build and test real automations connecting your apps.</div>
+          <a class="res-link" href="https://www.make.com/en/register" target="_blank">↗ make.com — Free Signup</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">n8n Cloud</div><div class="res-source">Free trial — Self-host also free</div></div></div>
+          <div class="res-desc">Try n8n cloud or self-host for free. Build complex multi-step workflows with code nodes and AI integrations.</div>
+          <a class="res-link" href="https://n8n.io" target="_blank">↗ n8n.io</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">Zapier Free Tier</div><div class="res-source">100 tasks/month free</div></div></div>
+          <div class="res-desc">Easiest entry point to workflow automation. Connect 6,000+ apps with no-code Zaps. Great for learning trigger/action concepts.</div>
+          <a class="res-link" href="https://zapier.com" target="_blank">↗ zapier.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">Ansible Playground</div><div class="res-source">Red Hat — Ansible Automation Platform</div></div></div>
+          <div class="res-desc">Browser-based Ansible labs on Red Hat Developer. Write and run playbooks without installing anything.</div>
+          <a class="res-link" href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">↗ Red Hat Ansible</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">💻</span><div><div class="res-title">LangChain Quickstart</div><div class="res-source">LangChain Docs — Python</div></div></div>
+          <div class="res-desc">Build your first AI agent in 15 minutes. Tool use, memory, and RAG patterns with code examples you can run in Google Colab.</div>
+          <a class="res-link" href="https://python.langchain.com/docs/get_started/quickstart" target="_blank">↗ LangChain Quickstart</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reading Tab -->
+    <div class="tab-pane" id="tab-reading">
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">Gartner Hyperautomation Report</div><div class="res-source">Gartner Research</div></div></div>
+          <div class="res-desc">Gartner's definitive framework for hyperautomation — strategy, technology components, and maturity assessment. Required reading for architects.</div>
+          <a class="res-link" href="https://www.gartner.com/en/information-technology/insights/hyperautomation" target="_blank">↗ gartner.com/hyperautomation</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">UiPath RPA Developer Docs</div><div class="res-source">UiPath Documentation</div></div></div>
+          <div class="res-desc">Complete developer reference for UiPath Studio, Orchestrator, and AI Center. Activity library, API docs, and architecture guides.</div>
+          <a class="res-link" href="https://docs.uipath.com" target="_blank">↗ docs.uipath.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">Terraform Documentation</div><div class="res-source">HashiCorp</div></div></div>
+          <div class="res-desc">Full reference for HCL syntax, providers, state management, modules, and workspaces. Best IaC documentation in the industry.</div>
+          <a class="res-link" href="https://developer.hashicorp.com/terraform/docs" target="_blank">↗ HashiCorp Terraform Docs</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">LangChain Conceptual Guide</div><div class="res-source">LangChain Documentation</div></div></div>
+          <div class="res-desc">Deep dive into chains, agents, tools, memory, and RAG. Architecture patterns for production LLM applications.</div>
+          <a class="res-link" href="https://python.langchain.com/docs/concepts" target="_blank">↗ LangChain Concepts</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">Ansible Best Practices</div><div class="res-source">Red Hat / Ansible Docs</div></div></div>
+          <div class="res-desc">Official guide to roles, collections, inventory management, vault for secrets, and scaling Ansible for enterprise environments.</div>
+          <a class="res-link" href="https://docs.ansible.com" target="_blank">↗ docs.ansible.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">📖</span><div><div class="res-title">Camunda BPMN Guide</div><div class="res-source">Camunda</div></div></div>
+          <div class="res-desc">BPMN 2.0 reference and Camunda Platform docs. Covers process modeling, decision tables (DMN), human tasks, and REST API.</div>
+          <a class="res-link" href="https://docs.camunda.io" target="_blank">↗ docs.camunda.io</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Podcasts Tab -->
+    <div class="tab-pane" id="tab-listening">
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">Automation Anywhere Podcast</div><div class="res-source">Automate This!</div></div></div>
+          <div class="res-desc">Real-world automation stories from enterprises. COOs, CIOs, and automation leads share deployment challenges and ROI. Practical, enterprise-focused.</div>
+          <a class="res-link" href="https://www.automationanywhere.com/company/podcast" target="_blank">↗ automationanywhere.com/podcast</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">Practical AI</div><div class="res-source">Changelog Media</div></div></div>
+          <div class="res-desc">Weekly show covering practical AI and automation topics — agents, LLMs, MLOps. Accessible to both technical and business audiences.</div>
+          <a class="res-link" href="https://changelog.com/practicalai" target="_blank">↗ changelog.com/practicalai</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">The AI Daily Brief</div><div class="res-source">Nathaniel Whittemore</div></div></div>
+          <div class="res-desc">Daily 15-min episodes on AI developments including agentic AI, automation tools, and enterprise deployments. Great for staying current.</div>
+          <a class="res-link" href="https://podcasts.apple.com/us/podcast/the-ai-daily-brief" target="_blank">↗ Apple Podcasts — AI Daily Brief</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">Software Engineering Daily</div><div class="res-source">SE Daily</div></div></div>
+          <div class="res-desc">Technical deep dives on automation engineering — Kubernetes, CI/CD, infrastructure as code, platform engineering. Developer-level depth.</div>
+          <a class="res-link" href="https://softwareengineeringdaily.com" target="_blank">↗ softwareengineeringdaily.com</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">Lex Fridman Podcast</div><div class="res-source">AI &amp; Agents Episodes</div></div></div>
+          <div class="res-desc">Long-form conversations with AI researchers and lab founders on the future of agents, automation, and intelligence. Episodes with Altman, Ng, LeCun.</div>
+          <a class="res-link" href="https://lexfridman.com/podcast/" target="_blank">↗ lexfridman.com/podcast</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top"><span class="res-icon">🎧</span><div><div class="res-title">Latent Space</div><div class="res-source">swyx &amp; Alessio</div></div></div>
+          <div class="res-desc">Technical interviews with AI engineers and researchers. Excellent coverage of AI agents, frameworks, and the agentic AI ecosystem.</div>
+          <a class="res-link" href="https://www.latent.space/podcast" target="_blank">↗ latent.space/podcast</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEARNING ROADMAP ===== -->
+<div class="roadmap-section" id="roadmap">
+  <p class="section-label">🗺️ Your Path</p>
+  <h2 class="section-title">Learning Roadmap</h2>
+  <p class="section-sub">Six stages from zero to agentic AI — follow in order or jump to your level.</p>
+
+  <div class="roadmap" style="margin-top:3rem;">
+    <div class="rm-step done">
+      <div class="rm-dot">🧩</div>
+      <div class="rm-step-badge">Stage 1</div>
+      <div class="rm-step-title">Process Thinking</div>
+      <div class="rm-step-sub">Map business processes, identify bottlenecks, document workflows using BPMN. Learn what makes a good automation candidate.</div>
+    </div>
+    <div class="rm-step done">
+      <div class="rm-dot">📜</div>
+      <div class="rm-step-badge">Stage 2</div>
+      <div class="rm-step-title">Basic Scripts</div>
+      <div class="rm-step-sub">Python/PowerShell scripting, scheduled tasks, Excel macros. File handling, API calls, simple data transformations.</div>
+    </div>
+    <div class="rm-step done">
+      <div class="rm-dot">🤖</div>
+      <div class="rm-step-badge">Stage 3</div>
+      <div class="rm-step-title">RPA</div>
+      <div class="rm-step-sub">Build attended + unattended bots in UiPath or Power Automate Desktop. Orchestrate deployments, handle exceptions.</div>
+    </div>
+    <div class="rm-step done">
+      <div class="rm-dot">🔗</div>
+      <div class="rm-step-badge">Stage 4</div>
+      <div class="rm-step-title">Workflow Automation</div>
+      <div class="rm-step-sub">Zapier, Make, or n8n to connect cloud apps. Webhooks, APIs, multi-step flows with conditionals and error handling.</div>
+    </div>
+    <div class="rm-step done">
+      <div class="rm-dot">🧠</div>
+      <div class="rm-step-badge">Stage 5</div>
+      <div class="rm-step-title">Intelligent Automation</div>
+      <div class="rm-step-sub">Add ML to RPA (OCR, NLP, classification). IT automation with Ansible + Terraform. Event-driven architectures.</div>
+    </div>
+    <div class="rm-step done">
+      <div class="rm-dot">🚀</div>
+      <div class="rm-step-badge">Stage 6</div>
+      <div class="rm-step-title">Agentic AI</div>
+      <div class="rm-step-sub">Build LLM agents with tool use (LangGraph, CrewAI). Multi-agent systems, RAG pipelines, autonomous AI workflows.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ===== INDUSTRY FRAMEWORKS ===== */
+.fw-card {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius-lg); padding: 1.8rem;
+  transition: border-color 0.3s, transform 0.2s;
+}
+.fw-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+.fw-badge {
+  display: inline-block; background: var(--orange-pale); color: var(--orange);
+  border: 1px solid var(--border); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 0.8rem;
+}
+.fw-title { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.7rem; }
+.fw-def { font-size: 0.87rem; color: var(--text-muted); line-height: 1.75; }
+.fw-source {
+  margin-top: 0.8rem; font-size: 0.71rem; color: var(--text-dim);
+  border-top: 1px solid var(--border-dim); padding-top: 0.6rem; font-style: italic;
+}
+.maturity-levels { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+.ml-item { display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+.ml-num {
+  min-width: 26px; height: 26px; background: var(--charcoal5);
+  border: 1px solid var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; color: var(--orange); flex-shrink: 0;
+}
+.ml-top { background: var(--orange) !important; color: var(--charcoal) !important; border-color: var(--orange) !important; }
+/* ===== KEY TERMS ===== */
+.kt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1rem; }
+.kt-card {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius); padding: 1.2rem 1.4rem; transition: border-color 0.25s;
+}
+.kt-card:hover { border-color: var(--orange); }
+.kt-term { font-size: 0.8rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+.kt-def { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.kt-cite { font-size: 0.68rem; color: var(--text-dim); margin-top: 0.35rem; font-style: italic; }
+/* ===== KNOWLEDGE CHECK ===== */
+.kc-score-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--charcoal3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.9rem 1.4rem; margin-bottom: 2rem;
+}
+.kc-score-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+.kc-score-val { font-size: 1.3rem; font-weight: 800; color: var(--orange); }
+.kc-reset {
+  background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+  font-size: 0.78rem; padding: 6px 14px; border-radius: 6px; transition: all 0.2s; cursor: pointer;
+}
+.kc-reset:hover { border-color: var(--orange); color: var(--orange); }
+.kc-question {
+  background: var(--charcoal3); border: 1px solid var(--border-dim);
+  border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.2rem;
+}
+.kc-q-num { font-size: 0.7rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+.kc-q-text { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 1rem; line-height: 1.5; }
+.kc-options { display: flex; flex-direction: column; gap: 0.45rem; }
+.kc-opt {
+  background: var(--charcoal4); border: 1px solid var(--border-dim); border-radius: 8px;
+  padding: 0.65rem 1rem; font-size: 0.84rem; color: var(--text); text-align: left;
+  transition: all 0.2s; cursor: pointer; font-family: inherit;
+}
+.kc-opt:hover:not([disabled]) { border-color: var(--orange); color: var(--white); }
+.kc-opt.correct { background: rgba(0,200,150,0.1); border-color: var(--green); color: var(--green); }
+.kc-opt.wrong { background: rgba(255,80,80,0.1); border-color: #FF5050; color: #FF5050; }
+.kc-opt.revealed { background: rgba(0,200,150,0.07); border-color: rgba(0,200,150,0.4); color: var(--green); opacity: 0.65; }
+.kc-explanation {
+  display: none; margin-top: 0.85rem; padding: 0.75rem 1rem;
+  background: var(--charcoal5); border-left: 3px solid var(--orange);
+  border-radius: 0 6px 6px 0; font-size: 0.81rem; color: var(--text-muted); line-height: 1.6;
+}
+.kc-explanation.visible { display: block; }
+</style>
+
+<!-- ===== INDUSTRY FRAMEWORKS ===== -->
+<section id="industry-frameworks" style="padding:5rem 2rem;background:var(--charcoal2);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="section-label">🔬 Research &amp; Standards</p>
+    <h2 class="section-title">Industry Frameworks &amp; Research</h2>
+    <p class="section-sub">Authoritative definitions and frameworks from Gartner, IEEE, and leading AI organizations — grounding automation in analyst-backed language.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;margin-top:2.5rem;">
+
+      <div class="fw-card">
+        <div class="fw-badge">Gartner · Coined 2019</div>
+        <h3 class="fw-title">🏢 Hyperautomation — Official Definition</h3>
+        <p class="fw-def">"A business-driven, disciplined approach that organizations use to rapidly identify, vet and automate as many business and IT processes as possible. It involves the orchestrated use of multiple technologies, tools or platforms, including: artificial intelligence (AI), machine learning, event-driven software architecture, robotic process automation (RPA), business process management (BPM) and intelligent business process management suites (iBPMS), integration platform as a service (iPaaS), low-code/no-code tools, packaged software, and other types of decision, process and task automation tools."</p>
+        <div class="fw-source">Source: Gartner IT Glossary — named a Top Strategic Technology Trend every year since 2020</div>
+      </div>
+
+      <div class="fw-card">
+        <div class="fw-badge">IEEE · Peer-Reviewed Research</div>
+        <h3 class="fw-title">🤖 RPA — IEEE Academic Definition</h3>
+        <p class="fw-def">"RPA refers to process automation applications of traditional Information Technologies based on robot software with the ability to capture and interpret the specific processes of organizations. RPA uses software that allows users to define a process across multiple software programs using a graphical user interface — automating routine, rule-based processes to reduce costs and increase efficiency. RPA is not a physical robot; it is software that acts like a human when interacting with computers."</p>
+        <div class="fw-source">Source: IEEE Xplore peer-reviewed corpus — publications 10649336, 9208907, 9091399, 9915043</div>
+      </div>
+
+      <div class="fw-card" style="grid-column:1/-1;">
+        <div class="fw-badge">Microsoft · Industry Standard · 5 Levels</div>
+        <h3 class="fw-title">📊 Automation Maturity Model</h3>
+        <p class="fw-def" style="margin-bottom:1rem;">A structured framework for assessing and advancing an organization's automation capability. Organizations advance through five progressive stages:</p>
+        <div class="maturity-levels">
+          <div class="ml-item"><span class="ml-num">1</span><div><strong style="color:var(--text);">Initial</strong> — Ad-hoc automation, isolated scripts, no governance. Manual processes dominate the entire organization.</div></div>
+          <div class="ml-item"><span class="ml-num">2</span><div><strong style="color:var(--text);">Repeatable</strong> — Defined automation patterns emerge. Basic RPA deployments. Some process documentation and team awareness begin.</div></div>
+          <div class="ml-item"><span class="ml-num">3</span><div><strong style="color:var(--text);">Defined</strong> — Automation Center of Excellence (CoE) established. Standardized frameworks, reusable components, governed delivery pipelines in place.</div></div>
+          <div class="ml-item"><span class="ml-num">4</span><div><strong style="color:var(--text);">Managed</strong> — KPI-driven automation programs. Process mining identifies candidates objectively. AI/ML integrated into core workflows and decision-making.</div></div>
+          <div class="ml-item"><span class="ml-num ml-top">5</span><div><strong style="color:var(--charcoal);">Optimized</strong> — Hyperautomation achieved. Continuous process discovery, self-healing bots, enterprise-wide orchestration, and agentic AI systems in production.</div></div>
+        </div>
+        <div class="fw-source">Source: Microsoft Power Automate Automation CoE Framework (learn.microsoft.com/power-automate/guidance/automation-coe); Gartner Automation Maturity Reference</div>
+      </div>
+
+      <div class="fw-card">
+        <div class="fw-badge">Gartner · Forrester · 2024</div>
+        <h3 class="fw-title">📈 RPA &amp; Hyperautomation Market</h3>
+        <p class="fw-def">The RPA software market grew <strong style="color:var(--orange);">14.5% to $3.6 billion in 2024</strong> (Gartner). Global RPA spend including services reached <strong style="color:var(--orange);">$22.79 billion</strong>. Long-term projections range $30–65B by 2030–2032 at CAGRs of 35–44%. Forrester projected the broader market at $22B by 2025. Growth drivers: generative AI integration, process discovery automation, and hyperautomation platform consolidation replacing point-solution RPA.</p>
+        <div class="fw-source">Source: Gartner Market Share Analysis: RPA Worldwide 2024 (doc 6842834); Forrester Report RES177085</div>
+      </div>
+
+      <div class="fw-card">
+        <div class="fw-badge">IBM · LangChain · AAIF · 2024–2025</div>
+        <h3 class="fw-title">🧠 Agentic AI — Converging Definitions</h3>
+        <p class="fw-def"><strong style="color:var(--text);">IBM:</strong> "An AI system that can accomplish a specific goal with limited supervision, consisting of AI agents that mimic human decision-making to solve problems in real time — extending generative AI outputs toward specific goals autonomously."<br><br><strong style="color:var(--text);">LangChain:</strong> Agents "call a model in a loop; if it decides to call a tool, you run that tool, get feedback, and pass it back into the LLM until it decides to stop." Contrasts with workflows (predefined code paths).<br><br><strong style="color:var(--text);">AAIF:</strong> The Agentic AI Foundation — launched Dec 2025 by Anthropic, OpenAI &amp; Block under the Linux Foundation — hosts MCP, goose, and AGENTS.md as open agentic standards.</p>
+        <div class="fw-source">Source: IBM Think Topics; LangChain Blog "How to think about agent frameworks"; Linux Foundation AAIF Announcement Dec 2025</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== KEY TERMS ===== -->
+<section id="key-terms" style="padding:5rem 2rem;background:var(--charcoal);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="section-label">📖 Authoritative Definitions</p>
+    <h2 class="section-title">Key Terms — Industry Standard</h2>
+    <p class="section-sub">18 precisely defined terms used by analysts, practitioners, and researchers — with citations to authoritative sources.</p>
+    <div class="kt-grid" style="margin-top:2.5rem;">
+
+      <div class="kt-card">
+        <div class="kt-term">RPA — Robotic Process Automation</div>
+        <div class="kt-def">Software bots that replicate human interactions with digital systems to execute rule-based, repetitive tasks. Bots interact with UIs exactly as a human would — clicking, typing, reading screens — without requiring API integration. Deterministic, auditable, but brittle to UI changes.</div>
+        <div class="kt-cite">IEEE Xplore (10649336, 9208907); Gartner IT Glossary</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">IPA — Intelligent Process Automation</div>
+        <div class="kt-def">RPA augmented with AI/ML capabilities — including NLP, computer vision (CV), OCR, and machine learning — to automate complex, judgment-intensive processes involving unstructured data. IPA handles what rules-based RPA alone cannot: invoices, emails, images, and exception-heavy workflows.</div>
+        <div class="kt-cite">Deloitte "IPA versus RPA"; Automation Anywhere APA Framework; ABBYY</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">BPA — Business Process Automation</div>
+        <div class="kt-def">A broad category: using technology to automate recurring, multi-step business workflows. BPA encompasses RPA, workflow engines, BPM platforms, and API integrations. Focuses on end-to-end process flows rather than individual task automation. Governed by BPMN (Business Process Model &amp; Notation) standards.</div>
+        <div class="kt-cite">IBM; ProcessMaker; Gartner BPM Definition</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Hyperautomation</div>
+        <div class="kt-def">Gartner's 2019 term for "a business-driven, disciplined approach to rapidly identify, vet and automate as many business and IT processes as possible" using an orchestrated combination of RPA, AI, ML, BPM, iPaaS, process mining, and low-code tools. Enterprise-wide automation at scale — not isolated bot deployments.</div>
+        <div class="kt-cite">Gartner IT Glossary (hyperautomation) — Top Strategic Tech Trend 2020–2025</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Attended Automation</div>
+        <div class="kt-def">RPA deployment where a bot runs on a human's workstation and is triggered by the user during their workflow. Human and bot collaborate in real time — the person handles judgment while the bot handles repetitive sub-tasks. Common in call centers, front-office operations, and compliance-heavy processes.</div>
+        <div class="kt-cite">UiPath Attended Automation docs; Automation Anywhere; Bizagi</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Unattended Automation</div>
+        <div class="kt-def">RPA deployment where bots execute autonomously on servers without human presence or triggering. Scheduled or event-driven. Processes entire queues of work end-to-end — invoices, reports, data migrations. Requires robust exception handling and monitoring since no human is present to intervene mid-process.</div>
+        <div class="kt-cite">UiPath Orchestrator documentation; ABBYY RPA Glossary</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Digital Worker</div>
+        <div class="kt-def">A virtual employee — a software entity (bot or AI agent) assigned a persona, skillset, and work queue. Digital workers can be assigned tasks, managed, and measured on output like human FTEs. The concept abstracts individual bots into workforce-level resource management. Used by UiPath, Automation Anywhere, and Blue Prism.</div>
+        <div class="kt-cite">UiPath; SS&amp;C Blue Prism; Automation Anywhere terminology</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Process Mining</div>
+        <div class="kt-def">A data-driven technique extracting knowledge from event logs in enterprise systems (ERP, CRM, ITSM) to automatically reconstruct, visualize, and analyze actual business process flows. Objectively identifies deviations, bottlenecks, and automation candidates. Key vendors: Celonis, UiPath Process Mining, Microsoft Process Advisor.</div>
+        <div class="kt-cite">IEEE Task Force on Process Mining; Celonis docs; Workscope.com</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Task Mining</div>
+        <div class="kt-def">The capture and analysis of user desktop interactions — keystrokes, mouse clicks, app navigation — to understand how humans perform work at the task level. Complements process mining (which uses system logs) by capturing the human execution layer. Generates task flow diagrams and surfaces RPA automation candidates.</div>
+        <div class="kt-cite">Celonis Task Mining docs; UiPath Task Mining; Flobotics comparison</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Low-Code / No-Code (LCNC)</div>
+        <div class="kt-def">Development platforms enabling automation creation with minimal or zero hand-written code, using visual drag-and-drop interfaces, pre-built connectors, and declarative logic. Low-code targets developers; no-code targets business users. Examples: Power Automate, Zapier, n8n, Make. A named component in Gartner's hyperautomation stack.</div>
+        <div class="kt-cite">Gartner Hyperautomation definition; Microsoft Power Platform; Zapier</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Event-Driven Architecture (EDA)</div>
+        <div class="kt-def">A software design paradigm where components communicate by producing and consuming events (messages representing state changes). Producers emit events to a broker (Kafka, RabbitMQ, AWS EventBridge); consumers subscribe and react asynchronously. Enables real-time, decoupled automation at enterprise scale. Explicitly named in Gartner's hyperautomation definition.</div>
+        <div class="kt-cite">AWS Architecture Center; Apache Kafka docs; Gartner Hyperautomation Glossary</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Workflow Orchestration</div>
+        <div class="kt-def">The coordination and sequencing of automated tasks, bots, agents, and services into a coherent end-to-end process. An orchestrator manages execution order, dependencies, error handling, retries, and monitoring. Examples: UiPath Orchestrator, Apache Airflow, Temporal, n8n, Azure Logic Apps. The "conductor" of the automation stack.</div>
+        <div class="kt-cite">UiPath Orchestrator; Apache Airflow docs; Temporal.io</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">AI Agent</div>
+        <div class="kt-def">An LLM-powered system that perceives context, reasons about goals using chain-of-thought, selects tools or actions, executes them, observes results, and iterates — all within a loop until the goal is achieved. Fundamentally different from RPA: agents handle ambiguity and open-ended tasks; bots execute fixed, deterministic scripts.</div>
+        <div class="kt-cite">IBM Think; LangChain documentation; OpenAI Agents SDK; Anthropic docs</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Multi-Agent System (MAS)</div>
+        <div class="kt-def">An architecture where multiple specialized AI agents collaborate — an orchestrator agent delegates subtasks to specialist agents (researcher, coder, writer, critic), each with their own tools, memory, and instructions. Enables parallelism and specialization beyond a single agent. Frameworks: LangGraph, CrewAI, Microsoft AutoGen.</div>
+        <div class="kt-cite">LangChain Blog; Microsoft AutoGen; CrewAI docs</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Tool Use (LLM Context)</div>
+        <div class="kt-def">The capability of an LLM-based agent to invoke external functions — web search, code execution, database queries, API calls, file operations — to gather information or take actions beyond text generation. Tools are declared to the model; the model decides when and how to call them. The mechanism transforming LLMs from responders into actors.</div>
+        <div class="kt-cite">Anthropic Tool Use docs; OpenAI Function Calling; LangChain Tools API</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">ReAct Pattern</div>
+        <div class="kt-def">A prompting and agent design framework (Reasoning + Acting) where an LLM agent alternates: Thought → Action → Observation, repeating until complete. The agent verbalizes reasoning before each action, then observes the result. Introduced by Yao et al. (arXiv:2210.03629, 2022). Reduces hallucinations by grounding reasoning in real-world observations.</div>
+        <div class="kt-cite">arXiv:2210.03629 "ReAct: Synergizing Reasoning and Acting"; IBM Think; Prompt Engineering Guide</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Human-in-the-Loop (HITL)</div>
+        <div class="kt-def">An automation design pattern inserting human judgment, approval, or input at critical decision points within an otherwise automated workflow. Used when confidence is low, stakes are high, or compliance requires sign-off. Balances automation efficiency with oversight — especially critical in agentic AI deployments handling consequential actions.</div>
+        <div class="kt-cite">LangGraph HITL docs; Anthropic Model Spec; UiPath Action Center</div>
+      </div>
+
+      <div class="kt-card">
+        <div class="kt-term">Continuous Automation</div>
+        <div class="kt-def">A practice treating automation as an ongoing, iterative discipline rather than a one-time project — continuously discovering, building, deploying, monitoring, and optimizing automations as processes evolve. Mirrors DevOps principles: CI/CD pipelines for bots. Enabled by process mining feedback loops, bot health monitoring, and automated ROI dashboards.</div>
+        <div class="kt-cite">UiPath Platform; Microsoft Power Automate CoE Toolkit; Celonis Execution Management System</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== KNOWLEDGE CHECK ===== -->
+<section id="knowledge-check" style="padding:5rem 2rem;background:var(--charcoal2);">
+  <div style="max-width:900px;margin:0 auto;">
+    <p class="section-label">🧪 Test Your Knowledge</p>
+    <h2 class="section-title">Knowledge Check</h2>
+    <p class="section-sub">8 questions grounded in authoritative industry sources. Click an answer — green means correct, red means wrong. Explanations cite the source.</p>
+
+    <div class="kc-score-bar">
+      <span class="kc-score-label">Score</span>
+      <span class="kc-score-val" id="kcScore">0 / 0</span>
+      <button class="kc-reset" onclick="kcReset()">↺ Reset Quiz</button>
+    </div>
+
+    <div class="kc-question" id="kc-q-0">
+      <div class="kc-q-num">Question 1 of 8</div>
+      <div class="kc-q-text">Gartner first introduced 'hyperautomation' as a Top Strategic Technology Trend in which year?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(0,0)">2017</button>
+        <button class="kc-opt" onclick="kcAnswer(0,1)">2018</button>
+        <button class="kc-opt" onclick="kcAnswer(0,2)">2019</button>
+        <button class="kc-opt" onclick="kcAnswer(0,3)">2021</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>2019</strong> — Gartner coined 'hyperautomation' in 2019, naming it a Top Strategic Technology Trend. It has remained on that list every year since 2020, cementing it as the defining enterprise automation strategy of the decade. Source: Gartner IT Glossary.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-1">
+      <div class="kc-q-num">Question 2 of 8</div>
+      <div class="kc-q-text">Which type of RPA bot requires a human operator to trigger it and runs directly on their workstation?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(1,0)">Unattended bot</button>
+        <button class="kc-opt" onclick="kcAnswer(1,1)">Attended bot</button>
+        <button class="kc-opt" onclick="kcAnswer(1,2)">Digital Worker</button>
+        <button class="kc-opt" onclick="kcAnswer(1,3)">Orchestrated bot</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>Attended bot</strong> — Attended bots run on a user's workstation and are triggered by the human during their workflow. Human and bot collaborate in real time. Unattended bots run autonomously on servers with no human presence. Source: UiPath; Automation Anywhere.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-2">
+      <div class="kc-q-num">Question 3 of 8</div>
+      <div class="kc-q-text">What primarily distinguishes Intelligent Process Automation (IPA) from traditional RPA?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(2,0)">IPA uses physical robots for manufacturing tasks</button>
+        <button class="kc-opt" onclick="kcAnswer(2,1)">IPA only runs in cloud-native environments</button>
+        <button class="kc-opt" onclick="kcAnswer(2,2)">IPA adds AI/ML to handle unstructured data and complex decisions</button>
+        <button class="kc-opt" onclick="kcAnswer(2,3)">IPA completely replaces BPM platforms</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>IPA adds AI/ML</strong> — IPA = RPA + AI (NLP, OCR, computer vision, ML). Traditional RPA handles rule-based tasks with structured data only. IPA can process invoices, emails, and images — tackling judgment-intensive tasks RPA cannot. Source: Deloitte "IPA versus RPA"; ABBYY.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-3">
+      <div class="kc-q-num">Question 4 of 8</div>
+      <div class="kc-q-text">In the context of LLM-based AI agents, 'tool use' refers to:</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(3,0)">Physical tools controlled by a robotic arm via AI</button>
+        <button class="kc-opt" onclick="kcAnswer(3,1)">An LLM calling external functions like web search, code execution, or APIs</button>
+        <button class="kc-opt" onclick="kcAnswer(3,2)">The UiPath activity library for desktop automation</button>
+        <button class="kc-opt" onclick="kcAnswer(3,3)">Prompt templates and system instructions for the model</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>External function calls</strong> — Tool use transforms LLMs from text generators into actors. The model decides when to invoke declared tools (web search, code runners, DB queries, APIs), executes them, and observes results. Source: Anthropic Tool Use docs; OpenAI Function Calling.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-4">
+      <div class="kc-q-num">Question 5 of 8</div>
+      <div class="kc-q-text">The ReAct pattern for LLM-based AI agents stands for:</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(4,0)">Real-Time Actions and Corrections</button>
+        <button class="kc-opt" onclick="kcAnswer(4,1)">Reactive Architecture eXtension</button>
+        <button class="kc-opt" onclick="kcAnswer(4,2)">Reasoning + Acting</button>
+        <button class="kc-opt" onclick="kcAnswer(4,3)">Recursive Execution and Context</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>Reasoning + Acting</strong> — ReAct agents alternate Thought → Action → Observation in a loop. Introduced by Yao et al. (arXiv:2210.03629, 2022). It reduces hallucinations by grounding reasoning in real observations from tool calls. Now standard in LangChain, IBM, and most major agent frameworks.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-5">
+      <div class="kc-q-num">Question 6 of 8</div>
+      <div class="kc-q-text">Process mining primarily analyzes which data source to automatically reconstruct business processes?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(5,0)">User keystrokes and mouse click recordings</button>
+        <button class="kc-opt" onclick="kcAnswer(5,1)">Bot execution and RPA audit logs</button>
+        <button class="kc-opt" onclick="kcAnswer(5,2)">Event logs from enterprise IT systems (ERP, CRM, ITSM)</button>
+        <button class="kc-opt" onclick="kcAnswer(5,3)">Source code and software version control repositories</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>Enterprise event logs</strong> — Process mining extracts knowledge from event logs in systems like SAP (ERP), Salesforce (CRM), ServiceNow (ITSM). Task mining (a separate technique) captures desktop user interactions. Together they cover both system flow and human execution. Source: IEEE Task Force on Process Mining; Celonis.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-6">
+      <div class="kc-q-num">Question 7 of 8</div>
+      <div class="kc-q-text">According to Gartner's official hyperautomation definition, which of the following IS explicitly named as a core component?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(6,0)">Physical robotic assembly line integration</button>
+        <button class="kc-opt" onclick="kcAnswer(6,1)">Integration Platform as a Service (iPaaS)</button>
+        <button class="kc-opt" onclick="kcAnswer(6,2)">Blockchain-based smart contracts</button>
+        <button class="kc-opt" onclick="kcAnswer(6,3)">Quantum computing optimization engines</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>iPaaS</strong> — Gartner's hyperautomation definition explicitly names: AI, ML, event-driven architecture, RPA, BPM/iBPMS, iPaaS, low-code/no-code tools, and packaged software. Physical robotics, blockchain, and quantum computing are not named components. Source: Gartner IT Glossary.</div>
+    </div>
+
+    <div class="kc-question" id="kc-q-7">
+      <div class="kc-q-num">Question 8 of 8</div>
+      <div class="kc-q-text">How does task mining fundamentally differ from process mining?</div>
+      <div class="kc-options">
+        <button class="kc-opt" onclick="kcAnswer(7,0)">Task mining only integrates with SAP and Oracle systems</button>
+        <button class="kc-opt" onclick="kcAnswer(7,1)">Task mining requires no software agents or data collection</button>
+        <button class="kc-opt" onclick="kcAnswer(7,2)">Task mining captures user desktop interactions (clicks, keystrokes, app navigation)</button>
+        <button class="kc-opt" onclick="kcAnswer(7,3)">Task mining analyzes system-level event logs from ERP platforms</button>
+      </div>
+      <div class="kc-explanation">✅ <strong>Desktop interaction capture</strong> — Task mining tracks what humans do at the desktop level — keystrokes, clicks, app switches — to understand how tasks are actually performed. Process mining analyzes system-level event logs. Together they give a complete picture of process flow and human execution. Source: Celonis Task Mining docs; Workscope.com.</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== CHEAT SHEET ===== -->
+<div class="cheat-section" id="cheatsheet">
+  <div class="cheat-inner">
+    <p class="section-label">📋 Quick Reference</p>
+    <h2 class="section-title">Automation Cheat Sheet</h2>
+    <p class="section-sub" style="margin-bottom:2rem;">20 essential terms every automation professional must know.</p>
+
+    <div class="cheat-grid">
+      <div class="cheat-card"><div class="cheat-term">RPA</div><div class="cheat-def">Robotic Process Automation — software bots that mimic human UI interactions. Rule-based, deterministic, and fragile to UI changes.</div></div>
+      <div class="cheat-card"><div class="cheat-term">BOT</div><div class="cheat-def">A software agent that performs automated tasks. In RPA, a bot executes recorded or scripted interactions with applications.</div></div>
+      <div class="cheat-card"><div class="cheat-term">IPA</div><div class="cheat-def">Intelligent Process Automation — RPA enhanced with AI/ML capabilities (NLP, OCR, CV) to handle unstructured data and edge cases.</div></div>
+      <div class="cheat-card"><div class="cheat-term">BPM / BPA</div><div class="cheat-def">Business Process Management / Automation — modeling, analyzing, and automating end-to-end business processes using BPMN standards.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Hyperautomation</div><div class="cheat-def">Gartner-coined strategy: systematically automate as many processes as possible using combined RPA + AI + analytics + BPM tools.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Attended Bot</div><div class="cheat-def">RPA bot that runs on a user's desktop and works alongside them. Human triggers the bot and can intervene. Used for assisted tasks.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Unattended Bot</div><div class="cheat-def">RPA bot that runs autonomously on servers without human interaction. Triggered by schedule, queue, or event. High-volume processing.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Orchestrator</div><div class="cheat-def">Central control server that deploys, schedules, monitors, and manages bots. UiPath Orchestrator and AA Control Room are examples.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Trigger</div><div class="cheat-def">An event that starts an automation. Can be time-based (schedule), data-based (new row in DB), or event-based (webhook, email received).</div></div>
+      <div class="cheat-card"><div class="cheat-term">Webhook</div><div class="cheat-def">An HTTP callback — when Event X happens in System A, it POSTs data to a URL in System B, triggering downstream automation.</div></div>
+      <div class="cheat-card"><div class="cheat-term">API</div><div class="cheat-def">Application Programming Interface — structured way for systems to communicate. REST APIs are the backbone of modern workflow automation.</div></div>
+      <div class="cheat-card"><div class="cheat-term">AI Agent</div><div class="cheat-def">An LLM-powered system that perceives context, reasons about goals, selects tools/actions, executes them, and observes results in a loop.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Tool Use</div><div class="cheat-def">Agent capability to call external functions — web search, code execution, database queries, API calls — to gather info or take actions.</div></div>
+      <div class="cheat-card"><div class="cheat-term">RAG Agent</div><div class="cheat-def">Retrieval-Augmented Generation agent — retrieves relevant docs from a vector store before generating a response. Reduces hallucination.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Multi-Agent System</div><div class="cheat-def">Multiple AI agents collaborating — an orchestrator delegates tasks to specialist agents (researcher, coder, writer) with their own tools and memory.</div></div>
+      <div class="cheat-card"><div class="cheat-term">IaC</div><div class="cheat-def">Infrastructure as Code — defining servers, networks, and cloud resources in version-controlled code (Terraform HCL, Ansible YAML).</div></div>
+      <div class="cheat-card"><div class="cheat-term">Idempotent</div><div class="cheat-def">Running an automation multiple times produces the same result as running it once. Critical property for safe IT automation playbooks.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Event-Driven Architecture</div><div class="cheat-def">System design where components communicate via events (messages). Producers emit events; consumers react. Enables real-time automation at scale.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Process Mining</div><div class="cheat-def">Analyzing event logs from IT systems to discover, visualize, and improve actual business processes. Identifies automation candidates objectively.</div></div>
+      <div class="cheat-card"><div class="cheat-term">Decision Engine / BRE</div><div class="cheat-def">Business Rules Engine — executes complex decision logic (if X and Y then Z) separately from application code. DMN tables, Drools, FICO Blaze.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="f-logo">⚙️ AutomateEverything</div>
+  <p>A visual learning guide for automation at an architectural level — RPA · Workflow · IT · AI Agents · Hyperautomation</p>
+  <p style="margin-top:0.5rem;color:var(--text-dim);">Built for enterprise IT and AI program learners. Use freely. Learn deeply.</p>
+  <a href="/data/" class="world-return-link">&#8592; Back to Data &amp; Tech</a>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->

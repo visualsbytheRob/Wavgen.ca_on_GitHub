@@ -1,0 +1,63 @@
+{#
+immersive.njk
+Layout for standalone immersive learning worlds integrated into Wavgen.ca.
+- Preserves all Wavgen SEO/OG/canonical metadata
+- Loads Wavgen's CSS for shared utilities
+- Does NOT include Wavgen nav or footer (worlds have their own visual system)
+- Does NOT load gallery/music/video/placeholder JS (worlds self-manage)
+- Loads GSAP for world animation use
+- Loads world-specific JS via {{ worldJs }} frontmatter variable
+#}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% if title %}{{ title }} - {% endif %}The Waveform Generation</title>
+  <meta name="description" content="{{ description or 'Rob McDonald — Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
+  {% if noindex %}
+  <meta name="robots" content="noindex,nofollow" />
+  {% endif %}
+
+  {# Canonical URL #}
+  {% if page and page.url %}
+  <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
+  {% endif %}
+
+  {# Open Graph #}
+  {%- set baseUrl = site.url | default('https://www.wavgen.ca') -%}
+  {%- set pageUrl = page.url | default('/') -%}
+  {%- set ogImagePath = ogImage or site.ogImage or '/images/home/studio.webp' -%}
+  {%- set ogImageFull = baseUrl + ogImagePath -%}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Waveform Generation" />
+  <meta property="og:title" content="{{ title or site.title or 'The Waveform Generation' }}" />
+  <meta property="og:description" content="{{ description or site.description or 'Rob McDonald — Creative technologist in Toronto.' }}" />
+  <meta property="og:url" content="{{ baseUrl }}{{ pageUrl }}" />
+  <meta property="og:image" content="{{ ogImageFull }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ title or site.title }}" />
+  <meta name="twitter:description" content="{{ description or site.description }}" />
+  <meta name="twitter:image" content="{{ ogImageFull }}" />
+  <meta name="theme-color" content="#050d1a" />
+
+  {# Wavgen CSS — world inline styles cascade over these #}
+  <link href="/css/style.css" rel="stylesheet" />
+  <link href="/css/systems/worlds.css" rel="stylesheet" />
+</head>
+<body>
+  {# World content: includes world CSS, nav, hero, sections, footer #}
+  {{ content | safe }}
+
+  {# GSAP — available for world animations #}
+  <script src="/js/gsap/gsap.min.js"></script>
+  <script src="/js/gsap/ScrollTrigger.min.js"></script>
+
+  {# World-specific JS — set worldJs in page frontmatter #}
+  {% if worldJs %}
+  <script src="{{ worldJs }}" defer></script>
+  {% endif %}
+</body>
+</html>

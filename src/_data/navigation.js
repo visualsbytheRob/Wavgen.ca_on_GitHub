@@ -54,7 +54,14 @@ module.exports = {
         { title: 'Web Dev', url: '/data/webdev/', description: 'Full-stack development' },
         { title: 'Coding', url: '/data/coding/', description: 'Programming projects' },
         { title: 'Gen AI', url: '/data/genai/', description: 'AI and machine learning' },
-        { title: 'Cloud', url: '/data/cloud/', description: 'Cloud infrastructure' }
+        { title: 'Cloud', url: '/data/cloud/', description: 'Cloud infrastructure' },
+        { title: 'Big Data', url: '/data/big-data/', description: 'Hadoop, Spark, Kafka, pipelines' },
+        { title: 'Automation', url: '/data/automation/', description: 'Scripts, orchestration, CI/CD' },
+        { title: 'Cloud', url: '/data/cloud-computing/', description: 'AWS, Azure, GCP architectures' },
+        { title: 'Gen AI', url: '/data/generative-ai/', description: 'LLMs, transformers, prompting' },
+        { title: 'ML & AI', url: '/data/ml/', description: 'Algorithms, training, deployment' },
+        { title: 'Quantum', url: '/data/quantum/', description: 'Qubits, gates, quantum advantage' },
+        { title: 'SOA & µS', url: '/data/soa/', description: 'Microservices, patterns, gateways' }
       ]
     },
     {

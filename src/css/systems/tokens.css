@@ -1,0 +1,249 @@
+/**
+ * DESIGN TOKENS
+ * 
+ * Purpose: Centralized design system for Wavgen.ca
+ * - Brand colors
+ * - Spacing scale
+ * - Typography sizes
+ * - Z-index hierarchy
+ * - Shadow system
+ * 
+ * These tokens are used throughout the site to ensure consistency
+ * Makes theming and updates simple (change once, updates everywhere)
+ * 
+ * USAGE:
+ * background: var(--color-primary);
+ * font-size: var(--text-lg);
+ * padding: var(--space-md);
+ * box-shadow: var(--shadow-md);
+ */
+
+@layer base {
+  :root {
+    /* ==========================================
+       BRAND COLORS
+       ========================================== */
+    
+    --color-primary: #FEDD00;        /* Wavgen Yellow - CTAs, highlights */
+    --color-secondary: #340093;      /* Wavgen Purple - Main brand */
+    --color-accent: #2c0077;         /* Dark Purple - Secondary brand */
+    --color-tertiary: #6366f1;       /* Light Purple - Interactive states */
+    
+    /* ==========================================
+       NEUTRAL COLORS (for dark mode)
+       ========================================== */
+    
+    --color-bg-dark: #0f172a;        /* Almost black background */
+    --color-bg-darker: #0a0e1a;      /* Darker background overlay */
+    --color-surface: #1e293b;        /* Card/container surface */
+    --color-surface-light: #334155;  /* Hover state surface */
+    
+    --color-text-primary: #ffffff;   /* Primary text */
+    --color-text-secondary: #cbd5e1; /* Secondary text */
+    --color-text-muted: #94a3b8;     /* Muted text */
+    
+    --color-border: #475569;         /* Border color */
+    --color-border-light: #64748b;   /* Lighter border */
+    
+    /* ==========================================
+       SEMANTIC COLORS
+       ========================================== */
+    
+    --color-success: #10b981;        /* Green - Success states */
+    --color-warning: #f59e0b;        /* Amber - Warning states */
+    --color-error: #ef4444;          /* Red - Error states */
+    --color-info: #3b82f6;           /* Blue - Info states */
+    
+    /* ==========================================
+       SPACING SCALE (8px base unit)
+       ========================================== */
+    
+    --space-xs: 0.25rem;    /* 4px - Micro spacing */
+    --space-sm: 0.5rem;     /* 8px - Small spacing */
+    --space-md: 1rem;       /* 16px - Medium spacing */
+    --space-lg: 1.5rem;     /* 24px - Large spacing */
+    --space-xl: 2rem;       /* 32px - Extra large */
+    --space-2xl: 3rem;      /* 48px - Double extra large */
+    --space-3xl: 4rem;      /* 64px - Triple extra large */
+    --space-4xl: 6rem;      /* 96px - Massive */
+    
+    /* ==========================================
+       TYPOGRAPHY SCALE
+       ========================================== */
+    
+    --text-xs: 0.75rem;     /* 12px */
+    --text-sm: 0.875rem;    /* 14px */
+    --text-md: 1rem;        /* 16px - Base */
+    --text-lg: 1.125rem;    /* 18px */
+    --text-xl: 1.25rem;     /* 20px */
+    --text-2xl: 1.5rem;     /* 24px */
+    --text-3xl: 1.875rem;   /* 30px */
+    --text-4xl: 2.25rem;    /* 36px */
+    --text-5xl: 3rem;       /* 48px - Hero text */
+    --text-6xl: 3.75rem;    /* 60px - Large hero */
+    
+    /* ==========================================
+       LINE HEIGHTS
+       ========================================== */
+    
+    --line-tight: 1.2;      /* Headings */
+    --line-normal: 1.5;     /* Body text */
+    --line-relaxed: 1.75;   /* Long-form content */
+    
+    /* ==========================================
+       FONT WEIGHTS
+       ========================================== */
+    
+    --font-light: 300;
+    --font-normal: 400;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 900;
+    
+    /* ==========================================
+       SHADOWS (Elevation system)
+       ========================================== */
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Cinematic/Brand shadow (with yellow tint) */
+    --shadow-brand: 0 10px 30px rgba(253, 224, 71, 0.15);
+    
+    /* ==========================================
+       BLUR (for glass morphism)
+       ========================================== */
+    
+    --blur-sm: blur(4px);
+    --blur-md: blur(12px);
+    --blur-lg: blur(20px);
+    
+    /* ==========================================
+       BORDER RADIUS (rounded corners)
+       ========================================== */
+    
+    --radius-sm: 0.25rem;   /* 4px - Minimal */
+    --radius-md: 0.5rem;    /* 8px - Standard */
+    --radius-lg: 1rem;      /* 16px - Large */
+    --radius-xl: 1.5rem;    /* 24px - Extra large */
+    --radius-full: 9999px;  /* Pill shape */
+    
+    /* ==========================================
+       Z-INDEX HIERARCHY (Stacking order)
+       ========================================== */
+    
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-bg: 900;
+    --z-modal: 1000;
+    --z-tooltip: 1100;
+    --z-notification: 1200;
+    
+    /* ==========================================
+       TRANSITIONS (Timing functions)
+       ========================================== */
+    
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+    --transition-slow: 500ms;
+    --transition-slower: 800ms;
+    
+    /* ==========================================
+       BREAKPOINTS (for responsive design)
+       ========================================== */
+    
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+    
+    /* ==========================================
+       CONTAINER QUERIES (future support)
+       ========================================== */
+    
+    --container-sm: 320px;
+    --container-md: 448px;
+    --container-lg: 576px;
+    --container-xl: 672px;
+    --container-2xl: 768px;
+  }
+
+  /* ==========================================
+     DARK MODE OVERRIDES (if needed)
+     ========================================== */
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Dark mode is already our default, but can add overrides here */
+    }
+  }
+
+  /* ==========================================
+     REDUCED MOTION MODE
+     ========================================== */
+  
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --transition-fast: 1ms;
+      --transition-normal: 1ms;
+      --transition-slow: 1ms;
+      --transition-slower: 1ms;
+    }
+  }
+}
+
+/* ==========================================
+   TOKEN USAGE HELPER CLASSES (Optional utilities)
+   ========================================== */
+
+@layer components {
+  /* Quick spacing utilities using tokens */
+  .p-token-xs { padding: var(--space-xs); }
+  .p-token-sm { padding: var(--space-sm); }
+  .p-token-md { padding: var(--space-md); }
+  .p-token-lg { padding: var(--space-lg); }
+  .p-token-xl { padding: var(--space-xl); }
+  
+  .gap-token-md { gap: var(--space-md); }
+  .gap-token-lg { gap: var(--space-lg); }
+  
+  /* Quick shadow utilities */
+  .shadow-token-sm { box-shadow: var(--shadow-sm); }
+  .shadow-token-md { box-shadow: var(--shadow-md); }
+  .shadow-token-lg { box-shadow: var(--shadow-lg); }
+  .shadow-token-brand { box-shadow: var(--shadow-brand); }
+  
+  /* Quick radius utilities */
+  .rounded-token-md { border-radius: var(--radius-md); }
+  .rounded-token-lg { border-radius: var(--radius-lg); }
+  
+  /* Quick text utilities */
+  .text-token-md { 
+    font-size: var(--text-md);
+    line-height: var(--line-normal);
+  }
+  
+  .text-token-lg {
+    font-size: var(--text-lg);
+    line-height: var(--line-normal);
+  }
+  
+  .text-token-xl {
+    font-size: var(--text-xl);
+    line-height: var(--line-tight);
+  }
+  
+  .text-token-2xl {
+    font-size: var(--text-2xl);
+    line-height: var(--line-tight);
+  }
+}

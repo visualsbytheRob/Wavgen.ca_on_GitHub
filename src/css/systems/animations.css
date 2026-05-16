@@ -1,0 +1,249 @@
+/**
+ * ANIMATIONS CSS LAYER
+ * 
+ * Purpose: CSS foundation for GSAP animations and transitions
+ * - Smooth easing presets
+ * - Transition utilities
+ * - Animation helpers
+ * - Accessibility (prefers-reduced-motion)
+ * 
+ * This @layer is applied BEFORE Tailwind utilities
+ * Keeps animations organized and separate from component layer
+ * 
+ * USAGE:
+ * <div class="animate-in-up"> — Entrance animation ready
+ * <div class="transition-smooth"> — GSAP-optimized transition
+ */
+
+@layer animations {
+  /* ==========================================
+     ENTRANCE ANIMATIONS
+     ========================================== */
+  
+  /* Fade in from below (hero sections, cards) */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  /* Fade in with slight scale */
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .animate-in-scale {
+    animation: fadeInScale 0.8s ease-out forwards;
+  }
+
+  /* Fade in from sides (staggered reveal) */
+  @keyframes fadeInSide {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .animate-in-side {
+    animation: fadeInSide 0.8s ease-out forwards;
+  }
+
+  /* ==========================================
+     EXIT ANIMATIONS
+     ========================================== */
+  
+  /* Fade out downward */
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+  
+  .animate-out-down {
+    animation: fadeOutDown 0.6s ease-in forwards;
+  }
+
+  /* ==========================================
+     HOVER INTERACTIONS
+     ========================================== */
+  
+  /* Smooth hover: Lift + scale */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover\:lift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ==========================================
+     SPECIAL EFFECTS
+     ========================================== */
+  
+  /* Pulse: Breathing effect */
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  .animate-pulse-soft {
+    animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Shine: Horizontal sweep */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .shimmer-effect {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 221, 0, 0.3), transparent);
+    background-size: 1000px 100%;
+  }
+
+  /* ==========================================
+     STAGGER ANIMATIONS (for sequence effects)
+     ========================================== */
+  
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+
+  /* ==========================================
+     TRANSITIONS (for smooth state changes)
+     ========================================== */
+  
+  /* Optimized for GSAP integration */
+  .will-animate {
+    will-change: transform, opacity;
+  }
+
+  .transition-transform {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transition-all {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transition-colors {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* ==========================================
+     ACCESSIBILITY: MOTION PREFERENCES
+     ========================================== */
+  
+  /* Respect prefers-reduced-motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ==========================================
+     EASING FUNCTION UTILITIES
+     ========================================== */
+  
+  /* GSAP/CSS easing equivalents */
+  .ease-in {
+    animation-timing-function: cubic-bezier(0.42, 0, 1, 1);
+  }
+
+  .ease-out {
+    animation-timing-function: cubic-bezier(0, 0, 0.58, 1);
+  }
+
+  .ease-in-out {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  /* Apple-like easing */
+  .ease-smooth {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Power easing (for entrance effects) */
+  .ease-power-in {
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  .ease-power-out {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  /* ==========================================
+     ANIMATION STATES
+     ========================================== */
+  
+  /* Pause animations on click */
+  .animate-pause {
+    animation-play-state: paused;
+  }
+
+  /* Infinite loop */
+  .animate-infinite {
+    animation-iteration-count: infinite;
+  }
+
+  /* ==========================================
+     MOBILE OPTIMIZATION
+     ========================================== */
+  
+  @media (max-width: 768px) {
+    /* Faster animations on mobile */
+    .animate-in-up,
+    .animate-in-scale,
+    .animate-in-side {
+      animation-duration: 0.6s;
+    }
+
+    /* Disable complex animations on lower-end mobile */
+    .reduce-motion-mobile {
+      animation: none !important;
+      transition: opacity 0.2s ease;
+    }
+  }
+}

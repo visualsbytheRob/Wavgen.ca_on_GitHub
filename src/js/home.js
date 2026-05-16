@@ -1,18 +1,38 @@
 /*
   home.js
   Interactions and animations for the Home page.
-  - Hero CTA shine pulse (GSAP if available, motion-safe)
+  - Hero CTA shine pulse (GSAP via AnimationOrchestrator, motion-safe)
   - Texture marquee momentum scrolling (motion-safe)
   - Section card peek tilt on hover (motion-safe)
   - "What's new" ticker population from server-side fallbacks
   - Command palette hint popover and open (Ctrl+K)
   - Hover-intent prefetch for internal links
   - Testimonials carousel rotation (motion-safe)
+  
+  ARCHITECTURE:
+  ✅ REFACTORED: Now uses AnimationOrchestrator for GSAP animations
+  - heroCTA() → Uses orchestrator + AnimationPresets.shine() + pulse()
+  - testimonials() → Uses orchestrator + AnimationPresets.entrance()
+  - marquee(), cardTilt(), etc. → Unchanged (non-GSAP)
+  
+  COMPATIBILITY:
+  - Preserves all existing functionality
+  - Backward compatible: Falls back gracefully if orchestrator not loaded
+  - No breaking changes to DOM or routing
+  - Same motion preference handling
 */
 
 (function () {
   const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasGSAP = typeof window.gsap !== 'undefined';
+  
+  // Initialize Animation Orchestrator if available
+  // Falls back to direct GSAP calls if orchestrator not available
+  const hasOrchestrator = typeof AnimationOrchestrator !== 'undefined' && typeof AnimationPresets !== 'undefined';
+  let orchestrator = null;
+  if (hasOrchestrator && hasGSAP) {
+    orchestrator = new AnimationOrchestrator({ debug: false });
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
     heroCTA();
@@ -28,7 +48,7 @@
     const cta = document.getElementById('hero-cta');
     if (!cta) return;
 
-    // Add shine element
+    // Add shine element (always needed for markup)
     const shine = document.createElement('span');
     shine.setAttribute('aria-hidden', 'true');
     shine.style.position = 'absolute';
@@ -43,9 +63,34 @@
     cta.style.position = 'relative';
     cta.appendChild(shine);
 
-    if (prefersReduced) return;
+    if (prefersReduced) return; // Stop if user prefers reduced motion
 
-    if (hasGSAP) {
+    // REFACTORED: Use orchestrator if available, otherwise fall back to direct GSAP
+    if (orchestrator && hasOrchestrator) {
+      // Register shine animation using preset
+      orchestrator.registerAnimation('hero-shine',
+        AnimationPresets.shine({
+          elements: shine,
+          duration: 1.2,
+          repeat: -1,
+          repeatDelay: 2.5
+        })
+      );
+      
+      // Register pulse animation on CTA button
+      orchestrator.registerAnimation('hero-pulse',
+        AnimationPresets.pulse({
+          elements: cta,
+          duration: 1.5,
+          scale: 1.02
+        })
+      );
+      
+      // Play both animations
+      orchestrator.play('hero-shine');
+      orchestrator.play('hero-pulse');
+    } else if (hasGSAP) {
+      // Fallback: Direct GSAP calls (original behavior)
       gsap.to(shine, {
         x: '350%',
         duration: 1.2,
@@ -53,10 +98,9 @@
         repeat: -1,
         repeatDelay: 2.5,
       });
-      // Subtle pulse on CTA
       gsap.to(cta, { scale: 1.02, duration: 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     } else {
-      // Fallback CSS animation
+      // No animation library: CSS fallback
       let dir = 1;
       setInterval(() => {
         const current = parseFloat(shine.style.left);
@@ -584,11 +628,35 @@
       slides.forEach((s, idx) => {
         const active = idx === n;
         s.classList.toggle('hidden', !active);
-        if (!prefersReduced && hasGSAP) {
-          if (active) gsap.fromTo(s, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+        
+        // REFACTORED: Use orchestrator if available
+        if (!prefersReduced) {
+          if (orchestrator && hasOrchestrator && active) {
+            // Use entrance preset for fade-in + slide-up
+            orchestrator.play('testimonial-entrance', {
+              elements: s,
+              duration: 0.6
+            });
+          } else if (hasGSAP && active) {
+            // Fallback: Direct GSAP call (original behavior)
+            gsap.fromTo(s, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+          }
         }
       });
     }
+    
+    // Pre-register testimonial entrance animation if using orchestrator
+    if (orchestrator && hasOrchestrator) {
+      orchestrator.registerAnimation('testimonial-entrance',
+        AnimationPresets.entrance({
+          elements: '.testimonial-slide',
+          duration: 0.6,
+          easing: 'power2.out',
+          y: 10
+        })
+      );
+    }
+    
     show(i);
     setInterval(() => { i = (i + 1) % slides.length; show(i); }, 5000);
   }

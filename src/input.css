@@ -1,7 +1,27 @@
+/**
+ * MAIN CSS ENTRY POINT
+ * 
+ * Layer order (cascading):
+ * 1. Design tokens (@layer base)
+ * 2. Animations (@layer animations)
+ * 3. Tailwind base (@tailwind base)
+ * 4. Tailwind components (@tailwind components)
+ * 5. Custom components (@layer components)
+ * 6. Tailwind utilities (@tailwind utilities)
+ * 
+ * This order ensures proper cascading and specificity
+ */
+
+/* System imports: Design tokens and animations */
+@import 'systems/tokens.css';
+@import 'systems/animations.css';
+
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600;700;800&display=swap');
 
 @layer components {
