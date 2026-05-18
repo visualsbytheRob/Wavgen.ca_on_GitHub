@@ -1,0 +1,59 @@
+---
+layout: base.njk
+---
+{#
+world.njk
+Layout for WAVGEN interactive world pages integrated under the site's sticky header.
+
+- Extends base.njk so all worlds get the site nav, footer, GSAP, and global scripts.
+- Wraps world content in .wavgen-world to provide a CSS scoping root.
+- Overrides the world's own sticky nav to sit below the 64px site header.
+- Suppresses any world-injected top-level nav that would duplicate site navigation.
+- Keeps fixed-position particle/bg canvases visually below the site header.
+
+Header height: 64px  (py-4 = 32px padding + text-2xl = 32px line-height in navigation.njk)
+World nav z-index override: 20 (below site header z-30, above page content z-10)
+#}
+
+{# World content is scoped under .wavgen-world so CSS overrides below beat the world's own
+   inline <style> selectors (0,1,1 specificity beats bare element selectors 0,0,1). #}
+<div class="wavgen-world" data-domain="{{ domain }}" data-standalone="false">
+  {{ content | safe }}
+</div>
+
+{# Forward the world's own JS bundle (particle systems, animations, interactions).
+   base.njk already loads GSAP + ScrollTrigger globally so worldJs can assume them. #}
+{% if worldJs %}
+<script src="{{ worldJs }}" defer></script>
+{% endif %}
+
+<style>
+  /* ── Offset world's sticky jump-nav below the 64px site header ─────────── */
+  .wavgen-world nav {
+    top: 64px !important;
+    z-index: 20 !important;   /* below site header z-30, above content z-10 */
+  }
+
+  /* ── Suppress world-injected top-level site nav (wavgen-core / standalone) */
+  .wavgen-world .wg-nav       { display: none !important; }
+  .wavgen-world [class*="wg-nav"] { display: none !important; }
+
+  /* ── Clip hero canvases so they don't underrun the site header ─────────── */
+  .wavgen-world canvas[id*="hero"],
+  .wavgen-world canvas[id*="Hero"],
+  .wavgen-world .hero-canvas {
+    max-height: calc(100vh - 64px);
+  }
+
+  /* ── Fixed particle/background canvases: push down so they start below header */
+  .wavgen-world #particle-canvas,
+  .wavgen-world #bg-canvas,
+  .wavgen-world canvas.bg-canvas {
+    top: 64px !important;
+    height: calc(100vh - 64px) !important;
+  }
+
+  /* ── Prevent world body/html resets from escaping the .wavgen-world scope ─
+     The world's * { margin:0; padding:0; } is inline so we can't re-scope it,
+     but box-sizing: border-box is benign and already set by Tailwind preflight. */
+</style>
