@@ -28,15 +28,30 @@ World nav z-index override: 20 (below site header z-30, above page content z-10)
 {% endif %}
 
 <style>
-  /* ── Offset world's sticky jump-nav below the 64px site header ─────────── */
-  .wavgen-world nav {
+  /* ── Suppress world-injected top nav — site header replaces it ───────── */
+  /* NOTE: only match .wg-nav exactly; do NOT use [class*="wg-nav"] because
+     that substring also matches .wg-jump-nav and would hide the jump nav. */
+  .wavgen-world .wg-nav { display: none !important; }
+
+  /* ── Jump nav: sticky below the 64px site header ─────────────────────── */
+  /* Handles worlds that use the .wg-jump-nav class */
+  .wavgen-world .wg-jump-nav {
+    position: sticky !important;
     top: 64px !important;
     z-index: 20 !important;   /* below site header z-30, above content z-10 */
   }
 
-  /* ── Suppress world-injected top-level site nav (wavgen-core / standalone) */
-  .wavgen-world .wg-nav       { display: none !important; }
-  .wavgen-world [class*="wg-nav"] { display: none !important; }
+  /* ── Offset world's bare <nav> below the site header ─────────────────── */
+  /* Handles current worlds that use a bare <nav> with position:fixed/sticky */
+  .wavgen-world nav:not([class*="mobile"]) {
+    top: 64px !important;
+    z-index: 20 !important;
+  }
+
+  /* ── Ensure no overflow clipping breaks sticky positioning ────────────── */
+  .wavgen-world {
+    overflow: visible !important;
+  }
 
   /* ── Clip hero canvases so they don't underrun the site header ─────────── */
   .wavgen-world canvas[id*="hero"],
