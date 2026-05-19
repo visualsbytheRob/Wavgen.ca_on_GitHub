@@ -2,7 +2,7 @@
 layout: base.njk
 ---
 
-{# Breadcrumb row — sits directly below the 64px site header #}
+{# Breadcrumb — fixed below the 64px site header #}
 <nav class="wg-breadcrumb" aria-label="Breadcrumb">
   <a href="/">Home</a>
   <span aria-hidden="true">›</span>
@@ -13,7 +13,7 @@ layout: base.njk
   <span class="wg-breadcrumb-current">{{ title | replace(" — Visual Learning World", "") | replace(" — Interactive Visual Learning Guide", "") | replace(" — Visual Learning Guide", "") | replace(" — WAVGEN Music World", "") | replace(" — WAVGEN World", "") }}</span>
 </nav>
 
-{# World iframe — full viewport minus header (64px) + breadcrumb (36px) = 100px #}
+{# World iframe — fixed to fill viewport below header + breadcrumb #}
 <iframe
   src="/worlds/{{ worldFile }}"
   class="wg-world-frame"
@@ -22,7 +22,22 @@ layout: base.njk
 ></iframe>
 
 <style>
+/* ── Site header: fixed so it can never scroll away ─────────────────── */
+body > header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+}
+
+/* ── Breadcrumb: fixed directly below header ─────────────────────────── */
 .wg-breadcrumb {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  z-index: 999;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -43,16 +58,25 @@ layout: base.njk
 .wg-breadcrumb span[aria-hidden] { color: rgba(255, 255, 255, 0.3); }
 .wg-breadcrumb-current { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
 
+/* ── World iframe: fixed below header + breadcrumb (64 + 36 = 100px) ── */
 .wg-world-frame {
-  display: block;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: calc(100vh - 100px);
   border: none;
-  overflow: hidden;
 }
 
-/* Prevent outer-page scroll — the world handles its own scrolling inside the iframe */
+/* ── Hide footer — not relevant inside an immersive world ────────────── */
+body > footer { display: none !important; }
+
+/* ── No outer-page scroll — everything that matters is fixed ─────────── */
 html, body {
-  overflow: hidden;
+  overflow: hidden !important;
+  height: 100% !important;
+  margin: 0;
 }
 </style>
