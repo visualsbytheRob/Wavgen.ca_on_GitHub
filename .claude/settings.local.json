@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx @11ty/eleventy --quiet)"
+      "Bash(npx @11ty/eleventy --quiet)",
+      "PowerShell(Get-ChildItem \"C:\\\\Claude\\\\\" -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object FullName, Name | Sort-Object Name | Format-Table -AutoSize)"
     ]
   }
 }

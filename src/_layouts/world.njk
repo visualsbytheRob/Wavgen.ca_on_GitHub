@@ -2,30 +2,7 @@
 layout: base.njk
 ---
 
-{#
-  world.njk — WAVGEN immersive world layout
-
-  Sticky nav stack (OUTSIDE .wavgen-world to avoid overflow clipping):
-    Row 1: Site header — in base.njk (sticky top-0 z-30, 64px)
-    Row 2: Breadcrumb — sticky top-64px z-9000, 36px
-    Row 3: Section jump nav — sticky top-100px z-8999, 44px (JS-populated from world's own nav)
-
-  Total nav height: 144px
-  scroll-margin-top on section anchors: 160px (144 + 16px breathing room)
-
-  Key fixes vs standalone worlds:
-    1. body overflow-x:clip (not hidden) — preserves sticky for all three nav rows
-    2. isolation:isolate on .wavgen-world — scopes world z-indexes (up to 1000) so
-       they cannot fight the site header or our breadcrumb/section nav
-    3. z-index 9000/8999 on our sticky bars — beats any world element that escapes
-    4. Fixed background canvases (#starfield, #particle-canvas) pushed to top:144px
-       so they don't visually overlap the nav stack
-    5. All world internal navs hidden, regardless of element/class/nesting depth
-    6. JS runs on window.load (after world DOMContentLoaded handlers) to fix any
-       inline canvas.style.position = 'fixed' set by world JS
-#}
-
-{# ── Row 2: Breadcrumb (outside wavgen-world) ─────────────────────────── #}
+{# Breadcrumb row — sits directly below the 64px site header #}
 <nav class="wg-breadcrumb" aria-label="Breadcrumb">
   <a href="/">Home</a>
   <span aria-hidden="true">›</span>
@@ -33,62 +10,25 @@ layout: base.njk
   <a href="/{{ domain }}/">{{ domain | capitalize }}</a>
   <span aria-hidden="true">›</span>
   {% endif %}
-  <span class="wg-breadcrumb-current">{{ title | replace(" — Visual Learning World", "") | replace(" — Interactive Visual Learning Guide", "") | replace(" — Visual Learning Guide", "") }}</span>
+  <span class="wg-breadcrumb-current">{{ title | replace(" — Visual Learning World", "") | replace(" — Interactive Visual Learning Guide", "") | replace(" — Visual Learning Guide", "") | replace(" — WAVGEN Music World", "") | replace(" — WAVGEN World", "") }}</span>
 </nav>
 
-{# ── Row 3: Section jump nav (outside wavgen-world, populated by JS) ──── #}
-<nav class="wg-section-nav" id="wg-section-nav" aria-label="Page sections"></nav>
+{# World iframe — full viewport minus header (64px) + breadcrumb (36px) = 100px #}
+<iframe
+  src="/worlds/{{ worldFile }}"
+  class="wg-world-frame"
+  allowfullscreen
+  title="{{ title }}"
+></iframe>
 
-{# ── World content ────────────────────────────────────────────────────── #}
-<div class="wavgen-world" data-domain="{{ domain }}" data-standalone="false">
-  {{ content | safe }}
-</div>
-
-{# Forward the world's own JS bundle (particle systems, animations, interactions).
-   base.njk already loads GSAP + ScrollTrigger globally so worldJs can assume them. #}
-{% if worldJs %}
-<script src="{{ worldJs }}" defer></script>
-{% endif %}
-
-{#
-  IMPORTANT: <style> is intentionally placed AFTER {{ content | safe }}.
-  World inline <style> blocks run before this block in document order,
-  so same-specificity rules here win the cascade without needing !important
-  on every property. Where world CSS uses more-specific selectors we still
-  use !important as a safety net.
-#}
 <style>
-/* ═══════════════════════════════════════════════════════════════════════
-   1. BODY OVERFLOW — THE CRITICAL STICKY FIX
-   All 6 world files set: body { overflow-x: hidden }
-   overflow-x:hidden on <body> destroys position:sticky by changing the
-   scroll container. overflow-x:clip achieves the same visual clipping
-   WITHOUT creating a new scroll container — sticky keeps working.
-   ═══════════════════════════════════════════════════════════════════════ */
-html,
-body {
-  overflow-x: clip !important;
-}
-/* Also clear any overflow-y:hidden a world JS might have set inline */
-body {
-  overflow-y: auto !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   2. BREADCRUMB ROW
-   z-index 9000 — beats world navs at z-1000 even if they somehow escape
-   isolation. position:sticky !important guards against world body rules.
-   ═══════════════════════════════════════════════════════════════════════ */
 .wg-breadcrumb {
-  position: sticky !important;
-  top: 64px !important;
-  z-index: 9000 !important;
   display: flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0 2rem;
   height: 36px;
-  background: #2c0077 !important;
+  background: #2c0077;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.75rem;
   white-space: nowrap;
@@ -103,275 +43,16 @@ body {
 .wg-breadcrumb span[aria-hidden] { color: rgba(255, 255, 255, 0.3); }
 .wg-breadcrumb-current { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   3. SECTION JUMP NAV ROW
-   ═══════════════════════════════════════════════════════════════════════ */
-.wg-section-nav {
-  position: sticky !important;
-  top: 100px !important; /* 64px site header + 36px breadcrumb */
-  z-index: 8999 !important;
-  display: flex;
-  align-items: stretch;
-  padding: 0 1rem;
-  height: 44px;
-  background: #2c0077 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.wg-section-nav::-webkit-scrollbar { display: none; }
-.wg-section-nav a {
-  display: inline-flex;
-  align-items: center;
-  padding: 0 0.85rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  text-decoration: none;
-  white-space: nowrap;
-  flex-shrink: 0;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
-}
-.wg-section-nav a:hover { color: rgba(255, 255, 255, 0.9); }
-.wg-section-nav a.wg-active {
-  color: #FEDD00;
-  border-bottom-color: #FEDD00;
+.wg-world-frame {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 100px);
+  border: none;
+  overflow: hidden;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   4. WORLD CONTAINER — ISOLATION + OVERFLOW
-   isolation:isolate creates a new stacking context so all world
-   z-indexes (up to 1000) are compared only within .wavgen-world.
-   They cannot beat the site header (z-30) or our bars (z-9000/8999)
-   which live in the root stacking context.
-   ═══════════════════════════════════════════════════════════════════════ */
-.wavgen-world {
-  isolation: isolate;       /* scope world z-indexes */
-  overflow: visible !important; /* don't clip sticky descendants */
-  position: relative;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   5. HIDE ALL WORLD INTERNAL NAVS
-   Each world file uses a different nav pattern:
-     ml, quantum, automation, cloud-computing: <nav> direct child or under .page-wrap
-     generative-ai: <nav> with .nav-inner inside a wrapper div
-     soa: <nav> with .nav-inner as direct child
-   We hide every <nav> and nav-like element inside .wavgen-world.
-   Our section nav (#wg-section-nav) lives OUTSIDE .wavgen-world so it
-   is unaffected.
-   ═══════════════════════════════════════════════════════════════════════ */
-.wavgen-world nav,
-.wavgen-world .nav-bar,
-.wavgen-world .navigation,
-.wavgen-world .navbar {
-  display: none !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   6. FIXED BACKGROUND CANVASES — PUSH BELOW NAV STACK
-   quantum:        #starfield  — position:fixed top:0 height:100vh z-index:0
-   generative-ai:  #particle-canvas — position:fixed top:0 height:100% z-index:0
-   These are positioned via CSS (not JS inline style — that's handled in JS below).
-   We keep position:fixed (preserves parallax effect) but push the top edge
-   down by 144px so the canvas starts below all three sticky nav rows.
-   ═══════════════════════════════════════════════════════════════════════ */
-.wavgen-world #starfield,
-.wavgen-world #particle-canvas,
-.wavgen-world #bg-canvas,
-.wavgen-world canvas.bg-canvas {
-  top: 144px !important;
-  height: calc(100vh - 144px) !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   7. HERO CANVAS — ALREADY ABSOLUTE, KEEP CONTAINED
-   ml: #hero-canvas — position:absolute inset:0 (fine, stays in hero section)
-   cloud-computing: .particles-canvas — position:absolute (fine)
-   No change needed, but ensure they can't escape their container.
-   ═══════════════════════════════════════════════════════════════════════ */
-.wavgen-world canvas[style*="height: 100vh"] {
-  height: calc(100vh - 144px) !important;
-  top: 144px !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   8. SCROLL MARGIN — SECTIONS LAND BELOW ALL THREE STICKY ROWS
-   ═══════════════════════════════════════════════════════════════════════ */
-.wavgen-world [id] {
-  scroll-margin-top: 160px; /* 144px nav stack + 16px breathing room */
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   9. HEADER PROTECTION
-   Bug 1 fix: world CSS nav { position: fixed } hijacks the site header nav.
-   Use body > header (direct child) so we target only the site header,
-   not any header element inside world content.
-   ═══════════════════════════════════════════════════════════════════════ */
-body > header {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 10000 !important;
-  display: block !important;
-  visibility: visible !important;
-}
-
-/* The nav INSIDE the site header must stay in normal flow — explicitly
-   undo whatever world CSS does with nav { position: fixed / absolute }. */
-body > header nav,
-body > header nav ul,
-body > header nav li,
-body > header nav a {
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  transform: none !important;
-  width: auto !important;
-  height: auto !important;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   10. BODY OVERFLOW — BELT-AND-SUSPENDERS
-   Bug 2 fix: Tailwind .sticky class not compiled → header position is static.
-   Some browsers also need the shorthand reset, not just the longhands.
-   overflow-y MUST stay visible/auto — setting it to hidden kills sticky.
-   ═══════════════════════════════════════════════════════════════════════ */
-html {
-  overflow-x: clip !important;
-  overflow-y: visible !important;
-}
-body {
-  overflow-x: clip !important;
-  overflow-y: auto !important;
+/* Prevent outer-page scroll — the world handles its own scrolling inside the iframe */
+html, body {
+  overflow: hidden;
 }
 </style>
-
-<script>
-(function () {
-  'use strict';
-
-  /* ─────────────────────────────────────────────────────────────────────
-     Run AFTER window.load, not DOMContentLoaded.
-     World JS typically initialises on DOMContentLoaded and may set
-     canvas.style.position = 'fixed' or document.body.style.overflow = 'hidden'
-     at that point. By using window.load we run after all of that.
-  ───────────────────────────────────────────────────────────────────── */
-  function fixWorldAndInitNav() {
-
-    /* ── Fix 1: canvases that world JS set to position:fixed inline ──── */
-    document.querySelectorAll('.wavgen-world canvas').forEach(function (c) {
-      if (c.style.position === 'fixed') {
-        c.style.position = 'absolute';
-        c.style.top = '0';
-      }
-    });
-
-    /* ── Fix 2: body overflow that world JS may have set inline ─────── */
-    if (
-      document.body.style.overflow === 'hidden' ||
-      document.body.style.overflowX === 'hidden'
-    ) {
-      document.body.style.overflow = '';
-      document.body.style.overflowX = 'clip';
-    }
-
-    /* ── Section nav: copy links from world's internal nav ─────────── */
-    var sectionNav = document.getElementById('wg-section-nav');
-    var world = document.querySelector('.wavgen-world');
-    if (!sectionNav || !world) return;
-
-    /* The world nav is hidden by CSS (display:none !important) but we can
-       still read its DOM to extract navigation links. */
-    var internalNav = world.querySelector('nav');
-    var navLinks = internalNav
-      ? Array.from(internalNav.querySelectorAll('a[href^="#"]'))
-      : [];
-
-    /* Fallback: synthesise links from section[id] elements */
-    if (navLinks.length === 0) {
-      navLinks = Array.from(world.querySelectorAll('section[id]')).map(function (el) {
-        var a = document.createElement('a');
-        a.href = '#' + el.id;
-        a.textContent = el.id
-          .replace(/-/g, ' ')
-          .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-        return a;
-      });
-    }
-
-    /* Second fallback: top-level div[id] children of world */
-    if (navLinks.length === 0) {
-      navLinks = Array.from(world.children)
-        .filter(function (el) { return el.id; })
-        .map(function (el) {
-          var a = document.createElement('a');
-          a.href = '#' + el.id;
-          a.textContent = el.id
-            .replace(/-/g, ' ')
-            .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-          return a;
-        });
-    }
-
-    if (navLinks.length === 0) {
-      sectionNav.style.display = 'none';
-      return;
-    }
-
-    /* Clone links into the external sticky nav */
-    var frag = document.createDocumentFragment();
-    navLinks.forEach(function (link) {
-      var a = document.createElement('a');
-      a.href = link.getAttribute('href') || link.href;
-      a.textContent = link.textContent.trim();
-      frag.appendChild(a);
-    });
-    sectionNav.appendChild(frag);
-
-    /* Active-section tracking via IntersectionObserver */
-    var navItems = Array.from(sectionNav.querySelectorAll('a'));
-    var targets = navItems
-      .map(function (a) {
-        return document.getElementById(a.getAttribute('href').replace('#', ''));
-      })
-      .filter(Boolean);
-
-    if (!targets.length || !window.IntersectionObserver) return;
-
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var id = entry.target.id;
-            navItems.forEach(function (a) {
-              a.classList.toggle('wg-active', a.getAttribute('href') === '#' + id);
-            });
-            var activeLink = sectionNav.querySelector('.wg-active');
-            if (activeLink) {
-              activeLink.scrollIntoView({ block: 'nearest', inline: 'center' });
-            }
-          }
-        });
-      },
-      { rootMargin: '-144px 0px -50% 0px', threshold: 0 }
-    );
-
-    targets.forEach(function (t) { io.observe(t); });
-  }
-
-  /* Use load event — fires after DOMContentLoaded + all deferred scripts */
-  if (document.readyState === 'complete') {
-    fixWorldAndInitNav();
-  } else {
-    window.addEventListener('load', fixWorldAndInitNav);
-  }
-})();
-</script>
