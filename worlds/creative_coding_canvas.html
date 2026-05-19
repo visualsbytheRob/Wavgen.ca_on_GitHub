@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring creative coding canvas">
+    <meta property="og:title" content="Creative Coding Canvas — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring creative coding canvas">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/creative_coding_canvas.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN — Creative Coding Canvas</title>
+<style>
+:root {
+  --black: #0a0a0f;
+  --surface: #111118;
+  --border: #1e1e2e;
+  --text: #e2e2f0;
+  --dim: #6b6b8a;
+  --accent: #f59e0b;
+  --accent2: #00e5ff;
+  --accent3: #a78bfa;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Courier New', Courier, monospace;
+  overflow-x: hidden;
+}
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0; overflow-x: auto;
+  padding: 0 16px; height: 48px;
+}
+nav a {
+  color: var(--dim); text-decoration: none; font-size: 11px;
+  letter-spacing: 0.08em; padding: 0 14px; height: 48px;
+  display: flex; align-items: center; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+}
+nav a:hover, nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+nav .logo { color: var(--accent); font-size: 13px; font-weight: bold; margin-right: 12px; flex-shrink: 0; }
+
+/* SECTIONS */
+section {
+  padding: 72px 24px 48px;
+  max-width: 1100px; margin: 0 auto;
+}
+section.full-bleed { max-width: none; }
+.section-label {
+  font-size: 10px; letter-spacing: 0.2em; color: var(--accent);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.section-title {
+  font-size: 22px; color: var(--text); margin-bottom: 4px; letter-spacing: 0.04em;
+}
+.section-sub {
+  font-size: 12px; color: var(--dim); margin-bottom: 28px;
+}
+
+/* VISIBILITY ANIMATIONS */
+.hidden { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.visible { opacity: 1; transform: translateY(0); }
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.10s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.20s; }
+.stagger-5 { transition-delay: 0.25s; }
+
+/* CANVAS WRAPPERS */
+.canvas-wrap {
+  position: relative; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+}
+canvas { display: block; }
+
+/* HERO */
+#hero-wrap {
+  position: relative; margin-top: 48px;
+}
+#hero-canvas {
+  width: 100%; height: 440px; display: block;
+}
+.scanline-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+  );
+}
+.hero-text {
+  position: absolute; bottom: 32px; left: 32px;
+}
+.hero-title {
+  font-size: clamp(18px, 3.5vw, 36px);
+  letter-spacing: 0.18em; color: var(--accent); font-weight: bold;
+  text-shadow: 0 0 20px rgba(245,158,11,0.5);
+}
+.hero-sub {
+  font-size: 12px; color: var(--dim); letter-spacing: 0.12em; margin-top: 6px;
+}
+
+/* BUTTONS */
+.btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--dim); font-family: inherit; font-size: 11px;
+  padding: 6px 14px; border-radius: 3px; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.06em;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.active { border-color: var(--accent); color: var(--accent); background: rgba(245,158,11,0.08); }
+.btn.cyan:hover { border-color: var(--accent2); color: var(--accent2); }
+.btn.cyan.active { border-color: var(--accent2); color: var(--accent2); background: rgba(0,229,255,0.08); }
+.btn.primary {
+  background: var(--accent); color: var(--black); border-color: var(--accent); font-weight: bold;
+}
+.btn.primary:hover { background: #fbbf24; border-color: #fbbf24; }
+
+/* SECTION 2 — LIVE SKETCH */
+.sketch-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  align-items: start;
+}
+@media (max-width: 700px) { .sketch-split { grid-template-columns: 1fr; } }
+.sketch-editor {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.code-textarea {
+  width: 100%; height: 300px; background: #0d0d14;
+  border: 1px solid var(--border); color: #a8d8a8;
+  font-family: 'Courier New', monospace; font-size: 12px;
+  padding: 12px; resize: vertical; border-radius: 3px;
+  outline: none; line-height: 1.6; tab-size: 2;
+}
+.code-textarea:focus { border-color: var(--accent); }
+.preset-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+}
+.sketch-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.error-display {
+  font-size: 11px; color: #f87171; background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.2); border-radius: 3px;
+  padding: 8px 12px; display: none; margin-top: 4px;
+}
+#sketch-canvas { width: 100%; height: 360px; }
+
+/* SECTION 3 — BRUSH */
+.brush-layout { display: flex; flex-direction: column; gap: 12px; }
+.brush-controls {
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 12px 16px;
+}
+.brush-controls label { font-size: 11px; color: var(--dim); }
+.brush-controls input[type=range] { accent-color: var(--accent); }
+.brush-controls input[type=color] {
+  width: 32px; height: 28px; border: 1px solid var(--border);
+  border-radius: 3px; background: none; cursor: pointer; padding: 2px;
+}
+.brush-btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+#brush-canvas { width: 100%; height: 450px; cursor: crosshair; touch-action: none; }
+
+/* SECTION 4 — ALGORITHMIC */
+.algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 700px) { .algo-grid { grid-template-columns: 1fr; } }
+.algo-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+}
+.algo-card-title {
+  font-size: 11px; color: var(--accent); letter-spacing: 0.1em;
+  padding: 10px 14px 6px; text-transform: uppercase;
+}
+.algo-card canvas { width: 100%; height: 260px; display: block; }
+.algo-card-controls { padding: 8px 14px 10px; display: flex; align-items: center; gap: 10px; }
+.algo-card-controls label { font-size: 10px; color: var(--dim); }
+.algo-card-controls input[type=range] { accent-color: var(--accent2); flex: 1; }
+.algo-card-controls span { font-size: 11px; color: var(--accent2); min-width: 20px; }
+
+/* SECTION 5 — PROCEDURAL */
+.tab-bar { display: flex; gap: 4px; margin-bottom: 12px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.proc-layout { display: flex; flex-direction: column; gap: 10px; }
+.proc-controls {
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 10px 14px;
+}
+.proc-controls label { font-size: 11px; color: var(--dim); }
+.proc-controls input[type=range] { accent-color: var(--accent3); }
+#truchet-canvas, #voronoi-canvas, #subdiv-canvas { width: 100%; height: 400px; cursor: crosshair; }
+
+/* SECTION 6 — KNOB BANK */
+.knob-bank { display: flex; flex-direction: column; gap: 20px; }
+.knob-row {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 12px;
+}
+@media (max-width: 800px) { .knob-row { grid-template-columns: repeat(4, 1fr); } }
+.knob-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.knob-cell canvas {
+  cursor: ns-resize; width: 64px; height: 64px;
+  border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface);
+}
+.knob-label { font-size: 9px; color: var(--dim); letter-spacing: 0.06em; text-align: center; }
+.knob-val { font-size: 10px; color: var(--accent); }
+.knob-output-wrap { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+#knob-lissajous { flex: 1; min-width: 280px; height: 300px; }
+.snapshot-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.snapshot-thumb { border: 1px solid var(--border); border-radius: 3px; }
+
+/* SECTION 7 — AV REACTOR */
+.av-layout { display: flex; flex-direction: column; gap: 12px; }
+.av-controls {
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 10px 16px;
+}
+.av-controls label { font-size: 11px; color: var(--dim); }
+.av-controls input[type=range] { accent-color: var(--accent); }
+.av-controls span { font-size: 11px; color: var(--accent); }
+#av-canvas { width: 100%; height: 360px; }
+
+/* SECTION 8 — ARTISTS */
+.artists-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;
+}
+.artist-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 20px 18px;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: default;
+}
+.artist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(245,158,11,0.15);
+  border-color: var(--accent);
+}
+.artist-name { font-size: 14px; color: var(--accent); margin-bottom: 4px; }
+.artist-tag { font-size: 10px; color: var(--accent2); letter-spacing: 0.08em; margin-bottom: 8px; }
+.artist-desc { font-size: 11px; color: var(--dim); line-height: 1.6; }
+
+/* SECTION 9 — GLOSSARY */
+.glossary-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px;
+}
+@media (max-width: 600px) { .glossary-grid { grid-template-columns: 1fr; } }
+.gloss-item { border-bottom: 1px solid var(--border); padding: 10px 0; }
+.gloss-term { font-size: 12px; color: var(--accent3); margin-bottom: 3px; }
+.gloss-def { font-size: 11px; color: var(--dim); line-height: 1.5; }
+
+/* FOOTER */
+footer {
+  text-align: center; padding: 40px 24px;
+  font-size: 11px; color: var(--dim); letter-spacing: 0.1em;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <span class="logo">WAVGEN</span>
+  <a href="#s1">HERO</a>
+  <a href="#s2">LIVE SKETCH</a>
+  <a href="#s3">BRUSH</a>
+  <a href="#s4">ALGORITHMIC</a>
+  <a href="#s5">PROCEDURAL</a>
+  <a href="#s6">KNOBS</a>
+  <a href="#s7">AV REACTOR</a>
+  <a href="#s8">ARTISTS</a>
+  <a href="#s9">GLOSSARY</a>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<div id="s1" id="hero-wrap" style="position:relative;margin-top:48px;">
+  <canvas id="hero-canvas" style="width:100%;height:440px;display:block;background:#0a0a0f;"></canvas>
+  <div class="scanline-overlay"></div>
+  <div class="hero-text">
+    <div class="hero-title">CREATIVE CODING CANVAS</div>
+    <div class="hero-sub">algorithms as art · code as medium · systems as expression</div>
+  </div>
+</div>
+
+<!-- SECTION 2: LIVE SKETCH -->
+<section id="s2">
+  <div class="section-label hidden stagger-1">Section 02</div>
+  <div class="section-title hidden stagger-2">Live Sketch Canvas</div>
+  <div class="section-sub hidden stagger-3">Edit the draw() function and press Ctrl+Enter to run — each preset is a complete generative system</div>
+  <div class="sketch-split hidden stagger-4">
+    <div class="sketch-editor">
+      <div class="preset-grid">
+        <button class="btn" data-preset="lissajous">Lissajous</button>
+        <button class="btn" data-preset="phyllotaxis">Phyllotaxis</button>
+        <button class="btn" data-preset="truchet">Truchet</button>
+        <button class="btn" data-preset="noisewalker">Noise Walker</button>
+        <button class="btn" data-preset="tree">Rec. Tree</button>
+        <button class="btn" data-preset="wave">Wave Interf.</button>
+        <button class="btn" data-preset="voronoi">Voronoi Seeds</button>
+        <button class="btn" data-preset="circles">Circle Pack</button>
+      </div>
+      <textarea class="code-textarea" id="sketch-code" spellcheck="false">// Lissajous Curve
+// draw(ctx, w, h, frame, t) — runs every frame
+function draw(ctx, w, h, frame, t) {
+  ctx.fillStyle = 'rgba(10,10,15,0.04)';
+  ctx.fillRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2;
+  const R = Math.min(w, h) * 0.42;
+  const a = 3, b = 2, delta = t * 0.4;
+  ctx.beginPath();
+  for (let i = 0; i <= 628; i++) {
+    const theta = i * 0.01;
+    const x = cx + R * Math.sin(a * theta + delta);
+    const y = cy + R * Math.sin(b * theta);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}</textarea>
+      <div class="sketch-controls">
+        <button class="btn primary" id="sketch-run">▶ Run (Ctrl+Enter)</button>
+        <button class="btn" id="sketch-clear">Clear</button>
+        <button class="btn" id="sketch-pause">⏸ Pause</button>
+      </div>
+      <div class="error-display" id="sketch-error"></div>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="sketch-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: GENERATIVE BRUSH -->
+<section id="s3">
+  <div class="section-label hidden stagger-1">Section 03</div>
+  <div class="section-title hidden stagger-2">Generative Brush</div>
+  <div class="section-sub hidden stagger-3">Draw on the canvas — each brush generates unique algorithmic marks</div>
+  <div class="brush-layout">
+    <div class="brush-controls hidden stagger-4">
+      <div class="brush-btn-row">
+        <button class="btn active" data-brush="noise">Noise Spray</button>
+        <button class="btn" data-brush="splitter">Rec. Splitter</button>
+        <button class="btn" data-brush="echo">Echo Trail</button>
+        <button class="btn" data-brush="scatter">Scatter Burst</button>
+        <button class="btn" data-brush="lisspen">Lissajous Pen</button>
+        <button class="btn" data-brush="worm">Organism Worm</button>
+      </div>
+      <label>Size <input type="range" id="brush-size" min="4" max="80" value="24"></label>
+      <label>Opacity <input type="range" id="brush-opacity" min="5" max="100" value="60"></label>
+      <label>Color <input type="color" id="brush-color" value="#f59e0b"></label>
+      <button class="btn" id="brush-clear">Clear Canvas</button>
+    </div>
+    <div class="canvas-wrap hidden stagger-5">
+      <canvas id="brush-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: ALGORITHMIC DRAWING LAB -->
+<section id="s4">
+  <div class="section-label hidden stagger-1">Section 04</div>
+  <div class="section-title hidden stagger-2">Algorithmic Drawing Lab</div>
+  <div class="section-sub hidden stagger-3">Three live generative systems — each an infinite canvas</div>
+  <div class="algo-grid">
+    <div class="algo-card hidden stagger-1">
+      <div class="algo-card-title">Phyllotaxis</div>
+      <canvas id="phyllo-canvas"></canvas>
+      <div class="algo-card-controls">
+        <label>Speed</label>
+        <input type="range" id="phyllo-speed" min="1" max="10" value="5">
+        <span id="phyllo-n">0</span>
+      </div>
+    </div>
+    <div class="algo-card hidden stagger-2">
+      <div class="algo-card-title">Polar Rose</div>
+      <canvas id="rose-canvas"></canvas>
+      <div class="algo-card-controls">
+        <label>k =</label>
+        <input type="range" id="rose-k" min="1" max="10" value="3">
+        <span id="rose-kval">3</span>
+      </div>
+    </div>
+    <div class="algo-card hidden stagger-3">
+      <div class="algo-card-title">Galaxy Spiral</div>
+      <canvas id="galaxy-canvas"></canvas>
+      <div class="algo-card-controls">
+        <label>Arms</label>
+        <input type="range" id="galaxy-arms" min="2" max="6" value="3">
+        <span id="galaxy-aval">3</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: PROCEDURAL DRAWING -->
+<section id="s5">
+  <div class="section-label hidden stagger-1">Section 05</div>
+  <div class="section-title hidden stagger-2">Procedural Drawing</div>
+  <div class="section-sub hidden stagger-3">Tab between three procedural generation systems</div>
+  <div class="tab-bar hidden stagger-4">
+    <button class="btn active" data-tab="truchet-tab">Truchet Tiles</button>
+    <button class="btn" data-tab="voronoi-tab">Voronoi Seeds</button>
+    <button class="btn" data-tab="subdiv-tab">Rec. Subdivision</button>
+  </div>
+  <div id="truchet-tab" class="tab-panel active hidden stagger-5">
+    <div class="proc-layout">
+      <div class="proc-controls">
+        <button class="btn" id="truchet-regen">↺ Regenerate</button>
+        <label>Tile Size <input type="range" id="truchet-size" min="20" max="80" value="40"><span id="truchet-szval">40</span>px</label>
+      </div>
+      <div class="canvas-wrap"><canvas id="truchet-canvas"></canvas></div>
+    </div>
+  </div>
+  <div id="voronoi-tab" class="tab-panel">
+    <div class="proc-layout">
+      <div class="proc-controls">
+        <span style="font-size:11px;color:var(--dim)">Click canvas to add seed · Seeds drift slowly</span>
+        <button class="btn" id="voronoi-reset">Reset Seeds</button>
+      </div>
+      <div class="canvas-wrap"><canvas id="voronoi-canvas"></canvas></div>
+    </div>
+  </div>
+  <div id="subdiv-tab" class="tab-panel">
+    <div class="proc-layout">
+      <div class="proc-controls">
+        <label>Max Depth <input type="range" id="subdiv-depth" min="1" max="8" value="4"><span id="subdiv-dval">4</span></label>
+        <button class="btn" id="subdiv-regen">↺ Regenerate</button>
+        <span style="font-size:11px;color:var(--dim)">Click a region to subdivide further</span>
+      </div>
+      <div class="canvas-wrap"><canvas id="subdiv-canvas"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: KNOB BANK -->
+<section id="s6">
+  <div class="section-label hidden stagger-1">Section 06</div>
+  <div class="section-title hidden stagger-2">Parameter Knob Bank</div>
+  <div class="section-sub hidden stagger-3">Drag knobs up/down to sculpt the Lissajous output — snapshot your favorite configurations</div>
+  <div class="knob-bank">
+    <div class="knob-row hidden stagger-4" id="knob-row"></div>
+    <div class="knob-output-wrap hidden stagger-5">
+      <div class="canvas-wrap" style="flex:1;min-width:280px;">
+        <canvas id="knob-lissajous"></canvas>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:8px;">
+          <button class="btn primary" id="knob-snapshot">📷 Snapshot</button>
+          <button class="btn" id="knob-randomize">⚄ Randomize</button>
+        </div>
+        <div class="snapshot-row" id="snapshot-row"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: AV REACTOR -->
+<section id="s7">
+  <div class="section-label hidden stagger-1">Section 07</div>
+  <div class="section-title hidden stagger-2">AV Reactor</div>
+  <div class="section-sub hidden stagger-3">Simulated 64-bin FFT at adjustable BPM — four visualization modes</div>
+  <div class="av-layout">
+    <div class="av-controls hidden stagger-4">
+      <div class="tab-bar" style="margin-bottom:0;">
+        <button class="btn active" data-avmode="petals">Radial Petals</button>
+        <button class="btn" data-avmode="spectrum">Linear Spectrum</button>
+        <button class="btn" data-avmode="wave">Waveform</button>
+        <button class="btn" data-avmode="particles">Particle Ring</button>
+      </div>
+      <label>BPM <input type="range" id="av-bpm" min="60" max="160" value="120"> <span id="av-bpmval">120</span></label>
+      <div class="tab-bar" style="margin-bottom:0;">
+        <button class="btn active cyan" data-avcolor="amber">Amber</button>
+        <button class="btn cyan" data-avcolor="rainbow">Rainbow</button>
+        <button class="btn cyan" data-avcolor="dual">Cyan/Violet</button>
+      </div>
+    </div>
+    <div class="canvas-wrap hidden stagger-5">
+      <canvas id="av-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: ARTISTS -->
+<section id="s8">
+  <div class="section-label hidden stagger-1">Section 08</div>
+  <div class="section-title hidden stagger-2">Creative Coding Artists</div>
+  <div class="section-sub hidden stagger-3">Pioneers who shaped the intersection of code and visual art</div>
+  <div class="artists-grid">
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">Casey Reas</div>
+      <div class="artist-tag">Processing · Form+Code · Computational Drawing</div>
+      <div class="artist-desc">Co-creator of Processing, the programming language that democratized generative art. His work explores processes, emergence, and the boundaries between software behavior and aesthetic form.</div>
+    </div>
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Ben Fry</div>
+      <div class="artist-tag">Processing · Data Visualization · Genomics</div>
+      <div class="artist-desc">Processing co-creator and data visualization pioneer. His Genomic Cartography work maps DNA sequences into visual landscapes, blending computational biology with design elegance.</div>
+    </div>
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">John Maeda</div>
+      <div class="artist-tag">Design+Tech · MIT Media Lab · Laws of Simplicity</div>
+      <div class="artist-desc">Design and computation pioneer who led MIT's Aesthetics + Computation Group. Author of "The Laws of Simplicity," bridging the gap between technology and humanist design thinking.</div>
+    </div>
+    <div class="artist-card hidden stagger-4">
+      <div class="artist-name">Vera Molnár</div>
+      <div class="artist-tag">Algorithmic Art · Plotter Drawings · Since 1968</div>
+      <div class="artist-desc">Hungarian pioneer of computer art who began algorithmic explorations in 1968. Used plotters to generate systematic geometric variations, exploring how slight rule-deviations create visual tension.</div>
+    </div>
+    <div class="artist-card hidden stagger-5">
+      <div class="artist-name">Manfred Mohr</div>
+      <div class="artist-tag">Computer Art · P-Series · Hypercube Projections</div>
+      <div class="artist-desc">One of the earliest computer artists, exhibiting algorithmic work since 1969. His P-Series explores the combinatorial space of hypercube projections through rigorous mathematical structure.</div>
+    </div>
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">Lauren McCarthy</div>
+      <div class="artist-tag">p5.js Creator · Social Practice · Surveillance Art</div>
+      <div class="artist-desc">Creator of p5.js and artist exploring human-computer interaction, social dynamics, and surveillance. Her performances question automation, intimacy, and what it means to be a person in connected systems.</div>
+    </div>
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Daniel Shiffman</div>
+      <div class="artist-tag">Coding Train · Nature of Code · Educator</div>
+      <div class="artist-desc">Creator of The Coding Train YouTube channel and "The Nature of Code." Transformed how thousands learn creative coding through infectious enthusiasm and simulation-based pedagogy.</div>
+    </div>
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">Zach Lieberman</div>
+      <div class="artist-tag">openFrameworks · Daily Sketches · Poetic Code</div>
+      <div class="artist-desc">Co-creator of openFrameworks and practitioner of daily sketch practice. His work transforms code into poetic gesture — playful explorations of perception, language, and real-time interaction.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: GLOSSARY -->
+<section id="s9">
+  <div class="section-label hidden stagger-1">Section 09</div>
+  <div class="section-title hidden stagger-2">Glossary</div>
+  <div class="section-sub hidden stagger-3">22 essential terms in the creative coding lexicon</div>
+  <div class="glossary-grid hidden stagger-4">
+    <div class="gloss-item"><div class="gloss-term">Algorithm</div><div class="gloss-def">A finite sequence of instructions that transforms input into output — the core unit of any generative system.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Canvas API</div><div class="gloss-def">The browser's 2D drawing interface: pixels, paths, gradients, transforms — the substrate of web-based creative coding.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Creative Coding</div><div class="gloss-def">Programming practice where the goal is expression, exploration, or aesthetics rather than utility or function.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Draw Loop</div><div class="gloss-def">A continuously repeating function (typically 60fps via requestAnimationFrame) that redraws the canvas each frame to produce animation.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Emergence</div><div class="gloss-def">Complex, unpredicted behavior arising from simple local rules — the hallmark of systems like flocking, cellular automata, and slime molds.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Fractal</div><div class="gloss-def">A self-similar structure where each part resembles the whole at different scales — Mandelbrot sets, Julia sets, Sierpinski triangles.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Generative Art</div><div class="gloss-def">Art created in whole or part by an autonomous system — the artist defines rules; the system executes them, often with controlled randomness.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Golden Ratio</div><div class="gloss-def">φ ≈ 1.618 — the ratio where (a+b)/a = a/b. Appears in phyllotaxis, the Fibonacci sequence, and countless natural and architectural forms.</div></div>
+    <div class="gloss-item"><div class="gloss-term">L-System</div><div class="gloss-def">Lindenmayer System — a string rewriting grammar that generates fractal-like plant structures by recursively expanding symbols into drawing instructions.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Lissajous Curve</div><div class="gloss-def">The path traced by x=A·sin(at+δ), y=B·sin(bt) — interlocking sinusoids whose ratio a:b determines the curve's symmetry and shape.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Modular Arithmetic</div><div class="gloss-def">Math that wraps around at a modulus — used for looping animations, color cycling, grid indexing, and tiling.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Noise</div><div class="gloss-def">Smooth pseudo-random functions (Perlin, Simplex, Value) that produce organic-looking variation — essential for textures, terrain, and natural motion.</div></div>
+    <div class="gloss-item"><div class="gloss-term">OOP</div><div class="gloss-def">Object-Oriented Programming — organizing code as objects with properties and behaviors, enabling particle systems, agents, and complex simulations.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Parametric</div><div class="gloss-def">Geometry or form defined by parameters — changing inputs continuously morphs the output, enabling interactive and animated visual exploration.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Perlin Noise</div><div class="gloss-def">Ken Perlin's 1983 gradient noise function, designed for visual naturalness. Its smooth continuity makes it ideal for organic textures and motion.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Phyllotaxis</div><div class="gloss-def">The arrangement of leaves and seeds in plants, following the golden angle (~137.5°). Results in spiral Fibonacci patterns seen in sunflowers and pine cones.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Processing</div><div class="gloss-def">A programming language and IDE built by Reas and Fry for visual artists and designers — the gateway environment that launched a generation of creative coders.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Recursion</div><div class="gloss-def">A function calling itself with simpler inputs until a base case — the mechanism behind fractal trees, L-systems, and Sierpinski structures.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Seed</div><div class="gloss-def">The initial value given to a pseudo-random number generator — the same seed always produces the same sequence, enabling reproducible generative art.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Signed Distance Field</div><div class="gloss-def">A function mapping each point in space to the signed distance from the nearest surface — positive outside, negative inside. Core to raymarching and GPU rendering.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Sketch</div><div class="gloss-def">In Processing/p5.js parlance, a self-contained creative coding program — analogous to an artist's sketch, built for rapid visual exploration.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Truchet Tiles</div><div class="gloss-def">Square tiles with a quarter-circle arc oriented in one of two rotations — when randomly placed, they generate complex continuous patterns from simple rules.</div></div>
+  </div>
+</section>
+
+<footer>WAVGEN — CREATIVE CODING CANVAS · algorithms as art · code as medium</footer>
+
+<script>
+'use strict';
+
+// ============================================================
+// UTILITIES
+// ============================================================
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = null; }
+  update(target, dt) {
+    if (this.value === null) this.value = target;
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+// Simple smooth noise (value noise)
+function smoothNoise(x) {
+  const i = Math.floor(x);
+  const f = x - i;
+  const u = f * f * (3 - 2 * f);
+  const hash = n => { let h = n * 1013 + 7919; h ^= h >> 13; h *= 0x85ebca6b; h ^= h >> 15; return (h & 0xffff) / 0xffff; };
+  return hash(i) * (1 - u) + hash(i + 1) * u;
+}
+function fbm(x, octaves = 4) {
+  let v = 0, amp = 0.5, freq = 1;
+  for (let i = 0; i < octaves; i++) { v += smoothNoise(x * freq) * amp; amp *= 0.5; freq *= 2.0; }
+  return v;
+}
+
+// ============================================================
+// SECTION 1 — HERO LISSAJOUS
+// ============================================================
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight || 440;
+  }
+  resize();
+  new ResizeObserver(resize).observe(canvas);
+
+  // Morphing targets: a, b, delta-phase
+  const targets = [
+    [1, 2], [2, 3], [3, 4], [3, 5], [4, 5], [5, 4], [1, 3], [2, 5],
+  ];
+  let targetIdx = 0;
+  let [ta, tb] = targets[0];
+  const aFilter = new LagFilter(2.2);
+  const bFilter = new LagFilter(2.2);
+  const deltaFilter = new LagFilter(1.8);
+  let targetDelta = 0;
+  let morphTimer = 0;
+
+  // Second & third curves for richness
+  const a2F = new LagFilter(3.0);
+  const b2F = new LagFilter(2.5);
+
+  let last = null;
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05);
+    last = ts;
+
+    morphTimer += dt;
+    if (morphTimer > 4.5) {
+      morphTimer = 0;
+      targetIdx = (targetIdx + 1) % targets.length;
+      [ta, tb] = targets[targetIdx];
+      targetDelta = targetDelta + Math.PI / 3;
+    }
+
+    const a  = aFilter.update(ta, dt);
+    const b  = bFilter.update(tb, dt);
+    const a2 = a2F.update(ta + 1, dt);
+    const b2 = b2F.update(tb + 0.5, dt);
+    const delta = deltaFilter.update(targetDelta, dt);
+    const t = ts / 1000;
+
+    // Phosphor decay
+    ctx.fillStyle = 'rgba(10,10,15,0.05)';
+    ctx.fillRect(0, 0, W, H);
+
+    const R = Math.min(W, H) * 0.4;
+    const cx = W / 2, cy = H / 2;
+
+    function drawLiss(a_, b_, d_, color, lw, alpha) {
+      ctx.beginPath();
+      for (let i = 0; i <= 630; i++) {
+        const theta = i * 0.01;
+        const x = cx + R * Math.sin(a_ * theta + d_);
+        const y = cy + R * Math.sin(b_ * theta);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = lw;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    drawLiss(a,  b,  delta + t * 0.15,          '#f59e0b', 1.8, 0.85);
+    drawLiss(a2, b2, delta + t * 0.12 + Math.PI * 0.25, '#a78bfa', 1.0, 0.35);
+    drawLiss(a + 0.3, b - 0.2, delta + t * 0.18, '#00e5ff', 0.8, 0.20);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ============================================================
+// SECTION 2 — LIVE SKETCH CANVAS
+// ============================================================
+(function initSketch() {
+  const canvas = document.getElementById('sketch-canvas');
+  const ctx = canvas.getContext('2d');
+  const textarea = document.getElementById('sketch-code');
+  const errorDiv = document.getElementById('sketch-error');
+  let W, H, animId = null, paused = false, frame = 0, startTime = Date.now();
+  let userFn = null;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight || 360;
+  }
+  resize();
+  new ResizeObserver(resize).observe(canvas);
+
+  const PRESETS = {
+    lissajous: `// Lissajous Curve\nfunction draw(ctx, w, h, frame, t) {\n  ctx.fillStyle = 'rgba(10,10,15,0.04)';\n  ctx.fillRect(0, 0, w, h);\n  const cx = w / 2, cy = h / 2;\n  const R = Math.min(w, h) * 0.42;\n  const a = 3, b = 2, delta = t * 0.4;\n  ctx.beginPath();\n  for (let i = 0; i <= 628; i++) {\n    const theta = i * 0.01;\n    const x = cx + R * Math.sin(a * theta + delta);\n    const y = cy + R * Math.sin(b * theta);\n    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);\n  }\n  ctx.strokeStyle = '#f59e0b';\n  ctx.lineWidth = 1.5;\n  ctx.stroke();\n}`,
+
+    phyllotaxis: `// Phyllotaxis\nfunction draw(ctx, w, h, frame, t) {\n  ctx.fillStyle = '#0a0a0f';\n  ctx.fillRect(0, 0, w, h);\n  const cx = w/2, cy = h/2;\n  const n = Math.min(frame * 2, 900);\n  const golden = 2.399963;\n  for (let i = 0; i < n; i++) {\n    const r = Math.sqrt(i) * 9;\n    const theta = i * golden;\n    const x = cx + r * Math.cos(theta);\n    const y = cy + r * Math.sin(theta);\n    const hue = (i / n) * 60 + 20;\n    ctx.beginPath();\n    ctx.arc(x, y, Math.sqrt(i)*0.28+1, 0, Math.PI*2);\n    ctx.fillStyle = \`hsl(\${hue},90%,60%)\`;\n    ctx.fill();\n  }\n}`,
+
+    truchet: `// Truchet Tiles\nlet seeded = false, tiles = [];\nfunction draw(ctx, w, h, frame, t) {\n  if (!seeded || frame === 0) {\n    seeded = true; tiles = [];\n    const sz = 40;\n    for (let y = 0; y < h; y += sz)\n      for (let x = 0; x < w; x += sz)\n        tiles.push({x,y,r:Math.random()<0.5});\n  }\n  ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0,0,w,h);\n  const sz = 40;\n  tiles.forEach(({x,y,r}) => {\n    ctx.save(); ctx.translate(x+sz/2,y+sz/2);\n    if(r) ctx.rotate(Math.PI/2);\n    ctx.beginPath(); ctx.arc(-sz/2,-sz/2,sz/2,0,Math.PI/2);\n    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2; ctx.stroke();\n    ctx.beginPath(); ctx.arc(sz/2,sz/2,sz/2,Math.PI,Math.PI*1.5);\n    ctx.strokeStyle='#00e5ff'; ctx.lineWidth=2; ctx.stroke();\n    ctx.restore();\n  });\n}`,
+
+    noisewalker: `// Noise Walker\nlet wx=null,wy=null,noff=0;\nfunction draw(ctx, w, h, frame, t) {\n  if(wx===null){wx=w/2;wy=h/2;}\n  ctx.fillStyle='rgba(10,10,15,0.025)';\n  ctx.fillRect(0,0,w,h);\n  const steps = 8;\n  for(let i=0;i<steps;i++){\n    noff += 0.005;\n    const angle = fbm(noff)*Math.PI*4;\n    wx += Math.cos(angle)*2; wy += Math.sin(angle)*2;\n    wx = (wx+w)%w; wy = (wy+h)%h;\n    const hue = (t*20 + noff*100)%360;\n    ctx.beginPath();\n    ctx.arc(wx,wy,1.5,0,Math.PI*2);\n    ctx.fillStyle=\`hsl(\${hue},90%,65%)\`;\n    ctx.fill();\n  }\n}`,
+
+    tree: `// Recursive Tree\nfunction branch(ctx,x,y,a,len,d){\n  if(d>9||len<2) return;\n  const x2=x+Math.cos(a)*len, y2=y+Math.sin(a)*len;\n  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x2,y2);\n  ctx.strokeStyle=\`hsl(\${30+d*20},80%,\${40+d*6}%)\`;\n  ctx.lineWidth=Math.max(10-d*1.1,0.5); ctx.stroke();\n  const spread = 0.4 + Math.sin(Date.now()/2000)*0.1;\n  branch(ctx,x2,y2,a-spread,len*0.72,d+1);\n  branch(ctx,x2,y2,a+spread,len*0.72,d+1);\n}\nfunction draw(ctx,w,h,frame,t){\n  ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,w,h);\n  branch(ctx,w/2,h,-(Math.PI/2),h*0.24,0);\n}`,
+
+    wave: `// Wave Interference\nfunction draw(ctx, w, h, frame, t) {\n  ctx.fillStyle='rgba(10,10,15,0.06)';\n  ctx.fillRect(0,0,w,h);\n  const cols=80, rows=50;\n  const cw=w/cols, ch=h/rows;\n  for(let r=0;r<rows;r++){\n    for(let c=0;c<cols;c++){\n      const x=c*cw+cw/2, y=r*ch+ch/2;\n      const d1=Math.sqrt((x-w*0.35)**2+(y-h/2)**2);\n      const d2=Math.sqrt((x-w*0.65)**2+(y-h/2)**2);\n      const v=(Math.sin(d1*0.08-t*2)+Math.sin(d2*0.08-t*2))*0.5;\n      const brightness=Math.floor((v+1)*127);\n      ctx.fillStyle=\`rgba(\${brightness+80},\${brightness*0.7},\${20},0.8)\`;\n      const sz=cw*0.8*(v*0.5+0.5);\n      ctx.fillRect(x-sz/2,y-sz/2,sz,sz);\n    }\n  }\n}`,
+
+    voronoi: `// Voronoi Seeds (fast approx)\nlet seeds=null;\nfunction draw(ctx,w,h,frame,t){\n  if(!seeds||frame===0){\n    seeds=Array.from({length:18},()=>({x:Math.random()*w,y:Math.random()*h,hue:Math.random()*360}));\n  }\n  seeds.forEach(s=>{s.x=(s.x+Math.sin(t+s.hue)*0.5+w)%w;s.y=(s.y+Math.cos(t+s.hue)*0.5+h)%h;});\n  const img=ctx.getImageData(0,0,w,h);\n  const d=img.data;\n  for(let y=0;y<h;y+=2) for(let x=0;x<w;x+=2){\n    let best=Infinity,bi=0;\n    seeds.forEach((s,i)=>{const dist=(x-s.x)**2+(y-s.y)**2;if(dist<best){best=dist;bi=i;}});\n    const h2=seeds[bi].hue,rgb=hslToRgb(h2/360,0.7,0.3);\n    const off=(y*w+x)*4;\n    for(let dy=0;dy<2;dy++) for(let dx=0;dx<2;dx++){\n      const o=((y+dy)*w+(x+dx))*4;\n      d[o]=rgb[0];d[o+1]=rgb[1];d[o+2]=rgb[2];d[o+3]=255;\n    }\n  }\n  ctx.putImageData(img,0,0);\n  seeds.forEach(s=>{ ctx.beginPath();ctx.arc(s.x,s.y,3,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill(); });\n}\nfunction hslToRgb(h,s,l){let r,g,b;if(s===0){r=g=b=l;}else{const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3);}return[r*255|0,g*255|0,b*255|0];}\nfunction hue2rgb(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}`,
+
+    circles: `// Circle Packing (approx)\nlet circles=[];\nfunction draw(ctx,w,h,frame,t){\n  if(frame===0) circles=[];\n  ctx.fillStyle='rgba(10,10,15,0.03)'; ctx.fillRect(0,0,w,h);\n  for(let att=0;att<8&&circles.length<300;att++){\n    const x=Math.random()*w, y=Math.random()*h;\n    let minD=Math.min(x,y,w-x,h-y);\n    circles.forEach(c=>{minD=Math.min(minD,Math.sqrt((x-c.x)**2+(y-c.y)**2)-c.r);});\n    if(minD>2) circles.push({x,y,r:minD,hue:Math.random()*60+10});\n  }\n  circles.forEach(c=>{\n    ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2);\n    ctx.strokeStyle=\`hsl(\${c.hue},90%,60%)\`;\n    ctx.lineWidth=1; ctx.stroke();\n  });\n}`
+  };
+
+  function compileAndRun(code) {
+    try {
+      // eslint-disable-next-line no-new-func
+      const wrapped = new Function('fbm', `${code}; return draw;`);
+      userFn = wrapped(fbm);
+      errorDiv.style.display = 'none';
+    } catch(e) {
+      errorDiv.textContent = '⚠ ' + e.message;
+      errorDiv.style.display = 'block';
+      userFn = null;
+    }
+  }
+
+  function loop() {
+    if (!paused && userFn) {
+      const t = (Date.now() - startTime) / 1000;
+      try {
+        userFn(ctx, W, H, frame, t);
+      } catch(e) {
+        errorDiv.textContent = '⚠ Runtime: ' + e.message;
+        errorDiv.style.display = 'block';
+        userFn = null;
+      }
+      frame++;
+    }
+    animId = requestAnimationFrame(loop);
+  }
+
+  compileAndRun(textarea.value);
+  loop();
+
+  document.getElementById('sketch-run').addEventListener('click', () => {
+    frame = 0; startTime = Date.now();
+    ctx.clearRect(0, 0, W, H);
+    compileAndRun(textarea.value);
+  });
+  document.getElementById('sketch-clear').addEventListener('click', () => {
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+  });
+  document.getElementById('sketch-pause').addEventListener('click', function() {
+    paused = !paused;
+    this.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  });
+
+  textarea.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = textarea.selectionStart, en = textarea.selectionEnd;
+      textarea.value = textarea.value.slice(0, s) + '  ' + textarea.value.slice(en);
+      textarea.selectionStart = textarea.selectionEnd = s + 2;
+    }
+    if (e.ctrlKey && e.key === 'Enter') {
+      frame = 0; startTime = Date.now();
+      ctx.clearRect(0, 0, W, H);
+      compileAndRun(textarea.value);
+    }
+  });
+
+  document.querySelectorAll('[data-preset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.preset;
+      if (PRESETS[key]) {
+        textarea.value = PRESETS[key];
+        frame = 0; startTime = Date.now();
+        ctx.clearRect(0, 0, W, H);
+        compileAndRun(textarea.value);
+      }
+    });
+  });
+})();
+
+// ============================================================
+// SECTION 3 — GENERATIVE BRUSH
+// ============================================================
+(function initBrush() {
+  const canvas = document.getElementById('brush-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() {
+    const img = ctx.getImageData(0, 0, W || 1, H || 1);
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight || 450;
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+    if (img.width > 1) ctx.putImageData(img, 0, 0);
+  }
+  resize();
+  new ResizeObserver(resize).observe(canvas);
+
+  let brushType = 'noise';
+  let isDrawing = false, mx = 0, my = 0, pmx = 0, pmy = 0;
+  let wormX = 200, wormY = 200, wormAngle = 0;
+  let lissPhase = 0;
+
+  function getColor() { return document.getElementById('brush-color').value; }
+  function getSize() { return +document.getElementById('brush-size').value; }
+  function getOpacity() { return +document.getElementById('brush-opacity').value / 100; }
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return `${r},${g},${b}`;
+  }
+
+  function applyBrush(x, y) {
+    const size = getSize(), op = getOpacity(), col = getColor(), rgb = hexToRgb(col);
+    ctx.save();
+
+    if (brushType === 'noise') {
+      const n = Math.floor(size * 3);
+      for (let i = 0; i < n; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.random() * size * (0.5 + fbm(i * 0.3) * 0.5);
+        const px = x + Math.cos(angle) * r;
+        const py = y + Math.sin(angle) * r;
+        ctx.beginPath();
+        ctx.arc(px, py, Math.random() * 2 + 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb},${op * (0.3 + Math.random() * 0.7)})`;
+        ctx.fill();
+      }
+    } else if (brushType === 'splitter') {
+      function splitLine(x1, y1, len, angle, depth) {
+        if (depth > 5 || len < 2) return;
+        const x2 = x1 + Math.cos(angle) * len;
+        const y2 = y1 + Math.sin(angle) * len;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.strokeStyle = `rgba(${rgb},${op * (1 - depth * 0.15)})`;
+        ctx.lineWidth = Math.max(3 - depth * 0.5, 0.5);
+        ctx.stroke();
+        const spread = 0.5 + Math.random() * 0.3;
+        splitLine(x2, y2, len * 0.65, angle - spread, depth + 1);
+        splitLine(x2, y2, len * 0.65, angle + spread, depth + 1);
+      }
+      splitLine(x, y, size, -Math.PI / 2 + (Math.random() - 0.5) * 0.8, 0);
+    } else if (brushType === 'echo') {
+      const echoes = 6;
+      for (let e = 0; e < echoes; e++) {
+        const ef = e / echoes;
+        const ex = x + (pmx - x) * ef * 0.6;
+        const ey = y + (pmy - y) * ef * 0.6;
+        ctx.beginPath();
+        ctx.arc(ex, ey, size * (1 - ef * 0.6), 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${rgb},${op * (1 - ef) * 0.4})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(x, y, size * 0.15, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb},${op})`; ctx.fill();
+    } else if (brushType === 'scatter') {
+      const count = Math.floor(size * 2);
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.pow(Math.random(), 0.5) * size * 1.5;
+        const px = x + Math.cos(angle) * r;
+        const py = y + Math.sin(angle) * r;
+        ctx.beginPath();
+        ctx.arc(px, py, Math.random() * 3 + 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb},${op * Math.random()})`;
+        ctx.fill();
+      }
+    } else if (brushType === 'lisspen') {
+      lissPhase += 0.08;
+      const R = size * 0.8;
+      ctx.beginPath();
+      for (let i = 0; i <= 60; i++) {
+        const theta = i * 0.1;
+        const px = x + R * Math.sin(3 * theta + lissPhase);
+        const py = y + R * Math.sin(2 * theta);
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = `rgba(${rgb},${op * 0.6})`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    } else if (brushType === 'worm') {
+      const steps = 8;
+      for (let i = 0; i < steps; i++) {
+        wormAngle += (Math.random() - 0.5) * 0.5;
+        const dx = x - wormX, dy = y - wormY;
+        wormAngle += Math.atan2(dy, dx) * 0.04;
+        wormX += Math.cos(wormAngle) * size * 0.18;
+        wormY += Math.sin(wormAngle) * size * 0.18;
+        ctx.beginPath();
+        ctx.arc(wormX, wormY, size * 0.12 + Math.random() * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb},${op * 0.5})`;
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+    pmx = x; pmy = y;
+  }
+
+  function evtPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * (W / r.width), y: (src.clientY - r.top) * (H / r.height) };
+  }
+
+  canvas.addEventListener('mousedown', e => { isDrawing = true; const p = evtPos(e); mx=p.x; my=p.y; pmx=mx; pmy=my; wormX=mx; wormY=my; });
+  canvas.addEventListener('mousemove', e => { if (!isDrawing) return; const p = evtPos(e); mx=p.x; my=p.y; applyBrush(mx, my); });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseleave', () => isDrawing = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); isDrawing = true; const p = evtPos(e); mx=p.x; my=p.y; pmx=mx; pmy=my; wormX=mx; wormY=my; }, { passive: false });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!isDrawing) return; const p = evtPos(e); mx=p.x; my=p.y; applyBrush(mx, my); }, { passive: false });
+  canvas.addEventListener('touchend', () => isDrawing = false);
+
+  document.querySelectorAll('[data-brush]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-brush]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      brushType = btn.dataset.brush;
+    });
+  });
+  document.getElementById('brush-clear').addEventListener('click', () => {
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+  });
+})();
+
+// ============================================================
+// SECTION 4 — ALGORITHMIC DRAWING LAB
+// ============================================================
+
+// --- Phyllotaxis ---
+(function initPhyllo() {
+  const canvas = document.getElementById('phyllo-canvas');
+  const ctx = canvas.getContext('2d');
+  const nLabel = document.getElementById('phyllo-n');
+  let W, H, n = 0, last = null;
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 260; }
+  resize(); new ResizeObserver(resize).observe(canvas);
+  const golden = 2.399963;
+  const speedSlider = document.getElementById('phyllo-speed');
+  const nFilter = new LagFilter(0.5);
+
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    const speed = +speedSlider.value;
+    n = Math.min(n + speed, 1200);
+    const nSmooth = nFilter.update(n, dt);
+    nLabel.textContent = Math.floor(nSmooth);
+
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    const maxR = Math.min(W, H) * 0.47;
+    const count = Math.floor(nSmooth);
+    for (let i = 0; i < count; i++) {
+      const r = Math.sqrt(i / count) * maxR;
+      const theta = i * golden;
+      const x = cx + r * Math.cos(theta);
+      const y = cy + r * Math.sin(theta);
+      const hue = (i / count) * 60 + 20;
+      const dotR = Math.sqrt(i) * 0.28 + 1.2;
+      ctx.beginPath(); ctx.arc(x, y, dotR, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${hue},90%,60%)`; ctx.fill();
+    }
+    if (n >= 1200) n = 0;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// --- Polar Rose ---
+(function initRose() {
+  const canvas = document.getElementById('rose-canvas');
+  const ctx = canvas.getContext('2d');
+  const kSlider = document.getElementById('rose-k');
+  const kVal = document.getElementById('rose-kval');
+  let W, H, theta = 0, last = null;
+  const kFilter = new LagFilter(1.2);
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 260; }
+  resize(); new ResizeObserver(resize).observe(canvas);
+  kSlider.addEventListener('input', () => kVal.textContent = kSlider.value);
+
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    const k = kFilter.update(+kSlider.value, dt);
+
+    ctx.fillStyle = 'rgba(10,10,15,0.08)'; ctx.fillRect(0, 0, W, H);
+    const R = Math.min(W, H) * 0.44;
+    const cx = W / 2, cy = H / 2;
+    const step = 0.025;
+    const total = Math.PI * (Number.isInteger(k) ? (k % 2 === 0 ? 2 : 1) : 2) * 12;
+
+    ctx.beginPath();
+    const t0 = theta;
+    for (let i = 0; i <= 80; i++) {
+      const th = t0 + i * step;
+      const r = R * Math.cos(k * th);
+      const x = cx + r * Math.cos(th);
+      const y = cy + r * Math.sin(th);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 1.5; ctx.stroke();
+    theta += step * 4;
+    if (theta > total) {
+      theta = 0;
+      ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// --- Galaxy Spiral ---
+(function initGalaxy() {
+  const canvas = document.getElementById('galaxy-canvas');
+  const ctx = canvas.getContext('2d');
+  const armsSlider = document.getElementById('galaxy-arms');
+  const aVal = document.getElementById('galaxy-aval');
+  let W, H, last = null, t = 0;
+  const armsFilter = new LagFilter(1.5);
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 260; }
+  resize(); new ResizeObserver(resize).observe(canvas);
+  armsSlider.addEventListener('input', () => aVal.textContent = armsSlider.value);
+
+  // Star particles
+  const N = 400;
+  const stars = Array.from({length: N}, (_, i) => ({
+    arm: i % 6,
+    t: Math.random(),
+    spread: (Math.random() - 0.5) * 0.4,
+    brightness: 0.4 + Math.random() * 0.6,
+    size: Math.random() * 1.8 + 0.3
+  }));
+
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    t += dt * 0.08;
+    const arms = Math.round(armsFilter.update(+armsSlider.value, dt));
+
+    ctx.fillStyle = 'rgba(10,10,15,0.12)'; ctx.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    const maxR = Math.min(W, H) * 0.44;
+
+    stars.forEach(s => {
+      if (s.arm >= arms) return;
+      const armAngle = (s.arm / arms) * Math.PI * 2 + t;
+      const r = s.t * maxR;
+      const twist = r * 0.018;
+      const angle = armAngle + twist + s.spread * (1 - s.t);
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      const hue = 200 + s.arm * 30;
+      ctx.beginPath(); ctx.arc(x, y, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(180,210,255,${s.brightness * (0.4 + s.t * 0.6)})`; ctx.fill();
+    });
+
+    // Core glow
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 0.18);
+    g.addColorStop(0, 'rgba(245,200,100,0.25)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ============================================================
+// SECTION 5 — PROCEDURAL DRAWING (tabs)
+// ============================================================
+
+// Tab switching
+document.querySelectorAll('[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-tab]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// --- Truchet Tiles ---
+(function initTruchet() {
+  const canvas = document.getElementById('truchet-canvas');
+  const ctx = canvas.getContext('2d');
+  const sizeSlider = document.getElementById('truchet-size');
+  const szVal = document.getElementById('truchet-szval');
+  let W, H, tiles = [];
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 400; generate(); }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  sizeSlider.addEventListener('input', () => { szVal.textContent = sizeSlider.value; generate(); });
+  document.getElementById('truchet-regen').addEventListener('click', generate);
+
+  function generate() {
+    const sz = +sizeSlider.value;
+    tiles = [];
+    for (let y = 0; y < H; y += sz)
+      for (let x = 0; x < W; x += sz)
+        tiles.push({ x, y, sz, rot: Math.random() < 0.5 });
+    draw();
+  }
+
+  function draw() {
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+    tiles.forEach(({ x, y, sz, rot }) => {
+      ctx.save();
+      ctx.translate(x + sz / 2, y + sz / 2);
+      if (rot) ctx.rotate(Math.PI / 2);
+      ctx.beginPath();
+      ctx.arc(-sz / 2, -sz / 2, sz / 2, 0, Math.PI / 2);
+      ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(sz / 2, sz / 2, sz / 2, Math.PI, Math.PI * 1.5);
+      ctx.strokeStyle = '#00e5ff'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.restore();
+    });
+  }
+  generate();
+})();
+
+// --- Voronoi Seeds ---
+(function initVoronoi() {
+  const canvas = document.getElementById('voronoi-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, seeds = [], last = null;
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight || 400;
+    resetSeeds();
+  }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) { r = g = b = l; } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1; if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q-p)*6*t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q-p)*(2/3-t)*6;
+        return p;
+      };
+      const q = l < 0.5 ? l*(1+s) : l+s-l*s, p = 2*l-q;
+      r = hue2rgb(p, q, h+1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h-1/3);
+    }
+    return [r*255|0, g*255|0, b*255|0];
+  }
+
+  function makeSeed(x, y) {
+    return {
+      x, y,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      xf: new LagFilter(1.8),
+      yf: new LagFilter(1.8),
+      hue: Math.random() * 360
+    };
+  }
+
+  function resetSeeds() {
+    seeds = Array.from({ length: 20 }, () => makeSeed(Math.random()*W, Math.random()*H));
+  }
+  document.getElementById('voronoi-reset').addEventListener('click', resetSeeds);
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const x = (e.clientX - r.left) * (W / r.width);
+    const y = (e.clientY - r.top) * (H / r.height);
+    seeds.push(makeSeed(x, y));
+  });
+
+  function drawVoronoi(dt) {
+    seeds.forEach(s => {
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < 0 || s.x > W) s.vx *= -1;
+      if (s.y < 0 || s.y > H) s.vy *= -1;
+      s.x = Math.max(0, Math.min(W, s.x));
+      s.y = Math.max(0, Math.min(H, s.y));
+    });
+
+    // Sample grid for performance
+    const step = 4;
+    const img = ctx.createImageData(W, H);
+    const d = img.data;
+    for (let py = 0; py < H; py += step) {
+      for (let px = 0; px < W; px += step) {
+        let best = Infinity, bi = 0;
+        seeds.forEach((s, i) => {
+          const dist = (px - s.x) ** 2 + (py - s.y) ** 2;
+          if (dist < best) { best = dist; bi = i; }
+        });
+        const [r, g, b] = hslToRgb(seeds[bi].hue / 360, 0.65, 0.22);
+        for (let dy = 0; dy < step && py+dy < H; dy++) {
+          for (let dx = 0; dx < step && px+dx < W; dx++) {
+            const off = ((py+dy)*W + (px+dx)) * 4;
+            d[off] = r; d[off+1] = g; d[off+2] = b; d[off+3] = 255;
+          }
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+
+    // Seeds dots + labels
+    seeds.forEach((s, i) => {
+      ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${s.hue},90%,70%)`; ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, Math.PI * 2);
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke();
+    });
+  }
+
+  function loop(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    // Only render if tab is visible
+    const panel = document.getElementById('voronoi-tab');
+    if (panel.classList.contains('active')) drawVoronoi(dt);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+// --- Recursive Subdivision ---
+(function initSubdiv() {
+  const canvas = document.getElementById('subdiv-canvas');
+  const ctx = canvas.getContext('2d');
+  const depthSlider = document.getElementById('subdiv-depth');
+  const dVal = document.getElementById('subdiv-dval');
+  let W, H, regions = [];
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 400; generate(); }
+  resize(); new ResizeObserver(resize).observe(canvas);
+  depthSlider.addEventListener('input', () => { dVal.textContent = depthSlider.value; generate(); });
+  document.getElementById('subdiv-regen').addEventListener('click', generate);
+
+  function makeRegion(x, y, w, h, depth) {
+    return { x, y, w, h, depth, children: [] };
+  }
+
+  function subdivide(region, maxDepth) {
+    if (region.depth >= maxDepth || region.w < 8 || region.h < 8) return;
+    const split = Math.random() < 0.5 ? 'h' : 'v';
+    const ratio = 0.35 + Math.random() * 0.3;
+    if (split === 'h') {
+      const sw = region.w * ratio;
+      region.children.push(makeRegion(region.x, region.y, sw, region.h, region.depth + 1));
+      region.children.push(makeRegion(region.x + sw, region.y, region.w - sw, region.h, region.depth + 1));
+    } else {
+      const sh = region.h * ratio;
+      region.children.push(makeRegion(region.x, region.y, region.w, sh, region.depth + 1));
+      region.children.push(makeRegion(region.x, region.y + sh, region.w, region.h - sh, region.depth + 1));
+    }
+    region.children.forEach(c => subdivide(c, maxDepth));
+  }
+
+  function generate() {
+    const maxDepth = +depthSlider.value;
+    const root = makeRegion(0, 0, W, H, 0);
+    subdivide(root, maxDepth);
+    regions = [];
+    function collect(r) {
+      if (r.children.length === 0) { regions.push(r); return; }
+      r.children.forEach(collect);
+    }
+    collect(root);
+    draw();
+  }
+
+  function draw() {
+    ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, W, H);
+    regions.forEach(r => {
+      const hue = (r.x / W * 60 + r.y / H * 40 + r.depth * 15) % 360;
+      const alpha = 0.08 + r.depth * 0.04;
+      ctx.fillStyle = `hsla(${hue},60%,40%,${alpha})`;
+      ctx.fillRect(r.x+1, r.y+1, r.w-2, r.h-2);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(r.x+0.5, r.y+0.5, r.w-1, r.h-1);
+    });
+  }
+
+  canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) * (W / rect.width);
+    const cy = (e.clientY - rect.top) * (H / rect.height);
+    const hit = regions.find(r => cx >= r.x && cx < r.x+r.w && cy >= r.y && cy < r.y+r.h);
+    if (hit) {
+      const maxD = +depthSlider.value + 2;
+      subdivide(hit, maxD);
+      regions = regions.filter(r => r !== hit);
+      function collect(r) {
+        if (r.children.length === 0) { regions.push(r); return; }
+        r.children.forEach(collect);
+      }
+      collect(hit);
+      draw();
+    }
+  });
+  generate();
+})();
+
+// ============================================================
+// SECTION 6 — KNOB BANK
+// ============================================================
+(function initKnobs() {
+  const KNOB_DEFS = [
+    { label: 'Freq A',    min: 1, max: 8,  def: 3   },
+    { label: 'Freq B',    min: 1, max: 8,  def: 2   },
+    { label: 'Phase X',   min: 0, max: 6.28, def: 0 },
+    { label: 'Phase Y',   min: 0, max: 6.28, def: 0 },
+    { label: 'Amplitude', min: 0.2, max: 1.0, def: 0.85 },
+    { label: 'Rotation',  min: 0, max: 6.28, def: 0 },
+    { label: 'Scale',     min: 0.3, max: 1.5, def: 1.0 },
+    { label: 'Color Shift', min: 0, max: 360, def: 30 }
+  ];
+
+  const knobRow = document.getElementById('knob-row');
+  const knobs = KNOB_DEFS.map((def, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'knob-cell';
+    const cvs = document.createElement('canvas');
+    cvs.width = 64; cvs.height = 64;
+    cvs.title = def.label;
+    const lbl = document.createElement('div');
+    lbl.className = 'knob-label';
+    lbl.textContent = def.label.toUpperCase();
+    const valEl = document.createElement('div');
+    valEl.className = 'knob-val';
+    cell.appendChild(cvs); cell.appendChild(lbl); cell.appendChild(valEl);
+    knobRow.appendChild(cell);
+
+    const state = {
+      value: def.def,
+      filter: new LagFilter(0.25),
+      target: def.def,
+      min: def.min, max: def.max,
+      canvas: cvs, valEl,
+      dragging: false, dragY: 0
+    };
+
+    cvs.addEventListener('mousedown', e => { state.dragging = true; state.dragY = e.clientY; e.preventDefault(); });
+    window.addEventListener('mousemove', e => {
+      if (!state.dragging) return;
+      const dy = state.dragY - e.clientY;
+      state.dragY = e.clientY;
+      const range = state.max - state.min;
+      state.target = Math.max(state.min, Math.min(state.max, state.target + dy * range / 180));
+    });
+    window.addEventListener('mouseup', () => { state.dragging = false; });
+
+    return state;
+  });
+
+  function drawKnob(state) {
+    const cvs = state.canvas;
+    const ctx = cvs.getContext('2d');
+    const W = cvs.width, H = cvs.height;
+    const cx = W / 2, cy = H / 2, R = 26;
+    const norm = (state.value - state.min) / (state.max - state.min);
+    const startA = Math.PI * 0.75, endA = Math.PI * 2.25;
+    const currentA = startA + norm * (endA - startA);
+
+    ctx.clearRect(0, 0, W, H);
+    // Track
+    ctx.beginPath(); ctx.arc(cx, cy, R, startA, endA);
+    ctx.strokeStyle = '#1e1e2e'; ctx.lineWidth = 4; ctx.stroke();
+    // Fill
+    ctx.beginPath(); ctx.arc(cx, cy, R, startA, currentA);
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 4; ctx.stroke();
+    // Dot
+    ctx.beginPath();
+    ctx.arc(cx + Math.cos(currentA) * R, cy + Math.sin(currentA) * R, 4, 0, Math.PI*2);
+    ctx.fillStyle = '#f59e0b'; ctx.fill();
+    // Center fill
+    ctx.beginPath(); ctx.arc(cx, cy, R - 6, 0, Math.PI*2);
+    ctx.fillStyle = '#111118'; ctx.fill();
+  }
+
+  // Lissajous output canvas
+  const lissCanvas = document.getElementById('knob-lissajous');
+  const lissCtx = lissCanvas.getContext('2d');
+  let lissW, lissH;
+  function resizeLiss() { lissW = lissCanvas.width = lissCanvas.offsetWidth; lissH = lissCanvas.height = lissCanvas.offsetHeight || 300; }
+  resizeLiss(); new ResizeObserver(resizeLiss).observe(lissCanvas);
+
+  const snapshots = [];
+  document.getElementById('knob-snapshot').addEventListener('click', () => {
+    const thumb = document.createElement('canvas');
+    thumb.width = 80; thumb.height = 60;
+    thumb.className = 'snapshot-thumb';
+    const tCtx = thumb.getContext('2d');
+    tCtx.drawImage(lissCanvas, 0, 0, lissW, lissH, 0, 0, 80, 60);
+    document.getElementById('snapshot-row').appendChild(thumb);
+    snapshots.push(knobs.map(k => k.value));
+  });
+
+  document.getElementById('knob-randomize').addEventListener('click', () => {
+    knobs.forEach(k => {
+      k.target = k.min + Math.random() * (k.max - k.min);
+      k.filter.tau = 0.8;
+    });
+  });
+
+  let lissLast = null, lissT = 0;
+  function lissLoop(ts) {
+    if (!lissLast) lissLast = ts;
+    const dt = Math.min((ts - lissLast) / 1000, 0.05); lissLast = ts;
+    lissT += dt;
+
+    knobs.forEach(k => {
+      k.value = k.filter.update(k.target, dt);
+      drawKnob(k);
+      const range = k.max - k.min;
+      k.valEl.textContent = ((k.value - k.min) / range * 100 | 0) + '%';
+    });
+
+    const [freqA, freqB, phaseX, phaseY, amp, rot, scale, colorShift] = knobs.map(k => k.value);
+    lissCtx.fillStyle = 'rgba(10,10,15,0.06)';
+    lissCtx.fillRect(0, 0, lissW, lissH);
+
+    const cx = lissW / 2, cy = lissH / 2;
+    const R = Math.min(lissW, lissH) * 0.4 * amp * scale;
+
+    lissCtx.save();
+    lissCtx.translate(cx, cy);
+    lissCtx.rotate(rot);
+
+    const offsets = [0, 0.2, -0.2];
+    const colors = [`hsla(${colorShift},90%,60%,0.8)`, `hsla(${colorShift+120},80%,55%,0.5)`, `hsla(${colorShift+240},80%,65%,0.4)`];
+    const widths = [1.8, 1.0, 0.8];
+
+    offsets.forEach((off, li) => {
+      lissCtx.beginPath();
+      for (let i = 0; i <= 630; i++) {
+        const theta = i * 0.01;
+        const x = R * Math.sin((freqA + off) * theta + phaseX + lissT * 0.2);
+        const y = R * Math.sin((freqB + off) * theta + phaseY);
+        i === 0 ? lissCtx.moveTo(x, y) : lissCtx.lineTo(x, y);
+      }
+      lissCtx.strokeStyle = colors[li];
+      lissCtx.lineWidth = widths[li];
+      lissCtx.stroke();
+    });
+    lissCtx.restore();
+    requestAnimationFrame(lissLoop);
+  }
+  requestAnimationFrame(lissLoop);
+})();
+
+// ============================================================
+// SECTION 7 — AV REACTOR
+// ============================================================
+(function initAVReactor() {
+  const canvas = document.getElementById('av-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight || 360; }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  const BINS = 64;
+  let mode = 'petals', colorMode = 'amber';
+  let bpm = 120, last = null, phase = 0;
+
+  // Simulated harmonics
+  const harmonics = Array.from({ length: 8 }, (_, i) => ({
+    freq: (i + 1),
+    amp: 1.0 / (i + 1),
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  const binFilters = Array.from({ length: BINS }, () => new LagFilter(0.08));
+  const peakDecay = new Array(BINS).fill(0);
+  const peakHold = new Array(BINS).fill(0);
+
+  // Particle ring
+  const particles = Array.from({ length: BINS }, (_, i) => ({
+    angle: (i / BINS) * Math.PI * 2,
+    r: 0, trail: []
+  }));
+
+  document.getElementById('av-bpm').addEventListener('input', function() {
+    bpm = +this.value;
+    document.getElementById('av-bpmval').textContent = bpm;
+  });
+
+  document.querySelectorAll('[data-avmode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-avmode]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.avmode;
+    });
+  });
+
+  document.querySelectorAll('[data-avcolor]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-avcolor]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      colorMode = btn.dataset.avcolor;
+    });
+  });
+
+  function getBinColor(i, alpha) {
+    const t = i / BINS;
+    if (colorMode === 'amber') return `rgba(245,158,11,${alpha})`;
+    if (colorMode === 'rainbow') return `hsla(${t*300},90%,60%,${alpha})`;
+    if (colorMode === 'dual') {
+      const r = t < 0.5 ? 0 : 167, g = t < 0.5 ? 229 : 139, b = t < 0.5 ? 255 : 250;
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+  }
+
+  function computeBins(t) {
+    const raw = new Array(BINS).fill(0);
+    const beatPhase = (t * bpm / 60) % 1;
+    const kick = Math.max(0, 1 - beatPhase * 6) ** 2;
+    const snare = beatPhase > 0.5 ? Math.max(0, 1 - (beatPhase - 0.5) * 6) ** 2 : 0;
+
+    for (let i = 0; i < BINS; i++) {
+      const f = (i + 1) / BINS;
+      let v = 0;
+      harmonics.forEach(h => {
+        v += h.amp * Math.max(0, Math.sin(t * h.freq * 2.1 + h.phase)) * Math.exp(-Math.abs(f - 1/h.freq) * 4);
+      });
+      if (i < 6) v += kick * (1 - i * 0.12);
+      if (i >= 24 && i < 36) v += snare * Math.random() * 0.6;
+      v += smoothNoise(i * 0.3 + t * 0.5) * 0.2;
+      raw[i] = Math.min(1, Math.max(0, v));
+    }
+    return raw;
+  }
+
+  function drawPetals(bins) {
+    const cx = W / 2, cy = H / 2;
+    const maxR = Math.min(W, H) * 0.42;
+    const baseR = maxR * 0.12;
+
+    ctx.fillStyle = 'rgba(10,10,15,0.15)'; ctx.fillRect(0, 0, W, H);
+
+    // Base circle
+    ctx.beginPath(); ctx.arc(cx, cy, baseR, 0, Math.PI * 2);
+    ctx.strokeStyle = '#1e1e2e'; ctx.lineWidth = 1; ctx.stroke();
+
+    bins.forEach((v, i) => {
+      const angle = (i / BINS) * Math.PI * 2 - Math.PI / 2;
+      const len = baseR + v * (maxR - baseR);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(angle) * baseR, cy + Math.sin(angle) * baseR);
+      ctx.lineTo(cx + Math.cos(angle) * len, cy + Math.sin(angle) * len);
+      ctx.strokeStyle = getBinColor(i, 0.8);
+      ctx.lineWidth = (Math.PI * 2 * baseR / BINS) * 0.6;
+      ctx.stroke();
+    });
+
+    // Glow center
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 2);
+    g.addColorStop(0, 'rgba(245,158,11,0.15)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+
+  function drawSpectrum(bins) {
+    ctx.fillStyle = 'rgba(10,10,15,0.2)'; ctx.fillRect(0, 0, W, H);
+    const bw = W / BINS;
+    bins.forEach((v, i) => {
+      const bh = v * H * 0.85;
+      const x = i * bw;
+      const y = H - bh;
+      ctx.fillStyle = getBinColor(i, 0.8);
+      ctx.fillRect(x + 1, y, bw - 2, bh);
+      // Peak marker
+      if (peakDecay[i] > 0) {
+        ctx.fillStyle = getBinColor(i, 1);
+        ctx.fillRect(x + 1, H - peakDecay[i] * H * 0.85 - 2, bw - 2, 2);
+      }
+      if (v > peakDecay[i]) { peakDecay[i] = v; peakHold[i] = 30; }
+      else if (peakHold[i] > 0) peakHold[i]--;
+      else peakDecay[i] = Math.max(0, peakDecay[i] - 0.008);
+    });
+  }
+
+  function drawWaveform(t) {
+    ctx.fillStyle = 'rgba(10,10,15,0.1)'; ctx.fillRect(0, 0, W, H);
+    ctx.beginPath();
+    const pts = 256;
+    for (let i = 0; i < pts; i++) {
+      const x = (i / pts) * W;
+      let y = 0;
+      harmonics.forEach(h => { y += h.amp * Math.sin((i / pts * 8 + t) * h.freq * 2 + h.phase); });
+      y = H / 2 + y * H * 0.22;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = getBinColor(0, 0.9);
+    ctx.lineWidth = 2; ctx.stroke();
+  }
+
+  function drawParticles(bins) {
+    ctx.fillStyle = 'rgba(10,10,15,0.12)'; ctx.fillRect(0, 0, W, H);
+    const cx = W/2, cy = H/2;
+    const baseR = Math.min(W,H) * 0.2;
+
+    particles.forEach((p, i) => {
+      const targetR = baseR + bins[i] * Math.min(W,H) * 0.22;
+      p.r += (targetR - p.r) * 0.15;
+      p.angle += 0.003;
+      const x = cx + Math.cos(p.angle) * p.r;
+      const y = cy + Math.sin(p.angle) * p.r;
+      p.trail.push({x, y});
+      if (p.trail.length > 12) p.trail.shift();
+
+      // Trail
+      p.trail.forEach((pt, ti) => {
+        const alpha = (ti / p.trail.length) * 0.4 * bins[i];
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, 1.5, 0, Math.PI*2);
+        ctx.fillStyle = getBinColor(i, alpha); ctx.fill();
+      });
+
+      // Particle
+      ctx.beginPath(); ctx.arc(x, y, 2 + bins[i] * 3, 0, Math.PI*2);
+      ctx.fillStyle = getBinColor(i, 0.9); ctx.fill();
+    });
+  }
+
+  function loop(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+    phase += dt;
+
+    const rawBins = computeBins(phase);
+    const bins = rawBins.map((v, i) => binFilters[i].update(v, dt));
+
+    if (mode === 'petals') drawPetals(bins);
+    else if (mode === 'spectrum') drawSpectrum(bins);
+    else if (mode === 'wave') drawWaveform(phase);
+    else if (mode === 'particles') drawParticles(bins);
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+// ============================================================
+// INTERSECTION OBSERVER — scroll reveal
+// ============================================================
+(function initObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+})();
+
+// ============================================================
+// NAV — active link highlighting on scroll
+// ============================================================
+(function initNav() {
+  const sections = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+  const links = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // Also observe hero div which isn't a section
+  const heroEl = document.getElementById('s1');
+  if (heroEl) observer.observe(heroEl);
+})();
+
+</script>
+</body>
+</html>

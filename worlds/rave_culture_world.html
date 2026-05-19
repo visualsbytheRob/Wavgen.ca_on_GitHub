@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring rave culture">
+    <meta property="og:title" content="Rave Culture World — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring rave culture">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/rave_culture_world.html">
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rave Culture World — WAVGEN</title>
+<style>
+:root{
+  --black:#030303;--surface:#0a0800;--surface2:#0f0d04;--border:rgba(57,255,20,0.15);
+  --text:#e8e0d0;--dim:#7a7060;--accent:#39ff14;--accent2:#f59e0b;--accent3:#ff6b00;
+  --border2:rgba(245,158,11,0.18);--border3:rgba(255,107,0,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;}
+nav{position:sticky;top:0;z-index:100;background:rgba(3,3,3,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;gap:0.1rem;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-logo{font-size:0.65rem;font-weight:900;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;padding:0.75rem 0.85rem 0.75rem 0;border-right:1px solid var(--border);margin-right:0.5rem;flex-shrink:0;text-shadow:0 0 10px rgba(57,255,20,0.6);}
+nav a{color:var(--dim);text-decoration:none;font-size:0.6rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:0.75rem 0.42rem;white-space:nowrap;transition:color 0.2s;border-bottom:2px solid transparent;display:block;}
+nav a:hover{color:var(--text);}
+nav a.active{color:var(--accent);border-bottom-color:var(--accent);}
+section{max-width:1400px;margin:0 auto;padding:4rem 1.5rem;}
+.section-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;}
+h2{font-size:clamp(1.7rem,3.5vw,2.8rem);font-weight:800;line-height:1.1;margin-bottom:0.75rem;}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;}
+p{color:var(--dim);margin-bottom:0.75rem;}
+.hidden{opacity:0;transform:translateY(40px);transition:all 0.7s ease;}
+.visible{opacity:1;transform:none;}
+.stagger-1{transition-delay:0.1s;}.stagger-2{transition-delay:0.2s;}
+.stagger-3{transition-delay:0.3s;}.stagger-4{transition-delay:0.4s;}.stagger-5{transition-delay:0.5s;}
+/* Hero */
+#hero{max-width:100%;padding:0;}
+.hero-canvas-wrap{width:100%;height:440px;position:relative;overflow:hidden;background:var(--black);}
+#heroCanvas{width:100%;height:100%;display:block;}
+.hero-overlay{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;width:90%;max-width:900px;}
+.hero-title{font-size:clamp(2rem,5vw,4rem);font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-shadow:0 0 40px rgba(57,255,20,0.8),0 0 80px rgba(57,255,20,0.4);line-height:1;}
+.hero-sub{font-size:0.85rem;color:var(--dim);margin-top:0.5rem;letter-spacing:0.15em;text-transform:uppercase;}
+.hero-bpm{font-size:0.7rem;font-weight:700;color:var(--accent2);letter-spacing:0.1em;margin-top:0.3rem;text-shadow:0 0 8px rgba(245,158,11,0.5);}
+.hero-badges{display:flex;gap:0.5rem;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;}
+.badge{background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.25);color:var(--accent);font-size:0.58rem;font-weight:700;letter-spacing:0.08em;padding:0.25rem 0.65rem;border-radius:20px;text-transform:uppercase;}
+.badge-amber{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);color:var(--accent2);}
+/* Canvas wrap */
+.canvas-wrap{width:100%;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--black);position:relative;}
+canvas{display:block;width:100%;}
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;}
+.card-quote{background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.15);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:0.9rem 1.2rem;margin-top:1.5rem;}
+.card-quote p{color:rgba(232,224,208,0.85);margin:0;font-style:italic;font-size:0.87rem;}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:0.35rem;background:transparent;border:1px solid var(--border);color:var(--text);font-size:0.73rem;font-weight:600;letter-spacing:0.04em;padding:0.42rem 0.88rem;border-radius:6px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;font-family:inherit;line-height:1;}
+.btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px rgba(57,255,20,0.2);}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#000;font-weight:800;}
+.btn-accent:hover{background:#55ff30;box-shadow:0 0 20px rgba(57,255,20,0.5);color:#000;}
+.btn-amber{border-color:rgba(245,158,11,0.4);color:var(--accent2);}
+.btn-amber:hover{border-color:var(--accent2);box-shadow:0 0 10px rgba(245,158,11,0.3);}
+/* Sliders */
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(57,255,20,0.6);cursor:pointer;}
+input[type=range].amber::-webkit-slider-thumb{background:var(--accent2);box-shadow:0 0 8px rgba(245,158,11,0.6);}
+.slider-row{display:flex;align-items:center;gap:0.7rem;margin:0.5rem 0;}
+.slider-label{font-size:0.62rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--dim);min-width:60px;flex-shrink:0;}
+.slider-val{font-size:0.78rem;font-weight:700;color:var(--accent);min-width:46px;text-align:right;flex-shrink:0;}
+.slider-val.amber{color:var(--accent2);}
+/* Grids */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+@media(max-width:900px){.two-col{grid-template-columns:1fr;}.three-col{grid-template-columns:1fr 1fr;}.four-col{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.three-col,.four-col{grid-template-columns:1fr;}}
+/* Section 2 — Timeline */
+.timeline-outer{overflow-x:auto;padding:1.5rem 0 2rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent;cursor:grab;user-select:none;}
+.timeline-outer:active{cursor:grabbing;}
+.timeline-track{display:flex;position:relative;min-width:1600px;padding:4.5rem 2rem 3rem;}
+.timeline-line-bg{position:absolute;top:calc(2.5rem + 6px);left:2rem;right:2rem;height:1px;background:var(--border);}
+.timeline-line-glow{position:absolute;top:calc(2.5rem + 5px);left:2rem;width:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent);box-shadow:0 0 8px var(--accent);transition:width 0.8s ease;}
+.t-node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;cursor:pointer;}
+.t-dot{width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--black);box-shadow:0 0 8px rgba(57,255,20,0.6);z-index:1;transition:all 0.2s;flex-shrink:0;}
+.t-node:hover .t-dot,.t-node.active .t-dot{transform:scale(1.7);box-shadow:0 0 22px rgba(57,255,20,1);}
+.t-year{font-size:0.58rem;font-weight:800;color:var(--accent);margin-top:0.5rem;letter-spacing:0.05em;}
+.t-name{font-size:0.55rem;color:var(--dim);text-align:center;max-width:68px;line-height:1.3;margin-top:0.15rem;}
+.t-card{position:absolute;top:calc(100% + 0.5rem);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:0.7rem 0.9rem;width:178px;font-size:0.64rem;color:var(--text);opacity:0;pointer-events:none;transition:opacity 0.2s;z-index:20;box-shadow:0 0 20px rgba(57,255,20,0.25);}
+.t-node:hover .t-card,.t-node.active .t-card{opacity:1;}
+.t-node:nth-child(even) .t-card{top:auto;bottom:calc(100% + 0.5rem);}
+.t-card strong{color:var(--accent);display:block;margin-bottom:0.25rem;font-size:0.66rem;}
+/* Section 3 — Sound System */
+#soundCanvas{height:360px;}
+/* Section 4 — Rhythm Decomposer */
+.decomp-grid{display:grid;grid-template-rows:1fr;gap:0;}
+.decomp-row{position:relative;}
+.decomp-label{position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:0.58rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;width:52px;text-align:right;padding-right:6px;}
+#amenCanvas{height:80px;border-bottom:1px solid var(--border);}
+#kickCanvas,#snareCanvas,#hatCanvas{height:64px;}
+/* Section 5 — Pirate Radio */
+.radio-panel{display:grid;grid-template-columns:1fr 1.5fr;gap:1.25rem;align-items:start;}
+@media(max-width:700px){.radio-panel{grid-template-columns:1fr;}}
+.freq-display{background:#080500;border:1px solid var(--border2);border-radius:8px;padding:1rem;text-align:center;}
+.freq-readout{font-size:2.5rem;font-weight:900;color:var(--accent2);font-variant-numeric:tabular-nums;text-shadow:0 0 20px rgba(245,158,11,0.8);letter-spacing:0.05em;line-height:1;}
+.freq-unit{font-size:0.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.15em;margin-top:0.2rem;}
+.station-info{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:0.9rem;min-height:100px;margin-top:0.75rem;}
+.station-name{font-size:1rem;font-weight:800;color:var(--accent2);text-shadow:0 0 10px rgba(245,158,11,0.4);}
+.station-meta{font-size:0.65rem;color:var(--dim);margin-top:0.25rem;line-height:1.6;}
+/* Section 6 — Flyer Archive */
+.flyer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;}
+@media(max-width:800px){.flyer-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.flyer-grid{grid-template-columns:repeat(2,1fr);}}
+.flyer-item{cursor:pointer;border-radius:4px;overflow:hidden;border:1px solid var(--border);transition:all 0.25s;aspect-ratio:0.7;}
+.flyer-item:hover{transform:translateY(-4px) scale(1.03);border-color:rgba(57,255,20,0.5);box-shadow:0 0 20px rgba(57,255,20,0.2);}
+.flyer-item canvas{display:block;width:100%;height:100%;}
+/* Section 7 — Crowd */
+#crowdCanvas{height:420px;}
+.energy-bar-wrap{margin-top:0.75rem;height:8px;background:var(--surface);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.energy-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.1s;}
+/* Section 8 — Artists */
+.artist-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+@media(max-width:900px){.artist-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.artist-grid{grid-template-columns:1fr;}}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem;cursor:default;transition:all 0.25s;}
+.artist-card:hover{transform:translateY(-4px);border-color:rgba(57,255,20,0.5);box-shadow:0 8px 30px rgba(57,255,20,0.12);}
+.artist-name{font-size:0.95rem;font-weight:800;color:var(--accent);margin-bottom:0.2rem;text-shadow:0 0 8px rgba(57,255,20,0.3);}
+.artist-role{font-size:0.6rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+.artist-era{font-size:0.6rem;color:var(--dim);margin-bottom:0.5rem;}
+.artist-city{font-size:0.62rem;color:var(--accent3);font-weight:600;margin-bottom:0.5rem;}
+.artist-bio{font-size:0.7rem;color:var(--dim);line-height:1.5;}
+/* Section 9 — Glossary */
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border);}
+@media(max-width:600px){.glossary-grid{grid-template-columns:1fr;}}
+.gloss-item{padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);display:grid;grid-template-columns:200px 1fr;gap:0.75rem;}
+@media(max-width:700px){.gloss-item{grid-template-columns:1fr;gap:0.2rem;}}
+.gloss-term{font-size:0.72rem;font-weight:800;color:var(--accent);letter-spacing:0.03em;text-transform:uppercase;}
+.gloss-def{font-size:0.7rem;color:var(--dim);line-height:1.5;}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--accent);border-radius:10px;max-width:480px;width:90%;padding:1.5rem;box-shadow:0 0 40px rgba(57,255,20,0.25);position:relative;}
+.modal-close{position:absolute;top:0.75rem;right:0.9rem;background:none;border:none;color:var(--dim);font-size:1.2rem;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--accent);}
+.modal-canvas-wrap{width:100%;aspect-ratio:0.7;margin-top:1rem;border-radius:4px;overflow:hidden;}
+/* Controls row */
+.ctrl-row{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin:1rem 0;}
+/* BPM Display */
+.bpm-clock{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(57,255,20,0.06);border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.75rem;}
+.bpm-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);}
+.bpm-val{font-size:0.78rem;font-weight:800;color:var(--accent);letter-spacing:0.05em;}
+/* Mute buttons */
+.mute-btn{background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.3);color:var(--accent);font-size:0.6rem;font-weight:700;letter-spacing:0.08em;padding:0.22rem 0.55rem;border-radius:4px;cursor:pointer;text-transform:uppercase;transition:all 0.15s;font-family:inherit;}
+.mute-btn.muted{background:rgba(122,112,96,0.1);border-color:rgba(122,112,96,0.3);color:var(--dim);}
+/* Drop states */
+.drop-btn{padding:0.35rem 0.9rem;}
+.drop-btn.active{background:var(--accent3);border-color:var(--accent3);color:#000;box-shadow:0 0 15px rgba(255,107,0,0.4);}
+</style>
+</head>
+<body class="domain-music">
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⬡ WAVGEN</div>
+    <a href="#hero">Warehouse</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#soundsystem">Sound System</a>
+    <a href="#decomposer">Rhythm</a>
+    <a href="#radio">Pirate Radio</a>
+    <a href="#flyers">Flyers</a>
+    <a href="#crowd">Crowd</a>
+    <a href="#artists">Artists</a>
+    <a href="#glossary">Glossary</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════ SECTION 1 — HERO ═══════════════════ -->
+<section id="hero">
+  <div class="hero-canvas-wrap">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-overlay">
+      <div class="hero-title">RAVE CULTURE</div>
+      <div class="hero-sub">UK Underground 1988 – 2002 · Jungle · Drum &amp; Bass · Free Party</div>
+      <div class="hero-bpm" id="heroBpmDisplay">160 BPM</div>
+      <div class="hero-badges">
+        <span class="badge">Acid House</span>
+        <span class="badge badge-amber">Second Summer of Love</span>
+        <span class="badge">Jungle</span>
+        <span class="badge badge-amber">Hardcore Continuum</span>
+        <span class="badge">Pirate Radio</span>
+        <span class="badge badge-amber">Free Party</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════ WAVGEN CORE SYSTEMS ═══════════════════ */
+class LagFilter {
+  constructor(initial=0,tau=0.15){this.value=initial;this.target=initial;this.tau=tau;}
+  update(dt){const a=1-Math.exp(-dt/Math.max(this.tau,0.001));this.value+=(this.target-this.value)*a;return this.value;}
+  set(t){this.target=t;}
+  snap(v){this.value=this.target=v;}
+}
+
+class BPMEngine {
+  constructor(bpm=120){
+    this.bpm=bpm;this._start=null;this._beat=0;this._running=false;
+    this._subs=new Map();
+  }
+  start(){this._running=true;this._start=performance.now();this._beat=0;this._tick();}
+  stop(){this._running=false;}
+  _tick(){
+    if(!this._running)return;
+    const now=performance.now();
+    const msPerBeat=60000/this.bpm;
+    const expected=Math.floor((now-this._start)/msPerBeat);
+    while(this._beat<=expected){this._fire(this._beat);this._beat++;}
+    requestAnimationFrame(()=>this._tick());
+  }
+  _fire(n){
+    const ph=n%16,isQ=ph%4===0,isD=ph===0;
+    this._subs.forEach(fn=>fn({beat:n,phase:ph,isQ,isD,bpm:this.bpm}));
+  }
+  sub(id,fn){this._subs.set(id,fn);}
+  setBPM(b){this.bpm=Math.max(60,Math.min(220,b));if(this._running){this.stop();this.start();}}
+}
+
+/* ═══════════════════ HERO WAREHOUSE CANVAS ═══════════════════ */
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  const W=canvas.width=canvas.offsetWidth||1200;
+  const H=canvas.height=440;
+  const ctx=canvas.getContext('2d');
+
+  const BPM=160;
+  const engine=new BPMEngine(BPM);
+
+  // State
+  let beatFlash=new LagFilter(0,0.04);
+  let crowdEnergy=new LagFilter(0.5,0.18);
+  let laserAlpha=new LagFilter(0.7,0.12);
+  let fogAlpha=new LagFilter(0.04,0.8);
+
+  // Crowd dots
+  const NDOTS=120;
+  const dots=Array.from({length:NDOTS},()=>({
+    x:W*0.15+Math.random()*W*0.7,
+    y:H*0.65+Math.random()*H*0.28,
+    r:1.2+Math.random()*1.8,
+    phase:Math.random()*Math.PI*2,
+    speed:0.8+Math.random()*0.8,
+    amp:1+Math.random()*3
+  }));
+
+  // Lasers — emanate from center top
+  const NLASERS=8;
+  const lasers=Array.from({length:NLASERS},(_,i)=>({
+    angle:(-0.5+i/(NLASERS-1))*Math.PI*0.9,
+    phase:i*0.4,
+    color:i%2===0?'#39ff14':'#f59e0b',
+    speed:0.3+Math.random()*0.3
+  }));
+
+  // Fog blobs
+  const NFOG=6;
+  const fogs=Array.from({length:NFOG},()=>({
+    x:Math.random()*W,y:H*0.5+Math.random()*H*0.3,
+    r:80+Math.random()*120,vx:(Math.random()-0.5)*0.3,vy:-0.1-Math.random()*0.15,
+    alpha:0.02+Math.random()*0.03
+  }));
+
+  // Speaker stacks (left + right)
+  const speakers=[
+    {x:W*0.03,y:H*0.3,w:44,h:160,ripples:[]},
+    {x:W*0.97-44,y:H*0.3,w:44,h:160,ripples:[]}
+  ];
+
+  let strobeAlpha=new LagFilter(0,0.03);
+  let lastTime=0;
+  let beatCount=0;
+
+  engine.sub('hero',({beat,phase,isQ})=>{
+    crowdEnergy.set(0.85+Math.random()*0.15);
+    strobeAlpha.set(isQ?0.6:0.2);
+    if(isQ){
+      speakers.forEach(s=>{
+        if(s.ripples.length<5)s.ripples.push({r:20,a:0.8,speed:2.5+Math.random()});
+      });
+    }
+    beatCount=beat;
+    // Update BPM display
+    document.getElementById('heroBpmDisplay').textContent=BPM+' BPM — Beat '+((beat%4)+1);
+  });
+  engine.start();
+
+  function draw(ts){
+    const dt=Math.min((ts-lastTime)/1000,0.05);lastTime=ts;
+
+    beatFlash.update(dt);crowdEnergy.update(dt);
+    laserAlpha.update(dt);fogAlpha.update(dt);
+    strobeAlpha.update(dt);
+
+    // Phosphor decay
+    ctx.globalAlpha=0.09;
+    ctx.fillStyle='#030200';
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+
+    // Ceiling & floor
+    const ceilGrad=ctx.createLinearGradient(0,0,0,H*0.35);
+    ceilGrad.addColorStop(0,'rgba(5,3,0,0.95)');
+    ceilGrad.addColorStop(1,'rgba(3,3,3,0)');
+    ctx.fillStyle=ceilGrad;ctx.fillRect(0,0,W,H*0.35);
+
+    const floorGrad=ctx.createLinearGradient(0,H*0.7,0,H);
+    floorGrad.addColorStop(0,'rgba(3,3,3,0)');
+    floorGrad.addColorStop(1,'rgba(10,6,0,0.7)');
+    ctx.fillStyle=floorGrad;ctx.fillRect(0,H*0.7,W,H*0.3);
+
+    // Structural lines — warehouse beams
+    ctx.strokeStyle='rgba(57,255,20,0.04)';
+    ctx.lineWidth=1;
+    for(let i=0;i<6;i++){
+      const x=W*0.1+i*(W*0.16);
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(W/2,H*0.02);ctx.stroke();
+    }
+
+    // Speaker stacks
+    speakers.forEach(s=>{
+      ctx.fillStyle='#0a0800';
+      ctx.strokeStyle='rgba(57,255,20,0.25)';
+      ctx.lineWidth=1;
+      ctx.fillRect(s.x,s.y,s.w,s.h);
+      ctx.strokeRect(s.x,s.y,s.w,s.h);
+      // Speaker cones
+      for(let i=0;i<4;i++){
+        const cy=s.y+20+i*38;
+        ctx.beginPath();
+        ctx.arc(s.x+s.w/2,cy,14,0,Math.PI*2);
+        ctx.fillStyle='#050400';ctx.fill();
+        ctx.strokeStyle='rgba(245,158,11,0.3)';ctx.stroke();
+      }
+      // Ripple rings from bass hits
+      s.ripples.forEach(rp=>{
+        rp.r+=rp.speed*(1+dt*60);rp.a-=0.025;
+      });
+      s.ripples=s.ripples.filter(r=>r.a>0);
+      s.ripples.forEach(rp=>{
+        ctx.beginPath();
+        const cx=(s.x===W*0.03?s.x+s.w:s.x);
+        ctx.arc(cx,s.y+s.h/2,rp.r,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(57,255,20,${rp.a*0.5})`;
+        ctx.lineWidth=1.5;ctx.stroke();
+      });
+    });
+
+    // Laser beams from ceiling
+    const laserOriginX=W/2;
+    const laserOriginY=H*0.02;
+    lasers.forEach(laser=>{
+      const sweep=Math.sin(ts*0.001*laser.speed+laser.phase)*0.25;
+      const angle=laser.angle+sweep;
+      const len=H*1.5;
+      const tx=laserOriginX+Math.sin(angle)*len;
+      const ty=laserOriginY+Math.cos(angle)*len;
+      const grad=ctx.createLinearGradient(laserOriginX,laserOriginY,tx,ty);
+      const isGreen=laser.color==='#39ff14';
+      grad.addColorStop(0,isGreen?`rgba(57,255,20,${0.7*laserAlpha.value})`:`rgba(245,158,11,${0.6*laserAlpha.value})`);
+      grad.addColorStop(0.4,isGreen?`rgba(57,255,20,${0.15*laserAlpha.value})`:`rgba(245,158,11,${0.12*laserAlpha.value})`);
+      grad.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.moveTo(laserOriginX,laserOriginY);ctx.lineTo(tx,ty);
+      ctx.strokeStyle=grad;ctx.lineWidth=1.2;
+      ctx.shadowBlur=6;ctx.shadowColor=laser.color;
+      ctx.stroke();ctx.shadowBlur=0;
+    });
+
+    // Fog drifts
+    fogs.forEach(fog=>{
+      fog.x+=fog.vx;fog.y+=fog.vy;
+      if(fog.y<-fog.r)fog.y=H+fog.r;
+      if(fog.x<-fog.r)fog.x=W+fog.r;
+      if(fog.x>W+fog.r)fog.x=-fog.r;
+      const fg=ctx.createRadialGradient(fog.x,fog.y,0,fog.x,fog.y,fog.r);
+      fg.addColorStop(0,`rgba(220,210,190,${fog.alpha})`);
+      fg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=fg;ctx.beginPath();
+      ctx.ellipse(fog.x,fog.y,fog.r,fog.r*0.5,0,0,Math.PI*2);
+      ctx.fill();
+    });
+
+    // Crowd dots
+    const ce=crowdEnergy.value;
+    dots.forEach(d=>{
+      const oy=Math.sin(ts*0.001*d.speed+d.phase)*d.amp*ce*3;
+      const ox=Math.cos(ts*0.0007*d.speed+d.phase)*d.amp*ce*1.5;
+      const glow=0.4+ce*0.5;
+      ctx.beginPath();
+      ctx.arc(d.x+ox,d.y+oy,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,158,11,${glow})`;
+      ctx.shadowBlur=6*ce;ctx.shadowColor='#f59e0b';
+      ctx.fill();ctx.shadowBlur=0;
+    });
+    crowdEnergy.set(crowdEnergy.value*0.98+0.25*0.02);
+
+    // Strobe flash
+    const sv=strobeAlpha.value;
+    if(sv>0.02){
+      ctx.fillStyle=`rgba(255,255,255,${sv*0.15})`;
+      ctx.fillRect(0,0,W,H);
+    }
+    strobeAlpha.set(0);
+
+    // Beat dot indicator (top right)
+    const bph=beatCount%4;
+    for(let i=0;i<4;i++){
+      ctx.beginPath();
+      ctx.arc(W-30-(3-i)*20,20,5,0,Math.PI*2);
+      ctx.fillStyle=i<=bph?'rgba(57,255,20,0.9)':'rgba(57,255,20,0.15)';
+      ctx.shadowBlur=i===bph?10:0;ctx.shadowColor='#39ff14';
+      ctx.fill();ctx.shadowBlur=0;
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  window.addEventListener('resize',()=>{
+    canvas.width=canvas.offsetWidth;
+    canvas.height=440;
+  });
+})();
+</script>
+
+<!-- ═══════════════════════════════ SECTION 2 — TIMELINE ═══════════════════ -->
+<section id="timeline">
+  <div class="hidden stagger-1"><div class="section-label">1985 — 2010</div>
+  <h2>The Rave Timeline</h2>
+  <p>From Acid House in Chicago to UK Jungle, Drum &amp; Bass, and the Hardcore Continuum. Drag to scroll. Hover nodes for detail.</p></div>
+  <div class="timeline-outer hidden stagger-2" id="timelineOuter">
+    <div class="timeline-track" id="timelineTrack">
+      <div class="timeline-line-bg"></div>
+      <div class="timeline-line-glow" id="timelineGlow"></div>
+      <div class="t-node" data-year="1985" data-title="Chicago House Born" data-detail="Frankie Knuckles and Ron Hardy forge house music at The Warehouse and Music Box. The TR-909, TB-303, and 4/4 kick define the template.">
+        <div class="t-dot"></div><div class="t-year">1985</div><div class="t-name">Chicago House</div>
+        <div class="t-card"><strong>Chicago House 1985</strong>Frankie Knuckles and Ron Hardy define house music at The Warehouse. TR-909 and TB-303 become the tools of a new genre.</div>
+      </div>
+      <div class="t-node" data-year="1986" data-title="Acid Tracks" data-detail="Phuture's 'Acid Tracks' accidentally invents acid house by discovering the TB-303's unintended filter behaviour.">
+        <div class="t-dot"></div><div class="t-year">1986</div><div class="t-name">Acid Tracks</div>
+        <div class="t-card"><strong>Acid House 1986</strong>Phuture release 'Acid Tracks' — the TB-303's squelchy resonance filter, discovered by mistake, defines a genre.</div>
+      </div>
+      <div class="t-node" data-year="1987" data-title="UK Acid House" data-detail="Acid house reaches Britain. DJ's like Danny Rampling and Paul Oakenfold return from Ibiza and open nights like Shoom, seeding the UK rave explosion.">
+        <div class="t-dot"></div><div class="t-year">1987</div><div class="t-name">UK Acid House</div>
+        <div class="t-card"><strong>UK Acid House 1987</strong>Danny Rampling opens Shoom. Acid house arrives in Britain — smiley face, white gloves, warehouse nights.</div>
+      </div>
+      <div class="t-node" data-year="1988" data-title="Second Summer of Love" data-detail="Britain's Second Summer of Love. Acid house and MDMA collide. Outdoor raves in fields and motorway service stations draw thousands. The establishment panics.">
+        <div class="t-dot"></div><div class="t-year">1988</div><div class="t-name">Second Summer of Love</div>
+        <div class="t-card"><strong>2nd Summer of Love</strong>Mass illegal outdoor raves, acid house chart hits, MDMA. A genuine subcultural rupture. Orbital M25 raves draw 10,000+.</div>
+      </div>
+      <div class="t-node" data-year="1990" data-title="Rave Goes National" data-detail="Hardcore rave proliferates across UK. Castlemorton. The Prodigy emerge. Breakbeats accelerate. Pirate radio stations multiply in London.">
+        <div class="t-dot"></div><div class="t-year">1990</div><div class="t-name">Rave Goes National</div>
+        <div class="t-card"><strong>Hardcore Rave 1990</strong>The Prodigy, Altern-8. Breakbeats at 140 BPM. Pirate FM stations proliferate. Hardcore rave reaches every city.</div>
+      </div>
+      <div class="t-node" data-year="1992" data-title="Jungle Emerges" data-detail="Jungle emerges from London's Black British communities. Amen breaks chopped at 160 BPM + reggae sub-bass + ragga vocals. Kool FM broadcasts it to the city.">
+        <div class="t-dot"></div><div class="t-year">1992</div><div class="t-name">Jungle Emerges</div>
+        <div class="t-card"><strong>Jungle 1992</strong>Amen break at 160 BPM. Reggae sub-bass. Ragga vocals. South and East London create a new genre broadcast on pirate radio.</div>
+      </div>
+      <div class="t-node" data-year="1993" data-title="Hardcore Continuum" data-detail="Simon Reynolds coins the 'Hardcore Continuum'. Darkside / Darkcore develops — horror samples, sub-bass pressure. Goldie's 'Terminator' is the ur-text.">
+        <div class="t-dot"></div><div class="t-year">1993</div><div class="t-name">Hardcore Continuum</div>
+        <div class="t-card"><strong>Darkside 1993</strong>Goldie's 'Terminator'. Dark, cinematic jungle. The Hardcore Continuum: rave → ardkore → jungle → DnB.</div>
+      </div>
+      <div class="t-node" data-year="1994" data-title="Breakbeat Science" data-detail="Shy FX releases 'Original Nuttah'. Breakbeat Science — the art of Amen break manipulation — is codified. The jungle/DnB split begins.">
+        <div class="t-dot"></div><div class="t-year">1994</div><div class="t-name">Breakbeat Science</div>
+        <div class="t-card"><strong>Breakbeat Science 1994</strong>Shy FX 'Original Nuttah'. Amen break chopping is codified. The split between ragga jungle and intelligent DnB begins.</div>
+      </div>
+      <div class="t-node" data-year="1994" data-title="Criminal Justice Act" data-detail="The UK Criminal Justice and Public Order Act criminalises gatherings 'characterised by repetitive beats'. Direct attack on rave culture. The free party movement galvanises.">
+        <div class="t-dot"></div><div class="t-year">1994</div><div class="t-name">Criminal Justice Act</div>
+        <div class="t-card"><strong>CJA 1994</strong>"Music wholly or predominantly characterised by the emission of a succession of repetitive beats." Parliament criminalises rave.</div>
+      </div>
+      <div class="t-node" data-year="1995" data-title="Metalheadz &amp; Timeless" data-detail="Goldie's Metalheadz label and 'Timeless' LP define drum and bass as a serious artistic form. Inner City Life. Jazz influences. DnB claims artistic legitimacy.">
+        <div class="t-dot"></div><div class="t-year">1995</div><div class="t-name">Metalheadz</div>
+        <div class="t-card"><strong>Goldie — Timeless 1995</strong>Metalheadz. 'Inner City Life'. Drum &amp; Bass claims artistic and cultural legitimacy beyond the rave floor.</div>
+      </div>
+      <div class="t-node" data-year="1996" data-title="DnB Codified" data-detail="Drum &amp; Bass emerges as distinct genre. LTJ Bukem's Good Looking Records defines liquid DnB. Grooverider and Fabio's BBC Radio 1 show gives mainstream access.">
+        <div class="t-dot"></div><div class="t-year">1996</div><div class="t-name">DnB Codified</div>
+        <div class="t-card"><strong>DnB 1996</strong>LTJ Bukem's Good Looking Records. Grooverider &amp; Fabio on Radio 1. Liquid DnB vs. techstep — the genre bifurcates artistically.</div>
+      </div>
+      <div class="t-node" data-year="1997" data-title="Pirate Radio Peak" data-detail="Pirate FM radio reaches its peak in London. Kool FM, Rush FM, Defection. DJs have cult followings. The pirate is the internet before the internet.">
+        <div class="t-dot"></div><div class="t-year">1997</div><div class="t-name">Pirate Radio Peak</div>
+        <div class="t-card"><strong>Pirate FM 1997</strong>Kool FM. Rush FM. Rinse FM. The pirate radio mast on the tower block roof is the cultural infrastructure of London underground.</div>
+      </div>
+      <div class="t-node" data-year="1999" data-title="UK Garage" data-detail="UK Garage evolves from US garage house via So Solid Crew and pay-as-you-go MCs. 2-step rhythm. Commercial peak. Seeds grime.">
+        <div class="t-dot"></div><div class="t-year">1999</div><div class="t-name">UK Garage</div>
+        <div class="t-card"><strong>UK Garage 1999</strong>Craig David, So Solid Crew. The 2-step rhythm. Commercial success of the Hardcore Continuum's latest evolution.</div>
+      </div>
+      <div class="t-node" data-year="2002" data-title="Grime Emerges" data-detail="Grime emerges from East London garage MCs. Wiley's eski beats. Dizzee Rascal. The Hardcore Continuum spawns a new genre with explicit lyrical content.">
+        <div class="t-dot"></div><div class="t-year">2002</div><div class="t-name">Grime</div>
+        <div class="t-card"><strong>Grime 2002</strong>Wiley. Dizzee Rascal. Eskibeat. The Hardcore Continuum produces grime — UK garage's bass and rhythm weaponised by London MCs.</div>
+      </div>
+      <div class="t-node" data-year="2006" data-title="Dubstep" data-detail="Dubstep codified at Plastic People, London. Digital Mystikz, Skream, Benga. Half-time rhythms, heavy sub-bass. The continuum continues.">
+        <div class="t-dot"></div><div class="t-year">2006</div><div class="t-name">Dubstep</div>
+        <div class="t-card"><strong>Dubstep 2006</strong>Plastic People. DMZ. Digital Mystikz. Dubstep's half-time feel and wall-of-bass inherits the continuum's bass-weight obsession.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-quote hidden stagger-3"><p>"A continuous genetic strand running through UK dance music — from acid house to jungle to garage to grime. The same cultural DNA, mutating." — Simon Reynolds, 'Energy Flash'</p></div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 3 — SOUND SYSTEM ═══════════════ -->
+<section id="soundsystem">
+  <div class="hidden stagger-1"><div class="section-label">Signal Chain</div>
+  <h2>Sound System Architecture</h2>
+  <p>A sound system is a social instrument — a mobile cathedral of bass. Signal flows from vinyl groove to sub-bass pressure at 130dB.</p></div>
+  <div class="two-col" style="align-items:start;gap:1.5rem;">
+    <div class="hidden stagger-2">
+      <div class="canvas-wrap">
+        <canvas id="soundCanvas" style="height:400px;"></canvas>
+      </div>
+      <p style="font-size:0.68rem;margin-top:0.5rem;text-align:center;color:var(--dim);">Click components to reveal specs. Particles flow with signal.</p>
+    </div>
+    <div class="hidden stagger-3">
+      <div class="card" id="soundInfoCard">
+        <div class="section-label">Component</div>
+        <div id="soundInfoTitle" style="font-size:1.1rem;font-weight:800;color:var(--accent);margin-bottom:0.5rem;">Hover a component</div>
+        <div id="soundInfoDesc" style="font-size:0.75rem;color:var(--dim);line-height:1.7;">Click any component in the diagram to learn about its role in the sound system signal chain.</div>
+      </div>
+      <div class="card-quote" style="margin-top:1rem;"><p>"A sound system is not equipment. It is an argument about bass — a philosophical statement made in low frequency." — Dennis Bovell</p></div>
+      <div class="card" style="margin-top:1rem;">
+        <div class="section-label">Freq Response</div>
+        <canvas id="freqResponseCanvas" style="height:90px;"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════ SECTION 2 — TIMELINE DRAG ═══════════════════ */
+(function(){
+  const outer=document.getElementById('timelineOuter');
+  let isDragging=false,startX=0,scrollLeft=0;
+  outer.addEventListener('mousedown',e=>{isDragging=true;startX=e.pageX-outer.offsetLeft;scrollLeft=outer.scrollLeft;});
+  outer.addEventListener('mouseleave',()=>isDragging=false);
+  outer.addEventListener('mouseup',()=>isDragging=false);
+  outer.addEventListener('mousemove',e=>{
+    if(!isDragging)return;e.preventDefault();
+    const x=e.pageX-outer.offsetLeft;
+    outer.scrollLeft=scrollLeft-(x-startX)*1.2;
+  });
+  // Touch support
+  outer.addEventListener('touchstart',e=>{startX=e.touches[0].pageX;scrollLeft=outer.scrollLeft;});
+  outer.addEventListener('touchmove',e=>{
+    const x=e.touches[0].pageX;
+    outer.scrollLeft=scrollLeft-(x-startX);
+  });
+})();
+
+/* ═══════════════════ SECTION 3 — SOUND SYSTEM CANVAS ═══════════════════ */
+(function(){
+  const canvas=document.getElementById('soundCanvas');
+  const W=canvas.width=canvas.offsetWidth||600;
+  const H=canvas.height=400;
+  const ctx=canvas.getContext('2d');
+  const infoTitle=document.getElementById('soundInfoTitle');
+  const infoDesc=document.getElementById('soundInfoDesc');
+
+  const components=[
+    {id:'tt',label:'Turntables',x:W*0.15,y:H*0.08,w:110,h:44,color:'#39ff14',
+     spec:'Technics SL-1200 MK2. Direct drive. 33⅓ RPM. The DJ's primary instrument — pitch control enables BPM matching. Two decks for continuous mixing.',
+     out:[1]},
+    {id:'mix',label:'Mixer',x:W*0.44,y:H*0.08,w:80,h:44,color:'#39ff14',
+     spec:'Rotary mixer (Urei 1620 / Rane TTM). EQ per channel: -∞ to +6dB. Crossfader. Gain staging critical — every dB of distortion compounds downstream.',
+     out:[2]},
+    {id:'xover',label:'Crossover',x:W*0.44,y:H*0.28,w:80,h:44,color:'#f59e0b',
+     spec:'Active crossover splits signal by frequency: Sub (<80Hz) → sub amp, Mid (80–800Hz) → mid amp, High (800Hz+) → horn amp. Prevents woofers from attempting treble.',
+     out:[3,4,5]},
+    {id:'sub',label:'Sub Amp\n18"',x:W*0.1,y:H*0.58,w:90,h:50,color:'#ff6b00',
+     spec:'18" subwoofer. Response: 20–80Hz. Power: 1000–3000W. Sub-bass is felt rather than heard — bone conduction, chest pressure. The physical argument of a sound system.',
+     out:[]},
+    {id:'mid',label:'Mid Stack\n12"',x:W*0.44,y:H*0.58,w:90,h:50,color:'#f59e0b',
+     spec:'12" woofers + horn compression driver. Range: 80–800Hz. The kick drum body, snare crack, vocal presence. Mid clarity separates a professional from a domestic rig.',
+     out:[]},
+    {id:'horn',label:'Horns\nHF',x:W*0.78,y:H*0.58,w:80,h:50,color:'#39ff14',
+     spec:'Exponential horn + 1" compression driver. Range: 800Hz–20kHz. High sensitivity (105dB/1W/1m). Horns project. Hi-hats, cymbals, top-end air.',
+     out:[]},
+    {id:'amp1',label:'Amp',x:W*0.18,y:H*0.42,w:56,h:32,color:'#7a7060',
+     spec:'Class D amplifier. Crown XTi / Lab.gruppen. Power: 2000W RMS. Sub amplification requires massive power reserves for transient response.',
+     out:[3]},
+    {id:'amp2',label:'Amp',x:W*0.46,y:H*0.42,w:56,h:32,color:'#7a7060',
+     spec:'Class AB/D amplifier. Mid-range requires precise power delivery for voice coil dynamics. Usually 500–1000W per cabinet.',
+     out:[4]},
+    {id:'amp3',label:'Amp',x:W*0.74,y:H*0.42,w:56,h:32,color:'#7a7060',
+     spec:'Class AB amplifier. Horn drivers require sensitive amplification — too much power and you blow the voice coil. Usually 200–500W.',
+     out:[5]},
+  ];
+  // Fix crossover outputs to amp indices
+  components[2].out=[6,7,8];
+  components[6].out=[3];components[7].out=[4];components[8].out=[5];
+  // Turntable → mixer
+  components[0].out=[1];
+  // Mixer → crossover
+  components[1].out=[2];
+
+  // Signal path edges
+  const edges=[
+    {from:0,to:1},{from:1,to:2},
+    {from:2,to:6},{from:2,to:7},{from:2,to:8},
+    {from:6,to:3},{from:7,to:4},{from:8,to:5}
+  ];
+
+  // Particles per edge
+  const particles=edges.map(e=>Array.from({length:4},()=>({t:Math.random(),speed:0.004+Math.random()*0.003})));
+
+  let hoveredIdx=-1;
+  function getCenter(c){return{x:c.x+c.w/2,y:c.y+c.h/2};}
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    hoveredIdx=-1;
+    components.forEach((c,i)=>{
+      if(mx>c.x&&mx<c.x+c.w&&my>c.y&&my<c.y+c.h)hoveredIdx=i;
+    });
+    canvas.style.cursor=hoveredIdx>=0?'pointer':'default';
+  });
+  canvas.addEventListener('click',()=>{
+    if(hoveredIdx>=0){
+      const c=components[hoveredIdx];
+      infoTitle.textContent=c.label.replace('\n',' ');
+      infoDesc.textContent=c.spec;
+    }
+  });
+
+  let lastT=0;
+  function drawSound(ts){
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    ctx.globalAlpha=0.12;ctx.fillStyle='#030300';ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
+
+    // Draw edges + particles
+    edges.forEach((e,ei)=>{
+      const a=components[e.from],b=components[e.to];
+      const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2;
+      ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);
+      ctx.strokeStyle='rgba(57,255,20,0.12)';ctx.lineWidth=1;ctx.stroke();
+      // Particles
+      particles[ei].forEach(p=>{
+        p.t+=p.speed;if(p.t>1)p.t-=1;
+        const px=ax+(bx-ax)*p.t,py=ay+(by-ay)*p.t;
+        ctx.beginPath();ctx.arc(px,py,2,0,Math.PI*2);
+        ctx.fillStyle='rgba(57,255,20,0.85)';
+        ctx.shadowBlur=6;ctx.shadowColor='#39ff14';
+        ctx.fill();ctx.shadowBlur=0;
+      });
+    });
+
+    // Draw components
+    components.forEach((c,i)=>{
+      const isHov=i===hoveredIdx;
+      ctx.fillStyle=isHov?'rgba(57,255,20,0.15)':'rgba(10,8,0,0.9)';
+      ctx.strokeStyle=isHov?c.color:c.color+'55';
+      ctx.lineWidth=isHov?1.5:1;
+      if(isHov){ctx.shadowBlur=12;ctx.shadowColor=c.color;}
+      roundRect(ctx,c.x,c.y,c.w,c.h,5);ctx.fill();ctx.stroke();
+      ctx.shadowBlur=0;
+      ctx.fillStyle=c.color;
+      ctx.font=`bold ${c.label.includes('\n')?'9':'10'}px Segoe UI`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      const lines=c.label.split('\n');
+      if(lines.length===2){
+        ctx.fillText(lines[0],c.x+c.w/2,c.y+c.h/2-6);
+        ctx.font='8px Segoe UI';ctx.fillStyle=c.color+'aa';
+        ctx.fillText(lines[1],c.x+c.w/2,c.y+c.h/2+6);
+      } else {
+        ctx.fillText(c.label,c.x+c.w/2,c.y+c.h/2);
+      }
+    });
+
+    // Sub-bass ripple rings at bottom
+    const t=ts*0.001;
+    for(let i=0;i<3;i++){
+      const phase=(t*0.8+i*0.5)%1;
+      const r=20+phase*60;const alpha=(1-phase)*0.3;
+      const c=components[3];
+      ctx.beginPath();ctx.arc(c.x+c.w/2,c.y+c.h,r,Math.PI,0);
+      ctx.strokeStyle=`rgba(255,107,0,${alpha})`;ctx.lineWidth=1;ctx.stroke();
+    }
+
+    requestAnimationFrame(drawSound);
+  }
+  requestAnimationFrame(drawSound);
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+  }
+
+  // Freq response canvas
+  const frc=document.getElementById('freqResponseCanvas');
+  frc.width=frc.offsetWidth||400;frc.height=90;
+  const fctx=frc.getContext('2d');
+  const fw=frc.width,fh=frc.height;
+  let lastFT=0;
+  function drawFreq(ts){
+    const dt=Math.min((ts-lastFT)/1000,0.05);lastFT=ts;
+    fctx.globalAlpha=0.1;fctx.fillStyle='#030300';fctx.fillRect(0,0,fw,fh);fctx.globalAlpha=1;
+    fctx.beginPath();
+    for(let i=0;i<fw;i++){
+      const freq=20*Math.pow(1000,i/fw);
+      const t=ts*0.001;
+      let resp=0;
+      if(freq<80){resp=0.9+0.08*Math.sin(t*2.1+freq*0.01);}
+      else if(freq<500){resp=0.7+0.06*Math.sin(t*1.7+freq*0.005);}
+      else if(freq<3000){resp=0.6+0.05*Math.sin(t*1.4);}
+      else{resp=0.45+0.04*Math.sin(t*2.3);}
+      const y=fh-(resp*fh*0.85);
+      if(i===0)fctx.moveTo(i,y);else fctx.lineTo(i,y);
+    }
+    fctx.strokeStyle='rgba(57,255,20,0.7)';fctx.lineWidth=1.5;
+    fctx.shadowBlur=4;fctx.shadowColor='#39ff14';fctx.stroke();fctx.shadowBlur=0;
+    // Sub fill
+    fctx.lineTo(fw*0.12,fh);fctx.lineTo(0,fh);fctx.closePath();
+    fctx.fillStyle='rgba(255,107,0,0.08)';fctx.fill();
+    requestAnimationFrame(drawFreq);
+  }
+  requestAnimationFrame(drawFreq);
+})();
+</script>
+
+<!-- ═══════════════════════════════ SECTION 4 — RHYTHM DECOMPOSER ══════════ -->
+<section id="decomposer">
+  <div class="hidden stagger-1"><div class="section-label">Breakbeat Anatomy</div>
+  <h2>Jungle Rhythm Decomposer</h2>
+  <p>The Amen Break — a 6-second drum solo from 1969 — became the rhythmic genome of jungle and drum &amp; bass. Dissect it here.</p></div>
+  <div class="two-col" style="align-items:start;">
+    <div class="hidden stagger-2">
+      <div style="font-size:0.65rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Amen Break — Waveform</div>
+      <div class="canvas-wrap"><canvas id="amenCanvas" style="height:80px;"></canvas></div>
+      <div style="margin-top:1rem;font-size:0.65rem;font-weight:700;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Kick Pattern</div>
+      <div class="canvas-wrap" style="position:relative;padding-left:0;">
+        <canvas id="kickCanvas" style="height:60px;"></canvas>
+      </div>
+      <div style="margin-top:0.75rem;font-size:0.65rem;font-weight:700;color:var(--accent2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Snare Pattern</div>
+      <div class="canvas-wrap"><canvas id="snareCanvas" style="height:60px;"></canvas></div>
+      <div style="margin-top:0.75rem;font-size:0.65rem;font-weight:700;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;">Hi-Hat Pattern</div>
+      <div class="canvas-wrap"><canvas id="hatCanvas" style="height:60px;"></canvas></div>
+    </div>
+    <div class="hidden stagger-3">
+      <div class="card">
+        <div class="section-label">Controls</div>
+        <div class="ctrl-row">
+          <div class="bpm-clock"><div class="bpm-dot" id="decomBpmDot"></div><span class="bpm-val" id="decomBpmVal">160</span><span style="font-size:0.6rem;color:var(--dim);margin-left:2px;">BPM</span></div>
+          <button class="mute-btn" id="muteKick">Kick</button>
+          <button class="mute-btn" id="muteSnare">Snare</button>
+          <button class="mute-btn" id="muteHat">Hat</button>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">BPM</span>
+          <input type="range" id="decomBpm" min="140" max="185" value="160" step="1">
+          <span class="slider-val" id="decomBpmDisplay">160</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Swing</span>
+          <input type="range" class="amber" id="decomSwing" min="0" max="60" value="20" step="1">
+          <span class="slider-val amber" id="decomSwingDisplay">20%</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1rem;">
+        <div class="section-label">Pattern Info</div>
+        <div style="font-size:0.72rem;color:var(--dim);line-height:1.8;">
+          <div><span style="color:var(--accent);font-weight:700;">Time sig:</span> 4/4 with jungle syncopation</div>
+          <div><span style="color:var(--accent);font-weight:700;">Amen original:</span> 136 BPM → stretched to 160+</div>
+          <div><span style="color:var(--accent);font-weight:700;">Kick:</span> Off-beat placement — beats 1½, 3</div>
+          <div><span style="color:var(--accent2);font-weight:700;">Snare:</span> Beats 2 and 4 — rimshot character</div>
+          <div><span style="color:var(--dim);font-weight:700;">Hi-hats:</span> 16th-note rush, anticipation triplets</div>
+          <div style="margin-top:0.75rem;"><span style="color:var(--accent3);font-weight:700;">Reese bass:</span> Sub-bass lock on beat 1 + 3</div>
+        </div>
+      </div>
+      <div class="card-quote" style="margin-top:1rem;"><p>"The Amen Break is the genome of jungle music — a 6-second loop that spawned a million tracks, a dozen genres, and an entire culture." — Nate Harrison, 'Can I Get an Amen?'</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 5 — PIRATE RADIO ═══════════════ -->
+<section id="radio">
+  <div class="hidden stagger-1"><div class="section-label">88–108 MHz</div>
+  <h2>Pirate Radio Scanner</h2>
+  <p>Before the internet, pirate FM stations were the information infrastructure of UK underground culture. Tune the dial to find them.</p></div>
+  <div class="radio-panel hidden stagger-2">
+    <div>
+      <div class="freq-display">
+        <div class="freq-readout" id="freqReadout">92.0</div>
+        <div class="freq-unit">MHz FM</div>
+        <div id="tuneStatus" style="font-size:0.65rem;color:var(--dim);margin-top:0.3rem;letter-spacing:0.05em;">Scanning...</div>
+      </div>
+      <div class="slider-row" style="margin-top:0.75rem;">
+        <span class="slider-label" style="color:var(--accent2);min-width:50px;">88</span>
+        <input type="range" class="amber" id="freqSlider" min="880" max="1080" value="920" step="1">
+        <span class="slider-label" style="color:var(--accent2);text-align:right;min-width:50px;">108</span>
+      </div>
+      <div class="station-info" id="stationInfo">
+        <div class="station-name" id="stationName">STATIC</div>
+        <div class="station-meta" id="stationMeta">Move the dial to find a station...</div>
+      </div>
+    </div>
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="radioCanvas" style="height:220px;"></canvas>
+      </div>
+      <div class="canvas-wrap" style="margin-top:0.75rem;">
+        <canvas id="radioScope" style="height:80px;"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════ SECTION 4 — RHYTHM DECOMPOSER ═══════════════════ */
+(function(){
+  // Amen break pattern (16 steps)
+  const kickPat  =[1,0,0,0, 0,0,1,0, 0,1,0,0, 0,0,0,0];
+  const snarePat =[0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0];
+  const hatPat   =[1,0,1,1, 0,1,1,0, 1,0,1,1, 0,1,1,1];
+  const muted={kick:false,snare:false,hat:false};
+  let bpm=160,swing=20,currentStep=0;
+  let bpmLag=new LagFilter(160,0.08);
+  let stepTime=0,stepInterval=60/bpm/4;
+
+  const decomBpmSlider=document.getElementById('decomBpm');
+  const decomSwingSlider=document.getElementById('decomSwing');
+  const decomBpmDisplay=document.getElementById('decomBpmDisplay');
+  const decomSwingDisplay=document.getElementById('decomSwingDisplay');
+  const decomBpmVal=document.getElementById('decomBpmVal');
+  decomBpmSlider.addEventListener('input',()=>{bpm=parseInt(decomBpmSlider.value);decomBpmDisplay.textContent=bpm;decomBpmVal.textContent=bpm;});
+  decomSwingSlider.addEventListener('input',()=>{swing=parseInt(decomSwingSlider.value);decomSwingDisplay.textContent=swing+'%';});
+  ['Kick','Snare','Hat'].forEach(n=>{
+    document.getElementById('mute'+n).addEventListener('click',function(){
+      const k=n.toLowerCase();muted[k]=!muted[k];this.classList.toggle('muted',muted[k]);
+    });
+  });
+
+  // BPM dot pulse
+  const bpmDot=document.getElementById('decomBpmDot');
+  let dotFlash=0;
+
+  // Canvas setup
+  function setupCanvas(id,h){
+    const c=document.getElementById(id);c.width=c.offsetWidth||600;c.height=h;return c;
+  }
+  const amenC=setupCanvas('amenCanvas',80);
+  const kickC=setupCanvas('kickCanvas',60);
+  const snareC=setupCanvas('snareCanvas',60);
+  const hatC=setupCanvas('hatCanvas',60);
+  const ac=amenC.getContext('2d');
+  const kc=kickC.getContext('2d');
+  const sc=snareC.getContext('2d');
+  const hc=hatC.getContext('2d');
+
+  // Hit flash values per step
+  const kickFlash=Array.from({length:16},()=>new LagFilter(0,0.06));
+  const snareFlash=Array.from({length:16},()=>new LagFilter(0,0.06));
+  const hatFlash=Array.from({length:16},()=>new LagFilter(0,0.06));
+
+  let lastT=0;
+  function draw(ts){
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    bpmLag.set(bpm);bpmLag.update(dt);
+    stepInterval=60/bpmLag.value/4;
+    stepTime+=dt;
+    if(stepTime>=stepInterval){
+      stepTime-=stepInterval;
+      currentStep=(currentStep+1)%16;
+      dotFlash=1;
+      if(!muted.kick&&kickPat[currentStep])kickFlash[currentStep].set(1);
+      if(!muted.snare&&snarePat[currentStep])snareFlash[currentStep].set(1);
+      if(!muted.hat&&hatPat[currentStep])hatFlash[currentStep].set(1);
+    }
+    kickFlash.forEach(f=>f.update(dt));
+    snareFlash.forEach(f=>f.update(dt));
+    hatFlash.forEach(f=>f.update(dt));
+    dotFlash=Math.max(0,dotFlash-dt*8);
+    bpmDot.style.boxShadow=`0 0 ${6+dotFlash*14}px var(--accent)`;
+
+    // Amen waveform (simulated)
+    ac.globalAlpha=0.1;ac.fillStyle='#030200';ac.fillRect(0,0,amenC.width,amenC.height);ac.globalAlpha=1;
+    ac.beginPath();
+    const AW=amenC.width,AH=amenC.height;
+    for(let i=0;i<AW;i++){
+      const t=i/AW;
+      const phase=t*(Math.PI*16);
+      const env=Math.sin(t*Math.PI);
+      const amp=0.35*env*(Math.sin(phase)+0.5*Math.sin(phase*2.1)+0.25*Math.sin(phase*3.7+1));
+      const y=AH/2+amp*AH*0.85;
+      if(i===0)ac.moveTo(i,y);else ac.lineTo(i,y);
+    }
+    ac.strokeStyle='rgba(57,255,20,0.7)';ac.lineWidth=1.2;
+    ac.shadowBlur=3;ac.shadowColor='#39ff14';ac.stroke();ac.shadowBlur=0;
+    // Playhead
+    const px=(currentStep/16)*AW;
+    ac.fillStyle='rgba(57,255,20,0.3)';
+    ac.fillRect(px,0,AW/16,AH);
+    ac.fillStyle='rgba(57,255,20,0.9)';
+    ac.fillRect(px,0,1,AH);
+
+    // Draw grid pattern
+    function drawGrid(ctx,c,pat,flash,color,bgColor){
+      const CW=c.width,CH=c.height;
+      ctx.globalAlpha=0.1;ctx.fillStyle='#030200';ctx.fillRect(0,0,CW,CH);ctx.globalAlpha=1;
+      const cellW=CW/16;
+      pat.forEach((hit,i)=>{
+        const fl=flash[i].value;
+        const x=i*cellW,y=2;
+        const active=hit===1;
+        const isCurrent=i===currentStep;
+        if(active){
+          ctx.fillStyle=isCurrent?color:`${color}${Math.round(60+fl*180).toString(16).padStart(2,'0')}`;
+          if(fl>0.05){ctx.shadowBlur=10+fl*10;ctx.shadowColor=color;}
+        } else {
+          ctx.fillStyle=`rgba(20,16,8,${isCurrent?0.7:0.4})`;
+        }
+        ctx.fillRect(x+1,y,cellW-2,CH-4);
+        ctx.shadowBlur=0;
+        // Grid lines
+        ctx.strokeStyle='rgba(57,255,20,0.08)';ctx.lineWidth=0.5;
+        ctx.strokeRect(x+1,y,cellW-2,CH-4);
+      });
+      // Beat markers
+      for(let b=0;b<4;b++){
+        ctx.strokeStyle='rgba(57,255,20,0.18)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(b*(CW/4),0);ctx.lineTo(b*(CW/4),CH);ctx.stroke();
+      }
+    }
+    drawGrid(kc,kickC,kickPat,kickFlash,'#39ff14');
+    drawGrid(sc,snareC,snarePat,snareFlash,'#f59e0b');
+    drawGrid(hc,hatC,hatPat,hatFlash,'#7a7060');
+
+    kickFlash.forEach(f=>f.set(0));snareFlash.forEach(f=>f.set(0));hatFlash.forEach(f=>f.set(0));
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ═══════════════════ SECTION 5 — PIRATE RADIO ═══════════════════ */
+(function(){
+  const stations=[
+    {freq:889,name:'KOOL FM',location:'East London',genre:'Jungle / DnB',era:'1992–2004',
+     notes:'The most influential jungle pirate. Grooverider, Fabio, Randall. Broadcasting from tower blocks in Hackney and Stratford.'},
+    {freq:920,name:'RUSH FM',location:'South London',genre:'Hardcore / Jungle',era:'1991–1994',
+     notes:'South London hardcore pirate. Became jungle station as the genre evolved. DIY aerial on the roof, transmitter in the loft.'},
+    {freq:951,name:'DEFECTION FM',location:'North London',genre:'Jungle',era:'1993–1998',
+     notes:'North London jungle station. Crew-run. Music not available anywhere else — vinyl-only exclusives played weeks before release.'},
+    {freq:988,name:'RINSE FM',location:'East London',genre:'Garage / Grime',era:'1994–present',
+     notes:'Started as UK Garage pirate in Forest Gate, E7. Evolved through grime into the first to give Skepta, Wiley, and JME early airtime. Now licensed.'},
+    {freq:1025,name:'FLEX FM',location:'West London',genre:'Jungle / DnB',era:'1995–2001',
+     notes:'West London jungle station. Part of the pirate ecosystem that gave DJs their first audience. Signal reached Heathrow flight paths — authorities took notice.'},
+    {freq:1055,name:'FREEK FM',location:'Manchester',genre:'Hardcore',era:'1991–1993',
+     notes:'Manchester hardcore pirate. Northern rave culture had its own pirate infrastructure parallel to London. The Haçienda\'s shadow fell long.'},
+  ];
+
+  const freqSlider=document.getElementById('freqSlider');
+  const freqReadout=document.getElementById('freqReadout');
+  const stationName=document.getElementById('stationName');
+  const stationMeta=document.getElementById('stationMeta');
+  const tuneStatus=document.getElementById('tuneStatus');
+
+  let currentFreq=920;
+  let freqLag=new LagFilter(920,0.12);
+  let signalStrength=new LagFilter(0,0.08);
+  let noiseLevel=new LagFilter(1,0.1);
+
+  freqSlider.addEventListener('input',()=>{
+    currentFreq=parseInt(freqSlider.value);
+    freqLag.set(currentFreq);
+  });
+
+  function getStation(freq){
+    for(const s of stations){
+      if(Math.abs(s.freq-freq)<8)return{station:s,strength:1-Math.abs(s.freq-freq)/8};
+    }
+    return null;
+  }
+
+  // Radio canvas
+  const rc=document.getElementById('radioCanvas');
+  rc.width=rc.offsetWidth||500;rc.height=220;
+  const rctx=rc.getContext('2d');
+  const RW=rc.width,RH=rc.height;
+
+  // Scope canvas
+  const sc=document.getElementById('radioScope');
+  sc.width=sc.offsetWidth||500;sc.height=80;
+  const sctx=sc.getContext('2d');
+  const SW=sc.width,SH=sc.height;
+
+  let lastT=0;
+  function draw(ts){
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    freqLag.update(dt);
+    const displayFreq=(freqLag.value/10).toFixed(1);
+    freqReadout.textContent=displayFreq;
+
+    const hit=getStation(freqLag.value);
+    const sig=hit?hit.strength:0;
+    signalStrength.set(sig);noiseLevel.set(1-sig*0.8);
+    signalStrength.update(dt);noiseLevel.update(dt);
+
+    if(sig>0.6){
+      const s=hit.station;
+      stationName.textContent=s.name;
+      stationMeta.innerHTML=`<b style="color:var(--accent2)">${s.genre}</b> · ${s.location} · ${s.era}<br>${s.notes}`;
+      tuneStatus.textContent=sig>0.85?'● LOCKED ON':'◐ TUNING...';
+      tuneStatus.style.color=sig>0.85?'#39ff14':'#f59e0b';
+    } else {
+      stationName.textContent='STATIC';
+      stationMeta.textContent='Move the dial to find a station...';
+      tuneStatus.textContent='⌀ NO SIGNAL';
+      tuneStatus.style.color='#7a7060';
+    }
+
+    // Radio spectrum display
+    rctx.globalAlpha=0.08;rctx.fillStyle='#040200';rctx.fillRect(0,0,RW,RH);rctx.globalAlpha=1;
+    const t=ts*0.001;
+    // Noise floor
+    for(let x=0;x<RW;x+=2){
+      const noise=Math.random()*noiseLevel.value*0.3;
+      const y=RH-(noise*RH*0.6);
+      rctx.fillStyle=`rgba(122,112,96,${noise*0.6})`;
+      rctx.fillRect(x,y,1,RH-y);
+    }
+    // Station peaks
+    stations.forEach(s=>{
+      const sx=(s.freq-880)/(1080-880)*RW;
+      const dist=Math.abs(s.freq-freqLag.value);
+      const alpha=Math.max(0,1-dist/20)*0.7+0.1;
+      const gh=RH*0.7*(1-dist/50);
+      if(gh>0){
+        const grad=rctx.createLinearGradient(sx,RH-gh,sx,RH);
+        grad.addColorStop(0,`rgba(245,158,11,${alpha})`);
+        grad.addColorStop(1,`rgba(245,158,11,0)`);
+        rctx.fillStyle=grad;
+        rctx.fillRect(sx-3,RH-gh,6,gh);
+        if(dist<15){
+          rctx.fillStyle=`rgba(245,158,11,${alpha*0.7})`;
+          rctx.font='8px Segoe UI';rctx.textAlign='center';
+          rctx.fillText(s.name,sx,RH-gh-4);
+        }
+      }
+    });
+    // Tuning needle
+    const nx=(freqLag.value-880)/(1080-880)*RW;
+    rctx.strokeStyle='rgba(57,255,20,0.9)';rctx.lineWidth=1.5;
+    rctx.shadowBlur=8;rctx.shadowColor='#39ff14';
+    rctx.beginPath();rctx.moveTo(nx,0);rctx.lineTo(nx,RH);rctx.stroke();
+    rctx.shadowBlur=0;
+
+    // Phosphor scope
+    sctx.globalAlpha=0.1;sctx.fillStyle='#040200';sctx.fillRect(0,0,SW,SH);sctx.globalAlpha=1;
+    sctx.beginPath();
+    for(let i=0;i<SW;i++){
+      const phase=i/SW*Math.PI*8;
+      const sig2=signalStrength.value;
+      const noise=noiseLevel.value*(Math.random()-0.5)*0.5;
+      const wave=sig2*(Math.sin(phase*2.1+t*6.3)*0.5+Math.sin(phase*3.7+t*4.1)*0.25)+noise;
+      const y=SH/2+wave*SH*0.38;
+      if(i===0)sctx.moveTo(i,y);else sctx.lineTo(i,y);
+    }
+    const sigColor=signalStrength.value>0.5?'rgba(245,158,11,0.8)':'rgba(122,112,96,0.5)';
+    sctx.strokeStyle=sigColor;sctx.lineWidth=1.2;
+    sctx.shadowBlur=signalStrength.value>0.5?6:0;sctx.shadowColor='#f59e0b';
+    sctx.stroke();sctx.shadowBlur=0;
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- ═══════════════════════════════ SECTION 6 — FLYER ARCHIVE ══════════════ -->
+<section id="flyers">
+  <div class="hidden stagger-1"><div class="section-label">Underground Archive</div>
+  <h2>Rave Flyer Archive</h2>
+  <p>Before social media, the photocopied flyer was the only advertising. Handed outside tube stations, left in record shops. Procedurally generated in the spirit of the originals.</p></div>
+  <div class="ctrl-row hidden stagger-2">
+    <button class="btn btn-accent" id="regenFlyers">Generate New Archive</button>
+    <span style="font-size:0.65rem;color:var(--dim);">12 flyers · hover to lift · click to expand</span>
+  </div>
+  <div class="flyer-grid hidden stagger-3" id="flyerGrid"></div>
+  <div class="modal-overlay" id="flyerModal">
+    <div class="modal-box">
+      <button class="modal-close" id="flyerModalClose">✕</button>
+      <div class="modal-canvas-wrap" id="flyerModalCanvasWrap"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 7 — CROWD SIMULATOR ════════════ -->
+<section id="crowd">
+  <div class="hidden stagger-1"><div class="section-label">Boids Simulation</div>
+  <h2>Crowd Energy Simulator</h2>
+  <p>Top-down warehouse floor. Each dot follows Boids rules — separation, alignment, cohesion. Drop the bass and watch them surge.</p></div>
+  <div class="two-col" style="align-items:start;">
+    <div class="hidden stagger-2">
+      <div class="canvas-wrap"><canvas id="crowdCanvas" style="height:420px;"></canvas></div>
+      <div class="energy-bar-wrap" style="margin-top:0.5rem;"><div class="energy-bar-fill" id="energyBar"></div></div>
+      <div style="font-size:0.6rem;color:var(--dim);margin-top:0.3rem;text-align:center;" id="energyLabel">Energy: 50%</div>
+    </div>
+    <div class="hidden stagger-3">
+      <div class="card">
+        <div class="section-label">Controls</div>
+        <div class="ctrl-row">
+          <button class="btn drop-btn" id="preDropBtn" style="font-size:0.65rem;">PRE-DROP</button>
+          <button class="btn drop-btn btn-accent" id="dropBtn" style="font-size:0.65rem;">DROP</button>
+          <button class="btn drop-btn btn-amber" id="breakdownBtn" style="font-size:0.65rem;">BREAKDOWN</button>
+        </div>
+        <div class="slider-row" style="margin-top:0.75rem;">
+          <span class="slider-label">BPM</span>
+          <input type="range" id="crowdBpm" min="100" max="180" value="160" step="1">
+          <span class="slider-val" id="crowdBpmVal">160</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Density</span>
+          <input type="range" class="amber" id="crowdDensity" min="30" max="200" value="80" step="1">
+          <span class="slider-val amber" id="crowdDensityVal">80</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Cohesion</span>
+          <input type="range" id="crowdCohesion" min="0" max="100" value="40" step="1">
+          <span class="slider-val" id="crowdCohesionVal">40</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1rem;">
+        <div class="section-label">State</div>
+        <div id="crowdStateDisplay" style="font-size:0.85rem;font-weight:800;color:var(--accent);text-shadow:0 0 8px rgba(57,255,20,0.5);">PRE-DROP</div>
+        <div style="font-size:0.68rem;color:var(--dim);margin-top:0.4rem;line-height:1.6;">Boids: separation radius 25px · cohesion radius 60px · max speed scales with BPM. Laser sweeps sync with beat phase.</div>
+      </div>
+      <div class="card-quote" style="margin-top:1rem;"><p>"On the dancefloor, the individual disappears into the collective. The rave was Britain's closest brush with utopian communism." — Jeremy Gilbert</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════ SECTION 6 — FLYER GENERATOR ═══════════════════ */
+(function(){
+  const EVENTS=[
+    {name:'JUNGLE MASSIVE',sub:'ALL NIGHT LONG',venue:'Arch 7, Hackney',phone:'0171 XXX XXXX'},
+    {name:'ROAST',sub:'JUNGLE FEVER',venue:'The Dungeons, Waterloo',phone:'0181 XXX XXXX'},
+    {name:'METALHEADZ',sub:'SUNDAY SESSIONS',venue:'Blue Note, Hoxton',phone:'0171 XXX XXXX'},
+    {name:'SPEED',sub:'INTELLIGENT DNB',venue:'Mars Bar, London W1',phone:'0171 XXX XXXX'},
+    {name:'SWERVE',sub:'BREAKBEAT SCIENCE',venue:'The Leisure Lounge',phone:'0181 XXX XXXX'},
+    {name:'KOOL FM',sub:'LIVE BROADCAST',venue:'Undisclosed Location',phone:'TUNE 100.4 FM'},
+    {name:'FREE PARTY',sub:'BRING SOUND SYSTEM',venue:'M25 Junction — TBA',phone:'FREE BEFORE 10PM'},
+    {name:'DARKCORE',sub:'FOR THE HARDCORE',venue:'Roller Express, N18',phone:'0181 XXX XXXX'},
+    {name:'MOVEMENT',sub:'LIQUID FUNCTION',venue:'Brixton Academy',phone:'0171 XXX XXXX'},
+    {name:'JUNGLE MANIA',sub:'THE ORIGINAL',venue:'Wembley Arena',phone:'0181 900 0000'},
+    {name:'PERCEPTION',sub:'STEPPERS NIGHT',venue:'The Forum, Kentish Town',phone:'0171 XXX XXXX'},
+    {name:'TELEPATHY',sub:'RAVE ALL NIGHT',venue:'Nr. Hemel Hempstead',phone:'FREE PARTY'},
+  ];
+  const MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const YEARS=['1992','1993','1994','1995','1996','1997'];
+
+  function drawFlyer(canvas,evt,seed){
+    const W=canvas.width=200,H=canvas.height=286;
+    const ctx=canvas.getContext('2d');
+    const rng=mulberry32(seed);
+
+    ctx.fillStyle='#030303';ctx.fillRect(0,0,W,H);
+
+    // Noise/grain texture
+    for(let i=0;i<3000;i++){
+      const x=rng()*W,y=rng()*H;
+      const a=rng()*0.12;
+      ctx.fillStyle=`rgba(255,255,255,${a})`;
+      ctx.fillRect(x,y,1,1);
+    }
+
+    // Background shape / slash
+    const shapeType=Math.floor(rng()*4);
+    if(shapeType===0){
+      ctx.fillStyle='rgba(57,255,20,0.06)';
+      ctx.fillRect(0,0,W,H*0.55);
+    } else if(shapeType===1){
+      ctx.fillStyle='rgba(245,158,11,0.07)';
+      ctx.beginPath();ctx.moveTo(0,H*0.2);ctx.lineTo(W,0);ctx.lineTo(W,H*0.6);ctx.lineTo(0,H*0.8);ctx.closePath();ctx.fill();
+    } else if(shapeType===2){
+      for(let i=0;i<5;i++){
+        const ly=rng()*H;
+        ctx.fillStyle=`rgba(57,255,20,0.04)`;
+        ctx.fillRect(0,ly,W,2+rng()*4);
+      }
+    }
+
+    // Border
+    const borderColor=rng()<0.6?'rgba(57,255,20,0.6)':'rgba(245,158,11,0.5)';
+    ctx.strokeStyle=borderColor;ctx.lineWidth=1.5;
+    ctx.strokeRect(3,3,W-6,H-6);
+    if(rng()<0.5){ctx.strokeRect(6,6,W-12,H-12);}
+
+    // Main event name
+    const accentGreen=rng()<0.65;
+    const mainColor=accentGreen?'#39ff14':'#f59e0b';
+    ctx.fillStyle=mainColor;
+    ctx.shadowBlur=8;ctx.shadowColor=mainColor;
+    const nameLen=evt.name.length;
+    const fontSize=nameLen<=6?28:nameLen<=10?22:16;
+    ctx.font=`900 ${fontSize}px 'Segoe UI',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    // Word-wrap if needed
+    const words=evt.name.split(' ');
+    if(words.length>1&&nameLen>8){
+      ctx.font=`900 ${fontSize-2}px 'Segoe UI',sans-serif`;
+      ctx.fillText(words[0],W/2,H*0.22);
+      ctx.fillText(words.slice(1).join(' '),W/2,H*0.33);
+    } else {
+      ctx.fillText(evt.name,W/2,H*0.27);
+    }
+    ctx.shadowBlur=0;
+
+    // Subtitle
+    ctx.fillStyle=accentGreen?'rgba(245,158,11,0.9)':'rgba(57,255,20,0.9)';
+    ctx.font=`700 8px 'Segoe UI',sans-serif`;
+    ctx.letterSpacing='0.1em';
+    ctx.fillText(evt.sub,W/2,H*0.43);
+
+    // Divider line
+    ctx.strokeStyle=mainColor+'55';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(20,H*0.5);ctx.lineTo(W-20,H*0.5);ctx.stroke();
+
+    // Date
+    const mo=MONTHS[Math.floor(rng()*12)];
+    const yr=YEARS[Math.floor(rng()*YEARS.length)];
+    const day=Math.floor(rng()*28)+1;
+    ctx.fillStyle='rgba(232,224,208,0.85)';
+    ctx.font=`700 10px 'Segoe UI',sans-serif`;
+    ctx.fillText(`${day} ${mo} ${yr}`,W/2,H*0.57);
+
+    // Venue
+    ctx.fillStyle='rgba(122,112,96,0.9)';
+    ctx.font=`600 7px 'Segoe UI',sans-serif`;
+    ctx.fillText(evt.venue,W/2,H*0.65);
+
+    // DJs
+    const djs=['GOLDIE','FABIO','GROOVERIDER','BUKEM','DJ HYPE','KRUST','DJ RAP','RANDALL','FROST','BRYAN GEE'];
+    const ndj=2+Math.floor(rng()*3);
+    const djList=[];
+    for(let i=0;i<ndj;i++)djList.push(djs[Math.floor(rng()*djs.length)]);
+    ctx.fillStyle=mainColor+'cc';
+    ctx.font=`700 7px 'Segoe UI',sans-serif`;
+    ctx.fillText(djList.join(' · '),W/2,H*0.74);
+
+    // Bottom info
+    ctx.fillStyle='rgba(122,112,96,0.7)';
+    ctx.font=`600 6.5px 'Segoe UI',sans-serif`;
+    ctx.fillText(evt.phone,W/2,H*0.84);
+    ctx.font=`700 6px 'Segoe UI',sans-serif`;
+    ctx.fillStyle='rgba(57,255,20,0.5)';
+    ctx.fillText('FREE BEFORE 10PM · STRICTLY 18+',W/2,H*0.91);
+
+    // Tiny decorative dots
+    for(let i=0;i<8;i++){
+      const dx=20+i*(W-40)/7,dy=H*0.96;
+      ctx.beginPath();ctx.arc(dx,dy,1,0,Math.PI*2);
+      ctx.fillStyle=i%2===0?mainColor+'88':'rgba(122,112,96,0.5)';ctx.fill();
+    }
+  }
+
+  function mulberry32(a){
+    return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+  }
+
+  function buildGrid(){
+    const grid=document.getElementById('flyerGrid');
+    grid.innerHTML='';
+    EVENTS.forEach((evt,i)=>{
+      const seed=Math.floor(Math.random()*999999)+i*1000;
+      const item=document.createElement('div');
+      item.className='flyer-item';
+      const c=document.createElement('canvas');
+      item.appendChild(c);
+      drawFlyer(c,evt,seed);
+      item.addEventListener('click',()=>{
+        const modal=document.getElementById('flyerModal');
+        const wrap=document.getElementById('flyerModalCanvasWrap');
+        wrap.innerHTML='';
+        const bigC=document.createElement('canvas');
+        wrap.appendChild(bigC);
+        bigC.style.width='100%';bigC.style.height='100%';
+        drawFlyer(bigC,evt,seed);
+        modal.classList.add('open');
+      });
+      grid.appendChild(item);
+    });
+  }
+  buildGrid();
+  document.getElementById('regenFlyers').addEventListener('click',buildGrid);
+  document.getElementById('flyerModalClose').addEventListener('click',()=>{
+    document.getElementById('flyerModal').classList.remove('open');
+  });
+  document.getElementById('flyerModal').addEventListener('click',e=>{
+    if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');
+  });
+})();
+
+/* ═══════════════════ SECTION 7 — CROWD BOIDS ═══════════════════ */
+(function(){
+  const canvas=document.getElementById('crowdCanvas');
+  canvas.width=canvas.offsetWidth||700;canvas.height=420;
+  const W=canvas.width,H=canvas.height;
+  const ctx=canvas.getContext('2d');
+
+  let crowdBpm=160,state='pre-drop',cohesion=0.4,targetN=80;
+  const energyLag=new LagFilter(0.5,0.3);
+  const speedLag=new LagFilter(1,0.15);
+
+  const bpmSlider=document.getElementById('crowdBpm');
+  const densitySlider=document.getElementById('crowdDensity');
+  const cohesionSlider=document.getElementById('crowdCohesion');
+  bpmSlider.addEventListener('input',()=>{crowdBpm=parseInt(bpmSlider.value);document.getElementById('crowdBpmVal').textContent=crowdBpm;});
+  densitySlider.addEventListener('input',()=>{targetN=parseInt(densitySlider.value);document.getElementById('crowdDensityVal').textContent=targetN;});
+  cohesionSlider.addEventListener('input',()=>{cohesion=parseInt(cohesionSlider.value)/100;document.getElementById('crowdCohesionVal').textContent=cohesionSlider.value;});
+
+  const stateDisplay=document.getElementById('crowdStateDisplay');
+  const energyBar=document.getElementById('energyBar');
+  const energyLabel=document.getElementById('energyLabel');
+
+  ['preDropBtn','dropBtn','breakdownBtn'].forEach((id,i)=>{
+    document.getElementById(id).addEventListener('click',()=>{
+      state=['pre-drop','drop','breakdown'][i];
+      stateDisplay.textContent=state.toUpperCase();
+      energyLag.set(i===1?1:i===2?0.1:0.5);
+      document.querySelectorAll('.drop-btn').forEach(b=>b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    });
+  });
+
+  // Boids
+  let boids=[];
+  function initBoids(n){
+    boids=Array.from({length:n},()=>({
+      x:W*0.2+Math.random()*W*0.6,y:H*0.2+Math.random()*H*0.6,
+      vx:(Math.random()-0.5)*2,vy:(Math.random()-0.5)*2,
+      trail:[],hue:Math.random()*30
+    }));
+  }
+  initBoids(80);
+
+  // Speaker positions (4 corners)
+  const spkPositions=[
+    {x:W*0.05,y:H*0.05},{x:W*0.95,y:H*0.05},
+    {x:W*0.05,y:H*0.95},{x:W*0.95,y:H*0.95}
+  ];
+
+  // Laser sweep
+  let laserAngleLag=new LagFilter(0,0.2);
+  let beatPhase=0,beatInterval=60/160;
+
+  let lastT=0;
+  function draw(ts){
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    beatInterval=60/crowdBpm;
+    beatPhase+=dt/beatInterval;if(beatPhase>1)beatPhase-=1;
+
+    energyLag.update(dt);speedLag.update(dt);
+    const energy=energyLag.value;
+    const maxSpeed=(0.5+energy*3.5)*(0.5+crowdBpm/180);
+    speedLag.set(maxSpeed);speedLag.update(dt);
+
+    // Manage boid count
+    while(boids.length<targetN)boids.push({x:W*0.5+Math.random()*50,y:H*0.5+Math.random()*50,vx:(Math.random()-0.5)*2,vy:(Math.random()-0.5)*2,trail:[],hue:Math.random()*30});
+    while(boids.length>targetN)boids.pop();
+
+    // Phosphor decay
+    ctx.globalAlpha=state==='drop'?0.06:0.12;
+    ctx.fillStyle='#030300';ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
+
+    // Floor grid
+    ctx.strokeStyle='rgba(57,255,20,0.04)';ctx.lineWidth=0.5;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // Laser sweeps (top-down)
+    const lAngle=Math.sin(ts*0.001*1.8)*0.6;
+    laserAngleLag.set(lAngle);laserAngleLag.update(dt);
+    const lx=W/2,ly=0;
+    for(let i=0;i<4;i++){
+      const a=laserAngleLag.value+(i-1.5)*0.3;
+      const tx=lx+Math.sin(a)*H*1.5,ty=ly+Math.cos(a)*H*1.5;
+      const grad=ctx.createLinearGradient(lx,ly,tx,ty);
+      const lc=i%2===0?'rgba(57,255,20,':'rgba(245,158,11,';
+      grad.addColorStop(0,lc+'0.25)');grad.addColorStop(0.5,lc+'0.08)');grad.addColorStop(1,lc+'0)');
+      ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(tx,ty);
+      ctx.strokeStyle=grad;ctx.lineWidth=1;ctx.stroke();
+    }
+
+    // Speaker stack markers
+    spkPositions.forEach(sp=>{
+      ctx.beginPath();ctx.arc(sp.x,sp.y,14,0,Math.PI*2);
+      ctx.fillStyle='rgba(57,255,20,0.06)';ctx.fill();
+      ctx.strokeStyle='rgba(57,255,20,0.3)';ctx.lineWidth=1;ctx.stroke();
+      // Pulse ring on beat
+      const pulse=Math.pow(1-beatPhase,3)*0.5;
+      ctx.beginPath();ctx.arc(sp.x,sp.y,14+pulse*30,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(57,255,20,${pulse*0.4})`;ctx.lineWidth=1;ctx.stroke();
+    });
+
+    // Update and draw boids
+    const SEP_R=22,COH_R=60,ALI_R=40;
+    boids.forEach((b,i)=>{
+      let sx=0,sy=0,cx=0,cy=0,ax=0,ay=0,n_sep=0,n_coh=0,n_ali=0;
+      boids.forEach((other,j)=>{
+        if(i===j)return;
+        const dx=other.x-b.x,dy=other.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<SEP_R&&dist>0){sx-=dx/dist;sy-=dy/dist;n_sep++;}
+        if(dist<COH_R){cx+=other.x;cy+=other.y;n_coh++;}
+        if(dist<ALI_R){ax+=other.vx;ay+=other.vy;n_ali++;}
+      });
+      // Separation
+      if(n_sep>0){b.vx+=sx*0.05;b.vy+=sy*0.05;}
+      // Cohesion
+      if(n_coh>0){b.vx+=(cx/n_coh-b.x)*cohesion*0.004;b.vy+=(cy/n_coh-b.y)*cohesion*0.004;}
+      // Alignment
+      if(n_ali>0){b.vx+=(ax/n_ali-b.vx)*0.05;b.vy+=(ay/n_ali-b.vy)*0.05;}
+      // Attraction to speakers in drop
+      if(state==='drop'){
+        const nearest=spkPositions.reduce((a,sp)=>{
+          const d=Math.hypot(sp.x-b.x,sp.y-b.y);return d<a.d?{d,sp}:a;
+        },{d:Infinity,sp:null});
+        if(nearest.sp){
+          b.vx+=(nearest.sp.x-b.x)*0.001;b.vy+=(nearest.sp.y-b.y)*0.001;
+        }
+      }
+      // Bounds
+      if(b.x<20)b.vx+=0.3;if(b.x>W-20)b.vx-=0.3;
+      if(b.y<20)b.vy+=0.3;if(b.y>H-20)b.vy-=0.3;
+      // Speed limit
+      const spd=Math.sqrt(b.vx*b.vx+b.vy*b.vy);
+      const ms=speedLag.value;
+      if(spd>ms){b.vx=(b.vx/spd)*ms;b.vy=(b.vy/spd)*ms;}
+      b.x+=b.vx;b.y+=b.vy;
+
+      // Trail
+      b.trail.push({x:b.x,y:b.y});
+      if(b.trail.length>6)b.trail.shift();
+
+      // Draw trail
+      if(state==='drop'&&b.trail.length>1){
+        ctx.beginPath();
+        b.trail.forEach((tp,ti)=>{
+          if(ti===0)ctx.moveTo(tp.x,tp.y);else ctx.lineTo(tp.x,tp.y);
+        });
+        ctx.strokeStyle=`rgba(245,158,11,${0.08+energy*0.15})`;ctx.lineWidth=1;ctx.stroke();
+      }
+
+      // Draw dot
+      const dotColor=state==='drop'?'rgba(245,158,11,0.9)':state==='breakdown'?'rgba(122,112,96,0.5)':'rgba(57,255,20,0.7)';
+      ctx.beginPath();ctx.arc(b.x,b.y,1.5+energy,0,Math.PI*2);
+      ctx.fillStyle=dotColor;
+      if(state==='drop'){ctx.shadowBlur=4+energy*4;ctx.shadowColor='#f59e0b';}
+      ctx.fill();ctx.shadowBlur=0;
+    });
+
+    const pct=Math.round(energy*100);
+    energyBar.style.width=pct+'%';
+    energyLabel.textContent='Energy: '+pct+'%';
+    if(state!=='drop')energyLag.set(energyLag.value*0.998+0.5*0.002);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- ═══════════════════════════════ SECTION 8 — ARTISTS ════════════════════ -->
+<section id="artists">
+  <div class="hidden stagger-1"><div class="section-label">Key Figures</div>
+  <h2>Artists of the Continuum</h2>
+  <p>The DJs, producers, and selectors who built jungle and drum &amp; bass from South and East London's Black British communities.</p></div>
+  <div class="artist-grid">
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">Fabio &amp; Grooverider</div>
+      <div class="artist-role">DJ Duo</div>
+      <div class="artist-era">1988 – present</div>
+      <div class="artist-city">South London</div>
+      <div class="artist-bio">The founding DJs of jungle and drum &amp; bass. Their Sunday night at Rage (Heaven) was the crucible where hardcore became jungle. BBC Radio 1 show 1997–2015. Grooverider championed darkside; Fabio pushed liquid.</div>
+    </div>
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Goldie</div>
+      <div class="artist-role">Producer / Label Owner</div>
+      <div class="artist-era">1992 – present</div>
+      <div class="artist-city">South London / Wolverhampton</div>
+      <div class="artist-bio">Metalheadz founder. 'Timeless' (1995) was the first DnB album to claim serious artistic ambition. 'Inner City Life' remains the most emotionally powerful record in the canon. Time-stretching as compositional tool.</div>
+    </div>
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">LTJ Bukem</div>
+      <div class="artist-role">Producer / DJ</div>
+      <div class="artist-era">1992 – present</div>
+      <div class="artist-city">Hertfordshire</div>
+      <div class="artist-bio">Architect of atmospheric, jazz-influenced drum &amp; bass. Good Looking Records defined the liquid strand. 'Horizons' is the template for sophisticated DnB. Speed parties at Mars Bar were the alternative to rave's harder edge.</div>
+    </div>
+    <div class="artist-card hidden stagger-4">
+      <div class="artist-name">DJ Krust</div>
+      <div class="artist-role">Producer / DJ</div>
+      <div class="artist-era">1992 – present</div>
+      <div class="artist-city">Bristol</div>
+      <div class="artist-bio">Full Cycle / Reprazent. Bristol's DnB sound was distinct from London — darker, more political, influenced by trip-hop and reggae. 'Warhead' is a founding document of techstep. The Bristol scene ran parallel to London.</div>
+    </div>
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">DJ Hype</div>
+      <div class="artist-role">MC / DJ</div>
+      <div class="artist-era">1991 – present</div>
+      <div class="artist-city">East London</div>
+      <div class="artist-bio">The MC's MC. Hype's style — rapid-fire rhymes over jungle riddims — brought the vocal tradition of Jamaican sound system culture into DnB. Ganja Records. His sets define jump-up jungle's maximum energy approach.</div>
+    </div>
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Cleveland Watkiss</div>
+      <div class="artist-role">Vocalist / Jazz Singer</div>
+      <div class="artist-era">1990 – present</div>
+      <div class="artist-city">Hackney, London</div>
+      <div class="artist-bio">The jazz vocalist who bridged DnB and jazz. His work with Goldie and on Bukem's Good Looking productions showed DnB could carry sophisticated harmonic content. The human voice over Amen breaks as emotional anchor.</div>
+    </div>
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">DJ Rap</div>
+      <div class="artist-role">DJ / Producer</div>
+      <div class="artist-era">1992 – present</div>
+      <div class="artist-city">Singapore / UK</div>
+      <div class="artist-bio">One of the most technically precise DJs in jungle and DnB. 'Intelligent Woman' showed the genre's reach. Won the DMC world championship. Her production work on Proper Talent pushed DnB's technical production standards.</div>
+    </div>
+    <div class="artist-card hidden stagger-4">
+      <div class="artist-name">Jumping Jack Frost</div>
+      <div class="artist-role">DJ / Producer</div>
+      <div class="artist-era">1989 – present</div>
+      <div class="artist-city">London</div>
+      <div class="artist-bio">One of the original jungle pirates. V Recordings co-founder. Frost's mixing precision and record collection depth made him the DJ's DJ. His Rage residency alongside Grooverider placed him at the origin point of the entire culture.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SECTION 9 — GLOSSARY ═══════════════════ -->
+<section id="glossary">
+  <div class="hidden stagger-1"><div class="section-label">Vocabulary</div>
+  <h2>Rave Culture Glossary</h2>
+  <p>22 terms from the Amen Break to 160BPM. The language of a culture that changed music.</p></div>
+  <div class="glossary-grid hidden stagger-2">
+    <div class="gloss-item">
+      <div class="gloss-term">160BPM</div>
+      <div class="gloss-def">The tempo at which jungle operates — Amen breaks stretched and chopped to 155–165 BPM. At this speed the breakbeat pattern creates a forward momentum unlike any 4/4 tempo.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Amen Break</div>
+      <div class="gloss-def">A 6-second drum solo from 'Amen, Brother' by The Winstons (1969). The most sampled recording in music history. The rhythmic DNA of jungle and drum &amp; bass.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Breakbeat</div>
+      <div class="gloss-def">A drum loop isolated from its rhythmic 'break' section — the moment in a funk or soul recording where the drummer plays without melody. The compositional raw material of jungle.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Clash</div>
+      <div class="gloss-def">A sound system battle — two rigs competing for crowd response. Borrowed from Jamaican sound system tradition. The selector chooses dubplates; the crowd chooses the winner.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Darkside</div>
+      <div class="gloss-def">The dark, menacing variant of early jungle (1993–94). Horror samples, sub-bass pressure, minor keys. Goldie's 'Terminator' is the founding text. Precursor to Metalheadz techstep.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Dubplate</div>
+      <div class="gloss-def">An exclusive lacquer-cut acetate of an unreleased track, pressed for a specific DJ. In sound system culture, owning the dubplate — the only copy — is the currency of status.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Free Party</div>
+      <div class="gloss-def">An illegal, non-commercial rave organised outside the club system. UK's Criminal Justice Act (1994) was written specifically to criminalise them by targeting 'repetitive beats'.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Hardcore Continuum</div>
+      <div class="gloss-def">Simon Reynolds's theory: a single evolutionary chain from UK rave (1989) through ardkore, jungle, DnB, garage, grime, to dubstep. The same cultural engine, constantly mutating.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Jump-Up</div>
+      <div class="gloss-def">An energetic, crowd-focused DnB subgenre. Heavy drops, wobbling subs, simple but effective. Commercial face of DnB. DJ Hazard, Dillinja, Shy FX. Maximum dancefloor pressure.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Jungle Techno</div>
+      <div class="gloss-def">Early name for jungle when it was still emerging from hardcore rave. The combination of breakbeats (from hip-hop/jungle) with techno's electronic texture. Became simply 'jungle' by 1993.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Liquid Funk</div>
+      <div class="gloss-def">A soulful, melodic DnB subgenre developed by LTJ Bukem. Lush pads, emotional basslines, jazz harmonics. Hospital Records continued the tradition. The cerebral alternative to jump-up.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Neurofunk</div>
+      <div class="gloss-def">Dark, technically complex DnB subgenre. Ed Rush &amp; Optical, Photek, Trace. Intricate Reese bass sound design, clinical production, sci-fi atmospherics. The most technically demanding DnB to produce.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Pirate Radio</div>
+      <div class="gloss-def">Unlicensed FM broadcasts from tower blocks. Kool FM, Rush FM, Rinse FM. The distribution infrastructure for underground music before the internet. A DJ slot on pirate radio built careers.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Ragga Jungle</div>
+      <div class="gloss-def">Jungle with Jamaican dancehall vocal samples. Connects electronic music to Caribbean diasporic identity. Shy FX's 'Original Nuttah' is canonical. Bass culture and rave culture in synthesis.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Reese Bass</div>
+      <div class="gloss-def">Deep, modulated bass created by Kevin Saunderson in 1988. Two detuned oscillators. The defining bass sound of jungle and DnB — warm, buzzing, harmonically rich under the breakbeat.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Riddim</div>
+      <div class="gloss-def">Jamaican term for rhythm or backing track. In sound system culture, the riddim is shared — multiple vocalists might toast (rap) over the same riddim. Carried into jungle via ragga vocal tradition.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Rollers</div>
+      <div class="gloss-def">DnB tracks with continuous, rolling rhythmic momentum — no traditional drop or breakdown. The energy stays constant through rhythmic density rather than structural contrast.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Selector</div>
+      <div class="gloss-def">The DJ role in sound system culture — the person who selects and plays the records. Distinct from the MC who toasts over them. 'The selector plays riddims; the crowd responds.'</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Sound System</div>
+      <div class="gloss-def">A mobile speaker rig operated by a collective. Bass bins (18"), mid stacks (12"), horns. The social instrument of reggae and rave culture — music as physical experience, community as technology.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Steppers</div>
+      <div class="gloss-def">A DnB sub-style with a 4/4 kick pattern underlying the Amen break — a conscious reference to roots reggae's 'steppers' rhythm. Bass weight and dancefloor function over technical complexity.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">Time Stretch</div>
+      <div class="gloss-def">Digital audio processing that changes tempo without affecting pitch — or vice versa. In jungle, time-stretch artifacts (smearing, granulation) were embraced as aesthetic elements: the sound of technology at its limits.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="gloss-term">VIP</div>
+      <div class="gloss-def">'Version in Progress' — a remix of a track created by the original artist, typically with a darker or more dancefloor-focused arrangement. Exclusive to DJs initially. 'The VIP was the dubplate you could play twice.'</div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══════════════════ INTERSECTION OBSERVER — SECTION REVEALS ═══════════════════ */
+(function(){
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
+})();
+
+/* ═══════════════════ NAV ACTIVE STATE ═══════════════════ */
+(function(){
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('nav a');
+  function updateNav(){
+    let current='hero';
+    sections.forEach(s=>{
+      const rect=s.getBoundingClientRect();
+      if(rect.top<=100)current=s.id;
+    });
+    navLinks.forEach(a=>{
+      a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+    });
+  }
+  window.addEventListener('scroll',updateNav,{passive:true});
+  updateNav();
+})();
+</script>
+</body>
+</html>

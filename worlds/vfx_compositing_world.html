@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring vfx compositing">
+    <meta property="og:title" content="Vfx Compositing World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring vfx compositing">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/vfx_compositing_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VFX &amp; Compositing World — The Invisible Craft of Illusion</title>
+<style>
+:root {
+  --black: #050508;
+  --surface: #0d0d14;
+  --border: #1e1e2e;
+  --text: #e2e8f0;
+  --dim: #64748b;
+  --accent: #f97316;
+  --accent-dim: rgba(249,115,22,0.15);
+  --accent-glow: rgba(249,115,22,0.4);
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --radius: 8px;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(5,5,8,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 24px; height: 54px; gap: 8px;
+}
+.nav-logo {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--accent); text-transform: uppercase; white-space: nowrap;
+  margin-right: 12px;
+}
+.nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
+.nav-links a {
+  color: var(--dim); font-size: 11px; text-decoration: none;
+  padding: 4px 8px; border-radius: 4px; letter-spacing: 0.04em;
+  text-transform: uppercase; transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--accent); background: var(--accent-dim); }
+.nav-links a.active { color: var(--accent); }
+
+/* LAYOUT */
+section { padding: 64px 24px; border-bottom: 1px solid var(--border); }
+.section-inner { max-width: 900px; margin: 0 auto; }
+.section-label {
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px; font-weight: 600;
+}
+h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.1; }
+h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 700; margin-bottom: 12px; }
+h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+.subtitle { font-size: 16px; color: var(--dim); margin-top: 10px; max-width: 600px; }
+
+/* BADGES */
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+.badge {
+  background: var(--accent-dim); border: 1px solid var(--accent-glow);
+  color: var(--accent); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+  font-weight: 600;
+}
+
+/* CANVAS WRAPPERS */
+.canvas-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; position: relative;
+  margin: 20px 0;
+}
+canvas { display: block; max-width: 100%; }
+
+/* CONTROLS */
+.controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px; margin: 12px 0;
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+}
+.ctrl-group { display: flex; flex-direction: column; gap: 4px; min-width: 140px; }
+.ctrl-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
+.ctrl-val { font-size: 12px; color: var(--accent); font-family: monospace; }
+input[type=range] {
+  -webkit-appearance: none; width: 100%; height: 4px;
+  background: var(--border); border-radius: 2px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  background: var(--accent); border-radius: 50%; cursor: pointer;
+}
+.btn {
+  background: var(--accent-dim); border: 1px solid var(--accent-glow);
+  color: var(--accent); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 6px 14px; border-radius: 4px;
+  cursor: pointer; font-weight: 600; transition: all 0.2s;
+}
+.btn:hover { background: var(--accent); color: #000; }
+.btn.active { background: var(--accent); color: #000; }
+select {
+  background: var(--black); border: 1px solid var(--border);
+  color: var(--text); font-size: 12px; padding: 4px 8px;
+  border-radius: 4px; outline: none;
+}
+select:focus { border-color: var(--accent); }
+
+/* EDUCATIONAL CARD */
+.edu-card {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 16px; margin-top: 16px;
+  font-size: 13px; color: var(--text);
+}
+.edu-card strong { color: var(--accent); }
+
+/* GRID + CARDS */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 12px; }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s, transform 0.6s; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: 0.1s; }
+.reveal.d2 { transition-delay: 0.2s; }
+.reveal.d3 { transition-delay: 0.3s; }
+.reveal.d4 { transition-delay: 0.4s; }
+.reveal.d5 { transition-delay: 0.5s; }
+
+/* SECTION-SPECIFIC */
+.pass-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 14px 0; }
+.pass-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px; min-width: 130px;
+}
+.pass-item.active { border-color: var(--accent); }
+.pass-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
+.pass-math { font-size: 10px; color: var(--accent); font-family: monospace; margin-top: 4px; }
+.pass-controls { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+
+.shot-pair { display: flex; flex-direction: column; gap: 6px; }
+.shot-pair .wipe-container { position: relative; overflow: hidden; border-radius: 6px; cursor: ew-resize; }
+.shot-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
+.shot-tech { font-size: 11px; color: var(--accent); }
+.shot-sw { font-size: 10px; color: var(--dim); }
+
+.node-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px;
+  font-size: 12px; min-height: 80px;
+}
+.node-panel h4 { color: var(--accent); margin-bottom: 6px; font-size: 13px; }
+
+.artist-card {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius); padding: 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.artist-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(249,115,22,0.2);
+}
+.artist-name { font-size: 14px; font-weight: 700; color: var(--accent); }
+.artist-role { font-size: 12px; color: var(--dim); margin-top: 2px; }
+.artist-work { font-size: 12px; color: var(--text); margin-top: 6px; }
+
+.glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.glossary-item { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+.glossary-term { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.04em; }
+.glossary-def { font-size: 12px; color: var(--dim); margin-top: 3px; line-height: 1.4; }
+
+.timeline-scroll {
+  overflow-x: auto; padding-bottom: 12px;
+}
+.timeline-inner {
+  display: flex; align-items: flex-start; gap: 0;
+  min-width: 1400px; padding: 20px 0;
+  position: relative;
+}
+.timeline-inner::before {
+  content: ''; position: absolute;
+  top: 36px; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.tl-node {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; flex: 1; min-width: 100px; cursor: pointer;
+  position: relative; z-index: 2;
+}
+.tl-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--border); border: 2px solid var(--dim);
+  transition: all 0.2s;
+}
+.tl-node:hover .tl-dot, .tl-node.expanded .tl-dot {
+  background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+.tl-year { font-size: 11px; font-weight: 700; color: var(--accent); }
+.tl-title { font-size: 10px; color: var(--dim); text-align: center; padding: 0 4px; line-height: 1.3; }
+.tl-expand {
+  display: none; position: absolute; top: 60px;
+  background: var(--surface); border: 1px solid var(--accent);
+  border-radius: var(--radius); padding: 10px; width: 160px;
+  font-size: 11px; color: var(--text); z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+.tl-node.expanded .tl-expand { display: block; }
+
+.match-score {
+  font-size: 32px; font-weight: 800; color: var(--accent);
+  text-align: center; font-family: monospace;
+}
+.match-label { text-align: center; font-size: 13px; color: var(--dim); margin-top: 4px; }
+.match-ok { color: var(--green); font-weight: 700; }
+
+footer {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 32px 24px; text-align: center;
+  font-size: 12px; color: var(--dim); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+footer span { color: var(--accent); }
+
+/* GLOW TEXT */
+.glow {
+  text-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(249,115,22,0.2);
+}
+</style>
+</head>
+<body class="domain-video">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⬡ VFX World</div>
+  <div class="nav-links">
+    <a href="#hero">Pipeline</a>
+    <a href="#keying">Keying</a>
+    <a href="#multipass">Multi-Pass</a>
+    <a href="#tracking">Tracking</a>
+    <a href="#beforeafter">Before/After</a>
+    <a href="#lightmatch">Light Match</a>
+    <a href="#zdepth">Z-Depth</a>
+    <a href="#nodegraph">Nodes</a>
+    <a href="#artists">Artists</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1 — HERO -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="hero" style="padding-top:80px;">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 01 — The VFX Pipeline</div>
+    <h1 class="glow reveal d1">VFX &amp; COMPOSITING<br>WORLD</h1>
+    <p class="subtitle reveal d2">The art of making you believe the impossible.</p>
+    <div class="badges reveal d3">
+      <span class="badge">Layers</span>
+      <span class="badge">Keying</span>
+      <span class="badge">Tracking</span>
+      <span class="badge">Render Passes</span>
+    </div>
+    <div class="canvas-wrap reveal d4" style="margin-top:28px;">
+      <canvas id="heroPipeline" width="800" height="300"></canvas>
+      <div id="heroPipelineTooltip" style="
+        position:absolute; display:none;
+        background:rgba(5,5,8,0.95); border:1px solid var(--accent);
+        border-radius:6px; padding:10px 14px; font-size:12px;
+        max-width:200px; pointer-events:none; z-index:10;
+        box-shadow:0 4px 20px rgba(249,115,22,0.3);
+      "></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2 — KEYING LAB -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="keying">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 02 — Keying Lab</div>
+    <h2 class="reveal d1">Green Screen Keying</h2>
+    <p class="subtitle reveal d2">Pull a clean key by dialing in clip black, clip white, and despill.</p>
+
+    <div class="canvas-wrap reveal d3">
+      <canvas id="keyingCanvas" width="600" height="320"></canvas>
+    </div>
+
+    <div class="controls reveal d4">
+      <div class="ctrl-group">
+        <span class="ctrl-label">Clip Black</span>
+        <input type="range" id="clipBlack" min="0" max="0.3" step="0.005" value="0.05">
+        <span class="ctrl-val" id="clipBlackVal">0.050</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Clip White</span>
+        <input type="range" id="clipWhite" min="0.7" max="1.0" step="0.005" value="0.92">
+        <span class="ctrl-val" id="clipWhiteVal">0.920</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Despill</span>
+        <input type="range" id="despill" min="0" max="1" step="0.01" value="0.5">
+        <span class="ctrl-val" id="despillVal">0.50</span>
+      </div>
+      <div class="ctrl-group">
+        <button class="btn" id="maттeViewBtn">Matte View</button>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;" class="reveal d4">
+      <p style="font-size:12px; color:var(--dim); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Problem Frames:</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <canvas id="prob0" width="100" height="70" style="border-radius:4px; border:2px solid var(--border); cursor:pointer;" title="Hair Detail"></canvas>
+        <canvas id="prob1" width="100" height="70" style="border-radius:4px; border:2px solid var(--border); cursor:pointer;" title="Motion Blur"></canvas>
+        <canvas id="prob2" width="100" height="70" style="border-radius:4px; border:2px solid var(--border); cursor:pointer;" title="Reflective Costume"></canvas>
+        <canvas id="prob3" width="100" height="70" style="border-radius:4px; border:2px solid var(--border); cursor:pointer;" title="Wrinkled Fabric"></canvas>
+      </div>
+    </div>
+
+    <div class="edu-card reveal d5">
+      <strong>Keying</strong> is the foundation of modern filmmaking. A chromakey works by isolating a specific hue (usually green or blue) and making it transparent — enabling actors to be placed in any digital environment.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3 — MULTI-PASS COMPOSITOR -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="multipass">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 03 — Multi-Pass Compositor</div>
+    <h2 class="reveal d1">Render Pass Compositing</h2>
+    <p class="subtitle reveal d2">Toggle passes on/off, blend them, and watch the composite update in real time.</p>
+
+    <div class="pass-grid reveal d3" id="passGrid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="canvas-wrap reveal d4">
+      <canvas id="multipassCanvas" width="580" height="260"></canvas>
+    </div>
+
+    <div class="edu-card reveal d5">
+      <strong>Render passes</strong> give compositors surgical control. Instead of one baked image, the renderer outputs each lighting contribution separately — allowing colour grade, blur, or effect adjustments per-element without re-rendering.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 4 — TRACKING DEMO -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="tracking">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 04 — Tracking Demo</div>
+    <h2 class="reveal d1">Motion Tracking Visualizer</h2>
+    <p class="subtitle reveal d2">Watch the tracker lock on, see the position data graph, and compare before/after.</p>
+
+    <div style="display:flex; gap:10px; margin-bottom:10px;" class="reveal d2">
+      <button class="btn active" id="trackMode2D">2D Track</button>
+      <button class="btn" id="trackModePlanar">Planar Track</button>
+    </div>
+
+    <div class="canvas-wrap reveal d3">
+      <canvas id="trackingCanvas" width="620" height="320"></canvas>
+    </div>
+
+    <div class="edu-card reveal d4">
+      <strong>Tracking</strong> converts motion into usable position data. 2D tracking follows a single point; planar tracking solves perspective on a flat surface — used for screen replacements and sign changes.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — BEFORE/AFTER VFX MACHINE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="beforeafter">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 05 — Before/After VFX Machine</div>
+    <h2 class="reveal d1">8 VFX Shot Pairs</h2>
+    <p class="subtitle reveal d2">Drag the wipe handle to reveal the before and after of each technique.</p>
+    <div class="grid-2 reveal d3" id="shotPairsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 6 — LIGHT MATCH CHALLENGE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="lightmatch">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 06 — Light Match Challenge</div>
+    <h2 class="reveal d1">Light Match Challenge</h2>
+    <p class="subtitle reveal d2">Adjust the CG sphere to match the reference scene lighting. Score &gt;90% to pass.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="reveal d3">
+      <div>
+        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--dim);margin-bottom:6px;">Reference Scene</p>
+        <div class="canvas-wrap"><canvas id="lightRefCanvas" width="280" height="240"></canvas></div>
+      </div>
+      <div>
+        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--dim);margin-bottom:6px;">Your CG Sphere</p>
+        <div class="canvas-wrap"><canvas id="lightCGCanvas" width="280" height="240"></canvas></div>
+      </div>
+    </div>
+
+    <div class="controls reveal d4">
+      <div class="ctrl-group">
+        <span class="ctrl-label">Key Direction (°)</span>
+        <input type="range" id="lightDir" min="0" max="360" step="1" value="220">
+        <span class="ctrl-val" id="lightDirVal">220°</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Color Temp (K)</span>
+        <input type="range" id="lightTemp" min="3200" max="6500" step="100" value="4000">
+        <span class="ctrl-val" id="lightTempVal">4000K</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Fill Ratio</span>
+        <input type="range" id="lightFill" min="1" max="8" step="0.1" value="4">
+        <span class="ctrl-val" id="lightFillVal">4.0:1</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Roughness</span>
+        <input type="range" id="lightRough" min="0" max="1" step="0.01" value="0.5">
+        <span class="ctrl-val" id="lightRoughVal">0.50</span>
+      </div>
+    </div>
+
+    <div style="margin:16px 0;" class="reveal d4">
+      <div class="match-score" id="matchScore">0%</div>
+      <div class="match-label" id="matchLabel">Adjust lighting to match the reference</div>
+    </div>
+
+    <div class="edu-card reveal d5">
+      <strong>Light matching</strong> is critical for CGI integration. In professional VFX, HDR light probes (chrome balls and grey balls) are photographed on set to capture the exact lighting environment — feeding data directly into the renderer.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 7 — Z-DEPTH WORLD + VFX TIMELINE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="zdepth">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 07 — Z-Depth &amp; VFX Timeline</div>
+    <h2 class="reveal d1">Z-Depth &amp; Focus Control</h2>
+    <p class="subtitle reveal d2">Move the focus plane through the scene. Elements outside focus appear defocused.</p>
+
+    <div style="display:flex;gap:10px;margin-bottom:10px;" class="reveal d2">
+      <button class="btn active" id="zdepthViewBeauty">Beauty</button>
+      <button class="btn" id="zdepthViewDepth">Depth Pass</button>
+      <button class="btn" id="zdepthViewDOF">Simulated DOF</button>
+    </div>
+
+    <div class="canvas-wrap reveal d3">
+      <canvas id="zdepthCanvas" width="580" height="260"></canvas>
+    </div>
+
+    <div class="controls reveal d4">
+      <div class="ctrl-group" style="flex:1;">
+        <span class="ctrl-label">Focus Plane</span>
+        <input type="range" id="focusPlane" min="0" max="1" step="0.01" value="0.4">
+        <span class="ctrl-val" id="focusPlaneVal">40% depth</span>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">DOF Strength</span>
+        <input type="range" id="dofStrength" min="0" max="1" step="0.01" value="0.6">
+        <span class="ctrl-val" id="dofStrengthVal">0.60</span>
+      </div>
+    </div>
+
+    <div class="edu-card reveal d4">
+      <strong>Post-DOF using depth passes</strong> is non-destructive and adjustable — compositors can change the focal point without re-rendering. This is why depth passes are an essential deliverable from the 3D department.
+    </div>
+
+    <h2 style="margin-top:48px;" class="reveal">History of VFX</h2>
+    <p style="color:var(--dim);font-size:14px;margin-bottom:16px;" class="reveal d1">Click any milestone to expand the technique description.</p>
+    <div class="timeline-scroll reveal d2">
+      <div class="timeline-inner" id="vfxTimeline"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 8 — NODE-BASED COMPOSITING PRIMER -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="nodegraph">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 08 — Node-Based Compositing</div>
+    <h2 class="reveal d1">Nuke-Style Node Graph</h2>
+    <p class="subtitle reveal d2">Click any node to learn what it does. Watch data flow through the network.</p>
+
+    <div style="display:flex;gap:10px;margin-bottom:10px;" class="reveal d2">
+      <button class="btn active" id="nodeSimplify">Simplified View</button>
+      <button class="btn" id="nodeExpand">Expanded View</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:16px;" class="reveal d3">
+      <div class="canvas-wrap">
+        <canvas id="nodeCanvas" width="620" height="360"></canvas>
+      </div>
+      <div class="node-panel" id="nodePanel">
+        <h4>Select a Node</h4>
+        <p style="color:var(--dim);font-size:12px;">Click any node in the graph to learn about its function in the compositing pipeline.</p>
+      </div>
+    </div>
+
+    <div class="edu-card reveal d4">
+      <strong>Node-based compositing</strong> (as used in Nuke, Fusion, and Flame) treats every operation as a node with inputs and outputs — building a tree of transformations. Far more flexible and re-entrant than layer-based workflows.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 9 — ARTISTS + GLOSSARY -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section id="artists">
+  <div class="section-inner">
+    <div class="section-label reveal">Section 09 — Artists &amp; Glossary</div>
+    <h2 class="reveal d1">VFX Legends</h2>
+    <p class="subtitle reveal d2">The artists who built the invisible craft.</p>
+    <div class="grid-2 reveal d3" id="artistsGrid"></div>
+
+    <h2 style="margin-top:48px;" class="reveal">Compositing Glossary</h2>
+    <p style="color:var(--dim);font-size:14px;margin-bottom:4px;" class="reveal d1">22 essential terms every compositor should know.</p>
+    <div class="glossary-grid reveal d2" id="glossaryGrid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>WAVGEN <span>VFX &amp; COMPOSITING WORLD</span> — App 05 of the Video Universe — The Waveform Generation — <span>wavgen.ca</span></p>
+</footer>
+
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CORE UTILITIES
+// ═══════════════════════════════════════════════════════════
+
+class LagFilter {
+  constructor(initial, tau) {
+    this.value = initial;
+    this.tau = tau;
+    this._last = performance.now();
+  }
+  update(target) {
+    const now = performance.now();
+    const dt = (now - this._last) / 1000;
+    this._last = now;
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+// IntersectionObserver scroll reveal
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Nav active section highlight
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id]');
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => navObs.observe(s));
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 1 — HERO PIPELINE CANVAS
+// ═══════════════════════════════════════════════════════════
+(function initHeroPipeline() {
+  const canvas = document.getElementById('heroPipeline');
+  const ctx = canvas.getContext('2d');
+  const tooltip = document.getElementById('heroPipelineTooltip');
+
+  const stages = [
+    { label: 'Pre-Production', desc: 'Storyboards, animatics, and VFX breakdowns establish the visual language before shooting begins.' },
+    { label: 'Production\n/ Shoot', desc: 'On-set VFX supervision ensures tracking markers, green screens, and reference data are captured.' },
+    { label: 'VFX\nSupervision', desc: 'The VFX Supervisor coordinates all departments: 3D, compositing, tracking, and colour.' },
+    { label: 'Tracking &\nMatchmove', desc: 'Camera motion is solved and 3D tracking markers are matched to plate footage.' },
+    { label: 'Compositing', desc: 'CG elements, keyed footage, matte paintings and passes are combined into final images.' },
+    { label: 'Color', desc: 'The DI colour grade unifies the visual tone across all shots — digital intermediate.' },
+    { label: 'Review', desc: 'Client reviews, notes, and approvals happen here — multiple rounds are typical.' },
+    { label: 'Delivery', desc: 'Final output: DCP for cinema, ProRes/H.264 for streaming, and archive masters.' }
+  ];
+
+  const W = 800, H = 300;
+  const nodeW = 78, nodeH = 50, nodeR = 8;
+  const startX = 28, startY = 110, spacingX = (W - startX * 2 - nodeW) / (stages.length - 1);
+
+  const nodes = stages.map((s, i) => ({
+    x: startX + i * spacingX,
+    y: startY,
+    w: nodeW, h: nodeH,
+    label: s.label,
+    desc: s.desc,
+    hovered: false
+  }));
+
+  // Particle that travels the pipeline
+  let particleT = 0; // 0..1 across all nodes
+  const particleLag = new LagFilter(0, 0.3);
+
+  function getParticlePos(t) {
+    const totalSegs = nodes.length - 1;
+    const seg = Math.min(Math.floor(t * totalSegs), totalSegs - 1);
+    const frac = (t * totalSegs) - seg;
+    const n0 = nodes[seg], n1 = nodes[seg + 1];
+    const x0 = n0.x + n0.w / 2, x1 = n1.x + n1.w / 2;
+    const y0 = n0.y + n0.h / 2, y1 = n1.y + n1.h / 2;
+    return { x: x0 + (x1 - x0) * frac, y: y0 + (y1 - y0) * frac };
+  }
+
+  function drawNode(n, idx) {
+    const glow = n.hovered ? 0.7 : 0.25;
+    ctx.save();
+    // glow
+    ctx.shadowColor = '#f97316';
+    ctx.shadowBlur = n.hovered ? 18 : 6;
+    // rect
+    ctx.strokeStyle = n.hovered ? '#f97316' : '#3a3a5c';
+    ctx.lineWidth = n.hovered ? 2 : 1.5;
+    ctx.fillStyle = n.hovered ? 'rgba(249,115,22,0.15)' : 'rgba(13,13,20,0.9)';
+    ctx.beginPath();
+    ctx.roundRect(n.x, n.y, n.w, n.h, nodeR);
+    ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // number badge
+    ctx.fillStyle = '#f97316';
+    ctx.font = 'bold 9px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(idx + 1).padStart(2, '0'), n.x + n.w / 2, n.y + 13);
+
+    // label (multi-line support)
+    ctx.fillStyle = n.hovered ? '#f97316' : '#e2e8f0';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    const lines = n.label.split('\n');
+    lines.forEach((ln, li) => {
+      ctx.fillText(ln, n.x + n.w / 2, n.y + 26 + li * 12);
+    });
+    ctx.restore();
+  }
+
+  function drawArrow(n0, n1) {
+    const x0 = n0.x + n0.w, y0 = n0.y + n0.h / 2;
+    const x1 = n1.x, y1 = n1.y + n1.h / 2;
+    ctx.save();
+    ctx.strokeStyle = '#2a2a40';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
+    ctx.stroke();
+    // arrowhead
+    ctx.fillStyle = '#2a2a40';
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - 7, y1 - 4);
+    ctx.lineTo(x1 - 7, y1 + 4);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  let animId;
+  function draw(ts) {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background gradient
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0a0a12');
+    bg.addColorStop(1, '#050508');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    // Title
+    ctx.save();
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillStyle = '#f97316';
+    ctx.shadowColor = '#f97316'; ctx.shadowBlur = 10;
+    ctx.textAlign = 'center';
+    ctx.fillText('THE VFX PIPELINE', W / 2, 38);
+    ctx.shadowBlur = 0;
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('Hover a stage to learn more', W / 2, 55);
+    ctx.restore();
+
+    // Pipeline line
+    ctx.save();
+    ctx.strokeStyle = '#1e1e2e'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(nodes[0].x + nodeW / 2, startY + nodeH / 2);
+    ctx.lineTo(nodes[nodes.length - 1].x + nodeW / 2, startY + nodeH / 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Arrows
+    for (let i = 0; i < nodes.length - 1; i++) drawArrow(nodes[i], nodes[i + 1]);
+
+    // Nodes
+    nodes.forEach((n, i) => drawNode(n, i));
+
+    // Particle
+    particleT = (particleT + 0.003) % 1;
+    const pos = getParticlePos(particleT);
+    ctx.save();
+    ctx.shadowColor = '#f97316'; ctx.shadowBlur = 16;
+    ctx.fillStyle = '#f97316';
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, 5, 0, Math.PI * 2); ctx.fill();
+    // trail
+    for (let i = 1; i <= 6; i++) {
+      const trailT = ((particleT - i * 0.004) + 1) % 1;
+      const tp = getParticlePos(trailT);
+      ctx.globalAlpha = (6 - i) / 10;
+      ctx.beginPath(); ctx.arc(tp.x, tp.y, 3 - i * 0.3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+
+    animId = requestAnimationFrame(draw);
+  }
+
+  // Tooltip / hover
+  function getScale() {
+    const rect = canvas.getBoundingClientRect();
+    return { sx: W / rect.width, sy: H / rect.height, rect };
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const { sx, sy, rect } = getScale();
+    const mx = (e.clientX - rect.left) * sx;
+    const my = (e.clientY - rect.top) * sy;
+    let hit = null;
+    nodes.forEach(n => {
+      const over = mx >= n.x && mx <= n.x + n.w && my >= n.y && my <= n.y + n.h;
+      n.hovered = over;
+      if (over) hit = n;
+    });
+    if (hit) {
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+      tooltip.innerHTML = `<strong style="color:#f97316">${hit.label.replace('\n', ' ')}</strong><br>${hit.desc}`;
+    } else {
+      tooltip.style.display = 'none';
+    }
+  });
+  canvas.addEventListener('mouseleave', () => { nodes.forEach(n => n.hovered = false); tooltip.style.display = 'none'; });
+
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SYSTEM: KeyingEngine — SECTION 2
+// ═══════════════════════════════════════════════════════════
+(function initKeyingLab() {
+  const canvas = document.getElementById('keyingCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 600, H = 320;
+
+  let clipBlack = 0.05, clipWhite = 0.92, despill = 0.5;
+  let showMatte = false;
+  let problemFrame = 0; // 0=normal,1=hair,2=motion,3=reflect,4=fabric
+
+  // Procedural city skyline for background
+  function drawSkyline(ctx, x, y, w, h) {
+    ctx.save();
+    ctx.fillStyle = '#1a1a3e';
+    ctx.fillRect(x, y, w, h);
+    // sky gradient
+    const sky = ctx.createLinearGradient(x, y, x, y + h * 0.6);
+    sky.addColorStop(0, '#0a0a28'); sky.addColorStop(1, '#1e1e4a');
+    ctx.fillStyle = sky; ctx.fillRect(x, y, w, h * 0.7);
+    // buildings
+    const buildings = [
+      [0,0.4,12,0.6],[15,0.3,10,0.7],[30,0.45,14,0.55],[50,0.2,18,0.8],
+      [72,0.35,12,0.65],[88,0.25,22,0.75],[115,0.38,10,0.62],[130,0.28,16,0.72],
+      [150,0.4,12,0.6],[168,0.32,14,0.68],[188,0.22,20,0.78],[212,0.36,10,0.64],
+      [228,0.28,18,0.72],[250,0.4,12,0.6],[268,0.32,14,0.68],[288,0.24,18,0.76]
+    ];
+    buildings.forEach(([bx, top, bw, bot]) => {
+      if (bx * (w/300) > w) return;
+      const rx = x + bx * (w / 300);
+      const rw = bw * (w / 300);
+      ctx.fillStyle = '#0d0d2a';
+      ctx.fillRect(rx, y + top * h, rw, (bot - top) * h);
+      // windows
+      ctx.fillStyle = '#f97316';
+      for (let wy = 0; wy < 6; wy++) {
+        for (let wx2 = 0; wx2 < 3; wx2++) {
+          if (Math.random() > 0.4) {
+            ctx.globalAlpha = 0.6 + Math.random() * 0.4;
+            ctx.fillRect(rx + 2 + wx2 * (rw / 3.5), y + (top + 0.05 + wy * 0.07) * h, 2, 3);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    });
+    ctx.restore();
+  }
+
+  // Draw human silhouette
+  function drawHuman(ctx, cx, cy, scale, color, alpha, blur) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    if (blur > 0) { ctx.filter = `blur(${blur}px)`; }
+    ctx.fillStyle = color;
+    // body
+    ctx.beginPath(); ctx.ellipse(cx, cy - scale * 0.05, scale * 0.18, scale * 0.28, 0, 0, Math.PI * 2); ctx.fill();
+    // head
+    ctx.beginPath(); ctx.arc(cx, cy - scale * 0.4, scale * 0.1, 0, Math.PI * 2); ctx.fill();
+    // arms
+    ctx.beginPath();
+    ctx.moveTo(cx - scale * 0.18, cy - scale * 0.15);
+    ctx.lineTo(cx - scale * 0.32, cy + scale * 0.1);
+    ctx.lineWidth = scale * 0.07; ctx.strokeStyle = color; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + scale * 0.18, cy - scale * 0.15);
+    ctx.lineTo(cx + scale * 0.32, cy + scale * 0.1);
+    ctx.stroke();
+    // legs
+    ctx.beginPath();
+    ctx.moveTo(cx - scale * 0.08, cy + scale * 0.2);
+    ctx.lineTo(cx - scale * 0.12, cy + scale * 0.42);
+    ctx.lineWidth = scale * 0.08; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + scale * 0.08, cy + scale * 0.2);
+    ctx.lineTo(cx + scale * 0.12, cy + scale * 0.42);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Draw hair detail on head
+  function drawHairDetail(ctx, cx, cy, scale) {
+    ctx.save();
+    ctx.strokeStyle = '#c8a050';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 20; i++) {
+      const angle = -Math.PI * 0.8 + i * (Math.PI * 1.6 / 20);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(angle) * scale * 0.1, cy - scale * 0.4 + Math.sin(angle) * scale * 0.1);
+      ctx.lineTo(cx + Math.cos(angle) * scale * 0.14, cy - scale * 0.4 + Math.sin(angle) * scale * 0.14);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function keyPixel(r, g, b, cb, cw, ds) {
+    // normalize
+    const nr = r / 255, ng = g / 255, nb = b / 255;
+    // green difference key
+    const diff = ng - Math.max(nr, nb);
+    // alpha
+    let alpha = 1 - (diff - cb) / Math.max(0.001, cw - cb);
+    alpha = Math.max(0, Math.min(1, alpha));
+    // despill: reduce green channel
+    const despilled_g = ng - ds * Math.max(0, diff);
+    return { alpha, r: nr, g: Math.max(0, despilled_g), b: nb };
+  }
+
+  function getHumanMaskAt(px, py, cx, cy, scale, frame) {
+    // rough body mask
+    const dx = px - cx, dy = py - cy;
+    // head
+    const headDist = Math.sqrt(dx * dx + (dy + scale * 0.4) * (dy + scale * 0.4));
+    if (headDist < scale * 0.12) return true;
+    // body
+    const bodyX = Math.abs(dx) / (scale * 0.2);
+    const bodyY = (dy + scale * 0.05) / (scale * 0.3);
+    if (bodyX < 1 && bodyY > -1 && bodyY < 1) return true;
+    // hair detail fringe  
+    if (frame === 1 && headDist < scale * 0.18 && headDist > scale * 0.1) return Math.random() > 0.5;
+    return false;
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    const halfW = W / 2;
+
+    // LEFT HALF: green screen source
+    ctx.save();
+    ctx.rect(0, 0, halfW, H); ctx.clip();
+    ctx.fillStyle = '#00FF00'; ctx.fillRect(0, 0, halfW, H);
+    // human figure
+    const cx = halfW / 2, cy = H * 0.52;
+    const scale = H * 0.65;
+    const humanColor = '#2a1a0a'; // dark brown skin tone proxy
+    const blur = problemFrame === 2 ? 3 : 0;
+    drawHuman(ctx, cx, cy, scale, humanColor, 1, blur);
+    if (problemFrame === 1) drawHairDetail(ctx, cx, cy, scale);
+    if (problemFrame === 3) {
+      // reflective suit — add green tint to body
+      ctx.save();
+      ctx.globalAlpha = 0.4; ctx.fillStyle = '#00ff88';
+      ctx.beginPath(); ctx.ellipse(cx, cy - scale * 0.05, scale * 0.18, scale * 0.28, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+    if (problemFrame === 4) {
+      // wrinkled fabric texture
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      for (let i = 0; i < 12; i++) {
+        ctx.strokeStyle = '#001100'; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - scale * 0.18 + i * scale * 0.03, cy - scale * 0.2);
+        ctx.quadraticCurveTo(cx - scale * 0.1 + i * scale * 0.03, cy, cx - scale * 0.18 + i * scale * 0.03, cy + scale * 0.2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+
+    // RIGHT HALF: keyed or matte result
+    ctx.save();
+    ctx.beginPath(); ctx.rect(halfW, 0, halfW, H); ctx.clip();
+
+    if (showMatte) {
+      // matte view
+      ctx.fillStyle = '#000'; ctx.fillRect(halfW, 0, halfW, H);
+      // draw matte based on position
+      const srcCX = cx, srcCY = cy;
+      for (let y = 0; y < H; y += 2) {
+        for (let x = 0; x < halfW; x += 2) {
+          const inMask = getHumanMaskAt(x - halfW / 2, y - cy, 0, 0, scale, problemFrame);
+          const baseColor = inMask ? 200 : 10;
+          const mattes = Math.min(255, Math.max(0, baseColor));
+          const a = mattes / 255;
+          ctx.fillStyle = `rgba(255,255,255,${a})`;
+          ctx.fillRect(halfW + x, y, 2, 2);
+        }
+      }
+    } else {
+      // composite view: figure over city
+      drawSkyline(ctx, halfW, 0, halfW, H);
+      // draw figure
+      drawHuman(ctx, halfW + halfW / 2, cy, scale, humanColor, 0.95, blur);
+      if (problemFrame === 1) drawHairDetail(ctx, halfW + halfW / 2, cy, scale);
+    }
+    ctx.restore();
+
+    // Divider
+    ctx.save();
+    ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // Labels
+    ctx.save();
+    ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('SOURCE (GREEN SCREEN)', halfW / 2, 20);
+    ctx.fillText(showMatte ? 'MATTE VIEW' : 'KEYED COMPOSITE', halfW + halfW / 2, 20);
+    ctx.restore();
+  }
+
+  drawFrame();
+
+  // Controls
+  const cbSlider = document.getElementById('clipBlack');
+  const cwSlider = document.getElementById('clipWhite');
+  const dsSlider = document.getElementById('despill');
+  const cbVal = document.getElementById('clipBlackVal');
+  const cwVal = document.getElementById('clipWhiteVal');
+  const dsVal = document.getElementById('despillVal');
+  const maттeBtn = document.getElementById('maттeViewBtn');
+
+  function updateKey() {
+    clipBlack = parseFloat(cbSlider.value);
+    clipWhite = parseFloat(cwSlider.value);
+    despill = parseFloat(dsSlider.value);
+    cbVal.textContent = clipBlack.toFixed(3);
+    cwVal.textContent = clipWhite.toFixed(3);
+    dsVal.textContent = despill.toFixed(2);
+    drawFrame();
+  }
+  cbSlider.addEventListener('input', updateKey);
+  cwSlider.addEventListener('input', updateKey);
+  dsSlider.addEventListener('input', updateKey);
+
+  if (maттeBtn) {
+    maттeBtn.addEventListener('click', () => {
+      showMatte = !showMatte;
+      maттeBtn.classList.toggle('active', showMatte);
+      maттeBtn.textContent = showMatte ? 'Composite View' : 'Matte View';
+      drawFrame();
+    });
+  }
+
+  // Problem frame thumbnails
+  const probNames = ['Hair Detail', 'Motion Blur', 'Reflective Suit', 'Wrinkled Fabric'];
+  const probColors = ['#2a1a0a', '#1a0a0a', '#0a2a2a', '#1a1a0a'];
+  for (let i = 0; i < 4; i++) {
+    const pc = document.getElementById('prob' + i);
+    if (!pc) continue;
+    const pctx = pc.getContext('2d');
+    pctx.fillStyle = '#00FF00'; pctx.fillRect(0, 0, 100, 70);
+    const pscale = 55;
+    const px = 50, py = 38;
+    // simplified figure
+    pctx.fillStyle = probColors[i];
+    pctx.beginPath(); pctx.arc(px, py - pscale * 0.35, pscale * 0.1, 0, Math.PI * 2); pctx.fill();
+    pctx.beginPath(); pctx.ellipse(px, py, pscale * 0.15, pscale * 0.25, 0, 0, Math.PI * 2); pctx.fill();
+    pctx.font = 'bold 9px sans-serif'; pctx.textAlign = 'center'; pctx.fillStyle = '#f97316';
+    pctx.fillText(probNames[i], 50, 65);
+    pc.style.borderColor = 'var(--border)';
+    pc.addEventListener('click', () => {
+      problemFrame = i + 1;
+      document.querySelectorAll('[id^=prob]').forEach((c, ci) => {
+        c.style.borderColor = (ci === i) ? 'var(--accent)' : 'var(--border)';
+      });
+      drawFrame();
+    });
+  }
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// SYSTEM: MultiPassCompositor — SECTION 3
+// ═══════════════════════════════════════════════════════════
+(function initMultiPass() {
+  const outCanvas = document.getElementById('multipassCanvas');
+  const octx = outCanvas.getContext('2d');
+  const W = 580, H = 260;
+
+  const passes = [
+    { name: 'Beauty',    color: '#f97316', math: 'Full render',         blend: 'normal',   opacity: 1.0, active: true },
+    { name: 'Diffuse',   color: '#94a3b8', math: 'N·L × albedo',        blend: 'multiply', opacity: 0.9, active: true },
+    { name: 'Specular',  color: '#ffffff', math: 'H·N ^ roughness',     blend: 'add',      opacity: 0.8, active: true },
+    { name: 'AO',        color: '#222230', math: '∑ occlusion',         blend: 'multiply', opacity: 0.7, active: true },
+    { name: 'Shadow',    color: '#050510', math: '1 − shadow_mask',     blend: 'multiply', opacity: 0.6, active: true },
+    { name: 'Reflection',color: '#60a5fa', math: 'env_map × fresnel',   blend: 'screen',   opacity: 0.5, active: true }
+  ];
+
+  // Build pass UI
+  const grid = document.getElementById('passGrid');
+  const passCanvases = [];
+  const lagOpacities = passes.map(p => new LagFilter(p.opacity, 0.12));
+
+  passes.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'pass-item' + (p.active ? ' active' : '');
+    item.innerHTML = `
+      <canvas id="passThumb${i}" width="100" height="80" style="border-radius:4px;"></canvas>
+      <span class="pass-label">${p.name}</span>
+      <span class="pass-math">${p.math}</span>
+      <div class="pass-controls">
+        <div style="display:flex;gap:6px;align-items:center;justify-content:space-between;">
+          <button class="btn" id="passToggle${i}" style="padding:3px 8px;font-size:10px;">${p.active ? 'ON' : 'OFF'}</button>
+          <select id="passBlend${i}" style="font-size:10px;padding:2px 4px;">
+            <option value="normal"${p.blend==='normal'?' selected':''}>Normal</option>
+            <option value="add"${p.blend==='add'?' selected':''}>Add</option>
+            <option value="multiply"${p.blend==='multiply'?' selected':''}>Multiply</option>
+            <option value="screen"${p.blend==='screen'?' selected':''}>Screen</option>
+          </select>
+        </div>
+        <input type="range" id="passOp${i}" min="0" max="1" step="0.01" value="${p.opacity}">
+      </div>`;
+    grid.appendChild(item);
+
+    const tc = document.getElementById('passThumb' + i);
+    passCanvases.push(tc);
+    drawPassThumb(tc, p, i);
+
+    document.getElementById('passToggle' + i).addEventListener('click', function() {
+      p.active = !p.active;
+      this.textContent = p.active ? 'ON' : 'OFF';
+      this.classList.toggle('active', p.active);
+      item.classList.toggle('active', p.active);
+      drawComposite();
+    });
+    document.getElementById('passBlend' + i).addEventListener('change', function() {
+      p.blend = this.value; drawComposite();
+    });
+    document.getElementById('passOp' + i).addEventListener('input', function() {
+      p.opacity = parseFloat(this.value); drawComposite();
+    });
+  });
+
+  function drawPassThumb(tc, p, idx) {
+    const tctx = tc.getContext('2d');
+    const tw = 100, th = 80;
+    tctx.clearRect(0, 0, tw, th);
+
+    const cx = tw / 2, cy = th / 2, r = Math.min(tw, th) * 0.3;
+    // background
+    tctx.fillStyle = idx === 0 ? '#0a0a18' :
+                     idx === 3 ? '#111122' :
+                     idx === 4 ? '#05050f' : '#0d0d1a';
+    tctx.fillRect(0, 0, tw, th);
+
+    // sphere shading per pass
+    const grd = tctx.createRadialGradient(cx - r * 0.35, cy - r * 0.35, r * 0.05, cx, cy, r);
+    if (idx === 0) { // beauty
+      grd.addColorStop(0, '#ffa050'); grd.addColorStop(0.6, '#c04010'); grd.addColorStop(1, '#200808');
+    } else if (idx === 1) { // diffuse
+      grd.addColorStop(0, '#c8c8d8'); grd.addColorStop(0.6, '#606070'); grd.addColorStop(1, '#181820');
+    } else if (idx === 2) { // specular
+      grd.addColorStop(0, '#ffffff'); grd.addColorStop(0.3, '#888888'); grd.addColorStop(1, '#000000');
+    } else if (idx === 3) { // AO
+      grd.addColorStop(0, '#c8c8c8'); grd.addColorStop(0.5, '#606060'); grd.addColorStop(1, '#000000');
+    } else if (idx === 4) { // shadow
+      grd.addColorStop(0, '#404040'); grd.addColorStop(0.5, '#181818'); grd.addColorStop(1, '#000000');
+    } else { // reflection
+      grd.addColorStop(0, '#80c0ff'); grd.addColorStop(0.5, '#2060a0'); grd.addColorStop(1, '#001030');
+    }
+    tctx.fillStyle = grd;
+    tctx.beginPath(); tctx.arc(cx, cy, r, 0, Math.PI * 2); tctx.fill();
+
+    // rim light on beauty
+    if (idx === 0) {
+      const rim = tctx.createRadialGradient(cx + r * 0.6, cy + r * 0.3, 0, cx + r * 0.6, cy + r * 0.3, r * 0.6);
+      rim.addColorStop(0, 'rgba(249,115,22,0.6)'); rim.addColorStop(1, 'rgba(249,115,22,0)');
+      tctx.fillStyle = rim;
+      tctx.beginPath(); tctx.arc(cx, cy, r, 0, Math.PI * 2); tctx.fill();
+    }
+  }
+
+  function applyBlendMode(ctx, mode) {
+    const blendMap = { normal: 'source-over', add: 'lighter', multiply: 'multiply', screen: 'screen' };
+    ctx.globalCompositeOperation = blendMap[mode] || 'source-over';
+  }
+
+  function drawComposite() {
+    octx.clearRect(0, 0, W, H);
+    octx.fillStyle = '#050510'; octx.fillRect(0, 0, W, H);
+
+    // render each active pass scaled to output
+    passes.forEach((p, i) => {
+      if (!p.active) return;
+      const tc = passCanvases[i];
+      const op = lagOpacities[i].update(p.opacity);
+      octx.save();
+      octx.globalAlpha = op;
+      applyBlendMode(octx, p.blend);
+      // tile-fill the output
+      const pattern = octx.createPattern(tc, 'repeat');
+      octx.scale(W / 100, H / 80);
+      octx.fillStyle = pattern;
+      octx.fillRect(0, 0, 100, 80);
+      octx.restore();
+    });
+
+    // label
+    octx.save();
+    octx.font = 'bold 11px sans-serif'; octx.fillStyle = '#64748b';
+    octx.textAlign = 'center';
+    octx.fillText('COMPOSITE OUTPUT', W / 2, 20);
+    octx.restore();
+  }
+
+  drawComposite();
+  // Animate composite slightly
+  function animLoop() { drawComposite(); requestAnimationFrame(animLoop); }
+  requestAnimationFrame(animLoop);
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SYSTEM: TrackingVisualizer — SECTION 4
+// ═══════════════════════════════════════════════════════════
+(function initTracking() {
+  const canvas = document.getElementById('trackingCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 620, H = 320;
+  let mode = '2d'; // '2d' or 'planar'
+  let t = 0;
+
+  document.getElementById('trackMode2D').addEventListener('click', function() {
+    mode = '2d';
+    this.classList.add('active');
+    document.getElementById('trackModePlanar').classList.remove('active');
+  });
+  document.getElementById('trackModePlanar').addEventListener('click', function() {
+    mode = 'planar';
+    this.classList.add('active');
+    document.getElementById('trackMode2D').classList.remove('active');
+  });
+
+  // Track path: Lissajous curve
+  function getTrackPos(t) {
+    const panelW = W / 3;
+    const cx = panelW / 2, cy = H * 0.35;
+    const rx = panelW * 0.3, ry = H * 0.2;
+    return {
+      x: cx + Math.sin(t * 1.3) * rx,
+      y: cy + Math.sin(t * 0.7 + 0.5) * ry
+    };
+  }
+
+  // History buffer for graph
+  const histLen = 80;
+  const posHistory = Array(histLen).fill({ x: 0, y: 0 });
+
+  function draw() {
+    t += 0.025;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#080812'; ctx.fillRect(0, 0, W, H);
+
+    const panelW = W / 3;
+
+    // Panel dividers
+    ctx.save();
+    ctx.strokeStyle = '#1e1e2e'; ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(panelW, 0); ctx.lineTo(panelW, H - 60); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(panelW * 2, 0); ctx.lineTo(panelW * 2, H - 60); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // Panel labels
+    ctx.save(); ctx.font = 'bold 10px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+    ctx.fillText(mode === '2d' ? 'POINT TRACK' : 'PLANAR TRACK', panelW / 2, 18);
+    ctx.fillText('OVERLAY LOCK', panelW + panelW / 2, 18);
+    ctx.fillText('BEFORE / AFTER', panelW * 2 + panelW / 2, 18);
+    ctx.restore();
+
+    if (mode === '2d') {
+      draw2DTrack(panelW);
+    } else {
+      drawPlanarTrack(panelW);
+    }
+
+    drawOverlayPanel(panelW, panelW);
+    drawBeforeAfterPanel(panelW * 2, panelW);
+    drawGraphPanel(panelW, H - 60);
+
+    requestAnimationFrame(draw);
+  }
+
+  function draw2DTrack(pw) {
+    const pos = getTrackPos(t);
+    posHistory.shift(); posHistory.push({ ...pos });
+
+    // Motion path
+    ctx.save();
+    ctx.strokeStyle = 'rgba(249,115,22,0.25)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    posHistory.forEach((p, i) => {
+      if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+
+    // Rotating square (tracked object)
+    ctx.save();
+    ctx.translate(pos.x, pos.y); ctx.rotate(t * 0.8);
+    ctx.fillStyle = 'rgba(249,115,22,0.2)'; ctx.strokeStyle = '#f97316'; ctx.lineWidth = 1.5;
+    ctx.fillRect(-14, -14, 28, 28); ctx.strokeRect(-14, -14, 28, 28);
+    ctx.restore();
+
+    // Crosshair tracker
+    const crossSize = 20;
+    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pos.x - crossSize, pos.y); ctx.lineTo(pos.x + crossSize, pos.y);
+    ctx.moveTo(pos.x, pos.y - crossSize); ctx.lineTo(pos.x, pos.y + crossSize);
+    ctx.stroke();
+    // Corner brackets
+    ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2;
+    const bs = 8;
+    [[−1,−1],[1,−1],[1,1],[−1,1]].forEach(([sx, sy]) => {
+      ctx.beginPath();
+      ctx.moveTo(pos.x + sx * 20, pos.y + sy * 20 - sy * bs);
+      ctx.lineTo(pos.x + sx * 20, pos.y + sy * 20);
+      ctx.lineTo(pos.x + sx * 20 - sx * bs, pos.y + sy * 20);
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  function drawPlanarTrack(pw) {
+    const pos = getTrackPos(t);
+    const ang = t * 0.5;
+    // Rotating quad (sign/screen being tracked)
+    const hw = 50, hh = 35;
+    const perspective = Math.sin(ang) * 0.7;
+    const pts = [
+      { x: pos.x - hw * (1 - perspective * 0.4), y: pos.y - hh * (1 - perspective * 0.2) },
+      { x: pos.x + hw * (1 + perspective * 0.4), y: pos.y - hh * (1 + perspective * 0.2) },
+      { x: pos.x + hw * (1 - perspective * 0.3), y: pos.y + hh * (1 - perspective * 0.3) },
+      { x: pos.x - hw * (1 + perspective * 0.3), y: pos.y + hh * (1 + perspective * 0.3) },
+    ];
+    ctx.save();
+    ctx.fillStyle = 'rgba(249,115,22,0.15)';
+    ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    // Corner markers
+    pts.forEach(p => {
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
+    });
+    // grid inside
+    ctx.strokeStyle = 'rgba(249,115,22,0.3)'; ctx.lineWidth = 0.5;
+    for (let i = 1; i < 4; i++) {
+      const t0 = i / 4;
+      const top = { x: pts[0].x + (pts[1].x - pts[0].x) * t0, y: pts[0].y + (pts[1].y - pts[0].y) * t0 };
+      const bot = { x: pts[3].x + (pts[2].x - pts[3].x) * t0, y: pts[3].y + (pts[2].y - pts[3].y) * t0 };
+      ctx.beginPath(); ctx.moveTo(top.x, top.y); ctx.lineTo(bot.x, bot.y); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawOverlayPanel(ox, pw) {
+    const pos = getTrackPos(t);
+    const lx = ox + pos.x * 0.85 + pw * 0.07;
+    const ly = pos.y;
+
+    // Label locked to tracked position
+    ctx.save();
+    ctx.strokeStyle = '#f97316'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 40, ly - 20); ctx.stroke();
+    ctx.fillStyle = 'rgba(249,115,22,0.15)';
+    ctx.strokeStyle = '#f97316';
+    ctx.beginPath(); ctx.roundRect(lx + 38, ly - 33, 70, 20, 3); ctx.fill(); ctx.stroke();
+    ctx.font = 'bold 10px sans-serif'; ctx.fillStyle = '#f97316'; ctx.textAlign = 'left';
+    ctx.fillText('VFX ELEMENT', lx + 44, ly - 19);
+    // dot
+    ctx.fillStyle = '#f97316';
+    ctx.beginPath(); ctx.arc(lx, ly, 3, 0, Math.PI * 2); ctx.fill();
+    // coord readout
+    ctx.font = '9px monospace'; ctx.fillStyle = '#64748b';
+    ctx.fillText(`X:${(pos.x).toFixed(1)} Y:${(pos.y).toFixed(1)}`, ox + 6, H - 68);
+    ctx.restore();
+  }
+
+  function drawBeforeAfterPanel(ox, pw) {
+    const ph = (H - 60) / 2 - 20;
+    // BEFORE: static square
+    ctx.save();
+    ctx.fillStyle = '#0d0d1a';
+    ctx.fillRect(ox, 22, pw - 2, ph);
+    ctx.fillStyle = '#f97316';
+    ctx.fillRect(ox + pw / 2 - 14, 22 + ph / 2 - 14, 28, 28);
+    ctx.font = '9px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+    ctx.fillText('BEFORE — no track', ox + pw / 2, 28);
+    ctx.restore();
+
+    // AFTER: object at locked screen pos
+    const pos = getTrackPos(t);
+    ctx.save();
+    ctx.fillStyle = '#0d0d1a';
+    ctx.fillRect(ox, 28 + ph, pw - 2, ph);
+    ctx.save();
+    const trackX = ox + pos.x * 0.8 + pw * 0.05;
+    const trackY = 28 + ph + pos.y * 0.35 + ph * 0.1;
+    ctx.translate(trackX, Math.min(28 + ph + ph - 5, Math.max(28 + ph + 5, trackY)));
+    ctx.rotate(t * 0.8);
+    ctx.fillStyle = 'rgba(249,115,22,0.3)'; ctx.strokeStyle = '#f97316'; ctx.lineWidth = 1.5;
+    ctx.fillRect(-10, -10, 20, 20); ctx.strokeRect(-10, -10, 20, 20);
+    ctx.restore();
+    ctx.font = '9px sans-serif'; ctx.fillStyle = '#f97316'; ctx.textAlign = 'center';
+    ctx.fillText('AFTER — tracker locked', ox + pw / 2, 34 + ph);
+    ctx.restore();
+  }
+
+  function drawGraphPanel(graphX, graphY) {
+    const gw = W, gh = 60;
+    ctx.save();
+    ctx.fillStyle = '#080812'; ctx.fillRect(0, graphY, gw, gh);
+    ctx.strokeStyle = '#1e1e2e'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, graphY); ctx.lineTo(gw, graphY); ctx.stroke();
+    ctx.font = '9px monospace'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+    ctx.fillText('POSITION DATA — X (orange) / Y (blue)', 10, graphY + 12);
+
+    const gleft = 10, gright = gw - 10, gmid = graphY + gh / 2;
+    ctx.strokeStyle = 'rgba(249,115,22,0.7)'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    posHistory.forEach((p, i) => {
+      const gx = gleft + (i / histLen) * (gright - gleft);
+      const gy = gmid - (p.x - W / 6) * 0.15;
+      if (i === 0) ctx.moveTo(gx, gy); else ctx.lineTo(gx, gy);
+    });
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(96,165,250,0.7)'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    posHistory.forEach((p, i) => {
+      const gx = gleft + (i / histLen) * (gright - gleft);
+      const gy = gmid - (p.y - H * 0.35) * 0.3;
+      if (i === 0) ctx.moveTo(gx, gy); else ctx.lineTo(gx, gy);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  requestAnimationFrame(draw);
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 5 — BEFORE/AFTER VFX MACHINE (8 shot pairs)
+// ═══════════════════════════════════════════════════════════
+(function initBeforeAfter() {
+  const shots = [
+    { name: 'Sky Replacement',      tech: 'Luminance keying + perspective match', sw: 'Nuke / Flame' },
+    { name: 'Object Removal',       tech: 'Frame-by-frame patch painting + fill', sw: 'Nuke / Photoshop' },
+    { name: 'De-Aging',             tech: 'Machine learning texture synthesis',   sw: 'ILM StageCraft / custom ML' },
+    { name: 'CGI Integration',      tech: 'Multi-pass CG composite + IBL',        sw: 'Nuke + Houdini / V-Ray' },
+    { name: 'Fire & Smoke',         tech: 'Volumetric simulation + additive comp',sw: 'Houdini FX / After Effects' },
+    { name: 'Color Enhancement',    tech: 'CDL grading + selective color',        sw: 'DaVinci Resolve / Lustre' },
+    { name: 'Screen Replace',       tech: 'Planar tracking + color correction',   sw: 'Nuke / After Effects' },
+    { name: 'Crowd Duplication',    tech: 'Motion vector cloning + overlap masks',sw: 'Nuke / Flame / Massive' }
+  ];
+
+  const grid = document.getElementById('shotPairsGrid');
+
+  shots.forEach((shot, idx) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'shot-pair card';
+    const canvasId = 'shot' + idx;
+    wrapper.innerHTML = `
+      <div class="shot-label">${String(idx+1).padStart(2,'0')} — ${shot.name}</div>
+      <div class="wipe-container" id="wipeWrap${idx}" style="cursor:ew-resize;">
+        <canvas id="${canvasId}" width="260" height="170" style="display:block;width:100%;"></canvas>
+      </div>
+      <div style="margin-top:6px;">
+        <div class="shot-tech">${shot.tech}</div>
+        <div class="shot-sw">${shot.sw}</div>
+      </div>`;
+    grid.appendChild(wrapper);
+
+    const canvas = document.getElementById(canvasId);
+    const cctx = canvas.getContext('2d');
+    let wipeX = 0.5; // 0..1
+    const wipeLag = new LagFilter(0.5, 0.08);
+    let dragging = false;
+    let targetWipe = 0.5;
+    let animId2;
+
+    function drawBefore(ctx, W, H) {
+      ctx.fillStyle = '#0a0a18'; ctx.fillRect(0, 0, W, H);
+      switch(idx) {
+        case 0: // gray sky
+          ctx.fillStyle = '#606878'; ctx.fillRect(0, 0, W, H * 0.5);
+          ctx.fillStyle = '#2a3a2a'; ctx.fillRect(0, H * 0.5, W, H * 0.5);
+          break;
+        case 1: // rig visible
+          drawSimpleScene(ctx, W, H, '#1a1a2e');
+          ctx.strokeStyle = '#a0a0b0'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(W*0.4, 0); ctx.lineTo(W*0.4, H*0.4); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(W*0.4, H*0.4); ctx.lineTo(W*0.6, H*0.4); ctx.stroke();
+          ctx.fillStyle = '#c0c0c8'; ctx.fillRect(W*0.38, 0, 4, H*0.4);
+          break;
+        case 2: // aged
+          drawSimpleScene(ctx, W, H, '#1e1a16');
+          ctx.fillStyle = '#b8a090';
+          ctx.beginPath(); ctx.arc(W*0.5, H*0.45, H*0.2, 0, Math.PI*2); ctx.fill();
+          ctx.strokeStyle = '#706050'; ctx.lineWidth = 0.8;
+          for (let w=0;w<8;w++) {
+            ctx.beginPath();
+            ctx.moveTo(W*0.35+w*W*0.04, H*0.3);
+            ctx.quadraticCurveTo(W*0.38+w*W*0.04, H*0.45, W*0.35+w*W*0.04, H*0.6);
+            ctx.stroke();
+          }
+          break;
+        case 3: // empty scene
+          drawSimpleScene(ctx, W, H, '#14141e');
+          ctx.font = '11px sans-serif'; ctx.fillStyle = '#3a3a5c';
+          ctx.textAlign = 'center'; ctx.fillText('CG ELEMENT NOT YET ADDED', W/2, H/2);
+          break;
+        case 4: // no fire
+          drawSimpleScene(ctx, W, H, '#0a0a14');
+          break;
+        case 5: // flat/ungraded
+          ctx.fillStyle = '#888890'; ctx.fillRect(0, 0, W, H);
+          drawSimpleScene(ctx, W, H, '#808088');
+          break;
+        case 6: // blank screen
+          drawSimpleScene(ctx, W, H, '#12121c');
+          ctx.fillStyle = '#0a0a0a'; ctx.fillRect(W*0.3, H*0.2, W*0.4, H*0.45);
+          break;
+        case 7: // sparse crowd
+          drawSimpleScene(ctx, W, H, '#0e0e1c');
+          for (let p=0;p<5;p++) drawStickFigure(ctx, W*0.15+p*W*0.16, H*0.72, H*0.18);
+          break;
+      }
+      ctx.save(); ctx.font='bold 10px sans-serif'; ctx.fillStyle='rgba(100,116,139,0.8)';
+      ctx.textAlign='left'; ctx.fillText('BEFORE', 6, 16); ctx.restore();
+    }
+
+    function drawAfter(ctx, W, H) {
+      ctx.fillStyle = '#0a0a18'; ctx.fillRect(0, 0, W, H);
+      switch(idx) {
+        case 0: // sunset sky
+          const skyG = ctx.createLinearGradient(0,0,0,H*0.55);
+          skyG.addColorStop(0,'#1a0a3a'); skyG.addColorStop(0.5,'#c05010'); skyG.addColorStop(1,'#f8a030');
+          ctx.fillStyle = skyG; ctx.fillRect(0, 0, W, H*0.55);
+          ctx.fillStyle = '#1a2a12'; ctx.fillRect(0, H*0.55, W, H*0.45);
+          // sun
+          ctx.fillStyle = '#ffe080'; ctx.shadowColor='#f97316'; ctx.shadowBlur=20;
+          ctx.beginPath(); ctx.arc(W*0.65, H*0.4, 18, 0, Math.PI*2); ctx.fill();
+          ctx.shadowBlur=0;
+          break;
+        case 1: // clean
+          drawSimpleScene(ctx, W, H, '#1a1a2e');
+          break;
+        case 2: // de-aged
+          drawSimpleScene(ctx, W, H, '#1e1a16');
+          ctx.fillStyle = '#f0c8a8';
+          ctx.beginPath(); ctx.arc(W*0.5, H*0.45, H*0.2, 0, Math.PI*2); ctx.fill();
+          break;
+        case 3: // chrome robot
+          drawSimpleScene(ctx, W, H, '#14141e');
+          drawChromeRobot(ctx, W*0.5, H*0.55, H*0.35);
+          break;
+        case 4: // fire/smoke
+          drawSimpleScene(ctx, W, H, '#0a0a14');
+          drawFireSmoke(ctx, W, H);
+          break;
+        case 5: // graded
+          const gradeG = ctx.createLinearGradient(0,0,0,H);
+          gradeG.addColorStop(0,'#0a0820'); gradeG.addColorStop(1,'#201008');
+          ctx.fillStyle = gradeG; ctx.fillRect(0, 0, W, H);
+          drawSimpleScene(ctx, W, H, null);
+          break;
+        case 6: // screen content
+          drawSimpleScene(ctx, W, H, '#12121c');
+          const scrG = ctx.createRadialGradient(W*0.5, H*0.425, 0, W*0.5, H*0.425, 80);
+          scrG.addColorStop(0,'#4060ff'); scrG.addColorStop(1,'#200840');
+          ctx.fillStyle = scrG; ctx.fillRect(W*0.3, H*0.2, W*0.4, H*0.45);
+          ctx.font='bold 10px monospace'; ctx.fillStyle='#60a0ff';
+          ctx.textAlign='center'; ctx.fillText('SYSTEM ONLINE', W*0.5, H*0.43);
+          break;
+        case 7: // crowd multiplied
+          drawSimpleScene(ctx, W, H, '#0e0e1c');
+          for (let row=0;row<2;row++)
+            for (let p=0;p<8;p++) drawStickFigure(ctx, W*0.06+p*W*0.115, H*(0.72+row*0.14), H*(0.15-row*0.02));
+          break;
+      }
+      ctx.save(); ctx.font='bold 10px sans-serif'; ctx.fillStyle='rgba(249,115,22,0.9)';
+      ctx.textAlign='right'; ctx.fillText('AFTER', W-6, 16); ctx.restore();
+    }
+
+    function drawSimpleScene(ctx, W, H, bgColor) {
+      if (bgColor) { ctx.fillStyle = bgColor; ctx.fillRect(0, 0, W, H); }
+      ctx.fillStyle = '#1e1e30'; ctx.fillRect(0, H*0.65, W, H*0.35);
+      ctx.fillStyle = '#141420'; ctx.fillRect(0, H*0.6, W, 6);
+    }
+
+    function drawStickFigure(ctx, x, y, h) {
+      ctx.save(); ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(x, y-h*0.45, h*0.12, 0, Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x,y-h*0.33); ctx.lineTo(x,y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x-h*0.15,y-h*0.22); ctx.lineTo(x+h*0.15,y-h*0.22); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-h*0.12,y+h*0.3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+h*0.12,y+h*0.3); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawChromeRobot(ctx, cx, cy, h) {
+      ctx.save();
+      const g = ctx.createLinearGradient(cx-h*0.2, cy-h*0.5, cx+h*0.2, cy);
+      g.addColorStop(0,'#d0d8e0'); g.addColorStop(0.5,'#809098'); g.addColorStop(1,'#304048');
+      ctx.fillStyle = g;
+      // torso
+      ctx.fillRect(cx-h*0.18, cy-h*0.4, h*0.36, h*0.35);
+      // head
+      ctx.fillRect(cx-h*0.12, cy-h*0.6, h*0.24, h*0.2);
+      // eyes
+      ctx.fillStyle='#f97316'; ctx.shadowColor='#f97316'; ctx.shadowBlur=8;
+      ctx.fillRect(cx-h*0.08, cy-h*0.55, h*0.05, h*0.04);
+      ctx.fillRect(cx+h*0.03, cy-h*0.55, h*0.05, h*0.04);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+
+    function drawFireSmoke(ctx, W, H) {
+      const now = performance.now() / 1000;
+      for (let p=0; p<18; p++) {
+        const phase = p/18;
+        const px = W*0.3 + Math.sin(phase*12+now*2)*W*0.15 + p*W*0.025;
+        const pyBase = H*0.65;
+        const height = H*(0.2 + Math.sin(phase*8+now*1.5)*0.15);
+        const opacity = 0.4 + Math.sin(phase*6+now)*0.3;
+        const fireG = ctx.createRadialGradient(px, pyBase, 0, px, pyBase-height*0.5, height*0.8);
+        fireG.addColorStop(0,'rgba(255,200,50,'+opacity+')');
+        fireG.addColorStop(0.4,'rgba(249,115,22,'+(opacity*0.8)+')');
+        fireG.addColorStop(1,'rgba(150,30,0,0)');
+        ctx.fillStyle = fireG;
+        ctx.beginPath(); ctx.arc(px, pyBase-height*0.3, height*0.4, 0, Math.PI*2); ctx.fill();
+      }
+      // smoke
+      for (let s=0; s<8; s++) {
+        const sx = W*0.25 + s*W*0.07;
+        const sy = H*0.35 - s*H*0.04;
+        ctx.fillStyle = `rgba(60,60,80,${0.15+s*0.04})`;
+        ctx.beginPath(); ctx.arc(sx, sy, 20+s*5, 0, Math.PI*2); ctx.fill();
+      }
+    }
+
+    function renderWipe() {
+      const W = 260, H = 170;
+      const wx = wipeLag.update(targetWipe) * W;
+      cctx.clearRect(0, 0, W, H);
+      drawBefore(cctx, W, H);
+      cctx.save();
+      cctx.beginPath(); cctx.rect(wx, 0, W - wx, H); cctx.clip();
+      drawAfter(cctx, W, H);
+      cctx.restore();
+      // wipe handle
+      cctx.save();
+      cctx.strokeStyle = '#f97316'; cctx.lineWidth = 2;
+      cctx.shadowColor = '#f97316'; cctx.shadowBlur = 8;
+      cctx.beginPath(); cctx.moveTo(wx, 0); cctx.lineTo(wx, H); cctx.stroke();
+      cctx.shadowBlur = 0;
+      cctx.fillStyle = '#f97316';
+      cctx.beginPath(); cctx.arc(wx, H/2, 6, 0, Math.PI*2); cctx.fill();
+      cctx.restore();
+      requestAnimationFrame(renderWipe);
+    }
+
+    const wrapEl = document.getElementById('wipeWrap' + idx);
+    wrapEl.addEventListener('mousedown', (e) => { dragging = true; });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const rect = canvas.getBoundingClientRect();
+      targetWipe = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    wrapEl.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      targetWipe = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+    }, { passive: false });
+
+    // Animate fire/smoke shots always
+    requestAnimationFrame(renderWipe);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// SYSTEM: LightMatchRenderer — SECTION 6
+// ═══════════════════════════════════════════════════════════
+(function initLightMatch() {
+  const refCanvas = document.getElementById('lightRefCanvas');
+  const cgCanvas = document.getElementById('lightCGCanvas');
+  if (!refCanvas || !cgCanvas) return;
+  const rctx = refCanvas.getContext('2d');
+  const cctx = cgCanvas.getContext('2d');
+  const W = 280, H = 240;
+
+  // TARGET values (hidden from user)
+  const TARGET = { dir: 315, temp: 5600, fill: 6.0, rough: 0.3 };
+
+  // kelvin to rgb
+  function kelvinToRGB(k) {
+    const t = k / 100;
+    let r, g, b;
+    if (t <= 66) {
+      r = 255;
+      g = Math.max(0, Math.min(255, 99.4708025861 * Math.log(t) - 161.1195681661));
+      b = t <= 19 ? 0 : Math.max(0, Math.min(255, 138.5177312231 * Math.log(t - 10) - 305.0447927307));
+    } else {
+      r = Math.max(0, Math.min(255, 329.698727446 * Math.pow(t - 60, -0.1332047592)));
+      g = Math.max(0, Math.min(255, 288.1221695283 * Math.pow(t - 60, -0.0755148492)));
+      b = 255;
+    }
+    return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+  }
+
+  function drawRoom(ctx) {
+    // floor
+    const floorG = ctx.createLinearGradient(0, H*0.6, 0, H);
+    floorG.addColorStop(0, '#1a1218'); floorG.addColorStop(1, '#0d0a0c');
+    ctx.fillStyle = floorG; ctx.fillRect(0, H*0.6, W, H*0.4);
+    // back wall
+    ctx.fillStyle = '#120f14'; ctx.fillRect(0, 0, W, H*0.6);
+    // perspective lines
+    ctx.strokeStyle = '#1e1820'; ctx.lineWidth = 1;
+    for (let i = 1; i < 5; i++) {
+      ctx.beginPath(); ctx.moveTo(W/2, H*0.5);
+      ctx.lineTo(0, H*0.6 + i*H*0.1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W/2, H*0.5);
+      ctx.lineTo(W, H*0.6 + i*H*0.1); ctx.stroke();
+    }
+  }
+
+  function drawSphere(ctx, dir, temp, fill, rough, radius, cx, cy, isRef) {
+    const { r, g, b } = kelvinToRGB(temp);
+    const keyRatio = 1.0;
+    const fillBrightness = 1 / fill;
+
+    // key light direction
+    const kx = Math.cos((dir - 90) * Math.PI / 180);
+    const ky = Math.sin((dir - 90) * Math.PI / 180);
+
+    // Base sphere shadow
+    const shadowG = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    shadowG.addColorStop(0, '#1a1a1a');
+    shadowG.addColorStop(1, '#000000');
+    ctx.fillStyle = shadowG;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+
+    // Diffuse + fill
+    const fillCol = `rgba(${Math.round(r*0.3)},${Math.round(g*0.3)},${Math.round(b*0.4)},${0.3 * fillBrightness + 0.05})`;
+    const diffG = ctx.createRadialGradient(
+      cx - kx * radius * 0.4, cy - ky * radius * 0.4, radius * 0.05,
+      cx, cy, radius
+    );
+    const lumKey = rough * 0.3 + 0.7;
+    diffG.addColorStop(0, `rgba(${r},${g},${b},${lumKey * 0.9})`);
+    diffG.addColorStop(0.5, `rgba(${Math.round(r*0.5)},${Math.round(g*0.5)},${Math.round(b*0.5)},${lumKey * 0.5})`);
+    diffG.addColorStop(1, fillCol);
+    ctx.fillStyle = diffG;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+
+    // Specular highlight
+    const specR = radius * (0.1 + rough * 0.25);
+    const specX = cx + kx * radius * 0.4;
+    const specY = cy + ky * radius * 0.4;
+    const specBright = Math.pow(1 - rough, 2) * 0.9 + 0.1;
+    const specG = ctx.createRadialGradient(specX, specY, 0, specX, specY, specR * 2);
+    specG.addColorStop(0, `rgba(255,255,255,${specBright})`);
+    specG.addColorStop(0.4, `rgba(${r},${g},${b},${specBright * 0.5})`);
+    specG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = specG;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+
+    // Rim light (complementary)
+    const rimG = ctx.createRadialGradient(
+      cx - kx * radius * 0.8, cy - ky * radius * 0.8, 0,
+      cx - kx * radius * 0.8, cy - ky * radius * 0.8, radius * 0.7
+    );
+    rimG.addColorStop(0, `rgba(${Math.round(255-r*0.5)},${Math.round(180-g*0.3)},${Math.round(b*0.6)},0.35)`);
+    rimG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = rimG;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+
+    // Ground shadow ellipse
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    ctx.ellipse(cx + kx*8, cy + radius + 4, radius * 0.8, radius * 0.2, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Label
+    if (isRef) {
+      ctx.save();
+      ctx.font = 'bold 10px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+      ctx.fillText('TARGET LIGHT', cx, cy - radius - 10);
+      ctx.restore();
+    }
+  }
+
+  // Read current user values
+  function getUserVals() {
+    return {
+      dir: parseFloat(document.getElementById('lightDir').value),
+      temp: parseFloat(document.getElementById('lightTemp').value),
+      fill: parseFloat(document.getElementById('lightFill').value),
+      rough: parseFloat(document.getElementById('lightRough').value)
+    };
+  }
+
+  function computeScore(u) {
+    const dDir = 1 - Math.abs(((u.dir - TARGET.dir + 540) % 360) - 180) / 180;
+    const dTemp = 1 - Math.abs(u.temp - TARGET.temp) / (6500 - 3200);
+    const dFill = 1 - Math.abs(u.fill - TARGET.fill) / 7;
+    const dRough = 1 - Math.abs(u.rough - TARGET.rough) / 1.0;
+    return Math.round(((dDir * 0.35 + dTemp * 0.3 + dFill * 0.2 + dRough * 0.15)) * 100);
+  }
+
+  function drawRef() {
+    rctx.clearRect(0, 0, W, H);
+    drawRoom(rctx);
+    drawSphere(rctx, TARGET.dir, TARGET.temp, TARGET.fill, TARGET.rough, 75, W/2, H*0.52, true);
+    // Light direction arrow
+    rctx.save();
+    const ax = W/2 + Math.cos((TARGET.dir-90)*Math.PI/180)*90;
+    const ay = H*0.52 + Math.sin((TARGET.dir-90)*Math.PI/180)*90;
+    rctx.strokeStyle='rgba(249,115,22,0.6)'; rctx.lineWidth=1.5; rctx.setLineDash([4,3]);
+    rctx.beginPath(); rctx.moveTo(ax,ay); rctx.lineTo(W/2, H*0.52); rctx.stroke();
+    rctx.setLineDash([]);
+    rctx.fillStyle='rgba(249,115,22,0.8)'; rctx.beginPath(); rctx.arc(ax,ay,4,0,Math.PI*2); rctx.fill();
+    rctx.restore();
+  }
+
+  function drawCG() {
+    cctx.clearRect(0, 0, W, H);
+    drawRoom(cctx);
+    const u = getUserVals();
+    drawSphere(cctx, u.dir, u.temp, u.fill, u.rough, 75, W/2, H*0.52, false);
+    // User light arrow
+    cctx.save();
+    const ax = W/2 + Math.cos((u.dir-90)*Math.PI/180)*90;
+    const ay = H*0.52 + Math.sin((u.dir-90)*Math.PI/180)*90;
+    cctx.strokeStyle='rgba(96,165,250,0.6)'; cctx.lineWidth=1.5; cctx.setLineDash([4,3]);
+    cctx.beginPath(); cctx.moveTo(ax,ay); cctx.lineTo(W/2, H*0.52); cctx.stroke();
+    cctx.setLineDash([]);
+    cctx.fillStyle='rgba(96,165,250,0.8)'; cctx.beginPath(); cctx.arc(ax,ay,4,0,Math.PI*2); cctx.fill();
+    cctx.restore();
+
+    const score = computeScore(u);
+    document.getElementById('matchScore').textContent = score + '%';
+    const lbl = document.getElementById('matchLabel');
+    if (score >= 90) {
+      lbl.innerHTML = '<span class="match-ok">✓ LIGHT MATCHED! Excellent work.</span>';
+    } else if (score >= 70) {
+      lbl.textContent = 'Getting close — refine direction and temperature';
+    } else if (score >= 50) {
+      lbl.textContent = 'Adjust key light direction and fill ratio';
+    } else {
+      lbl.textContent = 'Start with key light direction';
+    }
+  }
+
+  drawRef();
+  drawCG();
+
+  ['lightDir','lightTemp','lightFill','lightRough'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      document.getElementById('lightDirVal').textContent = document.getElementById('lightDir').value + '°';
+      document.getElementById('lightTempVal').textContent = document.getElementById('lightTemp').value + 'K';
+      document.getElementById('lightFillVal').textContent = parseFloat(document.getElementById('lightFill').value).toFixed(1) + ':1';
+      document.getElementById('lightRoughVal').textContent = parseFloat(document.getElementById('lightRough').value).toFixed(2);
+      drawCG();
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SYSTEM: ZDepthSimulator — SECTION 7 (top half)
+// ═══════════════════════════════════════════════════════════
+(function initZDepth() {
+  const canvas = document.getElementById('zdepthCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 580, H = 260;
+  let viewMode = 'beauty';
+  let focusPlane = 0.4, dofStrength = 0.6;
+  let animT = 0;
+
+  document.getElementById('zdepthViewBeauty').addEventListener('click', function() {
+    viewMode='beauty'; setActive(this);
+  });
+  document.getElementById('zdepthViewDepth').addEventListener('click', function() {
+    viewMode='depth'; setActive(this);
+  });
+  document.getElementById('zdepthViewDOF').addEventListener('click', function() {
+    viewMode='dof'; setActive(this);
+  });
+  function setActive(el) {
+    ['zdepthViewBeauty','zdepthViewDepth','zdepthViewDOF'].forEach(id =>
+      document.getElementById(id).classList.remove('active')
+    );
+    el.classList.add('active');
+  }
+
+  document.getElementById('focusPlane').addEventListener('input', function() {
+    focusPlane = parseFloat(this.value);
+    document.getElementById('focusPlaneVal').textContent = Math.round(focusPlane*100) + '% depth';
+  });
+  document.getElementById('dofStrength').addEventListener('input', function() {
+    dofStrength = parseFloat(this.value);
+    document.getElementById('dofStrengthVal').textContent = dofStrength.toFixed(2);
+  });
+
+  // Scene objects with depth values
+  const objects = [
+    { label: 'Foreground Tree',  depth: 0.05, x: 0.08, y: 0.72, w: 0.04, h: 0.6,  color: '#1a3a12', isTree: true },
+    { label: 'Fence',            depth: 0.15, x: 0.0,  y: 0.7,  w: 1.0,  h: 0.04, color: '#3a2a1a', isFence: true },
+    { label: 'Actor (MG)',       depth: 0.35, x: 0.38, y: 0.58, w: 0.09, h: 0.28, color: '#2a1a14' },
+    { label: 'Prop (MG)',        depth: 0.42, x: 0.55, y: 0.62, w: 0.07, h: 0.2,  color: '#3a3010' },
+    { label: 'Background Wall',  depth: 0.75, x: 0.0,  y: 0.0,  w: 1.0,  h: 0.72, color: '#141420' },
+    { label: 'BG Trees',         depth: 0.85, x: 0.7,  y: 0.3,  w: 0.06, h: 0.45, color: '#0e2010', isTree: true },
+  ];
+
+  function depthColor(d) {
+    const v = Math.round(d * 255);
+    return `rgb(${v},${v},${v})`;
+  }
+
+  function blurAmount(depth) {
+    const diff = Math.abs(depth - focusPlane);
+    return diff * dofStrength * 18;
+  }
+
+  function drawScene() {
+    animT += 0.01;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#080810'; ctx.fillRect(0, 0, W, H);
+
+    // Sort by depth (back to front)
+    const sorted = [...objects].sort((a,b) => b.depth - a.depth);
+
+    sorted.forEach(obj => {
+      const bx = obj.x * W, by = obj.y * H, bw = obj.w * W, bh = obj.h * H;
+      let blur = 0;
+      if (viewMode === 'dof') blur = blurAmount(obj.depth);
+
+      ctx.save();
+      if (blur > 0.5) ctx.filter = `blur(${blur.toFixed(1)}px)`;
+
+      if (viewMode === 'depth') {
+        ctx.fillStyle = depthColor(obj.depth);
+      } else {
+        ctx.fillStyle = obj.color;
+      }
+
+      if (obj.isFence) {
+        if (viewMode !== 'depth') ctx.fillStyle = '#4a3820';
+        ctx.fillRect(bx, by, bw, bh * 0.3);
+        for (let p = 0; p < Math.round(W/24); p++) {
+          ctx.fillRect(bx + p * 24, by - bh * 0.5, 6, bh * 0.8);
+        }
+      } else if (obj.isTree) {
+        const tx = bx + bw / 2, ty = by;
+        ctx.fillStyle = viewMode === 'depth' ? depthColor(obj.depth) : '#3a2a10';
+        ctx.fillRect(tx - 4, ty, 8, bh * 0.5);
+        ctx.fillStyle = viewMode === 'depth' ? depthColor(obj.depth * 0.9) : obj.color;
+        ctx.beginPath();
+        ctx.arc(tx, ty - bh * 0.15, bw * 3, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillRect(bx, by, bw, bh);
+        if (viewMode !== 'depth') {
+          // animate actor slight sway
+          if (obj.label.includes('Actor')) {
+            ctx.fillStyle = '#c8a080';
+            ctx.beginPath(); ctx.arc(bx + bw/2 + Math.sin(animT)*2, by - bh*0.08, bw*0.4, 0, Math.PI*2); ctx.fill();
+          }
+        }
+      }
+      ctx.restore();
+    });
+
+    // Focus plane indicator
+    if (viewMode === 'dof') {
+      const fpX = focusPlane * W;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(249,115,22,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
+      ctx.beginPath(); ctx.moveTo(fpX, 0); ctx.lineTo(fpX, H); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(249,115,22,0.8)'; ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('FOCUS', fpX, 14);
+      ctx.restore();
+    }
+
+    // Labels
+    if (viewMode !== 'depth') {
+      sorted.forEach(obj => {
+        const atFocus = Math.abs(obj.depth - focusPlane) < 0.08;
+        if (atFocus && viewMode === 'dof') {
+          ctx.save();
+          ctx.fillStyle = '#f97316'; ctx.font = 'bold 9px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('IN FOCUS', obj.x * W + obj.w * W / 2, obj.y * H - 4);
+          ctx.restore();
+        }
+      });
+    }
+
+    // Mode label
+    ctx.save();
+    ctx.font = 'bold 11px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+    const modeLabels = { beauty: 'BEAUTY PASS', depth: 'DEPTH PASS (Z)', dof: 'SIMULATED DOF' };
+    ctx.fillText(modeLabels[viewMode], 10, 20);
+    ctx.restore();
+
+    requestAnimationFrame(drawScene);
+  }
+
+  requestAnimationFrame(drawScene);
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 7 — VFX TIMELINE
+// ═══════════════════════════════════════════════════════════
+(function initTimeline() {
+  const container = document.getElementById('vfxTimeline');
+  if (!container) return;
+
+  const milestones = [
+    { year: 1895, title: "Méliès\nTrick Films",   desc: "Georges Méliès invented in-camera substitution, the first visual trick — stopping the camera and replacing objects." },
+    { year: 1933, title: "King Kong\nStop-Motion", desc: "Willis O'Brien animated Kong frame-by-frame using stop-motion — pioneering creature performance and rear projection." },
+    { year: 1968, title: "2001: A\nSpace Odyssey", desc: "Douglas Trumbull's front-projection and slit-scan techniques created hyperspace — all in-camera optical effects." },
+    { year: 1977, title: "Star Wars\nOptical Comp", desc: "ILM's Dykstraflex — a motion-controlled camera enabled repeated passes for ship battles composited on optical printer." },
+    { year: 1982, title: "Tron\nCGI Pioneers",    desc: "First major film using CGI environments — 15 min of computer animation using vector and solid geometry rendering." },
+    { year: 1988, title: "Roger Rabbit\nComposite", desc: "Optical + photochemical compositing of hand-drawn characters into live action — revolutionary interaction physics." },
+    { year: 1991, title: "T2\nMorphing",           desc: "ILM's digital morphing for the T-1000 — the first convincing digital human character composited into live action." },
+    { year: 1993, title: "Jurassic Park\nCGI Dino", desc: "Phil Tippett's stop-motion replaced by ILM's digital dinosaurs — lit with HDRI probes, composited in Matador." },
+    { year: 1999, title: "Matrix\nBullet Time",     desc: "120 still cameras fired sequentially around frozen action — stitched and composited with CG fill frames in Inferno." },
+    { year: 2009, title: "Avatar\nPerformance Cap", desc: "James Cameron's virtual camera and facial performance capture fed into Pandora — 60% CG film with live action comp." },
+    { year: 2016, title: "Jungle Book\nAll-CG",     desc: "Shot entirely on stage with only Mowgli live — every environment, animal, and plant is CG, composited in Nuke." },
+    { year: 2019, title: "Mandalorian\nLED Volume", desc: "Industrial Light & Magic's StageCraft — real-time Unreal Engine LED walls replace greenscreen entirely." },
+    { year: 2024, title: "Neural\nRendering",       desc: "NeRF and Gaussian splatting enable scene reconstruction from photos — composited with ML-guided depth and relighting." }
+  ];
+
+  milestones.forEach((m, i) => {
+    const node = document.createElement('div');
+    node.className = 'tl-node';
+    node.innerHTML = `
+      <div class="tl-year">${m.year}</div>
+      <div class="tl-dot"></div>
+      <div class="tl-title">${m.title.replace('\n','<br>')}</div>
+      <div class="tl-expand">${m.desc}</div>`;
+    node.addEventListener('click', () => {
+      const wasExp = node.classList.contains('expanded');
+      document.querySelectorAll('.tl-node').forEach(n => n.classList.remove('expanded'));
+      if (!wasExp) node.classList.add('expanded');
+    });
+    container.appendChild(node);
+  });
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 8 — NODE-BASED COMPOSITING PRIMER
+// ═══════════════════════════════════════════════════════════
+(function initNodeGraph() {
+  const canvas = document.getElementById('nodeCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 620, H = 360;
+  let expanded = false;
+  let selectedNode = null;
+  let particleT = 0;
+
+  document.getElementById('nodeSimplify').addEventListener('click', function() {
+    expanded = false; this.classList.add('active');
+    document.getElementById('nodeExpand').classList.remove('active');
+  });
+  document.getElementById('nodeExpand').addEventListener('click', function() {
+    expanded = true; this.classList.add('active');
+    document.getElementById('nodeSimplify').classList.remove('active');
+  });
+
+  // Node definitions
+  const nodeInfos = {
+    'Read GS':    { color: '#3b82f6', desc: 'Reads the green screen footage from disk. Supports EXR, DPX, MOV, and all major formats. This is always the entry point for footage in Nuke.' },
+    'Keyer':      { color: '#f97316', desc: 'Performs chromakey (Primatte or IBK) to extract the alpha matte from the green background. Outputs RGBA with a transparency mask.' },
+    'Grade':      { color: '#a855f7', desc: 'Applies colour correction — adjusts black/white point, lift/gamma/gain, and saturation. Often used after keying to match to background.' },
+    'Read BG':    { color: '#3b82f6', desc: 'Reads the background plate — either a photographed environment or a rendered CG background.' },
+    'Grade BG':   { color: '#a855f7', desc: 'Colour-corrects the background to match the lighting and tone of the foreground footage.' },
+    'Merge Over': { color: '#22c55e', desc: 'Composites the foreground (A) over the background (B) using alpha: Result = A + B*(1-alpha). The workhorse of compositing.' },
+    'Read CG Sh': { color: '#3b82f6', desc: 'Reads the CG shadow pass — the shadow cast by the CG object onto the background, rendered as a separate EXR layer.' },
+    'Premult':    { color: '#64748b', desc: 'Multiplies the RGB channels by the alpha. Required before blending — prevents "white fringing" around edges in composite.' },
+    'Grade Sh':   { color: '#a855f7', desc: 'Adjusts the shadow density, softness, and colour. Typically reduces opacity and may add a slight colour cast to match practical shadows.' },
+    'Merge Mult': { color: '#22c55e', desc: 'Composites the shadow using Multiply blend mode — darkens the background by the shadow value. Result = A * B.' },
+    'Write':      { color: '#ef4444', desc: 'Writes the final composited image to disk. Output format, codec, colour space, and naming convention are set here.' },
+  };
+
+  // Layout: simple and expanded
+  function getNodes(exp) {
+    if (!exp) {
+      return [
+        { id: 'Read GS',    x: 60,  y: 40  },
+        { id: 'Keyer',      x: 60,  y: 120 },
+        { id: 'Grade',      x: 60,  y: 200 },
+        { id: 'Read BG',    x: 220, y: 40  },
+        { id: 'Grade BG',   x: 220, y: 120 },
+        { id: 'Merge Over', x: 140, y: 290 },
+        { id: 'Write',      x: 140, y: 380 },
+      ];
+    } else {
+      return [
+        { id: 'Read GS',    x: 40,  y: 30  },
+        { id: 'Keyer',      x: 40,  y: 110 },
+        { id: 'Grade',      x: 40,  y: 190 },
+        { id: 'Read BG',    x: 200, y: 30  },
+        { id: 'Grade BG',   x: 200, y: 110 },
+        { id: 'Merge Over', x: 120, y: 270 },
+        { id: 'Read CG Sh', x: 380, y: 30  },
+        { id: 'Premult',    x: 380, y: 110 },
+        { id: 'Grade Sh',   x: 380, y: 190 },
+        { id: 'Merge Mult', x: 260, y: 270 },
+        { id: 'Write',      x: 200, y: 340 },
+      ];
+    }
+  }
+
+  function getConnections(exp) {
+    if (!exp) {
+      return [
+        ['Read GS', 'Keyer'], ['Keyer', 'Grade'], ['Grade', 'Merge Over'],
+        ['Read BG', 'Grade BG'], ['Grade BG', 'Merge Over'], ['Merge Over', 'Write'],
+      ];
+    } else {
+      return [
+        ['Read GS', 'Keyer'], ['Keyer', 'Grade'], ['Grade', 'Merge Over'],
+        ['Read BG', 'Grade BG'], ['Grade BG', 'Merge Over'], ['Merge Over', 'Merge Mult'],
+        ['Read CG Sh', 'Premult'], ['Premult', 'Grade Sh'], ['Grade Sh', 'Merge Mult'],
+        ['Merge Mult', 'Write'],
+      ];
+    }
+  }
+
+  const NW = 90, NH = 28, NR = 5;
+
+  function nodeCenter(n) {
+    return { x: n.x + NW/2, y: n.y + NH/2 };
+  }
+
+  // Bezier path between two nodes
+  function bezierPath(ctx, x0, y0, x1, y1) {
+    const cpx = x0; const cpy = (y0 + y1) / 2;
+    const cp2x = x1; const cp2y = (y0 + y1) / 2;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.bezierCurveTo(cpx, cpy + 20, cp2x, cp2y - 20, x1, y1);
+  }
+
+  // Particle along bezier
+  function bezierPoint(t, x0, y0, x1, y1) {
+    const cpx = x0, cpy = (y0+y1)/2+20;
+    const cp2x = x1, cp2y = (y0+y1)/2-20;
+    const mt = 1-t;
+    return {
+      x: mt*mt*mt*x0 + 3*mt*mt*t*cpx + 3*mt*t*t*cp2x + t*t*t*x1,
+      y: mt*mt*mt*y0 + 3*mt*mt*t*cpy + 3*mt*t*t*cp2y + t*t*t*y1
+    };
+  }
+
+  function drawGraph() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#06060f'; ctx.fillRect(0, 0, W, H);
+
+    // Grid dots
+    ctx.fillStyle = '#1a1a2e';
+    for (let gx = 0; gx < W; gx += 20) {
+      for (let gy = 0; gy < H; gy += 20) {
+        ctx.beginPath(); ctx.arc(gx, gy, 1, 0, Math.PI*2); ctx.fill();
+      }
+    }
+
+    const nodes = getNodes(expanded);
+    const conns = getConnections(expanded);
+    const nodeMap = {};
+    nodes.forEach(n => nodeMap[n.id] = n);
+
+    // Draw connections
+    conns.forEach(([fromId, toId]) => {
+      const from = nodeMap[fromId], to = nodeMap[toId];
+      if (!from || !to) return;
+      const fc = nodeCenter(from), tc = nodeCenter(to);
+      ctx.save();
+      ctx.strokeStyle = '#2a2a40'; ctx.lineWidth = 2;
+      bezierPath(ctx, fc.x, fc.y + NH/2, tc.x, tc.y - NH/2);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // Animate particles along connections
+    particleT = (particleT + 0.008) % 1;
+    conns.forEach(([fromId, toId], ci) => {
+      const from = nodeMap[fromId], to = nodeMap[toId];
+      if (!from || !to) return;
+      const fc = nodeCenter(from), tc = nodeCenter(to);
+      const t2 = (particleT + ci * 0.12) % 1;
+      const pt = bezierPoint(t2, fc.x, fc.y + NH/2, tc.x, tc.y - NH/2);
+      ctx.save();
+      ctx.fillStyle = '#f97316'; ctx.shadowColor='#f97316'; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+
+    // Draw nodes
+    nodes.forEach(n => {
+      const info = nodeInfos[n.id];
+      const isSelected = selectedNode === n.id;
+      ctx.save();
+      ctx.shadowColor = isSelected ? info.color : 'transparent';
+      ctx.shadowBlur = isSelected ? 16 : 0;
+      ctx.fillStyle = isSelected ? info.color + '44' : '#12121e';
+      ctx.strokeStyle = info.color;
+      ctx.lineWidth = isSelected ? 2.5 : 1.5;
+      ctx.beginPath(); ctx.roundRect(n.x, n.y, NW, NH, NR);
+      ctx.fill(); ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = isSelected ? '#fff' : info.color;
+      ctx.font = `bold 10px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(n.id, n.x + NW/2, n.y + NH/2);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(drawGraph);
+  }
+
+  // Click to select node
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const my = (e.clientY - rect.top) * (H / rect.height);
+    const nodes = getNodes(expanded);
+    let hit = null;
+    nodes.forEach(n => {
+      if (mx >= n.x && mx <= n.x + NW && my >= n.y && my <= n.y + NH) hit = n.id;
+    });
+    selectedNode = hit;
+    const panel = document.getElementById('nodePanel');
+    if (hit) {
+      const info = nodeInfos[hit];
+      panel.innerHTML = `<h4 style="color:${info.color}">${hit}</h4><p style="color:var(--text);font-size:12px;line-height:1.5;">${info.desc}</p>`;
+    } else {
+      panel.innerHTML = '<h4>Select a Node</h4><p style="color:var(--dim);font-size:12px;">Click any node in the graph to learn about its function in the compositing pipeline.</p>';
+    }
+  });
+
+  requestAnimationFrame(drawGraph);
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 9 — ARTISTS
+// ═══════════════════════════════════════════════════════════
+(function initArtists() {
+  const artists = [
+    { name: 'Dennis Muren', role: 'VFX Supervisor / ILM',  work: 'Jurassic Park, Terminator 2, E.T., Indiana Jones — 9 Academy Awards for VFX, the most by any individual.' },
+    { name: 'John Knoll',   role: 'VFX Supervisor / ILM',  work: 'Star Wars prequels, Pirates of the Caribbean — also co-created Adobe Photoshop with his brother Thomas.' },
+    { name: 'Lorne Peterson', role: 'Model Maker / ILM',   work: 'Original Star Wars practical miniatures — the Millennium Falcon, Death Star, X-Wings — hand-crafted physical models.' },
+    { name: 'Pablo Helman', role: 'VFX Supervisor / ILM',  work: 'War of the Worlds, Munich, Lincoln — mastered digital set extension and period-accurate CGI integration.' },
+    { name: 'Joe Letteri',  role: 'VFX Supervisor / Weta', work: 'Avatar, Lord of the Rings, Avengers — pioneered performance capture and subsurface scattering in production.' },
+    { name: 'Richard Baneham', role: 'VFX Supervisor / Avatar', work: 'Avatar (2009) — Academy Award winner for transforming performance-capture volumetric data into photorealistic Na\'vi.' },
+    { name: 'Rob Legato',   role: 'VFX Supervisor',        work: 'Titanic, Hugo, The Lion King — Emmy and Oscar winner known for blending practical photography with seamless CGI.' },
+    { name: 'Kat Nagel',    role: 'Pipeline TD / Compositor', work: 'Built compositing pipeline tools used across studios — representing the essential technical artists behind every frame.' },
+  ];
+
+  const grid = document.getElementById('artistsGrid');
+  artists.forEach((a, i) => {
+    const card = document.createElement('div');
+    card.className = 'artist-card reveal d' + Math.min(i % 4 + 1, 5);
+    card.innerHTML = `
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-role">${a.role}</div>
+      <div class="artist-work">${a.work}</div>`;
+    grid.appendChild(card);
+    revealObs.observe(card);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SECTION 9 — GLOSSARY
+// ═══════════════════════════════════════════════════════════
+(function initGlossary() {
+  const terms = [
+    { t: 'Alpha Channel',       d: 'Grayscale mask embedded in image data (RGBA) representing transparency — white=opaque, black=transparent.' },
+    { t: 'Beauty Pass',         d: 'The fully-combined CG render with all lighting, shading, and effects baked in — the "hero" render.' },
+    { t: 'Chromakey',           d: 'Technique to isolate and remove a specific colour (usually green or blue) from footage using hue range.' },
+    { t: 'Color Spill',         d: 'Green or blue light from the screen reflected back onto the foreground subject — removed via despill.' },
+    { t: 'Composite',           d: 'The final image created by combining multiple elements (live action, CG, mattes) into a single frame.' },
+    { t: 'CG',                  d: 'Computer Generated — any visual element created digitally using 3D software rather than photographed.' },
+    { t: 'Deep Compositing',    d: 'A compositing technique using images with multiple depth samples per pixel — allows re-ordering of elements.' },
+    { t: 'Despill',             d: 'Process of removing green/blue colour contamination from a keyed foreground\'s edges and skin tones.' },
+    { t: 'Garbage Matte',       d: 'A rough hand-drawn or animated matte used to exclude unwanted areas (boom mics, stage edges) from a key.' },
+    { t: 'HDRI',                d: 'High Dynamic Range Image — a 360° panoramic photo of a real environment used to light CG objects.' },
+    { t: 'Hold-Out Matte',      d: 'A matte that creates a hole in a CG layer — allows live-action elements to appear in front of CG.' },
+    { t: 'IBL',                 d: 'Image Based Lighting — using an HDRI photograph as a light source for CG rendering.' },
+    { t: 'Keying',              d: 'The process of isolating a foreground subject from its background using colour, luminance, or difference.' },
+    { t: 'Matchmove',           d: 'Tracking and solving the live-action camera\'s position/rotation so CG can be inserted with correct perspective.' },
+    { t: 'Motion Blur',         d: 'Blurring of fast-moving objects across frame exposure time — must be accurately reproduced in CG elements.' },
+    { t: 'Nuke',                d: 'Industry-standard node-based compositing software by Foundry — used at virtually every major VFX studio.' },
+    { t: 'Pre-Multiplied Alpha', d: 'Image where RGB is already multiplied by alpha — required for correct compositing math in over operations.' },
+    { t: 'Render Pass',         d: 'A specific lighting or shading component output separately (diffuse, specular, AO, shadow) for compositing.' },
+    { t: 'Rotoscoping',         d: 'Frame-by-frame hand-drawn masking of a subject — used to extract elements without a clean key.' },
+    { t: 'Tracking Marker',     d: 'Reflective or painted dots placed on set or actors to give tracking software identifiable reference points.' },
+    { t: 'VFX Supervisor',      d: 'The creative and technical lead overseeing all visual effects from pre-production through final delivery.' },
+    { t: 'Z-Depth',             d: 'A grayscale render pass encoding distance from camera — used for post-depth-of-field, fog, and compositing.' },
+  ];
+
+  const grid = document.getElementById('glossaryGrid');
+  terms.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'glossary-item reveal d' + Math.min((i % 4) + 1, 5);
+    el.innerHTML = `<div class="glossary-term">${item.t}</div><div class="glossary-def">${item.d}</div>`;
+    grid.appendChild(el);
+    revealObs.observe(el);
+  });
+})();
+
+</script>
+</body>
+</html>

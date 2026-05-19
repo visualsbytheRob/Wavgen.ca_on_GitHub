@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring typography">
+    <meta property="og:title" content="Typography World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring typography">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/typography_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typography World — The Architecture of Language</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ═══════════════════════════════════════
+   CSS VARIABLES & RESET
+═══════════════════════════════════════ */
+:root {
+  --primary:    #7c3aed;
+  --accent:     #a78bfa;
+  --bg:         #1e1b4b;
+  --surface:    #312e81;
+  --surface2:   #3730a3;
+  --text:       #f8f4ff;
+  --text-dim:   #c4b5fd;
+  --text-muted: #7c6fa0;
+  --border:     rgba(167,139,250,0.2);
+  --glow:       rgba(124,58,237,0.4);
+  --radius:     12px;
+  --ff-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --ff-sans:  'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --ff-mono:  'Space Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(30,27,75,0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  overflow-x: auto;
+}
+.nav-brand {
+  font-family: var(--ff-serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  margin-right: auto;
+  white-space: nowrap;
+}
+nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.77rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+nav a:hover { color: var(--accent); }
+
+/* ═══════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════ */
+.world-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--ff-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+.section-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.12;
+  margin-bottom: 0.7rem;
+  background: linear-gradient(130deg, var(--text) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-desc {
+  color: var(--text-dim);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+/* ═══════════════════════════════════════
+   INTERSECTION OBSERVER ANIMATION
+═══════════════════════════════════════ */
+.hidden {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.72s ease, transform 0.72s ease;
+}
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+.btn {
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.2rem;
+  color: #fff;
+  font-family: var(--ff-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.btn:hover { background: #6d28d9; box-shadow: 0 4px 20px var(--glow); }
+.btn-sm { padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--accent); }
+.btn-outline:hover { background: rgba(124,58,237,0.15); }
+input[type=range] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+input[type=text], input[type=number] {
+  background: rgba(49,46,129,0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  color: var(--text);
+  font-family: var(--ff-sans);
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+input[type=text]:focus, input[type=number]:focus { border-color: var(--primary); }
+select {
+  background: rgba(49,46,129,0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  color: var(--text);
+  font-family: var(--ff-sans);
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+select:focus { border-color: var(--primary); }
+.ctrl-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.ctrl-label span { color: var(--accent); font-family: var(--ff-mono); font-size: 0.78rem; }
+.ctrl-group { margin-bottom: 1.25rem; }
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  font-family: var(--ff-mono);
+  margin-top: 0.2rem;
+}
+.optimal-badge {
+  display: inline-block;
+  background: rgba(124,58,237,0.2);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  padding: 0.1rem 0.42rem;
+  font-size: 0.66rem;
+  color: var(--accent);
+  font-family: var(--ff-mono);
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#hero-wrapper { position: relative; width: 100%; height: 440px; overflow: hidden; margin-top: 56px; }
+#hero-canvas { display: block; width: 100%; height: 100%; }
+#hero-overlay { position: absolute; bottom: 2.5rem; left: 3rem; pointer-events: none; }
+#hero-overlay h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(1.8rem, 4vw, 2.9rem);
+  font-weight: 900;
+  color: var(--text);
+  text-shadow: 0 2px 24px rgba(30,27,75,0.9);
+  margin-bottom: 0.25rem;
+}
+#hero-overlay p { font-family: var(--ff-mono); font-size: 0.82rem; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; }
+
+/* ═══════════════════════════════════════
+   ANATOMY
+═══════════════════════════════════════ */
+.anatomy-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+@media(max-width:700px){ .anatomy-layout { grid-template-columns: 1fr; } }
+#anatomy-canvas { border-radius: var(--radius); background: #100d28; width: 100%; cursor: pointer; display: block; border: 1px solid var(--border); }
+.hotspot-list { display: flex; flex-direction: column; gap: 0.35rem; }
+.hp-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.48rem 0.9rem;
+  color: var(--text-dim);
+  font-family: var(--ff-sans);
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hp-btn:hover, .hp-btn.active { background: var(--surface); border-color: var(--accent); color: var(--text); }
+.hp-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.anatomy-info { margin-top: 1.25rem; background: var(--surface); border-radius: var(--radius); padding: 1.25rem 1.5rem; border-left: 3px solid var(--primary); min-height: 88px; }
+.anatomy-info h3 { font-family: var(--ff-serif); font-size: 1.2rem; color: var(--accent); margin-bottom: 0.35rem; }
+.anatomy-info p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.6; }
+
+/* ═══════════════════════════════════════
+   CLASSIFICATION
+═══════════════════════════════════════ */
+.class-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(138px,1fr)); gap: 0.85rem; margin-bottom: 2rem; }
+.class-node { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 0.75rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+.class-node:hover, .class-node.active { border-color: var(--primary); background: var(--surface2); box-shadow: 0 0 20px var(--glow); }
+.class-sample-sm { font-size: 1.85rem; margin-bottom: 0.4rem; line-height: 1.2; color: var(--text); }
+.class-name { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent); font-weight: 600; }
+.class-detail { background: var(--surface); border-radius: var(--radius); padding: 1.75rem; border: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+@media(max-width:600px){ .class-detail { grid-template-columns: 1fr; } }
+.class-big-sample { font-size: clamp(2.8rem,7vw,5rem); line-height: 1; color: var(--text); margin-bottom: 0.5rem; }
+.class-meta p { font-size: 0.875rem; color: var(--text-dim); margin-bottom: 0.4rem; }
+.class-meta strong { color: var(--accent); }
+.quiz-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; }
+.quiz-sample { font-size: 2.2rem; margin-bottom: 0.4rem; color: var(--text); }
+.quiz-prompt { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.75rem; }
+.quiz-options { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.quiz-btn { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 0.42rem 0.85rem; color: var(--text-dim); font-family: var(--ff-sans); font-size: 0.82rem; cursor: pointer; transition: all 0.18s; }
+.quiz-btn:hover { border-color: var(--primary); color: var(--text); background: var(--surface2); }
+.quiz-btn.correct { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.1); }
+.quiz-btn.wrong   { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.1); }
+#quiz-feedback { margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-dim); min-height: 1.4em; }
+
+/* ═══════════════════════════════════════
+   SPACING
+═══════════════════════════════════════ */
+.spacing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+@media(max-width:700px){ .spacing-grid { grid-template-columns: 1fr; } }
+#kerning-canvas { display: block; width: 100%; background: #0d0b1f; border-radius: 8px; }
+.preview-box { background: #0d0b1f; border-radius: 8px; padding: 1.25rem; min-height: 80px; display: flex; align-items: center; }
+.kern-pair-row { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.kern-pair-btn { background: transparent; border: 1px solid var(--border); border-radius: 5px; padding: 0.28rem 0.6rem; color: var(--text-dim); font-size: 1rem; font-family: var(--ff-serif); cursor: pointer; transition: all 0.15s; }
+.kern-pair-btn:hover, .kern-pair-btn.active { border-color: var(--accent); color: var(--text); background: var(--surface); }
+
+/* ═══════════════════════════════════════
+   SCALE & GRID
+═══════════════════════════════════════ */
+.scale-controls-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; align-items: flex-end; }
+.scale-rows { display: flex; flex-direction: column; gap: 0.35rem; }
+.scale-row { display: flex; align-items: baseline; gap: 1.25rem; padding: 0.38rem 0; border-bottom: 1px solid rgba(167,139,250,0.12); }
+.scale-label { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--text-muted); width: 90px; flex-shrink: 0; }
+.scale-text { color: var(--text); font-family: var(--ff-serif); line-height: 1.15; }
+.grid-demo { position: relative; background: #0d0b1f; border-radius: var(--radius); border: 1px solid var(--border); padding: 2rem; min-height: 270px; overflow: hidden; }
+
+/* ═══════════════════════════════════════
+   VARIABLE FONTS
+═══════════════════════════════════════ */
+.vf-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+@media(max-width:700px){ .vf-layout { grid-template-columns: 1fr; } }
+.vf-preview { background: #0d0b1f; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; text-align: center; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+#vf-text { font-size: clamp(4rem,10vw,7rem); color: var(--text); font-family: var(--ff-sans); line-height: 1; }
+#design-space-canvas { display: block; width: 100%; cursor: crosshair; border-radius: 8px; background: #0d0b1f; }
+
+/* ═══════════════════════════════════════
+   EXPRESSIVE
+═══════════════════════════════════════ */
+.exp-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
+.exp-tab { background: transparent; border: 1px solid var(--border); border-radius: 7px; padding: 0.42rem 1.05rem; color: var(--text-dim); font-family: var(--ff-sans); font-size: 0.82rem; cursor: pointer; transition: all 0.18s; }
+.exp-tab:hover, .exp-tab.active { background: var(--surface); border-color: var(--primary); color: var(--text); }
+.exp-panel { display: none; }
+.exp-panel.active { display: block; }
+#path-canvas, #gradient-canvas, #threed-canvas { display: block; width: 100%; border-radius: var(--radius); background: #0d0b1f; cursor: crosshair; }
+.movement-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(185px,1fr)); gap: 1rem; margin-top: 1.75rem; }
+.movement-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+.mvt-sample { font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--text); }
+.movement-card h4 { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 0.38rem; text-transform: uppercase; letter-spacing: 0.07em; }
+.movement-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   DESIGNER CARDS
+═══════════════════════════════════════ */
+.artists-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(248px,1fr)); gap: 1.25rem; }
+.artist-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: all 0.25s; }
+.artist-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 12px 36px var(--glow); }
+.artist-avatar { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg,var(--primary),var(--accent)); display: flex; align-items: center; justify-content: center; font-family: var(--ff-serif); font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.9rem; }
+.artist-name { font-family: var(--ff-serif); font-size: 1.15rem; color: var(--text); margin-bottom: 0.2rem; }
+.artist-era { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.09em; margin-bottom: 0.65rem; }
+.artist-bio { font-size: 0.83rem; color: var(--text-dim); margin-bottom: 0.65rem; line-height: 1.55; }
+.typeface-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.72rem; }
+.tf-tag { background: rgba(124,58,237,0.18); border: 1px solid var(--border); border-radius: 4px; padding: 0.1rem 0.42rem; font-size: 0.7rem; color: var(--accent); font-style: italic; font-family: var(--ff-serif); }
+.artist-quote { font-style: italic; font-size: 0.78rem; color: var(--text-muted); border-left: 2px solid var(--primary); padding-left: 0.7rem; line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   GLOSSARY
+═══════════════════════════════════════ */
+.glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+@media(max-width:580px){ .glossary-grid { grid-template-columns: 1fr; } }
+.g-item { padding: 1.1rem 1rem 1.1rem 0; border-bottom: 1px solid var(--border); }
+.g-item:nth-child(even) { padding-left: 1.5rem; border-left: 1px solid var(--border); }
+.g-term { font-family: var(--ff-serif); font-size: 1.05rem; color: var(--accent); margin-bottom: 0.2rem; font-style: italic; }
+.g-def { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; }
+
+footer { text-align: center; padding: 2.5rem 2rem; color: var(--text-muted); font-family: var(--ff-mono); font-size: 0.74rem; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body class="domain-art">
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#hero-wrapper">Typo World</a>
+  <a href="#anatomy">Anatomy</a>
+  <a href="#classification">Classification</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#scale">Scale</a>
+  <a href="#variable-fonts">Variable</a>
+  <a href="#expressive">Expressive</a>
+  <a href="#artists">Designers</a>
+  <a href="#glossary">Glossary</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1 — HERO CANVAS
+══════════════════════════════════════════════ -->
+<div id="hero-wrapper">
+  <canvas id="hero-canvas"></canvas>
+  <div id="hero-overlay">
+    <h1>Typography World</h1>
+    <p>The Architecture of Language</p>
+  </div>
+</div>
+
+<script>
+/* ── HERO: Kinetic Typography Canvas ── */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  const WORD = 'TYPOGRAPHY';
+  let W, H, letters = [], lastT = 0;
+  let mX = -9999, mY = -9999;
+
+  /* Global LagFilter — used throughout the page */
+  window.lagFilter = function(cur, tgt, dt, tau){
+    return cur + (1 - Math.exp(-dt / tau)) * (tgt - cur);
+  };
+  const lag = window.lagFilter;
+
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    buildLetters();
+  }
+
+  function buildLetters(){
+    letters = [];
+    const fs = Math.min(W / (WORD.length * 0.68), H * 0.38);
+    ctx.font = `900 ${fs}px 'Playfair Display',Georgia,serif`;
+    const tw = ctx.measureText(WORD).width;
+    let x = (W - tw) / 2;
+    const y = H * 0.50;
+    for(let i = 0; i < WORD.length; i++){
+      const ch = WORD[i];
+      const cw = ctx.measureText(ch).width;
+      const bx = x + cw / 2;
+      letters.push({
+        ch, fs,
+        bx, by: y,
+        sx: bx, sy: y,      /* smoothed positions — LagFilter #3, #4 */
+        sc: 1, tsc: 1,      /* scale — LagFilter #1 */
+        rt: 0, trt: 0,      /* rotation — LagFilter #2 */
+        phase: (i / WORD.length) * Math.PI * 2,
+        hue: 255 + i * 7
+      });
+      x += cw;
+    }
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mX = (e.clientX - r.left) * (W / r.width);
+    mY = (e.clientY - r.top)  * (H / r.height);
+  });
+  canvas.addEventListener('mouseleave', () => { mX = -9999; mY = -9999; });
+
+  function draw(ts){
+    const dt = Math.min((ts - lastT) / 1000, 0.05);
+    lastT = ts;
+    const t = ts / 1000;
+
+    /* Phosphor persistence */
+    ctx.fillStyle = 'rgba(30,27,75,0.19)';
+    ctx.fillRect(0, 0, W, H);
+
+    /* Baseline grid */
+    const gs = H / 7;
+    for(let gy = gs * 0.5; gy < H; gy += gs){
+      const a = 0.032 + 0.024 * Math.sin(t * 0.38 + gy * 0.007);
+      ctx.strokeStyle = `rgba(124,58,237,${a})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+    }
+
+    letters.forEach(l => {
+      /* LagFilter #1 — breathing scale */
+      l.tsc = 1 + 0.055 * Math.sin(t * 1.1 + l.phase);
+      l.sc  = lag(l.sc,  l.tsc, dt, 0.20);
+
+      /* LagFilter #2 — gentle rotation */
+      l.trt = 0.038 * Math.sin(t * 0.74 + l.phase + 1.1);
+      l.rt  = lag(l.rt,  l.trt, dt, 0.28);
+
+      /* Mouse attraction */
+      const dx = mX - l.bx, dy = mY - l.by;
+      const dist = Math.hypot(dx, dy);
+      const pull = Math.max(0, 1 - dist / 240) * 32;
+      const tx = l.bx + (dist > 4 ? (dx / dist) * pull : 0);
+      const ty = l.by + (dist > 4 ? (dy / dist) * pull : 0);
+      /* LagFilter #3 — smooth X */
+      l.sx = lag(l.sx, tx, dt, 0.10);
+      /* LagFilter #4 — smooth Y */
+      l.sy = lag(l.sy, ty, dt, 0.10);
+
+      ctx.save();
+      ctx.translate(l.sx, l.sy);
+      ctx.rotate(l.rt);
+      ctx.scale(l.sc, l.sc);
+      ctx.shadowColor = '#a78bfa';
+      ctx.shadowBlur  = 16 + 9 * Math.sin(t * 1.4 + l.phase);
+      const lum = 76 + 9 * Math.sin(t * 0.85 + l.phase);
+      ctx.fillStyle = `hsl(${l.hue},76%,${lum}%)`;
+      ctx.font = `900 ${l.fs}px 'Playfair Display',Georgia,serif`;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(l.ch, 0, 0);
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2 — ANATOMY OF TYPE
+══════════════════════════════════════════════ -->
+<section id="anatomy" class="world-section">
+  <div class="hidden">
+    <p class="section-label">02 — Anatomy</p>
+    <h2 class="section-title">Anatomy of Type</h2>
+    <p class="section-desc">Every letterform is built from named parts—the vocabulary type designers use to craft, critique, and communicate about type. Click a part to explore its definition and role.</p>
+  </div>
+  <div class="anatomy-layout hidden">
+    <div>
+      <canvas id="anatomy-canvas" width="500" height="360"></canvas>
+    </div>
+    <div>
+      <div class="hotspot-list" id="hotspot-list">
+        <button class="hp-btn active" data-part="baseline"><span class="hp-dot"></span>Baseline</button>
+        <button class="hp-btn" data-part="cap-height"><span class="hp-dot"></span>Cap Height</button>
+        <button class="hp-btn" data-part="x-height"><span class="hp-dot"></span>x-Height</button>
+        <button class="hp-btn" data-part="ascender"><span class="hp-dot"></span>Ascender</button>
+        <button class="hp-btn" data-part="descender"><span class="hp-dot"></span>Descender</button>
+        <button class="hp-btn" data-part="stem"><span class="hp-dot"></span>Stem</button>
+        <button class="hp-btn" data-part="serif"><span class="hp-dot"></span>Serif</button>
+        <button class="hp-btn" data-part="bowl"><span class="hp-dot"></span>Bowl</button>
+        <button class="hp-btn" data-part="counter"><span class="hp-dot"></span>Counter</button>
+        <button class="hp-btn" data-part="ear"><span class="hp-dot"></span>Ear</button>
+        <button class="hp-btn" data-part="tail"><span class="hp-dot"></span>Tail</button>
+        <button class="hp-btn" data-part="crossbar"><span class="hp-dot"></span>Crossbar</button>
+        <button class="hp-btn" data-part="aperture"><span class="hp-dot"></span>Aperture</button>
+        <button class="hp-btn" data-part="terminal"><span class="hp-dot"></span>Terminal</button>
+        <button class="hp-btn" data-part="spine"><span class="hp-dot"></span>Spine</button>
+        <button class="hp-btn" data-part="link"><span class="hp-dot"></span>Link</button>
+        <button class="hp-btn" data-part="loop"><span class="hp-dot"></span>Loop</button>
+      </div>
+      <div class="anatomy-info" id="anatomy-info">
+        <h3>Baseline</h3>
+        <p>The invisible line on which most letters sit. It is the fundamental reference point for all vertical measurements in type—cap height, x-height, ascender, and descender are all measured relative to it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const canvas  = document.getElementById('anatomy-canvas');
+  const ctx     = canvas.getContext('2d');
+  const infoEl  = document.getElementById('anatomy-info');
+  const buttons = document.querySelectorAll('.hp-btn');
+  const lag     = window.lagFilter;
+
+  const PARTS = {
+    'baseline':   { label:'Baseline',   def:'The invisible line on which most letters sit. Every vertical measurement in typography is defined relative to the baseline—cap height, x-height, ascenders, and descenders.' },
+    'cap-height': { label:'Cap Height', def:'The height of flat uppercase letters (H, I) measured from the baseline. Rounded capitals like O extend slightly beyond cap height to appear optically the same size.' },
+    'x-height':   { label:'x-Height',  def:'The height of a lowercase letter with no ascender or descender, named for the letter x. A larger x-height greatly improves legibility at small sizes and on screens.' },
+    'ascender':   { label:'Ascender',  def:'The portion of a lowercase letter that extends above the x-height—seen in b, d, f, h, k, l, t. Ascenders create visual rhythm and help with word-shape recognition.' },
+    'descender':  { label:'Descender', def:'The portion of a letter that extends below the baseline—seen in g, j, p, q, y. Generous descender space requires adequate line-height to prevent collision with the line below.' },
+    'stem':       { label:'Stem',      def:'The principal vertical or diagonal stroke of a letterform, forming its structural backbone. The weight of the stem is the primary factor that determines the apparent boldness of a typeface.' },
+    'serif':      { label:'Serif',     def:'The small cross-stroke finishing the end of a main stroke. Originating from Roman stone inscription, serifs help guide the eye along a line of text and add rhythm to letterforms.' },
+    'bowl':       { label:'Bowl',      def:'The fully or partially curved stroke that encloses the enclosed space in letters like b, d, o, p, q, R. The curvature and tension of the bowl give a typeface much of its character.' },
+    'counter':    { label:'Counter',   def:'The partially or fully enclosed space within a letterform—the interior of o, e, or the spaces inside b and d. Large, open counters dramatically improve legibility at small sizes.' },
+    'ear':        { label:'Ear',       def:'The small stroke that projects from the upper-right of the bowl in a double-story lowercase g, and sometimes seen on r. Ear style is a key differentiator between type classifications.' },
+    'tail':       { label:'Tail',      def:'The descending curved or diagonal stroke of Q, R, and the looped g. The shape of Q\'s tail is one of the most expressive and identifying features distinguishing typefaces from one another.' },
+    'crossbar':   { label:'Crossbar',  def:'The horizontal stroke that connects two vertical strokes (as in H, A) or crosses a single stem (as in f, t). The height of the crossbar profoundly affects the optical balance of a letter.' },
+    'aperture':   { label:'Aperture',  def:'The opening of a partially enclosed counter, as seen in n, C, S, a. Wide apertures feel open and humanist; narrow apertures create a more formal, tightly constructed appearance.' },
+    'terminal':   { label:'Terminal',  def:'The end of a stroke that does not terminate with a serif. Terminals can be ball-shaped (Times), sheared at a precise angle (Optima), or blunt (Helvetica). Terminal style defines type classification.' },
+    'spine':      { label:'Spine',     def:'The primary curved stroke of the letter S. The angle of the spine—near vertical in Modern (Didone) typefaces, more diagonal in Old Style—is a reliable indicator of type classification.' },
+    'link':       { label:'Link',      def:'The connecting stroke between the upper bowl and lower loop of a double-story lowercase g. Together with the ear, the link is a key identifier when distinguishing between typefaces.' },
+    'loop':       { label:'Loop',      def:'The enclosed counter at the bottom of a binocular (double-story) lowercase g, formed below the link. Its shape and degree of closure varies widely across typefaces and is highly distinctive.' },
+  };
+
+  const W = 500, H = 360;
+  const BL  = H * 0.67;
+  const CAP = H * 0.22;
+  const XH  = H * 0.445;
+  const ASC = H * 0.10;
+  const DSC = H * 0.83;
+
+  const REGIONS = {
+    'baseline':   { x:18,  y:BL-3,            w:W-36, h:6   },
+    'cap-height': { x:18,  y:CAP-3,           w:W-36, h:6   },
+    'x-height':   { x:18,  y:XH-3,            w:W-36, h:6   },
+    'ascender':   { x:55,  y:ASC,             w:55,   h:XH-ASC },
+    'descender':  { x:295, y:BL,              w:60,   h:DSC-BL },
+    'stem':       { x:55,  y:CAP,             w:42,   h:BL-CAP },
+    'serif':      { x:42,  y:BL-20,           w:85,   h:24 },
+    'bowl':       { x:98,  y:CAP,             w:118,  h:BL-CAP },
+    'counter':    { x:113, y:CAP+20,          w:88,   h:(BL-CAP)-42 },
+    'ear':        { x:284, y:XH-32,           w:52,   h:34 },
+    'tail':       { x:284, y:BL,              w:82,   h:DSC-BL },
+    'crossbar':   { x:55,  y:(CAP+XH)/2-5,   w:118,  h:10 },
+    'aperture':   { x:354, y:XH,              w:82,   h:BL-XH },
+    'terminal':   { x:350, y:CAP+2,           w:35,   h:32 },
+    'spine':      { x:338, y:CAP,             w:98,   h:BL-CAP },
+    'link':       { x:288, y:XH+8,            w:42,   h:22 },
+    'loop':       { x:283, y:XH+28,           w:68,   h:DSC-XH-28 },
+  };
+
+  let activePart = 'baseline';
+  let hAlpha = 0, tAlpha = 1, lastT = 0;
+
+  function draw(ts){
+    const dt = Math.min((ts - lastT)/1000, 0.05);
+    lastT = ts;
+    /* LagFilter #5 — highlight fade */
+    hAlpha = lag(hAlpha, tAlpha, dt, 0.10);
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = '#100d28';
+    ctx.fillRect(0,0,W,H);
+
+    /* Guide lines */
+    [[BL,'baseline','rgba(167,139,250,0.6)'],[CAP,'cap height','rgba(124,58,237,0.55)'],
+     [XH,'x-height','rgba(124,58,237,0.4)'],[ASC,'ascender','rgba(167,139,250,0.3)'],
+     [DSC,'descender','rgba(167,139,250,0.3)']].forEach(([y,lbl,col]) => {
+      ctx.strokeStyle = col; ctx.setLineDash([4,7]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(18,y); ctx.lineTo(W-18,y); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = col; ctx.font = '9px Space Mono,monospace';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+      ctx.fillText(lbl, W-22, y-2);
+    });
+
+    /* Letters */
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
+    ctx.shadowColor = 'rgba(167,139,250,0.15)'; ctx.shadowBlur = 6;
+
+    ctx.fillStyle = '#f8f4ff';
+    ctx.font = `700 ${(BL-CAP)*1.02}px 'Playfair Display',Georgia,serif`;
+    ctx.fillText('R', 52, BL);
+
+    const gFs = (BL-XH)*2.55;
+    ctx.font = `700 ${gFs}px 'Playfair Display',Georgia,serif`;
+    ctx.fillText('g', 246, BL);
+
+    ctx.font = `700 ${(BL-CAP)*0.92}px 'Playfair Display',Georgia,serif`;
+    ctx.fillText('S', 352, BL);
+    ctx.shadowBlur = 0;
+
+    /* Highlight region */
+    const r = REGIONS[activePart];
+    if(r && hAlpha > 0.01){
+      ctx.fillStyle = `rgba(124,58,237,${hAlpha*0.32})`;
+      ctx.strokeStyle = `rgba(167,139,250,${hAlpha})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      if(ctx.roundRect) ctx.roundRect(r.x,r.y,r.w,r.h,4);
+      else ctx.rect(r.x,r.y,r.w,r.h);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = `rgba(167,139,250,${hAlpha})`;
+      ctx.beginPath();
+      ctx.arc(r.x+r.w/2, r.y+r.h/2, 5, 0, Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  function select(part){
+    activePart = part; tAlpha = 0;
+    setTimeout(()=>{ tAlpha = 1; }, 40);
+    const p = PARTS[part];
+    if(p) infoEl.innerHTML = `<h3>${p.label}</h3><p>${p.def}</p>`;
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.part === part));
+  }
+
+  buttons.forEach(b => b.addEventListener('click', () => select(b.dataset.part)));
+  requestAnimationFrame(draw);
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 — TYPE CLASSIFICATION
+══════════════════════════════════════════════ -->
+<section id="classification" class="world-section">
+  <div class="hidden">
+    <p class="section-label">03 — Classification</p>
+    <h2 class="section-title">Type Classification</h2>
+    <p class="section-desc">Eight major type families, each with distinct visual DNA. Click a category to see characteristics, historical context, and famous examples. Then test your eye with the quiz.</p>
+  </div>
+
+  <div class="class-grid hidden" id="class-grid">
+    <div class="class-node active" data-class="oldstyle">
+      <div class="class-sample-sm" style="font-family:Georgia,serif">Rg</div>
+      <div class="class-name">Old Style</div>
+    </div>
+    <div class="class-node" data-class="transitional">
+      <div class="class-sample-sm" style="font-family:'Times New Roman',serif">Rg</div>
+      <div class="class-name">Transitional</div>
+    </div>
+    <div class="class-node" data-class="modern">
+      <div class="class-sample-sm" style="font-family:Georgia,serif;font-weight:900">Rg</div>
+      <div class="class-name">Modern / Didone</div>
+    </div>
+    <div class="class-node" data-class="slab">
+      <div class="class-sample-sm" style="font-family:'Courier New',monospace;font-weight:700">Rg</div>
+      <div class="class-name">Slab Serif</div>
+    </div>
+    <div class="class-node" data-class="grotesque">
+      <div class="class-sample-sm" style="font-family:Arial,sans-serif">Rg</div>
+      <div class="class-name">Grotesque Sans</div>
+    </div>
+    <div class="class-node" data-class="geometric">
+      <div class="class-sample-sm" style="font-family:'Space Grotesk',sans-serif">Rg</div>
+      <div class="class-name">Geometric Sans</div>
+    </div>
+    <div class="class-node" data-class="humanist">
+      <div class="class-sample-sm" style="font-family:Verdana,sans-serif">Rg</div>
+      <div class="class-name">Humanist Sans</div>
+    </div>
+    <div class="class-node" data-class="monospace">
+      <div class="class-sample-sm" style="font-family:'Space Mono',monospace">Rg</div>
+      <div class="class-name">Monospace</div>
+    </div>
+  </div>
+
+  <div class="class-detail hidden" id="class-detail">
+    <div>
+      <div class="class-big-sample" id="class-big-sample" style="font-family:Georgia,serif">Rg</div>
+      <p style="font-family:Georgia,serif;color:var(--text-dim);font-size:1.1rem;margin-bottom:0.75rem">"The quick brown fox"</p>
+    </div>
+    <div class="class-meta" id="class-meta">
+      <p><strong>Era:</strong> 15th–17th century</p>
+      <p><strong>Stress axis:</strong> Diagonal (oblique)</p>
+      <p><strong>Contrast:</strong> Low to moderate</p>
+      <p><strong>Serifs:</strong> Bracketed, angled</p>
+      <p><strong>Examples:</strong> Garamond, Caslon, Bembo, Jenson</p>
+      <p style="margin-top:0.75rem;color:var(--text-dim);font-size:0.85rem">Old Style typefaces reflect the hand-held pen of Renaissance scribes. The diagonal stress axis and low contrast between thick and thin strokes create warm, humanistic letterforms ideal for long-form reading.</p>
+    </div>
+  </div>
+
+  <div class="hidden" style="margin-bottom:2rem">
+    <h3 style="font-family:var(--ff-serif);font-size:1.4rem;color:var(--text);margin-bottom:1rem">Match the Font</h3>
+    <div class="quiz-box">
+      <div class="quiz-sample" id="quiz-sample">Hamburgefonstiv</div>
+      <p class="quiz-prompt" id="quiz-prompt">Which classification does this typeface belong to?</p>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div id="quiz-feedback"></div>
+      <button class="btn btn-sm" style="margin-top:1rem" onclick="nextQuiz()">Next &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const CLASSES = {
+    oldstyle: {
+      label: 'Old Style', font: 'Georgia,serif',
+      era: '15th–17th century', stress: 'Diagonal (oblique)', contrast: 'Low–moderate',
+      serifs: 'Bracketed, angled', examples: 'Garamond, Caslon, Bembo, Jenson',
+      desc: 'Rooted in Renaissance pen-writing. The diagonal stress axis and moderate stroke contrast produce warm, humanistic letterforms with excellent long-form readability.'
+    },
+    transitional: {
+      label: 'Transitional', font: '"Times New Roman",serif',
+      era: '18th century', stress: 'Near-vertical', contrast: 'Moderate–high',
+      serifs: 'Bracketed, more refined', examples: 'Times New Roman, Baskerville, Perpetua',
+      desc: 'A bridge between Old Style and Modern. The nearly vertical stress and sharper contrast reflect Enlightenment precision. Highly legible at small sizes, ubiquitous in newspapers and books.'
+    },
+    modern: {
+      label: 'Modern / Didone', font: 'Georgia,serif',
+      era: 'Late 18th–19th century', stress: 'Perfectly vertical', contrast: 'Extreme',
+      serifs: 'Hairline, unbracketed', examples: 'Bodoni, Didot, Walbaum',
+      desc: 'Extreme contrast between thick stems and hairline serifs creates a dramatic, elegant aesthetic. Beloved for fashion and luxury branding. Challenging to read at small sizes due to the "dazzle" effect.'
+    },
+    slab: {
+      label: 'Slab Serif', font: '"Courier New",monospace',
+      era: '19th century–present', stress: 'Vertical', contrast: 'Low (monolinear)',
+      serifs: 'Heavy, square, unbracketed', examples: 'Rockwell, Clarendon, Memphis, Courier',
+      desc: 'Developed for bold advertising display. Heavy rectangular serifs and low stroke contrast create a sturdy, mechanical appearance. Modern slab serifs (Archer, Adelle) are excellent body text faces.'
+    },
+    grotesque: {
+      label: 'Grotesque Sans', font: 'Arial,sans-serif',
+      era: '19th–early 20th century', stress: 'Vertical', contrast: 'Low',
+      serifs: 'None', examples: 'Helvetica, Akzidenz-Grotesk, Franklin Gothic',
+      desc: 'The original sans-serif genre. Named "grotesque" because sans serifs were considered ugly by Victorian-era critics. Helvetica is its most iconic example—neutral, rational, and endlessly versatile.'
+    },
+    geometric: {
+      label: 'Geometric Sans', font: '"Space Grotesk",system-ui,sans-serif',
+      era: '1920s Bauhaus–present', stress: 'Geometric', contrast: 'Very low (monolinear)',
+      serifs: 'None', examples: 'Futura, Avenir, Gill Sans, Space Grotesk',
+      desc: 'Constructed from pure geometric shapes—circles, triangles, rectangles. The lowercase o is a perfect circle. Born from Bauhaus modernism, geometric sans carry idealism and machine-age clarity. The lowercase a is single-story.'
+    },
+    humanist: {
+      label: 'Humanist Sans', font: 'Verdana,sans-serif',
+      era: '1950s–present', stress: 'Slight diagonal', contrast: 'Low–moderate',
+      serifs: 'None', examples: 'Gill Sans, Frutiger, Myriad, Verdana, Calibri',
+      desc: 'Sans-serif letterforms informed by the calligraphic pen tradition. More organic and legible than Grotesque or Geometric sans. Preferred for wayfinding, interfaces, and accessible body text.'
+    },
+    monospace: {
+      label: 'Monospace', font: '"Space Mono","Courier New",monospace',
+      era: 'Typewriter era–present', stress: 'Vertical', contrast: 'Low',
+      serifs: 'Varied (slab or none)', examples: 'Courier, Space Mono, Fira Code, JetBrains Mono',
+      desc: 'Every character occupies identical horizontal space—a property inherited from typewriter mechanics. Essential for code display and tabular data. Modern coding fonts add ligatures and sophisticated hinting.'
+    }
+  };
+
+  const detailEl    = document.getElementById('class-detail');
+  const bigSampleEl = document.getElementById('class-big-sample');
+  const metaEl      = document.getElementById('class-meta');
+  const nodes       = document.querySelectorAll('.class-node');
+
+  function showClass(key){
+    const c = CLASSES[key];
+    if(!c) return;
+    nodes.forEach(n => n.classList.toggle('active', n.dataset.class === key));
+    bigSampleEl.style.fontFamily = c.font;
+    bigSampleEl.textContent = 'Rg';
+    metaEl.innerHTML = `
+      <p><strong>Era:</strong> ${c.era}</p>
+      <p><strong>Stress axis:</strong> ${c.stress}</p>
+      <p><strong>Contrast:</strong> ${c.contrast}</p>
+      <p><strong>Serifs:</strong> ${c.serifs}</p>
+      <p><strong>Examples:</strong> ${c.examples}</p>
+      <p style="margin-top:0.75rem;color:var(--text-dim);font-size:0.85rem;line-height:1.6">${c.desc}</p>`;
+  }
+
+  nodes.forEach(n => n.addEventListener('click', () => showClass(n.dataset.class)));
+  showClass('oldstyle');
+
+  /* ── Quiz ── */
+  const classKeys = Object.keys(CLASSES);
+  let quizKey = '';
+
+  window.nextQuiz = function(){
+    const keys = classKeys.filter(k => k !== quizKey);
+    quizKey = keys[Math.floor(Math.random() * keys.length)];
+    const c = CLASSES[quizKey];
+    document.getElementById('quiz-sample').style.fontFamily = c.font;
+    document.getElementById('quiz-sample').textContent = 'Hamburgefonstiv';
+    document.getElementById('quiz-feedback').textContent = '';
+    const shuffled = [...classKeys].sort(() => Math.random()-0.5).slice(0,5);
+    if(!shuffled.includes(quizKey)) shuffled[0] = quizKey;
+    shuffled.sort(() => Math.random()-0.5);
+    const opts = document.getElementById('quiz-options');
+    opts.innerHTML = '';
+    shuffled.forEach(k => {
+      const b = document.createElement('button');
+      b.className = 'quiz-btn';
+      b.textContent = CLASSES[k].label;
+      b.onclick = () => {
+        document.querySelectorAll('.quiz-btn').forEach(x => x.disabled = true);
+        if(k === quizKey){
+          b.classList.add('correct');
+          document.getElementById('quiz-feedback').textContent = `✓ Correct! ${c.label} — ${c.examples}.`;
+        } else {
+          b.classList.add('wrong');
+          document.querySelectorAll('.quiz-btn').forEach(x => { if(x.textContent === CLASSES[quizKey].label) x.classList.add('correct'); });
+          document.getElementById('quiz-feedback').textContent = `✗ That's ${CLASSES[k].label}. The answer was ${c.label} (${c.examples}).`;
+        }
+      };
+      opts.appendChild(b);
+    });
+  };
+  nextQuiz();
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4 — SPACING & RHYTHM
+══════════════════════════════════════════════ -->
+<section id="spacing" class="world-section">
+  <div class="hidden">
+    <p class="section-label">04 — Spacing</p>
+    <h2 class="section-title">Spacing &amp; Rhythm</h2>
+    <p class="section-desc">The space between and around letters is as important as the letters themselves. Kerning, tracking, leading, and measure work together to create visual harmony and legibility.</p>
+  </div>
+
+  <!-- Kerning pairs -->
+  <div class="hidden" style="margin-bottom:2.5rem">
+    <h3 style="font-family:var(--ff-serif);font-size:1.35rem;color:var(--text);margin-bottom:0.5rem">Kerning Pairs</h3>
+    <p style="color:var(--text-dim);font-size:0.875rem;margin-bottom:1rem">Classic problem pairs where default letter spacing creates uncomfortable gaps. Adjust kerning to see the optical improvement.</p>
+    <div class="kern-pair-row" id="kern-pairs">
+      <button class="kern-pair-btn active" data-pair="AV">AV</button>
+      <button class="kern-pair-btn" data-pair="WA">WA</button>
+      <button class="kern-pair-btn" data-pair="To">To</button>
+      <button class="kern-pair-btn" data-pair="Ty">Ty</button>
+      <button class="kern-pair-btn" data-pair="PA">PA</button>
+      <button class="kern-pair-btn" data-pair="LT">LT</button>
+      <button class="kern-pair-btn" data-pair="ry">ry</button>
+      <button class="kern-pair-btn" data-pair="Ve">Ve</button>
+    </div>
+    <div class="ctrl-group">
+      <label class="ctrl-label">Kerning adjustment <span id="kern-val-lbl">0 units</span></label>
+      <input type="range" id="kern-slider" min="-120" max="80" value="0">
+      <div class="range-labels"><span>-120 (tight)</span><span>0 (default)</span><span>+80 (loose)</span></div>
+    </div>
+    <canvas id="kerning-canvas" height="110"></canvas>
+  </div>
+
+  <div class="spacing-grid hidden">
+    <!-- Tracking -->
+    <div class="card">
+      <h4 style="font-family:var(--ff-serif);font-size:1.1rem;color:var(--text);margin-bottom:0.5rem">Tracking (Letter-Spacing)</h4>
+      <p style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1rem">Global letter spacing applied uniformly. Negative tracking tightens display type; generous positive tracking opens up small caps and labels.</p>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Tracking <span id="track-val-lbl">0em</span>
+          <span id="track-badge" class="optimal-badge" style="display:none">optimal</span>
+        </label>
+        <input type="range" id="track-slider" min="-50" max="200" value="0">
+        <div class="range-labels"><span>-50</span><span>0</span><span>+200</span></div>
+      </div>
+      <div class="preview-box">
+        <p id="track-preview" style="color:var(--text);font-size:1rem;line-height:1.6;font-family:var(--ff-serif)">
+          The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.
+        </p>
+      </div>
+    </div>
+
+    <!-- Leading -->
+    <div class="card">
+      <h4 style="font-family:var(--ff-serif);font-size:1.1rem;color:var(--text);margin-bottom:0.5rem">Leading (Line-Height)</h4>
+      <p style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1rem">The vertical space between lines. Too tight causes ascenders and descenders to collide; too loose breaks the visual rhythm of a paragraph.</p>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Leading <span id="lead-val-lbl">1.6</span>
+          <span id="lead-badge" class="optimal-badge">optimal</span>
+        </label>
+        <input type="range" id="lead-slider" min="70" max="300" value="160">
+        <div class="range-labels"><span>0.7×</span><span>1.6×</span><span>3.0×</span></div>
+      </div>
+      <div class="preview-box" style="align-items:flex-start">
+        <p id="lead-preview" style="color:var(--text);font-size:0.9rem;font-family:var(--ff-serif)">
+          Typography is the art and technique of arranging type to make written language legible, readable, and appealing. The arrangement of type involves selecting typefaces, point sizes, line lengths, and leading.
+        </p>
+      </div>
+    </div>
+
+    <!-- Measure -->
+    <div class="card">
+      <h4 style="font-family:var(--ff-serif);font-size:1.1rem;color:var(--text);margin-bottom:0.5rem">Measure (Line Length)</h4>
+      <p style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1rem">The optimal line length for body text is 45–75 characters. Too short fragments reading rhythm; too long exhausts the eye as it returns to the next line.</p>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Characters per line <span id="measure-val-lbl">66ch</span>
+          <span id="measure-badge" class="optimal-badge">optimal</span>
+        </label>
+        <input type="range" id="measure-slider" min="20" max="120" value="66">
+        <div class="range-labels"><span>20ch</span><span>45–75 optimal</span><span>120ch</span></div>
+      </div>
+      <div class="preview-box" style="align-items:flex-start">
+        <p id="measure-preview" style="color:var(--text);font-size:0.9rem;font-family:var(--ff-serif);line-height:1.6">
+          Good typography requires careful attention to the measure—the width of the text column. A comfortable reading width helps the eye track from line to line without fatigue.
+        </p>
+      </div>
+    </div>
+
+    <!-- Paragraph rhythm -->
+    <div class="card">
+      <h4 style="font-family:var(--ff-serif);font-size:1.1rem;color:var(--text);margin-bottom:0.5rem">Typographic Scale</h4>
+      <p style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1rem">Pairing type sizes creates visual hierarchy. Toggle between usage contexts to see how scale relationships change.</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn btn-sm btn-outline rhythm-btn active" data-mode="editorial">Editorial</button>
+        <button class="btn btn-sm btn-outline rhythm-btn" data-mode="ui">UI / App</button>
+        <button class="btn btn-sm btn-outline rhythm-btn" data-mode="technical">Technical</button>
+      </div>
+      <div id="rhythm-preview" style="background:#0d0b1f;border-radius:8px;padding:1.25rem">
+        <p id="rp-label" style="font-family:var(--ff-mono);font-size:0.65rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">DISPLAY — 72px</p>
+        <p id="rp-display" style="font-family:var(--ff-serif);font-size:2.5rem;color:var(--text);line-height:1.1;margin-bottom:0.5rem">The Art of Type</p>
+        <p id="rp-body" style="font-family:var(--ff-serif);font-size:1rem;color:var(--text-dim);line-height:1.65">Good typography is invisible—it guides the reader through the text without drawing attention to itself.</p>
+        <p id="rp-caption" style="font-family:var(--ff-sans);font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem">Caption — 12px / Space Grotesk</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const lag = window.lagFilter;
+
+  /* ── Kerning canvas ── */
+  const kCanvas = document.getElementById('kerning-canvas');
+  const kCtx    = kCanvas.getContext('2d');
+  const kSlider = document.getElementById('kern-slider');
+  const kLbl    = document.getElementById('kern-val-lbl');
+  let kPair = 'AV', kTarget = 0, kSmooth = 0, kLastT = 0;  /* LagFilter #6 */
+
+  document.querySelectorAll('.kern-pair-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.kern-pair-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      kPair = b.dataset.pair;
+      kSlider.value = 0; kTarget = 0;
+    });
+  });
+  kSlider.addEventListener('input', () => { kTarget = +kSlider.value; kLbl.textContent = kTarget + ' units'; });
+
+  function drawKern(ts){
+    const dt = Math.min((ts - kLastT)/1000, 0.05); kLastT = ts;
+    /* LagFilter #6 — kerning smooth */
+    kSmooth = lag(kSmooth, kTarget, dt, 0.14);
+
+    const W = kCanvas.width = kCanvas.offsetWidth;
+    const H = 110;
+    kCtx.clearRect(0,0,W,H);
+    kCtx.fillStyle = '#0d0b1f'; kCtx.fillRect(0,0,W,H);
+
+    /* Baseline */
+    kCtx.strokeStyle = 'rgba(167,139,250,0.3)'; kCtx.lineWidth = 1; kCtx.setLineDash([3,5]);
+    kCtx.beginPath(); kCtx.moveTo(0,78); kCtx.lineTo(W,78); kCtx.stroke();
+    kCtx.setLineDash([]);
+
+    const fs = 64;
+    kCtx.font = `700 ${fs}px 'Playfair Display',Georgia,serif`;
+    kCtx.textBaseline = 'alphabetic'; kCtx.fillStyle = '#f8f4ff';
+    kCtx.shadowColor = '#a78bfa'; kCtx.shadowBlur = 8;
+
+    const ch0 = kPair[0], ch1 = kPair[1] || '';
+    const w0 = kCtx.measureText(ch0).width;
+    const w1 = ch1 ? kCtx.measureText(ch1).width : 0;
+    const totalW = w0 + (kSmooth / 5) + w1;
+    const startX = (W - totalW) / 2;
+
+    kCtx.fillText(ch0, startX, 78);
+    if(ch1) kCtx.fillText(ch1, startX + w0 + kSmooth/5, 78);
+    kCtx.shadowBlur = 0;
+
+    /* Labels */
+    kCtx.fillStyle = 'rgba(167,139,250,0.6)';
+    kCtx.font = '10px Space Mono,monospace'; kCtx.textAlign = 'center';
+    kCtx.textBaseline = 'top';
+    const pct = Math.round(kSmooth);
+    const color = pct < -20 ? '#a78bfa' : pct > 10 ? '#f59e0b' : '#10b981';
+    kCtx.fillStyle = color;
+    kCtx.fillText(`kern: ${pct >= 0 ? '+':''}${pct}`, W/2, 88);
+    requestAnimationFrame(drawKern);
+  }
+  requestAnimationFrame(drawKern);
+
+  /* ── Tracking ── */
+  const tSlider  = document.getElementById('track-slider');
+  const tLbl     = document.getElementById('track-val-lbl');
+  const tBadge   = document.getElementById('track-badge');
+  const tPreview = document.getElementById('track-preview');
+  let tTarget = 0, tSmooth = 0, tLastT = 0;  /* LagFilter #7 */
+
+  function applyTracking(ts){
+    const dt = Math.min((ts - tLastT)/1000, 0.05); tLastT = ts;
+    /* LagFilter #7 — tracking smooth */
+    tSmooth = lag(tSmooth, tTarget, dt, 0.14);
+    const em = (tSmooth / 1000).toFixed(4);
+    tPreview.style.letterSpacing = em + 'em';
+    const v = Math.round(tSmooth);
+    tLbl.textContent = (v >= 0 ? '+':'') + v + ' units';
+    const ok = v >= -10 && v <= 30;
+    tBadge.style.display = ok ? '' : 'none';
+    requestAnimationFrame(applyTracking);
+  }
+  tSlider.addEventListener('input', () => { tTarget = +tSlider.value; });
+  requestAnimationFrame(applyTracking);
+
+  /* ── Leading ── */
+  const lSlider  = document.getElementById('lead-slider');
+  const lLbl     = document.getElementById('lead-val-lbl');
+  const lBadge   = document.getElementById('lead-badge');
+  const lPreview = document.getElementById('lead-preview');
+  let lTarget = 1.6, lSmooth = 1.6, lLastT = 0;  /* LagFilter #8 */
+
+  function applyLeading(ts){
+    const dt = Math.min((ts - lLastT)/1000, 0.05); lLastT = ts;
+    /* LagFilter #8 — leading smooth */
+    lSmooth = lag(lSmooth, lTarget, dt, 0.14);
+    lPreview.style.lineHeight = lSmooth.toFixed(3);
+    lLbl.textContent = lSmooth.toFixed(2);
+    const ok = lSmooth >= 1.35 && lSmooth <= 1.85;
+    lBadge.style.display = ok ? '' : 'none';
+    requestAnimationFrame(applyLeading);
+  }
+  lSlider.addEventListener('input', () => { lTarget = +lSlider.value / 100; });
+  requestAnimationFrame(applyLeading);
+
+  /* ── Measure ── */
+  const mSlider  = document.getElementById('measure-slider');
+  const mLbl     = document.getElementById('measure-val-lbl');
+  const mBadge   = document.getElementById('measure-badge');
+  const mPreview = document.getElementById('measure-preview');
+  let mTarget = 66, mSmooth = 66, mLastT = 0;  /* LagFilter #9 */
+
+  function applyMeasure(ts){
+    const dt = Math.min((ts - mLastT)/1000, 0.05); mLastT = ts;
+    /* LagFilter #9 — measure smooth */
+    mSmooth = lag(mSmooth, mTarget, dt, 0.14);
+    mPreview.style.maxWidth = Math.round(mSmooth) + 'ch';
+    mLbl.textContent = Math.round(mSmooth) + 'ch';
+    const ok = mSmooth >= 45 && mSmooth <= 75;
+    mBadge.style.display = ok ? '' : 'none';
+    mBadge.style.background = ok ? 'rgba(16,185,129,0.2)' : '';
+    mBadge.style.borderColor = ok ? '#10b981' : '';
+    mBadge.style.color = ok ? '#10b981' : '';
+    mBadge.textContent = ok ? 'optimal' : (mSmooth < 45 ? 'too narrow' : 'too wide');
+    mBadge.style.display = '';
+    requestAnimationFrame(applyMeasure);
+  }
+  mSlider.addEventListener('input', () => { mTarget = +mSlider.value; });
+  requestAnimationFrame(applyMeasure);
+
+  /* ── Rhythm presets ── */
+  const rhythmModes = {
+    editorial: {
+      label:'DISPLAY — 72pt', display:'The Art of Type',
+      displayStyle:'font-family:var(--ff-serif);font-size:2.5rem;color:var(--text);line-height:1.1',
+      body:'Good typography is invisible—it guides the reader through text without drawing attention to itself.',
+      bodyStyle:'font-family:var(--ff-serif);font-size:1rem;color:var(--text-dim);line-height:1.65',
+      caption:'Caption — 12pt / Space Grotesk'
+    },
+    ui: {
+      label:'HEADING — 24pt', display:'Dashboard Overview',
+      displayStyle:'font-family:var(--ff-sans);font-size:1.5rem;font-weight:600;color:var(--text);line-height:1.2',
+      body:'5 active tasks · Last synced 2 min ago',
+      bodyStyle:'font-family:var(--ff-sans);font-size:0.875rem;color:var(--text-dim);line-height:1.5',
+      caption:'Helper text — 11pt / Space Mono'
+    },
+    technical: {
+      label:'SECTION HEAD — 18pt', display:'API Reference: fontVariationSettings',
+      displayStyle:'font-family:var(--ff-mono);font-size:1.2rem;font-weight:700;color:var(--accent);line-height:1.2',
+      body:'Accepts a string of space-separated axis tag and value pairs. Valid axis tags are four-character ASCII strings.',
+      bodyStyle:'font-family:var(--ff-sans);font-size:0.875rem;color:var(--text-dim);line-height:1.6',
+      caption:'Code comment — 11pt / Space Mono'
+    }
+  };
+  document.querySelectorAll('.rhythm-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.rhythm-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      const m = rhythmModes[b.dataset.mode];
+      document.getElementById('rp-label').textContent   = m.label;
+      document.getElementById('rp-display').setAttribute('style', m.displayStyle + ';margin-bottom:0.5rem');
+      document.getElementById('rp-display').textContent = m.display;
+      document.getElementById('rp-body').setAttribute('style', m.bodyStyle);
+      document.getElementById('rp-body').textContent    = m.body;
+      document.getElementById('rp-caption').textContent = m.caption;
+    });
+  });
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5 — TYPOGRAPHIC SCALE & GRID
+══════════════════════════════════════════════ -->
+<section id="scale" class="world-section">
+  <div class="hidden">
+    <p class="section-label">05 — Scale</p>
+    <h2 class="section-title">Typographic Scale &amp; Grid</h2>
+    <p class="section-desc">A modular scale creates a harmonious system of type sizes derived from a single ratio—the same principle used in music. Pair it with a baseline grid to achieve vertical rhythm.</p>
+  </div>
+
+  <div class="hidden" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3rem;align-items:start">
+    <div>
+      <h3 style="font-family:var(--ff-serif);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Modular Scale Calculator</h3>
+      <div class="scale-controls-row">
+        <div style="flex:1;min-width:120px">
+          <label class="ctrl-label">Base size <span id="base-lbl">16px</span></label>
+          <input type="range" id="base-slider" min="12" max="24" value="16">
+        </div>
+        <div style="flex:1;min-width:140px">
+          <label class="ctrl-label">Ratio</label>
+          <select id="ratio-select">
+            <option value="1.618">Golden (1.618)</option>
+            <option value="1.414">√2 — Aug. 4th (1.414)</option>
+            <option value="1.333" selected>Perfect 4th (1.333)</option>
+            <option value="1.25">Major 3rd (1.25)</option>
+            <option value="1.2">Minor 3rd (1.2)</option>
+            <option value="2.0">Octave (2.0)</option>
+            <option value="1.5">Perfect 5th (1.5)</option>
+          </select>
+        </div>
+      </div>
+      <div class="scale-rows" id="scale-rows"></div>
+    </div>
+    <div>
+      <h3 style="font-family:var(--ff-serif);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Classic Presets</h3>
+      <div style="display:flex;flex-direction:column;gap:0.65rem">
+        <button class="btn btn-outline" onclick="loadPreset('swiss')">Swiss International Style</button>
+        <button class="btn btn-outline" onclick="loadPreset('editorial')">Editorial Magazine</button>
+        <button class="btn btn-outline" onclick="loadPreset('tech')">Technical Documentation</button>
+        <button class="btn btn-outline" onclick="loadPreset('web')">Web / Interface</button>
+      </div>
+      <div id="preset-info" class="card" style="margin-top:1rem;font-size:0.85rem;color:var(--text-dim);line-height:1.6;display:none"></div>
+    </div>
+  </div>
+
+  <div class="hidden">
+    <h3 style="font-family:var(--ff-serif);font-size:1.3rem;color:var(--text);margin-bottom:0.75rem">Baseline Grid Alignment</h3>
+    <p style="color:var(--text-dim);font-size:0.875rem;margin-bottom:1.25rem">A baseline grid ensures consistent vertical rhythm. Every line of text should snap to a grid unit—typically matching the body text leading.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:flex-end">
+      <div style="flex:1;min-width:120px">
+        <label class="ctrl-label">Grid unit <span id="grid-unit-lbl">8px</span></label>
+        <input type="range" id="grid-unit" min="4" max="16" value="8">
+      </div>
+      <div style="flex:1;min-width:120px">
+        <label class="ctrl-label">Font size <span id="grid-fs-lbl">16px</span></label>
+        <input type="range" id="grid-fs" min="12" max="28" value="16">
+      </div>
+      <div style="flex:1;min-width:120px">
+        <label class="ctrl-label">Leading multiplier <span id="grid-lead-lbl">1.5</span></label>
+        <input type="range" id="grid-lead" min="100" max="250" value="150">
+      </div>
+    </div>
+    <div class="grid-demo" id="grid-demo">
+      <canvas id="grid-canvas" style="position:absolute;inset:0;width:100%;height:100%;border-radius:var(--radius)"></canvas>
+      <div id="grid-text" style="position:relative;z-index:1;font-family:var(--ff-serif);color:var(--text);font-size:16px;line-height:1.5">
+        <p style="margin-bottom:0.5em">The quick brown fox jumps over the lazy dog. Typography is the invisible art that shapes how we read and how we feel about what we read.</p>
+        <p>Every great composition rests on an invisible structure—the baseline grid. When type aligns to this grid, the page breathes with the steady rhythm of a well-tuned instrument.</p>
+      </div>
+    </div>
+    <p id="grid-status" style="font-family:var(--ff-mono);font-size:0.75rem;color:var(--accent);margin-top:0.75rem"></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6 — VARIABLE FONTS LAB
+══════════════════════════════════════════════ -->
+<section id="variable-fonts" class="world-section">
+  <div class="hidden">
+    <p class="section-label">06 — Variable Fonts</p>
+    <h2 class="section-title">Variable Fonts Lab</h2>
+    <p class="section-desc">Variable fonts encode an entire type family in a single file, with continuous axes for weight, width, slant, and more. Drag the sliders to explore the design space.</p>
+  </div>
+
+  <div class="vf-layout hidden">
+    <div>
+      <div class="vf-preview" id="vf-preview">
+        <div id="vf-text">Aa</div>
+      </div>
+      <div style="margin-top:1rem;text-align:center">
+        <input type="text" id="vf-input" value="Aa" style="width:200px;text-align:center;font-size:1.1rem;background:var(--surface)" placeholder="Type something…">
+      </div>
+      <div style="margin-top:1.25rem">
+        <h4 style="font-family:var(--ff-mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem">Design Space</h4>
+        <canvas id="design-space-canvas" height="160"></canvas>
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-muted);font-family:var(--ff-mono);margin-top:0.25rem">
+          <span>← Thin</span><span>Weight axis</span><span>Black →</span>
+        </div>
+      </div>
+    </div>
+    <div class="vf-controls">
+      <div class="ctrl-group">
+        <label class="ctrl-label">Weight <span id="vf-weight-lbl">400</span></label>
+        <input type="range" id="vf-weight" min="100" max="900" value="400" step="1">
+        <div class="range-labels"><span>100 Thin</span><span>400 Regular</span><span>900 Black</span></div>
+      </div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Width <span id="vf-width-lbl">100%</span></label>
+        <input type="range" id="vf-width" min="75" max="125" value="100" step="1">
+        <div class="range-labels"><span>75% Condensed</span><span>100%</span><span>125% Extended</span></div>
+      </div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Slant <span id="vf-slant-lbl">0°</span></label>
+        <input type="range" id="vf-slant" min="-15" max="15" value="0" step="0.5">
+        <div class="range-labels"><span>-15° Italic</span><span>0° Upright</span><span>+15° Backslant</span></div>
+      </div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Optical Size <span id="vf-opsz-lbl">16pt</span></label>
+        <input type="range" id="vf-opsz" min="8" max="144" value="16" step="1">
+        <div class="range-labels"><span>8pt Caption</span><span>16pt Body</span><span>144pt Display</span></div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-top:0.5rem">
+        <p style="font-family:var(--ff-mono);font-size:0.68rem;color:var(--accent);margin-bottom:0.5rem;letter-spacing:0.08em">COMPUTED CSS</p>
+        <code id="vf-css-output" style="font-family:var(--ff-mono);font-size:0.75rem;color:var(--text-dim);line-height:1.6;word-break:break-all"></code>
+      </div>
+      <div style="margin-top:1rem">
+        <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.55"><strong style="color:var(--accent)">Note:</strong> Variable font axes use CSS <code style="font-family:var(--ff-mono);font-size:0.75em;color:var(--text)">font-variation-settings</code>. The preview uses Space Grotesk which supports the weight axis. Width and slant are shown conceptually—full variable font support requires a variable font file with those axes registered.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const lag = window.lagFilter;
+
+  /* ══ SCALE CALCULATOR ══ */
+  const baseSlider  = document.getElementById('base-slider');
+  const ratioSelect = document.getElementById('ratio-select');
+  const scaleRows   = document.getElementById('scale-rows');
+  const baseLbl     = document.getElementById('base-lbl');
+  let baseTarget = 16, baseSmooth = 16, baseLastT = 0;  /* LagFilter #10 */
+  let ratioTarget = 1.333, ratioSmooth = 1.333;         /* LagFilter #11 */
+
+  const SCALE_NAMES = ['h6','h5','h4','h3','h2','h1','display sm','display md','display lg'];
+  const SCALE_DESCS = ['Smallest heading','Sub-heading','Section head','Major section','Chapter title','Page title','Display small','Display medium','Display hero'];
+
+  function buildScaleRows(base, ratio){
+    scaleRows.innerHTML = '';
+    for(let i = -1; i <= 7; i++){
+      const size = base * Math.pow(ratio, i);
+      const row = document.createElement('div');
+      row.className = 'scale-row';
+      const name = i === -1 ? 'body sm' : SCALE_NAMES[i] || `step +${i}`;
+      const px = size.toFixed(1);
+      const rem = (size/16).toFixed(3);
+      row.innerHTML = `
+        <span class="scale-label">${name}</span>
+        <span class="scale-text" style="font-size:${Math.min(size,80)}px;max-width:100%;overflow:hidden;white-space:nowrap">
+          ${size > 60 ? 'Aa' : size > 30 ? 'Typography' : 'The quick brown fox'}
+        </span>
+        <span style="font-family:var(--ff-mono);font-size:0.65rem;color:var(--text-muted);flex-shrink:0">${px}px / ${rem}rem</span>`;
+      scaleRows.appendChild(row);
+    }
+  }
+
+  function scaleLoop(ts){
+    const dt = Math.min((ts - baseLastT)/1000, 0.05); baseLastT = ts;
+    /* LagFilter #10 — base size */
+    baseSmooth = lag(baseSmooth, baseTarget, dt, 0.15);
+    /* LagFilter #11 — ratio */
+    ratioSmooth = lag(ratioSmooth, ratioTarget, dt, 0.18);
+    baseLbl.textContent = Math.round(baseSmooth) + 'px';
+    buildScaleRows(baseSmooth, ratioSmooth);
+    requestAnimationFrame(scaleLoop);
+  }
+  baseSlider.addEventListener('input', () => { baseTarget = +baseSlider.value; });
+  ratioSelect.addEventListener('change', () => { ratioTarget = +ratioSelect.value; });
+  requestAnimationFrame(scaleLoop);
+
+  /* Presets */
+  const PRESETS = {
+    swiss:    { base:10, ratio:1.414, label:'Swiss International Style', desc:'Based on √2 ratio (DIN standard). 10px base, strict grid, sans-serif exclusively. Max Miedinger, Josef Müller-Brockmann.' },
+    editorial:{ base:18, ratio:1.618, label:'Editorial Magazine',        desc:'Golden ratio (φ 1.618) with generous 18px base. Creates dramatic contrast between display and body. Beloved by magazine designers.' },
+    tech:     { base:14, ratio:1.25,  label:'Technical Documentation',   desc:'Major 3rd ratio for dense information. 14px base for code readability. Consistent spacing aids scanning.' },
+    web:      { base:16, ratio:1.333, label:'Web / Interface',           desc:'Perfect 4th (4:3 ratio) at 16px browser default. Most web typography systems—including Tailwind and Material—use this as foundation.' }
+  };
+  window.loadPreset = function(key){
+    const p = PRESETS[key];
+    baseTarget = p.base; baseSlider.value = p.base;
+    ratioTarget = p.ratio;
+    for(let i=0;i<ratioSelect.options.length;i++){
+      if(Math.abs(+ratioSelect.options[i].value - p.ratio) < 0.01) ratioSelect.selectedIndex = i;
+    }
+    const pi = document.getElementById('preset-info');
+    pi.style.display = '';
+    pi.innerHTML = `<strong style="color:var(--accent)">${p.label}</strong><br>${p.desc}`;
+  };
+
+  /* ══ GRID DEMO ══ */
+  const gridCanvas  = document.getElementById('grid-canvas');
+  const gridCtx     = gridCanvas.getContext('2d');
+  const gridDemo    = document.getElementById('grid-demo');
+  const gridUnitSl  = document.getElementById('grid-unit');
+  const gridFsSl    = document.getElementById('grid-fs');
+  const gridLeadSl  = document.getElementById('grid-lead');
+  const gridText    = document.getElementById('grid-text');
+  const gridStatus  = document.getElementById('grid-status');
+
+  function drawGrid(){
+    const W = gridDemo.offsetWidth;
+    const H = gridDemo.offsetHeight;
+    gridCanvas.width = W; gridCanvas.height = H;
+    const unit = +gridUnitSl.value;
+    const fs   = +gridFsSl.value;
+    const lead = +gridLeadSl.value / 100;
+    const lineH = fs * lead;
+    document.getElementById('grid-unit-lbl').textContent = unit + 'px';
+    document.getElementById('grid-fs-lbl').textContent   = fs + 'px';
+    document.getElementById('grid-lead-lbl').textContent = lead.toFixed(2);
+    gridText.style.fontSize   = fs + 'px';
+    gridText.style.lineHeight = lead;
+    const snaps = Math.abs(lineH % unit) < 0.5 || Math.abs(unit - lineH % unit) < 0.5;
+    gridCtx.clearRect(0,0,W,H);
+    for(let y = unit; y < H; y += unit){
+      gridCtx.strokeStyle = snaps ? 'rgba(124,58,237,0.28)' : 'rgba(239,68,68,0.22)';
+      gridCtx.lineWidth = 1;
+      gridCtx.beginPath(); gridCtx.moveTo(0,y); gridCtx.lineTo(W,y); gridCtx.stroke();
+    }
+    gridStatus.textContent = snaps
+      ? `✓ Aligned: ${fs}px × ${lead} = ${lineH.toFixed(1)}px leading snaps to ${unit}px grid`
+      : `✗ Misaligned: ${lineH.toFixed(1)}px leading does not divide evenly into ${unit}px grid`;
+    gridStatus.style.color = snaps ? '#10b981' : '#ef4444';
+  }
+  [gridUnitSl, gridFsSl, gridLeadSl].forEach(s => s.addEventListener('input', drawGrid));
+  window.addEventListener('resize', drawGrid);
+  setTimeout(drawGrid, 100);
+
+  /* ══ VARIABLE FONTS ══ */
+  const vfText    = document.getElementById('vf-text');
+  const vfInput   = document.getElementById('vf-input');
+  const vfCss     = document.getElementById('vf-css-output');
+  const dsCanvas  = document.getElementById('design-space-canvas');
+  const dsCtx     = dsCanvas.getContext('2d');
+
+  let vfW = 400, vfTW = 400;   /* LagFilter #12 */
+  let vfWd = 100, vfTWd = 100; /* LagFilter #13 */
+  let vfSl = 0, vfTSl = 0;    /* LagFilter #14 */
+  let vfOp = 16, vfTOp = 16;
+  let vfLastT = 0;
+  let dsDotX = 0, dsDotY = 0, dsTX = 0, dsTY = 0; /* LagFilter — design space dot */
+
+  vfInput.addEventListener('input', () => { vfText.textContent = vfInput.value || 'Aa'; });
+
+  document.getElementById('vf-weight').addEventListener('input', function(){
+    vfTW = +this.value;
+    document.getElementById('vf-weight-lbl').textContent = this.value;
+    dsTX = (vfTW - 100) / 800;
+  });
+  document.getElementById('vf-width').addEventListener('input', function(){
+    vfTWd = +this.value;
+    document.getElementById('vf-width-lbl').textContent = this.value + '%';
+    dsTY = 1 - (vfTWd - 75) / 50;
+  });
+  document.getElementById('vf-slant').addEventListener('input', function(){
+    vfTSl = +this.value;
+    document.getElementById('vf-slant-lbl').textContent = (+this.value >= 0 ? '+' : '') + this.value + '°';
+  });
+  document.getElementById('vf-opsz').addEventListener('input', function(){
+    vfTOp = +this.value;
+    document.getElementById('vf-opsz-lbl').textContent = this.value + 'pt';
+  });
+
+  function drawDesignSpace(dotX, dotY){
+    const W = dsCanvas.width  = dsCanvas.offsetWidth;
+    const H = 160;
+    dsCtx.clearRect(0,0,W,H);
+    dsCtx.fillStyle = '#0d0b1f'; dsCtx.fillRect(0,0,W,H);
+
+    /* Grid */
+    dsCtx.strokeStyle = 'rgba(167,139,250,0.12)'; dsCtx.lineWidth = 1;
+    for(let x=0;x<W;x+=W/8){ dsCtx.beginPath(); dsCtx.moveTo(x,0); dsCtx.lineTo(x,H); dsCtx.stroke(); }
+    for(let y=0;y<H;y+=H/4){ dsCtx.beginPath(); dsCtx.moveTo(0,y); dsCtx.lineTo(W,y); dsCtx.stroke(); }
+
+    /* Sample weight labels */
+    const weights = [100,200,300,400,500,600,700,800,900];
+    weights.forEach(w => {
+      const x = (w-100)/800 * W;
+      dsCtx.fillStyle = 'rgba(167,139,250,0.4)';
+      dsCtx.font = '9px Space Mono,monospace'; dsCtx.textAlign = 'center';
+      dsCtx.fillText(w, x, H-4);
+    });
+    ['125%','100%','75%'].forEach((l,i) => {
+      dsCtx.fillStyle = 'rgba(167,139,250,0.4)';
+      dsCtx.font = '9px Space Mono,monospace'; dsCtx.textAlign = 'left';
+      dsCtx.fillText(l, 2, (i/2)*H + 10);
+    });
+
+    /* Dot */
+    const px = dotX * W, py = dotY * H;
+    dsCtx.fillStyle = 'rgba(124,58,237,0.25)';
+    dsCtx.beginPath(); dsCtx.arc(px,py,18,0,Math.PI*2); dsCtx.fill();
+    dsCtx.fillStyle = '#a78bfa';
+    dsCtx.beginPath(); dsCtx.arc(px,py,5,0,Math.PI*2); dsCtx.fill();
+    dsCtx.strokeStyle = '#a78bfa'; dsCtx.lineWidth = 2;
+    dsCtx.beginPath();
+    dsCtx.moveTo(px-10,py); dsCtx.lineTo(px+10,py);
+    dsCtx.moveTo(px,py-10); dsCtx.lineTo(px,py+10);
+    dsCtx.stroke();
+  }
+
+  dsCanvas.addEventListener('click', e => {
+    const r = dsCanvas.getBoundingClientRect();
+    dsTX = (e.clientX - r.left) / r.width;
+    dsTY = (e.clientY - r.top)  / r.height;
+    const w = Math.round(dsTX * 800 + 100);
+    const wd = Math.round((1 - dsTY) * 50 + 75);
+    document.getElementById('vf-weight').value = w;
+    document.getElementById('vf-width').value  = wd;
+    vfTW  = w;   document.getElementById('vf-weight-lbl').textContent = w;
+    vfTWd = wd;  document.getElementById('vf-width-lbl').textContent  = wd + '%';
+  });
+
+  function vfLoop(ts){
+    const dt = Math.min((ts - vfLastT)/1000, 0.05); vfLastT = ts;
+    /* LagFilter #12 — weight */
+    vfW  = lag(vfW,  vfTW,  dt, 0.12);
+    /* LagFilter #13 — width */
+    vfWd = lag(vfWd, vfTWd, dt, 0.12);
+    /* LagFilter #14 — slant */
+    vfSl = lag(vfSl, vfTSl, dt, 0.15);
+    /* LagFilter — design space dot */
+    dsDotX = lag(dsDotX, dsTX, dt, 0.14);
+    dsDotY = lag(dsDotY, dsTY, dt, 0.14);
+
+    const w   = Math.round(vfW);
+    const skew = (-vfSl * 0.8).toFixed(2);
+    vfText.style.fontWeight   = w;
+    vfText.style.fontStretch  = vfWd.toFixed(1) + '%';
+    vfText.style.transform    = `skewX(${skew}deg)`;
+    vfText.style.fontVariationSettings = `'wght' ${w}`;
+
+    vfCss.textContent =
+      `font-weight: ${w};\n` +
+      `font-stretch: ${Math.round(vfWd)}%;\n` +
+      `font-style: oblique ${vfSl.toFixed(1)}deg;\n` +
+      `font-optical-sizing: auto;\n` +
+      `font-variation-settings: 'wght' ${w};`;
+
+    drawDesignSpace(dsDotX, dsDotY);
+    requestAnimationFrame(vfLoop);
+  }
+  dsTX = (400-100)/800; dsTY = 1 - (100-75)/50;
+  dsDotX = dsTX; dsDotY = dsTY;
+  requestAnimationFrame(vfLoop);
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7 — EXPRESSIVE TYPOGRAPHY
+══════════════════════════════════════════════ -->
+<section id="expressive" class="world-section">
+  <div class="hidden">
+    <p class="section-label">07 — Expressive</p>
+    <h2 class="section-title">Expressive Typography</h2>
+    <p class="section-desc">When type breaks free of the grid, it becomes illustration. Explore three tools—type on a bezier path, gradient masking, and 3D extrusion—plus a tour of expressive typography movements.</p>
+  </div>
+
+  <div class="exp-tabs hidden">
+    <button class="exp-tab active" data-tab="path">Type on Path</button>
+    <button class="exp-tab" data-tab="gradient">Gradient Mask</button>
+    <button class="exp-tab" data-tab="threed">3D Extrusion</button>
+    <button class="exp-tab" data-tab="movements">Movements</button>
+  </div>
+
+  <!-- TYPE ON PATH -->
+  <div class="exp-panel active" id="panel-path">
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center">
+      <input type="text" id="path-text-input" value="Typography flows like water" style="flex:1;min-width:200px">
+      <button class="btn btn-sm" onclick="clearPath()">Clear Path</button>
+      <span style="font-size:0.8rem;color:var(--text-dim)">Click canvas to add control points (3+ for curve)</span>
+    </div>
+    <canvas id="path-canvas" height="320"></canvas>
+    <p id="path-hint" style="font-family:var(--ff-mono);font-size:0.72rem;color:var(--accent);margin-top:0.5rem">Click to place bezier control points. Text will flow along the curve.</p>
+  </div>
+
+  <!-- GRADIENT MASK -->
+  <div class="exp-panel" id="panel-gradient">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div>
+        <label class="ctrl-label">Gradient angle <span id="grad-angle-lbl">45°</span></label>
+        <input type="range" id="grad-angle" min="0" max="360" value="45">
+      </div>
+      <div>
+        <label class="ctrl-label">Animation speed <span id="grad-speed-lbl">1.0×</span></label>
+        <input type="range" id="grad-speed" min="0" max="30" value="10">
+      </div>
+      <div>
+        <label class="ctrl-label">Color 1</label>
+        <input type="color" id="grad-c1" value="#7c3aed" style="width:100%;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer">
+      </div>
+      <div>
+        <label class="ctrl-label">Color 2</label>
+        <input type="color" id="grad-c2" value="#a78bfa" style="width:100%;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer">
+      </div>
+    </div>
+    <input type="text" id="grad-text-input" value="TYPOGRAPHY" style="margin-bottom:0.75rem">
+    <canvas id="gradient-canvas" height="220"></canvas>
+  </div>
+
+  <!-- 3D EXTRUSION -->
+  <div class="exp-panel" id="panel-threed">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1rem">
+      <div>
+        <label class="ctrl-label">Rotation X <span id="r3d-x-lbl">-15°</span></label>
+        <input type="range" id="r3d-x" min="-45" max="45" value="-15">
+      </div>
+      <div>
+        <label class="ctrl-label">Rotation Y <span id="r3d-y-lbl">20°</span></label>
+        <input type="range" id="r3d-y" min="-60" max="60" value="20">
+      </div>
+      <div>
+        <label class="ctrl-label">Extrusion depth <span id="r3d-d-lbl">12px</span></label>
+        <input type="range" id="r3d-d" min="0" max="40" value="12">
+      </div>
+      <div>
+        <label class="ctrl-label">Light angle <span id="r3d-l-lbl">45°</span></label>
+        <input type="range" id="r3d-l" min="0" max="360" value="45">
+      </div>
+    </div>
+    <input type="text" id="r3d-text-input" value="TYPE" style="margin-bottom:0.75rem">
+    <div id="threed-stage" style="background:#0d0b1f;border-radius:var(--radius);border:1px solid var(--border);height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden;perspective:800px">
+      <div id="threed-inner" style="font-family:var(--ff-serif);font-size:5rem;font-weight:900;color:var(--text);transform-style:preserve-3d;cursor:grab;user-select:none"></div>
+    </div>
+  </div>
+
+  <!-- MOVEMENTS -->
+  <div class="exp-panel" id="panel-movements">
+    <div class="movement-grid">
+      <div class="movement-card">
+        <div class="mvt-sample" style="font-family:Georgia,serif;letter-spacing:-0.05em;transform:skewX(-8deg);display:inline-block">Dada</div>
+        <h4>Dada (1916–1924)</h4>
+        <p>Anti-rational, deliberately chaotic typography. Multiple typefaces, sizes, and orientations on a single page—typography as visual noise and protest.</p>
+      </div>
+      <div class="movement-card">
+        <div class="mvt-sample" style="font-family:var(--ff-sans);font-weight:700;letter-spacing:0.1em">Bau</div>
+        <h4>Bauhaus (1919–1933)</h4>
+        <p>Typography as pure function. Geometric sans-serifs, strict grids, primary colors. Herbert Bayer's universal alphabet: no capital letters, just geometric forms.</p>
+      </div>
+      <div class="movement-card">
+        <div class="mvt-sample" style="font-family:Helvetica,Arial,sans-serif;font-weight:400">Ag</div>
+        <h4>Swiss International (1950s)</h4>
+        <p>Grid-based, objective, mathematical. Helvetica as the universal face. White space as content. The ideology behind every clean corporate identity system.</p>
+      </div>
+      <div class="movement-card">
+        <div class="mvt-sample" style="font-family:var(--ff-serif);font-style:italic;font-size:2.2rem">Ital</div>
+        <h4>Postmodern (1980s–90s)</h4>
+        <p>Rejection of Swiss rationalism. David Carson, Neville Brody. Layered type, distressed faces, type as image. The page as visual experience.</p>
+      </div>
+      <div class="movement-card">
+        <div class="mvt-sample" style="background:linear-gradient(90deg,#7c3aed,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">var</div>
+        <h4>Digital Native (2000s–now)</h4>
+        <p>Variable fonts, kinetic type, generative lettering. Type as animation, as data, as code. The screen as canvas, the browser as design tool.</p>
+      </div>
+      <div class="movement-card">
+        <div class="mvt-sample" style="font-family:var(--ff-mono);font-size:1.4rem">0x41</div>
+        <h4>Hacker Aesthetic</h4>
+        <p>Monospaced fonts, terminal green on black, ASCII art. The aesthetic of code as culture—embraced by tech companies, then reclaimed by those who lived it first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const lag = window.lagFilter;
+
+  /* Tab switching */
+  document.querySelectorAll('.exp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.exp-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ── TYPE ON PATH ── */
+  const pathCanvas = document.getElementById('path-canvas');
+  const pathCtx    = pathCanvas.getContext('2d');
+  let pathPoints = [], pathAnim = 0, pathLastT = 0, pathSmoothAnim = 0;  /* LagFilter #15 */
+
+  pathCanvas.addEventListener('click', e => {
+    const r = pathCanvas.getBoundingClientRect();
+    pathPoints.push({ x: (e.clientX-r.left)*(pathCanvas.width/r.width), y: (e.clientY-r.top)*(pathCanvas.height/r.height) });
+  });
+
+  window.clearPath = function(){ pathPoints = []; };
+
+  function getPathPoint(pts, t){
+    if(pts.length < 2) return { x:0, y:0, a:0 };
+    if(pts.length === 2){
+      return { x: pts[0].x + (pts[1].x-pts[0].x)*t, y: pts[0].y + (pts[1].y-pts[0].y)*t, a: Math.atan2(pts[1].y-pts[0].y, pts[1].x-pts[0].x) };
+    }
+    /* Catmull-Rom spline */
+    const segs = pts.length - 1;
+    const seg  = Math.min(Math.floor(t * segs), segs - 1);
+    const lt   = t * segs - seg;
+    const p0   = pts[Math.max(seg-1,0)], p1 = pts[seg], p2 = pts[Math.min(seg+1,pts.length-1)], p3 = pts[Math.min(seg+2,pts.length-1)];
+    const t2=lt*lt, t3=t2*lt;
+    const x = 0.5*((2*p1.x)+(-p0.x+p2.x)*lt+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3);
+    const y = 0.5*((2*p1.y)+(-p0.y+p2.y)*lt+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3);
+    const dx = 0.5*((-p0.x+p2.x)+(2*(2*p0.x-5*p1.x+4*p2.x-p3.x))*lt+(3*(-p0.x+3*p1.x-3*p2.x+p3.x))*t2);
+    const dy = 0.5*((-p0.y+p2.y)+(2*(2*p0.y-5*p1.y+4*p2.y-p3.y))*lt+(3*(-p0.y+3*p1.y-3*p2.y+p3.y))*t2);
+    return { x, y, a: Math.atan2(dy,dx) };
+  }
+
+  function drawPath(ts){
+    const dt = Math.min((ts-pathLastT)/1000, 0.05); pathLastT = ts;
+    pathAnim = (pathAnim + dt * 0.18) % 1;
+    /* LagFilter #15 — path animation position */
+    pathSmoothAnim = lag(pathSmoothAnim, pathAnim, dt, 0.08);
+
+    const W = pathCanvas.width  = pathCanvas.offsetWidth;
+    const H = 320;
+    pathCtx.clearRect(0,0,W,H);
+    pathCtx.fillStyle = '#0d0b1f'; pathCtx.fillRect(0,0,W,H);
+
+    if(pathPoints.length === 0){
+      pathCtx.fillStyle = 'rgba(167,139,250,0.35)';
+      pathCtx.font = '14px Space Mono,monospace'; pathCtx.textAlign = 'center';
+      pathCtx.fillText('Click to place control points for your bezier path', W/2, H/2-10);
+      pathCtx.fillText('Add 3 or more points to create a curve', W/2, H/2+15);
+      requestAnimationFrame(drawPath); return;
+    }
+
+    /* Draw path guide */
+    if(pathPoints.length >= 2){
+      pathCtx.strokeStyle = 'rgba(124,58,237,0.3)'; pathCtx.lineWidth = 1; pathCtx.setLineDash([4,6]);
+      pathCtx.beginPath(); pathCtx.moveTo(pathPoints[0].x, pathPoints[0].y);
+      pathPoints.slice(1).forEach(p => pathCtx.lineTo(p.x, p.y));
+      pathCtx.stroke(); pathCtx.setLineDash([]);
+    }
+
+    /* Draw control points */
+    pathPoints.forEach((p,i) => {
+      pathCtx.fillStyle = 'rgba(167,139,250,0.7)';
+      pathCtx.beginPath(); pathCtx.arc(p.x,p.y,5,0,Math.PI*2); pathCtx.fill();
+      pathCtx.fillStyle = 'rgba(167,139,250,0.5)';
+      pathCtx.font = '10px Space Mono,monospace'; pathCtx.textAlign='center';
+      pathCtx.fillText(i+1, p.x, p.y-10);
+    });
+
+    /* Place text along path */
+    if(pathPoints.length >= 2){
+      const txt = document.getElementById('path-text-input').value || 'Typography';
+      pathCtx.font = '700 22px "Playfair Display",Georgia,serif';
+      pathCtx.fillStyle = '#f8f4ff'; pathCtx.textBaseline = 'bottom';
+      pathCtx.shadowColor = '#a78bfa'; pathCtx.shadowBlur = 8;
+      const charW = pathCtx.measureText('M').width;
+      const totalTextW = pathCtx.measureText(txt).width;
+      const offset = (pathSmoothAnim * 0.3) % 1;
+      for(let ci=0; ci<txt.length; ci++){
+        const tPos = offset + (ci * charW / (totalTextW * 1.4)) % 1;
+        if(tPos < 0 || tPos > 1) continue;
+        const pt = getPathPoint(pathPoints, tPos);
+        pathCtx.save();
+        pathCtx.translate(pt.x, pt.y);
+        pathCtx.rotate(pt.a);
+        pathCtx.fillText(txt[ci], 0, 0);
+        pathCtx.restore();
+      }
+      pathCtx.shadowBlur = 0;
+    }
+    requestAnimationFrame(drawPath);
+  }
+  requestAnimationFrame(drawPath);
+
+  /* ── GRADIENT MASK ── */
+  const gradCanvas = document.getElementById('gradient-canvas');
+  const gradCtx    = gradCanvas.getContext('2d');
+  let gradOffset = 0, gradSmooth = 0, gradLastT = 0; /* LagFilter #16 */
+  let gradAngleTarget = 45, gradAngleSmooth = 45;     /* LagFilter #17 */
+
+  document.getElementById('grad-angle').addEventListener('input', function(){
+    gradAngleTarget = +this.value;
+    document.getElementById('grad-angle-lbl').textContent = this.value + '°';
+  });
+  document.getElementById('grad-speed').addEventListener('input', function(){
+    document.getElementById('grad-speed-lbl').textContent = (+this.value/10).toFixed(1) + '×';
+  });
+
+  function drawGradMask(ts){
+    const dt = Math.min((ts-gradLastT)/1000,0.05); gradLastT = ts;
+    const speed = +document.getElementById('grad-speed').value / 10;
+    gradOffset = (gradOffset + dt * speed * 0.5) % 2;
+    /* LagFilter #16 — gradient offset */
+    gradSmooth = lag(gradSmooth, gradOffset, dt, 0.06);
+    /* LagFilter #17 — angle smooth */
+    gradAngleSmooth = lag(gradAngleSmooth, gradAngleTarget, dt, 0.15);
+
+    const W = gradCanvas.width = gradCanvas.offsetWidth;
+    const H = 220;
+    gradCtx.clearRect(0,0,W,H);
+    gradCtx.fillStyle = '#0d0b1f'; gradCtx.fillRect(0,0,W,H);
+
+    const txt  = document.getElementById('grad-text-input').value || 'TYPOGRAPHY';
+    const c1   = document.getElementById('grad-c1').value;
+    const c2   = document.getElementById('grad-c2').value;
+    const ang  = gradAngleSmooth * Math.PI / 180;
+    const fs   = Math.min(W / (txt.length * 0.62), H * 0.55);
+    gradCtx.font = `900 ${fs}px 'Playfair Display',Georgia,serif`;
+    gradCtx.textAlign = 'center'; gradCtx.textBaseline = 'middle';
+
+    const tw = gradCtx.measureText(txt).width;
+    const r  = Math.hypot(tw, fs) * 0.6;
+    const cx = W/2 + Math.cos(ang) * r * gradSmooth;
+    const cy = H/2 + Math.sin(ang) * r * gradSmooth;
+
+    const grad = gradCtx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
+    grad.addColorStop(0, c1);
+    grad.addColorStop(0.5, c2);
+    grad.addColorStop(1, c1);
+    gradCtx.fillStyle = grad;
+    gradCtx.shadowColor = c1; gradCtx.shadowBlur = 20;
+    gradCtx.fillText(txt, W/2, H/2);
+    gradCtx.shadowBlur = 0;
+
+    /* Shimmer pass */
+    const shimmer = gradCtx.createLinearGradient(W*gradSmooth*0.4-W*0.5, 0, W*gradSmooth*0.4+W*0.5, H);
+    shimmer.addColorStop(0, 'rgba(255,255,255,0)');
+    shimmer.addColorStop(0.5,'rgba(255,255,255,0.18)');
+    shimmer.addColorStop(1, 'rgba(255,255,255,0)');
+    gradCtx.globalCompositeOperation = 'source-atop';
+    gradCtx.fillStyle = shimmer; gradCtx.fillRect(0,0,W,H);
+    gradCtx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(drawGradMask);
+  }
+  requestAnimationFrame(drawGradMask);
+
+  /* ── 3D EXTRUSION ── */
+  const inner = document.getElementById('threed-inner');
+  const r3dInput = document.getElementById('r3d-text-input');
+  let rX=-15, tRX=-15, rY=20, tRY=20, rD=12, tRD=12, rL=45, tRL=45, r3dLast=0;
+
+  document.getElementById('r3d-x').addEventListener('input',function(){ tRX=+this.value; document.getElementById('r3d-x-lbl').textContent=this.value+'°'; });
+  document.getElementById('r3d-y').addEventListener('input',function(){ tRY=+this.value; document.getElementById('r3d-y-lbl').textContent=this.value+'°'; });
+  document.getElementById('r3d-d').addEventListener('input',function(){ tRD=+this.value; document.getElementById('r3d-d-lbl').textContent=this.value+'px'; });
+  document.getElementById('r3d-l').addEventListener('input',function(){ tRL=+this.value; document.getElementById('r3d-l-lbl').textContent=this.value+'°'; });
+  r3dInput.addEventListener('input', () => { inner.textContent = r3dInput.value || 'TYPE'; });
+  inner.textContent = 'TYPE';
+
+  function r3dLoop(ts){
+    const dt = Math.min((ts-r3dLast)/1000,0.05); r3dLast=ts;
+    rX = lag(rX,tRX,dt,0.14); rY = lag(rY,tRY,dt,0.14);
+    rD = lag(rD,tRD,dt,0.14); rL = lag(rL,tRL,dt,0.14);
+    const lightX = Math.cos(rL*Math.PI/180);
+    const bright = Math.round(120 + lightX * 55);
+    const shadow = Math.round(rD * 0.8);
+    const lum = Math.max(60,bright);
+    inner.style.transform = `rotateX(${rX}deg) rotateY(${rY}deg)`;
+    inner.style.color = `hsl(260,60%,${lum}%)`;
+    inner.style.textShadow = Array.from({length:Math.max(1,Math.round(rD))},(_,i)=>
+      `${Math.sin(rL*Math.PI/180)*i*0.7}px ${Math.cos(rL*Math.PI/180)*i*0.7}px 0 hsl(260,80%,${Math.max(20,40-i*2)}%)`
+    ).join(',');
+    requestAnimationFrame(r3dLoop);
+  }
+  requestAnimationFrame(r3dLoop);
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8 — TYPE DESIGNERS
+══════════════════════════════════════════════ -->
+<section id="artists" class="world-section">
+  <div class="hidden">
+    <p class="section-label">08 — Designers</p>
+    <h2 class="section-title">Type Designers</h2>
+    <p class="section-desc">Behind every great typeface is a designer who shaped how the world reads. Eight figures whose work redefined the art and science of letterform design.</p>
+  </div>
+  <div class="artists-grid hidden">
+
+    <div class="artist-card">
+      <div class="artist-avatar">AF</div>
+      <div class="artist-name">Adrian Frutiger</div>
+      <div class="artist-era">1928–2015 · Swiss</div>
+      <p class="artist-bio">Created the definitive humanist sans-serif in Univers—the first typeface designed as a systematic family of 21 weights and widths, numbered rather than named. Later designed Frutiger for the Charles de Gaulle airport.</p>
+      <div class="typeface-tags"><span class="tf-tag">Univers</span><span class="tf-tag">Frutiger</span><span class="tf-tag">Avenir</span></div>
+      <p class="artist-quote">"A typeface is not a piece of art in itself; it exists to serve the text."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">HZ</div>
+      <div class="artist-name">Hermann Zapf</div>
+      <div class="artist-era">1918–2015 · German</div>
+      <p class="artist-bio">Master calligrapher turned type designer. Created Palatino from his study of Renaissance letterforms and Optima—the only major typeface that is neither serif nor sans-serif, but a "serifless roman." Also designed Zapf Dingbats.</p>
+      <div class="typeface-tags"><span class="tf-tag">Palatino</span><span class="tf-tag">Optima</span><span class="tf-tag">Zapfino</span></div>
+      <p class="artist-quote">"Typography must be as beautiful as the thought it expresses."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">MC</div>
+      <div class="artist-name">Matthew Carter</div>
+      <div class="artist-era">1937– · British-American</div>
+      <p class="artist-bio">Designed more typefaces in daily use than any living designer. Created Georgia and Verdana specifically for screen legibility in 1996—still the most widely used screen-optimized typefaces. Founded Carter &amp; Cone with Cherie Cone.</p>
+      <div class="typeface-tags"><span class="tf-tag">Georgia</span><span class="tf-tag">Verdana</span><span class="tf-tag">Bell Centennial</span></div>
+      <p class="artist-quote">"I start from constraints. The constraints are what make the work interesting."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">ZL</div>
+      <div class="artist-name">Zuzana Licko</div>
+      <div class="artist-era">1961– · Slovak-American</div>
+      <p class="artist-bio">Co-founder of Emigre magazine and Emigre Fonts, the first digital-native type foundry. Embraced low-resolution bitmaps as a design feature rather than a limitation—her early faces (Modula, Emigre) defined the aesthetic of desktop publishing.</p>
+      <div class="typeface-tags"><span class="tf-tag">Mrs Eaves</span><span class="tf-tag">Emigre</span><span class="tf-tag">Modula</span></div>
+      <p class="artist-quote">"We read best what we read most."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">ES</div>
+      <div class="artist-name">Erik Spiekermann</div>
+      <div class="artist-era">1947– · German</div>
+      <p class="artist-bio">Information designer, typographer, and entrepreneur. Founded MetaDesign and FontShop. Designed FF Meta, called "the Helvetica of the 1990s"—a humanist sans-serif that brought warmth back to corporate identity. Redesigned the Berlin S-Bahn system map.</p>
+      <div class="typeface-tags"><span class="tf-tag">FF Meta</span><span class="tf-tag">ITC Officina</span><span class="tf-tag">FF Unit</span></div>
+      <p class="artist-quote">"Type is a beautiful group of letters, not a group of beautiful letters."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">TFJ</div>
+      <div class="artist-name">Tobias Frere-Jones</div>
+      <div class="artist-era">1970– · American</div>
+      <p class="artist-bio">Designed Gotham, the typeface that defined American institutional confidence in the 2000s—used on the Obama campaign and the 1 World Trade Center cornerstone. Also designed Interstate, inspired by U.S. highway signage. Founded Frere-Jones Type.</p>
+      <div class="typeface-tags"><span class="tf-tag">Gotham</span><span class="tf-tag">Interstate</span><span class="tf-tag">Retina</span></div>
+      <p class="artist-quote">"The best typefaces are the ones people don't notice."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">JH</div>
+      <div class="artist-name">Jonathan Hoefler</div>
+      <div class="artist-era">1970– · American</div>
+      <p class="artist-bio">Founded the Hoefler Type Foundry (now H&amp;Co). His Hoefler Text was bundled with every Mac. Created the elegant editorial typeface family Requiem, and Chronicle—the workhorse serif of major newspapers. His digital lettering work appears on U.S. currency.</p>
+      <div class="typeface-tags"><span class="tf-tag">Hoefler Text</span><span class="tf-tag">Requiem</span><span class="tf-tag">Chronicle</span></div>
+      <p class="artist-quote">"Type is a tool. The best tools disappear into the work."</p>
+    </div>
+
+    <div class="artist-card">
+      <div class="artist-avatar">PB</div>
+      <div class="artist-name">Paul Renner</div>
+      <div class="artist-era">1878–1956 · German</div>
+      <p class="artist-bio">Created Futura in 1927—the typeface that became synonymous with modernism, geometry, and the future. Constructed entirely from circles, triangles, and rectangles. Used on the Apollo 11 commemorative plaque left on the Moon, NASA mission insignia, and Volkswagen.</p>
+      <div class="typeface-tags"><span class="tf-tag">Futura</span><span class="tf-tag">Plak</span><span class="tf-tag">Futura Display</span></div>
+      <p class="artist-quote">"The typeface of today must serve the needs of the present."</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+══════════════════════════════════════════════ -->
+<section id="glossary" class="world-section">
+  <div class="hidden">
+    <p class="section-label">09 — Glossary</p>
+    <h2 class="section-title">Typographic Glossary</h2>
+    <p class="section-desc">The essential vocabulary of typography—terms every designer, developer, and communicator should know.</p>
+  </div>
+  <div class="glossary-grid hidden">
+    <div class="g-item"><div class="g-term">Apex</div><div class="g-def">The point at the top of a triangle or angle where two strokes meet—the peak of A or M. Its sharpness or rounding helps identify a typeface's style.</div></div>
+    <div class="g-item"><div class="g-term">Arm</div><div class="g-def">A horizontal or upward diagonal stroke that is free at one end—seen in E, F, K, L, T, Y. Arm length and angle contribute significantly to a letterform's rhythm.</div></div>
+    <div class="g-item"><div class="g-term">Ascender</div><div class="g-def">The part of a lowercase letter that extends above the x-height—the vertical strokes of b, d, f, h, k, l, t. Ascender height relative to cap height varies by typeface.</div></div>
+    <div class="g-item"><div class="g-term">Baseline</div><div class="g-def">The invisible horizontal line on which most letters appear to rest. The baseline is the primary reference point for all vertical type measurements and grid alignment.</div></div>
+    <div class="g-item"><div class="g-term">Bowl</div><div class="g-def">The curved stroke that encloses the counter of letters like b, d, o, p, q, R. The shape—circular, oval, or slightly squared—is a key identifier of typeface classification.</div></div>
+    <div class="g-item"><div class="g-term">Cap Height</div><div class="g-def">The distance from the baseline to the top of uppercase letters. Rounded capitals like O slightly exceed cap height to appear optically the same size as flat-topped letters like H.</div></div>
+    <div class="g-item"><div class="g-term">Counter</div><div class="g-def">The fully or partially enclosed space within a letterform. In o, e, d—fully enclosed. In c, n—open counter. Counter size and shape dramatically affect legibility at small sizes.</div></div>
+    <div class="g-item"><div class="g-term">Crossbar</div><div class="g-def">The horizontal stroke that connects two vertical strokes (A, H) or crosses a single stem (f, t). The height of the crossbar affects the optical balance and apparent proportions of the letter.</div></div>
+    <div class="g-item"><div class="g-term">Descender</div><div class="g-def">The stroke of a lowercase letter that extends below the baseline—in g, j, p, q, y. The descender depth affects line spacing requirements and the overall color of a text block.</div></div>
+    <div class="g-item"><div class="g-term">Ear</div><div class="g-def">The small decorative stroke projecting from the upper-right of the bowl in the lowercase g, and sometimes r. Ear shape is one of the clearest visual differentiators between typefaces.</div></div>
+    <div class="g-item"><div class="g-term">Glyph</div><div class="g-def">A specific visual representation of a character or symbol. A single character may have multiple glyphs (regular, italic, small cap, swash variant). A complete font contains hundreds or thousands of glyphs.</div></div>
+    <div class="g-item"><div class="g-term">Grid</div><div class="g-def">An underlying invisible structure of columns, rows, and baseline guides that organizes elements on a page. The typographic grid was systematized by Swiss designers in the 1950s.</div></div>
+    <div class="g-item"><div class="g-term">Kerning</div><div class="g-def">The adjustment of space between specific letter pairs. Kerning addresses optical imbalances that occur between pairs like AV, To, Ty—where letter shapes create uncomfortable gaps or crowding.</div></div>
+    <div class="g-item"><div class="g-term">Leading</div><div class="g-def">The vertical space between lines of type, measured from baseline to baseline. Named for the lead strips used in hand-typesetting. Optimal body text leading is typically 120–145% of font size.</div></div>
+    <div class="g-item"><div class="g-term">Ligature</div><div class="g-def">Two or more letters combined into a single glyph to avoid awkward collision. Common ligatures include fi, fl, ff, ffi—the f's ascender or crossbar merges with the following letter.</div></div>
+    <div class="g-item"><div class="g-term">Measure</div><div class="g-def">The width of a column of text, typically expressed in characters or ems. Optimal measure for body text is 45–75 characters per line. Shorter lines feel choppy; longer lines tire the eye.</div></div>
+    <div class="g-item"><div class="g-term">Overshoot</div><div class="g-def">The degree to which round or pointed letters (O, A, S) extend slightly beyond cap height or the baseline. Without overshoot, rounded letters appear smaller than flat-topped letters of the same mathematical height.</div></div>
+    <div class="g-item"><div class="g-term">Serif</div><div class="g-def">The small cross-stroke finishing the end of a main stroke. Serif styles—bracketed, hairline, slab, wedge—are the primary means of classifying type. The word derives from Dutch schreef (line, stroke).</div></div>
+    <div class="g-item"><div class="g-term">Stem</div><div class="g-def">The main vertical or diagonal stroke of a letterform, forming its structural backbone. Stem weight determines the visual weight of the typeface and is measured in points.</div></div>
+    <div class="g-item"><div class="g-term">Stroke</div><div class="g-def">Any single linear element making up a letterform. Strokes are classified by orientation (horizontal, vertical, diagonal) and function (stem, arm, bar, bowl, link). Stroke contrast is a key classification tool.</div></div>
+    <div class="g-item"><div class="g-term">Terminal</div><div class="g-def">The end of a stroke without a serif. Terminal styles include ball (round), finial (tapered), sheared (angled), and blunt. Terminal form is as diagnostic as serif style for identifying typefaces.</div></div>
+    <div class="g-item"><div class="g-term">Tracking</div><div class="g-def">Uniform letter-spacing adjustment applied across a word, line, or passage. Negative tracking tightens display headings; positive tracking opens up all-caps and small-caps text for better legibility.</div></div>
+    <div class="g-item"><div class="g-term">x-Height</div><div class="g-def">The height of lowercase letters without ascenders or descenders, named for the letter x. A tall x-height improves legibility at small sizes. Modern screen-optimized typefaces typically have large x-heights.</div></div>
+  </div>
+</section>
+
+<footer>
+  <p style="font-family:var(--ff-serif);font-size:1.1rem;color:var(--accent);margin-bottom:0.5rem">Typography World</p>
+  <p>The art &amp; science of type &mdash; built with vanilla JS &amp; Canvas 2D &mdash; zero dependencies</p>
+  <p style="margin-top:0.35rem;color:var(--text-muted)">LagFilter &bull; Phosphor Canvas &bull; IntersectionObserver &bull; Variable Fonts &bull; Bezier Paths</p>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════
+   GLOBAL: IntersectionObserver — .hidden → .visible
+══════════════════════════════════════════ */
+(function(){
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.classList.remove('hidden');
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+  /* Also observe new elements added later (anatomy, etc.) */
+  const mo = new MutationObserver(muts => {
+    muts.forEach(m => {
+      m.addedNodes.forEach(n => {
+        if(n.nodeType === 1 && n.classList && n.classList.contains('hidden'))
+          observer.observe(n);
+      });
+    });
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+</body>
+</html>

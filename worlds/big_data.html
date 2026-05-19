@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive data world exploring big data">
+    <meta property="og:title" content="Big Data — WAVGEN">
+    <meta property="og:description" content="Immersive data world exploring big data">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#06B6D4">
+    <link rel="canonical" href="https://wavgen.ca/data/big_data.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Data — Visual Learning App</title>
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════════ */
+:root {
+  --navy-900: #050d1a;
+  --navy-800: #091428;
+  --navy-700: #0d1f3c;
+  --navy-600: #122a52;
+  --teal:     #00e5ff;
+  --teal-dim: #00b8cc;
+  --teal-glow:#00e5ff33;
+  --cyan:     #18ffff;
+  --purple:   #7c4dff;
+  --purple-dim:#5c35cc;
+  --green:    #00e676;
+  --amber:    #ffab40;
+  --red:      #ff5252;
+  --text:     #cdd9f0;
+  --text-dim: #7a93b8;
+  --card-bg:  #0b1a30;
+  --border:   #1a3a5c;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--navy-900);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--cyan); }
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy-800); }
+::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════
+   DATA STREAM BACKGROUND
+═══════════════════════════════════════════════ */
+.data-stream-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.stream-col {
+  position: absolute; top: -100%; width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--teal), transparent);
+  opacity: 0; animation: streamFall linear infinite;
+}
+
+@keyframes streamFall {
+  0%   { transform: translateY(0);     opacity: 0; }
+  10%  { opacity: 0.15; }
+  90%  { opacity: 0.08; }
+  100% { transform: translateY(200vh); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(5,13,26,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 60px;
+}
+.nav-brand {
+  font-size: 1.15rem; font-weight: 700; color: var(--teal);
+  letter-spacing: 0.05em;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-brand span { color: var(--text); }
+.nav-links {
+  display: flex; gap: 0.25rem; list-style: none; flex-wrap: wrap;
+}
+.nav-links a {
+  color: var(--text-dim); font-size: 0.8rem; padding: 0.35rem 0.7rem;
+  border-radius: 6px; transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--teal); background: var(--teal-glow); text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+main { position: relative; z-index: 1; padding-top: 60px; }
+section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-title {
+  font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, var(--teal), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.section-subtitle {
+  color: var(--text-dim); font-size: 1rem; margin-bottom: 2.5rem;
+}
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 2rem; position: relative;
+  max-width: 100%;
+}
+.hero-eyebrow {
+  font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--teal-dim); margin-bottom: 1.2rem;
+  animation: fadeSlideUp 0.8s ease both;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900; line-height: 1.05;
+  margin-bottom: 1.2rem;
+  animation: fadeSlideUp 0.8s 0.15s ease both;
+}
+.hero-title .accent { color: var(--teal); }
+.hero-sub {
+  font-size: 1.15rem; color: var(--text-dim); max-width: 560px;
+  margin: 0 auto 2.5rem;
+  animation: fadeSlideUp 0.8s 0.3s ease both;
+}
+
+/* 5 V badges */
+.v-badges {
+  display: flex; flex-wrap: wrap; gap: 0.75rem;
+  justify-content: center; margin-bottom: 3rem;
+}
+.v-badge {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1.4rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  min-width: 120px;
+  opacity: 0; transform: translateY(20px) scale(0.95);
+  animation: vBadgeIn 0.6s ease forwards;
+  position: relative; overflow: hidden;
+  cursor: default;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.v-badge::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--v-color, var(--teal));
+  opacity: 0; transition: opacity 0.25s;
+}
+.v-badge:hover { transform: translateY(-4px) scale(1.04); border-color: var(--v-color, var(--teal)); box-shadow: 0 0 24px var(--v-color, var(--teal-glow)); }
+.v-badge:hover::before { opacity: 0.06; }
+.v-letter {
+  font-size: 2rem; font-weight: 900; color: var(--v-color, var(--teal));
+  position: relative; z-index: 1;
+}
+.v-name {
+  font-size: 0.75rem; font-weight: 600; color: var(--text);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  position: relative; z-index: 1;
+}
+.v-badge:nth-child(1) { --v-color: #00e5ff; animation-delay: 0.5s; }
+.v-badge:nth-child(2) { --v-color: #7c4dff; animation-delay: 0.7s; }
+.v-badge:nth-child(3) { --v-color: #00e676; animation-delay: 0.9s; }
+.v-badge:nth-child(4) { --v-color: #ffab40; animation-delay: 1.1s; }
+.v-badge:nth-child(5) { --v-color: #ff5252; animation-delay: 1.3s; }
+
+@keyframes vBadgeIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hero-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeSlideUp 0.8s 1.5s ease both;
+}
+.btn {
+  padding: 0.75rem 1.8rem; border-radius: 8px; font-weight: 700;
+  font-size: 0.9rem; border: none; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.04em;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: var(--navy-900);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--teal-glow); }
+.btn-outline {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  color: var(--text-dim); font-size: 0.75rem;
+  animation: bounce 2s 2s ease infinite;
+}
+.scroll-hint svg { opacity: 0.5; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   STAT BAR
+═══════════════════════════════════════════════ */
+.stat-bar {
+  background: var(--navy-800); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 0; padding: 0;
+}
+.stat-item {
+  padding: 1.25rem 2.5rem; text-align: center;
+  border-right: 1px solid var(--border);
+  flex: 1; min-width: 150px;
+}
+.stat-item:last-child { border-right: none; }
+.stat-number {
+  font-size: 1.8rem; font-weight: 900; color: var(--teal);
+  display: block;
+}
+.stat-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ═══════════════════════════════════════════════
+   CARDS GRID
+═══════════════════════════════════════════════ */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.75rem;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  position: relative; overflow: hidden;
+}
+.card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--card-accent, var(--teal));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.card:hover { transform: translateY(-4px); border-color: var(--card-accent, var(--teal)); }
+.card:hover::after { transform: scaleX(1); }
+.card:hover { box-shadow: 0 12px 40px rgba(0,229,255,0.08); }
+.card-icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+.card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+.card-body { font-size: 0.875rem; color: var(--text-dim); line-height: 1.65; }
+.card-tag {
+  display: inline-block; margin-top: 0.75rem;
+  background: var(--teal-glow); color: var(--teal);
+  border-radius: 4px; padding: 0.2rem 0.6rem; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════════
+   COMPARISON TABLE
+═══════════════════════════════════════════════ */
+.compare-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  margin-top: 1rem;
+}
+.compare-card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; transition: transform 0.25s, box-shadow 0.25s;
+}
+.compare-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,229,255,0.07); }
+.compare-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, var(--ch-from), var(--ch-to));
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.compare-header h3 { font-size: 1rem; font-weight: 800; color: #fff; }
+.compare-body { padding: 1.25rem 1.5rem; }
+.compare-row { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.65rem; font-size: 0.82rem; }
+.compare-row .dot { flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); margin-top: 0.35rem; }
+.compare-row span { color: var(--text-dim); line-height: 1.5; }
+
+/* ═══════════════════════════════════════════════
+   PIPELINE BUILDER
+═══════════════════════════════════════════════ */
+#pipeline { background: var(--navy-800); }
+#pipeline > .inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+.pipeline-controls {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem;
+}
+.pipe-toggle {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.65rem 1.2rem; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.85rem; font-weight: 600; color: var(--text-dim);
+  user-select: none;
+}
+.pipe-toggle:hover { border-color: var(--teal-dim); color: var(--text); }
+.pipe-toggle.active {
+  border-color: var(--teal); color: var(--teal);
+  background: var(--teal-glow);
+  box-shadow: 0 0 16px var(--teal-glow);
+}
+.pipe-toggle .tog-icon { font-size: 1.1rem; }
+
+.pipeline-canvas {
+  background: var(--navy-900); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2rem 1.5rem;
+  overflow-x: auto;
+}
+.pipe-flow {
+  display: flex; align-items: center; gap: 0; min-width: 700px;
+}
+.pipe-node {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 0.5rem; padding: 0.75rem 0.5rem; border-radius: 12px;
+  border: 2px dashed var(--border); transition: all 0.3s;
+  position: relative; min-width: 90px;
+}
+.pipe-node.active-node {
+  border-color: var(--teal); background: rgba(0,229,255,0.05);
+  box-shadow: 0 0 20px var(--teal-glow);
+}
+.pipe-node .node-icon { font-size: 1.75rem; }
+.pipe-node .node-label { font-size: 0.7rem; font-weight: 700; text-align: center; color: var(--text-dim); }
+.pipe-node.active-node .node-label { color: var(--teal); }
+
+.pipe-arrow {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+  width: 40px;
+}
+.pipe-arrow svg { transition: all 0.3s; }
+.pipe-arrow.active-arrow svg { filter: drop-shadow(0 0 4px var(--teal)); }
+.pipe-arrow path { stroke: var(--border); transition: stroke 0.3s; }
+.pipe-arrow.active-arrow path { stroke: var(--teal); }
+
+.pipe-info-box {
+  margin-top: 1.5rem; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem 1.5rem; min-height: 80px;
+  transition: all 0.3s;
+}
+.pipe-info-box h4 { font-size: 0.9rem; color: var(--teal); margin-bottom: 0.4rem; }
+.pipe-info-box p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════
+   GALAXY MAP (SVG)
+═══════════════════════════════════════════════ */
+#ecosystem { background: var(--navy-900); }
+.galaxy-wrapper {
+  background: var(--navy-800); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden; margin-bottom: 3rem;
+}
+.galaxy-wrapper svg { width: 100%; height: auto; display: block; }
+
+/* ═══════════════════════════════════════════════
+   RESOURCE TABS
+═══════════════════════════════════════════════ */
+.tab-bar {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.tab-btn {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.55rem 1.1rem; cursor: pointer;
+  font-size: 0.85rem; font-weight: 600; color: var(--text-dim);
+  transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
+}
+.tab-btn:hover { border-color: var(--teal-dim); color: var(--text); }
+.tab-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-glow); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+
+.resource-card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.1rem 1.25rem; display: flex; gap: 0.75rem;
+  transition: all 0.2s; align-items: flex-start;
+}
+.resource-card:hover { border-color: var(--teal-dim); transform: translateY(-2px); }
+.resource-card .rc-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.resource-card .rc-body { flex: 1; }
+.resource-card .rc-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+.resource-card .rc-desc { font-size: 0.77rem; color: var(--text-dim); line-height: 1.5; }
+.resource-card .rc-link { font-size: 0.73rem; color: var(--teal); margin-top: 0.35rem; display: block; }
+
+/* ═══════════════════════════════════════════════
+   ROADMAP
+═══════════════════════════════════════════════ */
+#roadmap { background: var(--navy-800); }
+#roadmap > .inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+
+.roadmap-track {
+  display: flex; gap: 1rem;
+  overflow-x: auto; padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+.roadmap-phase {
+  flex-shrink: 0; width: 240px;
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.roadmap-phase-header {
+  padding: 0.9rem 1.1rem;
+  background: linear-gradient(135deg, var(--rp-from), var(--rp-to));
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.roadmap-phase-header h3 { font-size: 0.9rem; font-weight: 800; color: #fff; }
+.phase-num {
+  width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.2);
+  font-size: 0.75rem; font-weight: 900; color: #fff;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.roadmap-items { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.roadmap-item {
+  background: var(--navy-800); border-radius: 8px; padding: 0.6rem 0.75rem;
+  font-size: 0.8rem; color: var(--text-dim); display: flex; gap: 0.5rem; align-items: flex-start;
+}
+.roadmap-item .ri-check { color: var(--teal); font-size: 0.75rem; margin-top: 0.1rem; flex-shrink: 0; }
+.phase-duration {
+  padding: 0.6rem 1.1rem; font-size: 0.72rem; color: var(--teal);
+  border-top: 1px solid var(--border); background: var(--teal-glow);
+  text-align: center; font-weight: 700; letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════════════════
+   CHEAT SHEET
+═══════════════════════════════════════════════ */
+.cheat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.cheat-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem 1.1rem;
+  transition: all 0.2s; cursor: default;
+  position: relative;
+}
+.cheat-card:hover { border-color: var(--teal-dim); transform: translateY(-2px); }
+.cheat-term {
+  font-size: 0.82rem; font-weight: 800; color: var(--teal);
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.3rem;
+}
+.cheat-def { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55; }
+.cheat-copy-btn {
+  position: absolute; top: 0.6rem; right: 0.7rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim); font-size: 0.75rem; padding: 0.2rem;
+  opacity: 0; transition: opacity 0.2s;
+}
+.cheat-card:hover .cheat-copy-btn { opacity: 1; }
+.cheat-copy-btn:hover { color: var(--teal); }
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer {
+  background: var(--navy-800); border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem; text-align: center;
+  color: var(--text-dim); font-size: 0.82rem;
+}
+footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); margin-bottom: 0.5rem; }
+
+/* ═══════════════════════════════════════════════
+   TOOLTIP
+═══════════════════════════════════════════════ */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip-wrap .tt {
+  display: none; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+  background: var(--navy-700); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.5rem 0.75rem; font-size: 0.75rem; color: var(--text); white-space: nowrap;
+  z-index: 100; pointer-events: none; box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.tooltip-wrap:hover .tt { display: block; }
+
+/* ═══════════════════════════════════════════════
+   PROGRESS BAR (for skill levels)
+═══════════════════════════════════════════════ */
+.skill-bar-wrap { margin-top: 0.5rem; }
+.skill-bar-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-dim); margin-bottom: 0.25rem; }
+.skill-bar-track { height: 5px; background: var(--navy-700); border-radius: 3px; overflow: hidden; }
+.skill-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--teal), var(--cyan)); transition: width 1s ease; }
+
+/* ═══════════════════════════════════════════════
+   DEEP-DIVE ACCORDION
+═══════════════════════════════════════════════ */
+.accordion { margin-top: 1rem; }
+.acc-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; }
+.acc-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 1.1rem; cursor: pointer; background: var(--card-bg);
+  font-size: 0.88rem; font-weight: 700; color: var(--text);
+  transition: background 0.2s;
+}
+.acc-header:hover { background: var(--navy-700); }
+.acc-header .acc-chevron { transition: transform 0.3s; color: var(--teal-dim); }
+.acc-item.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display: none; padding: 1rem 1.1rem; background: var(--navy-900); font-size: 0.83rem; color: var(--text-dim); line-height: 1.65; }
+.acc-item.open .acc-body { display: block; }
+
+/* ═══════════════════════════════════════════════
+   NOTIFICATION TOAST
+═══════════════════════════════════════════════ */
+#toast {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+  background: var(--navy-700); border: 1px solid var(--teal);
+  border-radius: 10px; padding: 0.75rem 1.25rem;
+  font-size: 0.85rem; color: var(--teal);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: all 0.3s; box-shadow: 0 4px 20px var(--teal-glow);
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .compare-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .stat-item { min-width: 120px; padding: 1rem 1.25rem; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body class="domain-data">
+
+<!-- DATA STREAM BACKGROUND -->
+<div class="data-stream-bg" id="streamBg"></div>
+
+<!-- TOAST -->
+<div id="toast">✓ Copied to clipboard!</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">⚡ <span>Big</span>Data<span>Lab</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#foundations">Foundations</a></li>
+    <li><a href="#key-terms">Key Terms</a></li>
+    <li><a href="#knowledge-check">Quiz</a></li>
+    <li><a href="#cheatsheet">Cheat Sheet</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <p class="hero-eyebrow">⚡ Interactive Visual Learning</p>
+  <h1 class="hero-title">Master <span class="accent">Big Data</span><br>From Zero to Production</h1>
+  <p class="hero-sub">Explore the 5 V's, build pipelines, map the ecosystem, and launch your big data career — all in one interactive app.</p>
+
+  <div class="v-badges">
+    <div class="v-badge">
+      <span class="v-letter">V</span>
+      <span class="v-name">Volume</span>
+    </div>
+    <div class="v-badge">
+      <span class="v-letter">V</span>
+      <span class="v-name">Velocity</span>
+    </div>
+    <div class="v-badge">
+      <span class="v-letter">V</span>
+      <span class="v-name">Variety</span>
+    </div>
+    <div class="v-badge">
+      <span class="v-letter">V</span>
+      <span class="v-name">Veracity</span>
+    </div>
+    <div class="v-badge">
+      <span class="v-letter">V</span>
+      <span class="v-name">Value</span>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <button class="btn btn-primary" onclick="scrollToSection('concepts')">Start Learning →</button>
+    <button class="btn btn-outline" onclick="scrollToSection('pipeline')">Build a Pipeline</button>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 3v10M8 13l-4-4M8 13l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <span class="stat-number" data-target="2.5">0</span>
+    <span class="stat-label">Quintillion bytes/day</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number" data-target="97">0</span>
+    <span class="stat-label">% Fortune 500 use Big Data</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number" data-target="274">0</span>
+    <span class="stat-label">Billion market by 2026 ($B)</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number" data-target="5">0</span>
+    <span class="stat-label">Core V's of Big Data</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     CORE CONCEPTS
+════════════════════════════════════════ -->
+<section id="concepts">
+  <p class="section-title">Core Concepts</p>
+  <p class="section-subtitle">Six foundational pillars every big data engineer must master</p>
+
+  <div class="cards-grid">
+
+    <!-- 5 V's Deep Dive -->
+    <div class="card" style="--card-accent:#00e5ff">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">The 5 V's — Deep Dive</div>
+      <div class="card-body">
+        <div class="accordion">
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span>📦 Volume — Scale of Data</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+            <div class="acc-body">Data measured in petabytes and exabytes. Facebook processes 4 PB/day; Walmart handles 2.5 PB/hr transactions. Horizontal scaling with distributed storage (HDFS, S3) is essential — no single machine can hold it all.</div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span>⚡ Velocity — Speed of Data</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+            <div class="acc-body">Real-time vs. batch processing. Twitter generates 6,000 tweets/sec; NYSE processes 1M+ trades/sec. Stream processing (Kafka, Spark Streaming, Flink) handles high-velocity data without buffering entire datasets.</div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span>🎲 Variety — Types of Data</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+            <div class="acc-body">Structured (SQL tables), Semi-structured (JSON/XML/logs), Unstructured (images, video, text). 80% of enterprise data is unstructured. Data lakes handle all types; warehouses require schema-on-write.</div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span>🎯 Veracity — Quality of Data</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+            <div class="acc-body">Trustworthiness, accuracy, consistency. Biased sensors, dirty records, missing values corrupt analytics. Data quality pipelines (Great Expectations, dbt tests) validate schema, nulls, and statistical distributions.</div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span>💎 Value — Business Impact</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+            <div class="acc-body">Converting raw data into insights. Only ~1% of data is ever analyzed. ROI requires clear use cases — churn prediction, fraud detection, personalization. Value justifies the infrastructure investment.</div>
+          </div>
+        </div>
+      </div>
+      <span class="card-tag">Fundamentals</span>
+    </div>
+
+    <!-- Hadoop / HDFS -->
+    <div class="card" style="--card-accent:#7c4dff">
+      <span class="card-icon">🐘</span>
+      <div class="card-title">Hadoop & HDFS Architecture</div>
+      <div class="card-body">
+        <p style="margin-bottom:0.9rem; font-size:0.82rem; line-height:1.6;">Hadoop Distributed File System splits files into 128 MB blocks replicated across DataNodes (default 3×). The NameNode holds metadata only.</p>
+        <!-- ASCII node diagram -->
+        <div style="background:var(--navy-900); border-radius:8px; padding:0.9rem; font-family:monospace; font-size:0.72rem; color:var(--text-dim); line-height:1.8; border:1px solid var(--border);">
+          <div style="color:var(--purple);font-weight:700;">[ NameNode ]</div>
+          <div style="padding-left:1rem;">├─ Metadata only</div>
+          <div style="padding-left:1rem;">├─ Block map & locations</div>
+          <div style="padding-left:1rem;">└─ Single point of truth</div>
+          <div style="margin-top:0.5rem;color:var(--teal);font-weight:700;">[ DataNodes × N ]</div>
+          <div style="padding-left:1rem;">├─ Block storage (128 MB)</div>
+          <div style="padding-left:1rem;">├─ Heartbeat every 3s</div>
+          <div style="padding-left:1rem;">└─ Replication factor: 3</div>
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:0.75rem;">
+          <div class="skill-bar-label"><span>Industry Adoption</span><span>72%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:72%"></div></div>
+        </div>
+      </div>
+      <span class="card-tag" style="background:rgba(124,77,255,0.15);color:var(--purple);">Storage</span>
+    </div>
+
+    <!-- MapReduce -->
+    <div class="card" style="--card-accent:#00e676">
+      <span class="card-icon">🗺️</span>
+      <div class="card-title">MapReduce Pipeline</div>
+      <div class="card-body">
+        <p style="margin-bottom:0.9rem; font-size:0.82rem; line-height:1.6;">The original Hadoop processing model. Splits tasks into parallel Map phases, then aggregates via Reduce. Disk-heavy but fault-tolerant for batch ETL.</p>
+        <div style="background:var(--navy-900); border-radius:8px; padding:0.9rem; font-family:monospace; font-size:0.73rem; color:var(--text-dim); line-height:1.9; border:1px solid var(--border);">
+          <span style="color:var(--green);">INPUT</span> → Split into chunks<br>
+          <span style="color:var(--teal);">MAP</span> &nbsp; &nbsp;→ key-value pairs<br>
+          <span style="color:var(--purple);">SHUFFLE</span> → group by key<br>
+          <span style="color:var(--amber);">REDUCE</span> → aggregate per key<br>
+          <span style="color:var(--green);">OUTPUT</span> → write to HDFS
+        </div>
+        <p style="font-size:0.77rem; color:var(--text-dim); margin-top:0.6rem;">⚠️ Writes to disk between each stage — Spark replaced this with in-memory DAGs for 100× speed.</p>
+      </div>
+      <span class="card-tag" style="background:rgba(0,230,118,0.12);color:var(--green);">Processing</span>
+    </div>
+
+    <!-- Spark vs Disk -->
+    <div class="card" style="--card-accent:#ffab40">
+      <span class="card-icon">⚡</span>
+      <div class="card-title">Apache Spark — In-Memory Magic</div>
+      <div class="card-body">
+        <p style="margin-bottom:0.9rem; font-size:0.82rem; line-height:1.6;">Spark keeps data in RAM across a Directed Acyclic Graph (DAG) of transformations. 100× faster than MapReduce for iterative ML. 10× faster for batch ETL.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.75rem;">
+          <div style="background:var(--navy-900); border-radius:8px; padding:0.65rem; text-align:center; border:1px solid var(--border);">
+            <div style="font-size:0.7rem; color:var(--text-dim); margin-bottom:0.2rem;">MapReduce</div>
+            <div style="font-size:1.2rem; font-weight:800; color:var(--red);">💾 Disk</div>
+            <div style="font-size:0.68rem; color:var(--text-dim); margin-top:0.2rem;">Writes every stage</div>
+          </div>
+          <div style="background:var(--navy-900); border-radius:8px; padding:0.65rem; text-align:center; border:1px solid var(--teal-glow);">
+            <div style="font-size:0.7rem; color:var(--text-dim); margin-bottom:0.2rem;">Spark</div>
+            <div style="font-size:1.2rem; font-weight:800; color:var(--teal);">🧠 RAM</div>
+            <div style="font-size:0.68rem; color:var(--text-dim); margin-top:0.2rem;">In-memory DAG</div>
+          </div>
+        </div>
+        <p style="font-size:0.77rem; color:var(--text-dim);">Spark APIs: <strong style="color:var(--text);">RDD</strong> (low-level), <strong style="color:var(--text);">DataFrame</strong> (SQL-like), <strong style="color:var(--text);">Dataset</strong> (typed). PySpark enables Python. MLlib provides distributed ML.</p>
+      </div>
+      <span class="card-tag" style="background:rgba(255,171,64,0.12);color:var(--amber);">Compute</span>
+    </div>
+
+    <!-- Data Lake / Warehouse / Lakehouse -->
+    <div class="card" style="--card-accent:#18ffff; grid-column: span 1;">
+      <span class="card-icon">🏗️</span>
+      <div class="card-title">Lake vs. Warehouse vs. Lakehouse</div>
+      <div class="card-body">
+        <div class="compare-grid" style="grid-template-columns:1fr; gap:0.5rem; margin-top:0.5rem;">
+          <div style="background:var(--navy-900); border-radius:8px; padding:0.7rem 0.9rem; border-left:3px solid var(--teal);">
+            <div style="font-weight:800; font-size:0.82rem; color:var(--teal); margin-bottom:0.25rem;">🏞️ Data Lake</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); line-height:1.5;">Raw, schema-on-read. Any format. S3/ADLS/GCS. Cheap storage. Risk: data swamp if ungoverned.</div>
+          </div>
+          <div style="background:var(--navy-900); border-radius:8px; padding:0.7rem 0.9rem; border-left:3px solid var(--purple);">
+            <div style="font-weight:800; font-size:0.82rem; color:var(--purple); margin-bottom:0.25rem;">🏢 Data Warehouse</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); line-height:1.5;">Structured, schema-on-write. SQL. Snowflake/BigQuery/Redshift. Fast queries, expensive, limited formats.</div>
+          </div>
+          <div style="background:var(--navy-900); border-radius:8px; padding:0.7rem 0.9rem; border-left:3px solid var(--green);">
+            <div style="font-weight:800; font-size:0.82rem; color:var(--green); margin-bottom:0.25rem;">🏠 Lakehouse</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); line-height:1.5;">Best of both: ACID transactions on lake storage. Delta Lake/Apache Iceberg/Hudi. Databricks/Unity Catalog.</div>
+          </div>
+        </div>
+      </div>
+      <span class="card-tag">Architecture</span>
+    </div>
+
+    <!-- Kafka Streaming -->
+    <div class="card" style="--card-accent:#ff5252">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">Apache Kafka — Event Streaming</div>
+      <div class="card-body">
+        <p style="margin-bottom:0.9rem; font-size:0.82rem; line-height:1.6;">Kafka is a distributed commit log — a durable, ordered, replayable stream of events. Used by 80%+ of Fortune 100 for real-time data pipelines.</p>
+        <div style="background:var(--navy-900); border-radius:8px; padding:0.9rem; font-family:monospace; font-size:0.72rem; color:var(--text-dim); line-height:1.8; border:1px solid var(--border);">
+          <span style="color:var(--red);">PRODUCERS</span> → publish to Topics<br>
+          <span style="color:var(--amber);">BROKERS</span> &nbsp; → partition &amp; replicate<br>
+          <span style="color:var(--teal);">TOPICS</span> &nbsp; &nbsp;→ split into Partitions<br>
+          <span style="color:var(--green);">CONSUMERS</span> → read at own offset
+        </div>
+        <div class="skill-bar-wrap" style="margin-top:0.75rem;">
+          <div class="skill-bar-label"><span>Throughput</span><span>1M+ msg/sec</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:95%; background:linear-gradient(90deg,var(--red),var(--amber));"></div></div>
+        </div>
+        <p style="font-size:0.77rem; color:var(--text-dim); margin-top:0.5rem;">Kafka Connect syncs databases. Kafka Streams for in-process processing. Confluent Cloud = managed Kafka.</p>
+      </div>
+      <span class="card-tag" style="background:rgba(255,82,82,0.12);color:var(--red);">Streaming</span>
+    </div>
+
+  </div><!-- /cards-grid -->
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     INTERACTIVE PIPELINE BUILDER
+════════════════════════════════════════ -->
+<div id="pipeline">
+<div class="inner">
+  <p class="section-title">Pipeline Builder</p>
+  <p class="section-subtitle">Toggle components to see how a real Big Data pipeline comes together</p>
+
+  <div class="pipeline-controls" id="pipeControls">
+    <div class="pipe-toggle active" data-node="source" onclick="togglePipe(this)">
+      <span class="tog-icon">📡</span> Data Source
+    </div>
+    <div class="pipe-toggle active" data-node="kafka" onclick="togglePipe(this)">
+      <span class="tog-icon">🌊</span> Kafka
+    </div>
+    <div class="pipe-toggle active" data-node="hdfs" onclick="togglePipe(this)">
+      <span class="tog-icon">🗄️</span> HDFS / S3
+    </div>
+    <div class="pipe-toggle active" data-node="spark" onclick="togglePipe(this)">
+      <span class="tog-icon">⚡</span> Spark
+    </div>
+    <div class="pipe-toggle active" data-node="hive" onclick="togglePipe(this)">
+      <span class="tog-icon">🐝</span> Hive / DW
+    </div>
+    <div class="pipe-toggle active" data-node="superset" onclick="togglePipe(this)">
+      <span class="tog-icon">📊</span> Superset
+    </div>
+    <div class="pipe-toggle active" data-node="airflow" onclick="togglePipe(this)">
+      <span class="tog-icon">🌬️</span> Airflow
+    </div>
+  </div>
+
+  <div class="pipeline-canvas">
+    <div class="pipe-flow" id="pipeFlow">
+
+      <div class="pipe-node active-node" id="node-source">
+        <span class="node-icon">📡</span>
+        <span class="node-label">Data<br>Source</span>
+      </div>
+
+      <div class="pipe-arrow active-arrow" id="arrow-1">
+        <svg width="36" height="20" viewBox="0 0 36 20">
+          <path d="M2 10 H30 M24 4 L34 10 L24 16" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pipe-node active-node" id="node-kafka">
+        <span class="node-icon">🌊</span>
+        <span class="node-label">Kafka<br>Broker</span>
+      </div>
+
+      <div class="pipe-arrow active-arrow" id="arrow-2">
+        <svg width="36" height="20" viewBox="0 0 36 20">
+          <path d="M2 10 H30 M24 4 L34 10 L24 16" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pipe-node active-node" id="node-hdfs">
+        <span class="node-icon">🗄️</span>
+        <span class="node-label">HDFS<br>/ S3</span>
+      </div>
+
+      <div class="pipe-arrow active-arrow" id="arrow-3">
+        <svg width="36" height="20" viewBox="0 0 36 20">
+          <path d="M2 10 H30 M24 4 L34 10 L24 16" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pipe-node active-node" id="node-spark">
+        <span class="node-icon">⚡</span>
+        <span class="node-label">Spark<br>ETL</span>
+      </div>
+
+      <div class="pipe-arrow active-arrow" id="arrow-4">
+        <svg width="36" height="20" viewBox="0 0 36 20">
+          <path d="M2 10 H30 M24 4 L34 10 L24 16" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pipe-node active-node" id="node-hive">
+        <span class="node-icon">🐝</span>
+        <span class="node-label">Hive<br>/ DW</span>
+      </div>
+
+      <div class="pipe-arrow active-arrow" id="arrow-5">
+        <svg width="36" height="20" viewBox="0 0 36 20">
+          <path d="M2 10 H30 M24 4 L34 10 L24 16" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pipe-node active-node" id="node-superset">
+        <span class="node-icon">📊</span>
+        <span class="node-label">Apache<br>Superset</span>
+      </div>
+
+    </div><!-- /pipe-flow -->
+
+    <!-- Airflow floats below as orchestrator -->
+    <div style="display:flex; align-items:center; justify-content:center; margin-top:1.25rem; gap:0.75rem;">
+      <div style="height:1px; flex:1; background:var(--border);"></div>
+      <div class="pipe-node active-node" id="node-airflow" style="min-width:160px; flex-direction:row; border-radius:30px; padding:0.6rem 1.1rem;">
+        <span class="node-icon" style="font-size:1.2rem;">🌬️</span>
+        <span class="node-label" style="font-size:0.7rem; text-align:left; white-space:nowrap;">Airflow — Orchestrator<br><span style="color:var(--text-dim);font-weight:400;">Schedules &amp; monitors all stages</span></span>
+      </div>
+      <div style="height:1px; flex:1; background:var(--border);"></div>
+    </div>
+  </div><!-- /pipeline-canvas -->
+
+  <div class="pipe-info-box" id="pipeInfoBox">
+    <h4>⚡ Full Lambda Architecture Active</h4>
+    <p>All 7 components enabled. Data flows: Sources → Kafka (stream ingestion) → HDFS/S3 (raw storage) → Spark (ETL/processing) → Hive/DW (serving layer) → Superset (visualization). Airflow orchestrates every stage. Toggle components to explore partial architectures.</p>
+  </div>
+
+</div><!-- /inner -->
+</div><!-- /pipeline -->
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     ECOSYSTEM GALAXY MAP
+════════════════════════════════════════ -->
+<section id="ecosystem">
+  <p class="section-title">Ecosystem Galaxy Map</p>
+  <p class="section-subtitle">The Big Data tool landscape — organized by layer</p>
+
+  <div class="galaxy-wrapper">
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;">
+      <defs>
+        <radialGradient id="bgGrad" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#0d1f3c"/>
+          <stop offset="100%" stop-color="#050d1a"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow2">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="520" fill="url(#bgGrad)"/>
+
+      <!-- Grid lines -->
+      <line x1="0" y1="130" x2="900" y2="130" stroke="#1a3a5c" stroke-width="0.5" stroke-dasharray="4,8"/>
+      <line x1="0" y1="260" x2="900" y2="260" stroke="#1a3a5c" stroke-width="0.5" stroke-dasharray="4,8"/>
+      <line x1="0" y1="390" x2="900" y2="390" stroke="#1a3a5c" stroke-width="0.5" stroke-dasharray="4,8"/>
+
+      <!-- Layer labels -->
+      <text x="14" y="80" fill="#7a93b8" font-size="10" font-weight="700" letter-spacing="1">INGEST</text>
+      <text x="14" y="208" fill="#7a93b8" font-size="10" font-weight="700" letter-spacing="1">STORE</text>
+      <text x="14" y="338" fill="#7a93b8" font-size="10" font-weight="700" letter-spacing="1">PROCESS</text>
+      <text x="14" y="468" fill="#7a93b8" font-size="10" font-weight="700" letter-spacing="1">SERVE</text>
+
+      <!-- ─── INGEST LAYER ─── -->
+      <!-- Kafka -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('kafka')" style="cursor:pointer">
+        <circle cx="180" cy="75" r="32" fill="#ff525222" stroke="#ff5252" stroke-width="1.5"/>
+        <text x="180" y="70" text-anchor="middle" fill="#ff5252" font-size="13" font-weight="800">🌊</text>
+        <text x="180" y="86" text-anchor="middle" fill="#ff5252" font-size="9" font-weight="700">Kafka</text>
+      </g>
+      <!-- Flume -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('flume')" style="cursor:pointer">
+        <circle cx="310" cy="75" r="24" fill="#ffab4022" stroke="#ffab40" stroke-width="1.2"/>
+        <text x="310" y="70" text-anchor="middle" fill="#ffab40" font-size="11">🔌</text>
+        <text x="310" y="85" text-anchor="middle" fill="#ffab40" font-size="8.5" font-weight="700">Flume</text>
+      </g>
+      <!-- Kinesis -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('kinesis')" style="cursor:pointer">
+        <circle cx="430" cy="65" r="26" fill="#7c4dff22" stroke="#7c4dff" stroke-width="1.2"/>
+        <text x="430" y="59" text-anchor="middle" fill="#7c4dff" font-size="11">☁️</text>
+        <text x="430" y="75" text-anchor="middle" fill="#7c4dff" font-size="8.5" font-weight="700">Kinesis</text>
+      </g>
+      <!-- Pub/Sub -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('pubsub')" style="cursor:pointer">
+        <circle cx="560" cy="75" r="24" fill="#00e67622" stroke="#00e676" stroke-width="1.2"/>
+        <text x="560" y="70" text-anchor="middle" fill="#00e676" font-size="11">📨</text>
+        <text x="560" y="85" text-anchor="middle" fill="#00e676" font-size="8.5" font-weight="700">Pub/Sub</text>
+      </g>
+      <!-- Sqoop -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('sqoop')" style="cursor:pointer">
+        <circle cx="680" cy="75" r="22" fill="#00e5ff18" stroke="#00e5ff" stroke-width="1"/>
+        <text x="680" y="70" text-anchor="middle" fill="#00e5ff" font-size="10">🦑</text>
+        <text x="680" y="84" text-anchor="middle" fill="#00e5ff" font-size="8" font-weight="700">Sqoop</text>
+      </g>
+      <!-- Flink -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('flink')" style="cursor:pointer">
+        <circle cx="790" cy="75" r="24" fill="#ff529022" stroke="#ff5290" stroke-width="1.2"/>
+        <text x="790" y="70" text-anchor="middle" fill="#ff5290" font-size="10">⚡</text>
+        <text x="790" y="84" text-anchor="middle" fill="#ff5290" font-size="8.5" font-weight="700">Flink</text>
+      </g>
+
+      <!-- ─── STORE LAYER ─── -->
+      <!-- HDFS -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('hdfs')" style="cursor:pointer">
+        <circle cx="140" cy="205" r="32" fill="#7c4dff22" stroke="#7c4dff" stroke-width="1.5"/>
+        <text x="140" y="200" text-anchor="middle" fill="#7c4dff" font-size="13" font-weight="800">🐘</text>
+        <text x="140" y="216" text-anchor="middle" fill="#7c4dff" font-size="9" font-weight="700">HDFS</text>
+      </g>
+      <!-- S3 -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('s3')" style="cursor:pointer">
+        <circle cx="260" cy="205" r="28" fill="#ffab4022" stroke="#ffab40" stroke-width="1.2"/>
+        <text x="260" y="199" text-anchor="middle" fill="#ffab40" font-size="12">☁️</text>
+        <text x="260" y="214" text-anchor="middle" fill="#ffab40" font-size="9" font-weight="700">AWS S3</text>
+      </g>
+      <!-- HBase -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('hbase')" style="cursor:pointer">
+        <circle cx="380" cy="205" r="26" fill="#00e5ff18" stroke="#00e5ff" stroke-width="1.2"/>
+        <text x="380" y="199" text-anchor="middle" fill="#00e5ff" font-size="11">🏛️</text>
+        <text x="380" y="213" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700">HBase</text>
+      </g>
+      <!-- Delta Lake -->
+      <g filter="url(#glow2)" onclick="showGalaxyTip('delta')" style="cursor:pointer">
+        <circle cx="510" cy="205" r="34" fill="#00e5ff22" stroke="#00e5ff" stroke-width="2"/>
+        <text x="510" y="199" text-anchor="middle" fill="#00e5ff" font-size="14" font-weight="900">Δ</text>
+        <text x="510" y="215" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700">Delta Lake</text>
+      </g>
+      <!-- Cassandra -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('cassandra')" style="cursor:pointer">
+        <circle cx="650" cy="205" r="26" fill="#ff529022" stroke="#ff5290" stroke-width="1.2"/>
+        <text x="650" y="199" text-anchor="middle" fill="#ff5290" font-size="11">👁️</text>
+        <text x="650" y="213" text-anchor="middle" fill="#ff5290" font-size="9" font-weight="700">Cassandra</text>
+      </g>
+      <!-- Iceberg -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('iceberg')" style="cursor:pointer">
+        <circle cx="790" cy="205" r="24" fill="#00e67622" stroke="#00e676" stroke-width="1.2"/>
+        <text x="790" y="199" text-anchor="middle" fill="#00e676" font-size="11">🧊</text>
+        <text x="790" y="213" text-anchor="middle" fill="#00e676" font-size="9" font-weight="700">Iceberg</text>
+      </g>
+
+      <!-- ─── PROCESS LAYER ─── -->
+      <!-- Spark -->
+      <g filter="url(#glow2)" onclick="showGalaxyTip('spark')" style="cursor:pointer">
+        <circle cx="200" cy="335" r="38" fill="#ffab4022" stroke="#ffab40" stroke-width="2"/>
+        <text x="200" y="328" text-anchor="middle" fill="#ffab40" font-size="16" font-weight="900">⚡</text>
+        <text x="200" y="346" text-anchor="middle" fill="#ffab40" font-size="10" font-weight="700">Apache Spark</text>
+      </g>
+      <!-- Hive -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('hive')" style="cursor:pointer">
+        <circle cx="360" cy="335" r="28" fill="#ffab4018" stroke="#ffab40" stroke-width="1.3"/>
+        <text x="360" y="329" text-anchor="middle" fill="#ffab40" font-size="13">🐝</text>
+        <text x="360" y="344" text-anchor="middle" fill="#ffab40" font-size="9" font-weight="700">Hive</text>
+      </g>
+      <!-- Presto -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('presto')" style="cursor:pointer">
+        <circle cx="480" cy="335" r="26" fill="#7c4dff22" stroke="#7c4dff" stroke-width="1.2"/>
+        <text x="480" y="329" text-anchor="middle" fill="#7c4dff" font-size="11">🔍</text>
+        <text x="480" y="343" text-anchor="middle" fill="#7c4dff" font-size="9" font-weight="700">Presto</text>
+      </g>
+      <!-- dbt -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('dbt')" style="cursor:pointer">
+        <circle cx="600" cy="335" r="24" fill="#00e67622" stroke="#00e676" stroke-width="1.2"/>
+        <text x="600" y="329" text-anchor="middle" fill="#00e676" font-size="11">🔧</text>
+        <text x="600" y="343" text-anchor="middle" fill="#00e676" font-size="9" font-weight="700">dbt</text>
+      </g>
+      <!-- Airflow -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('airflow')" style="cursor:pointer">
+        <circle cx="730" cy="335" r="28" fill="#00e5ff18" stroke="#00e5ff" stroke-width="1.3"/>
+        <text x="730" y="329" text-anchor="middle" fill="#00e5ff" font-size="13">🌬️</text>
+        <text x="730" y="344" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700">Airflow</text>
+      </g>
+
+      <!-- ─── SERVE LAYER ─── -->
+      <!-- Superset -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('superset')" style="cursor:pointer">
+        <circle cx="160" cy="465" r="28" fill="#00e5ff22" stroke="#00e5ff" stroke-width="1.3"/>
+        <text x="160" y="459" text-anchor="middle" fill="#00e5ff" font-size="13">📊</text>
+        <text x="160" y="474" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700">Superset</text>
+      </g>
+      <!-- Tableau -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('tableau')" style="cursor:pointer">
+        <circle cx="290" cy="465" r="26" fill="#7c4dff22" stroke="#7c4dff" stroke-width="1.2"/>
+        <text x="290" y="459" text-anchor="middle" fill="#7c4dff" font-size="11">📈</text>
+        <text x="290" y="473" text-anchor="middle" fill="#7c4dff" font-size="9" font-weight="700">Tableau</text>
+      </g>
+      <!-- Snowflake -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('snowflake')" style="cursor:pointer">
+        <circle cx="430" cy="465" r="30" fill="#00e5ff22" stroke="#00e5ff" stroke-width="1.5"/>
+        <text x="430" y="459" text-anchor="middle" fill="#00e5ff" font-size="13">❄️</text>
+        <text x="430" y="474" text-anchor="middle" fill="#00e5ff" font-size="9" font-weight="700">Snowflake</text>
+      </g>
+      <!-- BigQuery -->
+      <g filter="url(#glow)" onclick="showGalaxyTip('bigquery')" style="cursor:pointer">
+        <circle cx="570" cy="465" r="28" fill="#ffab4022" stroke="#ffab40" stroke-width="1.3"/>
+        <text x="570" y="459" text-anchor="middle" fill="#ffab40" font-size="13">🔎</text>
+        <text x="570" y="474" text-anchor="middle" fill="#ffab40" font-size="9" font-weight="700">BigQuery</text>
+      </g>
+      <!-- Databricks -->
+      <g filter="url(#glow2)" onclick="showGalaxyTip('databricks')" style="cursor:pointer">
+        <circle cx="720" cy="465" r="34" fill="#ff529022" stroke="#ff5290" stroke-width="2"/>
+        <text x="720" y="459" text-anchor="middle" fill="#ff5290" font-size="15">🧱</text>
+        <text x="720" y="475" text-anchor="middle" fill="#ff5290" font-size="10" font-weight="700">Databricks</text>
+      </g>
+
+      <!-- Title -->
+      <text x="450" y="18" text-anchor="middle" fill="#00e5ff" font-size="12" font-weight="700" opacity="0.6">Click any tool to learn more ↓</text>
+    </svg>
+  </div>
+
+  <!-- Galaxy Info Panel -->
+  <div class="pipe-info-box" id="galaxyTip">
+    <h4>🗺️ Big Data Ecosystem Map</h4>
+    <p>Click any tool in the map above to see details about it — what it does, who uses it, and where it fits in the stack.</p>
+  </div>
+
+  <div class="divider" style="margin:3rem 0;"></div>
+
+  <!-- ── RESOURCE TABS ── -->
+  <p class="section-title" id="resources">Learning Resources</p>
+  <p class="section-subtitle">Curated videos, courses, books & podcasts to go deep</p>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'tab-video')">🎬 Videos</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-courses')">💻 Courses</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-books')">📚 Books</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-podcasts')">🎧 Podcasts</button>
+    <button class="tab-btn" onclick="switchTab(this,'tab-sandbox')">🧪 Sandbox</button>
+  </div>
+
+  <!-- Videos -->
+  <div class="tab-panel active" id="tab-video">
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Big Data in 5 Minutes — Simplilearn</div>
+        <div class="rc-desc">Fast-paced overview of Hadoop, Spark, and the Big Data ecosystem. Perfect starting point.</div>
+        <a class="rc-link" href="https://www.youtube.com/watch?v=bAyrObl7TYE" target="_blank">→ Watch on YouTube</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Hadoop Full Course — edureka!</div>
+        <div class="rc-desc">7-hour deep dive into HDFS, MapReduce, YARN, Hive, Pig, HBase, and Spark.</div>
+        <a class="rc-link" href="https://www.youtube.com/watch?v=1vbXmCrkT3Y" target="_blank">→ Watch on YouTube</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Apache Spark Tutorial — edureka!</div>
+        <div class="rc-desc">Comprehensive Spark tutorial covering RDDs, DataFrames, Streaming, MLlib, and GraphX.</div>
+        <a class="rc-link" href="https://www.youtube.com/watch?v=F8pyaR4uQ2g" target="_blank">→ Watch on YouTube</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Ken Jee — Data Engineering Roadmap</div>
+        <div class="rc-desc">Practical career advice from a data science veteran. What to learn and in what order.</div>
+        <a class="rc-link" href="https://www.youtube.com/@KenJee_ds" target="_blank">→ Ken Jee Channel</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Alex The Analyst — SQL & Data Tools</div>
+        <div class="rc-desc">Beginner-friendly tutorials on SQL, Python, Power BI — essential data foundations.</div>
+        <a class="rc-link" href="https://www.youtube.com/@AlexTheAnalyst" target="_blank">→ Alex The Analyst Channel</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎬</span>
+      <div class="rc-body">
+        <div class="rc-title">Kafka in 100 Seconds — Fireship</div>
+        <div class="rc-desc">Brilliant quick explainer of Kafka's publish-subscribe model and when to use it.</div>
+        <a class="rc-link" href="https://www.youtube.com/watch?v=uvb00oaa3k8" target="_blank">→ Watch on YouTube</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Courses -->
+  <div class="tab-panel" id="tab-courses">
+    <div class="resource-card">
+      <span class="rc-icon">💻</span>
+      <div class="rc-body">
+        <div class="rc-title">IBM Data Engineering Professional — Coursera</div>
+        <div class="rc-desc">16-course program covering SQL, NoSQL, Big Data, Spark, ETL, Kafka, and Airflow. Industry-recognized certificate.</div>
+        <a class="rc-link" href="https://www.coursera.org/professional-certificates/ibm-data-engineer" target="_blank">→ coursera.org</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">💻</span>
+      <div class="rc-body">
+        <div class="rc-title">Big Data Fundamentals with Hadoop & Spark — DataCamp</div>
+        <div class="rc-desc">Hands-on course with real PySpark exercises in a browser-based environment. No install needed.</div>
+        <a class="rc-link" href="https://www.datacamp.com/courses/big-data-fundamentals-with-pyspark" target="_blank">→ datacamp.com</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">💻</span>
+      <div class="rc-body">
+        <div class="rc-title">Apache Spark with Python — Udemy (Frank Kane)</div>
+        <div class="rc-desc">Best-selling Spark/PySpark course. Covers DataFrames, Spark SQL, Streaming, and ML with Amazon EMR labs.</div>
+        <a class="rc-link" href="https://www.udemy.com/course/apache-spark-with-python-big-data-with-pyspark-and-spark/" target="_blank">→ udemy.com</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">💻</span>
+      <div class="rc-body">
+        <div class="rc-title">Data Engineering Zoomcamp — DataTalks.Club</div>
+        <div class="rc-desc">Free 10-week bootcamp: containerization, workflow orchestration, data warehousing, Spark, and Kafka.</div>
+        <a class="rc-link" href="https://github.com/DataTalksClub/data-engineering-zoomcamp" target="_blank">→ GitHub (Free)</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">💻</span>
+      <div class="rc-body">
+        <div class="rc-title">Fundamentals of Data Engineering — O'Reilly</div>
+        <div class="rc-desc">Comprehensive course matching the landmark 2022 book by Joe Reis & Matt Housley.</div>
+        <a class="rc-link" href="https://www.oreilly.com" target="_blank">→ oreilly.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Books -->
+  <div class="tab-panel" id="tab-books">
+    <div class="resource-card">
+      <span class="rc-icon">📚</span>
+      <div class="rc-body">
+        <div class="rc-title">Hadoop: The Definitive Guide — Tom White</div>
+        <div class="rc-desc">The canonical Hadoop reference. Covers HDFS, MapReduce, YARN, HBase, Hive, Pig, and Flume with production patterns.</div>
+        <a class="rc-link" href="https://www.oreilly.com/library/view/hadoop-the-definitive/9781491901687/" target="_blank">→ O'Reilly</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">📚</span>
+      <div class="rc-body">
+        <div class="rc-title">Learning Spark (2nd Ed.) — Damji et al.</div>
+        <div class="rc-desc">Authoritative Spark 3.0 guide from Databricks engineers. RDDs, DataFrames, Structured Streaming, Delta Lake.</div>
+        <a class="rc-link" href="https://www.oreilly.com/library/view/learning-spark-2nd/9781492050032/" target="_blank">→ O'Reilly (Free PDF)</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">📚</span>
+      <div class="rc-body">
+        <div class="rc-title">Designing Data-Intensive Applications — Kleppmann</div>
+        <div class="rc-desc">The bible of distributed systems engineering. Replication, sharding, consensus, stream processing — all explained.</div>
+        <a class="rc-link" href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/" target="_blank">→ O'Reilly</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">📚</span>
+      <div class="rc-body">
+        <div class="rc-title">Fundamentals of Data Engineering — Reis & Housley</div>
+        <div class="rc-desc">Modern DE stack: the data engineering lifecycle, orchestration, storage, transformation, and serving.</div>
+        <a class="rc-link" href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/" target="_blank">→ O'Reilly</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Podcasts -->
+  <div class="tab-panel" id="tab-podcasts">
+    <div class="resource-card">
+      <span class="rc-icon">🎧</span>
+      <div class="rc-body">
+        <div class="rc-title">Data Skeptic</div>
+        <div class="rc-desc">Weekly episodes on data science, ML, and AI — with strong Big Data engineering segments. Over 400 episodes.</div>
+        <a class="rc-link" href="https://dataskeptic.com/" target="_blank">→ dataskeptic.com</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎧</span>
+      <div class="rc-body">
+        <div class="rc-title">Super Data Science — Jon Krohn</div>
+        <div class="rc-desc">Interviews with leading data professionals. Strong coverage of Spark, MLOps, and data platform engineering.</div>
+        <a class="rc-link" href="https://www.superdatascience.com/podcast" target="_blank">→ superdatascience.com</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎧</span>
+      <div class="rc-body">
+        <div class="rc-title">Streaming Audio — Confluent</div>
+        <div class="rc-desc">Deep dives into Apache Kafka, event streaming architectures, and real-time data engineering from the Kafka creators.</div>
+        <a class="rc-link" href="https://developer.confluent.io/podcast/" target="_blank">→ Confluent Podcast</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🎧</span>
+      <div class="rc-body">
+        <div class="rc-title">The Data Engineering Podcast</div>
+        <div class="rc-desc">Tobias Macey interviews engineers building data platforms. Tools, patterns, and war stories from production systems.</div>
+        <a class="rc-link" href="https://www.dataengineeringpodcast.com/" target="_blank">→ dataengineeringpodcast.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sandbox -->
+  <div class="tab-panel" id="tab-sandbox">
+    <div class="resource-card">
+      <span class="rc-icon">🧪</span>
+      <div class="rc-body">
+        <div class="rc-title">Databricks Community Edition</div>
+        <div class="rc-desc">Free Spark cluster in the cloud. Run PySpark notebooks, experiment with Delta Lake, and try MLflow — no credit card.</div>
+        <a class="rc-link" href="https://community.cloud.databricks.com/" target="_blank">→ Sign Up Free</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🧪</span>
+      <div class="rc-body">
+        <div class="rc-title">Google BigQuery Sandbox</div>
+        <div class="rc-desc">Analyze public datasets (Wikipedia, GitHub, NYC Taxi) with SQL — free 1 TB/month quota. No billing setup needed.</div>
+        <a class="rc-link" href="https://console.cloud.google.com/bigquery" target="_blank">→ Google Cloud Console</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🧪</span>
+      <div class="rc-body">
+        <div class="rc-title">Apache Kafka Quickstart</div>
+        <div class="rc-desc">Official Kafka quickstart guide. Run a local broker, create topics, produce, and consume events in under 15 minutes.</div>
+        <a class="rc-link" href="https://kafka.apache.org/quickstart" target="_blank">→ kafka.apache.org</a>
+      </div>
+    </div>
+    <div class="resource-card">
+      <span class="rc-icon">🧪</span>
+      <div class="rc-body">
+        <div class="rc-title">Snowflake Free Trial (30-day)</div>
+        <div class="rc-desc">$400 of free credits to explore Snowflake's cloud data warehouse, Time Travel, and data sharing features.</div>
+        <a class="rc-link" href="https://signup.snowflake.com/" target="_blank">→ signup.snowflake.com</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     LEARNING ROADMAP
+════════════════════════════════════════ -->
+<div id="roadmap">
+<div class="inner">
+  <p class="section-title">Learning Roadmap</p>
+  <p class="section-subtitle">Your 6-phase journey from data curious to cloud-scale engineer</p>
+
+  <div class="roadmap-track">
+
+    <div class="roadmap-phase" style="--rp-from:#0a1e3a;--rp-to:#061428;">
+      <div class="roadmap-phase-header">
+        <span class="phase-num">1</span>
+        <h3>Data Literacy</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>What is Big Data? The 5 V's</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Structured vs. unstructured data</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>File formats: JSON, CSV, Parquet, Avro</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Basic statistics &amp; probability</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Excel / Google Sheets fluency</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Intro to databases &amp; RDBMS</div>
+      </div>
+      <div class="phase-duration">⏱ 4–6 weeks</div>
+    </div>
+
+    <div class="roadmap-phase" style="--rp-from:#0a1a3e;--rp-to:#061228;">
+      <div class="roadmap-phase-header">
+        <span class="phase-num">2</span>
+        <h3>SQL + Python</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>SQL: SELECT, JOIN, GROUP BY, CTEs</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Window functions &amp; subqueries</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Python: pandas, numpy, matplotlib</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Data cleaning &amp; transformation</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Jupyter notebooks workflow</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Git version control basics</div>
+      </div>
+      <div class="phase-duration">⏱ 6–10 weeks</div>
+    </div>
+
+    <div class="roadmap-phase" style="--rp-from:#1a0a3e;--rp-to:#0e0628;">
+      <div class="roadmap-phase-header">
+        <span class="phase-num">3</span>
+        <h3>Hadoop Ecosystem</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>HDFS: blocks, replication, NameNode</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>MapReduce: map, shuffle, reduce</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>YARN resource management</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Hive: HiveQL &amp; metastore</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>HBase: wide-column NoSQL</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Run Hadoop locally via Docker</div>
+      </div>
+      <div class="phase-duration">⏱ 6–8 weeks</div>
+    </div>
+
+    <div class="roadmap-phase" style="--rp-from:#2a1800;--rp-to:#1a0e00;">
+      <div class="roadmap-phase-header" style="background:linear-gradient(135deg,#2a1800,#1a0e00);">
+        <span class="phase-num">4</span>
+        <h3>Apache Spark</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>RDDs, DataFrames, Datasets</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>PySpark &amp; Spark SQL</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Lazy evaluation &amp; DAGs</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Spark Structured Streaming</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>MLlib: classification &amp; clustering</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Databricks Community Edition labs</div>
+      </div>
+      <div class="phase-duration">⏱ 8–12 weeks</div>
+    </div>
+
+    <div class="roadmap-phase" style="--rp-from:#2a0808;--rp-to:#1a0404;">
+      <div class="roadmap-phase-header" style="background:linear-gradient(135deg,#2a0808,#1a0404);">
+        <span class="phase-num">5</span>
+        <h3>Streaming &amp; Pipelines</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>Kafka: topics, partitions, offsets</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Kafka Connect &amp; Kafka Streams</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Apache Flink stateful streaming</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Airflow DAGs &amp; operators</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>dbt for data transformation</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Lambda vs. Kappa architecture</div>
+      </div>
+      <div class="phase-duration">⏱ 8–10 weeks</div>
+    </div>
+
+    <div class="roadmap-phase" style="--rp-from:#00281a;--rp-to:#00180e;">
+      <div class="roadmap-phase-header" style="background:linear-gradient(135deg,#002818,#00180e);">
+        <span class="phase-num">6</span>
+        <h3>Cloud Big Data</h3>
+      </div>
+      <div class="roadmap-items">
+        <div class="roadmap-item"><span class="ri-check">▸</span>AWS EMR / Glue / Kinesis</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Google BigQuery &amp; Dataflow</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Azure HDInsight &amp; Synapse</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Snowflake &amp; Databricks Lakehouse</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>Delta Lake / Apache Iceberg</div>
+        <div class="roadmap-item"><span class="ri-check">▸</span>CI/CD for data pipelines</div>
+      </div>
+      <div class="phase-duration">⏱ 10–16 weeks</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     CHEAT SHEET
+════════════════════════════════════════ -->
+<section id="cheatsheet">
+  <p class="section-title">Big Data Cheat Sheet</p>
+  <p class="section-subtitle">20 essential terms — hover a card and click 📋 to copy the definition</p>
+
+  <div class="cheat-grid">
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'HDFS: Hadoop Distributed File System — splits files into 128 MB blocks replicated 3x across DataNodes.')">📋</button>
+      <div class="cheat-term">HDFS</div>
+      <div class="cheat-def">Hadoop Distributed File System. 128 MB blocks replicated 3× across DataNodes. NameNode holds block map.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'MapReduce: Input → Map (k/v) → Shuffle (group by key) → Reduce (aggregate). Disk-heavy batch processing.')">📋</button>
+      <div class="cheat-term">MapReduce</div>
+      <div class="cheat-def">Batch model: Input→Map(k/v)→Shuffle(group)→Reduce(aggregate). Disk I/O between stages; superseded by Spark.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Spark: in-memory cluster compute, 100x faster than MapReduce. APIs: RDD, DataFrame, Dataset.')">📋</button>
+      <div class="cheat-term">Apache Spark</div>
+      <div class="cheat-def">In-memory cluster compute. 100× faster than MapReduce for ML. APIs: RDD, DataFrame, Dataset. Batch &amp; streaming.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'RDD: Resilient Distributed Dataset — Spark low-level immutable partitioned collection. Lazy eval. Transformations + Actions.')">📋</button>
+      <div class="cheat-term">RDD</div>
+      <div class="cheat-def">Resilient Distributed Dataset. Spark's low-level immutable partitioned abstraction. Lazy evaluation. Transformations + Actions.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Kafka: distributed commit log. Topics→Partitions→Offsets. Replayable, durable, 1M+ msg/sec.')">📋</button>
+      <div class="cheat-term">Apache Kafka</div>
+      <div class="cheat-def">Distributed commit log for event streaming. Topics→Partitions→Offsets. Replayable &amp; durable. 1M+ msg/sec.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data Lake: raw data in any format, schema-on-read, cheap object storage. Risk: data swamp without governance.')">📋</button>
+      <div class="cheat-term">Data Lake</div>
+      <div class="cheat-def">Raw data in any format, schema-on-read. Cheap object storage (S3/ADLS/GCS). Risk: data swamp without governance.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data Warehouse: structured, SQL, schema-on-write analytical store. Snowflake, BigQuery, Redshift, Synapse.')">📋</button>
+      <div class="cheat-term">Data Warehouse</div>
+      <div class="cheat-def">Structured, SQL, schema-on-write analytical store. OLAP workloads. Snowflake, BigQuery, Redshift, Synapse.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Lakehouse: lake storage + warehouse ACID. Delta Lake, Apache Iceberg, Apache Hudi.')">📋</button>
+      <div class="cheat-term">Lakehouse</div>
+      <div class="cheat-def">Lake storage + warehouse ACID features (Delta Lake, Iceberg, Hudi). Schema enforcement, BI support, time travel.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Airflow: workflow orchestration with Python DAGs. Schedules, monitors, retries pipeline tasks.')">📋</button>
+      <div class="cheat-term">Apache Airflow</div>
+      <div class="cheat-def">Python DAG-based orchestration. Schedules, monitors, retries pipeline tasks. 1000+ built-in operators.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'dbt: transform data inside warehouse with SQL SELECT models. Testing, lineage, auto-docs.')">📋</button>
+      <div class="cheat-term">dbt</div>
+      <div class="cheat-def">Transform data inside warehouse using SQL SELECT models. Auto-generates tests, lineage graphs, and documentation.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data scale: KB→MB→GB→TB→PB→EB→ZB. Big Data starts at TB. Global internet ~5 ZB/year.')">📋</button>
+      <div class="cheat-term">Scale: KB → ZB</div>
+      <div class="cheat-def">KB(10³)→MB(10⁶)→GB(10⁹)→TB(10¹²)→PB(10¹⁵)→EB(10¹⁸)→ZB(10²¹). Big Data at TB+. Internet ~5 ZB/yr.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Parquet: columnar format, 3-10x better compression than CSV. Column pruning + predicate pushdown.')">📋</button>
+      <div class="cheat-term">Parquet</div>
+      <div class="cheat-def">Columnar storage format. 3–10× better compression than CSV/JSON. Column pruning &amp; predicate pushdown for fast queries.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Partitioning: divide data by key (date/region) to reduce files scanned. repartition()/coalesce() in Spark.')">📋</button>
+      <div class="cheat-term">Partitioning</div>
+      <div class="cheat-def">Divide data by key (date, region) to reduce files scanned per query. repartition() / coalesce() in Spark.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Lambda Architecture: Batch layer + Speed layer + Serving layer. Complexity led to simpler Kappa architecture.')">📋</button>
+      <div class="cheat-term">Lambda Architecture</div>
+      <div class="cheat-def">Batch layer (full recompute) + Speed layer (real-time) + Serving layer (merged). Complexity → Kappa alternative.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'CAP Theorem: only 2 of 3: Consistency, Availability, Partition Tolerance.')">📋</button>
+      <div class="cheat-term">CAP Theorem</div>
+      <div class="cheat-def">Distributed systems guarantee only 2 of: Consistency (latest write), Availability (always responds), Partition Tolerance.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Delta Lake: ACID on Parquet. Time travel, schema evolution, DML (UPDATE/DELETE) on lake storage.')">📋</button>
+      <div class="cheat-term">Delta Lake</div>
+      <div class="cheat-def">ACID transactions on Parquet files. Time travel (query history), schema evolution, DML on data lake storage.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Shuffle: most expensive Spark op — redistributes data for groupBy/join. Minimize with broadcast joins.')">📋</button>
+      <div class="cheat-term">Shuffle</div>
+      <div class="cheat-def">Most expensive Spark op — redistributes data across partitions (groupBy, join, distinct). Minimize with broadcast joins.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Snowflake: cloud DW with separated storage & compute. Time Travel 90 days. Multi-cloud. VARIANT type.')">📋</button>
+      <div class="cheat-term">Snowflake</div>
+      <div class="cheat-def">Cloud DW with separated storage &amp; compute. Virtual warehouses scale independently. Time Travel 90 days. Multi-cloud.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'ETL vs ELT: ETL transforms before loading; ELT loads raw then transforms inside warehouse. Cloud prefers ELT.')">📋</button>
+      <div class="cheat-term">ETL vs ELT</div>
+      <div class="cheat-def">ETL: transform before loading. ELT: load raw then transform inside warehouse. Cloud DWs make ELT preferred &amp; cheaper.</div>
+    </div>
+    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'YARN: Hadoop cluster resource manager. ResourceManager + NodeManagers. Lets Spark, Hive, MR share a cluster.')">📋</button>
+      <div class="cheat-term">YARN</div>
+      <div class="cheat-def">Yet Another Resource Negotiator — Hadoop cluster manager. ResourceManager + NodeManagers. Spark, Hive, MR share one cluster.</div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">⚡ BigDataLab</div>
+  <p>Visual learning app — pure HTML, CSS, and JavaScript. No frameworks.</p>
+  <p style="margin-top:0.5rem; font-size:0.73rem;">Resources link to official sites &amp; open courses. Happy learning! 🚀</p>
+</footer>
+
+</main>
+
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+/* ── Data Stream Background ─────────────── */
+(function() {
+  const bg = document.getElementById('streamBg');
+  if (!bg) return;
+  for (let i = 0; i < 20; i++) {
+    const col = document.createElement('div');
+    col.className = 'stream-col';
+    col.style.left = (Math.random() * 100) + '%';
+    col.style.height = (Math.random() * 30 + 15) + 'vh';
+    col.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    col.style.animationDelay = (Math.random() * 12) + 's';
+    col.style.width = (Math.random() > 0.7 ? 2 : 1) + 'px';
+    bg.appendChild(col);
+  }
+})();
+
+/* ── Scroll to section ───────────────────── */
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Accordion toggle ────────────────────── */
+function toggleAcc(header) {
+  const item = header.closest('.acc-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Pipeline toggle ─────────────────────── */
+const pipeInfo = {
+  source:   { title:'📡 Data Source',    text:'Raw data ingestion from DBs (JDBC), IoT sensors, web logs, APIs, and files. Can be batch (nightly exports) or continuous (event streams). The origin of all data in the pipeline.' },
+  kafka:    { title:'🌊 Apache Kafka',   text:'Durable, ordered, replayable event bus. Decouples producers and consumers. Handles 1M+ msg/sec. Ensures zero data loss even if downstream systems slow down or restart.' },
+  hdfs:     { title:'🗄️ HDFS / S3',      text:'Raw zone storage. HDFS for on-prem; S3/ADLS/GCS for cloud. Stores every raw event for reprocessing. Cheap, durable, append-only. Foundation of the data lake.' },
+  spark:    { title:'⚡ Apache Spark',   text:'Distributed in-memory processing. Performs ETL, aggregations, joins, and ML. Reads from HDFS/S3, writes enriched data back to storage or the warehouse.' },
+  hive:     { title:'🐝 Hive / DW',      text:'SQL serving layer. Hive on HDFS for on-prem; Snowflake/BigQuery/Redshift for cloud. Stores curated data in Parquet/ORC for BI tools and analysts.' },
+  superset: { title:'📊 Apache Superset','text':'Open-source BI platform. Connects to any SQL source. Drag-and-drop charts, dashboards, SQL Lab. Alerts, RBAC security, 40+ chart types built in.' },
+  airflow:  { title:'🌬️ Apache Airflow', text:'Workflow orchestration via Python DAGs. Schedules tasks, handles retries, sends failure alerts, and provides full audit history of every pipeline run.' }
+};
+
+function togglePipe(btn) {
+  btn.classList.toggle('active');
+  const node = btn.dataset.node;
+  const el = document.getElementById('node-' + node);
+  if (el) el.classList.toggle('active-node');
+  updateArrows();
+  updatePipeInfo();
+}
+
+function updateArrows() {
+  const nodes = ['source','kafka','hdfs','spark','hive','superset'];
+  for (let i = 0; i < nodes.length - 1; i++) {
+    const a = document.getElementById('node-' + nodes[i]);
+    const b = document.getElementById('node-' + nodes[i+1]);
+    const arrow = document.getElementById('arrow-' + (i+1));
+    if (!arrow) continue;
+    const both = a && b && a.classList.contains('active-node') && b.classList.contains('active-node');
+    arrow.classList.toggle('active-arrow', both);
+    const path = arrow.querySelector('path');
+    if (path) path.setAttribute('stroke', both ? '#00e5ff' : '#1a3a5c');
+  }
+}
+
+function updatePipeInfo() {
+  const box = document.getElementById('pipeInfoBox');
+  if (!box) return;
+  const active = Array.from(document.querySelectorAll('.pipe-toggle.active')).map(b => b.dataset.node);
+  if (active.length === 0) {
+    box.innerHTML = '<h4>⚠️ No Components Active</h4><p>Toggle components above to explore different pipeline architectures.</p>';
+    return;
+  }
+  if (active.length === 7) {
+    box.innerHTML = '<h4>⚡ Full Lambda Architecture Active</h4><p>All 7 components enabled: Source → Kafka → HDFS/S3 → Spark → Hive/DW → Superset, with Airflow orchestrating every stage.</p>';
+    return;
+  }
+  const last = active[active.length - 1];
+  const info = pipeInfo[last];
+  if (info) box.innerHTML = `<h4>${info.title}</h4><p>${info.text}</p>`;
+}
+
+/* ── Galaxy/Ecosystem map tips ───────────── */
+const galaxyData = {
+  kafka:      { name:'Apache Kafka',     desc:'Distributed event streaming. 1M+ msg/sec. Born at LinkedIn; used by Netflix, Uber, and 80% of Fortune 100. Replayable, durable pub/sub.' },
+  flume:      { name:'Apache Flume',     desc:'Distributed log aggregation. Collects streaming event data from web servers and apps into HDFS. Now largely replaced by Kafka.' },
+  kinesis:    { name:'AWS Kinesis',      desc:'Managed real-time streaming on AWS. Data Streams, Firehose (→S3/Redshift), and Analytics (SQL on streams). Native AWS integration.' },
+  pubsub:     { name:'Google Pub/Sub',   desc:'Fully managed GCP messaging. Globally scalable, serverless. Backbone of GCP pipelines feeding BigQuery and Dataflow.' },
+  sqoop:      { name:'Apache Sqoop',     desc:'Bulk transfers between Hadoop and relational DBs. Import tables from MySQL/Oracle into HDFS. Mostly superseded by Spark JDBC.' },
+  flink:      { name:'Apache Flink',     desc:'Stateful stream processing with exactly-once semantics. Lower latency than Spark Streaming. Powers real-time analytics at Alibaba &amp; Uber.' },
+  hdfs:       { name:'HDFS',             desc:'Hadoop Distributed File System. 128 MB blocks, 3× replication. NameNode (metadata) + DataNodes (storage). Still core to 70%+ enterprise Hadoop.' },
+  s3:         { name:'AWS S3',           desc:'Object storage foundation of cloud data lakes. 11-nines durability. Lifecycle rules, versioning, Glacier tiering. Works with Athena, EMR, Glue.' },
+  hbase:      { name:'Apache HBase',     desc:'Wide-column NoSQL on HDFS. Billions of rows × millions of columns. ms-level random read/write. Used for time-series, user profiles, serving layers.' },
+  delta:      { name:'Delta Lake',       desc:'ACID transactions on Parquet (by Databricks). Time travel, schema evolution, DML on lake files. Foundation of Databricks Lakehouse.' },
+  cassandra:  { name:'Apache Cassandra', desc:'Peer-to-peer NoSQL, no single point of failure. Linear write scaling. Used by Netflix, Instagram, and Discord for global low-latency workloads.' },
+  iceberg:    { name:'Apache Iceberg',   desc:'Open table format for huge analytic datasets. Hidden partitioning, schema evolution, time travel. Netflix open-sourced it; emerging standard.' },
+  spark:      { name:'Apache Spark',     desc:'Unified analytics engine. In-memory DAG execution. Python/Scala/R/SQL APIs. Spark SQL, Streaming, MLlib, GraphX. 100× faster than MapReduce.' },
+  hive:       { name:'Apache Hive',      desc:'SQL-on-Hadoop. HiveQL compiles to Tez jobs. Metastore is the shared schema registry used by Spark, Presto, Flink, and Glue.' },
+  presto:     { name:'Presto / Trino',   desc:'Distributed SQL query engine. Federated queries across HDFS, S3, Cassandra, MySQL in one statement. Sub-second on petabytes. Born at Facebook.' },
+  dbt:        { name:'dbt',              desc:'Analytics engineering tool. Transform raw data with SQL SELECT models. Auto-docs, lineage DAGs, data quality tests. Works in any cloud DW.' },
+  airflow:    { name:'Apache Airflow',   desc:'Python DAG orchestration. 1000+ built-in operators. Rich UI, alerting, SLAs, plugin ecosystem. Defacto orchestrator for data engineering.' },
+  superset:   { name:'Apache Superset',  desc:'Open-source BI platform. 40+ chart types, drag-and-drop dashboards, SQL Lab IDE. Connects to any SQL DB. Alternative to Tableau for OSS stacks.' },
+  tableau:    { name:'Tableau',          desc:'Industry-leading visual analytics. Drag-and-drop, Tableau Prep for cleaning. 100+ data source connectors. Most-used BI tool in Fortune 500.' },
+  snowflake:  { name:'Snowflake',        desc:'Multi-cloud DW on AWS/Azure/GCP. Separated storage &amp; compute. Zero-copy cloning, data sharing, 90-day Time Travel. $3B+ ARR.' },
+  bigquery:   { name:'Google BigQuery',  desc:'Serverless, petabyte-scale DW. Columnar storage, automatic optimization. Pay-per-query. Public datasets, geospatial, BQML built in.' },
+  databricks: { name:'Databricks',       desc:'Unified Data &amp; AI Platform: managed Spark + Delta Lake + MLflow + Unity Catalog. Founded by Spark creators. Lakehouse pioneer. $43B valuation.' }
+};
+
+function showGalaxyTip(tool) {
+  const box = document.getElementById('galaxyTip');
+  const d = galaxyData[tool];
+  if (!box || !d) return;
+  box.innerHTML = `<h4>🔍 ${d.name}</h4><p>${d.desc}</p>`;
+  box.style.borderColor = '#00e5ff';
+  setTimeout(() => { if (box) box.style.borderColor = ''; }, 2000);
+}
+
+/* ── Tab switching ───────────────────────── */
+function switchTab(btn, panelId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('active');
+}
+
+/* ── Copy cheat card ─────────────────────── */
+function copyCheat(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }).catch(() => {/* silent fail for non-https */});
+}
+
+/* ── Stat counter animation ──────────────── */
+function animateStats() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    const isFloat = target % 1 !== 0;
+    let current = 0;
+    const step = target / 60;
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(interval); }
+      el.textContent = isFloat ? current.toFixed(1) : Math.round(current);
+    }, 16);
+  });
+}
+
+/* ── Scroll reveal + nav highlight ──────── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.card, .cheat-card, .resource-card, .roadmap-phase, .compare-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  revealObserver.observe(el);
+});
+
+const revealObserver2 = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'none';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.card, .cheat-card, .resource-card, .roadmap-phase, .compare-card').forEach(el => {
+  revealObserver2.observe(el);
+});
+
+/* Active nav link on scroll */
+const navSections = ['hero','concepts','pipeline','ecosystem','resources','roadmap','cheatsheet'];
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 80;
+  navSections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.offsetTop, bot = top + el.offsetHeight;
+    if (scrollY >= top && scrollY < bot) {
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+  if (scrollY > 500 && !window._statsRun) {
+    window._statsRun = true;
+    animateStats();
+  }
+}, { passive: true });
+
+/* ── Initial pipeline state ─────────────── */
+updateArrows();
+</script>
+
+<!-- ═══════════ ADDED SECTIONS CSS ═══════════ -->
+<style>
+/* Paper Cards */
+.papers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;margin-top:2rem}
+.paper-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:border-color .3s,box-shadow .3s}
+.paper-card:hover{border-color:var(--teal-dim);box-shadow:0 0 16px var(--teal-glow)}
+.paper-year{font-size:.72rem;color:var(--teal);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
+.paper-title{font-size:.95rem;font-weight:700;color:var(--cyan);margin-bottom:.35rem;line-height:1.3}
+.paper-authors{font-size:.78rem;color:var(--text-dim);font-style:italic;margin-bottom:.6rem}
+.paper-venue{display:inline-block;font-size:.68rem;background:rgba(0,229,255,.1);color:var(--teal);border:1px solid rgba(0,229,255,.25);border-radius:4px;padding:.18rem .5rem;margin-bottom:.7rem}
+.paper-desc{font-size:.83rem;line-height:1.65;color:var(--text)}
+.paper-impact{margin-top:.7rem;font-size:.78rem;color:var(--green);line-height:1.4}
+/* Architecture Comparison */
+.arch-compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+@media(max-width:700px){.arch-compare{grid-template-columns:1fr}}
+.arch-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+.arch-card.lambda{border-top:3px solid var(--purple)}
+.arch-card.kappa{border-top:3px solid var(--teal)}
+.arch-name-h{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}
+.arch-author{font-size:.76rem;color:var(--text-dim);font-style:italic;margin-bottom:1rem}
+.arch-layers{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.arch-layer{display:flex;align-items:flex-start;gap:.7rem;background:rgba(255,255,255,.03);border-radius:8px;padding:.55rem .8rem;font-size:.82rem}
+.arch-layer-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.73rem;flex-shrink:0;font-weight:700;margin-top:2px}
+.lyr-batch{background:rgba(124,77,255,.25);color:var(--purple)}
+.lyr-speed{background:rgba(255,171,64,.25);color:var(--amber)}
+.lyr-serve{background:rgba(0,229,255,.15);color:var(--teal)}
+.lyr-stream{background:rgba(0,230,118,.15);color:var(--green)}
+.arch-verdict{font-size:.8rem;color:var(--text-dim);line-height:1.5;border-top:1px solid var(--border);padding-top:.7rem}
+/* CAP Theorem */
+.cap-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-top:2rem;text-align:center}
+.cap-heading{font-size:1.1rem;font-weight:700;color:var(--teal);margin-bottom:.25rem}
+.cap-byline{font-size:.82rem;color:var(--text-dim);margin-bottom:1.25rem}
+.cap-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.25rem}
+@media(max-width:620px){.cap-zones{grid-template-columns:1fr}}
+.cap-zone{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:left}
+.cap-zone-name{font-weight:700;font-size:.88rem;margin-bottom:.35rem}
+.cap-zone-desc{font-size:.78rem;color:var(--text-dim);line-height:1.5}
+.cap-zone-eg{font-size:.73rem;margin-top:.35rem}
+/* Key Terms */
+.terms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1rem;margin-top:2rem}
+.term-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .25s}
+.term-card:hover{border-color:var(--teal-dim)}
+.term-name{font-size:.88rem;font-weight:700;color:var(--cyan);margin-bottom:.15rem}
+.term-src{font-size:.68rem;color:var(--teal-dim);font-style:italic;margin-bottom:.45rem}
+.term-def{font-size:.82rem;color:var(--text);line-height:1.6}
+/* Knowledge Check */
+.quiz-wrap{max-width:780px;margin:2rem auto 0}
+.quiz-scorebar{display:flex;align-items:center;justify-content:space-between;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:.7rem 1.25rem;margin-bottom:1.5rem}
+.quiz-score-lbl{font-size:.82rem;color:var(--text-dim)}
+.quiz-score-val{font-size:1.25rem;font-weight:700;color:var(--teal)}
+.quiz-reset{background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;padding:.3rem .8rem;cursor:pointer;font-size:.78rem;transition:all .2s;font-family:var(--font)}
+.quiz-reset:hover{border-color:var(--teal);color:var(--teal)}
+.quiz-q{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin-bottom:.9rem}
+.q-num{font-size:.7rem;color:var(--teal);font-weight:700;letter-spacing:.08em;margin-bottom:.35rem}
+.q-text{font-size:.92rem;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:.9rem}
+.q-opts{display:flex;flex-direction:column;gap:.45rem}
+.q-opt{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:.6rem .95rem;cursor:pointer;font-size:.86rem;color:var(--text);text-align:left;width:100%;transition:all .2s;font-family:var(--font)}
+.q-opt:not([disabled]):hover{border-color:var(--teal-dim);background:rgba(0,229,255,.06)}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(0,230,118,.1)!important;color:var(--green)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(255,82,82,.1)!important;color:var(--red)!important}
+.q-explain{display:none;margin-top:.7rem;font-size:.8rem;color:var(--text-dim);line-height:1.6;background:rgba(255,255,255,.03);border-radius:6px;padding:.7rem .9rem}
+.q-explain.show{display:block}
+.q-explain strong{color:var(--teal)}
+.q-explain code{color:var(--amber);background:rgba(255,171,64,.1);border-radius:3px;padding:.1rem .3rem;font-size:.78rem}
+</style>
+
+<!-- ═══════════ SECTION A: FOUNDATIONAL PAPERS & ARCHITECTURE ═══════════ -->
+<section id="foundations">
+  <p class="section-title">Foundational Papers &amp; Architecture</p>
+  <p class="section-subtitle">The landmark research and architectural patterns that built the Big Data world</p>
+
+  <div class="papers-grid">
+    <div class="paper-card">
+      <div class="paper-year">2003</div>
+      <div class="paper-title">The Google File System (GFS)</div>
+      <div class="paper-authors">Ghemawat, Gobioff &amp; Leung &mdash; Google</div>
+      <span class="paper-venue">SOSP 2003</span>
+      <p class="paper-desc">A scalable distributed file system for large data-intensive applications on commodity hardware. Files split into fixed <strong>64 MB chunks</strong>, each replicated 3x across DataNodes. A single master holds namespace metadata; clients talk directly to chunkservers for I/O. Designed for append-dominant, sequential-read workloads &mdash; not random writes.</p>
+      <p class="paper-impact">&#9889; Directly inspired HDFS &mdash; the storage backbone of Apache Hadoop.</p>
+    </div>
+    <div class="paper-card">
+      <div class="paper-year">2004</div>
+      <div class="paper-title">MapReduce: Simplified Data Processing on Large Clusters</div>
+      <div class="paper-authors">Jeffrey Dean &amp; Sanjay Ghemawat &mdash; Google</div>
+      <span class="paper-venue">OSDI 2004</span>
+      <p class="paper-desc">"MapReduce is a programming model and an associated implementation for processing and generating large datasets. Users specify a <em>map</em> function that processes a key/value pair to generate a set of intermediate key/value pairs, and a <em>reduce</em> function that merges all intermediate values associated with the same intermediate key." The runtime auto-parallelises across thousands of machines and handles node failures transparently.</p>
+      <p class="paper-impact">&#9889; &gt;100,000 MapReduce jobs/day at Google within 4 years. Foundation of Apache Hadoop.</p>
+    </div>
+    <div class="paper-card">
+      <div class="paper-year">2006</div>
+      <div class="paper-title">Bigtable: A Distributed Storage System for Structured Data</div>
+      <div class="paper-authors">Chang, Dean, Ghemawat, Hsieh et al. &mdash; Google</div>
+      <span class="paper-venue">OSDI 2006 &mdash; Best Paper Award</span>
+      <p class="paper-desc">Manages petabytes of structured data across thousands of commodity servers. Data model: a sparse, distributed, persistent multi-dimensional sorted map indexed by (row key x column key x timestamp &rarr; value). Served Google Web Indexing, Google Earth, and Google Finance &mdash; wildly different latency and scale requirements, one unified system.</p>
+      <p class="paper-impact">&#9889; Directly inspired Apache HBase, Cassandra &amp; the entire NoSQL movement.</p>
+    </div>
+    <div class="paper-card">
+      <div class="paper-year">2006</div>
+      <div class="paper-title">Apache Hadoop</div>
+      <div class="paper-authors">Doug Cutting &amp; Mike Cafarella &mdash; Yahoo! / Apache Foundation</div>
+      <span class="paper-venue">Open-Source Implementation of GFS + MapReduce</span>
+      <p class="paper-desc">Doug Cutting implemented the GFS and MapReduce papers in open-source Java to power the Nutch web crawler, naming it after his son's toy elephant. HDFS is a direct open-source implementation of the GFS architecture. Became the de-facto Big Data platform and spawned the entire ecosystem: Hive, HBase, Pig, and Apache Spark.</p>
+      <p class="paper-impact">&#9889; The most influential open-source project in data engineering history.</p>
+    </div>
+  </div>
+
+  <p class="section-title" style="margin-top:3rem;font-size:1.25rem;">Lambda vs. Kappa Architecture</p>
+  <p class="section-subtitle">Two competing patterns for combining batch and real-time data processing</p>
+  <div class="arch-compare">
+    <div class="arch-card lambda">
+      <div class="arch-name-h" style="color:var(--purple)">&lambda; Lambda Architecture</div>
+      <div class="arch-author">Nathan Marz, 2011 &mdash; Creator of Apache Storm</div>
+      <div class="arch-layers">
+        <div class="arch-layer">
+          <div class="arch-layer-icon lyr-batch">B</div>
+          <div><strong>Batch Layer</strong> &mdash; Immutable master dataset; recomputes views over full history (Hadoop / Spark)</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon lyr-speed">S</div>
+          <div><strong>Speed Layer</strong> &mdash; Fills the batch gap with low-latency real-time views (Flink / Storm)</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon lyr-serve">V</div>
+          <div><strong>Serving Layer</strong> &mdash; Merges batch + speed views to answer queries (Druid / HBase)</div>
+        </div>
+      </div>
+      <div class="arch-verdict">&#10003; Highly fault-tolerant, historically accurate &nbsp;|&nbsp; &#10007; Two codebases to maintain, complex result reconciliation</div>
+    </div>
+    <div class="arch-card kappa">
+      <div class="arch-name-h" style="color:var(--teal)">&kappa; Kappa Architecture</div>
+      <div class="arch-author">Jay Kreps, 2014 &mdash; Co-creator of Apache Kafka</div>
+      <div class="arch-layers">
+        <div class="arch-layer">
+          <div class="arch-layer-icon lyr-stream">&rarr;</div>
+          <div><strong>Stream Layer only</strong> &mdash; All data treated as a stream; reprocess history by replaying Kafka log from offset 0</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon lyr-serve">V</div>
+          <div><strong>Serving Layer</strong> &mdash; Single unified view from stream output (Kafka + Flink + query store)</div>
+        </div>
+      </div>
+      <div class="arch-verdict">&#10003; Single codebase, simpler ops, stream-first &nbsp;|&nbsp; &#10007; Reprocessing huge history is expensive; deep historical analytics harder</div>
+    </div>
+  </div>
+
+  <p class="section-title" style="margin-top:3rem;font-size:1.25rem;">The CAP Theorem</p>
+  <p class="section-subtitle">Eric Brewer's conjecture (PODC 2000) &mdash; formally proven by Gilbert &amp; Lynch, MIT (2002)</p>
+  <div class="cap-wrapper">
+    <p class="cap-heading">A distributed system can guarantee at most 2 of these 3 properties simultaneously</p>
+    <p class="cap-byline">"In the presence of a network partition, you must choose between consistency and availability." &mdash; Brewer, 2012 clarification</p>
+    <svg viewBox="0 0 420 295" xmlns="http://www.w3.org/2000/svg" style="max-width:420px;width:100%;margin:0 auto;display:block">
+      <defs><filter id="cGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <polygon points="210,28 24,272 396,272" fill="rgba(0,229,255,.04)" stroke="rgba(0,229,255,.2)" stroke-width="1.5"/>
+      <line x1="210" y1="28"  x2="24"  y2="272" stroke="rgba(124,77,255,.45)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="210" y1="28"  x2="396" y2="272" stroke="rgba(0,230,118,.45)"  stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="24"  y1="272" x2="396" y2="272" stroke="rgba(255,171,64,.45)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="210" cy="28"  r="24" fill="#091428" stroke="#00e5ff" stroke-width="2" filter="url(#cGlow)"/>
+      <circle cx="24"  cy="272" r="24" fill="#091428" stroke="#7c4dff" stroke-width="2" filter="url(#cGlow)"/>
+      <circle cx="396" cy="272" r="24" fill="#091428" stroke="#00e676" stroke-width="2" filter="url(#cGlow)"/>
+      <text x="210" y="24"  text-anchor="middle" fill="#00e5ff" font-size="8"  font-family="Segoe UI,sans-serif" font-weight="700">Consistency</text>
+      <text x="210" y="34"  text-anchor="middle" fill="#00e5ff" font-size="11" font-family="Segoe UI,sans-serif" font-weight="700">C</text>
+      <text x="24"  y="268" text-anchor="middle" fill="#7c4dff" font-size="8"  font-family="Segoe UI,sans-serif" font-weight="700">Availability</text>
+      <text x="24"  y="279" text-anchor="middle" fill="#7c4dff" font-size="11" font-family="Segoe UI,sans-serif" font-weight="700">A</text>
+      <text x="396" y="263" text-anchor="middle" fill="#00e676" font-size="8"  font-family="Segoe UI,sans-serif" font-weight="700">Partition</text>
+      <text x="396" y="272" text-anchor="middle" fill="#00e676" font-size="8"  font-family="Segoe UI,sans-serif" font-weight="700">Tolerance</text>
+      <text x="396" y="283" text-anchor="middle" fill="#00e676" font-size="11" font-family="Segoe UI,sans-serif" font-weight="700">P</text>
+      <text x="113" y="161" text-anchor="middle" fill="rgba(255,255,255,.6)"  font-size="12" font-weight="700" font-family="Segoe UI,sans-serif">CA</text>
+      <text x="113" y="175" text-anchor="middle" fill="rgba(255,255,255,.32)" font-size="8.5" font-family="Segoe UI,sans-serif">PostgreSQL, MySQL</text>
+      <text x="307" y="161" text-anchor="middle" fill="rgba(255,255,255,.6)"  font-size="12" font-weight="700" font-family="Segoe UI,sans-serif">CP</text>
+      <text x="307" y="175" text-anchor="middle" fill="rgba(255,255,255,.32)" font-size="8.5" font-family="Segoe UI,sans-serif">HBase, Zookeeper</text>
+      <text x="210" y="242" text-anchor="middle" fill="rgba(255,255,255,.6)"  font-size="12" font-weight="700" font-family="Segoe UI,sans-serif">AP</text>
+      <text x="210" y="255" text-anchor="middle" fill="rgba(255,255,255,.32)" font-size="8.5" font-family="Segoe UI,sans-serif">Cassandra, DynamoDB</text>
+    </svg>
+    <div class="cap-zones">
+      <div class="cap-zone">
+        <div class="cap-zone-name" style="color:var(--teal)">CA &mdash; Consistency + Availability</div>
+        <div class="cap-zone-desc">Every read sees the latest write; every request gets a response. Cannot tolerate network partitions &mdash; must be a single-node or tightly coupled cluster.</div>
+        <div class="cap-zone-eg" style="color:var(--teal-dim)">Examples: PostgreSQL, MySQL, traditional RDBMS</div>
+      </div>
+      <div class="cap-zone">
+        <div class="cap-zone-name" style="color:var(--purple)">CP &mdash; Consistency + Partition Tolerance</div>
+        <div class="cap-zone-desc">Returns correct, up-to-date data even across partitions; may block or refuse requests to maintain consistency. Availability is sacrificed.</div>
+        <div class="cap-zone-eg" style="color:var(--purple-dim)">Examples: HBase, Zookeeper, MongoDB (default config)</div>
+      </div>
+      <div class="cap-zone">
+        <div class="cap-zone-name" style="color:var(--green)">AP &mdash; Availability + Partition Tolerance</div>
+        <div class="cap-zone-desc">Always responds and survives partitions, but data may be temporarily stale. Nodes converge to the same state over time &mdash; eventual consistency.</div>
+        <div class="cap-zone-eg" style="color:var(--green)">Examples: Cassandra, DynamoDB, CouchDB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION B: KEY TERMS ═══════════ -->
+<section id="key-terms">
+  <p class="section-title">Key Terms &mdash; Primary Source Definitions</p>
+  <p class="section-subtitle">Authoritative definitions drawn directly from foundational papers, documentation, and original research</p>
+  <div class="terms-grid">
+
+    <div class="term-card">
+      <div class="term-name">MapReduce</div>
+      <div class="term-src">&mdash; Dean &amp; Ghemawat, Google Research, OSDI 2004</div>
+      <div class="term-def">"A programming model and an associated implementation for processing and generating large datasets. Users specify a <em>map</em> function that processes a key/value pair to generate a set of intermediate key/value pairs, and a <em>reduce</em> function that merges all intermediate values associated with the same intermediate key." The runtime auto-parallelises and handles machine failures transparently.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">HDFS (Hadoop Distributed File System)</div>
+      <div class="term-src">&mdash; Apache Hadoop Documentation</div>
+      <div class="term-def">An open-source implementation of the Google File System architecture. Files are split into large blocks (default 128 MB) distributed across DataNodes. A NameNode holds all filesystem metadata. Designed for sequential, high-throughput reads of very large files on commodity hardware &mdash; not random-access I/O.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Commodity Hardware</div>
+      <div class="term-src">&mdash; GFS &amp; MapReduce papers, Google Research, 2003&ndash;2004</div>
+      <div class="term-def">Standard, inexpensive off-the-shelf servers &mdash; as opposed to specialised, high-cost machines. Both GFS and MapReduce were explicitly designed with the assumption that component failures are the norm, not the exception, enabling massive horizontal scaling at low unit cost.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Data Locality</div>
+      <div class="term-src">&mdash; MapReduce paper, Dean &amp; Ghemawat, 2004</div>
+      <div class="term-def">The principle of moving computation to the data rather than moving data to the computation. The MapReduce runtime schedules map tasks on the node &mdash; or a nearby rack node &mdash; that already holds the relevant HDFS block, dramatically reducing network I/O and improving throughput on large datasets.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Fault Tolerance</div>
+      <div class="term-src">&mdash; GFS, MapReduce &amp; Bigtable papers, Google, 2003&ndash;2006</div>
+      <div class="term-def">The ability of a system to continue operating correctly when one or more components fail. In Big Data systems this is achieved through data replication (typically 3x), automatic task re-execution on failure, and lineage-based recovery (Spark RDDs) rather than expensive checkpointing.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">RDD (Resilient Distributed Dataset)</div>
+      <div class="term-src">&mdash; Zaharia et al., "Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing", NSDI 2012</div>
+      <div class="term-def">An immutable, fault-tolerant, partitioned collection of elements that can be operated on in parallel. RDDs are "resilient" because they maintain a lineage graph (DAG) of transformations, enabling any lost partition to be recomputed from the original source rather than requiring physical data replication.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">DAG Execution</div>
+      <div class="term-src">&mdash; Apache Spark Documentation</div>
+      <div class="term-def">In Spark, all transformations on RDDs or DataFrames are <em>lazy</em> &mdash; recorded as nodes in a Directed Acyclic Graph (DAG) but not executed until an action is called. The DAG scheduler then optimises the plan, coalescing stages to minimise expensive data shuffles and enabling intelligent fault recovery.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Stream Processing</div>
+      <div class="term-src">&mdash; Apache Kafka &amp; Apache Flink Documentation</div>
+      <div class="term-def">Processing data records continuously as they arrive, in near-real-time, rather than accumulating them into a batch first. Each event is processed individually or in micro-batches with millisecond-to-second latency. Used for fraud detection, live dashboards, real-time recommendations, and IoT sensor analytics.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Batch Processing</div>
+      <div class="term-src">&mdash; MapReduce paradigm, Dean &amp; Ghemawat, 2004</div>
+      <div class="term-def">Processing a bounded, pre-accumulated dataset in a single job run &mdash; typically on a schedule (hourly, daily). Optimised for high throughput over low latency. Classic examples: nightly ETL pipelines, end-of-day financial aggregations, weekly model retraining on historical data.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Schema-on-Read</div>
+      <div class="term-src">&mdash; Data Lake architectural pattern</div>
+      <div class="term-def">Data is stored in its raw, native format without enforcing a schema at write time. The schema is applied only when the data is read or queried. Allows ingesting any data immediately with no up-front modelling; the trade-off is that schema errors are discovered later, at query time.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Schema-on-Write</div>
+      <div class="term-src">&mdash; Traditional Data Warehouse pattern</div>
+      <div class="term-def">A schema is defined and enforced before data is written to the store. Guarantees data quality and structure at the point of ingestion. Used in traditional relational databases and cloud data warehouses (Snowflake, Redshift). Slower ingestion pipeline but faster, more reliable queries.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Data Lakehouse</div>
+      <div class="term-src">&mdash; Armbrust et al., Databricks / Delta Lake, 2021</div>
+      <div class="term-def">A data management architecture combining the low-cost, flexible storage of a Data Lake with the ACID transaction guarantees and governance of a Data Warehouse. Implemented through open table formats &mdash; Delta Lake, Apache Iceberg, Apache Hudi &mdash; that add transactional metadata layers over cloud object storage.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">ACID Transactions (Data Context)</div>
+      <div class="term-src">&mdash; Delta Lake / Databricks Documentation</div>
+      <div class="term-def"><strong>Atomicity</strong>: a transaction fully completes or fully fails &mdash; no partial writes. <strong>Consistency</strong>: data remains in a valid state. <strong>Isolation</strong>: concurrent transactions do not interfere. <strong>Durability</strong>: committed data survives failures. Brought to data lakes via Delta Lake and Iceberg to prevent corrupt tables during concurrent streaming writes.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">ETL vs. ELT</div>
+      <div class="term-src">&mdash; Modern Data Stack architectural pattern</div>
+      <div class="term-def"><strong>ETL</strong> (Extract-Transform-Load): data is cleaned and transformed before loading into the destination &mdash; classic in on-premise warehouses with limited target compute. <strong>ELT</strong> (Extract-Load-Transform): raw data lands first, then transformed in-place using the warehouse's own compute &mdash; preferred in cloud-native stacks (Snowflake, BigQuery, dbt).</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Partitioning</div>
+      <div class="term-src">&mdash; Apache Hive, Spark &amp; distributed database documentation</div>
+      <div class="term-def">Dividing a large dataset into smaller segments based on one or more column values (e.g., date, region). Queries targeting a specific partition read only that segment &mdash; known as partition pruning. In HDFS/Hive, partitions are physical sub-directories on disk. Reduces I/O dramatically on large datasets.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Sharding</div>
+      <div class="term-src">&mdash; Distributed database systems (MongoDB, Cassandra)</div>
+      <div class="term-def">Horizontal partitioning of data across multiple independent database nodes, where each shard holds a distinct subset of rows. Unlike replication (which copies data for redundancy), sharding distributes data to increase write throughput and total storage capacity. Each shard operates as an independent database instance.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Replication Factor</div>
+      <div class="term-src">&mdash; GFS paper, Ghemawat et al., SOSP 2003; HDFS Documentation</div>
+      <div class="term-def">The number of copies of each data block maintained across different nodes. GFS and HDFS default to 3x: one primary copy plus two replicas, ideally placed on different racks for rack-fault tolerance. Higher replication increases fault tolerance and read throughput at the cost of storage overhead.</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">Compaction</div>
+      <div class="term-src">&mdash; Apache HBase, Cassandra &amp; Delta Lake documentation</div>
+      <div class="term-def">The background process of merging many small files or SSTables into fewer, larger ones to improve read performance, reclaim space from deleted and updated records, and reduce metadata overhead. In Delta Lake, compaction (OPTIMIZE + ZORDER) co-locates related Parquet data for faster query performance via data skipping.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ SECTION C: KNOWLEDGE CHECK ═══════════ -->
+<section id="knowledge-check">
+  <p class="section-title">Knowledge Check</p>
+  <p class="section-subtitle">8 questions from foundational papers and primary sources &mdash; click an answer to see the explanation</p>
+
+  <div class="quiz-wrap">
+    <div class="quiz-scorebar">
+      <span class="quiz-score-lbl">Score</span>
+      <span class="quiz-score-val" id="quizScore">0 / 8</span>
+      <button class="quiz-reset" onclick="resetQuiz()">&#8635; Reset</button>
+    </div>
+
+    <div class="quiz-q" id="q1">
+      <div class="q-num">QUESTION 1 OF 8</div>
+      <div class="q-text">Google's MapReduce paper was presented at which venue and in which year?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(1,this,false)">SIGMOD 2005</button>
+        <button class="q-opt" onclick="answerQ(1,this,true)">OSDI 2004</button>
+        <button class="q-opt" onclick="answerQ(1,this,false)">VLDB 2004</button>
+        <button class="q-opt" onclick="answerQ(1,this,false)">NeurIPS 2003</button>
+      </div>
+      <div class="q-explain" id="exp1"><strong>Correct: OSDI 2004.</strong> "MapReduce: Simplified Data Processing on Large Clusters" by Jeffrey Dean and Sanjay Ghemawat was presented at the 6th Symposium on Operating Systems Design and Implementation (OSDI), San Francisco, 2004. It is one of the most cited papers in computer science history.</div>
+    </div>
+
+    <div class="quiz-q" id="q2">
+      <div class="q-num">QUESTION 2 OF 8</div>
+      <div class="q-text">What does RDD stand for, and who introduced the concept?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(2,this,false)">Replicated Distributed Data &mdash; Jeffrey Dean, 2004</button>
+        <button class="q-opt" onclick="answerQ(2,this,true)">Resilient Distributed Dataset &mdash; Matei Zaharia et al., 2012</button>
+        <button class="q-opt" onclick="answerQ(2,this,false)">Redundant Data Distribution &mdash; Doug Cutting, 2006</button>
+        <button class="q-opt" onclick="answerQ(2,this,false)">Real-time Distributed DataFrame &mdash; Databricks, 2016</button>
+      </div>
+      <div class="q-explain" id="exp2"><strong>Correct: Resilient Distributed Dataset, Matei Zaharia et al., NSDI 2012.</strong> RDDs were introduced in "Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing." An RDD is an immutable, fault-tolerant collection partitioned across nodes, recoverable via its lineage graph (DAG) without physical data replication.</div>
+    </div>
+
+    <div class="quiz-q" id="q3">
+      <div class="q-num">QUESTION 3 OF 8</div>
+      <div class="q-text">The CAP theorem states a distributed system can simultaneously guarantee at most how many of its three properties?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(3,this,false)">All three &mdash; with the right configuration</button>
+        <button class="q-opt" onclick="answerQ(3,this,true)">At most two of the three</button>
+        <button class="q-opt" onclick="answerQ(3,this,false)">Exactly one &mdash; you always sacrifice two</button>
+        <button class="q-opt" onclick="answerQ(3,this,false)">It depends on the replication factor</button>
+      </div>
+      <div class="q-explain" id="exp3"><strong>Correct: At most two.</strong> Eric Brewer conjectured this at PODC 2000; Gilbert &amp; Lynch (MIT) formally proved it in 2002. In practice, network partitions are unavoidable, so designers choose between CP (Consistency + Partition tolerance) and AP (Availability + Partition tolerance).</div>
+    </div>
+
+    <div class="quiz-q" id="q4">
+      <div class="q-num">QUESTION 4 OF 8</div>
+      <div class="q-text">Lambda Architecture was proposed by whom, and in what year?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(4,this,false)">Jay Kreps &mdash; 2014</button>
+        <button class="q-opt" onclick="answerQ(4,this,false)">Doug Cutting &mdash; 2006</button>
+        <button class="q-opt" onclick="answerQ(4,this,true)">Nathan Marz &mdash; 2011</button>
+        <button class="q-opt" onclick="answerQ(4,this,false)">Martin Kleppmann &mdash; 2015</button>
+      </div>
+      <div class="q-explain" id="exp4"><strong>Correct: Nathan Marz, 2011.</strong> Nathan Marz (creator of Apache Storm) proposed Lambda Architecture in a 2011 blog post. It combines a Batch Layer (full historical recomputation), a Speed Layer (real-time gap-filling), and a Serving Layer (merged query interface).</div>
+    </div>
+
+    <div class="quiz-q" id="q5">
+      <div class="q-num">QUESTION 5 OF 8</div>
+      <div class="q-text">In the original Google File System paper (SOSP 2003), what is the default chunk size used to store files?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(5,this,false)">4 MB</button>
+        <button class="q-opt" onclick="answerQ(5,this,false)">16 MB</button>
+        <button class="q-opt" onclick="answerQ(5,this,true)">64 MB</button>
+        <button class="q-opt" onclick="answerQ(5,this,false)">256 MB</button>
+      </div>
+      <div class="q-explain" id="exp5"><strong>Correct: 64 MB.</strong> Ghemawat et al. specified 64 MB chunks &mdash; far larger than typical file system blocks. This reduces NameNode metadata overhead and supports the sequential, large-file read patterns of Google's workloads. Apache HDFS adopted 128 MB as its default block size.</div>
+    </div>
+
+    <div class="quiz-q" id="q6">
+      <div class="q-num">QUESTION 6 OF 8</div>
+      <div class="q-text">Kappa Architecture (Kreps, 2014) simplifies Lambda by replacing which two layers with a single streaming layer?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(6,this,false)">Serving Layer and Speed Layer</button>
+        <button class="q-opt" onclick="answerQ(6,this,true)">Batch Layer and Speed Layer</button>
+        <button class="q-opt" onclick="answerQ(6,this,false)">Serving Layer and Batch Layer</button>
+        <button class="q-opt" onclick="answerQ(6,this,false)">Storage Layer and Compute Layer</button>
+      </div>
+      <div class="q-explain" id="exp6"><strong>Correct: Batch Layer and Speed Layer.</strong> In "Questioning the Lambda Architecture" (2014), Kreps argued that maintaining two separate processing codebases is unnecessarily complex. Kappa replaces both with a single stream layer backed by a replayable Kafka log &mdash; reprocess history by replaying from offset 0.</div>
+    </div>
+
+    <div class="quiz-q" id="q7">
+      <div class="q-num">QUESTION 7 OF 8</div>
+      <div class="q-text">The Google Bigtable paper received what distinction at OSDI 2006, and which open-source systems did it directly inspire?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(7,this,false)">Turing Award &mdash; inspired PostgreSQL and MySQL</button>
+        <button class="q-opt" onclick="answerQ(7,this,true)">Best Paper Award at OSDI 2006 &mdash; directly inspired Apache HBase and Cassandra</button>
+        <button class="q-opt" onclick="answerQ(7,this,false)">ACM Systems Award &mdash; inspired Redis and Memcached</button>
+        <button class="q-opt" onclick="answerQ(7,this,false)">SIGOPS Hall of Fame (at publication) &mdash; inspired Apache Spark</button>
+      </div>
+      <div class="q-explain" id="exp7"><strong>Correct: Best Paper Award at OSDI 2006.</strong> Bigtable (Chang, Dean, Ghemawat et al.) won Best Paper at OSDI '06 and later the SIGOPS Hall of Fame Award in 2016. Its sparse, multi-dimensional sorted map model directly inspired Apache HBase (an open-source Bigtable clone) and strongly influenced Cassandra's column-family design.</div>
+    </div>
+
+    <div class="quiz-q" id="q8">
+      <div class="q-num">QUESTION 8 OF 8</div>
+      <div class="q-text">In Apache Spark's execution model, what does "lazy evaluation" mean?</div>
+      <div class="q-opts">
+        <button class="q-opt" onclick="answerQ(8,this,false)">Spark delays loading data into memory until disk space is available</button>
+        <button class="q-opt" onclick="answerQ(8,this,false)">Worker nodes only process data when explicitly prompted by the driver</button>
+        <button class="q-opt" onclick="answerQ(8,this,true)">Transformations are recorded as a DAG but not executed until an action is triggered</button>
+        <button class="q-opt" onclick="answerQ(8,this,false)">Spark schedules jobs during off-peak hours to reduce cluster costs</button>
+      </div>
+      <div class="q-explain" id="exp8"><strong>Correct: Transformations build a DAG; execution waits for an action.</strong> Operations like <code>filter()</code> and <code>map()</code> are <em>transformations</em> &mdash; they add nodes to the DAG but compute nothing immediately. Only <em>actions</em> like <code>count()</code> or <code>collect()</code> trigger the DAG scheduler to optimise and execute the full pipeline.</div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/* Quiz Logic */
+let quizCorrect = 0;
+function answerQ(qNum, btn, isCorrect) {
+  var qEl = document.getElementById('q' + qNum);
+  if (qEl.dataset.answered) return;
+  qEl.dataset.answered = '1';
+  qEl.querySelectorAll('.q-opt').forEach(function(b){ b.disabled = true; });
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    qEl.querySelectorAll('.q-opt').forEach(function(b){
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(',true)') !== -1) b.classList.add('correct');
+    });
+  }
+  document.getElementById('exp' + qNum).classList.add('show');
+  if (isCorrect) quizCorrect++;
+  document.getElementById('quizScore').textContent = quizCorrect + ' / 8';
+}
+function resetQuiz() {
+  quizCorrect = 0;
+  document.getElementById('quizScore').textContent = '0 / 8';
+  for (var i = 1; i <= 8; i++) {
+    var qEl = document.getElementById('q' + i);
+    delete qEl.dataset.answered;
+    qEl.querySelectorAll('.q-opt').forEach(function(b){ b.disabled = false; b.classList.remove('correct','wrong'); });
+    document.getElementById('exp' + i).classList.remove('show');
+  }
+}
+/* Extend nav scroll highlight to new sections */
+(function(){
+  var newIds = ['foundations','key-terms','knowledge-check'];
+  window.addEventListener('scroll', function(){
+    var scrollY = window.scrollY + 80;
+    newIds.forEach(function(id){
+      var el = document.getElementById(id);
+      if (!el) return;
+      var top = el.offsetTop, bot = top + el.offsetHeight;
+      if (scrollY >= top && scrollY < bot) {
+        document.querySelectorAll('.nav-links a').forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { passive: true });
+  /* Reveal animation for new section cards */
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.paper-card,.term-card,.arch-card,.cap-wrapper,.quiz-q').forEach(function(el){
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    obs.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>

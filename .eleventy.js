@@ -18,7 +18,7 @@ module.exports = function(eleventyConfig) {
   
   // Copy GSAP files from root js directory to js/gsap/ to avoid main.js conflict
   eleventyConfig.addPassthroughCopy({ "js/gsap": "js/gsap" }); // Copy only GSAP directory
-  eleventyConfig.addPassthroughCopy({ "src/public/worlds": "worlds" }); // Serve world apps at /worlds/*.html
+  eleventyConfig.addPassthroughCopy({ "worlds": "worlds" }); // Serve world apps at /worlds/*.html
   
   // Tell Eleventy to watch these files for changes and trigger rebuilds
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory

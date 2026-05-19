@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive av world exploring shaders">
+    <meta property="og:title" content="Shaders World — WAVGEN">
+    <meta property="og:description" content="Immersive av world exploring shaders">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#7C3AED">
+    <link rel="canonical" href="https://wavgen.ca/av/shaders_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaders World</title>
+<style>
+:root {
+  --bg:     #020008;
+  --uv:     #8800FF;
+  --uv-lt:  #AA44FF;
+  --uv-br:  #CC88FF;
+  --cyan:   #00FFFF;
+  --text:   #C8A8FF;
+  --text-dim:#4A2A80;
+  --card-bg:#06001A;
+  --border: rgba(136,0,255,0.25);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; line-height: 1.6; overflow-x: hidden; }
+a { color: var(--cyan); text-decoration: none; }
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(2,0,8,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.5rem; flex-wrap: wrap;
+}
+nav a { color: var(--text-dim); font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 3px; transition: all 0.2s; }
+nav a:hover { color: var(--uv-lt); background: rgba(136,0,255,0.1); text-decoration: none; }
+.nav-title { color: var(--uv-lt); font-weight: 700; font-size: 0.88rem; margin-right: 0.5rem; }
+#hero { position: relative; width: 100%; height: 440px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+#hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-text { position: relative; z-index: 2; text-align: center; pointer-events: none; }
+.hero-text h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 900; background: linear-gradient(135deg,var(--cyan) 0%,var(--uv-lt) 50%,var(--uv) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -2px; }
+.hero-text p { margin-top: 0.75rem; color: var(--text-dim); font-size: 1rem; }
+section { max-width: 1100px; margin: 0 auto; padding: 4rem 1.5rem; }
+section h2 { font-size: clamp(1.3rem,3vw,1.9rem); font-weight: 800; color: var(--uv-lt); margin-bottom: 1rem; border-left: 4px solid var(--uv); padding-left: 0.75rem; }
+section p { color: var(--text-dim); margin-bottom: 1rem; font-family: 'Segoe UI',sans-serif; font-size: 0.92rem; }
+.divider { width: 100%; height: 1px; background: var(--border); }
+.canvas-wrap { position: relative; width: 100%; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1.5rem 0; }
+.canvas-wrap canvas { display: block; width: 100%; }
+.canvas-label { position: absolute; bottom: 8px; right: 12px; font-size: 0.68rem; color: var(--text-dim); pointer-events: none; }
+.hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.visible { opacity: 1; transform: translateY(0); }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 1rem; margin-top: 1.5rem; }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; transition: border-color 0.2s,transform 0.2s; }
+.card:hover { border-color: var(--uv-lt); transform: translateY(-3px); }
+.card h3 { color: var(--uv-br); font-size: 0.88rem; margin-bottom: 0.4rem; }
+.card p { font-size: 0.8rem; color: var(--text-dim); margin: 0; font-family: 'Segoe UI',sans-serif; }
+.researcher-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+.researcher-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem 1rem; text-align: center; transition: border-color 0.25s,transform 0.25s; }
+.researcher-card:hover { border-color: var(--cyan); transform: translateY(-4px); }
+.researcher-avatar { width: 64px; height: 64px; border-radius: 8px; margin: 0 auto 0.8rem; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid var(--border); }
+.researcher-card h3 { font-size: 0.88rem; color: var(--text); margin-bottom: 0.2rem; }
+.researcher-card .role { font-size: 0.72rem; color: var(--cyan); margin-bottom: 0.4rem; }
+.researcher-card p { font-size: 0.76rem; color: var(--text-dim); margin: 0; font-family: 'Segoe UI',sans-serif; }
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+.glossary-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.85rem 1rem; }
+.glossary-item dt { color: var(--uv-lt); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.2rem; }
+.glossary-item dd { color: var(--text-dim); font-size: 0.78rem; margin: 0; font-family: 'Segoe UI',sans-serif; }
+.slider-row { display: flex; align-items: center; gap: 0.75rem; margin: 0.5rem 0; }
+.slider-row label { color: var(--text-dim); font-size: 0.78rem; width: 160px; flex-shrink: 0; }
+.slider-row input[type=range] { flex: 1; accent-color: var(--uv); }
+.slider-row span { color: var(--uv-lt); font-size: 0.78rem; width: 60px; text-align: right; }
+</style>
+</head>
+<body class="domain-av">
+<nav>
+  <span class="nav-title">◈ SHADERS</span>
+  <a href="#fragment">Fragment</a>
+  <a href="#playground">Playground</a>
+  <a href="#mat">MAT Systems</a>
+  <a href="#modulation">Modulation</a>
+  <a href="#performance">Performance</a>
+  <a href="#av">AV Sync</a>
+  <a href="#artists">Artists</a>
+  <a href="#glossary">Glossary</a>
+</nav>
+
+<div id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-text">
+    <h1>SHADERS</h1>
+    <p>// Every pixel — a parallel computation in the GPU's visual nervous system</p>
+  </div>
+</div>
+<div class="divider"></div>
+
+<section id="fragment" class="hidden">
+  <h2>// Fragment Shader Pipeline</h2>
+  <p>A fragment shader runs once for every pixel. It receives interpolated vertex attributes and outputs a final RGBA color. The entire visible universe of real-time graphics passes through this program, running millions of times per second in parallel on thousands of GPU cores.</p>
+  <div class="canvas-wrap">
+    <canvas id="fragCanvas" height="240"></canvas>
+    <div class="canvas-label">UV field visualization — move cursor</div>
+  </div>
+  <div class="slider-row"><label>// distortion</label><input type="range" id="distSlider" min="0" max="100" value="40"><span id="distVal">0.40</span></div>
+  <div class="slider-row"><label>// color_shift</label><input type="range" id="colorShiftSlider" min="0" max="100" value="50"><span id="colorShiftVal">0.50</span></div>
+  <div class="card-grid">
+    <div class="card"><h3>vUV / varyings</h3><p>Interpolated texture coordinates [0,1]² across the triangle surface. The primary navigation tool in fragment shader space.</p></div>
+    <div class="card"><h3>texture2D / texture</h3><p>Samples a texture at UV coordinates. Hardware bilinear filter, mipmap selection, and anisotropic filter all happen inside this single call.</p></div>
+    <div class="card"><h3>gl_FragColor</h3><p>Output vec4(r,g,b,a) in [0,1]. All the work of the shader converges to this one value written to the framebuffer.</p></div>
+    <div class="card"><h3>discard</h3><p>Kills the fragment entirely, making it transparent. Used for cutout materials without blending overhead.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="playground" class="hidden">
+  <h2>// Shader Playground</h2>
+  <p>Live WebGL preview driven by GLSL fragment logic — every parameter change propagates to the GPU immediately. This is how Shadertoy, GLSL Sandbox, and TouchDesigner's GLSL TOP work.</p>
+  <div class="canvas-wrap">
+    <canvas id="playgroundCanvas" height="300"></canvas>
+    <div class="canvas-label">live GLSL — move cursor</div>
+  </div>
+  <div class="slider-row"><label>// warp_amount</label><input type="range" id="warpSlider" min="0" max="100" value="50"><span id="warpVal">0.50</span></div>
+  <div class="slider-row"><label>// speed</label><input type="range" id="speedSlider" min="5" max="200" value="60"><span id="speedVal">0.60</span></div>
+  <div class="slider-row"><label>// palette_shift</label><input type="range" id="paletteSlider" min="0" max="360" value="270"><span id="paletteVal">270°</span></div>
+</section>
+<div class="divider"></div>
+
+<section id="mat" class="hidden">
+  <h2>// MAT Systems (TouchDesigner)</h2>
+  <p>In TouchDesigner, MAT operators wrap GLSL shaders in a node interface. GLSL MAT provides full vertex + fragment control. PBR MAT handles physically-based rendering. Custom GLSL MATs can sample TOP textures and read CHOP data via uniform exports.</p>
+  <div class="canvas-wrap">
+    <canvas id="matCanvas" height="240"></canvas>
+    <div class="canvas-label">PBR sphere — metal/roughness</div>
+  </div>
+  <div class="slider-row"><label>// metalness</label><input type="range" id="metalSlider" min="0" max="100" value="30"><span id="metalVal">0.30</span></div>
+  <div class="slider-row"><label>// roughness</label><input type="range" id="roughnessSlider" min="0" max="100" value="50"><span id="roughnessVal">0.50</span></div>
+  <div class="card-grid">
+    <div class="card"><h3>GLSL MAT</h3><p>Full programmable vertex + fragment pipeline. Uniforms set from Parameters CHOP or Python expressions. Direct GPU access.</p></div>
+    <div class="card"><h3>PBR MAT</h3><p>Physically Based Rendering material with Cook-Torrance BRDF, GGX distribution, and IBL support.</p></div>
+    <div class="card"><h3>Phong MAT</h3><p>Classic Blinn-Phong shading. Faster than PBR, good for stylized renders where physical accuracy isn't required.</p></div>
+    <div class="card"><h3>Point Sprite MAT</h3><p>Renders SOP points as billboard quads with custom GLSL texture — creates GPU particle systems with per-particle attributes.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="modulation" class="hidden">
+  <h2>// Realtime Shader Modulation</h2>
+  <p>Shaders become instruments when their uniforms are driven by live data: audio amplitude, MIDI CC values, OSC messages. The uniform interface is the connection between external signal and GPU computation.</p>
+  <div class="canvas-wrap">
+    <canvas id="modulationCanvas" height="260"></canvas>
+    <div class="canvas-label">audio amplitude → shader uniform → visual</div>
+  </div>
+  <div class="slider-row"><label>// bass_amplitude</label><input type="range" id="modBassSlider" min="0" max="100" value="60"><span id="modBassVal">0.60</span></div>
+  <div class="slider-row"><label>// treble_amplitude</label><input type="range" id="modTrebSlider" min="0" max="100" value="40"><span id="modTrebVal">0.40</span></div>
+  <div class="card-grid">
+    <div class="card"><h3>Uniform Injection</h3><p><code>uniform float u_bass</code> receives values set from JS or via Export in TD. Updated every frame before draw call.</p></div>
+    <div class="card"><h3>Spectrum as Texture</h3><p>1D FFT spectrum uploaded as texture each frame. Fragment shader reads via texture2D. Full frequency data available per pixel.</p></div>
+    <div class="card"><h3>CHOP → Export</h3><p>In TD: right-click any MAT parameter → Export → select CHOP channel. Drives shader uniform automatically every cook.</p></div>
+    <div class="card"><h3>Delta Time Uniform</h3><p>Passing u_dt enables frame-rate independent animation. Critical for consistent behavior at 30, 60, and 120fps.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="performance" class="hidden">
+  <h2>// Shader Performance</h2>
+  <p>At 1080p60, the GPU must shade 124 million pixels per second per pass. Profiling with NSight, RenderDoc, or Chrome DevTools WebGL reveals whether shaders are ALU-bound, texture-bound, or bandwidth-bound.</p>
+  <div class="canvas-wrap">
+    <canvas id="perfCanvas" height="220"></canvas>
+    <div class="canvas-label">GPU shader cost model</div>
+  </div>
+  <div class="slider-row"><label>// shader_complexity</label><input type="range" id="shaderComplexSlider" min="10" max="100" value="50"><span id="shaderComplexVal">50</span></div>
+  <div class="card-grid">
+    <div class="card"><h3>ALU Bound</h3><p>Too many math operations. Bake expensive lookups into textures, use half-precision where possible, precompute constants.</p></div>
+    <div class="card"><h3>Texture Bound</h3><p>Too many samples or poor cache locality. Use mip-maps, power-of-two textures, avoid random-access patterns.</p></div>
+    <div class="card"><h3>Bandwidth Bound</h3><p>Too much memory read/write. Reduce render target count, use R11G11B10F instead of RGBA32F, enable framebuffer compression.</p></div>
+    <div class="card"><h3>Warp Divergence</h3><p>if/else in fragment shaders serializes warp execution. Prefer mix(a, b, step()) over conditional branching where coherence is low.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="av" class="hidden">
+  <h2>// Audiovisual Shader Synchronization</h2>
+  <p>In live AV performance, shader uniforms become the score. Beat events trigger state changes. Frequency bands modulate spatial parameters. The shader receives music as data and renders visual interpretation frame by frame.</p>
+  <div class="canvas-wrap">
+    <canvas id="avCanvas" height="260"></canvas>
+    <div class="canvas-label">beat-synchronized shader — click to trigger</div>
+  </div>
+  <div class="slider-row"><label>// bpm</label><input type="range" id="bpmSlider" min="60" max="180" value="120"><span id="bpmVal">120 BPM</span></div>
+  <div class="card-grid">
+    <div class="card"><h3>Beat Detection</h3><p>Onset detection from AudioSpectrum CHOP energy derivatives. Ableton Link syncs beat grid across machines. MIDI clock for hardware.</p></div>
+    <div class="card"><h3>Phase Accumulator</h3><p>Accumulate phase += bpm/60 * dt. fract(phase) gives [0,1) within the current beat — drives periodic shader animations.</p></div>
+    <div class="card"><h3>Envelope Shaping</h3><p>Beat triggers ADSR envelope. Exponential decay: value *= exp(-dt * rate). LagFilter pattern applies directly.</p></div>
+    <div class="card"><h3>Spectral Mapping</h3><p>Map FFT bins to shader parameters spatially — bass drives low-frequency oscillation, treble drives high-frequency detail.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="artists" class="hidden">
+  <h2>// Artists &amp; Practitioners</h2>
+  <div class="researcher-grid">
+    <div class="researcher-card"><div class="researcher-avatar" style="background:rgba(136,0,255,0.2)">

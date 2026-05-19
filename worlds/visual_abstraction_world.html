@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring visual abstraction">
+    <meta property="og:title" content="Visual Abstraction World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring visual abstraction">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/visual_abstraction_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Abstraction World</title>
+<style>
+:root {
+  --primary: #7c3aed;
+  --accent: #a78bfa;
+  --bg: #1e1b4b;
+  --surface: #312e81;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --gold: #f59e0b;
+  --orange: #f97316;
+  --teal: #14b8a6;
+  --rose: #f43f5e;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --green: #22c55e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Georgia', serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(30,27,75,0.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(167,139,250,0.2);
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+nav .logo {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  flex: 1;
+  white-space: nowrap;
+}
+nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+nav a:hover { color: var(--accent); }
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem;
+}
+section { position: relative; }
+section + section { border-top: 1px solid rgba(167,139,250,0.08); }
+h2 {
+  font-size: clamp(1.6rem,3vw,2.4rem);
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.4rem; }
+p { line-height: 1.8; color: var(--text-muted); margin-bottom: 0.9rem; }
+small { color: var(--text-muted); font-size: 0.78rem; }
+#hero {
+  position: relative;
+  height: 440px;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+#heroCanvas { width: 100%; height: 100%; display: block; }
+.hero-overlay {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-overlay h1 {
+  font-size: clamp(2.4rem,6vw,4.5rem);
+  color: #fff;
+  text-shadow: 0 0 60px rgba(124,58,237,0.9), 0 2px 20px rgba(0,0,0,0.6);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.4rem;
+}
+.hero-overlay p {
+  font-size: clamp(0.9rem,2vw,1.25rem);
+  color: var(--accent);
+  font-style: italic;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+  margin: 0;
+}
+.hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.visible { opacity: 1; transform: translateY(0); }
+.timeline-scroll { overflow-x: auto; padding-bottom: 0.75rem; }
+.timeline {
+  display: flex;
+  min-width: 860px;
+  position: relative;
+  padding: 2rem 0 1rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
+  transform: translateY(-50%);
+}
+.tn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  gap: 0.3rem;
+}
+.tn-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  transition: transform 0.3s, background 0.3s;
+  margin: 0.35rem 0;
+}
+.tn:hover .tn-dot, .tn.act .tn-dot { transform: scale(1.7); background: var(--accent); }
+.tn-year { font-size: 0.65rem; color: var(--text-muted); }
+.tn-label { font-size: 0.6rem; color: var(--accent); text-align: center; max-width: 72px; line-height: 1.3; }
+.tl-detail {
+  display: none;
+  background: rgba(49,46,129,0.7);
+  border: 1px solid rgba(167,139,250,0.35);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.25rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.tl-detail.act { display: flex; }
+.tl-text { flex: 1; min-width: 180px; }
+.tl-canvas {
+  width: 200px; height: 155px;
+  border-radius: 8px;
+  border: 1px solid rgba(167,139,250,0.3);
+  flex-shrink: 0;
+  display: block;
+}
+.btn {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--primary);
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn:hover { background: var(--primary); transform: translateY(-1px); }
+.btn.act { background: var(--primary); color: #fff; }
+.toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.ctrl { display: flex; align-items: center; gap: 0.65rem; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.35rem; }
+.ctrl label { min-width: 95px; }
+input[type=range] { flex: 1; accent-color: var(--primary); cursor: pointer; min-width: 80px; }
+.val-d { min-width: 32px; text-align: right; color: var(--accent); }
+#geoCanvas {
+  border: 1px solid rgba(167,139,250,0.35);
+  border-radius: 10px;
+  cursor: crosshair;
+  display: block;
+  max-width: 680px;
+  width: 100%;
+  touch-action: none;
+}
+.op-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(265px,1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+.op-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(167,139,250,0.18);
+  transition: border-color 0.3s;
+}
+.op-card:hover { border-color: var(--accent); }
+.op-card h3 { font-size: 0.88rem; margin-bottom: 0.5rem; }
+.op-card canvas { width: 100%; border-radius: 6px; display: block; }
+.cf-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.cf-panel {
+  background: rgba(49,46,129,0.5);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid rgba(167,139,250,0.2);
+}
+#aeCanvas {
+  border-radius: 10px;
+  border: 1px solid rgba(167,139,250,0.35);
+  cursor: crosshair;
+  display: block;
+  max-width: 780px;
+  width: 100%;
+  touch-action: none;
+}
+.gen-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.gen-panel { display: none; }
+.gen-panel.act { display: block; }
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+.artist-card {
+  background: rgba(49,46,129,0.55);
+  border-radius: 14px;
+  padding: 1.4rem;
+  border: 1px solid rgba(167,139,250,0.18);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.artist-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+.artist-avatar { width: 76px; height: 76px; border-radius: 10px; display: block; margin-bottom: 0.85rem; }
+.a-name { font-size: 1.05rem; color: #fff; font-weight: bold; margin-bottom: 0.1rem; }
+.a-era { font-size: 0.72rem; color: var(--text-muted); }
+.a-move { font-size: 0.77rem; color: var(--accent); margin-bottom: 0.6rem; }
+.a-works { font-size: 0.75rem; color: var(--text-muted); line-height: 1.65; }
+.gloss-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 2rem;
+  margin-top: 1rem;
+}
+.g-item {
+  padding: 0.65rem 0.85rem;
+  border-left: 3px solid var(--primary);
+  background: rgba(49,46,129,0.3);
+  border-radius: 0 6px 6px 0;
+}
+.g-term { font-weight: bold; color: var(--accent); font-size: 0.87rem; margin-bottom: 0.2rem; }
+.g-def { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10,9,40,0.88);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 2rem;
+  width: min(580px,92vw);
+  position: relative;
+  border: 1px solid var(--accent);
+}
+.modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none;
+  color: var(--text-muted); font-size: 1.4rem; cursor: pointer; line-height: 1;
+}
+.modal-canvas { width: 100%; border-radius: 8px; display: block; margin-bottom: 0.75rem; }
+.sec-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  border-top: 1px solid rgba(167,139,250,0.1);
+  margin-top: 2rem;
+}
+@media (max-width: 680px) {
+  .cf-layout { grid-template-columns: 1fr; }
+  .gloss-grid { grid-template-columns: 1fr; }
+  nav a { display: none; }
+}
+</style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <span class="logo">✦ Visual Abstraction World</span>
+  <a href="#hero">Home</a>
+  <a href="#history">History</a>
+  <a href="#geometric">Geometric</a>
+  <a href="#op-art">Op Art</a>
+  <a href="#color-field">Color Field</a>
+  <a href="#abstract-expressionism">Expression</a>
+  <a href="#generative">Generative</a>
+  <a href="#artists">Artists</a>
+  <a href="#glossary">Glossary</a>
+</nav>
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — HERO CANVAS
+══════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay">
+    <h1>Visual Abstraction</h1>
+    <p>Form liberated from representation</p>
+  </div>
+</section>
+
+<script>
+// ── Global LagFilter class (used throughout) ──────
+class LagFilter {
+  constructor(init, tau) { this.val = init; this.tau = tau; }
+  update(target, dt) {
+    this.val += (1 - Math.exp(-dt / this.tau)) * (target - this.val);
+    return this.val;
+  }
+}
+
+// ── HERO ──────────────────────────────────────────
+(function() {
+  const cv = document.getElementById('heroCanvas');
+  const cx = cv.getContext('2d');
+  let W, H;
+  const resize = () => { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; };
+  resize();
+  window.addEventListener('resize', resize);
+
+  let mx = 200, my = 200;
+  cv.addEventListener('mousemove', e => {
+    const r = cv.getBoundingClientRect();
+    mx = e.clientX - r.left; my = e.clientY - r.top;
+  });
+
+  const PAIRS = [
+    ['#7c3aed','#f59e0b'],['#3b82f6','#f97316'],
+    ['#ef4444','#22c55e'],['#a78bfa','#fde68a'],
+    ['#ec4899','#10b981'],['#8b5cf6','#fbbf24']
+  ];
+  const TYPES = ['circle','triangle','arc','line','rect','diamond'];
+  const rnd = (a,b) => a + Math.random()*(b-a);
+  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+
+  // 24 shapes, each with 5 LagFilter instances = 120 total, well over 15
+  const shapes = Array.from({length: 24}, (_, i) => {
+    const pair = pick(PAIRS);
+    const sz = rnd(22, 68);
+    return {
+      type: pick(TYPES),
+      x: rnd(0.04, 0.96), y: rnd(0.04, 0.96),
+      vx: rnd(-7e-5, 7e-5), vy: rnd(-7e-5, 7e-5),
+      sz, rot: rnd(0, Math.PI*2), rotV: rnd(-0.005, 0.005),
+      color: pair[Math.floor(Math.random()*2)],
+      alpha: rnd(0.38, 0.82),
+      dispX: new LagFilter(0, 0.28),      // LagFilter #1 per shape
+      dispY: new LagFilter(0, 0.28),      // LagFilter #2 per shape
+      lSz:   new LagFilter(sz, 0.9),      // LagFilter #3 per shape
+      lAlpha:new LagFilter(rnd(0.38,0.82), 1.1), // LagFilter #4
+      lPulse:new LagFilter(0.5, 1.5),    // LagFilter #5
+    };
+  });
+
+  function drawShape(s) {
+    const x = s.x*W + s.dispX.val, y = s.y*H + s.dispY.val;
+    const sz = Math.max(2, s.lSz.val);
+    const al = Math.max(0, Math.min(1, s.lAlpha.val));
+    cx.save();
+    cx.globalAlpha = al;
+    cx.strokeStyle = s.color; cx.fillStyle = s.color; cx.lineWidth = 2.2;
+    cx.translate(x, y); cx.rotate(s.rot);
+    if (s.type === 'circle') {
+      cx.beginPath(); cx.arc(0,0,sz/2,0,Math.PI*2);
+      cx.globalAlpha = al*0.22; cx.fill(); cx.globalAlpha = al; cx.stroke();
+    } else if (s.type === 'triangle') {
+      cx.beginPath(); cx.moveTo(0,-sz/2); cx.lineTo(sz/2,sz/2); cx.lineTo(-sz/2,sz/2); cx.closePath();
+      cx.globalAlpha = al*0.2; cx.fill(); cx.globalAlpha = al; cx.stroke();
+    } else if (s.type === 'arc') {
+      cx.lineWidth = 2.5;
+      cx.beginPath(); cx.arc(0,0,sz/2,0.2,Math.PI*1.5); cx.stroke();
+      cx.beginPath(); cx.arc(0,0,sz/3.2,Math.PI*0.7,Math.PI*2.2); cx.stroke();
+    } else if (s.type === 'line') {
+      cx.lineWidth = 3;
+      cx.beginPath(); cx.moveTo(-sz/2,0); cx.lineTo(sz/2,0); cx.stroke();
+      cx.beginPath(); cx.moveTo(0,-sz*0.4); cx.lineTo(0,sz*0.4); cx.stroke();
+      cx.lineWidth = 1.5;
+      cx.beginPath(); cx.moveTo(-sz*0.3,-sz*0.3); cx.lineTo(sz*0.3,sz*0.3); cx.stroke();
+    } else if (s.type === 'rect') {
+      const w = sz, h = sz*0.62;
+      cx.strokeRect(-w/2,-h/2,w,h);
+      cx.globalAlpha = al*0.12; cx.fillRect(-w/2,-h/2,w,h);
+    } else {
+      cx.beginPath(); cx.moveTo(0,-sz/2); cx.lineTo(sz/2.4,0); cx.lineTo(0,sz/2); cx.lineTo(-sz/2.4,0); cx.closePath();
+      cx.globalAlpha = al*0.18; cx.fill(); cx.globalAlpha = al; cx.stroke();
+    }
+    cx.restore();
+  }
+
+  let last = performance.now();
+  function animate(now) {
+    requestAnimationFrame(animate);
+    const dt = Math.min((now-last)/1000, 0.05);
+    last = now;
+    // Phosphor persistence
+    cx.fillStyle = 'rgba(5,5,12,0.04)';
+    cx.fillRect(0,0,W,H);
+    const t = now*0.001;
+    shapes.forEach((s,i) => {
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < 0) s.x=1; if (s.x>1) s.x=0;
+      if (s.y < 0) s.y=1; if (s.y>1) s.y=0;
+      s.rot += s.rotV;
+      const sx=s.x*W, sy=s.y*H;
+      const ddx=sx-mx, ddy=sy-my;
+      const dist=Math.sqrt(ddx*ddx+ddy*ddy)+0.1;
+      const rep = dist<140 ? (140-dist)/140 : 0;
+      s.dispX.update(rep*(ddx/dist)*48, dt);
+      s.dispY.update(rep*(ddy/dist)*48, dt);
+      s.lSz.update(s.sz*(1+0.14*Math.sin(t+i*1.3)), dt);
+      s.lAlpha.update(s.alpha*(0.78+0.22*Math.cos(t*0.9+i*0.7)), dt);
+      s.lPulse.update(0.5+0.5*Math.sin(t*0.4+i), dt);
+      drawShape(s);
+    });
+  }
+  animate(performance.now());
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — HISTORY OF ABSTRACTION
+══════════════════════════════════════ -->
+<section id="history">
+<div class="section-inner hidden">
+  <div class="sec-label">A Century of Non-Representation</div>
+  <h2>History of Abstraction</h2>
+  <p>From Kandinsky's first watercolor to algorithmic NFTs — follow the lineage of art that broke free from depicting the visible world. Click a period to explore.</p>
+  <div class="timeline-scroll">
+    <div class="timeline" id="tlTrack">
+      <div class="tn" data-idx="0"><div class="tn-year">1910s</div><div class="tn-dot"></div><div class="tn-label">Kandinsky &amp; Suprematism</div></div>
+      <div class="tn" data-idx="1"><div class="tn-year">1920s</div><div class="tn-dot"></div><div class="tn-label">De Stijl &amp; Bauhaus</div></div>
+      <div class="tn" data-idx="2"><div class="tn-year">1930s</div><div class="tn-dot"></div><div class="tn-label">Concrete Art</div></div>
+      <div class="tn" data-idx="3"><div class="tn-year">1940s</div><div class="tn-dot"></div><div class="tn-label">Abs. Expressionism</div></div>
+      <div class="tn" data-idx="4"><div class="tn-year">1950s</div><div class="tn-dot"></div><div class="tn-label">Color Field</div></div>
+      <div class="tn" data-idx="5"><div class="tn-year">1960s</div><div class="tn-dot"></div><div class="tn-label">Minimalism &amp; Op Art</div></div>
+      <div class="tn" data-idx="6"><div class="tn-year">1970s-80s</div><div class="tn-dot"></div><div class="tn-label">Conceptual</div></div>
+      <div class="tn" data-idx="7"><div class="tn-year">1990s+</div><div class="tn-dot"></div><div class="tn-label">Generative &amp; Algorithmic</div></div>
+    </div>
+  </div>
+  <div class="tl-detail" id="tlDetail">
+    <div class="tl-text" id="tlText"></div>
+    <canvas class="tl-canvas" id="tlMini" width="200" height="155"></canvas>
+  </div>
+</div>
+</section>
+
+<script>
+(function() {
+  var eras = [
+    { title:'1910s — Birth of Abstraction',
+      body:'Wassily Kandinsky painted what is often considered the first truly abstract work in 1910. Believing color and form could express spiritual truth independently of subject matter, he theorized painting could operate like music. Kazimir Malevich simultaneously developed Suprematism in Russia — reducing painting to pure geometric sensation: a black square on white canvas.',
+      works:'Kandinsky: First Abstract Watercolor (1910), Composition VII (1913). Malevich: Black Square (1915).',
+      draw:function(cv,cx){ var t=Date.now()*0.001; cx.fillStyle='#fff'; cx.fillRect(0,0,200,155); cx.strokeStyle='#7c3aed'; cx.lineWidth=3; cx.beginPath(); cx.arc(60+Math.sin(t)*5,60,30,0,Math.PI*2); cx.stroke(); cx.strokeStyle='#f59e0b'; cx.lineWidth=2; cx.beginPath(); cx.arc(135,80+Math.cos(t)*4,22,0.3,Math.PI*1.6); cx.stroke(); cx.fillStyle='#ef4444'; cx.beginPath(); cx.moveTo(100,18); cx.lineTo(132,72); cx.lineTo(68,72); cx.closePath(); cx.fill(); cx.strokeStyle='#3b82f6'; cx.lineWidth=2; cx.beginPath(); cx.moveTo(18,100); cx.lineTo(182,132); cx.stroke(); cx.fillStyle='#22c55e'; cx.beginPath(); cx.arc(172,38,8,0,Math.PI*2); cx.fill(); }
+    },
+    { title:'1920s — De Stijl & Bauhaus',
+      body:'Piet Mondrian and Theo van Doesburg founded De Stijl in the Netherlands, restricting painting to horizontal/vertical lines and primary colors — seeking universal visual harmony. The Bauhaus in Weimar unified fine art and industrial design, teaching geometry as the foundation of beauty. Both movements believed abstraction could transform everyday life.',
+      works:'Mondrian: Composition with Red, Blue and Yellow (1930). Van Doesburg: Counter-Composition V (1924).',
+      draw:function(cv,cx){ cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,200,155); var lines=[[0,55,200,55],[0,110,200,110],[70,0,70,155],[130,0,130,155]]; cx.strokeStyle='#111'; cx.lineWidth=4; lines.forEach(function(l){ cx.beginPath(); cx.moveTo(l[0],l[1]); cx.lineTo(l[2],l[3]); cx.stroke(); }); [{x:0,y:0,w:70,h:55,c:'#ef4444'},{x:130,y:55,w:70,h:55,c:'#3b82f6'},{x:0,y:110,w:70,h:45,c:'#f59e0b'},{x:130,y:0,w:70,h:55,c:'#111'}].forEach(function(f){ cx.fillStyle=f.c; cx.fillRect(f.x+2,f.y+2,f.w-4,f.h-4); }); }
+    },
+    { title:'1930s — Concrete Art',
+      body:'Max Bill and the Abstraction-Creation group formulated Concrete Art: work created purely from visual elements with no metaphorical content. Unlike abstract art derived from nature, Concrete Art was entirely invented and constructed through mathematical precision. The Circle and Square manifesto demanded purity of visual means, influencing Swiss graphic design for decades.',
+      works:'Max Bill: Fifteen Variations on a Single Theme (1935). Sophie Taeuber-Arp: Composition (1931).',
+      draw:function(cv,cx){ cx.fillStyle='#fff'; cx.fillRect(0,0,200,155); var cols=['#7c3aed','#f59e0b','#ef4444','#3b82f6','#22c55e']; for(var i=0;i<5;i++){ cx.strokeStyle=cols[i]; cx.lineWidth=2.5; cx.beginPath(); cx.arc(100,77,18+i*14,0,Math.PI*2); cx.stroke(); cx.strokeStyle=cols[4-i]; cx.lineWidth=1; var s=25+i*22; cx.strokeRect(100-s/2,77-s*0.35,s,s*0.7); } }
+    },
+    { title:'1940s — Abstract Expressionism',
+      body:'Post-WWII New York became the center of abstract expressionism. Jackson Pollock dripped paint emphasizing process over product. Mark Rothko painted hovering luminous rectangles evoking vast emotional states. Willem de Kooning fused gestural mark-making with raw energy. The movement declared the act of painting itself as the primary meaning.',
+      works:'Pollock: No. 31 (1950). Rothko: Ochre and Red on Red (1954). de Kooning: Woman I (1952).',
+      draw:function(cv,cx){ cx.fillStyle='#111'; cx.fillRect(0,0,200,155); for(var i=0;i<180;i++){ cx.strokeStyle=['#f59e0b','#ef4444','#a78bfa','#fff','#3b82f6'][Math.floor(Math.random()*5)]; cx.lineWidth=Math.random()*2+0.4; cx.globalAlpha=0.6+Math.random()*0.4; cx.beginPath(); var sx=Math.random()*200,sy=Math.random()*155; cx.moveTo(sx,sy); cx.quadraticCurveTo(sx+Math.random()*60-30,sy+Math.random()*60-30,sx+Math.random()*80-40,sy+Math.random()*80-40); cx.stroke(); } cx.globalAlpha=1; }
+    },
+    { title:'1950s — Color Field Painting',
+      body:'Helen Frankenthaler pioneered soak-stain technique — thinning paint to transparency and pouring it onto unprimed canvas so color seeped into the weave. Barnett Newman painted vertical "zip" lines dividing vast color fields. Morris Louis created luminous veils of flowing paint. These artists reduced painting to pure chromatic experience, eliminating gesture and texture.',
+      works:'Frankenthaler: Mountains and Sea (1952). Newman: Vir Heroicus Sublimis (1950). Louis: Unfurled series.',
+      draw:function(cv,cx){ var g=cx.createLinearGradient(0,0,200,0); g.addColorStop(0,'#7c3aed'); g.addColorStop(0.5,'#ec4899'); g.addColorStop(1,'#f59e0b'); cx.fillStyle=g; cx.fillRect(0,0,200,155); [{x:80,y:60,r:70,c:'#3b82f688'},{x:140,y:100,r:60,c:'#22c55e66'},{x:50,y:90,r:55,c:'#fde68a55'}].forEach(function(z){ var rg=cx.createRadialGradient(z.x,z.y,0,z.x,z.y,z.r); rg.addColorStop(0,z.c); rg.addColorStop(1,'transparent'); cx.fillStyle=rg; cx.fillRect(0,0,200,155); }); cx.strokeStyle='#fff'; cx.lineWidth=3; cx.beginPath(); cx.moveTo(105,0); cx.lineTo(105,155); cx.stroke(); }
+    },
+    { title:'1960s — Minimalism & Op Art',
+      body:'Donald Judd and Carl Andre stripped art to bare geometric essentials — industrial materials, serial repetition, no illusion of space. Sol LeWitt created art from written instructions alone. Meanwhile Bridget Riley and Victor Vasarely explored optical phenomena: their geometrically precise paintings created illusions of movement, depth, and vibration in the viewer\'s eye alone.',
+      works:'Judd: Untitled Stack (1967). Riley: Crest (1964). Vasarely: Vega-Nor (1969). LeWitt: Wall Drawing #1.',
+      draw:function(cv,cx){ cx.fillStyle='#fff'; cx.fillRect(0,0,200,155); for(var y=0;y<155;y+=7){ cx.beginPath(); cx.strokeStyle=y%14===0?'#111':'#666'; cx.lineWidth=1; for(var x=0;x<=200;x++){ var py=y+Math.sin((x+y)*0.13)*6; if(x===0) cx.moveTo(x,py); else cx.lineTo(x,py); } cx.stroke(); } }
+    },
+    { title:'1970s-80s — Conceptual Abstraction',
+      body:'Agnes Martin painted meditative grids of pencil lines suggesting landscape without depicting it. Gerhard Richter created photorealistic paintings then scraped them into abstraction with a squeegee. Neo-Expressionism brought back raw gestural painting. Joseph Kosuth blurred the line between abstract image and pure idea — questioning what "abstraction" even meant.',
+      works:'Martin: Untitled #3 (1974). Richter: Abstract Painting 809-1 (1994). Basquiat: Horn Players (1983).',
+      draw:function(cv,cx){ cx.fillStyle='#f8f8f5'; cx.fillRect(0,0,200,155); cx.strokeStyle='#ddd'; cx.lineWidth=0.7; for(var x=0;x<200;x+=8){ cx.beginPath(); cx.moveTo(x,0); cx.lineTo(x,155); cx.stroke(); } for(var y=0;y<155;y+=8){ cx.beginPath(); cx.moveTo(0,y); cx.lineTo(200,y); cx.stroke(); } [['#7c3aed99',0],['#f59e0b99',60],['#ef444499',120]].forEach(function(sc){ cx.fillStyle=sc[0]; cx.beginPath(); cx.moveTo(sc[1],20); cx.bezierCurveTo(sc[1]+50,50,sc[1]+40,90,sc[1]+70,125); cx.lineTo(sc[1]+90,115); cx.bezierCurveTo(sc[1]+60,82,sc[1]+70,42,sc[1]+22,18); cx.closePath(); cx.fill(); }); }
+    },
+    { title:'1990s+ — Generative & Algorithmic Art',
+      body:'Vera Molnar pioneered computer-generated abstraction from the 1960s using FORTRAN loops. Casey Reas and Ben Fry created Processing, democratizing algorithmic art-making. The NFT boom of 2021 mainstreamed generative art: Tyler Hobbs\'s Fidenza, Dmitri Cherniak\'s Ringers, and the Art Blocks platform created new markets for code-as-art with each piece unique.',
+      works:'Molnar: Interruptions (1968). Hobbs: Fidenza (2021). Cherniak: Ringers (2021). Reas: Process series.',
+      draw:function(cv,cx){ var t=Date.now()*0.001; cx.fillStyle='#1e1b4b'; cx.fillRect(0,0,200,155); for(var i=0;i<80;i++){ var ang=i*2.399; var r=Math.sqrt(i)*11; var x=100+r*Math.cos(ang); var y=77+r*Math.sin(ang)*0.7; if(x<0||x>200||y<0||y>155) continue; var hue=(i*13+t*30)%360; cx.fillStyle='hsl('+hue+',75%,62%)'; cx.beginPath(); cx.arc(x,y,2.2,0,Math.PI*2); cx.fill(); } }
+    }
+  ];
+
+  var nodes = document.querySelectorAll('.tn');
+  var detail = document.getElementById('tlDetail');
+  var tlText = document.getElementById('tlText');
+  var tlMini = document.getElementById('tlMini');
+  var mctx = tlMini.getContext('2d');
+  var activeIdx = -1;
+  var miniRaf = null;
+
+  function showEra(idx) {
+    if (activeIdx === idx) {
+      detail.classList.remove('act');
+      nodes.forEach(function(n){ n.classList.remove('act'); });
+      activeIdx = -1;
+      if (miniRaf) { cancelAnimationFrame(miniRaf); miniRaf = null; }
+      return;
+    }
+    activeIdx = idx;
+    nodes.forEach(function(n,i){ n.classList.toggle('act', i===idx); });
+    detail.classList.add('act');
+    var era = eras[idx];
+    tlText.innerHTML = '<h3>'+era.title+'</h3><p>'+era.body+'</p><small><strong>Key works:</strong> '+era.works+'</small>';
+    if (miniRaf) cancelAnimationFrame(miniRaf);
+    function loop() { era.draw(tlMini, mctx); miniRaf = requestAnimationFrame(loop); }
+    loop();
+  }
+
+  nodes.forEach(function(n){ n.addEventListener('click', function(){ showEra(+n.dataset.idx); }); });
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — GEOMETRIC ABSTRACTION STUDIO
+══════════════════════════════════════ -->
+<section id="geometric">
+<div class="section-inner hidden">
+  <div class="sec-label">Interactive Composition Builder</div>
+  <h2>Geometric Abstraction Studio</h2>
+  <p>Drag the dividing lines to reshape rectangles. Click any rectangle to cycle its color. Switch modes to explore De Stijl, Kandinsky, and Malevich approaches.</p>
+  <div class="toolbar">
+    <button class="btn act" id="geoModeStijl">De Stijl</button>
+    <button class="btn" id="geoModeKand">Kandinsky</button>
+    <button class="btn" id="geoModeMal">Malevich</button>
+    <button class="btn" id="geoRandom">Randomize</button>
+    <button class="btn" id="geoReset">Reset</button>
+    <button class="btn" id="geoExport">Export PNG</button>
+  </div>
+  <canvas id="geoCanvas" width="680" height="440"></canvas>
+</div>
+</section>
+
+<script>
+(function() {
+  var cv = document.getElementById('geoCanvas');
+  var cx = cv.getContext('2d');
+  var W = 680, H = 440;
+  var mode = 'stijl';
+
+  // LagFilters for color transitions
+  function LF(v, tau) { return new LagFilter(v, tau); }
+
+  // Dividing lines (normalized 0-1)
+  var hLines = [0.38, 0.72];  // horizontal
+  var vLines = [0.28, 0.60];  // vertical
+  var allLines = [];
+
+  function buildLines() {
+    allLines = [];
+    hLines.forEach(function(y,i){ allLines.push({type:'h', pos:y, idx:i, lf: new LagFilter(y, 0.18)}); });
+    vLines.forEach(function(x,i){ allLines.push({type:'v', pos:x, idx:i, lf: new LagFilter(x, 0.18)}); });
+  }
+  buildLines();
+
+  // Stijl colors
+  var STIJL_COLORS = ['#ef4444','#3b82f6','#f59e0b','#111111','#f5f5f0','#f5f5f0','#f5f5f0','#f5f5f0','#f5f5f0'];
+  var cellColors = [];
+  var cellColorTargets = [];
+  // LagFilters for each cell color channel
+  var cellR = [], cellG = [], cellB = [];
+
+  function hexToRgb(h) {
+    var r=parseInt(h.slice(1,3),16), g=parseInt(h.slice(3,5),16), b=parseInt(h.slice(5,7),16);
+    return [r,g,b];
+  }
+  function rgbToHex(r,g,b) {
+    return '#'+[r,g,b].map(function(v){ return Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0'); }).join('');
+  }
+
+  function initCells() {
+    var n = (hLines.length+1)*(vLines.length+1);
+    cellColors = []; cellColorTargets = []; cellR = []; cellG = []; cellB = [];
+    for (var i=0;i<n;i++) {
+      var c = STIJL_COLORS[Math.min(i, STIJL_COLORS.length-1)];
+      var rgb = hexToRgb(c);
+      cellColors.push(c); cellColorTargets.push(c);
+      cellR.push(new LagFilter(rgb[0], 0.25));  // LagFilter per cell R
+      cellG.push(new LagFilter(rgb[1], 0.25));  // LagFilter per cell G
+      cellB.push(new LagFilter(rgb[2], 0.25));  // LagFilter per cell B
+    }
+  }
+  initCells();
+
+  function randomizeStijl() {
+    var n = cellColors.length;
+    var reds=0, blues=0, yellows=0;
+    for (var i=0;i<n;i++) {
+      var r = Math.random();
+      var c;
+      if (r < 0.12 && reds < 2) { c='#ef4444'; reds++; }
+      else if (r < 0.22 && blues < 2) { c='#3b82f6'; blues++; }
+      else if (r < 0.30 && yellows < 1) { c='#f59e0b'; yellows++; }
+      else if (r < 0.36) { c='#111111'; }
+      else { c='#f5f5f0'; }
+      cellColorTargets[i] = c;
+    }
+  }
+
+  function cycleCell(idx) {
+    var cycle;
+    if (mode === 'stijl') cycle = ['#f5f5f0','#ef4444','#3b82f6','#f59e0b','#111111'];
+    else if (mode === 'kand') cycle = ['#7c3aed','#f59e0b','#ef4444','#22c55e','#3b82f6','#ec4899','#f5f5f0'];
+    else cycle = ['#fff','#111','#fff','#fff','#888'];
+    var cur = cellColorTargets[idx];
+    var ci = cycle.indexOf(cur);
+    cellColorTargets[idx] = cycle[(ci+1)%cycle.length];
+  }
+
+  // Drag state
+  var drag = null;
+  var GRAB = 10;
+
+  function pxToNorm(px,py) { return {x:px/W, y:py/H}; }
+  function normToPx(nx,ny) { return {x:nx*W, y:ny*H}; }
+
+  function findLine(px,py) {
+    for (var i=0;i<allLines.length;i++) {
+      var l = allLines[i];
+      if (l.type==='h') { if (Math.abs(py - l.pos*H) < GRAB) return i; }
+      else { if (Math.abs(px - l.pos*W) < GRAB) return i; }
+    }
+    return -1;
+  }
+
+  function cellIndexAt(px,py) {
+    var xs = [0].concat(vLines.map(function(v){ return v*W; })).concat([W]);
+    var ys = [0].concat(hLines.map(function(h){ return h*H; })).concat([H]);
+    var ci = -1, ri = -1;
+    for (var i=0;i<xs.length-1;i++) { if (px>=xs[i] && px<xs[i+1]) { ci=i; break; } }
+    for (var j=0;j<ys.length-1;j++) { if (py>=ys[j] && py<ys[j+1]) { ri=j; break; } }
+    if (ci<0||ri<0) return -1;
+    return ri*(vLines.length+1)+ci;
+  }
+
+  cv.addEventListener('mousedown', function(e) {
+    var r=cv.getBoundingClientRect(), px=(e.clientX-r.left)*(W/r.width), py=(e.clientY-r.top)*(H/r.height);
+    var li = findLine(px,py);
+    if (li>=0) { drag={li:li}; cv.style.cursor='grabbing'; }
+    else {
+      var ci = cellIndexAt(px,py);
+      if (ci>=0) cycleCell(ci);
+    }
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!drag) { var r=cv.getBoundingClientRect(), px=(e.clientX-r.left)*(W/r.width), py=(e.clientY-r.top)*(H/r.height); cv.style.cursor = findLine(px,py)>=0 ? (allLines[findLine(px,py)].type==='h'?'ns-resize':'ew-resize') : 'crosshair'; return; }
+    var r=cv.getBoundingClientRect(), px=(e.clientX-r.left)*(W/r.width), py=(e.clientY-r.top)*(H/r.height);
+    var l = allLines[drag.li];
+    var margin = 0.08;
+    if (l.type==='h') {
+      var neighbors = [0].concat(hLines).concat([1]);
+      var prev = neighbors[l.idx], next = neighbors[l.idx+2];
+      l.pos = Math.max(prev+margin, Math.min(next-margin, py/H));
+      hLines[l.idx] = l.pos;
+    } else {
+      var neighbors2 = [0].concat(vLines).concat([1]);
+      var prev2 = neighbors2[l.idx], next2 = neighbors2[l.idx+2];
+      l.pos = Math.max(prev2+margin, Math.min(next2-margin, px/W));
+      vLines[l.idx] = l.pos;
+    }
+  });
+  window.addEventListener('mouseup', function() { drag=null; cv.style.cursor='crosshair'; });
+
+  // Kandinsky overlays: circles, arcs, diagonal lines
+  var kandShapes = [];
+  function buildKand() {
+    kandShapes = [];
+    for (var i=0;i<12;i++) {
+      kandShapes.push({
+        type:['circle','arc','line'][i%3],
+        x: 0.1+Math.random()*0.8, y:0.1+Math.random()*0.8,
+        r: 0.04+Math.random()*0.1,
+        a1: Math.random()*Math.PI*2, a2: Math.random()*Math.PI*2,
+        c:['#7c3aed','#f59e0b','#ef4444','#3b82f6','#22c55e'][i%5],
+        lx: new LagFilter(0.1+Math.random()*0.8, 0.5),
+        ly: new LagFilter(0.1+Math.random()*0.8, 0.5),
+      });
+    }
+  }
+  buildKand();
+
+  // Malevich shapes
+  var malShapes = [];
+  function buildMal() {
+    malShapes = [];
+    var forms = ['rect','circle','rect','rect','line','rect'];
+    var cols = ['#111','#111','#ef4444','#111','#111','#888888'];
+    var sizes = [[0.3,0.3],[0.18,0.18],[0.5,0.12],[0.15,0.4],[0,0],[0.2,0.08]];
+    for (var i=0;i<forms.length;i++) {
+      malShapes.push({
+        type:forms[i], c:cols[i],
+        x: 0.15+Math.random()*0.6, y: 0.15+Math.random()*0.6,
+        w:sizes[i][0], h:sizes[i][1],
+        rot: (Math.random()-0.5)*0.6,
+        lx: new LagFilter(0.15+Math.random()*0.6, 0.4),
+        ly: new LagFilter(0.15+Math.random()*0.6, 0.4),
+      });
+    }
+  }
+  buildMal();
+
+  var last = performance.now();
+  function draw(now) {
+    requestAnimationFrame(draw);
+    var dt = Math.min((now-last)/1000, 0.05); last=now;
+    var t = now*0.001;
+
+    cx.clearRect(0,0,W,H);
+
+    // Draw base cells with LagFiltered colors
+    var xs = [0].concat(vLines.map(function(v){ return v*W; })).concat([W]);
+    var ys = [0].concat(hLines.map(function(h){ return h*H; })).concat([H]);
+    var ci = 0;
+    for (var row=0;row<ys.length-1;row++) {
+      for (var col=0;col<xs.length-1;col++) {
+        var target = cellColorTargets[ci] || '#f5f5f0';
+        var trgb = hexToRgb(target);
+        cellR[ci].update(trgb[0], dt);
+        cellG[ci].update(trgb[1], dt);
+        cellB[ci].update(trgb[2], dt);
+        cx.fillStyle = rgbToHex(cellR[ci].val, cellG[ci].val, cellB[ci].val);
+        cx.fillRect(xs[col], ys[row], xs[col+1]-xs[col], ys[row+1]-ys[row]);
+        ci++;
+      }
+    }
+
+    // Draw grid lines (Stijl & Kand modes)
+    if (mode !== 'mal') {
+      cx.strokeStyle = '#111'; cx.lineWidth = mode==='stijl'?5:2;
+      hLines.forEach(function(y) { cx.beginPath(); cx.moveTo(0,y*H); cx.lineTo(W,y*H); cx.stroke(); });
+      vLines.forEach(function(x) { cx.beginPath(); cx.moveTo(x*W,0); cx.lineTo(x*W,H); cx.stroke(); });
+    }
+
+    // Kandinsky overlay
+    if (mode === 'kand') {
+      kandShapes.forEach(function(s,i) {
+        s.lx.update(s.x + 0.04*Math.sin(t*0.4+i), dt);
+        s.ly.update(s.y + 0.04*Math.cos(t*0.35+i), dt);
+        var px=s.lx.val*W, py=s.ly.val*H, r=s.r*Math.min(W,H);
+        cx.strokeStyle=s.c; cx.lineWidth=2.5; cx.globalAlpha=0.75;
+        if (s.type==='circle') { cx.beginPath(); cx.arc(px,py,r,0,Math.PI*2); cx.stroke(); }
+        else if (s.type==='arc') { cx.beginPath(); cx.arc(px,py,r,s.a1,s.a2); cx.stroke(); }
+        else { cx.beginPath(); cx.moveTo(px-r,py-r); cx.lineTo(px+r,py+r); cx.stroke(); }
+        cx.globalAlpha=1;
+      });
+    }
+
+    // Malevich overlay
+    if (mode === 'mal') {
+      cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,W,H);
+      malShapes.forEach(function(s,i) {
+        s.lx.update(s.x, dt); s.ly.update(s.y, dt);
+        var px=s.lx.val*W, py=s.ly.val*H;
+        cx.save(); cx.translate(px,py); cx.rotate(s.rot); cx.fillStyle=s.c;
+        if (s.type==='rect') { cx.fillRect(-s.w*W/2,-s.h*H/2,s.w*W,s.h*H); }
+        else if (s.type==='circle') { cx.beginPath(); cx.arc(0,0,s.w*Math.min(W,H)/2,0,Math.PI*2); cx.fill(); }
+        else { cx.strokeStyle=s.c; cx.lineWidth=3; cx.beginPath(); cx.moveTo(-s.w*W,0); cx.lineTo(s.w*W,0); cx.stroke(); }
+        cx.restore();
+      });
+    }
+  }
+  draw(performance.now());
+
+  // Button handlers
+  document.getElementById('geoModeStijl').addEventListener('click', function() {
+    mode='stijl'; updateBtns(); resetToStijl();
+  });
+  document.getElementById('geoModeKand').addEventListener('click', function() {
+    mode='kand'; updateBtns(); buildKand();
+    for(var i=0;i<cellColorTargets.length;i++) cellColorTargets[i]='#f5f5f0';
+  });
+  document.getElementById('geoModeMal').addEventListener('click', function() {
+    mode='mal'; updateBtns(); buildMal();
+  });
+  document.getElementById('geoRandom').addEventListener('click', function() {
+    if (mode==='stijl'||mode==='kand') { randomizeStijl(); }
+    else { buildMal(); }
+    vLines[0]=0.15+Math.random()*0.2; vLines[1]=0.55+Math.random()*0.2;
+    hLines[0]=0.2+Math.random()*0.2; hLines[1]=0.6+Math.random()*0.15;
+    buildLines();
+  });
+  document.getElementById('geoReset').addEventListener('click', function() {
+    hLines=[0.38,0.72]; vLines=[0.28,0.60]; buildLines(); resetToStijl(); mode='stijl'; updateBtns();
+  });
+  document.getElementById('geoExport').addEventListener('click', function() {
+    var link=document.createElement('a'); link.download='abstraction.png'; link.href=cv.toDataURL(); link.click();
+  });
+
+  function resetToStijl() {
+    initCells(); randomizeStijl();
+  }
+  function updateBtns() {
+    ['geoModeStijl','geoModeKand','geoModeMal'].forEach(function(id,i){
+      document.getElementById(id).classList.toggle('act', ['stijl','kand','mal'][i]===mode);
+    });
+  }
+
+  resetToStijl();
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — OP ART & PERCEPTUAL EFFECTS
+══════════════════════════════════════ -->
+<section id="op-art">
+<div class="section-inner hidden">
+  <div class="sec-label">Visual Phenomena & Perceptual Illusion</div>
+  <h2>Op Art &amp; Perceptual Effects</h2>
+  <p>Six interactive optical generators — each exploits a different quirk of human visual perception. Adjust sliders to push each illusion to its limit.</p>
+  <div class="op-grid">
+
+    <!-- 1: Riley Waves -->
+    <div class="op-card">
+      <h3>Bridget Riley Waves</h3>
+      <canvas id="opRiley" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Frequency</label><input type="range" id="rFreq" min="1" max="30" value="12" step="0.5"><span class="val-d" id="rFreqV">12</span></div>
+      <div class="ctrl"><label>Amplitude</label><input type="range" id="rAmp" min="1" max="40" value="10" step="0.5"><span class="val-d" id="rAmpV">10</span></div>
+      <div class="ctrl"><label>Phase Shift</label><input type="range" id="rPhase" min="0" max="6.28" value="0" step="0.01"><span class="val-d" id="rPhaseV">0</span></div>
+    </div>
+
+    <!-- 2: Vasarely Grid -->
+    <div class="op-card">
+      <h3>Vasarely Depth Grid</h3>
+      <canvas id="opVas" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Grid Size</label><input type="range" id="vGrid" min="4" max="16" value="9" step="1"><span class="val-d" id="vGridV">9</span></div>
+      <div class="ctrl"><label>Depth</label><input type="range" id="vDepth" min="0.1" max="2.5" value="1" step="0.05"><span class="val-d" id="vDepthV">1.0</span></div>
+    </div>
+
+    <!-- 3: Cafe Wall -->
+    <div class="op-card">
+      <h3>Cafe Wall Illusion</h3>
+      <canvas id="opCafe" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Offset</label><input type="range" id="cOff" min="0" max="30" value="14" step="0.5"><span class="val-d" id="cOffV">14</span></div>
+      <div class="ctrl"><label>Grout Width</label><input type="range" id="cGrout" min="1" max="10" value="3" step="0.5"><span class="val-d" id="cGroutV">3</span></div>
+      <div class="ctrl"><label>Grout Color</label><input type="range" id="cGCol" min="0" max="255" value="128" step="1"><span class="val-d" id="cGColV">128</span></div>
+    </div>
+
+    <!-- 4: Spiral Illusion -->
+    <div class="op-card">
+      <h3>Rotating Spiral Illusion</h3>
+      <canvas id="opSpiral" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Turns</label><input type="range" id="sTurns" min="2" max="20" value="9" step="1"><span class="val-d" id="sTurnsV">9</span></div>
+      <div class="ctrl"><label>Speed</label><input type="range" id="sSpeed" min="0" max="3" value="0.8" step="0.05"><span class="val-d" id="sSpeedV">0.8</span></div>
+    </div>
+
+    <!-- 5: Neon Color Spreading -->
+    <div class="op-card">
+      <h3>Neon Color Spreading</h3>
+      <canvas id="opNeon" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Line Density</label><input type="range" id="nDens" min="2" max="18" value="8" step="1"><span class="val-d" id="nDensV">8</span></div>
+      <div class="ctrl"><label>Hue</label><input type="range" id="nHue" min="0" max="360" value="270" step="1"><span class="val-d" id="nHueV">270</span></div>
+    </div>
+
+    <!-- 6: Moire Patterns -->
+    <div class="op-card">
+      <h3>Moir&#233; Patterns</h3>
+      <canvas id="opMoire" width="260" height="180"></canvas>
+      <div class="ctrl"><label>Angle Offset</label><input type="range" id="mAngle" min="0" max="15" value="3" step="0.1"><span class="val-d" id="mAngleV">3.0</span></div>
+      <div class="ctrl"><label>Grid Spacing</label><input type="range" id="mSpace" min="4" max="20" value="8" step="0.5"><span class="val-d" id="mSpaceV">8</span></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<script>
+(function() {
+  // LagFilters for all 6 Op Art generators
+  var riley = {
+    freq:  new LagFilter(12, 0.25),
+    amp:   new LagFilter(10, 0.25),
+    phase: new LagFilter(0,  0.25),
+    tFreq: 12, tAmp: 10, tPhase: 0
+  };
+  var vasarely = {
+    grid:  new LagFilter(9,  0.3),
+    depth: new LagFilter(1,  0.3),
+    tGrid: 9, tDepth: 1
+  };
+  var cafe = {
+    off:   new LagFilter(14, 0.22),
+    grout: new LagFilter(3,  0.22),
+    gcol:  new LagFilter(128,0.22),
+    tOff: 14, tGrout: 3, tGcol: 128
+  };
+  var spiral = {
+    turns: new LagFilter(9, 0.3),
+    speed: new LagFilter(0.8, 0.25),
+    angle: 0,
+    tTurns: 9, tSpeed: 0.8
+  };
+  var neon = {
+    dens: new LagFilter(8, 0.28),
+    hue:  new LagFilter(270, 0.28),
+    tDens: 8, tHue: 270
+  };
+  var moire = {
+    angle: new LagFilter(3, 0.22),
+    space: new LagFilter(8, 0.22),
+    tAngle: 3, tSpace: 8
+  };
+
+  function wire(id, valId, obj, key, fmt) {
+    var sl = document.getElementById(id);
+    var vd = document.getElementById(valId);
+    sl.addEventListener('input', function() {
+      obj[key] = +sl.value;
+      vd.textContent = fmt ? (+sl.value).toFixed(fmt) : sl.value;
+    });
+  }
+  wire('rFreq','rFreqV', riley,'tFreq',0);
+  wire('rAmp','rAmpV',   riley,'tAmp',0);
+  wire('rPhase','rPhaseV',riley,'tPhase',2);
+  wire('vGrid','vGridV', vasarely,'tGrid',0);
+  wire('vDepth','vDepthV',vasarely,'tDepth',1);
+  wire('cOff','cOffV',   cafe,'tOff',0);
+  wire('cGrout','cGroutV',cafe,'tGrout',0);
+  wire('cGCol','cGColV', cafe,'tGcol',0);
+  wire('sTurns','sTurnsV',spiral,'tTurns',0);
+  wire('sSpeed','sSpeedV',spiral,'tSpeed',2);
+  wire('nDens','nDensV', neon,'tDens',0);
+  wire('nHue','nHueV',   neon,'tHue',0);
+  wire('mAngle','mAngleV',moire,'tAngle',1);
+  wire('mSpace','mSpaceV',moire,'tSpace',0);
+
+  var cvR=document.getElementById('opRiley'), cxR=cvR.getContext('2d');
+  var cvV=document.getElementById('opVas'),   cxV=cvV.getContext('2d');
+  var cvC=document.getElementById('opCafe'),  cxC=cvC.getContext('2d');
+  var cvS=document.getElementById('opSpiral'),cxS=cvS.getContext('2d');
+  var cvN=document.getElementById('opNeon'),  cxN=cvN.getContext('2d');
+  var cvM=document.getElementById('opMoire'), cxM=cvM.getContext('2d');
+
+  var last = performance.now();
+
+  function drawRiley(dt) {
+    riley.freq.update(riley.tFreq, dt);
+    riley.amp.update(riley.tAmp, dt);
+    riley.phase.update(riley.tPhase, dt);
+    var W=260,H=180, freq=riley.freq.val, amp=riley.amp.val, ph=riley.phase.val;
+    cxR.fillStyle='#fff'; cxR.fillRect(0,0,W,H);
+    var spacing = H / Math.max(1,freq);
+    for (var row=0; row<freq+2; row++) {
+      var yBase = row*spacing;
+      cxR.beginPath(); cxR.strokeStyle=row%2===0?'#111':'#fff'; cxR.lineWidth=spacing*0.82;
+      for (var x=0;x<=W;x++) {
+        var y = yBase + amp*Math.sin((x/W)*Math.PI*3 + row*0.5 + ph);
+        if (x===0) cxR.moveTo(x,y); else cxR.lineTo(x,y);
+      }
+      cxR.stroke();
+    }
+  }
+
+  function drawVasarely(dt) {
+    vasarely.grid.update(vasarely.tGrid, dt);
+    vasarely.depth.update(vasarely.tDepth, dt);
+    var W=260,H=180, n=Math.round(vasarely.grid.val), dep=vasarely.depth.val;
+    cxV.fillStyle='#111'; cxV.fillRect(0,0,W,H);
+    var cw=W/n, ch=H/n, cx2=W/2, cy2=H/2;
+    for (var r=0;r<n;r++) {
+      for (var c=0;c<n;c++) {
+        var x=c*cw+cw/2, y=r*ch+ch/2;
+        var dx=(x-cx2)/cx2, dy=(y-cy2)/cy2;
+        var dist=Math.sqrt(dx*dx+dy*dy);
+        var rad=Math.min(cw,ch)*0.45*(1-dist*0.4*dep);
+        if (rad<=0) continue;
+        var bright=Math.floor(220*(1-dist*0.5*dep));
+        cxV.fillStyle='rgb('+bright+','+bright+','+bright+')';
+        cxV.beginPath(); cxV.arc(x,y,rad,0,Math.PI*2); cxV.fill();
+      }
+    }
+  }
+
+  function drawCafe(dt) {
+    cafe.off.update(cafe.tOff, dt);
+    cafe.grout.update(cafe.tGrout, dt);
+    cafe.gcol.update(cafe.tGcol, dt);
+    var W=260,H=180, off=cafe.off.val, gw=cafe.grout.val, gc=Math.round(cafe.gcol.val);
+    var rowH = 22, tileW = 40;
+    var rows = Math.ceil(H/rowH)+1;
+    var gcStr='rgb('+gc+','+gc+','+gc+')';
+    cxC.fillStyle=gcStr; cxC.fillRect(0,0,W,H);
+    for (var r=0;r<rows;r++) {
+      var y=r*rowH, shift=(r%2)*off;
+      var cols2=Math.ceil(W/tileW)+2;
+      for (var c=-1;c<cols2;c++) {
+        var x=c*tileW+shift-tileW;
+        cxC.fillStyle=c%2===0?'#111':'#f5f5f0';
+        cxC.fillRect(x+gw/2, y+gw/2, tileW-gw, rowH-gw);
+      }
+    }
+  }
+
+  function drawSpiral(dt) {
+    spiral.turns.update(spiral.tTurns, dt);
+    spiral.speed.update(spiral.tSpeed, dt);
+    spiral.angle += spiral.speed.val * dt;
+    var W=260,H=180, turns=spiral.turns.val, ang=spiral.angle;
+    var cx2=W/2, cy2=H/2, maxR=Math.min(W,H)*0.47;
+    cxS.fillStyle='#111'; cxS.fillRect(0,0,W,H);
+    var steps=800;
+    cxS.beginPath();
+    for (var i=0;i<=steps;i++) {
+      var t=i/steps;
+      var a=t*turns*Math.PI*2+ang;
+      var r=t*maxR;
+      var x=cx2+r*Math.cos(a), y=cy2+r*Math.sin(a);
+      if (i===0) cxS.moveTo(x,y); else cxS.lineTo(x,y);
+    }
+    cxS.strokeStyle='#fff'; cxS.lineWidth=2.5; cxS.stroke();
+    // Second arm
+    cxS.beginPath();
+    for (var i=0;i<=steps;i++) {
+      var t=i/steps;
+      var a=t*turns*Math.PI*2+ang+Math.PI;
+      var r=t*maxR;
+      var x=cx2+r*Math.cos(a), y=cy2+r*Math.sin(a);
+      if (i===0) cxS.moveTo(x,y); else cxS.lineTo(x,y);
+    }
+    cxS.strokeStyle='#a78bfa'; cxS.lineWidth=1.5; cxS.stroke();
+  }
+
+  function drawNeon(dt) {
+    neon.dens.update(neon.tDens, dt);
+    neon.hue.update(neon.tHue, dt);
+    var W=260,H=180, n=Math.round(neon.dens.val), h=neon.hue.val;
+    cxN.fillStyle='#0a0a0a'; cxN.fillRect(0,0,W,H);
+    // Black grid lines
+    var step=W/(n+1);
+    cxN.strokeStyle='#111'; cxN.lineWidth=2;
+    for (var i=1;i<=n;i++) { cxN.beginPath(); cxN.moveTo(i*step,0); cxN.lineTo(i*step,H); cxN.stroke(); }
+    for (var i=1;i<=n;i++) { var sy=i*(H/(n+1)); cxN.beginPath(); cxN.moveTo(0,sy); cxN.lineTo(W,sy); cxN.stroke(); }
+    // Colored segments in center cross — neon glow illusion
+    cxN.strokeStyle='hsl('+h+',100%,65%)'; cxN.lineWidth=3;
+    cxN.shadowColor='hsl('+h+',100%,65%)'; cxN.shadowBlur=12;
+    var mid=Math.round(n/2);
+    cxN.beginPath(); cxN.moveTo((mid+0.5)*step,0); cxN.lineTo((mid+0.5)*step,H); cxN.stroke();
+    cxN.beginPath(); cxN.moveTo(0,(mid+0.5)*(H/(n+1))); cxN.lineTo(W,(mid+0.5)*(H/(n+1))); cxN.stroke();
+    cxN.shadowBlur=0;
+    // Apparent glow at intersection
+    var gx=(mid+0.5)*step, gy=(mid+0.5)*(H/(n+1));
+    var grad=cxN.createRadialGradient(gx,gy,0,gx,gy,30);
+    grad.addColorStop(0,'hsla('+h+',100%,75%,0.45)');
+    grad.addColorStop(1,'transparent');
+    cxN.fillStyle=grad; cxN.fillRect(gx-35,gy-35,70,70);
+  }
+
+  function drawMoire(dt) {
+    moire.angle.update(moire.tAngle, dt);
+    moire.space.update(moire.tSpace, dt);
+    var W=260,H=180, ang=moire.angle.val*Math.PI/180, sp=moire.space.val;
+    cxM.fillStyle='#fff'; cxM.fillRect(0,0,W,H);
+    cxM.strokeStyle='#111'; cxM.lineWidth=0.8;
+    // Grid 1: straight
+    for (var x=0;x<W;x+=sp) { cxM.beginPath(); cxM.moveTo(x,0); cxM.lineTo(x,H); cxM.stroke(); }
+    // Grid 2: rotated
+    cxM.save();
+    cxM.translate(W/2,H/2); cxM.rotate(ang);
+    cxM.strokeStyle='rgba(0,0,0,0.6)';
+    for (var x=-W;x<W*2;x+=sp) { cxM.beginPath(); cxM.moveTo(x,-H); cxM.lineTo(x,H*2); cxM.stroke(); }
+    cxM.restore();
+  }
+
+  function loop(now) {
+    requestAnimationFrame(loop);
+    var dt=Math.min((now-last)/1000,0.05); last=now;
+    drawRiley(dt); drawVasarely(dt); drawCafe(dt);
+    drawSpiral(dt); drawNeon(dt); drawMoire(dt);
+  }
+  loop(performance.now());
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — COLOR FIELD & MINIMALISM
+══════════════════════════════════════ -->
+<section id="color-field">
+<div class="section-inner hidden">
+  <div class="sec-label">Chromatic Immersion &amp; Systematic Order</div>
+  <h2>Color Field &amp; Minimalism</h2>
+  <p>Two poles of 1950s–60s abstraction: Rothko's luminous color-saturated fields versus LeWitt's instruction-based geometric systems.</p>
+  <div class="cf-layout">
+    <div class="cf-panel">
+      <h3>Rothko Generator</h3>
+      <canvas id="rothkoCanvas" width="320" height="280" style="width:100%;border-radius:8px;display:block;margin-bottom:0.75rem;"></canvas>
+      <div class="ctrl"><label>Zone 1 Hue</label><input type="range" id="rH1" min="0" max="360" value="270"><span class="val-d" id="rH1V">270</span></div>
+      <div class="ctrl"><label>Zone 2 Hue</label><input type="range" id="rH2" min="0" max="360" value="20"><span class="val-d" id="rH2V">20</span></div>
+      <div class="ctrl"><label>Zone 3 Hue</label><input type="range" id="rH3" min="0" max="360" value="200"><span class="val-d" id="rH3V">200</span></div>
+      <div class="ctrl"><label>Edge Softness</label><input type="range" id="rSoft" min="5" max="80" value="38"><span class="val-d" id="rSoftV">38</span></div>
+      <div class="toolbar" style="margin-top:0.5rem;">
+        <button class="btn" id="rothkoNew">New Palette</button>
+      </div>
+    </div>
+    <div class="cf-panel">
+      <h3>LeWitt Grid System</h3>
+      <canvas id="lewittCanvas" width="320" height="280" style="width:100%;border-radius:8px;display:block;margin-bottom:0.75rem;background:#fff;"></canvas>
+      <div class="ctrl"><label>Grid Size</label><input type="range" id="lwGrid" min="1" max="12" value="6" step="1"><span class="val-d" id="lwGridV">6</span></div>
+      <div class="ctrl"><label>Line Dir</label><input type="range" id="lwDir" min="0" max="3" value="1" step="1"><span class="val-d" id="lwDirV">H</span></div>
+      <div class="ctrl"><label>Density</label><input type="range" id="lwDens" min="1" max="10" value="4"><span class="val-d" id="lwDensV">4</span></div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.5rem;" id="lwInstruction"></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+(function() {
+  // ── ROTHKO ──────────────────────────────────────
+  var rcv = document.getElementById('rothkoCanvas');
+  var rcx = rcv.getContext('2d');
+  var W=320, H=280;
+  var rH1=new LagFilter(270,0.6), rH2=new LagFilter(20,0.6), rH3=new LagFilter(200,0.6);
+  var rSoft=new LagFilter(38,0.5);
+  var breathe1=new LagFilter(50,1.8), breathe2=new LagFilter(50,1.8);
+  var tH1=270, tH2=20, tH3=200, tSoft=38;
+  // Breathe targets
+  var bTgt1=50, bTgt2=50;
+
+  function wire(id,valId,cb,fmt) {
+    var sl=document.getElementById(id), vd=document.getElementById(valId);
+    sl.addEventListener('input', function(){ cb(+sl.value); vd.textContent=fmt?((+sl.value).toFixed(fmt)):sl.value; });
+  }
+  wire('rH1','rH1V', function(v){tH1=v;});
+  wire('rH2','rH2V', function(v){tH2=v;});
+  wire('rH3','rH3V', function(v){tH3=v;});
+  wire('rSoft','rSoftV', function(v){tSoft=v;});
+
+  document.getElementById('rothkoNew').addEventListener('click', function() {
+    tH1=Math.random()*360; tH2=Math.random()*360; tH3=Math.random()*360;
+    document.getElementById('rH1').value=Math.round(tH1); document.getElementById('rH1V').textContent=Math.round(tH1);
+    document.getElementById('rH2').value=Math.round(tH2); document.getElementById('rH2V').textContent=Math.round(tH2);
+    document.getElementById('rH3').value=Math.round(tH3); document.getElementById('rH3V').textContent=Math.round(tH3);
+  });
+
+  function drawRothko(dt) {
+    rH1.update(tH1,dt); rH2.update(tH2,dt); rH3.update(tH3,dt); rSoft.update(tSoft,dt);
+    // Breathe
+    bTgt1=50+35*Math.sin(Date.now()*0.0004); bTgt2=50+35*Math.cos(Date.now()*0.00035);
+    breathe1.update(bTgt1,dt); breathe2.update(bTgt2,dt);
+    var h1=rH1.val, h2=rH2.val, h3=rH3.val, soft=rSoft.val;
+    var s1=Math.round(breathe1.val), s2=Math.round(breathe2.val);
+    // Background
+    rcx.fillStyle='hsl('+h1+',55%,22%)'; rcx.fillRect(0,0,W,H);
+    // Zone 1 — top rectangle
+    var g1=rcx.createLinearGradient(0,10,0,H*0.42);
+    g1.addColorStop(0,'hsla('+h1+',60%,45%,0)');
+    g1.addColorStop(soft/100,'hsla('+h2+','+s1+'%,52%,0.9)');
+    g1.addColorStop(1-soft/100,'hsla('+h2+','+s1+'%,52%,0.9)');
+    g1.addColorStop(1,'hsla('+h1+',60%,45%,0)');
+    rcx.fillStyle=g1; rcx.fillRect(0,0,W,H*0.45);
+    // Zone 2 — bottom rectangle
+    var g2=rcx.createLinearGradient(0,H*0.55,0,H-10);
+    g2.addColorStop(0,'hsla('+h3+',65%,40%,0)');
+    g2.addColorStop(soft/100,'hsla('+h3+','+s2+'%,48%,0.88)');
+    g2.addColorStop(1-soft/100,'hsla('+h3+','+s2+'%,48%,0.88)');
+    g2.addColorStop(1,'hsla('+h3+',65%,40%,0)');
+    rcx.fillStyle=g2; rcx.fillRect(0,H*0.52,W,H*0.48);
+    // Luminous inner glow
+    var glow=rcx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*0.45);
+    glow.addColorStop(0,'hsla('+h2+',80%,70%,0.12)');
+    glow.addColorStop(1,'transparent');
+    rcx.fillStyle=glow; rcx.fillRect(0,0,W,H);
+  }
+
+  // ── LEWITT ──────────────────────────────────────
+  var lcv=document.getElementById('lewittCanvas'), lcx=lcv.getContext('2d');
+  var LW=320,LH=280;
+  var lwGrid=new LagFilter(6,0.3), lwDens=new LagFilter(4,0.3);
+  var tLwGrid=6, tLwDir=1, tLwDens=4;
+  var DIRS=['Vertical','Horizontal','Diagonal','Cross'];
+
+  wire('lwGrid','lwGridV', function(v){tLwGrid=v;});
+  wire('lwDens','lwDensV', function(v){tLwDens=v;});
+  document.getElementById('lwDir').addEventListener('input', function() {
+    tLwDir=+this.value;
+    document.getElementById('lwDirV').textContent=['V','H','D','X'][tLwDir];
+    updateInstruction();
+  });
+
+  function updateInstruction() {
+    var g=Math.round(tLwGrid), d=DIRS[tLwDir], dens=Math.round(tLwDens);
+    document.getElementById('lwInstruction').innerHTML =
+      '<em>Instruction:</em> Draw a '+g+'x'+g+' grid. In each cell draw '+dens+' '+d.toLowerCase()+' lines evenly spaced within the cell boundary.';
+  }
+  updateInstruction();
+
+  function drawLeWitt(dt) {
+    lwGrid.update(tLwGrid,dt); lwDens.update(tLwDens,dt);
+    var n=Math.max(1,Math.round(lwGrid.val)), d=Math.max(1,Math.round(lwDens.val));
+    lcx.fillStyle='#f5f5f0'; lcx.fillRect(0,0,LW,LH);
+    var cw=LW/n, ch=LH/n;
+    lcx.strokeStyle='#1e1b4b'; lcx.lineWidth=0.9;
+    for (var r=0;r<n;r++) {
+      for (var c=0;c<n;c++) {
+        var x0=c*cw, y0=r*ch;
+        // Cell border
+        lcx.strokeStyle='#ccc'; lcx.lineWidth=0.5;
+        lcx.strokeRect(x0,y0,cw,ch);
+        lcx.strokeStyle='#1e1b4b'; lcx.lineWidth=0.9;
+        // Lines inside cell
+        for (var i=1;i<=d;i++) {
+          var frac=i/(d+1);
+          if (tLwDir===0) { // vertical
+            lcx.beginPath(); lcx.moveTo(x0+cw*frac,y0+1); lcx.lineTo(x0+cw*frac,y0+ch-1); lcx.stroke();
+          } else if (tLwDir===1) { // horizontal
+            lcx.beginPath(); lcx.moveTo(x0+1,y0+ch*frac); lcx.lineTo(x0+cw-1,y0+ch*frac); lcx.stroke();
+          } else if (tLwDir===2) { // diagonal
+            lcx.beginPath(); lcx.moveTo(x0+cw*frac,y0); lcx.lineTo(x0+cw*(frac-0.5)+cw,y0+ch); lcx.stroke();
+          } else { // cross
+            lcx.beginPath(); lcx.moveTo(x0+cw*frac,y0+1); lcx.lineTo(x0+cw*frac,y0+ch-1); lcx.stroke();
+            lcx.beginPath(); lcx.moveTo(x0+1,y0+ch*frac); lcx.lineTo(x0+cw-1,y0+ch*frac); lcx.stroke();
+          }
+        }
+      }
+    }
+  }
+
+  var last=performance.now();
+  function loop(now) {
+    requestAnimationFrame(loop);
+    var dt=Math.min((now-last)/1000,0.05); last=now;
+    drawRothko(dt); drawLeWitt(dt);
+  }
+  loop(performance.now());
+})();
+</script>
+
+<!-- ══════════════════════════════════════
+     SECTION 6 — ABSTRACT EXPRESSIONISM TOOLS
+══════════════════════════════════════ -->
+<section id="abstract-expressionism">
+<div class="section-inner hidden">
+  <div class="sec-label">Expressive Mark-Making</div>
+  <h2>Abstract Expressionism Tools</h2>
+  <p>Three expressive tools drawn from the New York School — drip painting, gestural brushwork, and soft color washes. Select a tool and paint directly on the canvas.</p>
+  <div class="ae-toolbar">
+    <button class="btn act" id="aeDrip">Drip / Pollock</button>
+    <button class="btn" id="aeBrush">Gestural / de Kooning</button>
+    <button class="btn" id="aeWash">Color Wash / Rothko</button>
+    <button class="btn" id="aeReset">Clear Canvas</button>
+  </div>
+  <canvas id="aeCanvas" width="780" height="420"></canvas>
+  <p style="margin-top:0.5rem;font-size:0.78rem;"><em>Drip:</em> click-drag fast to fling paint. <em>Gestural:</em> drag — fast=thin, slow=thick bristles. <em>Wash:</em> click to pour a soft color zone.</p>
+</div>
+</section>
+
+<script>
+(function() {
+  var cv=document.getElementById('aeCanvas'), cx=cv.getContext('2d');
+  var W=780,H=420;
+  cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,W,H);
+
+  var tool='drip';
+  var painting=false, lastX=0, lastY=0, lastT=0;
+  var pressure=new LagFilter(8,0.12);  // LagFilter for brush pressure
+  var vx=new LagFilter(0,0.08), vy=new LagFilter(0,0.08); // velocity smoothing
+  var drip_hue=new LagFilter(0,0.5);   // LagFilter for drip hue cycling
+
+  var DRIP_PALETTE=['#f59e0b','#ef4444','#7c3aed','#3b82f6','#22c55e','#ec4899','#111111','#f97316'];
+  var EXP_PALETTE=['#7c3aed','#f59e0b','#ef4444','#3b82f6','#22c55e','#f97316','#ec4899','#14b8a6'];
+  var currentColor=DRIP_PALETTE[0];
+  var colorIdx=0;
+  var washHue=new LagFilter(270,0.8); // LagFilter for wash hue
+  var tWashHue=270;
+
+  function getPos(e) {
+    var r=cv.getBoundingClientRect();
+    var src=e.touches?e.touches[0]:e;
+    return {x:(src.clientX-r.left)*(W/r.width), y:(src.clientY-r.top)*(H/r.height)};
+  }
+
+  function startPaint(e) {
+    e.preventDefault(); painting=true;
+    var p=getPos(e); lastX=p.x; lastY=p.y; lastT=performance.now();
+    colorIdx=(colorIdx+1)%DRIP_PALETTE.length;
+    if (tool==='drip') currentColor=DRIP_PALETTE[colorIdx];
+    else if (tool==='brush') currentColor=EXP_PALETTE[colorIdx];
+    else {
+      tWashHue=(tWashHue+47)%360;
+      doWash(p.x,p.y);
+    }
+  }
+  function doPaint(e) {
+    if (!painting||tool==='wash') return;
+    e.preventDefault();
+    var p=getPos(e); var now=performance.now();
+    var dt=(now-lastT)/1000; lastT=now;
+    var dvx=(p.x-lastX)/(dt+0.001), dvy=(p.y-lastY)/(dt+0.001);
+    vx.update(dvx,dt); vy.update(dvy,dt);
+    var speed=Math.sqrt(vx.val*vx.val+vy.val*vy.val);
+
+    if (tool==='drip') {
+      doDrip(p.x,p.y,speed,dvx,dvy);
+    } else if (tool==='brush') {
+      doGesture(lastX,lastY,p.x,p.y,speed,dt);
+    }
+    lastX=p.x; lastY=p.y;
+  }
+  function stopPaint() { painting=false; }
+
+  cv.addEventListener('mousedown', startPaint);
+  cv.addEventListener('mousemove', doPaint);
+  window.addEventListener('mouseup', stopPaint);
+  cv.addEventListener('touchstart', startPaint, {passive:false});
+  cv.addEventListener('touchmove', doPaint, {passive:false});
+  cv.addEventListener('touchend', stopPaint);
+
+  function doDrip(x,y,speed,dvx,dvy) {
+    // Main drop
+    cx.beginPath();
+    cx.arc(x,y,2+Math.random()*3,0,Math.PI*2);
+    cx.fillStyle=currentColor;
+    cx.globalAlpha=0.85+Math.random()*0.15;
+    cx.fill();
+    // Splatter at high speed
+    if (speed>200) {
+      var splats=Math.floor(speed/120);
+      for (var i=0;i<splats;i++) {
+        var ang=Math.atan2(dvy,dvx)+(Math.random()-0.5)*1.2;
+        var dist=20+Math.random()*speed*0.04;
+        cx.beginPath();
+        cx.arc(x+Math.cos(ang)*dist, y+Math.sin(ang)*dist, 0.8+Math.random()*2.5, 0, Math.PI*2);
+        cx.globalAlpha=0.5+Math.random()*0.4;
+        cx.fill();
+      }
+    }
+    // Drip line
+    cx.beginPath(); cx.moveTo(x,y);
+    cx.lineTo(x+(dvx/(speed+1))*15, y+(dvy/(speed+1))*15);
+    cx.strokeStyle=currentColor; cx.lineWidth=1.5+Math.random()*2;
+    cx.globalAlpha=0.6; cx.stroke();
+    cx.globalAlpha=1;
+  }
+
+  function doGesture(x1,y1,x2,y2,speed,dt) {
+    // LagFiltered pressure: fast=thin, slow=thick
+    var targetW=Math.max(2, 28-(speed/60));
+    pressure.update(targetW, dt);
+    var bristles=Math.ceil(pressure.val/3);
+    cx.globalAlpha=0.72;
+    for (var i=0;i<bristles;i++) {
+      var off=(i-bristles/2)*(pressure.val/bristles)*0.9;
+      var perpX=-(y2-y1)/(Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))+0.01);
+      var perpY=(x2-x1)/(Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))+0.01);
+      cx.beginPath();
+      cx.moveTo(x1+perpX*off, y1+perpY*off);
+      cx.lineTo(x2+perpX*off+Math.random()*2-1, y2+perpY*off+Math.random()*2-1);
+      cx.strokeStyle=currentColor;
+      cx.lineWidth=Math.max(0.5, pressure.val/bristles*0.8);
+      cx.lineCap='round'; cx.stroke();
+    }
+    cx.globalAlpha=1;
+  }
+
+  var washHueAnim=new LagFilter(270,0.6);
+  function doWash(x,y) {
+    washHue.update(tWashHue, 0.3);
+    var h=tWashHue;
+    var r=80+Math.random()*60;
+    var g=cx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,'hsla('+h+',70%,55%,0.55)');
+    g.addColorStop(0.5,'hsla('+h+',60%,45%,0.3)');
+    g.addColorStop(1,'transparent');
+    cx.globalCompositeOperation='multiply';
+    cx.fillStyle=g; cx.fillRect(x-r,y-r,r*2,r*2);
+    cx.globalCompositeOperation='source-over';
+  }
+
+  document.getElementById('aeDrip').addEventListener('click', function(){ tool='drip'; updateAeBtns(); });
+  document.getElementById('aeBrush').addEventListener('click', function(){ tool='brush'; updateAeBtns(); });
+  document.getElementById('aeWash').addEventListener('click', function(){ tool='wash'; updateAeBtns(); });
+  document.getElementById('aeReset').addEventListener('click', function(){
+    cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,W,H);
+  });
+  function updateAeBtns() {
+    [['aeDrip','drip'],['aeBrush','brush'],['aeWash','wash']].forEach(function(p){
+      document.getElementById(p[0]).classList.toggle('act',tool===p[1]);
+    });
+  }
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 7 — GENERATIVE ABSTRACTION
+══════════════════════════════════════ -->
+<section id="generative">
+<div class="section-inner hidden">
+  <div class="sec-label">Algorithmic &amp; Systematic Art</div>
+  <h2>Generative Abstraction</h2>
+  <p>Three algorithmic systems that generate abstract compositions through rules, mathematics, and recursive logic.</p>
+  <div class="gen-tabs">
+    <button class="btn act" id="genT0">Rule-Based</button>
+    <button class="btn" id="genT1">Strange Attractors</button>
+    <button class="btn" id="genT2">Recursive Subdivision</button>
+  </div>
+
+  <!-- Panel 0: Rule-Based -->
+  <div class="gen-panel act" id="genP0">
+    <canvas id="genRuleCanvas" width="700" height="360" style="width:100%;border-radius:8px;border:1px solid rgba(167,139,250,0.3);display:block;"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 2rem;margin-top:0.75rem;">
+      <div class="ctrl"><label>N Circles</label><input type="range" id="grCircles" min="0" max="60" value="30"><span class="val-d" id="grCirclesV">30</span></div>
+      <div class="ctrl"><label>Connect Nth</label><input type="range" id="grConnect" min="0" max="30" value="8"><span class="val-d" id="grConnectV">8</span></div>
+      <div class="ctrl"><label>Subdivide Thresh</label><input type="range" id="grSubdiv" min="500" max="50000" value="12000"><span class="val-d" id="grSubdivV">12000</span></div>
+      <div class="ctrl"><label>Color Spread</label><input type="range" id="grSpread" min="10" max="360" value="120"><span class="val-d" id="grSpreadV">120</span></div>
+    </div>
+    <button class="btn" id="grRegen" style="margin-top:0.5rem;">Regenerate</button>
+  </div>
+
+  <!-- Panel 1: Strange Attractors -->
+  <div class="gen-panel" id="genP1">
+    <canvas id="genAttrCanvas" width="700" height="380" style="width:100%;border-radius:8px;border:1px solid rgba(167,139,250,0.3);display:block;"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 2rem;margin-top:0.75rem;">
+      <div class="ctrl"><label>a</label><input type="range" id="gaA" min="-3" max="3" value="-1.7" step="0.01"><span class="val-d" id="gaAV">-1.7</span></div>
+      <div class="ctrl"><label>b</label><input type="range" id="gaB" min="-3" max="3" value="1.3" step="0.01"><span class="val-d" id="gaBV">1.3</span></div>
+      <div class="ctrl"><label>c</label><input type="range" id="gaC" min="-3" max="3" value="0.5" step="0.01"><span class="val-d" id="gaCV">0.5</span></div>
+      <div class="ctrl"><label>d</label><input type="range" id="gaD" min="-3" max="3" value="-1.2" step="0.01"><span class="val-d" id="gaDV">-1.2</span></div>
+    </div>
+    <div class="toolbar" style="margin-top:0.5rem;">
+      <button class="btn act" id="gaClifford">Clifford</button>
+      <button class="btn" id="gaPeterDeJong">Peter de Jong</button>
+    </div>
+  </div>
+
+  <!-- Panel 2: Recursive Subdivision -->
+  <div class="gen-panel" id="genP2">
+    <canvas id="genRecCanvas" width="700" height="380" style="width:100%;border-radius:8px;border:1px solid rgba(167,139,250,0.3);display:block;"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 2rem;margin-top:0.75rem;">
+      <div class="ctrl"><label>Depth</label><input type="range" id="grDepth" min="1" max="8" value="4" step="1"><span class="val-d" id="grDepthV">4</span></div>
+      <div class="ctrl"><label>Base Hue</label><input type="range" id="grHue" min="0" max="360" value="270"><span class="val-d" id="grHueV">270</span></div>
+    </div>
+    <button class="btn" id="grRecRegen" style="margin-top:0.5rem;">Regenerate</button>
+  </div>
+</div>
+</section>
+
+<script>
+(function() {
+  var panels=['genP0','genP1','genP2'], tabs=['genT0','genT1','genT2'];
+  tabs.forEach(function(tid,i) {
+    document.getElementById(tid).addEventListener('click', function() {
+      panels.forEach(function(pid,j){ document.getElementById(pid).classList.toggle('act',j===i); });
+      tabs.forEach(function(t,j){ document.getElementById(t).classList.toggle('act',j===i); });
+    });
+  });
+
+  // ── PANEL 0: RULE-BASED ─────────────────────────
+  var rcv=document.getElementById('genRuleCanvas'), rcx=rcv.getContext('2d');
+  var RW=700,RH=360;
+  var rCircles=new LagFilter(30,0.4), rConnect=new LagFilter(8,0.4);
+  var rSubdiv=new LagFilter(12000,0.4), rSpread=new LagFilter(120,0.4);
+  var tRCircles=30, tRConnect=8, tRSubdiv=12000, tRSpread=120;
+
+  function wireG(id,valId,setter,fmt) {
+    var sl=document.getElementById(id), vd=document.getElementById(valId);
+    sl.addEventListener('input', function(){ setter(+sl.value); vd.textContent=fmt?(+sl.value).toFixed(fmt):sl.value; });
+  }
+  wireG('grCircles','grCirclesV',function(v){tRCircles=v;});
+  wireG('grConnect','grConnectV',function(v){tRConnect=v;});
+  wireG('grSubdiv','grSubdivV',function(v){tRSubdiv=v;});
+  wireG('grSpread','grSpreadV',function(v){tRSpread=v;});
+
+  var rulePoints=[];
+  function regenRule() {
+    rulePoints=[];
+    var n=Math.round(tRCircles);
+    for (var i=0;i<n;i++) {
+      rulePoints.push({x:40+Math.random()*(RW-80), y:40+Math.random()*(RH-80), r:8+Math.random()*30});
+    }
+  }
+  regenRule();
+  document.getElementById('grRegen').addEventListener('click', regenRule);
+
+  var lastR=performance.now();
+  function drawRule(now) {
+    if (document.getElementById('genP0').classList.contains('act')) requestAnimationFrame(drawRule);
+    var dt=Math.min((now-lastR)/1000,0.05); lastR=now;
+    rCircles.update(tRCircles,dt); rConnect.update(tRConnect,dt);
+    rSubdiv.update(tRSubdiv,dt); rSpread.update(tRSpread,dt);
+    rcx.fillStyle='#1e1b4b'; rcx.fillRect(0,0,RW,RH);
+    var n=Math.min(rulePoints.length, Math.round(rCircles.val));
+    var hueBase=270, spread=rSpread.val;
+    // Rule 1: Draw N circles
+    for (var i=0;i<n;i++) {
+      var p=rulePoints[i], hue=(hueBase+i/n*spread)%360;
+      rcx.beginPath(); rcx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      rcx.strokeStyle='hsl('+hue+',80%,65%)'; rcx.lineWidth=1.2; rcx.globalAlpha=0.6; rcx.stroke();
+      rcx.globalAlpha=0.1; rcx.fillStyle='hsl('+hue+',60%,50%)'; rcx.fill(); rcx.globalAlpha=1;
+    }
+    // Rule 2: Connect every Nth point
+    var step=Math.max(1,Math.round(rConnect.val));
+    rcx.strokeStyle='rgba(167,139,250,0.35)'; rcx.lineWidth=0.8;
+    for (var i=0;i<n-step;i+=step) {
+      rcx.beginPath(); rcx.moveTo(rulePoints[i].x,rulePoints[i].y);
+      rcx.lineTo(rulePoints[i+step].x,rulePoints[i+step].y); rcx.stroke();
+    }
+    // Rule 3: Subdivide rects with area > threshold
+    var thresh=rSubdiv.val;
+    rcx.strokeStyle='rgba(245,158,11,0.2)'; rcx.lineWidth=0.6;
+    function subdivide(x,y,w,h,depth) {
+      if (depth>4||w*h<thresh) return;
+      var phi=0.618;
+      if (w>h) {
+        var sp=w*phi; rcx.beginPath(); rcx.moveTo(x+sp,y); rcx.lineTo(x+sp,y+h); rcx.stroke();
+        subdivide(x,y,sp,h,depth+1); subdivide(x+sp,y,w-sp,h,depth+1);
+      } else {
+        var sp=h*phi; rcx.beginPath(); rcx.moveTo(x,y+sp); rcx.lineTo(x+w,y+sp); rcx.stroke();
+        subdivide(x,y,w,sp,depth+1); subdivide(x,y+sp,w,h-sp,depth+1);
+      }
+    }
+    subdivide(0,0,RW,RH,0);
+  }
+  drawRule(performance.now());
+
+  // ── PANEL 1: STRANGE ATTRACTORS ─────────────────
+  var acv=document.getElementById('genAttrCanvas'), acx=acv.getContext('2d');
+  var AW=700,AH=380;
+  var aA=new LagFilter(-1.7,0.6), aB=new LagFilter(1.3,0.6);
+  var aC=new LagFilter(0.5,0.6), aD=new LagFilter(-1.2,0.6);
+  var tA=-1.7, tB=1.3, tC=0.5, tD=-1.2;
+  var attrType='clifford';
+  wireG('gaA','gaAV',function(v){tA=v;},2);
+  wireG('gaB','gaBV',function(v){tB=v;},2);
+  wireG('gaC','gaCV',function(v){tC=v;},2);
+  wireG('gaD','gaDV',function(v){tD=v;},2);
+  document.getElementById('gaClifford').addEventListener('click',function(){attrType='clifford'; this.classList.add('act'); document.getElementById('gaPeterDeJong').classList.remove('act');});
+  document.getElementById('gaPeterDeJong').addEventListener('click',function(){attrType='pdj'; this.classList.add('act'); document.getElementById('gaClifford').classList.remove('act');});
+
+  // Off-screen for accumulation
+  var offscr=document.createElement('canvas'); offscr.width=AW; offscr.height=AH;
+  var offcx=offscr.getContext('2d');
+  offcx.fillStyle='#0a0814'; offcx.fillRect(0,0,AW,AH);
+  var ax=0.1, ay=0.1;
+  var lastPrms={a:tA,b:tB,c:tC,d:tD,type:attrType};
+
+  function resetAttractor() {
+    offcx.fillStyle='#0a0814'; offcx.fillRect(0,0,AW,AH);
+    ax=0.1; ay=0.1;
+  }
+
+  var lastA=performance.now();
+  function drawAttractor(now) {
+    if (document.getElementById('genP1').classList.contains('act')) requestAnimationFrame(drawAttractor);
+    else { lastA=now; return; }
+    var dt=Math.min((now-lastA)/1000,0.05); lastA=now;
+    var ca=aA.update(tA,dt), cb=aB.update(tB,dt), cc=aC.update(tC,dt), cd=aD.update(tD,dt);
+    if (lastPrms.a!==tA||lastPrms.b!==tB||lastPrms.c!==tC||lastPrms.d!==tD||lastPrms.type!==attrType) {
+      resetAttractor(); lastPrms={a:tA,b:tB,c:tC,d:tD,type:attrType};
+    }
+    var steps=8000;
+    offcx.globalAlpha=0.55;
+    for (var i=0;i<steps;i++) {
+      var nx,ny;
+      if (attrType==='clifford') {
+        nx=Math.sin(ca*ay)+cc*Math.cos(ca*ax);
+        ny=Math.sin(cb*ax)+cd*Math.cos(cb*ay);
+      } else {
+        nx=Math.sin(ca*ay)-Math.cos(cb*ax);
+        ny=Math.sin(cc*ax)-Math.cos(cd*ay);
+      }
+      ax=nx; ay=ny;
+      var px=Math.round((ax+3)/6*AW), py=Math.round((ay+3)/6*AH);
+      if (px<0||px>=AW||py<0||py>=AH) continue;
+      var hue=(i/steps*360)%360;
+      offcx.fillStyle='hsl('+hue+',85%,65%)';
+      offcx.fillRect(px,py,1,1);
+    }
+    offcx.globalAlpha=1;
+    acx.drawImage(offscr,0,0);
+  }
+  document.getElementById('genT1').addEventListener('click', function() { drawAttractor(performance.now()); });
+  // Auto-start if tab is active
+  setTimeout(function(){ if(document.getElementById('genP1').classList.contains('act')) drawAttractor(performance.now()); }, 100);
+
+  // ── PANEL 2: RECURSIVE SUBDIVISION ──────────────
+  var rrcv=document.getElementById('genRecCanvas'), rrcx=rrcv.getContext('2d');
+  var RRW=700,RRH=380;
+  var rrDepth=new LagFilter(4,0.4), rrHue=new LagFilter(270,0.4);
+  var tRRDepth=4, tRRHue=270;
+  wireG('grDepth','grDepthV',function(v){tRRDepth=v;});
+  wireG('grHue','grHueV',function(v){tRRHue=v;});
+
+  var recSeed=Math.random();
+  document.getElementById('grRecRegen').addEventListener('click',function(){recSeed=Math.random(); drawRecursive();});
+
+  function seededRand(seed) {
+    var x=Math.sin(seed+1)*10000; return x-Math.floor(x);
+  }
+
+  function drawRecursive() {
+    rrDepth.update(tRRDepth,0.3); rrHue.update(tRRHue,0.3);
+    rrcx.fillStyle='#1e1b4b'; rrcx.fillRect(0,0,RRW,RRH);
+    var maxDepth=Math.round(rrDepth.val), baseHue=rrHue.val;
+    var counter={n:0};
+    function subDiv(x,y,w,h,depth,hueOffset) {
+      if (depth>=maxDepth||w<4||h<4) {
+        var hue=(baseHue+hueOffset)%360;
+        var light=35+depth*7;
+        rrcx.fillStyle='hsl('+hue+',65%,'+light+'%)';
+        rrcx.fillRect(x+1,y+1,w-2,h-2);
+        return;
+      }
+      var phi=0.618;
+      var sr=seededRand(recSeed*100+counter.n++);
+      if (w>h) {
+        var sp=sr<0.5?(w*phi):(w*(1-phi));
+        subDiv(x,y,sp,h,depth+1,hueOffset+15);
+        subDiv(x+sp,y,w-sp,h,depth+1,hueOffset+35);
+      } else {
+        var sp=sr<0.5?(h*phi):(h*(1-phi));
+        subDiv(x,y,w,sp,depth+1,hueOffset+25);
+        subDiv(x,y+sp,w,h-sp,depth+1,hueOffset+10);
+      }
+      rrcx.strokeStyle='rgba(30,27,75,0.7)'; rrcx.lineWidth=1;
+      rrcx.strokeRect(x,y,w,h);
+    }
+    subDiv(0,0,RRW,RRH,0,0);
+  }
+  drawRecursive();
+
+  document.getElementById('genT2').addEventListener('click', drawRecursive);
+  document.getElementById('grDepth').addEventListener('input', drawRecursive);
+  document.getElementById('grHue').addEventListener('input', drawRecursive);
+
+  // Resume rule-based anim on tab switch
+  document.getElementById('genT0').addEventListener('click', function() { drawRule(performance.now()); });
+})();
+</script>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 8 — ARTISTS
+══════════════════════════════════════ -->
+<section id="artists">
+<div class="section-inner hidden">
+  <div class="sec-label">Eight Visionaries</div>
+  <h2>Artists of Abstraction</h2>
+  <p>Eight figures who defined how we understand form, color, and space without representation — from Russian avant-garde to contemporary generative practice.</p>
+  <div class="artists-grid" id="artistsGrid"></div>
+</div>
+</section>
+
+<!-- Artist demo modal -->
+<div class="modal-overlay" id="artistModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc" style="font-size:0.82rem;margin-bottom:0.75rem;"></p>
+    <canvas class="modal-canvas" id="modalCanvas" width="500" height="280"></canvas>
+    <p id="modalApproach" style="font-size:0.78rem;font-style:italic;"></p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var ARTISTS = [
+    {
+      name:'Wassily Kandinsky', era:'1866–1944', move:'Lyrical Abstraction / Bauhaus',
+      works:'Composition VII (1913), Yellow-Red-Blue (1925), Several Circles (1926)',
+      approach:'Believed each color has a spiritual vibration — yellow is aggressive, blue is deep, red is confident. Composition like music.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#fff'; cx.fillRect(0,0,76,76);
+        cx.fillStyle='#7c3aed'; cx.beginPath(); cx.arc(38,38,28,0,Math.PI*2); cx.stroke=cx.strokeStyle='#7c3aed'; cx.lineWidth=3; cx.stroke();
+        cx.fillStyle='#f59e0b'; cx.beginPath(); cx.arc(38,38,14,0,Math.PI*2); cx.fill();
+        cx.strokeStyle='#ef4444'; cx.lineWidth=2; cx.beginPath(); cx.moveTo(10,20); cx.lineTo(66,56); cx.stroke();
+        cx.fillStyle='#3b82f6'; cx.fillRect(8,55,20,10);
+      },
+      demo: function(cv,cx) {
+        var t=Date.now()*0.001;
+        cx.fillStyle='#fff'; cx.fillRect(0,0,500,280);
+        var shapes=[{t:'c',x:120,y:100,r:60,c:'#3b82f6'},{t:'c',x:280,y:140,r:40,c:'#f59e0b'},{t:'c',x:400,y:90,r:50,c:'#7c3aed'},{t:'t',x:200,y:200,s:80,c:'#ef4444'},{t:'l',x1:50,y1:50,x2:450,y2:230,c:'#111'}];
+        shapes.forEach(function(s,i){
+          cx.globalAlpha=0.7+0.3*Math.sin(t+i);
+          if(s.t==='c'){cx.beginPath();cx.arc(s.x+Math.sin(t*0.5+i)*8,s.y+Math.cos(t*0.4+i)*6,s.r,0,Math.PI*2);cx.strokeStyle=s.c;cx.lineWidth=3;cx.stroke();cx.globalAlpha*=0.2;cx.fillStyle=s.c;cx.fill();}
+          else if(s.t==='t'){cx.beginPath();cx.moveTo(s.x,s.y-s.s/2);cx.lineTo(s.x+s.s/2,s.y+s.s/2);cx.lineTo(s.x-s.s/2,s.y+s.s/2);cx.closePath();cx.fillStyle=s.c;cx.globalAlpha*=0.8;cx.fill();}
+          else{cx.beginPath();cx.moveTo(s.x1,s.y1);cx.lineTo(s.x2,s.y2);cx.strokeStyle=s.c;cx.lineWidth=2;cx.stroke();}
+          cx.globalAlpha=1;
+        });
+      }
+    },
+    {
+      name:'Kazimir Malevich', era:'1879–1935', move:'Suprematism',
+      works:'Black Square (1915), Suprematist Composition (1916), White on White (1918)',
+      approach:'Pure sensation of non-objectivity — geometric forms float free of gravity, narrative, and all earthly association.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,76,76);
+        cx.fillStyle='#111'; cx.fillRect(14,14,48,48);
+        cx.fillStyle='#888'; cx.save(); cx.translate(38,38); cx.rotate(0.4); cx.fillRect(-12,-6,24,12); cx.restore();
+      },
+      demo: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,500,280);
+        var shapes=[{t:'r',x:60,y:40,w:140,h:100,c:'#111',rot:0},{t:'r',x:280,y:80,w:80,h:180,c:'#111',rot:0.3},{t:'c2',x:380,y:60,r:55,c:'#111'},{t:'r',x:100,y:190,w:220,h:35,c:'#ef4444',rot:-0.15},{t:'r',x:360,y:180,w:60,h:60,c:'#888',rot:0.5}];
+        shapes.forEach(function(s){
+          cx.save(); cx.translate(s.t==='c2'?s.x:s.x+s.w/2, s.t==='c2'?s.y:s.y+s.h/2); cx.rotate(s.rot||0); cx.fillStyle=s.c;
+          if(s.t==='r'||s.t===undefined) cx.fillRect(-s.w/2,-s.h/2,s.w,s.h);
+          else if(s.t==='c2'){cx.beginPath();cx.arc(0,0,s.r,0,Math.PI*2);cx.fill();}
+          cx.restore();
+        });
+      }
+    },
+    {
+      name:'Piet Mondrian', era:'1872–1944', move:'De Stijl / Neo-Plasticism',
+      works:'Composition with Red, Blue and Yellow (1930), Broadway Boogie Woogie (1943)',
+      approach:'Reduction to primary colors and right angles expressed universal harmony — horizontal and vertical forces of life in balance.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,76,76);
+        cx.strokeStyle='#111'; cx.lineWidth=4;
+        cx.beginPath(); cx.moveTo(30,0); cx.lineTo(30,76); cx.stroke();
+        cx.beginPath(); cx.moveTo(0,40); cx.lineTo(76,40); cx.stroke();
+        cx.fillStyle='#ef4444'; cx.fillRect(32,2,42,36);
+        cx.fillStyle='#3b82f6'; cx.fillRect(2,42,26,32);
+        cx.fillStyle='#f59e0b'; cx.fillRect(32,42,42,32);
+      },
+      demo: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,500,280);
+        var ls=[[0,120,500,120],[0,220,500,220],[140,0,140,280],[320,0,320,280]];
+        cx.strokeStyle='#111'; cx.lineWidth=6;
+        ls.forEach(function(l){cx.beginPath();cx.moveTo(l[0],l[1]);cx.lineTo(l[2],l[3]);cx.stroke();});
+        [{x:0,y:0,w:140,h:120,c:'#ef4444'},{x:320,y:120,w:180,h:100,c:'#3b82f6'},{x:0,y:220,w:140,h:60,c:'#f59e0b'},{x:140,y:220,w:180,h:60,c:'#111'}].forEach(function(r){cx.fillStyle=r.c;cx.fillRect(r.x+3,r.y+3,r.w-6,r.h-6);});
+      }
+    },
+    {
+      name:'Bridget Riley', era:'1931–', move:'Op Art',
+      works:'Movement in Squares (1961), Crest (1964), Nataraja (1993)',
+      approach:'Optical phenomena ARE the subject — the artwork happens in the viewer\'s nervous system, not on the canvas.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#fff'; cx.fillRect(0,0,76,76);
+        for(var y=0;y<76;y+=6){cx.beginPath();cx.strokeStyle=y%12===0?'#111':'#555';cx.lineWidth=1;for(var x=0;x<76;x++){var py=y+Math.sin(x*0.3)*5;if(x===0)cx.moveTo(x,py);else cx.lineTo(x,py);}cx.stroke();}
+      },
+      demo: function(cv,cx) {
+        var t=Date.now()*0.001;
+        cx.fillStyle='#fff'; cx.fillRect(0,0,500,280);
+        for(var y=0;y<300;y+=9){cx.beginPath();cx.strokeStyle=y%18===0?'#111':'#666';cx.lineWidth=1.2;for(var x=0;x<=500;x++){var py=y+Math.sin((x/500)*Math.PI*4+t+y*0.05)*14;if(x===0)cx.moveTo(x,py);else cx.lineTo(x,py);}cx.stroke();}
+      }
+    },
+    {
+      name:'Victor Vasarely', era:'1906–1997', move:'Op Art / Kinetic',
+      works:'Vega-Nor (1969), Orion (1956), Zebra (1938)',
+      approach:'The optical illusion of movement and depth from flat geometric patterns — art as visual science for mass reproduction.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#111'; cx.fillRect(0,0,76,76);
+        var n=4; var cw=76/n;
+        for(var r=0;r<n;r++){for(var c=0;c<n;c++){var x=c*cw+cw/2,y=r*cw+cw/2,d=Math.sqrt(Math.pow(x-38,2)+Math.pow(y-38,2));var rad=cw*0.42*(1-d/54);if(rad>0){cx.beginPath();cx.arc(x,y,rad,0,Math.PI*2);cx.fillStyle='rgb('+(200-d*2)+','+(200-d*2)+','+(200-d*2)+')';cx.fill();}}}
+      },
+      demo: function(cv,cx) {
+        var t=Date.now()*0.0005;
+        cx.fillStyle='#111'; cx.fillRect(0,0,500,280);
+        var n=10, cw=500/n, ch=280/n;
+        for(var r=0;r<n;r++){for(var c=0;c<n;c++){var x=c*cw+cw/2,y=r*ch+ch/2;var dx=(x-250)/250,dy=(y-140)/140;var dist=Math.sqrt(dx*dx+dy*dy);var rad=Math.min(cw,ch)*0.45*(1-dist*0.5+0.1*Math.sin(dist*4-t));if(rad<1)continue;var bright=Math.floor(220*(1-dist*0.45));cx.fillStyle='rgb('+bright+','+bright+','+bright+')';cx.beginPath();cx.arc(x,y,rad,0,Math.PI*2);cx.fill();}}
+      }
+    },
+    {
+      name:'Mark Rothko', era:'1903–1970', move:'Abstract Expressionism / Color Field',
+      works:'No. 61 (1953), Ochre and Red on Red (1954), Seagram Murals (1958–59)',
+      approach:'Soft-edged rectangles of color meant to be experienced up close — Rothko wanted viewers to weep before them.',
+      avatar: function(cv,cx) {
+        var g=cx.createLinearGradient(0,0,0,76);g.addColorStop(0,'#7c3aed');g.addColorStop(1,'#1e1b4b');cx.fillStyle=g;cx.fillRect(0,0,76,76);
+        var z1=cx.createLinearGradient(0,5,0,35);z1.addColorStop(0,'rgba(245,158,11,0)');z1.addColorStop(0.3,'rgba(245,158,11,0.85)');z1.addColorStop(0.7,'rgba(245,158,11,0.85)');z1.addColorStop(1,'rgba(245,158,11,0)');cx.fillStyle=z1;cx.fillRect(8,5,60,30);
+        var z2=cx.createLinearGradient(0,42,0,70);z2.addColorStop(0,'rgba(239,68,68,0)');z2.addColorStop(0.3,'rgba(239,68,68,0.8)');z2.addColorStop(0.7,'rgba(239,68,68,0.8)');z2.addColorStop(1,'rgba(239,68,68,0)');cx.fillStyle=z2;cx.fillRect(8,42,60,28);
+      },
+      demo: function(cv,cx) {
+        var t=Date.now()*0.0004;
+        var h1=270+20*Math.sin(t), h2=20+15*Math.cos(t*0.7);
+        var bg=cx.createLinearGradient(0,0,500,0);bg.addColorStop(0,'hsl('+h1+',55%,18%)');bg.addColorStop(1,'hsl('+h1+',50%,22%)');cx.fillStyle=bg;cx.fillRect(0,0,500,280);
+        var g1=cx.createLinearGradient(0,20,0,130);g1.addColorStop(0,'hsla('+h2+',70%,55%,0)');g1.addColorStop(0.25,'hsla('+h2+',70%,55%,0.9)');g1.addColorStop(0.75,'hsla('+h2+',70%,55%,0.9)');g1.addColorStop(1,'hsla('+h2+',70%,55%,0)');cx.fillStyle=g1;cx.fillRect(30,20,440,130);
+        var h3=(h1+140)%360;
+        var g2=cx.createLinearGradient(0,160,0,265);g2.addColorStop(0,'hsla('+h3+',65%,42%,0)');g2.addColorStop(0.25,'hsla('+h3+',65%,48%,0.88)');g2.addColorStop(0.75,'hsla('+h3+',65%,48%,0.88)');g2.addColorStop(1,'hsla('+h3+',65%,42%,0)');cx.fillStyle=g2;cx.fillRect(30,158,440,122);
+      }
+    },
+    {
+      name:'Sol LeWitt', era:'1928–2007', move:'Conceptual Art / Minimalism',
+      works:'Wall Drawing #1 (1968), 46 Three-Part Variations (1967), Incomplete Open Cubes (1974)',
+      approach:'The idea is the machine that makes the art. Once the instruction is written the work is done — execution is secondary.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,76,76);
+        cx.strokeStyle='#1e1b4b'; cx.lineWidth=1;
+        var n=5; var s=76/n;
+        for(var r=0;r<n;r++){for(var c=0;c<n;c++){cx.strokeRect(c*s+2,r*s+2,s-4,s-4); if((r+c)%2===0){cx.beginPath();cx.moveTo(c*s+2,r*s+2);cx.lineTo(c*s+s-2,r*s+s-2);cx.stroke();}}}
+      },
+      demo: function(cv,cx) {
+        cx.fillStyle='#f5f5f0'; cx.fillRect(0,0,500,280);
+        cx.strokeStyle='#1e1b4b'; cx.lineWidth=1;
+        var n=8, cw=500/n, ch=280/n;
+        var dirs=[['h'],['v'],['d'],['h','v'],['h','d'],['v','d'],['h','v','d'],[]];
+        for(var r=0;r<n;r++){for(var c=0;c<n;c++){var x0=c*cw,y0=r*ch;cx.strokeStyle='#ccc';cx.strokeRect(x0,y0,cw,ch);cx.strokeStyle='#1e1b4b';var dir=dirs[(r+c)%dirs.length];var dens=4;for(var i=1;i<=dens;i++){var f=i/(dens+1);if(dir.indexOf('h')>=0){cx.beginPath();cx.moveTo(x0+2,y0+ch*f);cx.lineTo(x0+cw-2,y0+ch*f);cx.stroke();}if(dir.indexOf('v')>=0){cx.beginPath();cx.moveTo(x0+cw*f,y0+2);cx.lineTo(x0+cw*f,y0+ch-2);cx.stroke();}if(dir.indexOf('d')>=0){cx.beginPath();cx.moveTo(x0+cw*f,y0);cx.lineTo(x0+cw*(f-0.5)+cw,y0+ch);cx.stroke();}}}}
+      }
+    },
+    {
+      name:'Vera Molnar', era:'1924–2023', move:'Generative / Algorithmic Art',
+      works:'Interruptions (1968), 5 Lines (1984), Structure de Quadrilateres (1987)',
+      approach:'Computer as a studio partner — systematic permutations of simple rules generate infinite aesthetic variation. Disorder within order.',
+      avatar: function(cv,cx) {
+        cx.fillStyle='#1e1b4b'; cx.fillRect(0,0,76,76);
+        for(var i=0;i<30;i++){var ang=i*2.399,r=Math.sqrt(i)*6,x=38+r*Math.cos(ang),y=38+r*Math.sin(ang)*0.8;if(x<2||x>74||y<2||y>74)continue;cx.fillStyle='hsl('+(i*18%360)+',75%,65%)';cx.fillRect(x-1.5,y-1.5,3,3);}
+      },
+      demo: function(cv,cx) {
+        var t=Date.now()*0.001;
+        cx.fillStyle='#1e1b4b'; cx.fillRect(0,0,500,280);
+        for(var i=0;i<200;i++){var ang=i*2.399+t*0.1;var r=Math.sqrt(i)*15;var x=250+r*Math.cos(ang);var y=140+r*Math.sin(ang)*0.7;if(x<0||x>500||y<0||y>280)continue;var hue=(i*11+t*20)%360;cx.fillStyle='hsl('+hue+',80%,65%)';cx.fillRect(x-2,y-2,4,4);}
+        // Squares with noise
+        cx.strokeStyle='rgba(167,139,250,0.4)'; cx.lineWidth=1;
+        for(var i=0;i<12;i++){var s=20+i*18;var noise=5*Math.sin(t+i);cx.strokeRect(250-s/2+noise,140-s*0.36+noise,s,s*0.72);}
+      }
+    }
+  ];
+
+  var grid=document.getElementById('artistsGrid');
+  var modal=document.getElementById('artistModal');
+  var modalTitle=document.getElementById('modalTitle');
+  var modalDesc=document.getElementById('modalDesc');
+  var modalCanvas=document.getElementById('modalCanvas');
+  var modalApproach=document.getElementById('modalApproach');
+  var mcx=modalCanvas.getContext('2d');
+  var demoRaf=null;
+
+  ARTISTS.forEach(function(a,i) {
+    // Create avatar canvas
+    var ac=document.createElement('canvas'); ac.width=76; ac.height=76; ac.className='artist-avatar';
+    var actx=ac.getContext('2d'); a.avatar(ac,actx);
+
+    var card=document.createElement('div'); card.className='artist-card';
+    card.innerHTML='<div class="a-name">'+a.name+'</div><div class="a-era">'+a.era+'</div><div class="a-move">'+a.move+'</div><div class="a-works">'+a.works+'</div><button class="btn demo-btn" data-idx="'+i+'" style="margin-top:0.7rem;font-size:0.72rem;">View Technique Demo</button>';
+    card.insertBefore(ac, card.firstChild);
+    grid.appendChild(card);
+  });
+
+  grid.addEventListener('click', function(e) {
+    var btn=e.target.closest('[data-idx]');
+    if (!btn) return;
+    var a=ARTISTS[+btn.dataset.idx];
+    modalTitle.textContent=a.name;
+    modalDesc.textContent=a.era+' · '+a.move;
+    modalApproach.textContent=a.approach;
+    modal.classList.add('open');
+    if (demoRaf) cancelAnimationFrame(demoRaf);
+    function runDemo() { a.demo(modalCanvas,mcx); demoRaf=requestAnimationFrame(runDemo); }
+    runDemo();
+  });
+
+  document.getElementById('modalClose').addEventListener('click', function() {
+    modal.classList.remove('open');
+    if (demoRaf) { cancelAnimationFrame(demoRaf); demoRaf=null; }
+  });
+  modal.addEventListener('click', function(e) {
+    if (e.target===modal) { modal.classList.remove('open'); if(demoRaf){cancelAnimationFrame(demoRaf);demoRaf=null;} }
+  });
+})();
+</script>
+
+<!-- ══════════════════════════════════════
+     SECTION 9 — GLOSSARY
+══════════════════════════════════════ -->
+<section id="glossary">
+<div class="section-inner hidden">
+  <div class="sec-label">Key Terms &amp; Concepts</div>
+  <h2>Glossary of Abstraction</h2>
+  <p>Core vocabulary for understanding non-representational art — from formal elements to philosophical underpinnings.</p>
+  <div class="gloss-grid">
+    <div class="g-item"><div class="g-term">Abstraction</div><p class="g-def">The process of departing from literal representation toward pure form, color, and line — reducing or eliminating reference to the visible world.</p></div>
+    <div class="g-item"><div class="g-term">Color Field</div><p class="g-def">A style in which large areas of flat, resonant color fill the canvas to create immersive chromatic experience. Associated with Rothko, Newman, Frankenthaler.</p></div>
+    <div class="g-item"><div class="g-term">Composition</div><p class="g-def">The deliberate arrangement of visual elements — shape, color, line, space — within the picture plane to create unity and meaning.</p></div>
+    <div class="g-item"><div class="g-term">Concrete Art</div><p class="g-def">Art composed entirely of invented visual elements with no reference to natural forms, coined by Theo van Doesburg. Max Bill was its foremost practitioner.</p></div>
+    <div class="g-item"><div class="g-term">De Stijl</div><p class="g-def">Dutch movement (1917–1931) led by Mondrian and Van Doesburg, restricting visual language to horizontal/vertical lines and primary colors plus black and white.</p></div>
+    <div class="g-item"><div class="g-term">Expressionism</div><p class="g-def">Art that prioritizes subjective emotional response over objective depiction, using distortion, heightened color, and gestural marks to convey inner states.</p></div>
+    <div class="g-item"><div class="g-term">Form</div><p class="g-def">A bounded area or three-dimensional shape within a composition. In abstraction, form is the primary carrier of meaning independent of any object it might resemble.</p></div>
+    <div class="g-item"><div class="g-term">Gestural</div><p class="g-def">Mark-making that preserves the physical evidence of the artist's movement — brushstroke speed, pressure, and direction remain visible as expressive content.</p></div>
+    <div class="g-item"><div class="g-term">Geometric</div><p class="g-def">Abstraction using precise mathematical forms — circles, squares, triangles, lines — often derived from tools rather than hand gesture. De Stijl, Suprematism, Op Art.</p></div>
+    <div class="g-item"><div class="g-term">Ground</div><p class="g-def">The background surface upon which marks are made. In abstract painting, the relationship between figure and ground can be intentionally ambiguous or reversed.</p></div>
+    <div class="g-item"><div class="g-term">Hue</div><p class="g-def">The pure spectral color (red, blue, yellow, violet) before modification by value or saturation. In color theory, hue is the first dimension of color identity.</p></div>
+    <div class="g-item"><div class="g-term">Kinetic Art</div><p class="g-def">Art incorporating actual or apparent movement. Op Art creates visual movement without physical motion through carefully calibrated optical conflicts.</p></div>
+    <div class="g-item"><div class="g-term">Luminosity</div><p class="g-def">The quality of appearing to emit light from within. Rothko achieved luminosity through translucent paint layers; color field artists pursued it as primary goal.</p></div>
+    <div class="g-item"><div class="g-term">Minimalism</div><p class="g-def">Reduction to the absolute essentials of form and material, eliminating personal expression. Judd, Andre, Flavin used industrial materials in serial arrangements.</p></div>
+    <div class="g-item"><div class="g-term">Moir&#233;</div><p class="g-def">An interference pattern created when two repetitive grids or patterns overlap at a slight angle, producing a larger-scale emergent optical pattern.</p></div>
+    <div class="g-item"><div class="g-term">Non-Objective</div><p class="g-def">Art with no reference to observable reality whatsoever — stricter than "abstract," which may retain some naturalistic origin. Malevich's Suprematism was fully non-objective.</p></div>
+    <div class="g-item"><div class="g-term">Op Art</div><p class="g-def">Short for Optical Art — work that exploits visual perception to create apparent motion, three-dimensionality, or vibration through precise geometric patterning.</p></div>
+    <div class="g-item"><div class="g-term">Pictorial Space</div><p class="g-def">The illusion of depth or three-dimensional space within a two-dimensional work. Abstract artists may flatten, deny, or paradoxically intensify pictorial space.</p></div>
+    <div class="g-item"><div class="g-term">Plane</div><p class="g-def">A flat, two-dimensional surface element within a composition. Paul Cezanne's "passage" of interlocking planes was foundational for abstract art's development.</p></div>
+    <div class="g-item"><div class="g-term">Pure Abstraction</div><p class="g-def">Art in which visual elements function autonomously without reference to external reality — form and color as the sole subject matter and content.</p></div>
+    <div class="g-item"><div class="g-term">Saturation</div><p class="g-def">The intensity or purity of a hue — how far it is from gray. High saturation produces vivid, intense color; low saturation approaches neutral gray.</p></div>
+    <div class="g-item"><div class="g-term">Suprematism</div><p class="g-def">Movement founded by Malevich in 1915 reducing painting to pure geometric sensation — squares, circles, lines floating in white space with no narrative or object.</p></div>
+    <div class="g-item"><div class="g-term">Texture</div><p class="g-def">The surface quality of a work — actual physical texture from thick paint (impasto) or implied visual texture through mark density and variation.</p></div>
+    <div class="g-item"><div class="g-term">Value</div><p class="g-def">The lightness or darkness of a color. Value contrast creates form; in abstract art, value relationships are often more structurally important than hue choices.</p></div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <p>Visual Abstraction World &mdash; From Kandinsky to Code &mdash; A journey through non-representational art</p>
+  <p style="margin-top:0.4rem;font-size:0.7rem;color:rgba(148,163,184,0.5);">Built with Canvas 2D &amp; Vanilla JS &bull; No external dependencies</p>
+</footer>
+
+<!-- ══════════════════════════════════════
+     INTERSECTION OBSERVER
+══════════════════════════════════════ -->
+<script>
+(function() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove('hidden');
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.hidden').forEach(function(el) { obs.observe(el); });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring sound design">
+    <meta property="og:title" content="Sound Design World — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring sound design">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/sound_design_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sound Design World — WAVGEN Music Universe</title>
+<style>
+:root {
+  --black:#020408; --surface:#060c12; --border:rgba(59,130,246,0.15);
+  --text:#dce8f0; --dim:#4a6070; --accent:#2563eb;
+  --accent2:#f59e0b; --accent3:#60a5fa; --accent4:#0a1a28;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body { background:var(--black); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; line-height:1.6; min-width:320px; }
+a { color:var(--accent3); text-decoration:none; }
+
+/* NAV */
+nav { position:sticky; top:0; z-index:100; background:rgba(2,4,8,0.93); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border); padding:0 1rem; display:flex; align-items:center; overflow-x:auto; gap:0; }
+nav a { font-size:0.71rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--dim);
+  padding:0.75rem 0.65rem; white-space:nowrap; border-bottom:2px solid transparent; transition:all 0.25s; }
+nav a:hover, nav a.active { color:var(--accent3); border-bottom-color:var(--accent3); }
+.nav-brand { font-size:0.78rem; font-weight:700; color:var(--accent3); margin-right:1.2rem; white-space:nowrap; letter-spacing:0.08em; }
+
+/* SCROLL ENTRANCE */
+.hidden { opacity:0; transform:translateY(36px); transition:all 0.7s ease; }
+.visible { opacity:1; transform:none; }
+.stagger-1 { transition-delay:0.1s; }
+.stagger-2 { transition-delay:0.2s; }
+.stagger-3 { transition-delay:0.3s; }
+.stagger-4 { transition-delay:0.4s; }
+.stagger-5 { transition-delay:0.5s; }
+
+/* SECTIONS */
+section { padding:4rem 1.5rem; max-width:1100px; margin:0 auto; }
+section.full-bleed { max-width:none; padding:0; }
+.section-label { font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent3); margin-bottom:0.5rem; }
+h1 { font-size:clamp(2rem,6vw,3.5rem); font-weight:800; line-height:1.08; }
+h2 { font-size:clamp(1.3rem,3vw,1.9rem); font-weight:700; margin-bottom:1rem; }
+h3 { font-size:1.05rem; font-weight:600; color:var(--accent3); margin-bottom:0.4rem; }
+p { color:#7a9ab8; margin-bottom:1rem; }
+
+/* CANVAS WRAPPERS */
+.canvas-wrap { position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:var(--surface); }
+canvas { display:block; }
+
+/* CARDS */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem; transition:border-color 0.25s; }
+.card:hover { border-color:rgba(59,130,246,0.4); }
+.card-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.45rem 1rem; border-radius:7px;
+  border:1px solid var(--accent); background:transparent; color:var(--accent3); font-size:0.82rem;
+  cursor:pointer; transition:all 0.2s; font-family:inherit; letter-spacing:0.03em; }
+.btn:hover { background:var(--accent); color:#fff; }
+.btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.btn-sm { padding:0.3rem 0.7rem; font-size:0.75rem; }
+.btn-row { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1rem 0; }
+.btn-amber { border-color:var(--accent2); color:var(--accent2); }
+.btn-amber:hover, .btn-amber.active { background:var(--accent2); color:var(--black); }
+
+/* SLIDERS */
+input[type=range] { -webkit-appearance:none; width:100%; height:3px; border-radius:2px;
+  background:rgba(59,130,246,0.2); outline:none; cursor:pointer; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px;
+  border-radius:50%; background:var(--accent3); cursor:pointer; }
+.slider-row { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.6rem; }
+.slider-label { font-size:0.72rem; color:var(--dim); min-width:90px; letter-spacing:0.04em; text-transform:uppercase; }
+.slider-val { font-size:0.72rem; color:var(--accent3); min-width:36px; text-align:right; font-variant-numeric:tabular-nums; }
+
+/* TAB CONTROLS */
+.tab-bar { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:1.5rem; }
+.tab { padding:0.5rem 1.1rem; font-size:0.8rem; color:var(--dim); cursor:pointer; border-bottom:2px solid transparent;
+  transition:all 0.2s; letter-spacing:0.04em; background:none; border-top:none; border-left:none; border-right:none;
+  font-family:inherit; }
+.tab.active { color:var(--accent3); border-bottom-color:var(--accent3); }
+
+/* HERO */
+#hero-wrap { position:relative; width:100%; height:440px; background:var(--black); overflow:hidden; border-bottom:1px solid var(--border); }
+#hero-canvas { width:100%; height:100%; }
+.hero-overlay { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; pointer-events:none; text-align:center; padding:1rem; }
+.hero-title { font-size:clamp(1.6rem,5vw,3.2rem); font-weight:800; letter-spacing:0.06em; color:#fff;
+  text-shadow:0 0 40px rgba(37,99,235,0.8), 0 2px 4px rgba(0,0,0,0.8); margin-bottom:0.5rem; }
+.hero-sub { font-size:clamp(0.8rem,2vw,1rem); color:var(--accent3); letter-spacing:0.1em;
+  text-transform:uppercase; opacity:0.85; max-width:600px; }
+
+/* GLOSSARY */
+.glossary-grid { columns:2; column-gap:2rem; }
+.glossary-grid .term { break-inside:avoid; margin-bottom:1rem; padding:0.75rem; background:var(--surface);
+  border:1px solid var(--border); border-radius:8px; }
+.term-word { font-size:0.8rem; font-weight:700; color:var(--accent3); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:0.2rem; }
+.term-def { font-size:0.82rem; color:#6a88a0; line-height:1.5; }
+@media(max-width:600px) { .glossary-grid { columns:1; } }
+
+/* TRACK ROWS */
+.track-row { display:grid; grid-template-columns:100px 1fr 120px; gap:0.75rem; align-items:center;
+  padding:0.6rem 0; border-bottom:1px solid var(--border); }
+.track-name { font-size:0.75rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.06em; }
+.track-controls { display:flex; gap:0.4rem; }
+
+/* RECIPE CHAIN */
+.recipe-palette { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1rem; }
+.recipe-chip { padding:0.3rem 0.7rem; border-radius:20px; font-size:0.73rem; border:1px solid var(--border);
+  color:var(--dim); cursor:pointer; transition:all 0.2s; user-select:none; }
+.recipe-chip:hover { border-color:var(--accent3); color:var(--accent3); }
+.recipe-chip.selected { background:rgba(37,99,235,0.18); border-color:var(--accent); color:var(--accent3); }
+.recipe-chain { display:flex; gap:0.5rem; flex-wrap:wrap; min-height:44px; padding:0.5rem;
+  border:1px dashed rgba(59,130,246,0.25); border-radius:8px; margin-bottom:0.75rem; align-items:center; }
+.recipe-node { padding:0.3rem 0.65rem; background:rgba(37,99,235,0.2); border:1px solid var(--accent);
+  border-radius:5px; font-size:0.72rem; color:var(--accent3); display:flex; align-items:center; gap:0.3rem; }
+.recipe-node .remove { cursor:pointer; color:var(--dim); font-size:0.8em; }
+.recipe-node .remove:hover { color:#f87171; }
+
+/* ARTIST CARD */
+.artist-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.1rem;
+  transition:border-color 0.25s, box-shadow 0.25s; }
+.artist-card:hover { border-color:rgba(59,130,246,0.5); box-shadow:0 0 20px rgba(37,99,235,0.1); }
+.artist-name { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:0.2rem; }
+.artist-film { font-size:0.78rem; color:var(--accent2); letter-spacing:0.04em; margin-bottom:0.4rem; }
+.artist-tech { font-size:0.8rem; color:#6a88a0; margin-bottom:0.4rem; }
+.artist-oscar { font-size:0.72rem; color:var(--dim); font-style:italic; }
+.artist-tag { display:inline-block; font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:10px;
+  background:rgba(37,99,235,0.12); border:1px solid rgba(59,130,246,0.25); color:var(--accent3); margin-top:0.4rem; }
+
+/* CANVAS CAPTION */
+.canvas-caption { font-size:0.72rem; color:var(--dim); text-align:center; padding:0.4rem 0.5rem;
+  letter-spacing:0.06em; font-style:italic; border-top:1px solid var(--border); }
+
+/* ENV BUTTONS */
+.env-selector { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+
+/* REACTIVE LAYERS */
+.layer-row { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem; }
+.layer-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.layer-label { font-size:0.75rem; color:var(--dim); min-width:80px; }
+.layer-bar { flex:1; height:4px; border-radius:2px; background:rgba(59,130,246,0.1); position:relative; overflow:hidden; }
+.layer-fill { height:100%; border-radius:2px; transition:width 0.1s; }
+</style>
+</head>
+<body class="domain-music">
+
+<!-- NAV -->
+<nav id="main-nav">
+  <span class="nav-brand">WAVGEN</span>
+  <a href="#hero" class="active" data-section="hero">Texture Engine</a>
+  <a href="#foley" data-section="foley">Foley Lab</a>
+  <a href="#synthesis" data-section="synthesis">Synthesis</a>
+  <a href="#impact" data-section="impact">Impact</a>
+  <a href="#environment" data-section="environment">Environment</a>
+  <a href="#procedural" data-section="procedural">Procedural</a>
+  <a href="#reactive" data-section="reactive">Reactive</a>
+  <a href="#artists" data-section="artists">Artists</a>
+  <a href="#glossary" data-section="glossary">Glossary</a>
+</nav>
+
+<!-- SECTION 1: HERO — THE TEXTURE ENGINE -->
+<div id="hero" class="full-bleed">
+  <div id="hero-wrap">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-overlay">
+      <div class="section-label" style="color:var(--accent2);margin-bottom:0.3rem;">WAVGEN · Sound Design World</div>
+      <div class="hero-title">SOUND DESIGN WORLD</div>
+      <div class="hero-sub">Inside the subconscious texture engine of cinema.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- HERO JS -->
+<script>
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const wrap   = document.getElementById('hero-wrap');
+  function resize(){
+    canvas.width  = wrap.clientWidth;
+    canvas.height = wrap.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const ctx = canvas.getContext('2d');
+
+  class LagFilter {
+    constructor(v=0, tau=0.15){ this.value=v; this.target=v; this.tau=tau; }
+    set(t){ this.target=t; }
+    update(dt){ const a=1-Math.exp(-dt/Math.max(this.tau,0.001)); this.value+=(this.target-this.value)*a; return this.value; }
+  }
+
+  // 5 waveform layers
+  const layers = [
+    { freq:0.5,  amp:0.18, speed:0.12, phase:0,    color:'rgba(37,99,235,0.7)',  ampLag:new LagFilter(0.18,1.5) },
+    { freq:1.2,  amp:0.12, speed:0.19, phase:1.2,  color:'rgba(96,165,250,0.5)', ampLag:new LagFilter(0.12,2.0) },
+    { freq:2.1,  amp:0.07, speed:0.28, phase:2.4,  color:'rgba(37,99,235,0.4)',  ampLag:new LagFilter(0.07,1.2) },
+    { freq:3.4,  amp:0.05, speed:0.41, phase:0.8,  color:'rgba(96,165,250,0.3)', ampLag:new LagFilter(0.05,0.9) },
+    { freq:0.8,  amp:0.22, speed:0.08, phase:3.1,  color:'rgba(245,158,11,0.25)',ampLag:new LagFilter(0.22,2.5) },
+  ];
+
+  // BPM: ambient 60BPM
+  const BPM = 60;
+  const beatInterval = 60 / BPM; // seconds
+  let beatPhase = 0;
+  let lastT = 0;
+  let elapsed = 0;
+
+  // Phosphor scanline pattern
+  function buildScanPattern(){
+    const pc = document.createElement('canvas');
+    pc.width=1; pc.height=3;
+    const px = pc.getContext('2d');
+    px.fillStyle='rgba(0,0,0,0.04)';
+    px.fillRect(0,0,1,1);
+    return ctx.createPattern(pc,'repeat');
+  }
+  let scanPattern = null;
+
+  function drawLayer(layer, W, H, t){
+    const centerY = H * 0.5;
+    const ampPx   = H * layer.ampLag.value;
+    ctx.beginPath();
+    const steps = Math.min(W, 600);
+    for(let i=0; i<=steps; i++){
+      const x = (i/steps)*W;
+      const nx = i/steps; // 0..1
+      // composite sine with harmonics
+      const y = centerY +
+        Math.sin(nx * Math.PI * 2 * layer.freq + layer.phase + t * layer.speed) * ampPx +
+        Math.sin(nx * Math.PI * 4 * layer.freq + layer.phase*1.3 + t * layer.speed*1.7) * ampPx * 0.3 +
+        Math.sin(nx * Math.PI * 1.5 * layer.freq + t * layer.speed*0.5) * ampPx * 0.15;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = layer.color;
+    ctx.lineWidth = 1.2;
+    // amber glow on high amplitude peaks
+    const peakAmp = layer.ampLag.value;
+    if(peakAmp > 0.14){
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = 'rgba(245,158,11,0.6)';
+    } else {
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = 'rgba(37,99,235,0.7)';
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  function draw(ts){
+    const t = ts * 0.001;
+    const dt = Math.min(t - lastT, 0.05);
+    lastT = t;
+    elapsed += dt;
+
+    const W = canvas.width;
+    const H = canvas.height;
+
+    // Phosphor decay
+    ctx.globalAlpha = 0.07;
+    ctx.fillStyle = 'rgba(2,4,8,1)';
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha = 1.0;
+
+    // Beat-driven amplitude modulation (60BPM)
+    beatPhase = (elapsed % beatInterval) / beatInterval;
+    const beatPulse = Math.pow(Math.sin(beatPhase * Math.PI), 3); // smooth beat
+
+    // Update layers
+    layers.forEach((layer, i) => {
+      layer.phase += dt * 0.05; // slow phase drift
+      const baseAmp = [0.18, 0.12, 0.07, 0.05, 0.22][i];
+      layer.ampLag.set(baseAmp + beatPulse * [0.06, 0.04, 0.03, 0.02, 0.08][i]);
+      layer.ampLag.update(dt);
+      drawLayer(layer, W, H, elapsed);
+    });
+
+    // Scanlines
+    if(!scanPattern) scanPattern = buildScanPattern();
+    ctx.fillStyle = scanPattern;
+    ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+
+<!-- SECTION 2: FOLEY LAYERING LAB -->
+<section id="foley">
+  <div class="section-label">Section 02</div>
+  <h2 class="hidden stagger-1">Foley Layering Lab</h2>
+  <p class="hidden stagger-2">The Foley stage is where films gain their body. Four performance tracks — footsteps, cloth, contact, atmosphere — combine into a single composite waveform.</p>
+
+  <div class="hidden stagger-3" style="margin-bottom:1rem;">
+    <div class="slider-row">
+      <span class="slider-label">BPM</span>
+      <input type="range" id="foley-bpm" min="40" max="180" value="80" style="flex:1;">
+      <span class="slider-val" id="foley-bpm-val">80</span>
+    </div>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-3" style="margin-bottom:1rem;">
+    <canvas id="foley-canvas" width="1100" height="420" style="width:100%;height:420px;"></canvas>
+    <div class="canvas-caption">4-track Foley waveform simulation · composite master shown at bottom</div>
+  </div>
+
+  <div class="hidden stagger-4" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;margin-bottom:1rem;">
+    <div>
+      <div class="slider-row"><span class="slider-label">Footstep Vol</span><input type="range" id="fvol0" min="0" max="100" value="80"><span class="slider-val" id="fvol0v">80</span></div>
+      <div class="slider-row"><span class="slider-label">Cloth Vol</span><input type="range" id="fvol1" min="0" max="100" value="55"><span class="slider-val" id="fvol1v">55</span></div>
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">Contact Vol</span><input type="range" id="fvol2" min="0" max="100" value="65"><span class="slider-val" id="fvol2v">65</span></div>
+      <div class="slider-row"><span class="slider-label">Atmosphere Vol</span><input type="range" id="fvol3" min="0" max="100" value="40"><span class="slider-val" id="fvol3v">40</span></div>
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">Pan 1</span><input type="range" id="fpan0" min="-100" max="100" value="0"><span class="slider-val" id="fpan0v">C</span></div>
+      <div class="slider-row"><span class="slider-label">Pan 2</span><input type="range" id="fpan1" min="-100" max="100" value="-30"><span class="slider-val" id="fpan1v">L</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.4rem;justify-content:center;">
+      <button class="btn btn-sm" id="foley-rec">⏺ Record Burst</button>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-amber" id="fmute0">Mute 1</button>
+        <button class="btn btn-sm btn-amber" id="fmute1">Mute 2</button>
+        <button class="btn btn-sm btn-amber" id="fmute2">Mute 3</button>
+        <button class="btn btn-sm btn-amber" id="fmute3">Mute 4</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: SYNTHESIS EXPLORER -->
+<section id="synthesis">
+  <div class="section-label">Section 03</div>
+  <h2 class="hidden stagger-1">Synthesis Explorer for Picture</h2>
+  <p class="hidden stagger-2">Sound is sculpted, not found. Three paradigms — subtractive, additive, FM — visualized as living waveform systems.</p>
+
+  <div class="tab-bar hidden stagger-2">
+    <button class="tab active" data-syn="sub">Subtractive</button>
+    <button class="tab" data-syn="add">Additive</button>
+    <button class="tab" data-syn="fm">FM Synthesis</button>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-3" style="margin-bottom:1rem;">
+    <canvas id="syn-canvas" width="1100" height="400" style="width:100%;height:400px;"></canvas>
+    <div class="canvas-caption" id="syn-caption">Subtractive: sawtooth → filter cutoff → ADSR envelope</div>
+  </div>
+
+  <!-- Subtractive controls -->
+  <div id="syn-sub-ctrl" class="hidden stagger-4" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
+    <div>
+      <div class="slider-row"><span class="slider-label">Cutoff</span><input type="range" id="s-cutoff" min="0" max="100" value="60"><span class="slider-val" id="s-cutoff-v">60</span></div>
+      <div class="slider-row"><span class="slider-label">Resonance</span><input type="range" id="s-res" min="0" max="100" value="30"><span class="slider-val" id="s-res-v">30</span></div>
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">Attack</span><input type="range" id="s-att" min="1" max="100" value="10"><span class="slider-val" id="s-att-v">10ms</span></div>
+      <div class="slider-row"><span class="slider-label">Decay</span><input type="range" id="s-dec" min="1" max="100" value="30"><span class="slider-val" id="s-dec-v">30ms</span></div>
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">Sustain</span><input type="range" id="s-sus" min="0" max="100" value="70"><span class="slider-val" id="s-sus-v">70%</span></div>
+      <div class="slider-row"><span class="slider-label">Release</span><input type="range" id="s-rel" min="1" max="100" value="50"><span class="slider-val" id="s-rel-v">50ms</span></div>
+    </div>
+  </div>
+
+  <!-- Additive controls -->
+  <div id="syn-add-ctrl" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:0.5rem;" class="hidden stagger-4" id="harmonics-grid">
+    </div>
+    <p style="margin-top:0.75rem;font-size:0.8rem;">Adjust harmonic amplitudes — the summed result is shown in the canvas.</p>
+  </div>
+
+  <!-- FM controls -->
+  <div id="syn-fm-ctrl" style="display:none;" class="hidden stagger-4">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
+      <div>
+        <div class="slider-row"><span class="slider-label">C:M Ratio</span><input type="range" id="fm-ratio" min="1" max="8" value="2" step="1"><span class="slider-val" id="fm-ratio-v">1:2</span></div>
+        <div class="slider-row"><span class="slider-label">Mod Index</span><input type="range" id="fm-idx" min="0" max="100" value="40"><span class="slider-val" id="fm-idx-v">4.0</span></div>
+      </div>
+      <div>
+        <div class="slider-row"><span class="slider-label">Carrier Freq</span><input type="range" id="fm-cfreq" min="1" max="100" value="50"><span class="slider-val" id="fm-cfreq-v">50</span></div>
+        <div class="slider-row"><span class="slider-label">Mod Amp</span><input type="range" id="fm-mamp" min="0" max="100" value="60"><span class="slider-val" id="fm-mamp-v">60</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─────────────────────────────────────────────
+// SHARED LagFilter (reused across all sections)
+// ─────────────────────────────────────────────
+class LagFilter {
+  constructor(v=0,tau=0.15){this.value=v;this.target=v;this.tau=tau;}
+  set(t){this.target=t;}
+  update(dt){const a=1-Math.exp(-dt/Math.max(this.tau,0.001));this.value+=(this.target-this.value)*a;return this.value;}
+  snap(v){this.value=this.target=v;}
+}
+
+// ─────────────────────────────────────────────
+// SECTION 2: FOLEY LAB
+// ─────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('foley-canvas');
+  const ctx    = canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=420;}
+  resize(); new ResizeObserver(resize).observe(canvas.parentElement);
+
+  let bpm=80, bpmLag=new LagFilter(80,0.5);
+  let vols=[0.8,0.55,0.65,0.4].map(v=>new LagFilter(v,0.12));
+  let muted=[false,false,false,false];
+  let burstTimer=0;
+  let recTrack=-1;
+  let lastT=0, elapsed=0;
+
+  // Wire sliders
+  ['fvol0','fvol1','fvol2','fvol3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.addEventListener('input',()=>{
+      vols[i].set(+el.value/100);
+      document.getElementById(id+'v').textContent=el.value;
+    });
+  });
+  ['fmute0','fmute1','fmute2','fmute3'].forEach((id,i)=>{
+    document.getElementById(id).addEventListener('click',function(){
+      muted[i]=!muted[i];
+      this.classList.toggle('active',muted[i]);
+    });
+  });
+  const bpmEl=document.getElementById('foley-bpm');
+  bpmEl.addEventListener('input',()=>{bpm=+bpmEl.value;document.getElementById('foley-bpm-val').textContent=bpm;});
+  document.getElementById('foley-rec').addEventListener('click',()=>{burstTimer=0.4;recTrack=Math.floor(Math.random()*4);});
+
+  const TRACK_COLORS=['#2563eb','#60a5fa','#f59e0b','#34d399'];
+  const TRACK_NAMES=['Footsteps','Cloth','Contact','Atmosphere'];
+
+  function genTrackWave(track, W, t, bpmNow, vol, burst){
+    const pts=[];
+    const beatSec=60/bpmNow;
+    for(let i=0;i<W;i++){
+      const x=i/W; // 0..1 across time window (2 seconds)
+      const tOff=x*2;
+      let y=0;
+      if(track===0){ // Footsteps: rhythmic low-freq bursts
+        const beatPhase=(tOff % beatSec)/beatSec;
+        const pulse=Math.exp(-beatPhase*8)*Math.sin(beatPhase*Math.PI*20);
+        y=pulse*vol*(1+(burst>0&&recTrack===0?1.5:0));
+      } else if(track===1){ // Cloth: high-freq noise bursts
+        const noiseBase=Math.sin(tOff*47.3+t*2.1)*Math.sin(tOff*81.7+t*1.3);
+        const env=0.3+0.7*Math.abs(Math.sin(tOff*1.8+t*0.5));
+        y=noiseBase*env*vol*0.6;
+      } else if(track===2){ // Contact: transient spikes
+        const beatPhase2=((tOff+0.3) % (beatSec*1.5))/(beatSec*1.5);
+        y=Math.exp(-beatPhase2*20)*(1+Math.sin(beatPhase2*30)*0.3)*vol*1.2;
+      } else { // Atmosphere: continuous low-level
+        y=(Math.sin(tOff*2.1+t*0.3)*0.5+Math.sin(tOff*0.7+t*0.1)*0.3)*vol*0.5;
+      }
+      pts.push(y);
+    }
+    return pts;
+  }
+
+  function drawTrack(ctx,W,H,yOff,trackH,pts,color,name,mute){
+    const cy=yOff+trackH*0.5;
+    // Track background
+    ctx.fillStyle='rgba(6,12,18,0.6)';
+    ctx.fillRect(0,yOff,W,trackH);
+    // Label
+    ctx.fillStyle=mute?'#2a3a4a':color;
+    ctx.font='10px Segoe UI';
+    ctx.fillText(name,8,yOff+14);
+    if(!mute){
+      ctx.beginPath();
+      pts.forEach((y,i)=>{
+        const px=i;
+        const py=cy-y*trackH*0.42;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      });
+      ctx.strokeStyle=color;
+      ctx.shadowBlur=8;ctx.shadowColor=color;
+      ctx.lineWidth=1.2;ctx.stroke();ctx.shadowBlur=0;
+    } else {
+      ctx.strokeStyle='rgba(42,58,74,0.5)';
+      ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    }
+    // Border
+    ctx.strokeStyle='rgba(59,130,246,0.12)';
+    ctx.lineWidth=0.5;ctx.beginPath();ctx.rect(0,yOff,W,trackH);ctx.stroke();
+  }
+
+  function draw(ts){
+    const t=ts*0.001;
+    const dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    burstTimer=Math.max(0,burstTimer-dt);
+    const W=canvas.width,H=canvas.height;
+    bpmLag.set(bpm);bpmLag.update(dt);
+    vols.forEach(v=>v.update(dt));
+
+    ctx.fillStyle='rgba(2,4,8,0.85)';ctx.fillRect(0,0,W,H);
+
+    const masterH=80, trackH=Math.floor((H-masterH)/4);
+    const bpmNow=bpmLag.value;
+
+    // Draw 4 tracks
+    const allPts=[];
+    for(let i=0;i<4;i++){
+      const vol=muted[i]?0:vols[i].value;
+      const burst=burstTimer>0&&recTrack===i?burstTimer:0;
+      const pts=genTrackWave(i,W,elapsed,bpmNow,vol,burst);
+      allPts.push(pts);
+      drawTrack(ctx,W,H,i*trackH,trackH,pts,TRACK_COLORS[i],TRACK_NAMES[i],muted[i]);
+    }
+
+    // Master composite
+    const masterY=H-masterH;
+    ctx.fillStyle='rgba(10,26,40,0.9)';ctx.fillRect(0,masterY,W,masterH);
+    ctx.fillStyle='rgba(37,99,235,0.08)';ctx.fillRect(0,masterY,W,masterH);
+    ctx.fillStyle='#60a5fa';ctx.font='10px Segoe UI';ctx.fillText('MASTER',8,masterY+14);
+    const masterPts=allPts[0].map((_,i)=>allPts.reduce((s,p)=>s+p[i],0)/4);
+    const masterCy=masterY+masterH*0.5;
+    ctx.beginPath();
+    masterPts.forEach((y,i)=>{
+      const py=masterCy-y*masterH*0.38;
+      i===0?ctx.moveTo(i,py):ctx.lineTo(i,py);
+    });
+    ctx.strokeStyle='#f59e0b';ctx.shadowBlur=14;ctx.shadowColor='#f59e0b';
+    ctx.lineWidth=1.8;ctx.stroke();ctx.shadowBlur=0;
+
+    // Record burst flash
+    if(burstTimer>0){
+      ctx.fillStyle=`rgba(245,158,11,${burstTimer*0.4})`;
+      ctx.fillRect(0,recTrack*trackH,W,trackH);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ─────────────────────────────────────────────
+// SECTION 3: SYNTHESIS EXPLORER
+// ─────────────────────────────────────────────
+(function(){
+  const canvas=document.getElementById('syn-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=400;}
+  resize();new ResizeObserver(resize).observe(canvas.parentElement);
+
+  let mode='sub'; // sub | add | fm
+  let lastT=0,elapsed=0;
+
+  // LagFilters for sub params
+  const cutLag=new LagFilter(0.6,0.15),resLag=new LagFilter(0.3,0.15);
+  const attLag=new LagFilter(0.1,0.15),decLag=new LagFilter(0.3,0.15);
+  const susLag=new LagFilter(0.7,0.15),relLag=new LagFilter(0.5,0.15);
+  // Additive harmonic amplitudes
+  const harmAmps=[1,0.6,0.4,0.3,0.2,0.15,0.1,0.08].map(v=>new LagFilter(v,0.2));
+  // FM params
+  const fmRatioLag=new LagFilter(2,0.2),fmIdxLag=new LagFilter(4,0.2);
+  const fmCFreqLag=new LagFilter(0.5,0.15),fmMAmpLag=new LagFilter(0.6,0.15);
+
+  // Wire tabs
+  document.querySelectorAll('.tab[data-syn]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      mode=btn.dataset.syn;
+      document.querySelectorAll('.tab[data-syn]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('syn-sub-ctrl').style.display=mode==='sub'?'':'none';
+      document.getElementById('syn-add-ctrl').style.display=mode==='add'?'':'none';
+      document.getElementById('syn-fm-ctrl').style.display=mode==='fm'?'':'none';
+      const caps={sub:'Subtractive: sawtooth → filter cutoff → ADSR envelope',
+        add:'Additive: 8 harmonics summed → composite waveform',
+        fm:'FM: carrier modulated by modulator → complex spectrum'};
+      document.getElementById('syn-caption').textContent=caps[mode];
+    });
+  });
+
+  // Wire sub sliders
+  function wireSub(id,lag,fmt){
+    const el=document.getElementById(id);
+    el.addEventListener('input',()=>{lag.set(+el.value/100);document.getElementById(id+'-v').textContent=fmt(+el.value);});
+  }
+  wireSub('s-cutoff',cutLag,v=>v);
+  wireSub('s-res',resLag,v=>v);
+  wireSub('s-att',attLag,v=>v+'ms');
+  wireSub('s-dec',decLag,v=>v+'ms');
+  wireSub('s-sus',susLag,v=>v+'%');
+  wireSub('s-rel',relLag,v=>v+'ms');
+
+  // Build harmonic sliders
+  const hgrid=document.getElementById('harmonics-grid');
+  for(let i=0;i<8;i++){
+    const div=document.createElement('div');
+    div.style.cssText='display:flex;flex-direction:column;align-items:center;gap:0.3rem;';
+    div.innerHTML=`<span style="font-size:0.65rem;color:var(--dim)">H${i+1}</span>
+      <input type="range" id="harm${i}" min="0" max="100" value="${Math.round(harmAmps[i].value*100)}"
+        style="writing-mode:vertical-lr;direction:rtl;width:20px;height:80px;cursor:pointer;">
+      <span style="font-size:0.65rem;color:var(--accent3)" id="harmv${i}">${Math.round(harmAmps[i].value*100)}</span>`;
+    hgrid.appendChild(div);
+    document.getElementById('harm'+i).addEventListener('input',function(){
+      harmAmps[i].set(+this.value/100);
+      document.getElementById('harmv'+i).textContent=this.value;
+    });
+  }
+
+  // Wire FM sliders
+  document.getElementById('fm-ratio').addEventListener('input',function(){
+    fmRatioLag.set(+this.value);
+    document.getElementById('fm-ratio-v').textContent='1:'+this.value;
+  });
+  document.getElementById('fm-idx').addEventListener('input',function(){
+    fmIdxLag.set(+this.value/10);
+    document.getElementById('fm-idx-v').textContent=(+this.value/10).toFixed(1);
+  });
+  document.getElementById('fm-cfreq').addEventListener('input',function(){
+    fmCFreqLag.set(+this.value/100);
+    document.getElementById('fm-cfreq-v').textContent=this.value;
+  });
+  document.getElementById('fm-mamp').addEventListener('input',function(){
+    fmMAmpLag.set(+this.value/100);
+    document.getElementById('fm-mamp-v').textContent=this.value;
+  });
+
+  function drawSubtractive(W,H,t){
+    const panelW=Math.floor(W/3);
+    // Panel labels
+    ['OSCILLATOR','FILTER','ENVELOPE'].forEach((label,i)=>{
+      ctx.fillStyle='rgba(37,99,235,0.06)';ctx.fillRect(i*panelW,0,panelW,H);
+      ctx.fillStyle='var(--accent3)';ctx.font='10px Segoe UI';
+      ctx.fillText(label,i*panelW+10,20);
+      // divider
+      if(i>0){ctx.strokeStyle='rgba(59,130,246,0.15)';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(i*panelW,0);ctx.lineTo(i*panelW,H);ctx.stroke();}
+    });
+
+    const cy=H*0.5;
+    // OSC: animated sawtooth
+    ctx.beginPath();
+    for(let i=0;i<=panelW;i++){
+      const x=i;const nx=i/panelW;
+      const cycles=4;const phase=(nx*cycles+t*0.8)%1;
+      const y=cy-(phase*2-1)*H*0.35;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='#2563eb';ctx.shadowBlur=10;ctx.shadowColor='#2563eb';
+    ctx.lineWidth=1.5;ctx.stroke();ctx.shadowBlur=0;
+
+    // FILTER: show cutoff line + filtered waveform
+    const cut=cutLag.value;const res=resLag.value;
+    const cutY=cy-(cut*2-1)*H*0.3;
+    ctx.strokeStyle='rgba(245,158,11,0.6)';ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);ctx.beginPath();
+    ctx.moveTo(panelW,cutY);ctx.lineTo(panelW*2,cutY);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(245,158,11,0.5)';ctx.font='9px Segoe UI';
+    ctx.fillText('cutoff',panelW+6,cutY-4);
+    // Resonance bump
+    ctx.beginPath();
+    for(let i=0;i<=panelW;i++){
+      const x=panelW+i;const nx=i/panelW;
+      const freq=nx*cut+0.1;
+      const bump=res*0.4*Math.exp(-Math.pow((nx-cut)*8,2));
+      const y=cy-(freq+bump)*H*0.28;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='#60a5fa';ctx.shadowBlur=8;ctx.shadowColor='#60a5fa';
+    ctx.lineWidth=1.3;ctx.stroke();ctx.shadowBlur=0;
+
+    // ENVELOPE: ADSR shape
+    const att=attLag.value,dec=decLag.value,sus=susLag.value,rel=relLag.value;
+    const pw=panelW-20;const envX=panelW*2+10;const envY=H*0.85;
+    const eH=H*0.6;
+    const attEnd=envX+att*pw*0.3;
+    const decEnd=attEnd+dec*pw*0.2;
+    const susEnd=decEnd+pw*0.25;
+    const relEnd=susEnd+rel*pw*0.25;
+    ctx.beginPath();
+    ctx.moveTo(envX,envY);
+    ctx.lineTo(attEnd,envY-eH);
+    ctx.lineTo(decEnd,envY-sus*eH);
+    ctx.lineTo(susEnd,envY-sus*eH);
+    ctx.lineTo(relEnd,envY);
+    ctx.strokeStyle='#f59e0b';ctx.shadowBlur=12;ctx.shadowColor='#f59e0b';
+    ctx.lineWidth=2;ctx.stroke();ctx.shadowBlur=0;
+    // Fill
+    ctx.beginPath();
+    ctx.moveTo(envX,envY);ctx.lineTo(attEnd,envY-eH);ctx.lineTo(decEnd,envY-sus*eH);
+    ctx.lineTo(susEnd,envY-sus*eH);ctx.lineTo(relEnd,envY);ctx.closePath();
+    ctx.fillStyle='rgba(245,158,11,0.08)';ctx.fill();
+    ['A','D','S','R'].forEach((label,i)=>{
+      const xs=[envX+att*pw*0.15,attEnd+dec*pw*0.1,decEnd+pw*0.12,susEnd+rel*pw*0.12];
+      ctx.fillStyle='rgba(245,158,11,0.6)';ctx.font='9px Segoe UI';ctx.fillText(label,xs[i],envY+14);
+    });
+  }
+
+  function drawAdditive(W,H,t){
+    harmAmps.forEach(h=>h.update(0.016));
+    const N=8,barW=Math.floor(W/(N*2));
+    const cy=H*0.55;
+    // Draw harmonic bars
+    for(let i=0;i<N;i++){
+      const amp=harmAmps[i].value;
+      const x=barW*(i*2+0.5);const barH=amp*H*0.35;
+      const hue=200+i*15;
+      ctx.fillStyle=`hsla(${hue},70%,55%,0.25)`;
+      ctx.fillRect(x,cy-barH,barW,barH*2);
+      ctx.strokeStyle=`hsla(${hue},80%,65%,0.9)`;
+      ctx.shadowBlur=8;ctx.shadowColor=`hsl(${hue},80%,60%)`;
+      ctx.lineWidth=1.2;ctx.strokeRect(x,cy-barH,barW,barH*2);ctx.shadowBlur=0;
+      ctx.fillStyle='rgba(96,165,250,0.7)';ctx.font='9px Segoe UI';
+      ctx.fillText('H'+(i+1),x+barW*0.2,cy+barH+14);
+    }
+    // Summed waveform at bottom
+    const sumY=H*0.82;
+    ctx.beginPath();
+    for(let px=0;px<W;px++){
+      const nx=px/W;let y=0;
+      for(let i=0;i<N;i++) y+=harmAmps[i].value*Math.sin(nx*Math.PI*2*(i+1)+t*0.5*(i+1)*0.3);
+      const py=sumY-y*H*0.06;
+      px===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.strokeStyle='#f59e0b';ctx.shadowBlur=14;ctx.shadowColor='#f59e0b';
+    ctx.lineWidth=1.8;ctx.stroke();ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(245,158,11,0.6)';ctx.font='10px Segoe UI';ctx.fillText('SUMMED OUTPUT',8,sumY-H*0.09);
+  }
+
+  function drawFM(W,H,t){
+    fmRatioLag.update(0.016);fmIdxLag.update(0.016);
+    fmCFreqLag.update(0.016);fmMAmpLag.update(0.016);
+    const ratio=fmRatioLag.value,idx=fmIdxLag.value;
+    const cfreq=fmCFreqLag.value*3+0.5;
+    const mamp=fmMAmpLag.value;
+    const cy=H*0.5;
+    // Carrier
+    ctx.beginPath();
+    for(let i=0;i<=W;i++){
+      const nx=i/W;
+      const y=cy-Math.sin(nx*Math.PI*2*cfreq+t*0.4)*H*0.15;
+      i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);
+    }
+    ctx.strokeStyle='rgba(37,99,235,0.6)';ctx.lineWidth=1;ctx.stroke();
+    // Modulator
+    ctx.beginPath();
+    for(let i=0;i<=W;i++){
+      const nx=i/W;
+      const y=cy-Math.sin(nx*Math.PI*2*cfreq*ratio+t*0.4*ratio)*H*0.1*mamp;
+      i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);
+    }
+    ctx.strokeStyle='rgba(245,158,11,0.5)';ctx.lineWidth=1;ctx.stroke();
+    // FM Result
+    ctx.beginPath();
+    for(let i=0;i<=W;i++){
+      const nx=i/W;
+      const mod=Math.sin(nx*Math.PI*2*cfreq*ratio+t*0.4*ratio)*idx*mamp;
+      const y=cy-Math.sin(nx*Math.PI*2*cfreq+mod+t*0.4)*H*0.3;
+      i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);
+    }
+    ctx.strokeStyle='#60a5fa';ctx.shadowBlur=14;ctx.shadowColor='#60a5fa';
+    ctx.lineWidth=2;ctx.stroke();ctx.shadowBlur=0;
+    // Labels
+    [['CARRIER','rgba(37,99,235,0.8)',H*0.12],
+     ['MODULATOR','rgba(245,158,11,0.8)',H*0.22],
+     ['FM RESULT','rgba(96,165,250,0.9)',H*0.36]].forEach(([l,c,y])=>{
+      ctx.fillStyle=c;ctx.font='10px Segoe UI';ctx.fillText(l,8,y);
+    });
+  }
+
+  function draw(ts){
+    const t=ts*0.001,dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    const W=canvas.width,H=canvas.height;
+    [cutLag,resLag,attLag,decLag,susLag,relLag].forEach(l=>l.update(dt));
+
+    ctx.fillStyle='rgba(2,4,8,0.88)';ctx.fillRect(0,0,W,H);
+    if(mode==='sub') drawSubtractive(W,H,elapsed);
+    else if(mode==='add') drawAdditive(W,H,elapsed);
+    else drawFM(W,H,elapsed);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- SECTION 4: CINEMATIC IMPACT GENERATOR -->
+<section id="impact">
+  <div class="section-label">Section 04</div>
+  <h2 class="hidden stagger-1">Cinematic Impact Generator</h2>
+  <p class="hidden stagger-2">The classic action-cinema sound design moment: sub-bass rumble → transient hit → high-frequency tail. Press Play to sweep the playhead.</p>
+
+  <div class="btn-row hidden stagger-2">
+    <button class="btn" id="imp-play">▶ Play</button>
+    <button class="btn btn-amber" id="imp-type-exp" data-imptype="explosion">Explosion</button>
+    <button class="btn btn-amber" id="imp-type-hit" data-imptype="hit">Hit</button>
+    <button class="btn btn-amber" id="imp-type-wsh" data-imptype="whoosh">Whoosh</button>
+    <button class="btn btn-amber" id="imp-type-drn" data-imptype="drone">Drone</button>
+    <button class="btn btn-amber" id="imp-type-swl" data-imptype="swell">Swell</button>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-3" style="margin-bottom:1rem;">
+    <canvas id="impact-canvas" width="1100" height="400" style="width:100%;height:400px;"></canvas>
+    <div class="canvas-caption">Sub rumble → transient spike → decay tail · phosphor playhead</div>
+  </div>
+
+  <div class="hidden stagger-4" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
+    <div>
+      <div class="slider-row"><span class="slider-label">Sub Duration</span><input type="range" id="imp-subd" min="1" max="100" value="50"><span class="slider-val" id="imp-subd-v">1.5s</span></div>
+      <div class="slider-row"><span class="slider-label">Sharpness</span><input type="range" id="imp-sharp" min="0" max="100" value="70"><span class="slider-val" id="imp-sharp-v">70</span></div>
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">Tail Length</span><input type="range" id="imp-tail" min="1" max="100" value="60"><span class="slider-val" id="imp-tail-v">1.2s</span></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.3rem;">
+        <span class="slider-label">Reverb</span>
+        <button class="btn btn-sm" id="imp-reverb" style="min-width:70px;">OFF</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: ENVIRONMENTAL TEXTURE SYSTEMS -->
+<section id="environment">
+  <div class="section-label">Section 05</div>
+  <h2 class="hidden stagger-1">Environmental Texture Systems</h2>
+  <p class="hidden stagger-2">Sound positions the audience in space. Four acoustic environments rendered as animated waveform fields — click to morph between them.</p>
+
+  <div class="env-selector hidden stagger-2">
+    <button class="btn active" data-env="ocean">Deep Ocean</button>
+    <button class="btn" data-env="forest">Forest</button>
+    <button class="btn" data-env="urban">Urban Street</button>
+    <button class="btn" data-env="cave">Cave/Tunnel</button>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-3" style="margin-bottom:1rem;">
+    <canvas id="env-canvas" width="600" height="350" style="width:100%;height:350px;"></canvas>
+    <div class="canvas-caption" id="env-caption">Deep Ocean — slow rolling waves, deep undulation</div>
+  </div>
+
+  <div class="hidden stagger-4" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.75rem;">
+    <div class="slider-row"><span class="slider-label">Density</span><input type="range" id="env-density" min="1" max="100" value="40"><span class="slider-val" id="env-density-v">40</span></div>
+    <div class="slider-row"><span class="slider-label">Intensity</span><input type="range" id="env-intensity" min="1" max="100" value="60"><span class="slider-val" id="env-intensity-v">60</span></div>
+    <div class="slider-row"><span class="slider-label">Weather</span><input type="range" id="env-weather" min="0" max="100" value="0"><span class="slider-val" id="env-weather-v">0</span></div>
+  </div>
+</section>
+
+<script>
+// ─────────────────────────────────────────────
+// SECTION 4: CINEMATIC IMPACT GENERATOR
+// ─────────────────────────────────────────────
+(function(){
+  const canvas=document.getElementById('impact-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=400;}
+  resize();new ResizeObserver(resize).observe(canvas.parentElement);
+
+  let lastT=0,elapsed=0;
+  let playhead=-1; // -1 = stopped, 0..1 = playing
+  let playing=false;
+  let impType='explosion';
+  let reverbOn=false;
+
+  const subdLag=new LagFilter(0.5,0.2);
+  const sharpLag=new LagFilter(0.7,0.2);
+  const tailLag=new LagFilter(0.6,0.2);
+
+  const TYPES={
+    explosion:{subW:0.35,spikeH:1.0,tailL:0.45,color:'#f59e0b',color2:'#2563eb'},
+    hit:       {subW:0.2, spikeH:0.85,tailL:0.3, color:'#60a5fa',color2:'#f59e0b'},
+    whoosh:    {subW:0.4, spikeH:0.45,tailL:0.2, color:'#34d399',color2:'#60a5fa'},
+    drone:     {subW:0.7, spikeH:0.3, tailL:0.55,color:'#a78bfa',color2:'#2563eb'},
+    swell:     {subW:0.5, spikeH:0.55,tailL:0.5, color:'#60a5fa',color2:'#a78bfa'},
+  };
+
+  document.getElementById('imp-play').addEventListener('click',function(){
+    if(!playing){playing=true;playhead=0;this.textContent='◼ Stop';}
+    else{playing=false;playhead=-1;this.textContent='▶ Play';}
+  });
+  document.getElementById('imp-reverb').addEventListener('click',function(){
+    reverbOn=!reverbOn;this.textContent=reverbOn?'ON':'OFF';
+    this.classList.toggle('active',reverbOn);
+  });
+  document.querySelectorAll('[data-imptype]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      impType=btn.dataset.imptype;
+      document.querySelectorAll('[data-imptype]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  ['imp-subd','imp-sharp','imp-tail'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    const lags=[subdLag,sharpLag,tailLag];
+    const labels=[['imp-subd-v',v=>(0.5+v*0.025).toFixed(1)+'s'],
+                  ['imp-sharp-v',v=>v],['imp-tail-v',v=>(0.2+v*0.018).toFixed(1)+'s']];
+    el.addEventListener('input',()=>{
+      lags[i].set(+el.value/100);
+      document.getElementById(labels[i][0]).textContent=labels[i][1](+el.value);
+    });
+  });
+
+  function buildWaveform(W, type, subd, sharp, tail, rev){
+    const T=TYPES[type];
+    const pts=[];
+    const subEnd=Math.floor(W*(T.subW*0.5+subd*0.3));
+    const spikeX=Math.floor(subEnd+W*0.05);
+    const tailEnd=Math.floor(spikeX+W*(T.tailL*0.4+tail*0.2));
+    for(let i=0;i<W;i++){
+      let y=0;
+      if(i<subEnd){
+        const nx=i/subEnd;
+        y=Math.sin(nx*Math.PI)*nx*T.subW*(1+subd*0.5);
+        if(type==='drone') y+=Math.sin(nx*Math.PI*8)*0.1;
+        if(type==='swell') y=Math.pow(nx,0.5)*T.subW*0.8;
+      } else if(i<=spikeX){
+        const nx=(i-subEnd)/(spikeX-subEnd+1);
+        y=T.spikeH*(1-nx)*sharp*1.5;
+        if(type==='whoosh') y*=Math.sin(nx*Math.PI);
+      } else if(i<=tailEnd){
+        const nx=(i-spikeX)/(tailEnd-spikeX+1);
+        y=T.spikeH*Math.exp(-nx*(5+sharp*3))*tail;
+        if(rev) y+=T.spikeH*Math.exp(-nx*1.5)*0.3*Math.sin(nx*Math.PI*6)*tail;
+        if(type==='drone') y*=(1+Math.sin(nx*Math.PI*12)*0.2);
+      }
+      pts.push(Math.min(1,Math.abs(y)));
+    }
+    return pts;
+  }
+
+  function draw(ts){
+    const t=ts*0.001,dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    [subdLag,sharpLag,tailLag].forEach(l=>l.update(dt));
+    const W=canvas.width,H=canvas.height;
+
+    ctx.fillStyle='rgba(2,4,8,0.08)';ctx.fillRect(0,0,W,H);
+
+    const T=TYPES[impType];
+    const pts=buildWaveform(W,impType,subdLag.value,sharpLag.value,tailLag.value,reverbOn);
+    const cy=H*0.5;
+
+    // Draw waveform (top+bottom mirrored)
+    ctx.beginPath();
+    pts.forEach((y,i)=>{
+      const py=cy-y*H*0.42;
+      i===0?ctx.moveTo(i,py):ctx.lineTo(i,py);
+    });
+    ctx.strokeStyle=T.color;ctx.shadowBlur=12;ctx.shadowColor=T.color;
+    ctx.lineWidth=2;ctx.stroke();ctx.shadowBlur=0;
+    ctx.beginPath();
+    pts.forEach((y,i)=>{
+      const py=cy+y*H*0.42;
+      i===0?ctx.moveTo(i,py):ctx.lineTo(i,py);
+    });
+    ctx.strokeStyle=T.color2;ctx.shadowBlur=8;ctx.shadowColor=T.color2;
+    ctx.lineWidth=1.2;ctx.stroke();ctx.shadowBlur=0;
+
+    // Center zero line
+    ctx.strokeStyle='rgba(59,130,246,0.15)';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+
+    // Playhead
+    if(playing){
+      playhead+=dt*0.3;
+      if(playhead>1){playing=false;playhead=-1;document.getElementById('imp-play').textContent='▶ Play';}
+    }
+    if(playhead>=0){
+      const px=playhead*W;
+      ctx.strokeStyle='rgba(245,158,11,0.9)';ctx.shadowBlur=16;ctx.shadowColor='#f59e0b';
+      ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,H);ctx.stroke();ctx.shadowBlur=0;
+      // Amplitude indicator at playhead
+      const amp=pts[Math.floor(px)]||0;
+      ctx.fillStyle='rgba(245,158,11,0.7)';ctx.beginPath();
+      ctx.arc(px,cy-amp*H*0.42,5,0,Math.PI*2);ctx.fill();
+    }
+
+    // Section labels
+    ctx.fillStyle='rgba(96,165,250,0.5)';ctx.font='10px Segoe UI';
+    ctx.fillText('SUB RUMBLE',8,H*0.08);
+    ctx.fillText('IMPACT',W*0.38,H*0.08);
+    ctx.fillText('DECAY TAIL',W*0.58,H*0.08);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ─────────────────────────────────────────────
+// SECTION 5: ENVIRONMENTAL TEXTURES
+// ─────────────────────────────────────────────
+(function(){
+  const canvas=document.getElementById('env-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=350;}
+  resize();new ResizeObserver(resize).observe(canvas.parentElement);
+
+  let lastT=0,elapsed=0;
+  let envMode='ocean';
+
+  const densityLag=new LagFilter(0.4,0.3);
+  const intensityLag=new LagFilter(0.6,0.3);
+  const weatherLag=new LagFilter(0,0.4);
+
+  // Per-environment LagFilters for smooth morphing
+  const ENV_PARAMS={
+    ocean:  {freqLag:new LagFilter(0.3,1.5), ampLag:new LagFilter(0.7,1.5), speedLag:new LagFilter(0.08,1.5), noiseLag:new LagFilter(0.05,1.5)},
+    forest: {freqLag:new LagFilter(2.0,1.5), ampLag:new LagFilter(0.3,1.5), speedLag:new LagFilter(0.4,1.5),  noiseLag:new LagFilter(0.6,1.5)},
+    urban:  {freqLag:new LagFilter(1.2,1.5), ampLag:new LagFilter(0.5,1.5), speedLag:new LagFilter(0.25,1.5), noiseLag:new LagFilter(0.4,1.5)},
+    cave:   {freqLag:new LagFilter(0.5,1.5), ampLag:new LagFilter(0.4,1.5), speedLag:new LagFilter(0.12,1.5), noiseLag:new LagFilter(0.15,1.5)},
+  };
+  const ENV_TARGETS={
+    ocean:  {freq:0.3,amp:0.7,speed:0.08,noise:0.05},
+    forest: {freq:2.0,amp:0.3,speed:0.4, noise:0.6},
+    urban:  {freq:1.2,amp:0.5,speed:0.25,noise:0.4},
+    cave:   {freq:0.5,amp:0.4,speed:0.12,noise:0.15},
+  };
+  const ENV_COLORS={ocean:'#2563eb',forest:'#34d399',urban:'#f59e0b',cave:'#a78bfa'};
+  const ENV_CAPTIONS={
+    ocean:'Deep Ocean — slow rolling waves, deep undulation',
+    forest:'Forest — irregular high-freq bursts over steady base',
+    urban:'Urban Street — rhythmic patterns, random events',
+    cave:'Cave/Tunnel — sparse low events, long decay tails'
+  };
+
+  // Current blended params
+  const freq=new LagFilter(0.3,0.8),amp=new LagFilter(0.7,0.8);
+  const speed=new LagFilter(0.08,0.8),noise=new LagFilter(0.05,0.8);
+  const colorR=new LagFilter(37,0.8),colorG=new LagFilter(99,0.8),colorB=new LagFilter(235,0.8);
+  function hexToRgb(h){const n=parseInt(h.slice(1),16);return[n>>16&255,(n>>8)&255,n&255];}
+
+  document.querySelectorAll('[data-env]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      envMode=btn.dataset.env;
+      document.querySelectorAll('[data-env]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const t=ENV_TARGETS[envMode];
+      freq.set(t.freq);amp.set(t.amp);speed.set(t.speed);noise.set(t.noise);
+      const [r,g,b]=hexToRgb(ENV_COLORS[envMode]);colorR.set(r);colorG.set(g);colorB.set(b);
+      document.getElementById('env-caption').textContent=ENV_CAPTIONS[envMode];
+    });
+  });
+  document.getElementById('env-density').addEventListener('input',function(){
+    densityLag.set(+this.value/100);document.getElementById('env-density-v').textContent=this.value;
+  });
+  document.getElementById('env-intensity').addEventListener('input',function(){
+    intensityLag.set(+this.value/100);document.getElementById('env-intensity-v').textContent=this.value;
+  });
+  document.getElementById('env-weather').addEventListener('input',function(){
+    weatherLag.set(+this.value/100);document.getElementById('env-weather-v').textContent=this.value;
+  });
+
+  // Layers for the 2D waveform field
+  const LAYERS=5;
+
+  function draw(ts){
+    const t=ts*0.001,dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    [freq,amp,speed,noise,densityLag,intensityLag,weatherLag,colorR,colorG,colorB].forEach(l=>l.update(dt));
+
+    const W=canvas.width,H=canvas.height;
+    ctx.fillStyle='rgba(2,4,8,0.07)';ctx.fillRect(0,0,W,H);
+
+    const cr=Math.round(colorR.value),cg=Math.round(colorG.value),cb=Math.round(colorB.value);
+    const intens=intensityLag.value,dens=densityLag.value,wx=weatherLag.value;
+
+    for(let li=0;li<LAYERS;li++){
+      const layerPhase=li*(Math.PI*2/LAYERS);
+      const layerFreq=freq.value*(0.6+li*0.3)*(1+dens*0.5);
+      const layerAmp=amp.value*(1-li*0.12)*intens;
+      const layerSpeed=speed.value*(1+li*0.4);
+      const alpha=0.8-li*0.12;
+
+      ctx.beginPath();
+      const cy=H*(0.2+li*(0.6/LAYERS));
+      for(let i=0;i<=W;i++){
+        const nx=i/W;
+        let y=Math.sin(nx*Math.PI*2*layerFreq+layerPhase+elapsed*layerSpeed)*layerAmp*H*0.1;
+        y+=Math.sin(nx*Math.PI*4*layerFreq*1.3+elapsed*layerSpeed*0.7)*layerAmp*H*0.04;
+        // Noise component (weather / environment specific)
+        if(noise.value>0.1||wx>0){
+          const noiseAmt=(noise.value+wx*0.4)*H*0.06;
+          y+=Math.sin(nx*100+elapsed*3.7+li)*noiseAmt*(Math.random()*0.3+0.7);
+        }
+        // Cave: add echo/decay events
+        if(envMode==='cave'&&Math.sin(nx*Math.PI*1.5+elapsed*0.2+li)>0.85){
+          y+=Math.exp(-((nx*Math.PI*1.5+elapsed*0.2+li)%Math.PI)*2)*H*0.08;
+        }
+        const py=cy+y;
+        i===0?ctx.moveTo(i,py):ctx.lineTo(i,py);
+      }
+      ctx.strokeStyle=`rgba(${cr},${cg},${cb},${alpha*0.8})`;
+      ctx.shadowBlur=li===0?14:6;ctx.shadowColor=`rgba(${cr},${cg},${cb},0.5)`;
+      ctx.lineWidth=li===0?1.8:1;ctx.stroke();ctx.shadowBlur=0;
+    }
+
+    // Weather noise overlay
+    if(wx>0.05){
+      for(let i=0;i<W;i+=Math.max(1,Math.floor(3/wx))){
+        if(Math.random()<wx*0.3){
+          const y=Math.random()*H;
+          ctx.strokeStyle=`rgba(${cr},${cg},${cb},${wx*0.4})`;
+          ctx.lineWidth=0.5;ctx.beginPath();
+          ctx.moveTo(i,y);ctx.lineTo(i+1,y+Math.random()*4-2);ctx.stroke();
+        }
+      }
+    }
+
+    // Environment label
+    ctx.fillStyle=`rgba(${cr},${cg},${cb},0.7)`;ctx.font='bold 11px Segoe UI';
+    ctx.fillText(envMode.toUpperCase(),12,24);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- SECTION 6: PROCEDURAL SOUND DESIGN -->
+<section id="procedural">
+  <div class="section-label">Section 06</div>
+  <h2 class="hidden stagger-1">Procedural Sound Design</h2>
+  <p class="hidden stagger-2">Recipes can be shared as text notation. Build a chain of up to 6 ingredients — each element transforms the signal.</p>
+
+  <div class="hidden stagger-3" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem;">
+    <div>
+      <div style="font-size:0.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">Texture Sources</div>
+      <div class="recipe-palette" id="palette-texture"></div>
+      <div style="font-size:0.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;margin-top:0.75rem;">Processes</div>
+      <div class="recipe-palette" id="palette-process"></div>
+    </div>
+    <div>
+      <div style="font-size:0.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">Presets</div>
+      <div class="btn-row" id="presets-row"></div>
+    </div>
+  </div>
+
+  <div style="font-size:0.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;" class="hidden stagger-3">Signal Chain (click ingredients above, max 6)</div>
+  <div class="recipe-chain hidden stagger-3" id="recipe-chain">
+    <span style="font-size:0.75rem;color:var(--dim);padding:0.3rem;">Click ingredients to build your chain…</span>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-4" style="margin-bottom:0.75rem;">
+    <canvas id="proc-canvas" width="1100" height="350" style="width:100%;height:350px;"></canvas>
+    <div class="canvas-caption" id="proc-caption">Signal chain waveform — build a recipe to see it evolve</div>
+  </div>
+
+  <div class="hidden stagger-4" style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+    <button class="btn btn-sm" id="proc-clear">Clear Chain</button>
+    <div id="proc-notation" style="font-size:0.78rem;color:var(--accent3);font-family:monospace;background:var(--surface);padding:0.4rem 0.75rem;border-radius:6px;border:1px solid var(--border);flex:1;min-width:200px;"></div>
+  </div>
+</section>
+
+<!-- SECTION 7: REACTIVE SOUND VISUALIZATION -->
+<section id="reactive">
+  <div class="section-label">Section 07</div>
+  <h2 class="hidden stagger-1">Reactive Sound Visualization</h2>
+  <p class="hidden stagger-2">Sound design is the invisible architecture. Four signal layers — bass, sub-bass, mid, high — each driving a distinct visual response.</p>
+
+  <div class="btn-row hidden stagger-2">
+    <button class="btn active" data-genre="ambient">Ambient</button>
+    <button class="btn" data-genre="cinematic">Cinematic</button>
+    <button class="btn" data-genre="experimental">Experimental</button>
+    <button class="btn" data-genre="industrial">Industrial</button>
+  </div>
+
+  <div class="hidden stagger-2" style="margin-bottom:0.75rem;">
+    <div class="slider-row">
+      <span class="slider-label">BPM</span>
+      <input type="range" id="react-bpm" min="60" max="160" value="110">
+      <span class="slider-val" id="react-bpm-v">110</span>
+    </div>
+  </div>
+
+  <div class="canvas-wrap hidden stagger-3" style="margin-bottom:1rem;">
+    <canvas id="react-canvas" width="1100" height="400" style="width:100%;height:400px;"></canvas>
+    <div class="canvas-caption">Bass → bg pulse · Sub → wobble · Mid → particle ring · High → edge scanlines</div>
+  </div>
+
+  <!-- Layer indicators -->
+  <div class="hidden stagger-4">
+    <div class="layer-row">
+      <div class="layer-dot" style="background:#2563eb;"></div>
+      <span class="layer-label">Bass</span>
+      <div class="layer-bar"><div class="layer-fill" id="lbar-bass" style="background:#2563eb;width:0%;"></div></div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-dot" style="background:#7c3aed;"></div>
+      <span class="layer-label">Sub-Bass</span>
+      <div class="layer-bar"><div class="layer-fill" id="lbar-sub" style="background:#7c3aed;width:0%;"></div></div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-dot" style="background:#60a5fa;"></div>
+      <span class="layer-label">Mid</span>
+      <div class="layer-bar"><div class="layer-fill" id="lbar-mid" style="background:#60a5fa;width:0%;"></div></div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-dot" style="background:#f59e0b;"></div>
+      <span class="layer-label">High</span>
+      <div class="layer-bar"><div class="layer-fill" id="lbar-high" style="background:#f59e0b;width:0%;"></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─────────────────────────────────────────────
+// SECTION 6: PROCEDURAL SOUND RECIPE BUILDER
+// ─────────────────────────────────────────────
+(function(){
+  const TEXTURES=['Noise:White','Noise:Pink','Noise:Brown','Tone:Sine','Tone:Saw','Tone:Square','Grain:Sparse','Grain:Dense'];
+  const PROCESSES=['Filter','Compress','Reverb','Pitch↑','Pitch↓','Distort','Fade','Delay'];
+  const PRESETS={
+    'Sci-Fi Laser':['Tone:Sine','Pitch↑','Distort','Filter'],
+    'Monster Roar':['Noise:Brown','Grain:Dense','Reverb','Compress','Filter'],
+    'Spaceship':   ['Tone:Saw','Noise:Pink','Filter','Compress','Reverb'],
+    'Rain':        ['Noise:White','Noise:Pink','Filter','Delay'],
+    'Fire':        ['Noise:Brown','Grain:Sparse','Reverb','Distort'],
+    'Digital Glitch':['Noise:White','Tone:Square','Distort','Pitch↑','Filter'],
+  };
+
+  let chain=[];
+  const MAX=6;
+
+  function buildPalette(containerId, items){
+    const el=document.getElementById(containerId);
+    items.forEach(item=>{
+      const chip=document.createElement('div');
+      chip.className='recipe-chip';chip.textContent=item;
+      chip.addEventListener('click',()=>addToChain(item));
+      el.appendChild(chip);
+    });
+  }
+  buildPalette('palette-texture',TEXTURES);
+  buildPalette('palette-process',PROCESSES);
+
+  const presetsRow=document.getElementById('presets-row');
+  Object.keys(PRESETS).forEach(name=>{
+    const btn=document.createElement('button');
+    btn.className='btn btn-sm';btn.textContent=name;
+    btn.addEventListener('click',()=>{chain=PRESETS[name].slice();renderChain();});
+    presetsRow.appendChild(btn);
+  });
+
+  function addToChain(item){
+    if(chain.length>=MAX) return;
+    chain.push(item);renderChain();
+  }
+  function removeFromChain(idx){chain.splice(idx,1);renderChain();}
+
+  function renderChain(){
+    const chainEl=document.getElementById('recipe-chain');
+    chainEl.innerHTML='';
+    if(chain.length===0){
+      chainEl.innerHTML='<span style="font-size:0.75rem;color:var(--dim);padding:0.3rem;">Click ingredients to build your chain…</span>';
+    } else {
+      chain.forEach((item,i)=>{
+        const node=document.createElement('div');node.className='recipe-node';
+        node.innerHTML=`${item} <span class="remove" data-i="${i}">✕</span>`;
+        node.querySelector('.remove').addEventListener('click',()=>removeFromChain(i));
+        chainEl.appendChild(node);
+        if(i<chain.length-1){
+          const arr=document.createElement('span');
+          arr.style.cssText='color:var(--dim);font-size:0.8rem;';arr.textContent='→';
+          chainEl.appendChild(arr);
+        }
+      });
+    }
+    document.getElementById('proc-notation').textContent=chain.length>0?chain.join(' → '):'(empty chain)';
+    document.getElementById('proc-caption').textContent=chain.length>0?
+      `Chain: ${chain.join(' → ')} · waveform transforms shown below`:'Signal chain waveform — build a recipe to see it evolve';
+  }
+  document.getElementById('proc-clear').addEventListener('click',()=>{chain=[];renderChain();});
+
+  // Canvas
+  const canvas=document.getElementById('proc-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=350;}
+  resize();new ResizeObserver(resize).observe(canvas.parentElement);
+  let lastT=0,elapsed=0;
+
+  function applyProcess(pts,proc,t){
+    return pts.map((y,i)=>{
+      const nx=i/pts.length;
+      switch(proc){
+        case 'Filter':  return y*(0.3+Math.pow(1-nx,0.5)*0.7);
+        case 'Compress':return Math.sign(y)*Math.pow(Math.abs(y),0.5)*0.8;
+        case 'Reverb':  return y+pts[Math.max(0,i-Math.floor(pts.length*0.1))]*0.4;
+        case 'Pitch↑':  return pts[Math.min(pts.length-1,Math.floor(i*1.5))]||y;
+        case 'Pitch↓':  return pts[Math.floor(i*0.6)]||y;
+        case 'Distort': return Math.tanh(y*4)*0.8;
+        case 'Fade':    return y*(1-nx);
+        case 'Delay':   return y*0.7+(pts[Math.max(0,i-Math.floor(pts.length*0.15))]||0)*0.5;
+        default:        return y;
+      }
+    });
+  }
+
+  function genSource(type,W,t){
+    const pts=[];
+    for(let i=0;i<W;i++){
+      const nx=i/W;let y=0;
+      if(type.includes('Sine'))    y=Math.sin(nx*Math.PI*8+t*0.5);
+      else if(type.includes('Saw')) y=(nx*6+t*0.3)%2-1;
+      else if(type.includes('Square')) y=Math.sign(Math.sin(nx*Math.PI*8+t*0.5));
+      else if(type.includes('White'))  y=(Math.random()*2-1);
+      else if(type.includes('Pink'))   y=(Math.random()*2-1)*(1-nx*0.5);
+      else if(type.includes('Brown'))  y=Math.sin(nx*Math.PI*2+t*0.1)*(1+Math.random()*0.3);
+      else if(type.includes('Sparse')) y=Math.random()<0.03?Math.random()*2-1:0;
+      else if(type.includes('Dense'))  y=Math.random()<0.2?Math.random()*2-1:0;
+      pts.push(y);
+    }
+    return pts;
+  }
+
+  function draw(ts){
+    const t=ts*0.001,dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    const W=canvas.width,H=canvas.height;
+    ctx.fillStyle='rgba(2,4,8,0.09)';ctx.fillRect(0,0,W,H);
+
+    if(chain.length===0){
+      // idle: multi-layer ambient
+      const cy=H*0.5;
+      for(let li=0;li<4;li++){
+        ctx.beginPath();
+        for(let i=0;i<=W;i++){
+          const nx=i/W;
+          const y=cy+Math.sin(nx*Math.PI*(1+li*0.7)+elapsed*(0.1+li*0.08))*H*(0.05+li*0.03);
+          i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);
+        }
+        ctx.strokeStyle=`rgba(37,99,235,${0.5-li*0.1})`;ctx.lineWidth=1;ctx.stroke();
+      }
+      return requestAnimationFrame(draw);
+    }
+
+    // Find first source
+    const sourceIdx=chain.findIndex(c=>!PROCESSES.includes(c));
+    if(sourceIdx<0) return requestAnimationFrame(draw);
+
+    let pts=genSource(chain[sourceIdx],W,elapsed);
+    const colors=['#2563eb','#60a5fa','#f59e0b','#34d399','#a78bfa','#f87171'];
+
+    // Draw stages
+    const stageH=Math.floor(H/(chain.length+1));
+    chain.forEach((step,si)=>{
+      if(si>sourceIdx) pts=applyProcess(pts,step,elapsed);
+      const cy=(si+0.5)*stageH+stageH*0.2;
+      ctx.beginPath();
+      pts.forEach((y,i)=>{
+        const px=i;const py=cy+y*stageH*0.35;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      });
+      ctx.strokeStyle=colors[si%colors.length];
+      ctx.shadowBlur=6;ctx.shadowColor=colors[si%colors.length];
+      ctx.lineWidth=1.3;ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle=colors[si%colors.length];ctx.font='10px Segoe UI';
+      ctx.fillText(step,6,cy-stageH*0.38);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  renderChain();
+})();
+
+// ─────────────────────────────────────────────
+// SECTION 7: REACTIVE VISUALIZATION
+// ─────────────────────────────────────────────
+(function(){
+  const canvas=document.getElementById('react-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=400;}
+  resize();new ResizeObserver(resize).observe(canvas.parentElement);
+
+  let lastT=0,elapsed=0,bpm=110,genre='ambient';
+  const bassLag=new LagFilter(0,0.1),subLag=new LagFilter(0,0.15);
+  const midLag=new LagFilter(0,0.08),highLag=new LagFilter(0,0.06);
+  const bgColorLag=new LagFilter(0,0.2);
+  const wobbleLag=new LagFilter(0,0.08);
+  const ringLag=new LagFilter(0,0.1);
+  const scanLag=new LagFilter(0,0.05);
+
+  const GENRE_PROFILES={
+    ambient:     {bassBase:0.2,subBase:0.15,midBase:0.25,highBase:0.1, beatStrength:0.3},
+    cinematic:   {bassBase:0.5,subBase:0.4, midBase:0.4, highBase:0.3, beatStrength:0.7},
+    experimental:{bassBase:0.3,subBase:0.2, midBase:0.5, highBase:0.6, beatStrength:0.5},
+    industrial:  {bassBase:0.7,subBase:0.6, midBase:0.45,highBase:0.55,beatStrength:0.9},
+  };
+
+  document.getElementById('react-bpm').addEventListener('input',function(){
+    bpm=+this.value;document.getElementById('react-bpm-v').textContent=bpm;
+  });
+  document.querySelectorAll('[data-genre]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      genre=btn.dataset.genre;
+      document.querySelectorAll('[data-genre]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Particles
+  const NPARTICLES=60;
+  const particles=Array.from({length:NPARTICLES},()=>({
+    angle:Math.random()*Math.PI*2,speed:0.01+Math.random()*0.02,r:0,size:2
+  }));
+
+  function simulate(t,dt){
+    const beatSec=60/bpm;
+    const beatPhase=(t%beatSec)/beatSec;
+    const G=GENRE_PROFILES[genre];
+    const beat=Math.pow(Math.max(0,Math.sin(beatPhase*Math.PI)),2)*G.beatStrength;
+    const slowBeat=Math.pow(Math.max(0,Math.sin(beatPhase*Math.PI*0.5)),2)*G.beatStrength;
+
+    bassLag.set(G.bassBase+beat*0.5+Math.sin(t*1.3)*0.1*G.bassBase);
+    subLag.set(G.subBase+slowBeat*0.4+Math.sin(t*0.6)*0.1*G.subBase);
+    midLag.set(G.midBase+Math.sin(t*2.1)*0.15*G.midBase+beat*0.2);
+    highLag.set(G.highBase+Math.abs(Math.sin(t*4.7+Math.random()*0.2))*0.2+beat*0.1);
+    [bassLag,subLag,midLag,highLag].forEach(l=>l.update(dt));
+    bgColorLag.set(bassLag.value);bgColorLag.update(dt);
+    wobbleLag.set(subLag.value);wobbleLag.update(dt);
+    ringLag.set(midLag.value);ringLag.update(dt);
+    scanLag.set(highLag.value);scanLag.update(dt);
+  }
+
+  function draw(ts){
+    const t=ts*0.001,dt=Math.min(t-lastT,0.05);lastT=t;elapsed+=dt;
+    simulate(elapsed,dt);
+    const W=canvas.width,H=canvas.height;
+
+    // Layer 1: Bass → bg color pulse (blue throb)
+    const bgAlpha=0.06+bassLag.value*0.08;
+    ctx.fillStyle=`rgba(2,4,8,${1-bgAlpha})`;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=`rgba(37,99,235,${bgColorLag.value*0.15})`;ctx.fillRect(0,0,W,H);
+
+    // Layer 2: Sub-bass → canvas wobble effect (horizontal wave distortion)
+    const wobble=wobbleLag.value;
+    if(wobble>0.05){
+      ctx.strokeStyle=`rgba(124,58,237,${wobble*0.3})`;ctx.lineWidth=2;
+      for(let y=0;y<H;y+=20){
+        ctx.beginPath();
+        ctx.moveTo(0,y+Math.sin(y*0.1+elapsed*2)*wobble*6);
+        ctx.lineTo(W,y+Math.sin(y*0.1+elapsed*2+Math.PI)*wobble*6);
+        ctx.stroke();
+      }
+    }
+
+    // Layer 3: Mid → particle ring
+    const cx=W*0.5,cy=H*0.5;
+    const ringR=80+ringLag.value*120;
+    particles.forEach((p,i)=>{
+      p.angle+=p.speed*(1+ringLag.value*2)*dt;
+      p.r=ringR+(Math.sin(p.angle*3+elapsed)*20*ringLag.value);
+      p.size=2+ringLag.value*4;
+      const px=cx+Math.cos(p.angle)*p.r+(Math.sin(elapsed*2+i)*wobbleLag.value*15);
+      const py=cy+Math.sin(p.angle)*p.r*(0.5+subLag.value*0.3);
+      ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);
+      ctx.fillStyle=`rgba(96,165,250,${0.3+ringLag.value*0.5})`;
+      ctx.shadowBlur=8;ctx.shadowColor='#60a5fa';ctx.fill();ctx.shadowBlur=0;
+    });
+
+    // Ring outline
+    ctx.beginPath();ctx.ellipse(cx,cy,ringR,ringR*(0.5+subLag.value*0.3),0,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(37,99,235,${0.2+bassLag.value*0.4})`;
+    ctx.shadowBlur=bassLag.value*20;ctx.shadowColor='#2563eb';
+    ctx.lineWidth=1;ctx.stroke();ctx.shadowBlur=0;
+
+    // Layer 4: High → edge scanline intensity
+    const scanInt=scanLag.value;
+    if(scanInt>0.05){
+      for(let y=0;y<H;y+=2){
+        ctx.fillStyle=`rgba(245,158,11,${scanInt*0.06})`;
+        ctx.fillRect(0,y,W,1);
+        ctx.fillRect(0,y,Math.floor(scanInt*30),1);
+        ctx.fillRect(W-Math.floor(scanInt*30),y,Math.floor(scanInt*30),1);
+      }
+    }
+
+    // Update layer bars
+    document.getElementById('lbar-bass').style.width=(bassLag.value*100)+'%';
+    document.getElementById('lbar-sub').style.width=(subLag.value*100)+'%';
+    document.getElementById('lbar-mid').style.width=(midLag.value*100)+'%';
+    document.getElementById('lbar-high').style.width=(highLag.value*100)+'%';
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- SECTION 8: ARTISTS -->
+<section id="artists">
+  <div class="section-label">Section 08</div>
+  <h2 class="hidden stagger-1">Masters of the Craft</h2>
+  <p class="hidden stagger-2">Eight sound designers whose work defines cinema's invisible architecture — from Skywalker Sound to the editing rooms of David Fincher.</p>
+
+  <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));">
+
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">Ben Burtt</div>
+      <div class="artist-film">Star Wars · WALL-E · Indiana Jones</div>
+      <div class="artist-tech">Field recording + synthesis fusion. Lightsaber from film projector motor + CRT TV interference. R2-D2 from baby vocals processed through hardware synthesizers.</div>
+      <div class="artist-oscar">Academy Award winner — Star Wars (1978), E.T. (1983)</div>
+      <div><span class="artist-tag">Recording + Synthesis</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Walter Murch</div>
+      <div class="artist-film">Apocalypse Now · The Godfather · THX 1138</div>
+      <div class="artist-tech">Inventor of the "sound designer" title. Pioneered worldizing — re-recording sounds in real spaces to embed natural acoustic environments. Sound as expression of inner psychological states.</div>
+      <div class="artist-oscar">Academy Award winner — Apocalypse Now (1980)</div>
+      <div><span class="artist-tag">Worldizing · Theoretical</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">Gary Rydstrom</div>
+      <div class="artist-film">Jurassic Park · Saving Private Ryan · Terminator 2</div>
+      <div class="artist-tech">Transformation of natural recordings into impossible creatures. T-Rex roar built from elephant, tiger, crocodile, and whale sounds. Raptor vocals from baby voices + crocodile hiss.</div>
+      <div class="artist-oscar">7× Academy Award winner</div>
+      <div><span class="artist-tag">Transformation · Layering</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-4">
+      <div class="artist-name">Randy Thom</div>
+      <div class="artist-film">Cast Away · The Right Stuff · Forrest Gump</div>
+      <div class="artist-tech">Theorist and practitioner at Skywalker Sound. Argues sound design must begin at the screenplay stage. His essays on "designing a movie for sound" changed how the industry thinks about audio integration.</div>
+      <div class="artist-oscar">Academy Award winner · Skywalker Sound veteran</div>
+      <div><span class="artist-tag">Theory · Integration</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-1">
+      <div class="artist-name">Skywalker Sound</div>
+      <div class="artist-film">Industrial Light &amp; Sound · Marin County, CA</div>
+      <div class="artist-tech">George Lucas's post-production facility. The institutional center of American cinematic sound design since 1975. Home to Burtt, Rydstrom, Thom, and a generation of sound designers who defined the craft.</div>
+      <div class="artist-oscar">Dozens of Academy Awards collectively</div>
+      <div><span class="artist-tag">Institution · Legacy</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-2">
+      <div class="artist-name">Ren Klyce</div>
+      <div class="artist-film">Se7en · Fight Club · The Social Network · Gone Girl</div>
+      <div class="artist-tech">David Fincher's long-term collaborator. Synthesis as behavioral and psychological architecture. Sound design as a tool for building dread, unease, and tension beneath the surface of image.</div>
+      <div class="artist-oscar">Multiple BAFTA and Guild nominations</div>
+      <div><span class="artist-tag">Psychological · Synthesis</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-3">
+      <div class="artist-name">Frank Serafine</div>
+      <div class="artist-film">Tron · Star Trek: The Motion Picture · The Hunt for Red October</div>
+      <div class="artist-tech">Pioneer of electronic synthesis in film sound. Created the electronic soundscape of Tron (1982) using early synthesizers at a time when electronic sound in film was virtually unexplored.</div>
+      <div class="artist-oscar">Emmy Award winner · Electronic synthesis pioneer</div>
+      <div><span class="artist-tag">Electronic · Synthesis Pioneer</span></div>
+    </div>
+
+    <div class="artist-card hidden stagger-4">
+      <div class="artist-name">Richard King</div>
+      <div class="artist-film">The Dark Knight · Inception · Dunkirk · Interstellar</div>
+      <div class="artist-tech">Christopher Nolan's primary sound collaborator. Builds immersive practical sound environments using real objects rather than synthesis. Dunkirk's sound design notoriously avoided digital processing.</div>
+      <div class="artist-oscar">Academy Award winner — The Dark Knight (2009), Inception (2011)</div>
+      <div><span class="artist-tag">Practical · Immersive</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 9: GLOSSARY -->
+<section id="glossary">
+  <div class="section-label">Section 09</div>
+  <h2 class="hidden stagger-1">Glossary</h2>
+  <p class="hidden stagger-2">22 essential terms spanning Foley, synthesis, signal processing, and the psychoacoustics of cinematic sound.</p>
+
+  <div class="glossary-grid hidden stagger-3">
+
+    <div class="term">
+      <div class="term-word">ADR</div>
+      <div class="term-def">Automated Dialogue Replacement. Re-recording dialogue in a studio to replace unusable production sound. Also called "looping." The post-production process of restoring or improving recorded speech to match picture.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Additive Synthesis</div>
+      <div class="term-def">Building complex timbres by summing sine waves at controlled frequencies and amplitudes. Theoretically any sound can be reproduced as a sum of sinusoids. The Hammond organ is the analog example; FM synthesis is a computational shortcut.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Ambience</div>
+      <div class="term-def">The continuous background sound of a scene or environment — crowd noise, wind, mechanical hum, room tone. Distinct from Foley and dialogue, ambience provides the acoustic world that contains all other sounds.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Atmos (Dolby)</div>
+      <div class="term-def">Dolby's object-based spatial audio format. Places sounds as 3D objects in space rather than channels, enabling reproduction at any speaker count. The standard for theatrical and streaming immersive audio since 2012.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Bus</div>
+      <div class="term-def">A shared signal routing path that combines multiple audio signals into a single output. In mixing, buses allow groups of sounds (all dialogue, all Foley) to be processed together. Essential in film mixing for stem management.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Convolution</div>
+      <div class="term-def">Applying the acoustic "fingerprint" (impulse response) of one space or object to another signal. A convolution reverb places any sound inside a real captured space. Also used for cabinet simulation and creative spectral processing.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Delay</div>
+      <div class="term-def">A time-based effect that produces one or more echoes of a signal. In sound design, delay creates space, depth, and rhythmic interest. Short delays (1–30ms) create thickening and widening; longer delays create distinct echoes.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Envelope (ADSR)</div>
+      <div class="term-def">A time-varying control signal with four stages: Attack (rise to peak), Decay (fall to sustain), Sustain (held level), Release (fade to silence). ADSR shapes amplitude, filter, or any parameter over the lifetime of a note or event.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Filter</div>
+      <div class="term-def">A processor that attenuates specific frequency ranges. Low-pass filters remove high frequencies; high-pass remove lows; band-pass isolate a frequency band. The foundational tool of subtractive synthesis and spectral shaping.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">FM Synthesis</div>
+      <div class="term-def">Frequency Modulation synthesis. One oscillator (the modulator) modulates the frequency of another (the carrier). At high modulation depths, complex non-harmonic spectra emerge — producing metallic, bell, and percussive timbres. Yamaha DX7 is canonical.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Foley</div>
+      <div class="term-def">Recording and creating sound effects in synchrony with picture, named after Jack Foley. Includes footsteps, clothing movement, and prop handling. Performance-based, recorded to picture in a Foley stage. Distinct from field recording and synthesis.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Impulse Response</div>
+      <div class="term-def">The acoustic fingerprint of a space — recorded by playing a sine sweep or impulse and capturing the result. Used in convolution reverb to place sounds inside real spaces. Field recordists capture IRs to preserve locations acoustically.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Noise Floor</div>
+      <div class="term-def">The level of inherent electronic or environmental noise in a recording system. A lower noise floor allows quiet sounds to be captured without artifacts. Determined by microphone self-noise and preamp noise — critical specifications for field recording.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Oscillator</div>
+      <div class="term-def">The primary sound source in most synthesizers. Produces continuous periodic waveforms — sine, sawtooth, square, triangle, noise — whose fundamental frequency determines pitch. Voltage-controlled oscillators (VCO) form the basis of analog synthesis.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Reverb</div>
+      <div class="term-def">The persistence of sound in a space after the source stops — the sum of all reflections. Reverb places sounds in acoustic environments and is fundamental to cinematic sound design. Convolution reverb uses real measured spaces.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Sampling</div>
+      <div class="term-def">Recording a real sound and playing it back at different pitches and timings. The bridge between field recording and synthesis. Modern sample libraries combine thousands of recordings to recreate acoustic instruments and environments with synthesis control.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Sound Design</div>
+      <div class="term-def">The craft of creating, recording, and manipulating audio to serve a narrative, interactive, or aesthetic purpose. In film, sound design encompasses all non-musical sound — effects, ambience, Foley — and their integration with the image.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Stems</div>
+      <div class="term-def">Separate mixed tracks for each major element of a film's audio — dialogue stem, music stem, effects stem. Stems allow re-mixing for different formats (theatrical vs. streaming), languages, and territories without rebuilding the entire mix.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Subtractive Synthesis</div>
+      <div class="term-def">Starting with a harmonically rich waveform (sawtooth, pulse) and using filters to subtract frequencies. The dominant synthesis paradigm — Moog, Prophet-5, 303. Filter cutoff sweeps are its signature gesture.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Synthesis</div>
+      <div class="term-def">The electronic generation of sound from mathematical principles rather than physical acoustic sources. Encompasses subtractive, additive, FM, granular, physical modeling, and spectral methods. The core technology of sound design beyond recording.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Transient</div>
+      <div class="term-def">The initial high-energy, non-periodic portion of a sound — the attack before steady-state sustain begins. Transients carry sonic identity: we recognize instruments primarily by transient shape. Transient preservation or removal is a primary sound design tool.</div>
+    </div>
+
+    <div class="term">
+      <div class="term-word">Waveform</div>
+      <div class="term-def">The visual representation of a sound as amplitude over time. The shape of a waveform determines its harmonic content — sine is pure, sawtooth is rich in harmonics, noise is aperiodic. Reading waveforms is the fundamental literacy of sound design.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;background:var(--surface);">
+  <div style="font-size:0.72rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;">
+    WAVGEN · Sound Design World &nbsp;·&nbsp; The subconscious texture engine of cinema
+  </div>
+  <div style="font-size:0.68rem;color:rgba(74,96,112,0.6);margin-top:0.5rem;">
+    Foley · Synthesis · Psychoacoustics · Convolution · Impulse Response · Worldizing
+  </div>
+</footer>
+
+<!-- INTERSECTION OBSERVER + NAV WIRING -->
+<script>
+// IntersectionObserver for scroll entrance animations
+(function(){
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        entry.target.classList.remove('hidden');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.hidden').forEach(el => obs.observe(el));
+})();
+
+// Active nav wiring via IntersectionObserver on sections
+(function(){
+  const navLinks = document.querySelectorAll('nav a[data-section]');
+  const sections = document.querySelectorAll('section[id], div[id="hero"]');
+
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.dataset.section === id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => sectionObs.observe(s));
+})();
+</script>
+
+</body>
+</html>

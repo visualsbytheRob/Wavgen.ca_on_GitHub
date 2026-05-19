@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring dub techniques">
+    <meta property="og:title" content="Dub Techniques World — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring dub techniques">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/dub_techniques_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN :: DUB TECHNIQUES</title>
+<style>
+:root{
+  --black:#020806;--surface:#060E08;--surface2:#0A1410;
+  --border:#112210;--text:#C8E0C0;--dim:#447044;
+  --green:#00CC44;--green2:#00882A;--green3:#80EE90;
+  --amber:#D4820A;--amber2:#FF9C18;--smoke:#8A9A80;
+  --font:'Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:var(--font);overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(2,8,6,0.95);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:48px;}
+.nav-logo{color:var(--green);font-size:0.85rem;letter-spacing:4px;font-weight:bold;}
+.nav-links{display:flex;gap:1.2rem;list-style:none;}
+.nav-links a{color:var(--dim);font-size:0.65rem;text-decoration:none;letter-spacing:1px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--green);}
+section{padding:5rem 2rem 4rem;max-width:1100px;margin:0 auto;}
+.section-label{font-size:0.62rem;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:0.4rem;opacity:0.8;}
+.section-title{font-size:1.9rem;color:var(--text);margin-bottom:0.4rem;letter-spacing:1px;}
+.section-sub{color:var(--dim);font-size:0.82rem;margin-bottom:2rem;line-height:1.6;}
+canvas{display:block;}
+.hidden{opacity:0;transform:translateY(40px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.visible{opacity:1;transform:translateY(0);}
+.stagger-1{transition-delay:0.1s;}.stagger-2{transition-delay:0.2s;}
+#hero{padding:4rem 0 0;max-width:100%;}
+#hero-canvas{width:100%;height:440px;display:block;border-bottom:1px solid var(--border);}
+.hero-wrap{position:relative;}
+.hero-overlay{position:absolute;top:80px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;z-index:2;}
+.hero-title{font-size:2.8rem;letter-spacing:8px;color:var(--green);text-shadow:0 0 40px rgba(0,204,68,0.6);font-weight:bold;}
+.hero-sub{font-size:0.72rem;letter-spacing:3px;color:var(--dim);margin-top:0.5rem;}
+.canvas-box{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.ctrl-row{display:flex;gap:0.75rem;padding:0.75rem;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+.ctrl-group{display:flex;align-items:center;gap:0.5rem;}
+.ctrl-group label{font-size:0.6rem;color:var(--dim);letter-spacing:1px;white-space:nowrap;}
+input[type=range]{accent-color:var(--green);width:90px;}
+.ctrl-val{font-size:0.62rem;color:var(--green3);min-width:36px;}
+.dub-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);font-family:var(--font);font-size:0.65rem;padding:0.25rem 0.7rem;cursor:pointer;border-radius:2px;letter-spacing:1px;transition:all 0.15s;}
+.dub-btn:hover,.dub-btn.active{border-color:var(--green);color:var(--green);}
+.dub-btn.amber:hover,.dub-btn.amber.active{border-color:var(--amber);color:var(--amber);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+/* DUB MIXER */
+.mixer-strip{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:0.75rem 0.5rem;text-align:center;position:relative;}
+.mixer-strips{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:0.75rem;}
+.strip-label{font-size:0.6rem;color:var(--green3);letter-spacing:0.5px;margin-bottom:0.5rem;}
+.strip-fader{writing-mode:vertical-lr;direction:rtl;-webkit-appearance:none;height:120px;width:6px;background:rgba(0,204,68,0.15);border-radius:3px;cursor:pointer;accent-color:var(--green);}
+.strip-fader::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:8px;background:var(--green);border-radius:1px;cursor:pointer;}
+.send-knob{width:36px;height:36px;border:2px solid rgba(212,130,10,0.4);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto 0.4rem;font-size:0.55rem;color:var(--amber);transition:border-color 0.2s;}
+.send-knob:hover{border-color:var(--amber);}
+.vu-bar{height:8px;background:rgba(0,204,68,0.15);border-radius:2px;margin-top:0.4rem;overflow:hidden;}
+.vu-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.05s;}
+/* ARTISTS */
+.artists-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.2rem 1rem;text-align:center;transition:border-color 0.25s,transform 0.25s;}
+.artist-card:hover{border-color:var(--green);transform:translateY(-3px);}
+.artist-avatar{margin:0 auto 0.75rem;}
+.artist-name{font-size:0.75rem;color:var(--text);letter-spacing:1px;margin-bottom:0.25rem;}
+.artist-role{font-size:0.6rem;color:var(--dim);}
+.gloss-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.gloss-item{border-left:2px solid rgba(0,204,68,0.3);padding-left:0.75rem;}
+.gloss-term{font-size:0.72rem;color:var(--green3);letter-spacing:1px;margin-bottom:0.2rem;}
+.gloss-def{font-size:0.68rem;color:var(--dim);line-height:1.55;}
+</style>
+</head>
+<body class="domain-music">
+<nav>
+  <div class="nav-logo">WAVGEN</div>
+  <ul class="nav-links">
+    <li><a href="#hero">DUB</a></li>
+    <li><a href="#s2">MIXER</a></li>
+    <li><a href="#s3">TAPE ECHO</a></li>
+    <li><a href="#s4">SPRING</a></li>
+    <li><a href="#s5">ROUTING</a></li>
+    <li><a href="#s6">RIDDIM</a></li>
+    <li><a href="#s7">ARTISTS</a></li>
+    <li><a href="#s8">GLOSSARY</a></li>
+  </ul>
+</nav>
+
+<div id="hero" class="hero-wrap">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">DUB TECHNIQUES</div>
+    <div class="hero-sub">ECHO CHAMBER OF CONSCIOUSNESS</div>
+  </div>
+</div>
+
+<!-- S2: DUB MIXER -->
+<section id="s2" class="hidden">
+  <div class="section-label">02 · MIXING DESK</div>
+  <div class="section-title">Dub Mixer Simulation</div>
+  <div class="section-sub">The dub engineer treats the mixing desk as an instrument. Faders arc through the mix, sends feed echo chambers and reverbs, and every voltage is a creative decision. Drop — the instrument disappears. Cut — the echo eats itself.</div>
+  <div class="canvas-box">
+    <div class="mixer-strips" id="mixer-strips"></div>
+    <canvas id="mixer-canvas" height="120" style="width:100%;height:120px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>ECHO SEND</label><input type="range" id="sl-echo-send" min="0" max="1" value="0.4" step="0.01"><span class="ctrl-val" id="v-echo-send">40%</span></div>
+      <div class="ctrl-group"><label>REVERB SEND</label><input type="range" id="sl-rev-send" min="0" max="1" value="0.3" step="0.01"><span class="ctrl-val" id="v-rev-send">30%</span></div>
+      <div class="ctrl-group"><label>BPM</label><input type="range" id="sl-bpm" min="60" max="180" value="90" step="1"><span class="ctrl-val" id="v-bpm">90</span></div>
+      <button class="dub-btn active" id="btn-drop">DROP</button>
+      <button class="dub-btn amber" id="btn-dub">DUB</button>
+    </div>
+  </div>
+</section>
+
+<!-- S3: TAPE ECHO -->
+<section id="s3" class="hidden stagger-1">
+  <div class="section-label">03 · MAGNETIC TIME</div>
+  <div class="section-title">Tape Echo Systems</div>
+  <div class="section-sub">The Roland RE-201 Space Echo captures audio on a loop of magnetic tape, playing it back from a read head spaced millimetres from the write head. Speed, head spacing, and feedback converge into infinite recursive echo architecture.</div>
+  <div class="canvas-box">
+    <canvas id="echo-canvas" height="320" style="width:100%;height:320px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>ECHO RATE</label><input type="range" id="sl-echo-rate" min="0.1" max="1" value="0.4" step="0.01"><span class="ctrl-val" id="v-echo-rate">0.40s</span></div>
+      <div class="ctrl-group"><label>FEEDBACK</label><input type="range" id="sl-feedback" min="0" max="0.98" value="0.55" step="0.01"><span class="ctrl-val" id="v-feedback">55%</span></div>
+      <div class="ctrl-group"><label>WOW/FLUTTER</label><input type="range" id="sl-wf" min="0" max="1" value="0.3" step="0.01"><span class="ctrl-val" id="v-wf">30%</span></div>
+      <div class="ctrl-group"><label>HEAD SELECT</label><input type="range" id="sl-heads" min="1" max="4" value="2" step="1"><span class="ctrl-val" id="v-heads">2 HEADS</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: SPRING REVERB -->
+<section id="s4" class="hidden stagger-2">
+  <div class="section-label">04 · MECHANICAL SPACE</div>
+  <div class="section-title">Spring Reverb Explorer</div>
+  <div class="section-sub">Suspended metal springs store and release audio energy through mechanical wave propagation. Drive the transducer, waves travel the length of the spring, bounce, interfere, and emerge as the iconic crash, twang, and shimmer of classic dub reverb.</div>
+  <div class="two-col">
+    <div class="canvas-box">
+      <canvas id="spring-canvas" height="260" style="width:100%;height:260px;"></canvas>
+    </div>
+    <div class="canvas-box">
+      <canvas id="spring-ir-canvas" height="260" style="width:100%;height:260px;"></canvas>
+    </div>
+  </div>
+  <div class="ctrl-row" style="background:var(--surface);border:1px solid var(--border);border-radius:0 0 4px 4px;margin-top:0;">
+    <div class="ctrl-group"><label>TENSION</label><input type="range" id="sl-tension" min="0.1" max="1" value="0.5" step="0.01"><span class="ctrl-val" id="v-tension">50%</span></div>
+    <div class="ctrl-group"><label>DRIVE</label><input type="range" id="sl-drive" min="0" max="1" value="0.4" step="0.01"><span class="ctrl-val" id="v-drive">40%</span></div>
+    <div class="ctrl-group"><label>DECAY</label><input type="range" id="sl-sdecay" min="0.5" max="8" value="3" step="0.1"><span class="ctrl-val" id="v-sdecay">3.0s</span></div>
+    <div class="ctrl-group"><label>CRASH</label><input type="range" id="sl-crash" min="0" max="1" value="0.2" step="0.01"><span class="ctrl-val" id="v-crash">20%</span></div>
+  </div>
+</section>
+
+<!-- S5: SEND/RETURN ROUTING -->
+<section id="s5" class="hidden stagger-1">
+  <div class="section-label">05 · SIGNAL ARCHITECTURE</div>
+  <div class="section-title">Send / Return Routing</div>
+  <div class="section-sub">Dub routing is a spatial philosophy. Channels feed echo chambers through pre-fader sends, returns cascade into each other through secondary sends, and the engineer conducts in realtime — drawing the mix spatially across a room nobody is standing in.</div>
+  <div class="canvas-box">
+    <canvas id="route-canvas" height="340" style="width:100%;height:340px;"></canvas>
+  </div>
+</section>
+
+<!-- S6: RIDDIM LAYERING -->
+<section id="s6" class="hidden stagger-2">
+  <div class="section-label">06 · FOUNDATION</div>
+  <div class="section-title">Riddim Layering Systems</div>
+  <div class="section-sub">Riddim — the rhythm track — is the structural DNA of dub. Kick, bass, guitar chop, and percussion define a groove that can underpin hundreds of vocal cuts and mixing sessions. The art is in the drop, the space, and the weight of the foundation.</div>
+  <div class="canvas-box">
+    <canvas id="riddim-canvas" height="320" style="width:100%;height:320px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>KICKS</label><input type="range" id="sl-kicks" min="0" max="1" value="1" step="1"><span class="ctrl-val" id="v-kicks">ON</span></div>
+      <div class="ctrl-group"><label>BASS</label><input type="range" id="sl-bass" min="0" max="1" value="1" step="1"><span class="ctrl-val" id="v-bass">ON</span></div>
+      <div class="ctrl-group"><label>CHOP</label><input type="range" id="sl-chop" min="0" max="1" value="1" step="1"><span class="ctrl-val" id="v-chop">ON</span></div>
+      <div class="ctrl-group"><label>DROP CHANCE</label><input type="range" id="sl-drop-ch" min="0" max="1" value="0.1" step="0.01"><span class="ctrl-val" id="v-drop-ch">10%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S7: ARTISTS -->
+<section id="s7" class="hidden">
+  <div class="section-label">07 · SOUND SYSTEM</div>
+  <div class="section-title">Dub Architects</div>
+  <div class="artists-grid">
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.7"/>
+        <circle cx="28" cy="28" r="12" fill="none" stroke="#D4820A" stroke-width="1" opacity="0.5"/>
+        <circle cx="28" cy="28" r="4" fill="rgba(0,204,68,0.3)" stroke="#00CC44" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">King Tubby</div>
+      <div class="artist-role">Osbourne Ruddock · Inventor of Dub</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <polygon points="28,6 50,42 6,42" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.7"/>
+        <polygon points="28,16 40,36 16,36" fill="rgba(0,204,68,0.1)" stroke="#D4820A" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Lee 'Scratch' Perry</div>
+      <div class="artist-role">Black Ark Studio · Psychedelic Dub</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <rect x="8" y="8" width="40" height="40" rx="4" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.6"/>
+        <rect x="18" y="18" width="20" height="20" rx="2" fill="rgba(0,204,68,0.1)" stroke="#D4820A" stroke-width="1"/>
+        <circle cx="28" cy="28" r="3" fill="#00CC44" opacity="0.8"/>
+      </svg>
+      <div class="artist-name">Augustus Pablo</div>
+      <div class="artist-role">Melodica Dub · Rockers Sound</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <ellipse cx="28" cy="28" rx="22" ry="12" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.6"/>
+        <line x1="6" y1="28" x2="50" y2="28" stroke="#D4820A" stroke-width="1" opacity="0.5"/>
+        <circle cx="28" cy="28" r="5" fill="rgba(212,130,10,0.2)" stroke="#D4820A" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Scientist</div>
+      <div class="artist-role">Hopeton Brown · King Tubby's Engineer</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <polygon points="28,8 48,48 8,48" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.5"/>
+        <line x1="18" y1="38" x2="38" y2="38" stroke="#00CC44" stroke-width="1" opacity="0.4"/>
+        <circle cx="28" cy="22" r="4" fill="rgba(0,204,68,0.2)" stroke="#D4820A" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Sly & Robbie</div>
+      <div class="artist-role">Riddim Twins · Studio Foundation</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="20" fill="none" stroke="#D4820A" stroke-width="1.5" opacity="0.6"/>
+        <rect x="20" y="20" width="16" height="16" rx="2" fill="rgba(212,130,10,0.15)" stroke="#D4820A" stroke-width="1"/>
+        <line x1="8" y1="28" x2="20" y2="28" stroke="#00CC44" stroke-width="1" opacity="0.4"/>
+        <line x1="36" y1="28" x2="48" y2="28" stroke="#00CC44" stroke-width="1" opacity="0.4"/>
+      </svg>
+      <div class="artist-name">Mad Professor</div>
+      <div class="artist-role">Neil Fraser · Ariwa Studio · UK Dub</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <line x1="8" y1="20" x2="48" y2="20" stroke="#00CC44" stroke-width="1.5" opacity="0.6"/>
+        <line x1="8" y1="36" x2="48" y2="36" stroke="#D4820A" stroke-width="1.5" opacity="0.5"/>
+        <line x1="28" y1="8" x2="28" y2="48" stroke="#00CC44" stroke-width="1" opacity="0.35"/>
+        <circle cx="28" cy="28" r="6" fill="rgba(0,204,68,0.15)" stroke="#00CC44" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">The Upsetters</div>
+      <div class="artist-role">Lee Perry's Band · Riddim Engine</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="20" fill="none" stroke="#00CC44" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="28" cy="28" r="10" fill="none" stroke="#D4820A" stroke-width="1" opacity="0.4"/>
+        <circle cx="28" cy="28" r="4" fill="rgba(0,204,68,0.2)"/>
+        <line x1="14" y1="14" x2="42" y2="42" stroke="#D4820A" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <div class="artist-name">Adrian Sherwood</div>
+      <div class="artist-role">On-U Sound · Industrial Dub</div>
+    </div>
+  </div>
+</section>
+
+<!-- S8: GLOSSARY -->
+<section id="s8" class="hidden">
+  <div class="section-label">08 · REFERENCE</div>
+  <div class="section-title">Dub Lexicon</div>
+  <div class="gloss-grid">
+    <div class="gloss-item"><div class="gloss-term">Dub</div><div class="gloss-def">Instrumental remix created by isolating, manipulating, and re-mixing individual tracks of a reggae recording. Emerged in Jamaica in the early 1970s through engineers like King Tubby and Rudolf Redwood.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Riddim</div><div class="gloss-def">The instrumental track — drum, bass, rhythm guitar, and keyboard foundation — over which multiple vocal artists record separate cuts. One riddim can underpin dozens of recordings across years and labels.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Space Echo (RE-201)</div><div class="gloss-def">Roland's classic tape echo unit using a loop of magnetic tape with multiple playback heads. Variable tape speed controls echo rate; feedback routes delayed signal back to the input for self-oscillating repeats.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Drop</div><div class="gloss-def">The sudden removal of one or more instrument channels from the mix — bass drops out, melody drops out, leaving space that feels louder than its absence. The fundamental tension-release technique of dub production.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Echo Chamber</div><div class="gloss-def">A physical room or chamber where audio is played through a speaker and recorded with a microphone to capture room reflections. Original studios used actual echo chambers before spring reverbs became standard.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Spring Reverb</div><div class="gloss-def">Reverb unit using a suspended coil spring as a delay medium. Audio drives a transducer at one end; waves travel the spring's length and return as reflections. Distinctive crash and twang — the signature sound of dub reverb.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Send / Return</div><div class="gloss-def">Routing architecture where a portion of a channel signal is sent to an effects unit (echo, reverb) via a send bus; the processed signal returns on a separate return channel. Enables shared effects with per-channel intensity control.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Version</div><div class="gloss-def">The B-side of a Jamaican single — typically an instrumental or dub mix of the A-side. The version tradition established remix culture: the same riddim existing in multiple simultaneous forms for different audiences.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Pre-Fader Send</div><div class="gloss-def">A send taken from the channel signal before the fader — so pulling down the fader mutes the direct signal but continues feeding the echo/reverb. Creates the effect of echoes hanging in space after the instrument disappears.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Sound System</div><div class="gloss-def">A mobile DJ and amplification apparatus — often custom-built with custom speaker cabinets — used for outdoor dance events. The competitive sound system culture of Kingston in the 1960s was the nursery of Jamaican popular music.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Feedback Loop</div><div class="gloss-def">Routing the output of an echo or reverb unit back to its own input, creating self-sustaining, building echoes that can escalate toward controlled chaos. A signature technique of King Tubby and Lee Perry.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Wow and Flutter</div><div class="gloss-def">Speed variations in tape transport: Wow = slow pitch variation below 6 Hz; Flutter = faster variation 6-100 Hz. In dub, intentional wow adds psychedelic pitch wobble to echo repeats — an aesthetic feature rather than a defect.</div></div>
+    <div class="gloss-item"><div class="gloss-term">One Drop</div><div class="gloss-def">Reggae rhythmic pattern where the kick drum emphasis falls on beat three rather than one — the "one" is dropped. Creates the characteristic floating suspension of reggae and dub rhythm.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Plate Reverb</div><div class="gloss-def">Large metal plate (typically 2m × 1m) suspended in a frame, driven by a transducer and sensed by contact microphones. Creates dense, smooth reverb — less mechanical than spring, more mechanical than digital.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Channel Strip</div><div class="gloss-def">A vertical section of a mixing console containing gain, EQ, auxiliary sends, channel fader, and routing matrix for one input signal. In dub, the channel strip is played as an instrument — fader position is a performance parameter.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Delay Time</div><div class="gloss-def">The time interval between input and echo repeat, typically synced to a tempo subdivision (quarter-note, dotted eighth). In tape echo, delay time is a function of tape speed and physical head spacing — continuously variable.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Autopan</div><div class="gloss-def">LFO-driven panning effect rotating audio between left and right channels at a rhythmic rate. In dub, extreme autopan creates spatial movement that animates the stereo field and simulates echo chamber positioning.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Half-Step (Steppers)</div><div class="gloss-def">Reggae subgenre with four-on-the-floor kick drum pattern — all four beats emphasised. Associated with the Rasta nyahbinghi tradition and 1970s roots reggae. The rhythmic foundation of much UK dub.</div></div>
+    <div class="gloss-item"><div class="gloss-term">DUB Plate</div><div class="gloss-def">An acetate disc cut one-at-a-time for exclusive use by a sound system or artist — not commercially released. Contains exclusive mixes, specials, or artist greetings for competitive sound system events.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Selector</div><div class="gloss-def">The DJ role in sound system culture — choosing and playing the records. The Selector curates the selection of riddims and artists, responding to crowd energy and competing against rival systems' selections.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Roots Dub</div><div class="gloss-def">The foundational style of dub — deep bass, sparse percussion, extended echo and reverb, politically conscious lyrical content. Pioneered by King Tubby, Augustus Pablo, and Scientist in the 1970s Kingston studio complex.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Oscillator (Dub)</div><div class="gloss-def">In live dub performance, a test-tone oscillator fed through the echo chain creates pure sine-wave repeats that can be tuned to the key of the riddim, producing bass-frequency drone feedback effects.</div></div>
+  </div>
+</section>
+
+<script>
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand=(lo=0,hi=1)=>lo+Math.random()*(hi-lo);
+function noise21(x,y){const ix=Math.floor(x),iy=Math.floor(y);const fx=x-ix,fy=y-iy;const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);const h=(a,b)=>{let n=(a*1619+b*31337)^(a*31337);n=(n>>8)^n;return(n&0xffff)/65535;};return lerp(lerp(h(ix,iy),h(ix+1,iy),ux),lerp(h(ix,iy+1),h(ix+1,iy+1),ux),uy);}
+function fbm(x,y,oct=4){let v=0,a=0.5,f=1;for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}return v;}
+
+class LagFilter{constructor(init,tau){this.value=init;this.tau=tau;}update(target,dt){const k=1-Math.exp(-dt/this.tau);this.value+=k*(target-this.value);return this.value;}}
+const lagHMX=new LagFilter(0.5,0.9);
+const lagHMY=new LagFilter(0.5,0.9);
+const lagHPulse=new LagFilter(0,0.15);
+const lagEchoRate=new LagFilter(0.4,0.5);
+const lagFeedback=new LagFilter(0.55,0.4);
+const lagWF=new LagFilter(0.3,0.4);
+const lagTension=new LagFilter(0.5,0.4);
+const lagDrive=new LagFilter(0.4,0.3);
+const lagSpringDecay=new LagFilter(3,0.5);
+const lagCrash=new LagFilter(0.2,0.3);
+const lagEchoSend=new LagFilter(0.4,0.3);
+const lagRevSend=new LagFilter(0.3,0.3);
+const lagBPM=new LagFilter(90,1.0);
+const lagDropAnim=new LagFilter(0,0.1);
+const lagRiddimEnergy=new LagFilter(0.7,0.2);
+const lagSpringAnim=new LagFilter(0,0.08);
+const lagMixAnim=new LagFilter(0,0.12);
+
+let mouseX=0.5,mouseY=0.5;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX/window.innerWidth;mouseY=e.clientY/window.innerHeight;});
+
+// HERO WebGL
+const hc=document.getElementById('hero-canvas');
+hc.width=window.innerWidth;hc.height=440;
+window.addEventListener('resize',()=>{hc.width=window.innerWidth;hc.height=440;initHGL();});
+const HVS=`attribute vec2 pos;void main(){gl_Position=vec4(pos,0,1);}`;
+const HFS=`
+precision highp float;
+uniform vec2 u_res;uniform float u_time;uniform vec2 u_mouse;uniform float u_pulse;
+float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+17.5);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);a*=.5;p=p*2.1+vec2(1.7,9.2);}return v;}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 st=uv*2.-1.;st.x*=u_res.x/u_res.y;
+  float t=u_time;
+  // Echo trails — multiple delayed versions of same wave
+  float echoTrails=0.;
+  for(int i=0;i<8;i++){
+    float fi=float(i)/8.;
+    float delay=fi*0.4;
+    float decay=pow(0.6,float(i));
+    float wave=sin(st.x*6.+t*2.-delay*12.)*0.12*decay;
+    float trail=exp(-abs(st.y-wave)*18.)*decay;
+    echoTrails+=trail;
+  }
+  // Dub psychedelic background field
+  vec2 q=vec2(fbm(st*0.4+t*0.04+vec2(0,u_mouse.y)),fbm(st*0.4+vec2(1.7,9.2)+t*0.03));
+  vec2 r=vec2(fbm(st*0.6+2.*q+t*0.02),fbm(st*0.6+2.*q+vec2(8.3,2.8)+t*0.02));
+  float f=fbm(st+2.*r);
+  // Smoke green cols
+  vec3 dubGreen=vec3(0.,0.8,0.26);
+  vec3 echoAmber=vec3(0.83,0.51,0.04);
+  vec3 smokeBlack=vec3(0.01,0.03,0.01);
+  vec3 col=smokeBlack;
+  col+=dubGreen*echoTrails*0.5;
+  col+=mix(dubGreen,echoAmber,f)*f*0.15;
+  col+=echoAmber*u_pulse*0.3;
+  // Mouse echo center
+  vec2 ms=u_mouse*2.-1.;ms.x*=u_res.x/u_res.y;
+  col+=dubGreen*exp(-length(st-ms)*4.)*0.25;
+  // Smoke grain
+  col+=vec3(0.02,0.04,0.01)*noise(st*30.+t)*0.3;
+  float vig=1.-length(uv-0.5)*1.5;
+  col*=clamp(vig,0.,1.);
+  gl_FragColor=vec4(col,1.);
+}`;
+let hgl,hprog,huniforms={};
+function initHGL(){
+  hgl=hc.getContext('webgl');if(!hgl)return;
+  function mkS(t,src){const s=hgl.createShader(t);hgl.shaderSource(s,src);hgl.compileShader(s);return s;}
+  if(hprog)hgl.deleteProgram(hprog);
+  hprog=hgl.createProgram();
+  hgl.attachShader(hprog,mkS(hgl.VERTEX_SHADER,HVS));
+  hgl.attachShader(hprog,mkS(hgl.FRAGMENT_SHADER,HFS));
+  hgl.linkProgram(hprog);hgl.useProgram(hprog);
+  const buf=hgl.createBuffer();hgl.bindBuffer(hgl.ARRAY_BUFFER,buf);
+  hgl.bufferData(hgl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),hgl.STATIC_DRAW);
+  const pl=hgl.getAttribLocation(hprog,'pos');hgl.enableVertexAttribArray(pl);hgl.vertexAttribPointer(pl,2,hgl.FLOAT,false,0,0);
+  huniforms={res:hgl.getUniformLocation(hprog,'u_res'),time:hgl.getUniformLocation(hprog,'u_time'),mouse:hgl.getUniformLocation(hprog,'u_mouse'),pulse:hgl.getUniformLocation(hprog,'u_pulse')};
+}
+initHGL();
+
+// MIXER
+const CHANNEL_NAMES=['KICK','BASS','SNARE','GUITAR','MELODICA','ORGAN','VOX','FX'];
+const CH_COLORS=['#FF4040','#00CC44','#FF9C18','#D4820A','#80EE90','#40A0FF','#C880FF','#AAAAAA'];
+const faderEls=[];
+const vuFills=[];
+
+function buildMixer(){
+  const container=document.getElementById('mixer-strips');
+  container.innerHTML='';
+  CHANNEL_NAMES.forEach((name,i)=>{
+    const strip=document.createElement('div');
+    strip.className='mixer-strip';
+    const initVal=0.6+rand(-0.2,0.2);
+    strip.innerHTML=`
+      <div class="strip-label" style="color:${CH_COLORS[i]}">${name}</div>
+      <div class="send-knob" style="border-color:rgba(212,130,10,0.4)" id="send-${i}">S</div>
+      <input type="range" class="strip-fader" id="fader-${i}" min="0" max="1" step="0.01" value="${initVal.toFixed(2)}" orient="vertical">
+      <div class="vu-bar"><div class="vu-fill" id="vu-${i}" style="width:${Math.round(initVal*100)}%"></div></div>
+    `;
+    container.appendChild(strip);
+    setTimeout(()=>{
+      const fd=document.getElementById('fader-'+i);
+      const vu=document.getElementById('vu-'+i);
+      if(fd)faderEls.push(fd);
+      if(vu)vuFills.push(vu);
+    },10);
+  });
+}
+buildMixer();
+
+document.getElementById('sl-echo-send').addEventListener('input',function(){document.getElementById('v-echo-send').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-rev-send').addEventListener('input',function(){document.getElementById('v-rev-send').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-bpm').addEventListener('input',function(){document.getElementById('v-bpm').textContent=this.value;});
+
+let dropActive=false;
+document.getElementById('btn-drop').addEventListener('click',()=>{
+  dropActive=!dropActive;
+  document.getElementById('btn-drop').classList.toggle('active',!dropActive);
+});
+
+// MIXER CANVAS (level meters)
+const mxC=document.getElementById('mixer-canvas');
+const mxX=mxC.getContext('2d');
+function resMX(){mxC.width=mxC.offsetWidth;mxC.height=120;}resMX();
+window.addEventListener('resize',resMX);
+
+function drawMixerCanvas(t){
+  const W=mxC.width,H=mxC.height;
+  mxX.fillStyle='rgba(2,8,6,0.88)';mxX.fillRect(0,0,W,H);
+  // Stereo VU meters
+  const meterW=W/3;
+  ['L','R'].forEach((ch,ci)=>{
+    const mx=ci*(meterW+4)+W/2-meterW-2;
+    const level=0.5+noise21(ci*5,t*0.8)*0.4;
+    const h=level*(H-20);
+    // Background
+    mxX.fillStyle='rgba(0,204,68,0.08)';
+    mxX.fillRect(mx,10,meterW,H-20);
+    // Level
+    const grad=mxX.createLinearGradient(0,H-10,0,10);
+    grad.addColorStop(0,'#00CC44');grad.addColorStop(0.6,'#80EE90');grad.addColorStop(0.85,'#D4820A');grad.addColorStop(1,'#FF4040');
+    mxX.fillStyle=grad;
+    mxX.fillRect(mx,H-10-h,meterW,h);
+    mxX.fillStyle='#447044';mxX.font='9px Courier New';mxX.textAlign='center';
+    mxX.fillText(ch,mx+meterW/2,H-2);
+  });
+  // Waveform display
+  mxX.strokeStyle='rgba(0,204,68,0.5)';mxX.lineWidth=1.5;mxX.beginPath();
+  for(let x=0;x<W;x++){
+    const xf=x/W;
+    const bpm=lagBPM.value;
+    const beat=((t*(bpm/60))%1)*Math.PI*2;
+    const w=Math.sin(xf*40+t*6)*0.3*(dropActive?0.1:1)*Math.sin(beat)*0.8;
+    x===0?mxX.moveTo(x,H/2+w*H*0.4):mxX.lineTo(x,H/2+w*H*0.4);
+  }
+  mxX.stroke();
+  mxX.fillStyle='#447044';mxX.font='9px Courier New';mxX.textAlign='left';
+  mxX.fillText(dropActive?'◀ DROP ACTIVE ▶':'LIVE MIX',4,14);
+}
+
+// ECHO Canvas
+const ecC=document.getElementById('echo-canvas');
+const ecX=ecC.getContext('2d');
+function resEC(){ecC.width=ecC.offsetWidth;ecC.height=320;}resEC();
+window.addEventListener('resize',resEC);
+document.getElementById('sl-echo-rate').addEventListener('input',function(){document.getElementById('v-echo-rate').textContent=parseFloat(this.value).toFixed(2)+'s';});
+document.getElementById('sl-feedback').addEventListener('input',function(){document.getElementById('v-feedback').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-wf').addEventListener('input',function(){document.getElementById('v-wf').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-heads').addEventListener('input',function(){document.getElementById('v-heads').textContent=this.value+' HEADS';});
+
+let echoSignals=[];
+
+function drawEcho(t){
+  const W=ecC.width,H=ecC.height;
+  ecX.fillStyle='rgba(2,8,6,0.18)';
+  ecX.fillRect(0,0,W,H);
+  const echoRate=lagEchoRate.value;
+  const fb=lagFeedback.value;
+  const wf=lagWF.value;
+  const nHeads=parseInt(document.getElementById('sl-heads').value);
+
+  // Tape loop visualization
+  const loopY=60,loopH=H*0.55;
+  const tapeX=40,tapeW=W-80;
+
+  // Write head
+  ecX.fillStyle='rgba(0,204,68,0.2)';
+  ecX.fillRect(tapeX,loopY,10,loopH);
+  ecX.fillStyle='#00CC44';ecX.font='9px Courier New';ecX.textAlign='center';
+  ecX.fillText('W',tapeX+5,loopY-6);
+
+  // Read heads
+  for(let h=0;h<nHeads;h++){
+    const hx=tapeX+tapeW*(h+1)/(nHeads+1);
+    ecX.fillStyle=`rgba(212,130,10,0.2)`;
+    ecX.fillRect(hx-5,loopY,10,loopH);
+    ecX.fillStyle='#D4820A';ecX.font='9px Courier New';ecX.textAlign='center';
+    ecX.fillText(`R${h+1}`,hx,loopY-6);
+    // Delay time label
+    const delayMs=Math.round(echoRate*1000*(h+1)/(nHeads));
+    ecX.fillStyle='#447044';ecX.font='8px Courier New';
+    ecX.fillText(`${delayMs}ms`,hx,loopY+loopH+16);
+  }
+
+  // Tape (animated oxide particles)
+  const tapePhase=(t*0.5)%1;
+  for(let i=0;i<80;i++){
+    const fi=(i/80+tapePhase)%1;
+    const px=tapeX+fi*tapeW;
+    const level=noise21(fi*20,t*0.2);
+    const py=loopY+loopH/2+(level-0.5)*loopH*0.6;
+    const col=level>0.6?'#00CC44':level>0.4?'#447044':'#224422';
+    ecX.fillStyle=col;
+    ecX.fillRect(px,py,2,2);
+  }
+
+  // Echo cascade visual
+  const cascadeY=loopY+loopH+40;
+  const maxEchos=12;
+  for(let e=0;e<maxEchos;e++){
+    const fe=e/maxEchos;
+    const decay=Math.pow(fb,e);
+    if(decay<0.01)break;
+    const ex=tapeX+fe*(W-tapeX-40);
+    const bh=(1-fe)*40*decay;
+    // Wow/flutter: slight pitch wobble
+    const wfOffset=wf*Math.sin(t*3+e*0.7)*4;
+    ecX.strokeStyle=`rgba(0,204,68,${decay*0.7})`;
+    ecX.lineWidth=1;
+    ecX.beginPath();
+    for(let px=0;px<60;px++){
+      const wave=Math.sin(px*0.3+t*4+e*0.5)*bh+wfOffset;
+      px===0?ecX.moveTo(ex+px,cascadeY+wave):ecX.lineTo(ex+px,cascadeY+wave);
+    }
+    ecX.stroke();
+    ecX.fillStyle=`rgba(0,204,68,${decay*0.3})`;
+    ecX.beginPath();ecX.arc(ex+5,cascadeY,4,0,Math.PI*2);ecX.fill();
+    ecX.fillStyle=`rgba(212,130,10,${decay*0.5})`;
+    ecX.font='8px Courier New';ecX.textAlign='center';
+    ecX.fillText(`-${Math.round(20*Math.log10(decay))}dB`,ex+30,cascadeY+30);
+  }
+}
+
+// SPRING Canvas
+const spC=document.getElementById('spring-canvas');
+const spX=spC.getContext('2d');
+const spirC=document.getElementById('spring-ir-canvas');
+const spirX=spirC.getContext('2d');
+function resSP(){spC.width=spC.offsetWidth;spC.height=260;spirC.width=spirC.offsetWidth;spirC.height=260;}resSP();
+window.addEventListener('resize',resSP);
+document.getElementById('sl-tension').addEventListener('input',function(){document.getElementById('v-tension').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-drive').addEventListener('input',function(){document.getElementById('v-drive').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-sdecay').addEventListener('input',function(){document.getElementById('v-sdecay').textContent=parseFloat(this.value).toFixed(1)+'s';});
+document.getElementById('sl-crash').addEventListener('input',function(){document.getElementById('v-crash').textContent=Math.round(this.value*100)+'%';});
+
+let springImpulse=0;
+document.addEventListener('keydown',e=>{if(e.code==='Space'){springImpulse=1;}});
+
+function drawSpring(t){
+  const W=spC.width,H=spC.height;
+  spX.fillStyle='rgba(2,8,6,0.2)';spX.fillRect(0,0,W,H);
+  const tension=lagTension.value;
+  const drive=lagDrive.value;
+  const crash=lagCrash.value;
+  const COILS=20;
+  const springX=20,springW=W-40;
+  const sy=H/2;
+  // Spring coils
+  spX.strokeStyle='rgba(0,204,68,0.6)';spX.lineWidth=2;spX.beginPath();
+  for(let x=0;x<springW;x++){
+    const fi=x/springW;
+    const coilPhase=fi*COILS*Math.PI*2;
+    const tension_wobble=drive*(1-fi)*Math.sin(coilPhase*tension*2+t*10)*8;
+    const waveform=Math.sin(coilPhase+t*2)*(4+tension*4);
+    const crashWave=crash*Math.sin(coilPhase*3+t*30)*(2*(1-fi));
+    const y=sy+waveform+tension_wobble+crashWave;
+    x===0?spX.moveTo(springX+x,y):spX.lineTo(springX+x,y);
+  }
+  spX.stroke();
+  // Transducer
+  spX.fillStyle='#D4820A';
+  spX.fillRect(springX-8,sy-12,8,24);
+  spX.fillStyle='#00CC44';
+  spX.fillRect(springX+springW,sy-12,8,24);
+  // Labels
+  spX.fillStyle='#D4820A';spX.font='8px Courier New';spX.textAlign='center';
+  spX.fillText('IN',springX-4,sy-16);
+  spX.fillStyle='#00CC44';
+  spX.fillText('OUT',springX+springW+4,sy-16);
+  spX.fillStyle='#447044';spX.font='9px Courier New';spX.textAlign='left';
+  spX.fillText(`SPRING REVERB  TENSION: ${Math.round(tension*100)}%`,8,20);
+
+  // IR Canvas
+  const WI=spirC.width,HI=spirC.height;
+  spirX.fillStyle='rgba(2,8,6,0.2)';spirX.fillRect(0,0,WI,HI);
+  spirX.fillStyle='#447044';spirX.font='9px Courier New';spirX.textAlign='left';
+  spirX.fillText('IMPULSE RESPONSE',8,18);
+  const decay=lagSpringDecay.value;
+  spirX.strokeStyle='rgba(212,130,10,0.8)';spirX.lineWidth=1.5;spirX.beginPath();
+  for(let x=0;x<WI;x++){
+    const xf=x/WI;
+    const env=Math.exp(-xf*decay);
+    const noise=fbm(xf*8+t*0.05,t*0.03)*2-1;
+    const crashComp=crash*Math.sin(xf*80)*Math.exp(-xf*20)*0.5;
+    const w=env*(noise*0.4+crashComp);
+    x===0?spirX.moveTo(x,HI/2+w*HI*0.4):spirX.lineTo(x,HI/2+w*HI*0.4);
+  }
+  spirX.stroke();
+  // RT60 line
+  const rt60x=WI*(1/decay);
+  spirX.strokeStyle='rgba(0,204,68,0.4)';spirX.setLineDash([4,6]);
+  spirX.beginPath();spirX.moveTo(rt60x,20);spirX.lineTo(rt60x,HI-20);spirX.stroke();
+  spirX.setLineDash([]);
+  spirX.fillStyle='#00CC44';spirX.font='8px Courier New';spirX.textAlign='center';
+  spirX.fillText(`RT60: ${decay.toFixed(1)}s`,rt60x,HI-8);
+}
+
+// ROUTING Canvas
+const rtC=document.getElementById('route-canvas');
+const rtX=rtC.getContext('2d');
+function resRT(){rtC.width=rtC.offsetWidth;rtC.height=340;}resRT();
+window.addEventListener('resize',resRT);
+let rtPackets=[];
+
+function spawnRtPacket(){
+  rtPackets.push({from:Math.floor(rand(0,5)),t:0,speed:rand(0.005,0.015),path:Math.floor(rand(0,3))});
+}
+
+function drawRouting(t){
+  const W=rtC.width,H=rtC.height;
+  rtX.fillStyle='rgba(2,8,6,0.88)';rtX.fillRect(0,0,W,H);
+  const nodes=[
+    {id:'ch1',label:'CH1\nDRUMS',x:0.08,y:0.3,color:'#FF4040'},
+    {id:'ch2',label:'CH2\nBASSS',x:0.08,y:0.55,color:'#00CC44'},
+    {id:'ch3',label:'CH3\nGUITAR',x:0.08,y:0.8,color:'#D4820A'},
+    {id:'mix',label:'MIX\nBUS',x:0.35,y:0.55,color:'#80EE90'},
+    {id:'echo',label:'ECHO\nRE-201',x:0.6,y:0.25,color:'#D4820A'},
+    {id:'spring',label:'SPRING\nREVERB',x:0.6,y:0.55,color:'#80EE90'},
+    {id:'ret1',label:'RETURN\nECHO',x:0.78,y:0.3,color:'#D4820A'},
+    {id:'ret2',label:'RETURN\nREVERB',x:0.78,y:0.65,color:'#80EE90'},
+    {id:'master',label:'MASTER\nOUT',x:0.93,y:0.47,color:'#00CC44'},
+  ];
+  const edges=[
+    {from:'ch1',to:'mix'},{from:'ch2',to:'mix'},{from:'ch3',to:'mix'},
+    {from:'mix',to:'echo',dashed:true},{from:'mix',to:'spring',dashed:true},
+    {from:'echo',to:'ret1'},{from:'spring',to:'ret2'},
+    {from:'mix',to:'master'},{from:'ret1',to:'master'},{from:'ret2',to:'master'},
+  ];
+  const pos={};
+  nodes.forEach(n=>{pos[n.id]={x:n.x*W,y:n.y*H};});
+
+  edges.forEach(e=>{
+    const a=pos[e.from],b=pos[e.to];if(!a||!b)return;
+    rtX.strokeStyle=e.dashed?'rgba(212,130,10,0.3)':'rgba(0,204,68,0.2)';
+    rtX.lineWidth=1.5;
+    if(e.dashed)rtX.setLineDash([4,6]);
+    rtX.beginPath();
+    const cpx=(a.x+b.x)/2,cpy=a.y;
+    rtX.moveTo(a.x+44,a.y);
+    rtX.quadraticCurveTo(cpx,cpy,b.x-8,b.y);
+    rtX.stroke();
+    rtX.setLineDash([]);
+  });
+
+  rtPackets=rtPackets.filter(p=>p.t<1);
+  rtPackets.forEach(p=>{
+    p.t+=p.speed;
+    const e=edges[Math.min(p.from,edges.length-1)];
+    const a=pos[e.from],b=pos[e.to];if(!a||!b)return;
+    const px=lerp(a.x+44,b.x-8,p.t);
+    const py=lerp(a.y,b.y,p.t);
+    rtX.beginPath();rtX.arc(px,py,4,0,Math.PI*2);
+    rtX.fillStyle=e.dashed?'#D4820A':'#00CC44';
+    rtX.shadowBlur=8;rtX.shadowColor=rtX.fillStyle;
+    rtX.fill();rtX.shadowBlur=0;
+  });
+
+  nodes.forEach(n=>{
+    const {x,y}=pos[n.id];const w=88,h=36;
+    rtX.fillStyle='#0A1410';rtX.strokeStyle=n.color;rtX.lineWidth=1.5;
+    rtX.fillRect(x-w/2,y-h/2,w,h);rtX.strokeRect(x-w/2,y-h/2,w,h);
+    rtX.fillStyle=n.color;rtX.font='8px Courier New';rtX.textAlign='center';
+    n.label.split('\n').forEach((line,li)=>rtX.fillText(line,x,y+(li-0.5)*12));
+  });
+}
+
+// RIDDIM Canvas
+const rdC=document.getElementById('riddim-canvas');
+const rdX=rdC.getContext('2d');
+function resRD(){rdC.width=rdC.offsetWidth;rdC.height=320;}resRD();
+window.addEventListener('resize',resRD);
+document.getElementById('sl-kicks').addEventListener('input',function(){document.getElementById('v-kicks').textContent=parseInt(this.value)?'ON':'OFF';});
+document.getElementById('sl-bass').addEventListener('input',function(){document.getElementById('v-bass').textContent=parseInt(this.value)?'ON':'OFF';});
+document.getElementById('sl-chop').addEventListener('input',function(){document.getElementById('v-chop').textContent=parseInt(this.value)?'ON':'OFF';});
+document.getElementById('sl-drop-ch').addEventListener('input',function(){document.getElementById('v-drop-ch').textContent=Math.round(this.value*100)+'%';});
+
+const RIDDIM_PATTERNS={
+  kick:[1,0,0,0, 1,0,0,1, 0,0,1,0, 0,0,0,1],
+  bass:[1,0,1,0, 1,0,0,0, 1,0,1,0, 1,0,0,0],
+  chop:[0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0],
+  hat: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+};
+let riddimBeat=0,riddimBeatT=0,riddimDrops={};
+
+function drawRiddim(t,dt){
+  const W=rdC.width,H=rdC.height;
+  rdX.fillStyle='rgba(2,8,6,0.2)';rdX.fillRect(0,0,W,H);
+  const bpm=lagBPM.value;
+  const beatInterval=60/bpm/4;
+  riddimBeatT+=dt;
+  if(riddimBeatT>beatInterval){
+    riddimBeat=(riddimBeat+1)%16;
+    riddimBeatT%=beatInterval;
+    // Random drops
+    if(Math.random()<parseFloat(document.getElementById('sl-drop-ch').value)){
+      const keys=['kick','bass','chop'];
+      const k=keys[Math.floor(rand(0,3))];
+      riddimDrops[k]=(riddimDrops[k]||0)+8;
+    }
+  }
+  // Decrement drops
+  Object.keys(riddimDrops).forEach(k=>{if(riddimDrops[k]>0)riddimDrops[k]--;});
+
+  const tracks=[
+    {name:'KICK',pattern:RIDDIM_PATTERNS.kick,color:'#FF4040',en:'sl-kicks'},
+    {name:'BASS',pattern:RIDDIM_PATTERNS.bass,color:'#00CC44',en:'sl-bass'},
+    {name:'CHOP',pattern:RIDDIM_PATTERNS.chop,color:'#D4820A',en:'sl-chop'},
+    {name:'HI-HAT',pattern:RIDDIM_PATTERNS.hat,color:'#80EE90',en:null},
+  ];
+  const trackH=60,PAD=80,stepW=(W-PAD-20)/16;
+
+  tracks.forEach((tr,ti)=>{
+    const ty=20+ti*trackH;
+    const isEnabled=tr.en?parseInt(document.getElementById(tr.en).value)===1:true;
+    const isDropped=riddimDrops[tr.name.toLowerCase()]>0;
+    rdX.fillStyle=isDropped?'rgba(255,64,64,0.1)':isEnabled?tr.color+'22':'transparent';
+    rdX.strokeStyle=isEnabled?tr.color+'44':tr.color+'15';rdX.lineWidth=1;
+    rdX.fillRect(0,ty,W,trackH-4);
+    rdX.strokeRect(0,ty,W,trackH-4);
+    rdX.fillStyle=isEnabled?tr.color:tr.color+'44';
+    rdX.font='9px Courier New';rdX.textAlign='right';
+    rdX.fillText(tr.name+(isDropped?' [DROP]':''),PAD-8,ty+trackH/2+3);
+
+    for(let s=0;s<16;s++){
+      const sx=PAD+s*stepW;
+      const active=tr.pattern[s]===1&&isEnabled&&!isDropped;
+      const isCurrent=s===riddimBeat;
+      const col=active?(isCurrent?tr.color:tr.color+'88'):'transparent';
+      rdX.fillStyle=col;
+      const bh=active?(isCurrent?trackH*0.7:trackH*0.5):trackH*0.1;
+      if(active){rdX.shadowBlur=isCurrent?12:0;rdX.shadowColor=tr.color;}
+      rdX.fillRect(sx+1,ty+trackH/2-bh/2,stepW-3,bh);
+      rdX.shadowBlur=0;
+    }
+  });
+
+  // Playhead
+  const phx=PAD+riddimBeat*stepW+stepW/2;
+  rdX.strokeStyle='rgba(255,255,255,0.3)';rdX.lineWidth=1;
+  rdX.beginPath();rdX.moveTo(phx,16);rdX.lineTo(phx,H-10);rdX.stroke();
+  rdX.fillStyle='#FFFFFF44';rdX.font='9px Courier New';rdX.textAlign='center';
+  rdX.fillText(`BEAT ${Math.floor(riddimBeat/4)+1}.${(riddimBeat%4)+1}  ${bpm.toFixed(0)} BPM`,W/2,H-4);
+}
+
+// MAIN LOOP
+let lastT=0,rtPkT=0;
+function frame(now){
+  const dt=Math.min((now-lastT)/1000,0.05);lastT=now;
+  const t=now/1000;
+  lagHMX.update(mouseX,dt);lagHMY.update(mouseY,dt);
+  lagEchoRate.update(parseFloat(document.getElementById('sl-echo-rate').value),dt);
+  lagFeedback.update(parseFloat(document.getElementById('sl-feedback').value),dt);
+  lagWF.update(parseFloat(document.getElementById('sl-wf').value),dt);
+  lagTension.update(parseFloat(document.getElementById('sl-tension').value),dt);
+  lagDrive.update(parseFloat(document.getElementById('sl-drive').value),dt);
+  lagSpringDecay.update(parseFloat(document.getElementById('sl-sdecay').value),dt);
+  lagCrash.update(parseFloat(document.getElementById('sl-crash').value),dt);
+  lagEchoSend.update(parseFloat(document.getElementById('sl-echo-send').value),dt);
+  lagRevSend.update(parseFloat(document.getElementById('sl-rev-send').value),dt);
+  lagBPM.update(parseFloat(document.getElementById('sl-bpm').value),dt);
+  lagHPulse.update(Math.sin(t*2)*0.5+0.5,dt);
+
+  // Update VU fills
+  const faders=document.querySelectorAll('.strip-fader');
+  faders.forEach((fd,i)=>{
+    const vu=document.getElementById('vu-'+i);
+    if(vu){const level=parseFloat(fd.value);const noise=noise21(i*5,t*2);vu.style.width=Math.round(level*noise*100)+'%';}
+  });
+
+  if(hgl&&hprog){hgl.viewport(0,0,hc.width,hc.height);hgl.useProgram(hprog);hgl.uniform2f(huniforms.res,hc.width,hc.height);hgl.uniform1f(huniforms.time,t);hgl.uniform2f(huniforms.mouse,lagHMX.value,1-lagHMY.value);hgl.uniform1f(huniforms.pulse,lagHPulse.value);hgl.drawArrays(hgl.TRIANGLE_STRIP,0,4);}
+  drawMixerCanvas(t);
+  drawEcho(t);
+  drawSpring(t);
+  rtPkT+=dt;if(rtPkT>0.12){spawnRtPacket();rtPkT=0;}
+  drawRouting(t);
+  drawRiddim(t,dt);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t=>{lastT=t;requestAnimationFrame(frame);});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

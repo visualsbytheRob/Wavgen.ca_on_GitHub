@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring painting">
+    <meta property="og:title" content="Painting World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring painting">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/painting_world.html">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painting World — Where Pigment Meets Light</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #1A0E0A;
+      --crimson: #B32020;
+      --ultra:   #1B3A6B;
+      --ivory:   #F5EDD8;
+      --dark:    #2C1810;
+      --mid:     #3D2218;
+      --accent:  #E8A030;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ivory);
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: rgba(26,14,10,0.93);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(179,32,32,0.3);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 2rem;
+    }
+    .nav-brand {
+      font-size: 1.2rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ivory); text-decoration: none;
+    }
+    .nav-brand span { color: var(--crimson); }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; flex-wrap: wrap; }
+    .nav-links a {
+      color: rgba(245,237,216,0.55); text-decoration: none;
+      font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ivory); }
+
+    section {
+      padding: 5rem 2rem;
+      max-width: 1100px; margin: 0 auto;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    section.visible { opacity: 1; transform: translateY(0); }
+
+    h2.section-title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      color: var(--ivory); letter-spacing: 0.06em;
+      border-left: 4px solid var(--crimson); padding-left: 1rem;
+      margin-bottom: 0.3rem;
+    }
+    .section-sub {
+      color: rgba(245,237,216,0.48); font-size: 0.87rem;
+      margin-bottom: 2.2rem; padding-left: 1.3rem; letter-spacing: 0.04em;
+    }
+
+    canvas { display: block; border-radius: 4px; cursor: crosshair; }
+
+    /* Hero */
+    #hero {
+      max-width: 100%; padding: 0; height: 430px; position: relative;
+      opacity: 1; transform: none;
+    }
+    #heroCanvas { width: 100%; height: 430px; border-radius: 0; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; pointer-events: none;
+    }
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem); letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ivory);
+      text-shadow: 0 2px 40px rgba(179,32,32,0.6), 0 0 80px rgba(0,0,0,0.8);
+    }
+    .hero-sub {
+      font-size: clamp(0.85rem, 2vw, 1.15rem); letter-spacing: 0.22em;
+      text-transform: uppercase; color: rgba(245,237,216,0.7);
+      margin-top: 0.7rem; text-shadow: 0 1px 20px rgba(0,0,0,0.9);
+    }
+
+    /* Pigment Mixing */
+    .pigment-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 0.45rem; margin-bottom: 1.4rem;
+    }
+    .pigment-swatch {
+      height: 54px; border-radius: 4px; cursor: pointer;
+      position: relative; border: 2px solid transparent;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .pigment-swatch:hover { transform: scale(1.06); }
+    .pigment-swatch.selected { border-color: var(--ivory); transform: scale(1.08); }
+    .pigment-swatch span {
+      position: absolute; bottom: 2px; left: 0; right: 0;
+      text-align: center; font-size: 0.52rem;
+      color: rgba(255,255,255,0.88); text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .mix-controls {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .mix-result {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 3px solid rgba(245,237,216,0.3); flex-shrink: 0;
+    }
+    .mix-label { font-size: 0.8rem; color: rgba(245,237,216,0.55); }
+    .mix-name  { font-size: 1rem; color: var(--accent); margin-bottom: 0.4rem; }
+
+    /* Sliders */
+    .slider-row {
+      display: flex; align-items: center; gap: 0.7rem; margin: 0.55rem 0;
+    }
+    .slider-row label { font-size: 0.78rem; color: rgba(245,237,216,0.55); min-width: 88px; }
+    input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      height: 4px; border-radius: 2px;
+      background: rgba(245,237,216,0.14); flex: 1; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: var(--crimson);
+      cursor: pointer; border: 2px solid var(--ivory);
+    }
+    .slider-val { font-size: 0.73rem; color: var(--accent); min-width: 34px; }
+
+    /* Brush Dynamics */
+    .brush-toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .brush-btn {
+      padding: 0.38rem 0.85rem; border-radius: 3px;
+      border: 1px solid rgba(245,237,216,0.18);
+      background: var(--dark); color: var(--ivory);
+      font-size: 0.78rem; cursor: pointer;
+      transition: background 0.18s, border-color 0.18s; font-family: Georgia, serif;
+    }
+    .brush-btn:hover { background: var(--mid); border-color: rgba(245,237,216,0.38); }
+    .brush-btn.active { background: var(--crimson); border-color: var(--crimson); }
+    .brush-demos {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem; margin-bottom: 1.1rem;
+    }
+    .brush-demo-item { text-align: center; }
+    .brush-demo-item canvas { border: 1px solid rgba(245,237,216,0.1); }
+    .brush-demo-item p { font-size: 0.7rem; color: rgba(245,237,216,0.45); margin-top: 0.25rem; }
+
+    /* Techniques */
+    .techniques-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+    }
+    .technique-card {
+      background: var(--dark); border-radius: 6px; padding: 0.75rem;
+      border: 1px solid rgba(245,237,216,0.07);
+    }
+    .technique-card h3 { font-size: 0.88rem; color: var(--accent); margin-bottom: 0.35rem; letter-spacing: 0.05em; }
+    .technique-card canvas { border: 1px solid rgba(245,237,216,0.07); }
+    .technique-card p { font-size: 0.7rem; color: rgba(245,237,216,0.48); margin-top: 0.35rem; }
+
+    /* Art History */
+    .period-tabs { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .period-btn {
+      padding: 0.38rem 0.95rem; border-radius: 20px;
+      border: 1px solid rgba(245,237,216,0.18);
+      background: transparent; color: rgba(245,237,216,0.65);
+      font-size: 0.78rem; cursor: pointer;
+      transition: all 0.18s; font-family: Georgia, serif;
+    }
+    .period-btn.active { background: var(--ultra); border-color: var(--ultra); color: var(--ivory); }
+    .history-layout { display: flex; gap: 1.4rem; align-items: flex-start; flex-wrap: wrap; }
+    .history-palette { display: flex; flex-direction: column; gap: 0.28rem; min-width: 110px; }
+    .palette-chip {
+      height: 26px; border-radius: 3px;
+      display: flex; align-items: center; padding: 0 0.45rem;
+      font-size: 0.62rem; color: rgba(255,255,255,0.82);
+    }
+    .history-info { flex: 1; min-width: 180px; }
+    .history-info h3 { font-size: 0.95rem; color: var(--accent); margin-bottom: 0.35rem; }
+    .history-info p { font-size: 0.8rem; color: rgba(245,237,216,0.62); }
+
+    /* Watercolour */
+    .watercolor-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.7rem; align-items: center; }
+    .wc-btn {
+      padding: 0.33rem 0.75rem; border-radius: 3px;
+      border: 1px solid rgba(245,237,216,0.18);
+      background: var(--dark); color: var(--ivory);
+      font-size: 0.76rem; cursor: pointer; transition: background 0.18s; font-family: Georgia, serif;
+    }
+    .wc-btn.active { background: var(--ultra); border-color: var(--ultra); }
+    .wc-btn:hover { background: var(--mid); }
+
+    /* Portrait */
+    .portrait-layout { display: flex; gap: 1.8rem; align-items: flex-start; flex-wrap: wrap; }
+    .portrait-stages { display: flex; flex-direction: column; gap: 0.35rem; min-width: 155px; }
+    .stage-btn {
+      padding: 0.38rem 0.75rem; border-radius: 3px;
+      border: 1px solid rgba(245,237,216,0.1);
+      background: var(--dark); color: rgba(245,237,216,0.58);
+      font-size: 0.75rem; cursor: pointer; text-align: left;
+      transition: all 0.18s; font-family: Georgia, serif;
+    }
+    .stage-btn.active { background: var(--crimson); color: var(--ivory); border-color: var(--crimson); }
+    .stage-num { color: var(--accent); font-size: 0.68rem; margin-right: 0.35rem; }
+    .portrait-info { flex: 1; }
+    .portrait-info h3 { font-size: 0.93rem; color: var(--accent); margin-bottom: 0.28rem; }
+    .portrait-info p { font-size: 0.78rem; color: rgba(245,237,216,0.58); }
+    .speed-btn {
+      margin-top: 0.7rem; padding: 0.48rem 1.1rem;
+      background: var(--ultra); border: none; border-radius: 3px;
+      color: var(--ivory); cursor: pointer; font-family: Georgia, serif; font-size: 0.8rem;
+    }
+    .speed-btn:hover { background: #254a8a; }
+
+    /* Artists */
+    .artists-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); gap: 1.1rem;
+    }
+    .artist-card {
+      background: var(--dark); border-radius: 6px;
+      border: 1px solid rgba(245,237,216,0.07); overflow: hidden;
+      transition: transform 0.18s, border-color 0.18s;
+    }
+    .artist-card:hover { transform: translateY(-3px); border-color: rgba(245,237,216,0.2); }
+    .artist-avatar { width: 100%; height: 118px; display: block; }
+    .artist-info { padding: 0.75rem; }
+    .artist-name { font-size: 0.98rem; color: var(--ivory); margin-bottom: 0.08rem; }
+    .artist-era { font-size: 0.7rem; color: var(--accent); margin-bottom: 0.45rem; letter-spacing: 0.05em; }
+    .artist-tag {
+      display: inline-block; font-size: 0.62rem; padding: 0.12rem 0.45rem;
+      border-radius: 10px; background: rgba(27,58,107,0.5);
+      color: rgba(245,237,216,0.68); margin-bottom: 0.45rem; letter-spacing: 0.04em;
+    }
+    .artist-works { font-size: 0.7rem; color: rgba(245,237,216,0.48); line-height: 1.55; }
+    .artist-technique { font-size: 0.7rem; color: rgba(245,237,216,0.38); margin-top: 0.35rem; font-style: italic; }
+
+    /* Glossary */
+    .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem 2rem; }
+    .glossary-item { padding: 0.48rem 0; border-bottom: 1px solid rgba(245,237,216,0.07); }
+    .glossary-term { font-size: 0.82rem; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.18rem; }
+    .glossary-def { font-size: 0.76rem; color: rgba(245,237,216,0.58); }
+
+    footer {
+      text-align: center; padding: 2rem;
+      color: rgba(245,237,216,0.22); font-size: 0.73rem;
+      letter-spacing: 0.08em; border-top: 1px solid rgba(245,237,216,0.06);
+    }
+
+    @media (max-width: 600px) {
+      .pigment-grid { grid-template-columns: repeat(4, 1fr); }
+      .brush-demos  { grid-template-columns: repeat(2, 1fr); }
+      .glossary-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <a class="nav-brand" href="#hero">Paint<span>ing</span> World</a>
+  <ul class="nav-links">
+    <li><a href="#mixing">Pigments</a></li>
+    <li><a href="#brushwork">Brushes</a></li>
+    <li><a href="#techniques">Techniques</a></li>
+    <li><a href="#color-history">History</a></li>
+    <li><a href="#watercolor">Watercolour</a></li>
+    <li><a href="#portrait">Portrait</a></li>
+    <li><a href="#artists">Artists</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ─────────────────────────────── SECTION 1: HERO ─── -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">Painting</div>
+    <div class="hero-sub">Where pigment meets light</div>
+  </div>
+</section>
+
+<!-- ────────────────────────── SECTION 2: PIGMENT MIXING ─── -->
+<section id="mixing" class="hidden">
+  <h2 class="section-title">Pigment Mixing</h2>
+  <p class="section-sub">Subtractive colour — click two swatches to blend</p>
+  <div class="pigment-grid" id="pigmentGrid"></div>
+  <div class="mix-controls">
+    <div class="mix-result" id="mixResult"></div>
+    <div style="flex:1;min-width:160px;">
+      <div class="mix-name"  id="mixName">—</div>
+      <div class="mix-label" id="mixLabel">Select two pigments above</div>
+      <div class="slider-row" style="margin-top:0.6rem;">
+        <label>Ratio A : B</label>
+        <input type="range" id="mixRatio" min="0" max="100" value="50">
+        <span class="slider-val" id="mixRatioVal">50%</span>
+      </div>
+    </div>
+    <canvas id="mixCanvas" width="300" height="130"
+      style="border:1px solid rgba(245,237,216,0.1);border-radius:4px;"></canvas>
+  </div>
+</section>
+
+<!-- ──────────────────────── SECTION 3: BRUSH DYNAMICS ─── -->
+<section id="brushwork" class="hidden">
+  <h2 class="section-title">Brush Dynamics</h2>
+  <p class="section-sub">Six brush types — speed detection shapes weight &amp; texture</p>
+  <div class="brush-demos" id="brushDemos"></div>
+  <div class="brush-toolbar" id="brushToolbar"></div>
+  <div class="slider-row">
+    <label>Brush Size</label>
+    <input type="range" id="brushSize" min="4" max="42" value="14">
+    <span class="slider-val" id="brushSizeVal">14px</span>
+  </div>
+  <div class="slider-row">
+    <label>Opacity</label>
+    <input type="range" id="brushOpacity" min="10" max="100" value="80">
+    <span class="slider-val" id="brushOpacityVal">80%</span>
+  </div>
+  <canvas id="brushCanvas" width="700" height="260"
+    style="border:1px solid rgba(245,237,216,0.12);margin-top:0.8rem;border-radius:4px;max-width:100%;"></canvas>
+  <p style="font-size:0.73rem;color:rgba(245,237,216,0.3);margin-top:0.35rem;">
+    Paint on canvas above · fast strokes = thin/broken · slow = thick/wet</p>
+</section>
+
+<!-- ───────────────────── SECTION 4: PAINTING TECHNIQUES ─── -->
+<section id="techniques" class="hidden">
+  <h2 class="section-title">Classical Techniques</h2>
+  <p class="section-sub">Five animated demonstrations on live canvases</p>
+  <div class="techniques-grid" id="techniquesGrid"></div>
+</section>
+
+<!-- ─────────────────────── SECTION 5: ART HISTORY COLOR ─── -->
+<section id="color-history" class="hidden">
+  <h2 class="section-title">Art History &amp; Colour</h2>
+  <p class="section-sub">Six movements — click a period to feel its atmosphere</p>
+  <div class="period-tabs"   id="periodTabs"></div>
+  <div class="history-layout">
+    <div class="history-palette" id="historyPalette"></div>
+    <canvas id="historyCanvas" width="440" height="270"
+      style="border:1px solid rgba(245,237,216,0.1);border-radius:4px;max-width:100%;"></canvas>
+    <div class="history-info" id="historyInfo">
+      <h3>Select a period</h3>
+      <p>Click a movement above to explore its characteristic palette and atmospheric mood.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────── SECTION 6: WATERCOLOUR PHYSICS ─── -->
+<section id="watercolor" class="hidden">
+  <h2 class="section-title">Watercolour Physics</h2>
+  <p class="section-sub">Wet-on-wet blooms, backruns, granulation &amp; lifting</p>
+  <div class="watercolor-controls" id="wcControls">
+    <button class="wc-btn active" data-wc="wetOnWet">Wet-on-Wet</button>
+    <button class="wc-btn" data-wc="wetOnDry">Wet-on-Dry</button>
+    <button class="wc-btn" data-wc="backrun">Backrun</button>
+    <button class="wc-btn" data-wc="granulation">Granulation</button>
+    <button class="wc-btn" data-wc="lifting">Lifting</button>
+    <button class="wc-btn" data-wc="masking">Masking</button>
+  </div>
+  <div class="slider-row">
+    <label>Wet / Dry</label>
+    <input type="range" id="wcWet" min="0" max="100" value="75">
+    <span class="slider-val" id="wcWetVal">75%</span>
+  </div>
+  <div class="slider-row">
+    <label>Pigment Load</label>
+    <input type="range" id="wcLoad" min="10" max="100" value="60">
+    <span class="slider-val" id="wcLoadVal">60%</span>
+  </div>
+  <canvas id="wcCanvas" width="680" height="310"
+    style="border:1px solid rgba(245,237,216,0.1);border-radius:4px;
+           background:#f0ece3;margin-top:0.7rem;max-width:100%;"></canvas>
+</section>
+
+<!-- ──────────────────────── SECTION 7: PORTRAIT STUDY ─── -->
+<section id="portrait" class="hidden">
+  <h2 class="section-title">Portrait Study</h2>
+  <p class="section-sub">Flemish technique — six progressive build-up stages</p>
+  <div class="portrait-layout">
+    <div class="portrait-stages" id="portraitStages"></div>
+    <div>
+      <canvas id="portraitCanvas" width="360" height="440"
+        style="border:1px solid rgba(245,237,216,0.1);border-radius:4px;max-width:100%;"></canvas>
+      <button class="speed-btn" id="portraitSpeed">&#9654; Animate All Stages</button>
+    </div>
+    <div class="portrait-info" id="portraitInfo">
+      <h3>Stage 1 — Underpainting</h3>
+      <p>Burnt sienna thinned with medium creates a warm transparent ground — maps value structure before colour is applied.</p>
+    </div>
+  </div>
+  <div class="slider-row" style="margin-top:1rem;">
+    <label>Stage</label>
+    <input type="range" id="portraitStage" min="0" max="5" value="0" step="1">
+    <span class="slider-val" id="portraitStageVal">1 / 6</span>
+  </div>
+</section>
+
+<!-- ─────────────────────────── SECTION 8: ARTISTS ─── -->
+<section id="artists" class="hidden">
+  <h2 class="section-title">Masters of Painting</h2>
+  <p class="section-sub">Eight artists who shaped the discipline</p>
+  <div class="artists-grid" id="artistsGrid"></div>
+</section>
+
+<!-- ──────────────────────────── SECTION 9: GLOSSARY ─── -->
+<section id="glossary" class="hidden">
+  <h2 class="section-title">Painter's Glossary</h2>
+  <p class="section-sub">22 essential terms every painter should know</p>
+  <div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+
+<footer>Painting World &mdash; A living study of pigment, light &amp; technique</footer>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════
+   LAGFILTER — exponential smoothing (core engine)
+   value += (1 - Math.exp(-dt/tau)) * (target - value)
+   ═══════════════════════════════════════════════ */
+class LagFilter {
+  constructor(initial = 0, tau = 0.14) {
+    this.value  = initial;
+    this.target = initial;
+    this.tau    = tau;
+  }
+  update(dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (this.target - this.value);
+    return this.value;
+  }
+  set(v)    { this.target = v; return this; }
+  snap(v)   { this.value = this.target = v; return this; }
+  at(v,tau) { this.tau = tau; return this.set(v); }
+}
+
+/* ── Utilities ── */
+function lerp(a,b,t)   { return a+(b-a)*t; }
+function rand(lo,hi)   { return lo+Math.random()*(hi-lo); }
+function clamp(v,a,b)  { return Math.max(a,Math.min(b,v)); }
+function randInt(a,b)  { return Math.floor(rand(a,b)); }
+
+function hexToRgb(hex) {
+  const h = hex.replace('#','');
+  return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+}
+function rgbToHex(r,g,b) {
+  return '#'+[r,g,b].map(v=>Math.round(clamp(v,0,255)).toString(16).padStart(2,'0')).join('');
+}
+function subtractiveBlend(hex1, hex2, t) {
+  const [r1,g1,b1] = hexToRgb(hex1);
+  const [r2,g2,b2] = hexToRgb(hex2);
+  return rgbToHex(
+    Math.sqrt(lerp(r1*r1, r2*r2, t)),
+    Math.sqrt(lerp(g1*g1, g2*g2, t)),
+    Math.sqrt(lerp(b1*b1, b2*b2, t))
+  );
+}
+function rgba(hex, a) {
+  const [r,g,b] = hexToRgb(hex);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+/* ════════════════════════════════════════════════
+   SECTION 1 — HERO CANVAS (impasto dreamscape)
+   ════════════════════════════════════════════════ */
+(function initHero() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W=0, H=430;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth || window.innerWidth;
+    canvas.height = H;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* palette pairs — complementary */
+  const PALETTES = [
+    ['#B32020','#E06828'],  // crimson → orange
+    ['#1B3A6B','#5B2E8A'],  // ultramarine → violet
+    ['#1F7040','#1F9060'],  // viridian
+    ['#B87820','#C04010'],  // ochre → red-earth
+  ];
+  let palIdx = 0, palTimer = 0;
+
+  /* LagFilters for hero */
+  const lgMX    = new LagFilter(0.5, 0.4);
+  const lgMY    = new LagFilter(0.5, 0.4);
+  const lgPace  = new LagFilter(1.0, 0.9);
+  const lgHueA  = new LagFilter(0,   2.2);
+  const lgHueB  = new LagFilter(0,   2.8);
+
+  let mx=0.5, my=0.5, mouseActive=false;
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mx = (e.clientX-r.left)/W;
+    my = (e.clientY-r.top)/H;
+    mouseActive = true;
+  });
+
+  /* strokes */
+  const strokes = [];
+  function addStroke(nx, ny, col1, col2, thick, opacity) {
+    strokes.push({
+      nx, ny,
+      angle:  rand(0, Math.PI*2),
+      len:    rand(70,230),
+      col1, col2,
+      thick:  thick || rand(6,26),
+      opacity: opacity || rand(0.3,0.75),
+      life: 0,
+      maxLife: rand(55,110)
+    });
+  }
+
+  /* seed */
+  for (let i=0; i<22; i++) {
+    const p = PALETTES[i%PALETTES.length];
+    addStroke(rand(0,1), rand(0,1), p[0], p[1]);
+  }
+
+  function drawImpasto(x0,y0,angle,len,hex,thick,opacity,progress) {
+    const ex = x0 + Math.cos(angle)*len*progress;
+    const ey = y0 + Math.sin(angle)*len*progress;
+    const nB = clamp(Math.round(thick/3.8), 2, 10);
+    const [r,g,b] = hexToRgb(hex);
+    for (let i=0; i<nB; i++) {
+      const off = ((i/nB)-0.5)*thick*0.88;
+      const px  = Math.cos(angle+Math.PI/2)*off;
+      const py  = Math.sin(angle+Math.PI/2)*off;
+      ctx.beginPath();
+      ctx.moveTo(x0+px, y0+py);
+      ctx.lineTo(ex+px+rand(-2,2), ey+py+rand(-1.5,1.5));
+      ctx.lineWidth   = rand(0.5, thick/nB*1.6);
+      ctx.globalAlpha = opacity * rand(0.28,0.88);
+      ctx.strokeStyle = `rgb(${r},${g},${b})`;
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  let lastT=0, frame=0;
+  function heroLoop(ts) {
+    requestAnimationFrame(heroLoop);
+    const dt = Math.min((ts-lastT)/1000, 0.05);
+    lastT = ts; frame++;
+
+    /* phosphor persistence */
+    ctx.fillStyle = 'rgba(26,14,10,0.03)';
+    ctx.fillRect(0,0,W,H);
+
+    lgMX.set(mx).update(dt);
+    lgMY.set(my).update(dt);
+    lgPace.set(mouseActive ? 1.4 : 1.0).update(dt);
+    palTimer += dt;
+    if (palTimer > 12) { palTimer=0; palIdx=(palIdx+1)%PALETTES.length; }
+
+    /* draw strokes */
+    for (let i=strokes.length-1; i>=0; i--) {
+      const s = strokes[i];
+      s.life++;
+      const progress = Math.min(s.life/s.maxLife, 1);
+      const hex = subtractiveBlend(s.col1, s.col2, progress*0.55);
+      drawImpasto(s.nx*W, s.ny*H, s.angle, s.len, hex, s.thick, s.opacity, progress);
+      if (s.life >= s.maxLife) strokes.splice(i,1);
+    }
+
+    /* spawn new strokes */
+    if (frame%7===0 && strokes.length<65) {
+      const p = PALETTES[palIdx];
+      addStroke(rand(0,1), rand(0,1), p[0], p[1]);
+    }
+    if (mouseActive && frame%3===0 && strokes.length<90) {
+      const p = PALETTES[(palIdx+1)%PALETTES.length];
+      addStroke(lgMX.value+rand(-0.08,0.08), lgMY.value+rand(-0.06,0.06), p[0], p[1], rand(4,18), rand(0.35,0.7));
+    }
+    mouseActive = false;
+  }
+  requestAnimationFrame(heroLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 2 — PIGMENT MIXING
+   ════════════════════════════════════════════════ */
+(function initMixing() {
+  const PIGMENTS = [
+    { name:'Cad Red',      hex:'#C83020' },
+    { name:'Alizarin',     hex:'#8B1830' },
+    { name:'Ochre',        hex:'#C89028' },
+    { name:'Cad Yellow',   hex:'#E8C020' },
+    { name:'Viridian',     hex:'#1A7050' },
+    { name:'Phthalo Blue', hex:'#0A3870' },
+    { name:'Ultramarine',  hex:'#1B3A6B' },
+    { name:'Burnt Sienna', hex:'#8B3A18' },
+    { name:'Raw Umber',    hex:'#5A3C18' },
+    { name:'Ti. White',    hex:'#EDE8DC' },
+    { name:'Ivory Black',  hex:'#1A1814' },
+    { name:'Naples Yel.',  hex:'#D8B870' },
+  ];
+
+  const grid = document.getElementById('pigmentGrid');
+  PIGMENTS.forEach((p,i) => {
+    const el = document.createElement('div');
+    el.className   = 'pigment-swatch';
+    el.style.background = p.hex;
+    el.innerHTML   = `<span>${p.name}</span>`;
+    el.dataset.idx = i;
+    grid.appendChild(el);
+  });
+
+  let selA=-1, selB=-1;
+  const mixResult = document.getElementById('mixResult');
+  const mixLabel  = document.getElementById('mixLabel');
+  const mixName   = document.getElementById('mixName');
+  const mixRatio  = document.getElementById('mixRatio');
+  const mixRatioV = document.getElementById('mixRatioVal');
+  const mixCanvas = document.getElementById('mixCanvas');
+  const mctx      = mixCanvas.getContext('2d');
+
+  /* LagFilters */
+  const lgRatio   = new LagFilter(0.5, 0.25);
+  const lgMixR    = new LagFilter(128, 0.2);
+  const lgMixG    = new LagFilter(128, 0.2);
+  const lgMixB    = new LagFilter(128, 0.2);
+  const lgSpread  = new LagFilter(0,   0.35);
+  const lgBrush   = new LagFilter(0,   0.18);
+
+  function updateMix() {
+    if (selA<0 || selB<0) return;
+    const t   = lgRatio.value;
+    const hex = subtractiveBlend(PIGMENTS[selA].hex, PIGMENTS[selB].hex, t);
+    const [r,g,b] = hexToRgb(hex);
+    lgMixR.set(r); lgMixG.set(g); lgMixB.set(b);
+    mixResult.style.background = `rgb(${Math.round(lgMixR.value)},${Math.round(lgMixG.value)},${Math.round(lgMixB.value)})`;
+    mixName.textContent  = `${PIGMENTS[selA].name} + ${PIGMENTS[selB].name}`;
+    mixLabel.textContent = `Blend (${Math.round(t*100)}% B)`;
+  }
+
+  grid.addEventListener('click', e => {
+    const sw = e.target.closest('.pigment-swatch');
+    if (!sw) return;
+    const i = +sw.dataset.idx;
+    if (selA === i) { selA=-1; }
+    else if (selB === i) { selB=-1; }
+    else if (selA<0) { selA=i; }
+    else { selB=i; }
+    grid.querySelectorAll('.pigment-swatch').forEach((el,j) => {
+      el.classList.toggle('selected', j===selA || j===selB);
+    });
+    lgRatio.set(+mixRatio.value/100);
+    updateMix();
+  });
+
+  mixRatio.addEventListener('input', () => {
+    mixRatioV.textContent = mixRatio.value+'%';
+    lgRatio.set(+mixRatio.value/100);
+  });
+
+  /* bristle animation on mix canvas */
+  const MC_W = mixCanvas.width, MC_H = mixCanvas.height;
+  const mixStrokes=[];
+  let lastMT=0;
+
+  function spawnMixStroke() {
+    if (selA<0 || selB<0) return;
+    const t   = lgRatio.value;
+    const col = subtractiveBlend(PIGMENTS[selA].hex, PIGMENTS[selB].hex, t);
+    mixStrokes.push({
+      x: rand(20,MC_W-20), y: rand(20,MC_H-20),
+      angle: rand(0,Math.PI*2), len: rand(40,100),
+      col, thick: rand(5,14), opacity: rand(0.45,0.8),
+      life:0, maxLife: rand(40,80)
+    });
+  }
+
+  function mixLoop(ts) {
+    requestAnimationFrame(mixLoop);
+    const dt = Math.min((ts-lastMT)/1000,0.05);
+    lastMT = ts;
+
+    lgRatio.update(dt);
+    lgMixR.update(dt); lgMixG.update(dt); lgMixB.update(dt);
+    lgSpread.set(selA>=0&&selB>=0 ? 1 : 0).update(dt);
+    lgBrush.update(dt);
+
+    /* phosphor */
+    mctx.fillStyle = `rgba(26,20,14,${0.035 + (1-lgSpread.value)*0.02})`;
+    mctx.fillRect(0,0,MC_W,MC_H);
+
+    for (let i=mixStrokes.length-1; i>=0; i--) {
+      const s = mixStrokes[i];
+      s.life++;
+      const prog = Math.min(s.life/s.maxLife,1);
+      const ex   = s.x + Math.cos(s.angle)*s.len*prog;
+      const ey   = s.y + Math.sin(s.angle)*s.len*prog;
+      const nB   = clamp(Math.round(s.thick/3.5),2,8);
+      const [r,g,b] = hexToRgb(s.col);
+      for (let b2=0; b2<nB; b2++) {
+        const off = ((b2/nB)-0.5)*s.thick*0.9;
+        const px  = Math.cos(s.angle+Math.PI/2)*off;
+        const py  = Math.sin(s.angle+Math.PI/2)*off;
+        mctx.beginPath();
+        mctx.moveTo(s.x+px, s.y+py);
+        mctx.lineTo(ex+px+rand(-1.5,1.5), ey+py+rand(-1,1));
+        mctx.lineWidth   = rand(0.5, s.thick/nB*1.5);
+        mctx.globalAlpha = s.opacity*rand(0.3,0.85);
+        mctx.strokeStyle = `rgb(${r},${g},${b})`;
+        mctx.stroke();
+      }
+      mctx.globalAlpha=1;
+      if (s.life>=s.maxLife) mixStrokes.splice(i,1);
+    }
+
+    if (selA>=0 && selB>=0 && mixStrokes.length<18 && Math.random()<0.25) spawnMixStroke();
+    updateMix();
+  }
+  requestAnimationFrame(mixLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 3 — BRUSH DYNAMICS
+   ════════════════════════════════════════════════ */
+(function initBrushwork() {
+  const BRUSHES = [
+    { name:'Fan',      desc:'Foliage & spread — bristles fan wide',        color:'#1F8040' },
+    { name:'Palette Knife', desc:'Impasto — knife-edge, no bristle',       color:'#B07020' },
+    { name:'Round',    desc:'Point-to-body — fine tip to broad belly',     color:'#B32020' },
+    { name:'Flat',     desc:'Chisel edge — controlled rectangular marks',  color:'#1B3A6B' },
+    { name:'Filbert',  desc:'Egg-shaped — painterly leaf marks',           color:'#6B2070' },
+    { name:'Dry',      desc:'Broken colour — near-empty bristles drag',    color:'#807030' },
+  ];
+
+  const demosEl = document.getElementById('brushDemos');
+  const demoCanvases = [];
+  BRUSHES.forEach((b, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'brush-demo-item';
+    const c = document.createElement('canvas');
+    c.width=220; c.height=120;
+    c.style.width='100%';
+    const p = document.createElement('p');
+    p.textContent = b.desc;
+    wrap.appendChild(c); wrap.appendChild(p);
+    demosEl.appendChild(wrap);
+    demoCanvases.push(c);
+  });
+
+  /* animate demo canvases */
+  const demoStates = BRUSHES.map((_,i) => ({
+    phase: rand(0, Math.PI*2),
+    strokes: [],
+    lastSpawn: 0,
+    lgPhase: new LagFilter(rand(0,Math.PI*2), rand(0.8,2.0))
+  }));
+
+  /* toolbar */
+  const toolbar = document.getElementById('brushToolbar');
+  let activeBrush = 2;
+  BRUSHES.forEach((b,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'brush-btn' + (i===activeBrush?' active':'');
+    btn.textContent = b.name;
+    btn.addEventListener('click', () => {
+      activeBrush = i;
+      toolbar.querySelectorAll('.brush-btn').forEach((el,j)=>el.classList.toggle('active',j===i));
+    });
+    toolbar.appendChild(btn);
+  });
+
+  /* main painting canvas */
+  const brushCanvas = document.getElementById('brushCanvas');
+  const bctx = brushCanvas.getContext('2d');
+  bctx.fillStyle = '#1A1410';
+  bctx.fillRect(0,0,brushCanvas.width,brushCanvas.height);
+
+  const lgBrushSize    = new LagFilter(14, 0.18);
+  const lgBrushOpacity = new LagFilter(0.8,0.18);
+  const lgBrushSpeed   = new LagFilter(0,  0.12);
+
+  const szSlider = document.getElementById('brushSize');
+  const opSlider = document.getElementById('brushOpacity');
+  const szVal    = document.getElementById('brushSizeVal');
+  const opVal    = document.getElementById('brushOpacityVal');
+  szSlider.addEventListener('input', () => { szVal.textContent=szSlider.value+'px'; lgBrushSize.set(+szSlider.value); });
+  opSlider.addEventListener('input', () => { opVal.textContent=opSlider.value+'%'; lgBrushOpacity.set(+opSlider.value/100); });
+
+  let bMouseDown=false, bPrev={x:0,y:0}, bSpeedEst=0;
+  const bCOLORS = BRUSHES.map(b=>b.color);
+
+  function drawBrushStroke(ctx, x0, y0, x1, y1, type, size, opacity) {
+    const dx=x1-x0, dy=y1-y0, dist=Math.sqrt(dx*dx+dy*dy)+0.001;
+    const angle = Math.atan2(dy,dx);
+    const col = bCOLORS[type];
+    const [r,g,b] = hexToRgb(col);
+    const speed = dist;
+    lgBrushSpeed.set(speed);
+    const effectiveSize = size * clamp(1 - speed*0.008, 0.3, 1);
+    const effectiveOp   = opacity * clamp(1 - speed*0.006, 0.2, 1);
+
+    ctx.lineCap = 'round';
+
+    if (type===1) { /* palette knife */
+      ctx.beginPath();
+      ctx.moveTo(x0,y0); ctx.lineTo(x1,y1);
+      ctx.lineWidth   = effectiveSize*1.4;
+      ctx.globalAlpha = effectiveOp*0.9;
+      ctx.strokeStyle = col;
+      ctx.stroke();
+      /* knife edge texture */
+      for (let t=0; t<dist; t+=6) {
+        const fx = x0 + (dx/dist)*t;
+        const fy = y0 + (dy/dist)*t;
+        ctx.beginPath();
+        ctx.moveTo(fx+Math.cos(angle+Math.PI/2)*effectiveSize*0.7, fy+Math.sin(angle+Math.PI/2)*effectiveSize*0.7);
+        ctx.lineTo(fx-Math.cos(angle+Math.PI/2)*effectiveSize*0.7, fy-Math.sin(angle+Math.PI/2)*effectiveSize*0.7);
+        ctx.lineWidth   = rand(0.5,2);
+        ctx.globalAlpha = effectiveOp*rand(0.3,0.7);
+        ctx.strokeStyle = subtractiveBlend(col,'#EDE8DC',0.2);
+        ctx.stroke();
+      }
+    } else if (type===0) { /* fan */
+      const fanCount = 12;
+      for (let f=0; f<fanCount; f++) {
+        const spread = ((f/fanCount)-0.5)*effectiveSize*2.2;
+        const fx0 = x0+Math.cos(angle+Math.PI/2)*spread*0.3;
+        const fy0 = y0+Math.sin(angle+Math.PI/2)*spread*0.3;
+        const fx1 = x1+Math.cos(angle+Math.PI/2)*spread;
+        const fy1 = y1+Math.sin(angle+Math.PI/2)*spread;
+        ctx.beginPath();
+        ctx.moveTo(fx0,fy0); ctx.lineTo(fx1,fy1);
+        ctx.lineWidth   = rand(0.4,1.5);
+        ctx.globalAlpha = effectiveOp*rand(0.3,0.7);
+        ctx.strokeStyle = `rgb(${r},${g},${b})`;
+        ctx.stroke();
+      }
+    } else if (type===5) { /* dry brush */
+      const nB = clamp(Math.round(effectiveSize/2.5),3,12);
+      for (let i=0; i<nB; i++) {
+        if (Math.random()<0.5) continue; /* skip half bristles */
+        const off = ((i/nB)-0.5)*effectiveSize*1.1;
+        const px  = Math.cos(angle+Math.PI/2)*off;
+        const py  = Math.sin(angle+Math.PI/2)*off;
+        ctx.beginPath();
+        ctx.moveTo(x0+px,y0+py);
+        ctx.lineTo(x1+px+rand(-2,2),y1+py+rand(-1.5,1.5));
+        ctx.lineWidth   = rand(0.3,1.2);
+        ctx.globalAlpha = effectiveOp*rand(0.15,0.55);
+        ctx.strokeStyle = `rgb(${r},${g},${b})`;
+        ctx.stroke();
+      }
+    } else { /* round, flat, filbert */
+      const nB = clamp(Math.round(effectiveSize/3.2),2,9);
+      const wMult = type===3 ? 1.8 : (type===4 ? 1.1 : 0.6);
+      for (let i=0; i<nB; i++) {
+        const t2 = i/nB;
+        const taper = type===2 ? Math.sin(t2*Math.PI)*0.8+0.2 : 1;
+        const off   = (t2-0.5)*effectiveSize*wMult;
+        const px    = Math.cos(angle+Math.PI/2)*off;
+        const py    = Math.sin(angle+Math.PI/2)*off;
+        ctx.beginPath();
+        ctx.moveTo(x0+px,y0+py);
+        ctx.lineTo(x1+px+rand(-1,1),y1+py+rand(-0.8,0.8));
+        ctx.lineWidth   = rand(0.5,effectiveSize/nB*1.5)*taper;
+        ctx.globalAlpha = effectiveOp*rand(0.35,0.85);
+        ctx.strokeStyle = `rgb(${r},${g},${b})`;
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha=1;
+  }
+
+  brushCanvas.addEventListener('mousedown', e => {
+    bMouseDown=true;
+    const r=brushCanvas.getBoundingClientRect();
+    bPrev={x:e.clientX-r.left, y:e.clientY-r.top};
+  });
+  brushCanvas.addEventListener('mousemove', e => {
+    if (!bMouseDown) return;
+    const r=brushCanvas.getBoundingClientRect();
+    const cx=e.clientX-r.left, cy=e.clientY-r.top;
+    lgBrushSize.update(0.016); lgBrushOpacity.update(0.016);
+    drawBrushStroke(bctx, bPrev.x, bPrev.y, cx, cy, activeBrush, lgBrushSize.value, lgBrushOpacity.value);
+    bPrev={x:cx,y:cy};
+  });
+  brushCanvas.addEventListener('mouseup',   ()=>bMouseDown=false);
+  brushCanvas.addEventListener('mouseleave',()=>bMouseDown=false);
+
+  /* touch support */
+  brushCanvas.addEventListener('touchstart', e=>{
+    e.preventDefault(); bMouseDown=true;
+    const r=brushCanvas.getBoundingClientRect();
+    const t=e.touches[0];
+    bPrev={x:t.clientX-r.left, y:t.clientY-r.top};
+  },{passive:false});
+  brushCanvas.addEventListener('touchmove', e=>{
+    e.preventDefault();
+    if (!bMouseDown) return;
+    const r=brushCanvas.getBoundingClientRect();
+    const t=e.touches[0];
+    const cx=t.clientX-r.left, cy=t.clientY-r.top;
+    lgBrushSize.update(0.016); lgBrushOpacity.update(0.016);
+    drawBrushStroke(bctx,bPrev.x,bPrev.y,cx,cy,activeBrush,lgBrushSize.value,lgBrushOpacity.value);
+    bPrev={x:cx,y:cy};
+  },{passive:false});
+  brushCanvas.addEventListener('touchend',()=>bMouseDown=false);
+
+  /* demo canvas auto-animation */
+  let lastDemoT=0;
+  function demoLoop(ts) {
+    requestAnimationFrame(demoLoop);
+    const dt=Math.min((ts-lastDemoT)/1000,0.05);
+    lastDemoT=ts;
+    lgBrushSize.update(dt);
+    lgBrushOpacity.update(dt);
+
+    demoCanvases.forEach((c,i) => {
+      const s = demoStates[i];
+      const ctx2=c.getContext('2d');
+      /* phosphor */
+      ctx2.fillStyle='rgba(26,16,10,0.04)';
+      ctx2.fillRect(0,0,c.width,c.height);
+
+      s.phase+=dt*0.55;
+      const cx=c.width/2+Math.cos(s.phase)*c.width*0.3;
+      const cy=c.height/2+Math.sin(s.phase*1.3)*c.height*0.28;
+      const px=c.width/2+Math.cos(s.phase-0.18)*c.width*0.3;
+      const py=c.height/2+Math.sin((s.phase-0.18)*1.3)*c.height*0.28;
+      drawBrushStroke(ctx2, px,py, cx,cy, i, 10, 0.65);
+    });
+  }
+  requestAnimationFrame(demoLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 4 — PAINTING TECHNIQUES
+   ════════════════════════════════════════════════ */
+(function initTechniques() {
+  const TECHNIQUES = [
+    { name:'Alla Prima', desc:'Wet-on-wet — colours blended directly on canvas', fn: drawAllaPrima },
+    { name:'Glazing',    desc:'Transparent layers — luminous depth', fn: drawGlazing },
+    { name:'Scumbling',  desc:'Dry drag of opaque paint over dried layer', fn: drawScumbling },
+    { name:'Impasto',    desc:'Thick textured marks — physical paint surface', fn: drawImpastoTech },
+    { name:'Sfumato',    desc:'Smoky gradients — no hard edges anywhere', fn: drawSfumato },
+  ];
+
+  const grid = document.getElementById('techniquesGrid');
+  const tCanvases=[], tFrames=[];
+  TECHNIQUES.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className='technique-card';
+    card.innerHTML=`<h3>${t.name}</h3>`;
+    const c=document.createElement('canvas');
+    c.width=230; c.height=165; c.style.width='100%';
+    const p=document.createElement('p');
+    p.textContent=t.desc;
+    card.appendChild(c); card.appendChild(p);
+    grid.appendChild(card);
+    tCanvases.push(c);
+    tFrames.push(0);
+
+    /* seed canvas */
+    const ctx2=c.getContext('2d');
+    ctx2.fillStyle='#1A1410';
+    ctx2.fillRect(0,0,c.width,c.height);
+  });
+
+  /* LagFilters for each technique parameter */
+  const lgTBlend  = new LagFilter(0, 0.55);
+  const lgTGlaze  = new LagFilter(0, 0.7);
+  const lgTScum   = new LagFilter(0, 0.5);
+  const lgTImpast = new LagFilter(0, 0.45);
+  const lgTSfum   = new LagFilter(0, 0.65);
+  const techLags  = [lgTBlend, lgTGlaze, lgTScum, lgTImpast, lgTSfum];
+
+  function drawAllaPrima(ctx, frame, lag) {
+    const c=['#B32020','#E06828','#1B3A6B','#F5EDD8'];
+    const t=(frame%120)/120;
+    lag.set(t);
+    const p0={x:30+Math.sin(frame*0.04)*60, y:80+Math.cos(frame*0.03)*40};
+    const p1={x:170+Math.cos(frame*0.05)*50, y:80+Math.sin(frame*0.04)*35};
+    ctx.globalAlpha=0.22;
+    ctx.fillStyle=c[Math.floor(t*4)%4];
+    ctx.beginPath(); ctx.arc(p0.x,p0.y,22,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=0.18;
+    ctx.fillStyle=c[(Math.floor(t*4)+1)%4];
+    ctx.beginPath(); ctx.arc(p1.x,p1.y,20,0,Math.PI*2); ctx.fill();
+    /* blend stroke */
+    ctx.globalAlpha=0.15;
+    const grd=ctx.createLinearGradient(p0.x,p0.y,p1.x,p1.y);
+    grd.addColorStop(0, c[0]); grd.addColorStop(1, c[2]);
+    ctx.strokeStyle=grd; ctx.lineWidth=rand(8,18);
+    ctx.beginPath(); ctx.moveTo(p0.x,p0.y); ctx.lineTo(p1.x,p1.y); ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  function drawGlazing(ctx, frame, lag) {
+    lag.set((frame%160)/160);
+    const layers=['rgba(179,32,32,0.08)','rgba(27,58,107,0.07)','rgba(232,160,48,0.09)','rgba(179,32,32,0.06)'];
+    layers.forEach((c,i) => {
+      const off=Math.sin(frame*0.02+i)*12;
+      ctx.fillStyle=c;
+      ctx.fillRect(15+i*8+off, 20, 180-i*8, 130);
+    });
+    /* luminous centre */
+    const grd=ctx.createRadialGradient(115,83,5,115,83,80);
+    grd.addColorStop(0,'rgba(245,237,216,0.12)');
+    grd.addColorStop(1,'rgba(245,237,216,0)');
+    ctx.fillStyle=grd;
+    ctx.fillRect(0,0,230,165);
+  }
+
+  function drawScumbling(ctx, frame, lag) {
+    lag.set((frame%100)/100);
+    const base='#2C1810';
+    ctx.globalAlpha=0.04;
+    ctx.fillStyle=base; ctx.fillRect(0,0,230,165);
+    ctx.globalAlpha=1;
+    const nBristles=16;
+    const y=83+Math.sin(frame*0.03)*30;
+    const xStart=10+((frame*0.8)%200);
+    for (let b=0; b<nBristles; b++) {
+      if (Math.random()<0.4) continue;
+      const oy=y+(b-nBristles/2)*8;
+      ctx.beginPath();
+      ctx.moveTo(xStart, oy);
+      ctx.lineTo(xStart+rand(20,50), oy+rand(-3,3));
+      ctx.lineWidth=rand(0.4,1.4);
+      ctx.globalAlpha=rand(0.15,0.45);
+      ctx.strokeStyle=`rgba(${180+rand(-20,20)},${160+rand(-20,20)},${120+rand(-20,20)},1)`;
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  function drawImpastoTech(ctx, frame, lag) {
+    lag.set((frame%90)/90);
+    const angle=(frame%90)/90*Math.PI*2;
+    const cx=115+Math.cos(angle)*60, cy=82+Math.sin(angle)*40;
+    const px=115+Math.cos(angle-0.2)*60, py=82+Math.sin(angle-0.2)*40;
+    const cols=['#B32020','#E8A030','#1B3A6B','#F5EDD8','#1F8040'];
+    const col=cols[Math.floor(frame/60)%cols.length];
+    const [r,g,b]=hexToRgb(col);
+    const nB=7;
+    for (let i=0; i<nB; i++) {
+      const off=((i/nB)-0.5)*18;
+      const ppx=Math.cos(angle+Math.PI/2)*off, ppy=Math.sin(angle+Math.PI/2)*off;
+      ctx.beginPath();
+      ctx.moveTo(px+ppx,py+ppy); ctx.lineTo(cx+ppx+rand(-2,2),cy+ppy+rand(-2,2));
+      ctx.lineWidth=rand(1,18/nB*2.2);
+      ctx.globalAlpha=rand(0.4,0.9);
+      ctx.strokeStyle=`rgb(${r},${g},${b})`;
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  function drawSfumato(ctx, frame, lag) {
+    lag.set((frame%200)/200);
+    const t=(frame%200)/200;
+    const cols=['#B32020','#1B3A6B','#2C1810','#5A2040'];
+    const cx=115+Math.sin(t*Math.PI*2)*40;
+    const cy=82+Math.cos(t*Math.PI*1.5)*28;
+    for (let r2=60; r2>0; r2-=6) {
+      const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,r2);
+      const c1=cols[Math.floor(t*4)%4];
+      const c2=cols[(Math.floor(t*4)+1)%4];
+      const [ar,ag,ab]=hexToRgb(c1);
+      grd.addColorStop(0,`rgba(${ar},${ag},${ab},0.055)`);
+      grd.addColorStop(1,`rgba(${ar},${ag},${ab},0)`);
+      ctx.fillStyle=grd;
+      ctx.fillRect(0,0,230,165);
+    }
+  }
+
+  const drawFns = [drawAllaPrima, drawGlazing, drawScumbling, drawImpastoTech, drawSfumato];
+  let lastTT=0;
+
+  function techLoop(ts) {
+    requestAnimationFrame(techLoop);
+    const dt=Math.min((ts-lastTT)/1000,0.05);
+    lastTT=ts;
+    techLags.forEach(l=>l.update(dt));
+
+    tCanvases.forEach((c,i) => {
+      tFrames[i]++;
+      const ctx2=c.getContext('2d');
+      /* phosphor */
+      ctx2.fillStyle='rgba(26,20,16,0.04)';
+      ctx2.fillRect(0,0,c.width,c.height);
+      drawFns[i](ctx2, tFrames[i], techLags[i]);
+    });
+  }
+  requestAnimationFrame(techLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 5 — ART HISTORY COLOR
+   ════════════════════════════════════════════════ */
+(function initColorHistory() {
+  const PERIODS = [
+    {
+      name:'Renaissance', era:'1400–1600',
+      palette:['#5A3818','#1B3A6B','#8B1830','#C8A050','#2A1A10','#D4C090'],
+      names:['Earth Brown','Lapis Lazuli','Madder','Gold Leaf','Shadow','Underpaint'],
+      info:'Lapis lazuli and vermilion over earth grounds. Egg tempera transitions to oil. Leonardo\'s sfumato, Raphael\'s clarity.',
+    },
+    {
+      name:'Baroque', era:'1600–1750',
+      palette:['#1A0E0A','#C83020','#D09020','#3A2818','#EDE0C0','#2A1820'],
+      names:['Deep Shadow','Vermilion','Lead Yellow','Dark Ground','Highlight','Asphaltum'],
+      info:'Chiaroscuro — extreme light/dark contrast. Rembrandt\'s warm shadows, Caravaggio\'s theatrical light from darkness.',
+    },
+    {
+      name:'Impressionism', era:'1860–1900',
+      palette:['#A0C8E0','#E8D050','#C03020','#80A840','#7080B8','#E8A830'],
+      names:['Cerulean Blue','Chrome Yellow','Poppy Red','Viridian','Lavender','Cadmium'],
+      info:'Broken colour, en plein air. Pure complementaries placed side by side — the eye mixes optically. Monet, Renoir, Pissarro.',
+    },
+    {
+      name:'Fauvism', era:'1905–1910',
+      palette:['#E03020','#30A820','#3040E0','#E8C010','#C030A0','#20C0C0'],
+      names:['Pure Red','Pure Green','Cobalt Blue','Chrome Yel','Magenta','Turquoise'],
+      info:'Wild beasts — colour freed from description. Matisse and Derain apply paint unmixed, straight from tube.',
+    },
+    {
+      name:'Expressionism', era:'1905–1935',
+      palette:['#802010','#2A5030','#8B3A18','#1A3060','#C08020','#4A1020'],
+      names:['Acid Red','Forest Green','Burnt Sienna','Night Blue','Ochre','Dark Plum'],
+      info:'Emotional, non-naturalistic colour. Kirchner\'s jagged angularity, Munch\'s psychological urgency.',
+    },
+    {
+      name:'Abstract Exp.', era:'1940–1960',
+      palette:['#C83020','#1B3A6B','#E8C020','#1A1410','#F0E8D8','#207050'],
+      names:['Alizarin','Prussian Blue','Raw Sienna','Ivory Black','Titanium Wh','Phthalo Grn'],
+      info:'Gestural primaries — action painting. Pollock\'s drip, Rothko\'s colour field, de Kooning\'s energy.',
+    },
+  ];
+
+  const tabs  = document.getElementById('periodTabs');
+  const palEl = document.getElementById('historyPalette');
+  const info  = document.getElementById('historyInfo');
+  const hCvs  = document.getElementById('historyCanvas');
+  const hctx  = hCvs.getContext('2d');
+
+  let activePeriod = 0;
+
+  /* LagFilters for history */
+  const lgHistR = new LagFilter(26, 0.5);
+  const lgHistG = new LagFilter(14, 0.5);
+  const lgHistB = new LagFilter(10, 0.5);
+  const lgHistEnergy = new LagFilter(0, 0.6);
+  const lgHistContrast= new LagFilter(0.5,0.55);
+
+  PERIODS.forEach((p,i) => {
+    const btn=document.createElement('button');
+    btn.className='period-btn'+(i===0?' active':'');
+    btn.textContent=p.name;
+    btn.addEventListener('click',()=>selectPeriod(i));
+    tabs.appendChild(btn);
+  });
+
+  function selectPeriod(i) {
+    activePeriod=i;
+    tabs.querySelectorAll('.period-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+    const p=PERIODS[i];
+    const [r,g,b]=hexToRgb(p.palette[0]);
+    lgHistR.set(r); lgHistG.set(g); lgHistB.set(b);
+    lgHistEnergy.set(i===3||i===4||i===5?1.0:0.3);
+    lgHistContrast.set(i===1?0.9:i===0?0.5:0.3);
+
+    /* palette swatches */
+    palEl.innerHTML='';
+    p.palette.forEach((hex,k) => {
+      const chip=document.createElement('div');
+      chip.className='palette-chip';
+      chip.style.background=hex;
+      const [cr,cg,cb]=hexToRgb(hex);
+      const lum=(cr*299+cg*587+cb*114)/1000;
+      chip.style.color=lum>128?'rgba(0,0,0,0.7)':'rgba(255,255,255,0.85)';
+      chip.textContent=p.names[k];
+      palEl.appendChild(chip);
+    });
+
+    info.innerHTML=`<h3>${p.name} <small style="font-size:0.7rem;color:rgba(245,237,216,0.45)">${p.era}</small></h3><p>${p.info}</p>`;
+  }
+  selectPeriod(0);
+
+  let histFrame=0, lastHT=0;
+  function histLoop(ts) {
+    requestAnimationFrame(histLoop);
+    const dt=Math.min((ts-lastHT)/1000,0.05);
+    lastHT=ts; histFrame++;
+    lgHistR.update(dt); lgHistG.update(dt); lgHistB.update(dt);
+    lgHistEnergy.update(dt); lgHistContrast.update(dt);
+
+    const p=PERIODS[activePeriod];
+    /* phosphor */
+    hctx.fillStyle=`rgba(${Math.round(lgHistR.value*0.12)},${Math.round(lgHistG.value*0.08)},${Math.round(lgHistB.value*0.06)},0.04)`;
+    hctx.fillRect(0,0,hCvs.width,hCvs.height);
+
+    /* period-specific rendering */
+    const energy=lgHistEnergy.value;
+    const contrast=lgHistContrast.value;
+    const numStrokes=Math.round(3+energy*6);
+
+    for (let s=0; s<numStrokes; s++) {
+      const colHex=p.palette[randInt(0,p.palette.length)];
+      const [r,g,b]=hexToRgb(colHex);
+      const x=rand(10,430), y=rand(10,260);
+      const size=rand(6,30+energy*30);
+      const opa=rand(0.06,0.18+energy*0.1);
+
+      if (activePeriod===0) { /* Renaissance — hatching */
+        hctx.beginPath();
+        hctx.moveTo(x,y); hctx.lineTo(x+rand(8,35),y+rand(-12,12));
+        hctx.lineWidth=rand(0.4,1.5); hctx.globalAlpha=opa*0.7;
+        hctx.strokeStyle=colHex; hctx.stroke();
+      } else if (activePeriod===1) { /* Baroque — dramatic blobs */
+        const grd=hctx.createRadialGradient(x,y,0,x,y,size);
+        grd.addColorStop(0,`rgba(${r},${g},${b},${opa*1.5})`);
+        grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
+        hctx.fillStyle=grd;
+        hctx.fillRect(x-size,y-size,size*2,size*2);
+      } else if (activePeriod===2) { /* Impressionism — dabs */
+        hctx.fillStyle=`rgba(${r},${g},${b},${opa})`;
+        hctx.beginPath(); hctx.ellipse(x,y,rand(3,10),rand(2,6),rand(0,Math.PI),0,Math.PI*2);
+        hctx.fill();
+      } else if (activePeriod===3) { /* Fauvism — bold rectangles */
+        hctx.fillStyle=`rgba(${r},${g},${b},${opa*1.2})`;
+        hctx.fillRect(x,y,rand(8,30),rand(8,30));
+      } else if (activePeriod===4) { /* Expressionism — jagged */
+        hctx.beginPath();
+        hctx.moveTo(x,y);
+        hctx.lineTo(x+rand(-30,30),y+rand(-30,30));
+        hctx.lineTo(x+rand(-20,20),y+rand(-20,20));
+        hctx.lineWidth=rand(1,4); hctx.globalAlpha=opa;
+        hctx.strokeStyle=colHex; hctx.stroke();
+      } else { /* AbEx — drips/gestures */
+        hctx.beginPath();
+        hctx.moveTo(x,y);
+        hctx.bezierCurveTo(x+rand(-60,60),y+rand(-40,40),x+rand(-60,60),y+rand(-40,40),x+rand(-80,80),y+rand(-50,50));
+        hctx.lineWidth=rand(1,6); hctx.globalAlpha=opa*1.3;
+        hctx.strokeStyle=colHex; hctx.stroke();
+      }
+      hctx.globalAlpha=1;
+    }
+  }
+  requestAnimationFrame(histLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 6 — WATERCOLOUR PHYSICS
+   ════════════════════════════════════════════════ */
+(function initWatercolor() {
+  const wcCanvas=document.getElementById('wcCanvas');
+  const wctx=wcCanvas.getContext('2d');
+  wctx.fillStyle='#f0ece3';
+  wctx.fillRect(0,0,wcCanvas.width,wcCanvas.height);
+
+  let wcMode='wetOnWet';
+  document.querySelectorAll('[data-wc]').forEach(btn => {
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-wc]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      wcMode=btn.dataset.wc;
+      /* reset canvas */
+      wctx.fillStyle='#f0ece3';
+      wctx.fillRect(0,0,wcCanvas.width,wcCanvas.height);
+      wcDrops.length=0; wcFrame=0;
+    });
+  });
+
+  const wcWetSlider =document.getElementById('wcWet');
+  const wcLoadSlider=document.getElementById('wcLoad');
+  const wcWetVal    =document.getElementById('wcWetVal');
+  const wcLoadVal   =document.getElementById('wcLoadVal');
+
+  /* LagFilters for watercolour */
+  const lgWcWet    = new LagFilter(0.75, 0.4);
+  const lgWcLoad   = new LagFilter(0.60, 0.4);
+  const lgWcBleed  = new LagFilter(0,    0.55);
+  const lgWcOpacity= new LagFilter(0.6,  0.35);
+  const lgWcRadius = new LagFilter(20,   0.45);
+
+  wcWetSlider.addEventListener('input',()=>{
+    wcWetVal.textContent=wcWetSlider.value+'%';
+    lgWcWet.set(+wcWetSlider.value/100);
+  });
+  wcLoadSlider.addEventListener('input',()=>{
+    wcLoadVal.textContent=wcLoadSlider.value+'%';
+    lgWcLoad.set(+wcLoadSlider.value/100);
+  });
+
+  const WC_COLS=['#2050A0','#C03020','#20A050','#9030A0','#E07020','#205080'];
+  const wcDrops=[];
+  let wcFrame=0, lastWcT=0;
+
+  function spawnDrop() {
+    const col=WC_COLS[randInt(0,WC_COLS.length)];
+    wcDrops.push({
+      x: rand(60,wcCanvas.width-60),
+      y: rand(60,wcCanvas.height-60),
+      col, life:0,
+      maxLife: rand(80,200),
+      wet: lgWcWet.value,
+      load: lgWcLoad.value,
+      seed: Math.random()
+    });
+  }
+
+  function renderDrop(d) {
+    const prog=d.life/d.maxLife;
+    const bleed=lgWcBleed.value;
+    const [r,g,b]=hexToRgb(d.col);
+    const wet=d.wet, load=d.load;
+
+    if (wcMode==='wetOnWet') {
+      const bleedR=8+wet*60*Math.sqrt(prog)+bleed*20;
+      const grd=wctx.createRadialGradient(d.x,d.y,0,d.x,d.y,bleedR);
+      const cOpa=load*0.55*(1-prog*0.5);
+      grd.addColorStop(0,`rgba(${r},${g},${b},${cOpa})`);
+      grd.addColorStop(0.5,`rgba(${r},${g},${b},${cOpa*0.45})`);
+      grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
+      wctx.fillStyle=grd;
+      wctx.beginPath(); wctx.arc(d.x,d.y,bleedR,0,Math.PI*2); wctx.fill();
+      /* bloom tendrils */
+      if (wet>0.5 && prog<0.6) {
+        const nT=Math.round(4+wet*8);
+        for (let t=0; t<nT; t++) {
+          const tAngle=d.seed*Math.PI*2+t/nT*Math.PI*2+prog*0.5;
+          const tLen=bleedR*0.7*wet*prog;
+          const tx=d.x+Math.cos(tAngle)*tLen;
+          const ty=d.y+Math.sin(tAngle)*tLen;
+          const tgrd=wctx.createRadialGradient(tx,ty,0,tx,ty,bleedR*0.35);
+          tgrd.addColorStop(0,`rgba(${r},${g},${b},${cOpa*0.3})`);
+          tgrd.addColorStop(1,`rgba(${r},${g},${b},0)`);
+          wctx.fillStyle=tgrd;
+          wctx.beginPath(); wctx.arc(tx,ty,bleedR*0.38,0,Math.PI*2); wctx.fill();
+        }
+      }
+    } else if (wcMode==='wetOnDry') {
+      /* crisp edge — hard boundary */
+      const radius=8+load*25;
+      wctx.fillStyle=`rgba(${r},${g},${b},${load*0.5*(1-prog*0.4)})`;
+      wctx.beginPath(); wctx.arc(d.x,d.y,radius,0,Math.PI*2); wctx.fill();
+      /* edge darkening */
+      const egrd=wctx.createRadialGradient(d.x,d.y,radius*0.8,d.x,d.y,radius*1.05);
+      egrd.addColorStop(0,`rgba(${r},${g},${b},0)`);
+      egrd.addColorStop(1,`rgba(${r},${g},${b},${load*0.3})`);
+      wctx.fillStyle=egrd;
+      wctx.beginPath(); wctx.arc(d.x,d.y,radius*1.1,0,Math.PI*2); wctx.fill();
+    } else if (wcMode==='backrun') {
+      /* cauliflower bloom */
+      const base=12+wet*30;
+      for (let petal=0; petal<8; petal++) {
+        const pa=petal/8*Math.PI*2+d.seed*Math.PI;
+        const pr=base*(0.6+Math.sin(d.life*0.1+petal)*0.4);
+        const px=d.x+Math.cos(pa)*pr*0.8;
+        const py=d.y+Math.sin(pa)*pr*0.8;
+        const grd=wctx.createRadialGradient(px,py,0,px,py,pr*0.7);
+        grd.addColorStop(0,`rgba(${r},${g},${b},${load*0.15})`);
+        grd.addColorStop(0.7,`rgba(${r},${g},${b},${load*0.1})`);
+        grd.addColorStop(1,`rgba(${r},${g},${b},${load*0.25})`);
+        wctx.fillStyle=grd;
+        wctx.beginPath(); wctx.arc(px,py,pr*0.8,0,Math.PI*2); wctx.fill();
+      }
+    } else if (wcMode==='granulation') {
+      /* pigment granules separate out */
+      const radius=15+load*20;
+      const nGrains=Math.round(40+wet*80);
+      for (let g2=0; g2<nGrains; g2++) {
+        const gr=rand(0,radius);
+        const ga=rand(0,Math.PI*2);
+        const grx=d.x+Math.cos(ga)*gr;
+        const gry=d.y+Math.sin(ga)*gr;
+        const grSize=rand(0.5,2.5)*load;
+        const grOpa=rand(0.2,0.7)*load*(1-gr/radius);
+        wctx.fillStyle=`rgba(${r},${g},${b},${grOpa})`;
+        wctx.beginPath(); wctx.arc(grx,gry,grSize,0,Math.PI*2); wctx.fill();
+      }
+    } else if (wcMode==='lifting') {
+      /* blotting reveals paper */
+      const radius=10+wet*25;
+      /* initial wash */
+      const grd=wctx.createRadialGradient(d.x,d.y,0,d.x,d.y,radius*1.5);
+      grd.addColorStop(0,`rgba(${r},${g},${b},${load*0.4*(1-prog)})`);
+      grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
+      wctx.fillStyle=grd;
+      wctx.fillRect(d.x-radius*2,d.y-radius*2,radius*4,radius*4);
+      /* lifting blob */
+      if (prog>0.3) {
+        const liftR=radius*0.8*((prog-0.3)/0.7);
+        const lgrd=wctx.createRadialGradient(d.x,d.y,0,d.x,d.y,liftR);
+        lgrd.addColorStop(0,'rgba(240,236,227,0.6)');
+        lgrd.addColorStop(1,'rgba(240,236,227,0)');
+        wctx.fillStyle=lgrd;
+        wctx.beginPath(); wctx.arc(d.x,d.y,liftR,0,Math.PI*2); wctx.fill();
+      }
+    } else if (wcMode==='masking') {
+      /* white paper revealed within masked area */
+      if (prog<0.3) {
+        /* wash around mask */
+        const maskW=40+load*30, maskH=28+load*20;
+        wctx.fillStyle=`rgba(${r},${g},${b},${load*0.35})`;
+        wctx.fillRect(d.x-maskW,d.y-maskH,maskW*2,maskH*2);
+        wctx.clearRect(d.x-maskW*0.5,d.y-maskH*0.5,maskW,maskH);
+        /* restore paper colour */
+        wctx.fillStyle='rgba(240,236,227,1)';
+        wctx.fillRect(d.x-maskW*0.5,d.y-maskH*0.5,maskW,maskH);
+      } else {
+        const grd=wctx.createRadialGradient(d.x,d.y,0,d.x,d.y,50+load*30);
+        grd.addColorStop(0,`rgba(${r},${g},${b},${load*0.3})`);
+        grd.addColorStop(1,`rgba(${r},${g},${b},0)`);
+        wctx.fillStyle=grd;
+        wctx.fillRect(d.x-80,d.y-60,160,120);
+      }
+    }
+  }
+
+  function wcLoop(ts) {
+    requestAnimationFrame(wcLoop);
+    const dt=Math.min((ts-lastWcT)/1000,0.05);
+    lastWcT=ts; wcFrame++;
+
+    lgWcWet.update(dt); lgWcLoad.update(dt);
+    lgWcBleed.set(lgWcWet.value).update(dt);
+    lgWcOpacity.set(lgWcLoad.value).update(dt);
+    lgWcRadius.set(10+lgWcWet.value*50).update(dt);
+
+    for (let i=wcDrops.length-1; i>=0; i--) {
+      wcDrops[i].life++;
+      renderDrop(wcDrops[i]);
+      if (wcDrops[i].life>=wcDrops[i].maxLife) {
+        wcDrops.splice(i,1);
+        /* gentle phosphor fade when drop done */
+        wctx.fillStyle='rgba(240,236,227,0.006)';
+        wctx.fillRect(0,0,wcCanvas.width,wcCanvas.height);
+      }
+    }
+
+    if (wcDrops.length<6 && Math.random()<0.04) spawnDrop();
+  }
+  requestAnimationFrame(wcLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 7 — PORTRAIT STUDY (Flemish Technique)
+   ════════════════════════════════════════════════ */
+(function initPortrait() {
+  const ptCvs=document.getElementById('portraitCanvas');
+  const ptx=ptCvs.getContext('2d');
+  const W=ptCvs.width, H=ptCvs.height;
+
+  const STAGES=[
+    { name:'Underpainting', col:'Burnt Sienna', info:'Thinned sienna maps value structure — warm transparent ground for subsequent layers.' },
+    { name:'Grisaille', col:'Raw Umber + White', info:'Dead layer in cool grey establishes full tonal range. Values lighter than final — glazes will darken.' },
+    { name:'Flesh Block-in', col:'Flesh Mixture', info:'Warm opaque flesh tones blocked in — yellow ochre, white, a touch of cadmium red.' },
+    { name:'Shadow Modelling', col:'Cool/Warm Contrast', info:'Cool shadows (ultramarine + umber) against warm lights. Temperature contrast creates volume.' },
+    { name:'Transparent Glazing', col:'Glazes', info:'Alizarin, raw sienna glazes add luminous depth — transparent layers over dried paint.' },
+    { name:'Titanium Highlights', col:'Titanium White', info:'Pure white impasto at highest light points — forehead, nose tip, lower lip, catch-lights in eyes.' },
+  ];
+
+  const STAGE_COLS=[
+    '#8B3A18', /* burnt sienna */
+    '#8A8070', /* grisaille */
+    '#C89060', /* flesh */
+    '#7870A0', /* shadows */
+    '#A05830', /* glazing */
+    '#F0E8DC', /* highlights */
+  ];
+
+  const stagesEl=document.getElementById('portraitStages');
+  const ptInfo  =document.getElementById('portraitInfo');
+  const ptSlider=document.getElementById('portraitStage');
+  const ptSlVal =document.getElementById('portraitStageVal');
+  const ptSpeedBtn=document.getElementById('portraitSpeed');
+
+  STAGES.forEach((s,i) => {
+    const btn=document.createElement('button');
+    btn.className='stage-btn'+(i===0?' active':'');
+    btn.innerHTML=`<span class="stage-num">${i+1}</span>${s.name}`;
+    btn.addEventListener('click',()=>setStage(i));
+    stagesEl.appendChild(btn);
+  });
+
+  /* LagFilters */
+  const lgStage     = new LagFilter(0, 0.5);
+  const lgPortraitX = new LagFilter(W/2, 0.3);
+  const lgPortraitY = new LagFilter(H/2, 0.3);
+  const lgHighlight = new LagFilter(0, 0.6);
+  const lgShadow    = new LagFilter(0, 0.55);
+  const lgFlesh     = new LagFilter(0, 0.65);
+
+  let currentStage=0, animating=false, animFrame=0;
+
+  function setStage(i) {
+    currentStage=i;
+    lgStage.set(i);
+    stagesEl.querySelectorAll('.stage-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+    ptInfo.innerHTML=`<h3>Stage ${i+1} — ${STAGES[i].name}</h3><p>${STAGES[i].info}</p>`;
+    ptSlider.value=i;
+    ptSlVal.textContent=`${i+1} / 6`;
+    lgHighlight.set(i>=5?1:0);
+    lgShadow.set(i>=3?1:0);
+    lgFlesh.set(i>=2?1:0);
+  }
+  setStage(0);
+
+  ptSlider.addEventListener('input',()=>{
+    setStage(+ptSlider.value);
+    lgStage.set(+ptSlider.value);
+  });
+
+  ptSpeedBtn.addEventListener('click',()=>{
+    if (animating) return;
+    animating=true; animFrame=0;
+    let st=0;
+    const iv=setInterval(()=>{
+      setStage(st++);
+      if (st>=STAGES.length) { clearInterval(iv); animating=false; }
+    },800);
+  });
+
+  /* draw portrait layers */
+  function drawPortrait(stage) {
+    ptx.fillStyle='#1A1410';
+    ptx.fillRect(0,0,W,H);
+
+    const s=lgStage.value;
+    const cx=W/2, cy=H*0.42;
+
+    /* ── Stage 0: underpainting ── */
+    if (s>=0) {
+      const opa=clamp((s+1)*0.8,0,1);
+      /* ground */
+      const grd=ptx.createRadialGradient(cx,cy,20,cx,cy,180);
+      grd.addColorStop(0,`rgba(139,58,24,${opa*0.7})`);
+      grd.addColorStop(0.6,`rgba(100,35,12,${opa*0.45})`);
+      grd.addColorStop(1,`rgba(26,14,10,0)`);
+      ptx.fillStyle=grd; ptx.fillRect(0,0,W,H);
+      /* head oval */
+      ptx.beginPath(); ptx.ellipse(cx,cy,85,105,0,0,Math.PI*2);
+      ptx.fillStyle=`rgba(160,70,28,${opa*0.55})`; ptx.fill();
+    }
+
+    /* ── Stage 1: grisaille ── */
+    if (s>=1) {
+      const opa=clamp((s-0.8)*0.9,0,1);
+      ptx.beginPath(); ptx.ellipse(cx,cy,80,100,0,0,Math.PI*2);
+      ptx.fillStyle=`rgba(120,110,100,${opa*0.5})`; ptx.fill();
+      /* value shading */
+      const shd=ptx.createLinearGradient(cx-80,cy-100,cx+80,cy+100);
+      shd.addColorStop(0,`rgba(180,170,160,${opa*0.35})`);
+      shd.addColorStop(0.5,`rgba(80,70,60,${opa*0.25})`);
+      shd.addColorStop(1,`rgba(30,24,20,${opa*0.4})`);
+      ptx.fillStyle=shd; ptx.beginPath(); ptx.ellipse(cx,cy,80,100,0,0,Math.PI*2); ptx.fill();
+      /* features */
+      ptx.fillStyle=`rgba(40,30,24,${opa*0.35})`;
+      /* eyes */
+      ptx.beginPath(); ptx.ellipse(cx-28,cy-18,14,7,0,0,Math.PI*2); ptx.fill();
+      ptx.beginPath(); ptx.ellipse(cx+28,cy-18,14,7,0,0,Math.PI*2); ptx.fill();
+      /* nose shadow */
+      ptx.beginPath(); ptx.arc(cx,cy+12,16,0,Math.PI); ptx.fill();
+      /* mouth */
+      ptx.beginPath(); ptx.arc(cx,cy+42,20,0,Math.PI); ptx.fill();
+    }
+
+    /* ── Stage 2: flesh block-in ── */
+    if (s>=2) {
+      const opa=clamp((s-1.6)*0.9,0,1)*lgFlesh.value;
+      const flesh=ptx.createRadialGradient(cx-20,cy-20,10,cx,cy,90);
+      flesh.addColorStop(0,`rgba(220,165,100,${opa*0.65})`);
+      flesh.addColorStop(0.5,`rgba(190,128,75,${opa*0.45})`);
+      flesh.addColorStop(1,`rgba(150,85,45,${opa*0.2})`);
+      ptx.fillStyle=flesh; ptx.beginPath(); ptx.ellipse(cx,cy,78,98,0,0,Math.PI*2); ptx.fill();
+    }
+
+    /* ── Stage 3: shadow modelling ── */
+    if (s>=3) {
+      const opa=clamp((s-2.4)*0.85,0,1)*lgShadow.value;
+      /* cool shadow side */
+      const shadowGrd=ptx.createLinearGradient(cx-90,cy,cx+50,cy);
+      shadowGrd.addColorStop(0,`rgba(60,55,100,${opa*0.55})`);
+      shadowGrd.addColorStop(0.5,`rgba(60,55,100,0)`);
+      ptx.fillStyle=shadowGrd; ptx.beginPath(); ptx.ellipse(cx,cy,80,100,0,0,Math.PI*2); ptx.fill();
+      /* warm reflected light */
+      const refGrd=ptx.createRadialGradient(cx+70,cy+40,5,cx+60,cy+40,50);
+      refGrd.addColorStop(0,`rgba(180,100,50,${opa*0.3})`);
+      refGrd.addColorStop(1,`rgba(180,100,50,0)`);
+      ptx.fillStyle=refGrd; ptx.fillRect(cx+10,cy-10,90,100);
+      /* eye sockets */
+      ptx.fillStyle=`rgba(40,30,50,${opa*0.4})`;
+      ptx.beginPath(); ptx.ellipse(cx-28,cy-18,18,9,0,0,Math.PI*2); ptx.fill();
+      ptx.beginPath(); ptx.ellipse(cx+28,cy-18,18,9,0,0,Math.PI*2); ptx.fill();
+    }
+
+    /* ── Stage 4: glazing ── */
+    if (s>=4) {
+      const opa=clamp((s-3.3)*0.8,0,1);
+      /* alizarin glaze over cheeks */
+      ptx.fillStyle=`rgba(140,28,50,${opa*0.18})`;
+      ptx.beginPath(); ptx.ellipse(cx-32,cy+15,28,22,0,0,Math.PI*2); ptx.fill();
+      ptx.beginPath(); ptx.ellipse(cx+32,cy+15,28,22,0,0,Math.PI*2); ptx.fill();
+      /* warm glaze overall */
+      ptx.fillStyle=`rgba(160,80,20,${opa*0.1})`;
+      ptx.beginPath(); ptx.ellipse(cx,cy,80,100,0,0,Math.PI*2); ptx.fill();
+      /* sienna glaze shadows */
+      ptx.fillStyle=`rgba(100,45,15,${opa*0.15})`;
+      ptx.beginPath(); ptx.ellipse(cx-50,cy+20,40,60,0,0,Math.PI*2); ptx.fill();
+    }
+
+    /* ── Stage 5: highlights ── */
+    if (s>=5) {
+      const opa=clamp((s-4.5)*1.4,0,1)*lgHighlight.value;
+      const hiPts=[
+        {x:cx-18,y:cy-55,r:6},  /* forehead */
+        {x:cx+8, y:cy-50,r:4},  /* forehead 2 */
+        {x:cx,   y:cy,   r:5},  /* nose tip */
+        {x:cx-10,y:cy+45,r:4},  /* lower lip */
+        {x:cx-26,y:cy-18,r:2.5},/* eye catchlight */
+        {x:cx+26,y:cy-18,r:2.5},
+      ];
+      hiPts.forEach(hp => {
+        const grd=ptx.createRadialGradient(hp.x,hp.y,0,hp.x,hp.y,hp.r*2);
+        grd.addColorStop(0,`rgba(245,238,220,${opa*0.95})`);
+        grd.addColorStop(0.4,`rgba(245,238,220,${opa*0.6})`);
+        grd.addColorStop(1,`rgba(245,238,220,0)`);
+        ptx.fillStyle=grd;
+        ptx.beginPath(); ptx.arc(hp.x,hp.y,hp.r*2.2,0,Math.PI*2); ptx.fill();
+      });
+    }
+
+    /* annotation */
+    ptx.fillStyle='rgba(245,237,216,0.55)';
+    ptx.font='11px Georgia';
+    ptx.fillText(`Stage ${Math.min(Math.round(lgStage.value)+1,6)}: ${STAGES[Math.min(currentStage,5)].col}`, 12, H-14);
+  }
+
+  let lastPT=0;
+  function portraitLoop(ts) {
+    requestAnimationFrame(portraitLoop);
+    const dt=Math.min((ts-lastPT)/1000,0.05);
+    lastPT=ts;
+    lgStage.update(dt);
+    lgHighlight.update(dt); lgShadow.update(dt); lgFlesh.update(dt);
+    lgPortraitX.update(dt); lgPortraitY.update(dt);
+    drawPortrait(lgStage.value);
+  }
+  requestAnimationFrame(portraitLoop);
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 8 — ARTISTS
+   ════════════════════════════════════════════════ */
+(function initArtists() {
+  const ARTISTS=[
+    { name:'Rembrandt van Rijn', era:'1606–1669', movement:'Dutch Golden Age',
+      palette:['#1A0E0A','#C88020','#8B3A18','#EDE0C0','#3A2010'],
+      works:['The Night Watch','Self-Portrait (1659)','The Anatomy Lesson'],
+      tech:'Impasto highlights over transparent shadows; warm-cold temperature play.' },
+    { name:'Johannes Vermeer', era:'1632–1675', movement:'Dutch Golden Age',
+      palette:['#1B3A6B','#C8B050','#EDE0C0','#8B3A18','#3A5070'],
+      works:['Girl with a Pearl Earring','The Milkmaid','View of Delft'],
+      tech:'Pointillés — tiny dots of light; camera obscura compositional precision.' },
+    { name:'J.M.W. Turner', era:'1775–1851', movement:'Romanticism',
+      palette:['#E8D050','#E07820','#90B8D8','#F0E8C0','#606880'],
+      works:['The Fighting Temeraire','Rain Steam Speed','Norham Castle'],
+      tech:'Vortex compositions; yellow-white luminous centres dissolving into abstraction.' },
+    { name:'Claude Monet', era:'1840–1926', movement:'Impressionism',
+      palette:['#A0C8E0','#E8D050','#B8D890','#C06040','#7898C0'],
+      works:['Water Lilies','Haystacks','Rouen Cathedral series'],
+      tech:'Series paintings capturing light change; broken complementary colour dabs.' },
+    { name:'Paul Cézanne', era:'1839–1906', movement:'Post-Impressionism',
+      palette:['#80A840','#C09050','#4060A0','#C04020','#D0B070'],
+      works:['Mont Sainte-Victoire','The Card Players','Large Bathers'],
+      tech:'Parallel constructive brushstrokes; multiple viewpoints within single canvas.' },
+    { name:'Francis Bacon', era:'1909–1992', movement:'Figurative Expressionism',
+      palette:['#C03020','#1A1410','#E8A020','#506080','#8B3018'],
+      works:['Three Studies for Figures','Study after Velázquez','Screaming Pope'],
+      tech:'Smeared and wiped flesh; raw meat palette; isolation in geometric space frames.' },
+    { name:'Gerhard Richter', era:'b. 1932', movement:'Photo-Realism / Abstraction',
+      palette:['#808080','#C0C0C0','#404040','#B03020','#1B3A6B'],
+      works:['Atlas','Squeegee paintings','October 18, 1977'],
+      tech:'Squeegee drag of wet paint across photo-real underlayers; grey as neutral fact.' },
+    { name:'Jenny Saville', era:'b. 1970', movement:'Contemporary Figurative',
+      palette:['#C89070','#8B3018','#D0A880','#4A2818','#E0C0A0'],
+      works:['Propped','Plan','Matrix'],
+      tech:'Scale and close-up viewpoint; impasto flesh worked wet-into-wet; body as landscape.' },
+  ];
+
+  const grid=document.getElementById('artistsGrid');
+  ARTISTS.forEach(a => {
+    const card=document.createElement('div');
+    card.className='artist-card';
+    /* geometric avatar canvas */
+    const avCvs=document.createElement('canvas');
+    avCvs.className='artist-avatar';
+    avCvs.width=240; avCvs.height=118;
+    drawAvatar(avCvs, a.palette);
+    card.appendChild(avCvs);
+    const info=document.createElement('div');
+    info.className='artist-info';
+    info.innerHTML=`
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-era">${a.era} · ${a.movement}</div>
+      <span class="artist-tag">${a.movement}</span>
+      <div class="artist-works">${a.works.join(' · ')}</div>
+      <div class="artist-technique">${a.tech}</div>`;
+    card.appendChild(info);
+    grid.appendChild(card);
+  });
+
+  function drawAvatar(canvas, palette) {
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width, H=canvas.height;
+    ctx.fillStyle=palette[4]||'#1A0E0A';
+    ctx.fillRect(0,0,W,H);
+    /* geometric shapes in palette */
+    palette.slice(0,4).forEach((col,i) => {
+      ctx.globalAlpha=0.7+Math.random()*0.25;
+      ctx.fillStyle=col;
+      const shape=i%3;
+      if (shape===0) {
+        ctx.beginPath();
+        ctx.arc(rand(20,W-20),rand(10,H-10),rand(12,38),0,Math.PI*2);
+        ctx.fill();
+      } else if (shape===1) {
+        const rx=rand(10,W-10), ry=rand(8,H-8);
+        ctx.fillRect(rx-rand(15,40),ry-rand(10,30),rand(30,80),rand(20,60));
+      } else {
+        ctx.beginPath();
+        const tx=rand(15,W-15), ty=rand(10,H-10), ts=rand(20,45);
+        ctx.moveTo(tx,ty-ts); ctx.lineTo(tx+ts,ty+ts); ctx.lineTo(tx-ts,ty+ts);
+        ctx.fill();
+      }
+    });
+    ctx.globalAlpha=1;
+    /* phosphor grain overlay */
+    for (let g=0; g<120; g++) {
+      ctx.fillStyle=`rgba(245,237,216,${rand(0.01,0.06)})`;
+      ctx.fillRect(rand(0,W),rand(0,H),1,1);
+    }
+  }
+})();
+
+/* ════════════════════════════════════════════════
+   SECTION 9 — GLOSSARY
+   ════════════════════════════════════════════════ */
+(function initGlossary() {
+  const TERMS=[
+    { term:'Alla Prima',    def:'Wet-on-wet technique completed in a single painting session.' },
+    { term:'Binder',        def:'Medium that holds pigment particles together (oil, gum arabic, acrylic polymer).' },
+    { term:'Chiaroscuro',   def:'Strong contrast between light and dark; Baroque modelling technique.' },
+    { term:'Complementary', def:'Colours opposite on the colour wheel — intensify each other when placed adjacent.' },
+    { term:'Earth Tones',   def:'Pigments derived from minerals — ochres, siennas, umbers, and terre verte.' },
+    { term:'Fat over Lean', def:'Oil painting rule: each layer must be more oil-rich than the layer beneath.' },
+    { term:'Gesso',         def:'Calcium carbonate + binder ground applied to support before painting.' },
+    { term:'Glaze',         def:'Transparent colour applied over dried paint — adds luminous depth.' },
+    { term:'Ground',        def:'Prepared surface on support; determines absorbency and tooth.' },
+    { term:'Impasto',       def:'Thick application of paint leaving visible texture and brushwork.' },
+    { term:'Lean',          def:'Paint with low oil content — used in initial layers (fat over lean rule).' },
+    { term:'Medium',        def:'Liquid mixed with paint to alter consistency, drying time, or finish.' },
+    { term:'Opacity',       def:'Degree to which a paint obscures the layer beneath; opposite of transparency.' },
+    { term:'Palette',       def:'Surface for mixing colours; also the range of colours an artist habitually uses.' },
+    { term:'Pigment',       def:'Dry colouring matter — ground minerals, synthetic compounds, or organic sources.' },
+    { term:'Plein Air',     def:'Painting outdoors directly from the motif; central to Impressionism.' },
+    { term:'Scumbling',     def:'Dragging dry paint loosely over a textured or painted surface.' },
+    { term:'Sfumato',       def:'Blended transitions with no hard edges — Leonardo\'s atmospheric veiling.' },
+    { term:'Underpainting', def:'Monochrome or thinly painted first layer establishing value and composition.' },
+    { term:'Value',         def:'Lightness or darkness of a colour, independent of hue.' },
+    { term:'Viscosity',     def:'Thickness or fluidity of paint — controlled by medium, temperature, and brand.' },
+    { term:'Warm / Cool',   def:'Temperature contrast — warm (red/yellow) advances; cool (blue/violet) recedes.' },
+  ];
+
+  const el=document.getElementById('glossaryGrid');
+  TERMS.forEach(t => {
+    const item=document.createElement('div');
+    item.className='glossary-item';
+    item.innerHTML=`<div class="glossary-term">${t.term}</div><div class="glossary-def">${t.def}</div>`;
+    el.appendChild(item);
+  });
+})();
+
+/* ════════════════════════════════════════════════
+   INTERSECTION OBSERVER — reveal sections
+   ════════════════════════════════════════════════ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.remove('hidden');
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.10 });
+
+document.querySelectorAll('section.hidden').forEach(s => observer.observe(s));
+document.body.style.paddingTop = '50px';
+
+</script>
+</body>
+</html>

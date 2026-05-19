@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring drawing">
+    <meta property="og:title" content="Drawing World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring drawing">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/drawing_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawing World — The First Language of Seeing</title>
+<style>
+  :root {
+    --bg: #1C1C1C;
+    --parchment: #F5EFE0;
+    --graphite: #3D3D3D;
+    --charcoal: #0A0A0A;
+    --surface: #E8E0CC;
+    --mid: #2A2A2A;
+    --accent: #5A5A5A;
+    --light-graphite: #8A8A8A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--parchment); font-family: 'Georgia','Times New Roman',serif; overflow-x: hidden; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 52px;
+    border-bottom: 1px solid rgba(245,239,224,0.1);
+  }
+  .nav-logo { font-size: 1.1rem; letter-spacing: 0.15em; color: var(--parchment); text-transform: uppercase; font-style: italic; }
+  .nav-links { display: flex; gap: 1.4rem; list-style: none; }
+  .nav-links a { color: var(--light-graphite); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--parchment); }
+  section { position: relative; }
+  .section-header { text-align: center; padding: 3.5rem 2rem 2rem; }
+  .section-header h2 { font-size: 2rem; letter-spacing: 0.08em; color: var(--parchment); font-weight: 400; text-transform: uppercase; }
+  .section-header p { color: var(--light-graphite); font-style: italic; margin-top: 0.5rem; font-size: 0.95rem; }
+  .hidden { opacity: 0; transform: translateY(28px); transition: opacity 0.8s, transform 0.8s; }
+  .visible { opacity: 1; transform: translateY(0); }
+  #hero { height: 430px; position: relative; overflow: hidden; margin-top: 52px; background: var(--parchment); }
+  #heroCanvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+  .hero-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
+  .hero-title { font-size: 5rem; font-weight: 400; letter-spacing: 0.2em; color: rgba(10,10,10,0.12); text-transform: uppercase; font-style: italic; line-height: 1; }
+  .hero-sub { font-size: 1rem; letter-spacing: 0.3em; color: rgba(10,10,10,0.18); text-transform: uppercase; margin-top: 0.5rem; }
+  #gesture { background: var(--bg); padding-bottom: 4rem; }
+  .gesture-container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .gesture-panel { background: var(--mid); border-radius: 4px; padding: 1.2rem; border: 1px solid rgba(245,239,224,0.08); }
+  .gesture-panel h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--light-graphite); margin-bottom: 1rem; }
+  .timer-display { font-size: 2rem; color: var(--parchment); text-align: center; margin: 0.5rem 0; font-variant-numeric: tabular-nums; }
+  .btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+  .btn { background: transparent; border: 1px solid rgba(245,239,224,0.25); color: var(--parchment); padding: 0.4rem 0.9rem; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.25s; font-family: inherit; }
+  .btn:hover { background: rgba(245,239,224,0.1); border-color: rgba(245,239,224,0.5); }
+  .btn.active { background: rgba(245,239,224,0.18); border-color: var(--parchment); }
+  .slider-row { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.8rem; }
+  .slider-row label { font-size: 0.75rem; color: var(--light-graphite); min-width: 90px; }
+  input[type=range] { flex: 1; accent-color: var(--parchment); background: transparent; }
+  .slider-val { font-size: 0.75rem; color: var(--parchment); min-width: 28px; text-align: right; }
+  #perspective { background: #141414; padding-bottom: 4rem; }
+  .persp-tabs { display: flex; justify-content: center; gap: 0; margin-bottom: 1.5rem; }
+  .persp-tab { background: transparent; border: 1px solid rgba(245,239,224,0.2); color: var(--light-graphite); padding: 0.5rem 1.4rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all 0.25s; }
+  .persp-tab.active { background: rgba(245,239,224,0.15); color: var(--parchment); }
+  .persp-tab:first-child { border-radius: 2px 0 0 2px; }
+  .persp-tab:last-child { border-radius: 0 2px 2px 0; }
+  .persp-canvas-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  #perspCanvas { display: block; width: 100%; background: var(--parchment); border-radius: 4px; cursor: crosshair; }
+  .persp-controls { max-width: 900px; margin: 1rem auto 0; padding: 0 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  #anatomy { background: var(--bg); padding-bottom: 4rem; }
+  .anatomy-wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: auto 1fr; gap: 2rem; }
+  .anatomy-controls { display: flex; flex-direction: column; gap: 0.7rem; min-width: 160px; }
+  #anatomyCanvas { display: block; background: var(--parchment); border-radius: 4px; max-width: 100%; }
+  .layer-toggle { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--light-graphite); cursor: pointer; user-select: none; }
+  .layer-toggle input { accent-color: var(--parchment); }
+  .view-btns { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+  #marks { background: #141414; padding-bottom: 4rem; }
+  .marks-wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  .marks-tools { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; justify-content: center; }
+  #marksCanvas { display: block; width: 100%; background: var(--parchment); border-radius: 4px; cursor: crosshair; }
+  .marks-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+  #composition { background: var(--bg); padding-bottom: 4rem; }
+  .comp-wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  .thumbnails-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
+  .thumb-canvas { display: block; width: 100%; border-radius: 2px; border: 1px solid rgba(245,239,224,0.1); }
+  .comp-tools { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; justify-content: center; }
+  #compCanvas { display: block; width: 100%; background: var(--parchment); border-radius: 4px; cursor: crosshair; }
+  #media { background: #141414; padding-bottom: 4rem; }
+  .media-wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  .media-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  .media-tile { background: var(--mid); border-radius: 4px; overflow: hidden; border: 1px solid rgba(245,239,224,0.08); cursor: pointer; transition: border-color 0.3s; }
+  .media-tile:hover, .media-tile.active { border-color: rgba(245,239,224,0.4); }
+  .media-tile canvas { display: block; width: 100%; }
+  .media-tile-name { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light-graphite); padding: 0.5rem; text-align: center; }
+  #mediaDrawCanvas { display: block; width: 100%; background: var(--parchment); border-radius: 4px; cursor: crosshair; }
+  #artists { background: var(--bg); padding-bottom: 4rem; }
+  .artists-grid { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+  .artist-card { background: var(--mid); border-radius: 4px; border: 1px solid rgba(245,239,224,0.08); padding: 1.2rem; transition: border-color 0.3s; }
+  .artist-card:hover { border-color: rgba(245,239,224,0.3); }
+  .artist-avatar { display: block; margin: 0 auto 0.8rem; }
+  .artist-name { font-size: 0.85rem; letter-spacing: 0.06em; color: var(--parchment); text-align: center; margin-bottom: 0.2rem; }
+  .artist-era { font-size: 0.7rem; color: var(--light-graphite); text-align: center; font-style: italic; margin-bottom: 0.6rem; }
+  .artist-tradition { font-size: 0.72rem; color: var(--surface); margin-bottom: 0.5rem; font-style: italic; border-top: 1px solid rgba(245,239,224,0.08); padding-top: 0.5rem; }
+  .artist-works { font-size: 0.68rem; color: var(--light-graphite); line-height: 1.6; }
+  .artist-mark { font-size: 0.7rem; color: var(--surface); margin-top: 0.5rem; line-height: 1.5; }
+  #glossary { background: #141414; padding-bottom: 5rem; }
+  .glossary-grid { max-width: 900px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .gloss-item { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(245,239,224,0.07); }
+  .gloss-item:nth-child(odd) { border-right: 1px solid rgba(245,239,224,0.07); }
+  .gloss-term { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--parchment); margin-bottom: 0.25rem; }
+  .gloss-def { font-size: 0.82rem; color: var(--light-graphite); line-height: 1.55; font-style: italic; }
+  footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(245,239,224,0.08); color: var(--accent); font-size: 0.75rem; letter-spacing: 0.1em; }
+  @media (max-width: 768px) {
+    .gesture-container { grid-template-columns: 1fr; }
+    .artists-grid { grid-template-columns: repeat(2,1fr); }
+    .media-tiles { grid-template-columns: repeat(2,1fr); }
+    .thumbnails-grid { grid-template-columns: repeat(3,1fr); }
+    .anatomy-wrap { grid-template-columns: 1fr; }
+    .hero-title { font-size: 3rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <div class="nav-logo">Drawing World</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#gesture">Gesture</a></li>
+    <li><a href="#perspective">Perspective</a></li>
+    <li><a href="#anatomy">Anatomy</a></li>
+    <li><a href="#marks">Marks</a></li>
+    <li><a href="#composition">Composition</a></li>
+    <li><a href="#media">Media</a></li>
+    <li><a href="#artists">Artists</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">Drawing</div>
+    <div class="hero-sub">The first language of seeing</div>
+  </div>
+</section>
+
+<script>
+// ─── HERO CANVAS ─────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    ctx.fillStyle = '#F5EFE0';
+    ctx.fillRect(0,0,W,H);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let smoothX, smoothY, smoothThick = 4, smoothVX = 0, smoothVY = 0;
+  let fig = { phase: 0, smoothAngle: 0, smoothArm: 0, smoothLeg: 0.3, smoothWeight: 0 };
+  let mouseX = 0, mouseY = 0, lastMX = 0, lastMY = 0, mouseDown = false;
+  let lastTime = performance.now();
+  let marks = [];
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouseX = (e.clientX - r.left) * (W / r.width);
+    mouseY = (e.clientY - r.top) * (H / r.height);
+  });
+  canvas.addEventListener('mousedown', () => mouseDown = true);
+  canvas.addEventListener('mouseup', () => mouseDown = false);
+  canvas.addEventListener('mouseleave', () => mouseDown = false);
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    mouseX = (e.touches[0].clientX - r.left) * (W / r.width);
+    mouseY = (e.touches[0].clientY - r.top) * (H / r.height);
+    mouseDown = true;
+  }, {passive:false});
+  canvas.addEventListener('touchend', () => mouseDown = false);
+
+  function drawFigureLine(x1,y1,x2,y2,thick,alpha){
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = '#1C1C1C';
+    ctx.lineWidth = thick;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawSketchFigure(){
+    if(!W) return;
+    const cx = W * 0.5, cy = H * 0.46;
+    const sc = Math.min(W, H) * 0.30;
+    const al = 0.15;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(28,28,28,0.16)';
+    ctx.lineWidth = 1.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    // head
+    ctx.beginPath();
+    ctx.arc(cx + fig.smoothAngle*sc*0.05, cy - sc*0.42, sc*0.085, 0, Math.PI*2);
+    ctx.stroke();
+    // spine
+    ctx.beginPath();
+    ctx.moveTo(cx + fig.smoothAngle*sc*0.04, cy - sc*0.33);
+    ctx.bezierCurveTo(
+      cx + fig.smoothAngle*sc*0.07, cy - sc*0.1,
+      cx + fig.smoothWeight*sc*0.08, cy + sc*0.08,
+      cx + fig.smoothWeight*sc*0.05, cy + sc*0.19
+    );
+    ctx.stroke();
+    // shoulders
+    const sy = cy - sc*0.27;
+    drawFigureLine(cx - sc*0.19, sy, cx + sc*0.19, sy, 1.4, 0.15);
+    // arms
+    ctx.beginPath();
+    ctx.moveTo(cx - sc*0.19, sy);
+    ctx.bezierCurveTo(cx - sc*0.24, sy+sc*0.14, cx - sc*(0.2+Math.sin(fig.smoothArm)*0.13), sy+sc*0.26, cx - sc*(0.15+Math.cos(fig.smoothArm)*0.13), sy+sc*0.37);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + sc*0.19, sy);
+    ctx.bezierCurveTo(cx + sc*0.24, sy+sc*0.14, cx + sc*(0.2-Math.sin(fig.smoothArm)*0.13), sy+sc*0.26, cx + sc*(0.15-Math.cos(fig.smoothArm)*0.13), sy+sc*0.37);
+    ctx.stroke();
+    // hips
+    const hy = cy + sc*0.19;
+    drawFigureLine(cx - sc*0.13, hy, cx + sc*0.13, hy, 1.4, 0.15);
+    // legs
+    ctx.beginPath();
+    ctx.moveTo(cx - sc*0.08, hy);
+    ctx.bezierCurveTo(cx - sc*(0.1+fig.smoothLeg*0.22), hy+sc*0.22, cx - sc*(0.12+fig.smoothLeg*0.16), hy+sc*0.4, cx - sc*(0.08+fig.smoothLeg*0.1), hy+sc*0.52);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + sc*0.08, hy);
+    ctx.bezierCurveTo(cx + sc*(0.1+fig.smoothLeg*0.22), hy+sc*0.22, cx + sc*(0.12+fig.smoothLeg*0.16), hy+sc*0.4, cx + sc*(0.08+fig.smoothLeg*0.1), hy+sc*0.52);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function heroAnimate(now){
+    requestAnimationFrame(heroAnimate);
+    const dt = Math.min((now - lastTime)/1000, 0.05);
+    lastTime = now;
+    fig.phase += dt * 0.38;
+
+    // Phosphor persistence
+    ctx.fillStyle = 'rgba(245,240,230,0.05)';
+    ctx.fillRect(0,0,W,H);
+
+    // LagFilter 1 — figure angle
+    const tau1 = 1.3;
+    fig.smoothAngle += (1 - Math.exp(-dt/tau1)) * (Math.sin(fig.phase*0.65)*0.28 - fig.smoothAngle);
+    // LagFilter 2 — arm swing
+    const tau2 = 0.9;
+    fig.smoothArm += (1 - Math.exp(-dt/tau2)) * (Math.sin(fig.phase*1.05)*0.85 - fig.smoothArm);
+    // LagFilter 3 — leg spread
+    const tau3 = 1.6;
+    fig.smoothLeg += (1 - Math.exp(-dt/tau3)) * (0.18 + Math.sin(fig.phase*0.48)*0.14 - fig.smoothLeg);
+    // LagFilter 4 — weight shift
+    const tau4 = 1.1;
+    fig.smoothWeight += (1 - Math.exp(-dt/tau4)) * (Math.sin(fig.phase*0.55)*0.22 - fig.smoothWeight);
+
+    drawSketchFigure();
+
+    // Initialise smooth position
+    if(smoothX === undefined){ smoothX = W/2; smoothY = H/2; }
+
+    // LagFilter 5 — mouse X smoothing
+    const tauMx = 0.07;
+    smoothX += (1 - Math.exp(-dt/tauMx)) * (mouseX - smoothX);
+    // LagFilter 6 — mouse Y smoothing
+    const tauMy = 0.07;
+    smoothY += (1 - Math.exp(-dt/tauMy)) * (mouseY - smoothY);
+
+    const dx = mouseX - lastMX, dy = mouseY - lastMY;
+    const speed = Math.sqrt(dx*dx + dy*dy);
+
+    // LagFilter 7 — stroke thickness
+    const tauT = 0.18;
+    const targetT = speed > 18 ? 1.8 : speed > 7 ? 3.5 : 6.5;
+    smoothThick += (1 - Math.exp(-dt/tauT)) * (targetT - smoothThick);
+
+    // LagFilter 8 — velocity X
+    const tauVx = 0.1;
+    smoothVX += (1 - Math.exp(-dt/tauVx)) * ((dx/(dt||0.016)) - smoothVX);
+    // LagFilter 9 — velocity Y
+    const tauVy = 0.1;
+    smoothVY += (1 - Math.exp(-dt/tauVy)) * ((dy/(dt||0.016)) - smoothVY);
+
+    if(mouseDown && speed > 0.8){
+      marks.push({ x:smoothX, y:smoothY, angle:Math.atan2(dy,dx), thick:smoothThick, life:1 });
+    }
+    // Ambient background marks
+    if(Math.random() < 0.07){
+      marks.push({ x: W*0.18+Math.random()*W*0.64, y: H*0.1+Math.random()*H*0.8, angle: Math.random()*Math.PI, thick: 0.8+Math.random()*2.2, life: 1, ambient: true });
+    }
+
+    for(let i = marks.length-1; i >= 0; i--){
+      const m = marks[i];
+      const alpha = m.ambient ? 0.045*m.life : 0.22*m.life;
+      ctx.save();
+      ctx.translate(m.x, m.y); ctx.rotate(m.angle);
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = '#1C1C1C';
+      ctx.lineWidth = m.thick; ctx.lineCap = 'round';
+      const len = m.thick * (m.ambient ? 12 : 18);
+      ctx.beginPath(); ctx.moveTo(-len,0); ctx.lineTo(len,0); ctx.stroke();
+      ctx.restore();
+      m.life -= dt * (m.ambient ? 0.25 : 0.35);
+      if(m.life <= 0) marks.splice(i,1);
+    }
+    lastMX = mouseX; lastMY = mouseY;
+  }
+  requestAnimationFrame(heroAnimate);
+})();
+</script>
+
+<!-- SECTION 2: GESTURE & LINE -->
+<section id="gesture" class="hidden">
+  <div class="section-header">
+    <h2>Gesture &amp; Line</h2>
+    <p>The living energy of mark-making — speed, weight, and intention</p>
+  </div>
+  <div class="gesture-container">
+    <div class="gesture-panel">
+      <h3>Gesture Timer</h3>
+      <canvas id="gestureCanvas" width="440" height="320"></canvas>
+      <div class="timer-display" id="timerDisplay">60</div>
+      <div class="btn-row">
+        <button class="btn" id="timer30">30s</button>
+        <button class="btn active" id="timer60">60s</button>
+        <button class="btn" id="timer120">120s</button>
+        <button class="btn" id="timerStart">Start</button>
+        <button class="btn" id="timerClear">Clear</button>
+      </div>
+      <div class="slider-row">
+        <label>Line Quality</label>
+        <input type="range" id="lineQuality" min="0" max="100" value="70">
+        <span class="slider-val" id="lineQualVal">70</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="blindContourBtn">Blind Contour</button>
+        <button class="btn" id="crossContourBtn">Cross-Contour</button>
+      </div>
+    </div>
+    <div class="gesture-panel">
+      <h3>Figure Poses — Wireframe Reference</h3>
+      <canvas id="poseCanvas" width="440" height="320"></canvas>
+      <div class="btn-row">
+        <button class="btn" id="prevPose">&#8592; Prev</button>
+        <button class="btn" id="nextPose">Next &#8594;</button>
+        <button class="btn" id="autoCyclePose">Auto Cycle</button>
+      </div>
+      <div class="slider-row">
+        <label>Rotate View</label>
+        <input type="range" id="poseRotate" min="-180" max="180" value="0">
+        <span class="slider-val" id="poseRotVal">0°</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── GESTURE SECTION ─────────────────────────────────────────
+(function(){
+  // --- Gesture drawing canvas ---
+  const gCvs = document.getElementById('gestureCanvas');
+  const gCtx = gCvs.getContext('2d');
+  gCtx.fillStyle = '#F5EFE0'; gCtx.fillRect(0,0,gCvs.width,gCvs.height);
+
+  let gDrawing = false, gLastX = 0, gLastY = 0;
+  let lineQuality = 70, smoothQuality = 70;
+  let blindMode = false, crossMode = false;
+  let gLastTime = performance.now();
+
+  function getPos(e, cvs){
+    const r = cvs.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return [(src.clientX - r.left)*(cvs.width/r.width), (src.clientY - r.top)*(cvs.height/r.height)];
+  }
+
+  gCvs.addEventListener('mousedown', e => { gDrawing=true; [gLastX,gLastY]=getPos(e,gCvs); });
+  gCvs.addEventListener('mouseup', () => gDrawing=false);
+  gCvs.addEventListener('mouseleave', () => gDrawing=false);
+  gCvs.addEventListener('mousemove', e => {
+    if(!gDrawing) return;
+    const [x,y] = getPos(e,gCvs);
+    drawGestureLine(gLastX,gLastY,x,y);
+    gLastX=x; gLastY=y;
+  });
+
+  function drawGestureLine(x1,y1,x2,y2){
+    const now = performance.now();
+    const dt = Math.min((now - gLastTime)/1000, 0.1);
+    gLastTime = now;
+
+    // LagFilter 10 — line quality smoothing
+    const tauQ = 0.25;
+    smoothQuality += (1 - Math.exp(-dt/tauQ)) * (lineQuality - smoothQuality);
+
+    const q = smoothQuality / 100;
+    const dx = x2-x1, dy = y2-y1;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+
+    gCtx.strokeStyle = blindMode ? 'rgba(20,20,60,0.75)' : 'rgba(28,28,28,0.7)';
+    gCtx.lineCap = 'round'; gCtx.lineJoin = 'round';
+    gCtx.lineWidth = 1.2 + (1-q)*3;
+
+    if(crossMode){
+      // Cross-contour: perpendicular strokes
+      gCtx.strokeStyle = 'rgba(40,20,0,0.5)';
+      const nx = -dy/dist, ny = dx/dist;
+      const sz = 8 + q*12;
+      gCtx.beginPath();
+      gCtx.moveTo(x2+nx*sz, y2+ny*sz);
+      gCtx.lineTo(x2-nx*sz, y2-ny*sz);
+      gCtx.stroke();
+    } else if(q < 0.4){
+      // Trembling broken line
+      const segs = Math.floor(dist/4)+1;
+      gCtx.beginPath();
+      for(let i=0;i<=segs;i++){
+        const t=i/segs;
+        const jx = (Math.random()-0.5)*(1-q)*8;
+        const jy = (Math.random()-0.5)*(1-q)*8;
+        if(i===0) gCtx.moveTo(x1+jx,y1+jy);
+        else gCtx.lineTo(x1+(x2-x1)*t+jx, y1+(y2-y1)*t+jy);
+      }
+      gCtx.stroke();
+    } else {
+      gCtx.beginPath();
+      gCtx.moveTo(x1,y1);
+      gCtx.lineTo(x2,y2);
+      gCtx.stroke();
+    }
+  }
+
+  document.getElementById('lineQuality').addEventListener('input', e => {
+    lineQuality = +e.target.value;
+    document.getElementById('lineQualVal').textContent = lineQuality;
+  });
+  document.getElementById('blindContourBtn').addEventListener('click', function(){
+    blindMode = !blindMode; this.classList.toggle('active',blindMode);
+  });
+  document.getElementById('crossContourBtn').addEventListener('click', function(){
+    crossMode = !crossMode; this.classList.toggle('active',crossMode);
+  });
+  document.getElementById('timerClear').addEventListener('click',()=>{
+    gCtx.fillStyle='#F5EFE0'; gCtx.fillRect(0,0,gCvs.width,gCvs.height);
+  });
+
+  // --- Timer ---
+  let timerDuration = 60, timerRemaining = 60, timerRunning = false, timerInterval = null;
+  const timerDisp = document.getElementById('timerDisplay');
+
+  function setTimer(s){ timerDuration = timerRemaining = s; timerDisp.textContent = s; }
+  document.getElementById('timer30').addEventListener('click',()=>{ setTimer(30); document.querySelectorAll('#timer30,#timer60,#timer120').forEach(b=>b.classList.remove('active')); document.getElementById('timer30').classList.add('active'); });
+  document.getElementById('timer60').addEventListener('click',()=>{ setTimer(60); document.querySelectorAll('#timer30,#timer60,#timer120').forEach(b=>b.classList.remove('active')); document.getElementById('timer60').classList.add('active'); });
+  document.getElementById('timer120').addEventListener('click',()=>{ setTimer(120); document.querySelectorAll('#timer30,#timer60,#timer120').forEach(b=>b.classList.remove('active')); document.getElementById('timer120').classList.add('active'); });
+
+  document.getElementById('timerStart').addEventListener('click', function(){
+    if(timerRunning){ clearInterval(timerInterval); timerRunning=false; this.textContent='Start'; return; }
+    timerRemaining = timerDuration; timerRunning = true; this.textContent='Stop';
+    timerInterval = setInterval(()=>{
+      timerRemaining--;
+      timerDisp.textContent = timerRemaining;
+      if(timerRemaining <= 0){ clearInterval(timerInterval); timerRunning=false; document.getElementById('timerStart').textContent='Start'; cyclePose(); gCtx.fillStyle='rgba(245,239,224,0.7)'; gCtx.fillRect(0,0,gCvs.width,gCvs.height); }
+    }, 1000);
+  });
+
+  // --- Pose wireframe canvas ---
+  const pCvs = document.getElementById('poseCanvas');
+  const pCtx = pCvs.getContext('2d');
+  let poseIndex = 0, poseRotTarget = 0, poseRotSmooth = 0, autoCycle = false, autoCycleTimer = null;
+  let posLastTime = performance.now();
+
+  const POSES = [
+    { name:'Standing Rest', arms:[0.3,0.3], legs:[0.15,0.15], lean:0 },
+    { name:'Arms Raised', arms:[1.2,1.2], legs:[0.15,0.15], lean:0 },
+    { name:'Running', arms:[0.8,-0.6], legs:[0.5,-0.3], lean:0.15 },
+    { name:'Reaching Right', arms:[-0.1,1.0], legs:[0.2,0.2], lean:0.08 },
+    { name:'Crouch', arms:[0.5,0.5], legs:[0.7,0.7], lean:0.1, crouch:true },
+    { name:'Lunge Forward', arms:[0.4,0.8], legs:[0.6,-0.1], lean:0.2 },
+    { name:'Sitting', arms:[0.3,0.3], legs:[1.2,1.2], lean:0.05, sit:true },
+    { name:'Twist', arms:[0.9,-0.3], legs:[0.2,0.3], lean:0, twist:0.3 },
+    { name:'Balance', arms:[1.1,-0.6], legs:[0.0,0.8], lean:0.12 },
+    { name:'Arms Wide', arms:[1.4,1.4], legs:[0.3,0.3], lean:0 },
+    { name:'Stepping', arms:[0.5,0.3], legs:[0.4,0.0], lean:0.06 },
+    { name:'Contrapposto', arms:[0.2,0.4], legs:[0.1,0.35], lean:0.04, contra:true }
+  ];
+
+  function drawPose(pose, rot){
+    pCtx.clearRect(0,0,pCvs.width,pCvs.height);
+    pCtx.fillStyle='#F5EFE0'; pCtx.fillRect(0,0,pCvs.width,pCvs.height);
+    const cx=pCvs.width/2, cy=pCvs.height/2;
+    const sc = Math.min(pCvs.width,pCvs.height)*0.33;
+    const cosR=Math.cos(rot*Math.PI/180), sinR=Math.sin(rot*Math.PI/180);
+    const crouchY = pose.crouch ? sc*0.12 : 0;
+    const sitY = pose.sit ? sc*0.18 : 0;
+
+    function proj(x,y){ return [cx + x*cosR*sc, cy + y*sc + crouchY + sitY]; }
+    function line(x1,y1,x2,y2,w,a){
+      const [px1,py1]=proj(x1,y1), [px2,py2]=proj(x2,y2);
+      pCtx.save(); pCtx.globalAlpha=a; pCtx.strokeStyle='#1C1C1C'; pCtx.lineWidth=w; pCtx.lineCap='round';
+      pCtx.beginPath(); pCtx.moveTo(px1,py1); pCtx.lineTo(px2,py2); pCtx.stroke(); pCtx.restore();
+    }
+    function circle(x,y,r,a){
+      const [px,py]=proj(x,y);
+      pCtx.save(); pCtx.globalAlpha=a; pCtx.strokeStyle='#1C1C1C'; pCtx.lineWidth=1.5;
+      pCtx.beginPath(); pCtx.arc(px,py,r,0,Math.PI*2); pCtx.stroke(); pCtx.restore();
+    }
+
+    const lean = pose.lean||0;
+    const twist = pose.twist||0;
+    circle(lean*0.05, -0.42, sc*0.085, 0.75);
+    line(lean*0.04,-0.34, lean*0.08,-0.1, 2, 0.65);
+    line(lean*0.08,-0.1, pose.contra?lean*0.04:lean*0.05, 0.18, 2, 0.65);
+    line(-0.19,-0.28, 0.19+twist*0.1,-0.28, 1.8, 0.6);
+    // arms
+    const aL=pose.arms[0], aR=pose.arms[1];
+    line(-0.19,-0.28, -0.19-Math.cos(aL)*0.22,-0.28+Math.sin(aL)*0.22, 1.6, 0.65);
+    line(-0.19-Math.cos(aL)*0.22,-0.28+Math.sin(aL)*0.22, -0.19-Math.cos(aL)*0.42,-0.28+Math.sin(aL)*0.42, 1.4, 0.6);
+    line(0.19+twist*0.1,-0.28, 0.19+Math.cos(aR)*0.22+twist*0.1,-0.28+Math.sin(aR)*0.22, 1.6, 0.65);
+    line(0.19+Math.cos(aR)*0.22+twist*0.1,-0.28+Math.sin(aR)*0.22, 0.19+Math.cos(aR)*0.42+twist*0.1,-0.28+Math.sin(aR)*0.42, 1.4, 0.6);
+    // hips
+    line(-0.12,0.18, 0.12,0.18, 1.8, 0.6);
+    // legs
+    const lL=pose.legs[0], lR=pose.legs[1];
+    const lsy = pose.sit ? 0.0 : 0.18;
+    const langle1 = pose.sit ? Math.PI/2.2 : 0;
+    const langle2 = pose.sit ? Math.PI/2.2 : 0;
+    line(-0.08,lsy, -0.08-Math.sin(lL)*0.24,lsy+Math.cos(lL)*0.24, 1.6, 0.65);
+    line(-0.08-Math.sin(lL)*0.24,lsy+Math.cos(lL)*0.24, -0.08-Math.sin(lL)*0.48,lsy+Math.cos(lL)*0.48, 1.4, 0.6);
+    line(0.08,lsy, 0.08+Math.sin(lR)*0.24,lsy+Math.cos(lR)*0.24, 1.6, 0.65);
+    line(0.08+Math.sin(lR)*0.24,lsy+Math.cos(lR)*0.24, 0.08+Math.sin(lR)*0.48,lsy+Math.cos(lR)*0.48, 1.4, 0.6);
+
+    pCtx.save(); pCtx.fillStyle='#1C1C1C'; pCtx.globalAlpha=0.35;
+    pCtx.font = '11px Georgia'; pCtx.textAlign='center';
+    pCtx.fillText(pose.name + ' (' + (poseIndex+1) + '/12)', pCvs.width/2, pCvs.height-12);
+    pCtx.restore();
+  }
+
+  function cyclePose(){ poseIndex = (poseIndex+1)%POSES.length; }
+
+  function poseLoop(now){
+    requestAnimationFrame(poseLoop);
+    const dt = Math.min((now-posLastTime)/1000,0.08);
+    posLastTime = now;
+    // LagFilter 11 — pose rotation smoothing
+    const tauPR = 0.35;
+    poseRotSmooth += (1 - Math.exp(-dt/tauPR)) * (poseRotTarget - poseRotSmooth);
+    drawPose(POSES[poseIndex], poseRotSmooth);
+  }
+  requestAnimationFrame(poseLoop);
+
+  document.getElementById('prevPose').addEventListener('click',()=>{ poseIndex=(poseIndex-1+POSES.length)%POSES.length; });
+  document.getElementById('nextPose').addEventListener('click',()=>{ poseIndex=(poseIndex+1)%POSES.length; });
+  document.getElementById('autoCyclePose').addEventListener('click', function(){
+    autoCycle=!autoCycle; this.classList.toggle('active',autoCycle);
+    if(autoCycle) autoCycleTimer=setInterval(()=>cyclePose(),3000);
+    else clearInterval(autoCycleTimer);
+  });
+  document.getElementById('poseRotate').addEventListener('input',e=>{
+    poseRotTarget=+e.target.value;
+    document.getElementById('poseRotVal').textContent=e.target.value+'°';
+  });
+})();
+</script>
+
+<!-- SECTION 3: PERSPECTIVE -->
+<section id="perspective" class="hidden">
+  <div class="section-header">
+    <h2>Perspective Systems</h2>
+    <p>The geometry of space — how the eye understands depth on a flat surface</p>
+  </div>
+  <div class="persp-tabs">
+    <button class="persp-tab active" data-mode="1pt">1-Point</button>
+    <button class="persp-tab" data-mode="2pt">2-Point</button>
+    <button class="persp-tab" data-mode="3pt">3-Point</button>
+  </div>
+  <div class="persp-canvas-wrap">
+    <canvas id="perspCanvas" height="420"></canvas>
+  </div>
+  <div class="persp-controls">
+    <button class="btn" id="perspAddBox">Add Box</button>
+    <button class="btn" id="perspAtmo">Atmospheric</button>
+    <button class="btn" id="perspGrid">Grid</button>
+    <button class="btn" id="perspClear">Clear</button>
+    <div class="slider-row" style="flex:1;">
+      <label>Horizon</label>
+      <input type="range" id="horizonSlider" min="0.1" max="0.9" step="0.01" value="0.45">
+      <span class="slider-val" id="horizonVal">0.45</span>
+    </div>
+    <div class="slider-row" style="flex:1;">
+      <label>Convergence</label>
+      <input type="range" id="convSlider" min="0.1" max="2.0" step="0.05" value="1.0">
+      <span class="slider-val" id="convVal">1.0</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── PERSPECTIVE SECTION ──────────────────────────────────────
+(function(){
+  const cvs = document.getElementById('perspCanvas');
+  const ctx = cvs.getContext('2d');
+  let W, H;
+  function resize(){
+    W = cvs.width = cvs.offsetWidth;
+    H = cvs.height = 420;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let mode = '1pt';
+  let boxes = [];
+  let showAtmo = false, showGrid = false;
+  let horizon = 0.45, smoothHorizon = 0.45;
+  let conv = 1.0, smoothConv = 1.0;
+  let lastTime = performance.now();
+
+  // Vanishing points (normalized)
+  let vp = { x1: 0.5, y: 0.45, x2: 0.85, x3y: 0.1 };
+  let smoothVP = { x1: 0.5, y: 0.45, x2: 0.85, x3y: 0.1 };
+  let draggingVP = null;
+
+  cvs.addEventListener('mousedown', e => {
+    const r = cvs.getBoundingClientRect();
+    const mx = (e.clientX-r.left)*(W/r.width);
+    const my = (e.clientY-r.top)*(H/r.height);
+    // Check if near a vanishing point
+    const vps = getVPs();
+    for(const [name,x,y] of vps){
+      if(Math.hypot(mx-x, my-y) < 18){ draggingVP=name; return; }
+    }
+  });
+  cvs.addEventListener('mouseup',()=>draggingVP=null);
+  cvs.addEventListener('mouseleave',()=>draggingVP=null);
+  cvs.addEventListener('mousemove',e=>{
+    if(!draggingVP) return;
+    const r=cvs.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(W/r.width);
+    const my=(e.clientY-r.top)*(H/r.height);
+    if(draggingVP==='vp1') vp.x1=mx/W;
+    if(draggingVP==='vpy') vp.y=my/H;
+    if(draggingVP==='vp2') vp.x2=mx/W;
+    if(draggingVP==='vp3y') vp.x3y=my/H;
+    if(draggingVP==='combo'){ vp.x1=mx/W; vp.y=my/H; }
+  });
+
+  function getVPs(){
+    if(mode==='1pt') return [['combo', W*smoothVP.x1, H*smoothVP.y]];
+    if(mode==='2pt') return [['vp1',W*smoothVP.x1,H*smoothVP.y],['vp2',W*smoothVP.x2,H*smoothVP.y]];
+    return [['vp1',W*0.18,H*smoothVP.y],['vp2',W*0.82,H*smoothVP.y],['vp3y',W*0.5,H*smoothVP.x3y]];
+  }
+
+  function drawLine(x1,y1,x2,y2,lw,alpha,color){
+    ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=color||'#1C1C1C';
+    ctx.lineWidth=lw; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+
+  function perspDist(x,y,vpx,vpy){ return Math.hypot(x-vpx, y-vpy); }
+
+  function atmoAlpha(x,y,vpx,vpy){
+    if(!showAtmo) return 1;
+    const d = perspDist(x,y,vpx,vpy);
+    return Math.max(0.1, Math.min(1, d/(W*0.6)));
+  }
+
+  function draw1pt(){
+    const vpx=W*smoothVP.x1, vpy=H*smoothVP.y;
+    const hy = H*smoothVP.y;
+    // Horizon line
+    drawLine(0,hy,W,hy,0.8,0.18,'#1C1C1C');
+    // Grid
+    if(showGrid){
+      const cols=8, rows=6;
+      for(let i=0;i<=cols;i++){
+        const x=W*i/cols;
+        const alph=atmoAlpha(x,H,vpx,vpy);
+        drawLine(x,H,vpx,vpy,0.7,0.12*alph*smoothConv,'#1C1C1C');
+      }
+      for(let j=1;j<=rows;j++){
+        const y=hy+(H-hy)*j/rows;
+        drawLine(0,y,W,y,0.5,0.08,'#1C1C1C');
+      }
+    } else {
+      for(let i=0;i<=10;i++){
+        const x=W*i/10;
+        const alph=atmoAlpha(x,H,vpx,vpy);
+        drawLine(x,H,vpx,vpy,0.6,0.09*alph*smoothConv,'#1C1C1C');
+      }
+    }
+    // VP indicator
+    ctx.save(); ctx.fillStyle='rgba(28,28,28,0.5)'; ctx.beginPath(); ctx.arc(vpx,vpy,7,0,Math.PI*2); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.fillStyle='rgba(245,239,224,0.9)'; ctx.font='11px Georgia'; ctx.textAlign='center'; ctx.fillText('VP',vpx,vpy-12); ctx.restore();
+    // Boxes
+    for(const b of boxes) drawBox1pt(b,vpx,vpy);
+  }
+
+  function drawBox1pt(b,vpx,vpy){
+    const {x,y,w,h,d} = b;
+    const sc = smoothConv;
+    const atmo=atmoAlpha(x,y,vpx,vpy);
+    ctx.save(); ctx.globalAlpha=0.65*atmo; ctx.strokeStyle='#1C1C1C'; ctx.lineWidth=1.5;
+    // Front face
+    ctx.strokeRect(x,y,w,h);
+    // Perspective lines to back corners
+    ctx.beginPath();
+    function toVP(fx,fy){ const t=d/(perspDist(fx,fy,vpx,vpy)||1); return [fx+(vpx-fx)*t,fy+(vpy-fy)*t]; }
+    const [bx1,by1]=toVP(x,y), [bx2,by2]=toVP(x+w,y), [bx3,by3]=toVP(x+w,y+h), [bx4,by4]=toVP(x,y+h);
+    // Vanishing edges
+    drawLine(x,y,vpx,vpy,0.7,0.18*atmo);
+    drawLine(x+w,y,vpx,vpy,0.7,0.18*atmo);
+    drawLine(x+w,y+h,vpx,vpy,0.7,0.18*atmo);
+    drawLine(x,y+h,vpx,vpy,0.7,0.18*atmo);
+    // Back face (partial)
+    ctx.strokeStyle='rgba(28,28,28,0.3)';
+    ctx.strokeRect(bx1-(bx2-bx1)*0.0, by1, bx2-bx1, by3-by2);
+    ctx.restore();
+  }
+
+  function draw2pt(){
+    const vp1x=W*0.12, vp2x=W*0.88, vpy=H*smoothVP.y;
+    drawLine(0,vpy,W,vpy,0.8,0.15);
+    const nLines=7;
+    for(let i=0;i<=nLines;i++){
+      const y=vpy+(H-vpy)*i/(nLines-1);
+      const a=atmoAlpha(0,y,vp1x,vpy)*0.1*smoothConv;
+      drawLine(0,y,vp1x,vpy,0.6,a); drawLine(W,y,vp2x,vpy,0.6,a);
+    }
+    // VP markers
+    for(const [px,label] of [[vp1x,'VP1'],[vp2x,'VP2']]){
+      ctx.save(); ctx.fillStyle='rgba(28,28,28,0.5)'; ctx.beginPath(); ctx.arc(px,vpy,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(245,239,224,0.85)'; ctx.font='11px Georgia'; ctx.textAlign='center'; ctx.fillText(label,px,vpy-10); ctx.restore();
+    }
+    for(const b of boxes) drawBox2pt(b,vp1x,vp2x,vpy);
+  }
+
+  function drawBox2pt(b,vp1x,vp2x,vpy){
+    const {x,y,w,h} = b;
+    const atmo=atmoAlpha(x,y,vp1x,vpy);
+    ctx.save(); ctx.globalAlpha=0.6*atmo; ctx.strokeStyle='#1C1C1C'; ctx.lineWidth=1.5;
+    // Center vertical
+    drawLine(x,y-h/2,x,y+h/2,2,0.7*atmo);
+    // Lines to VPs
+    drawLine(x,y-h/2,vp1x,vpy,1,0.3*atmo); drawLine(x,y-h/2,vp2x,vpy,1,0.3*atmo);
+    drawLine(x,y+h/2,vp1x,vpy,1,0.3*atmo); drawLine(x,y+h/2,vp2x,vpy,1,0.3*atmo);
+    ctx.restore();
+  }
+
+  function draw3pt(){
+    const vp1x=W*0.15, vp2x=W*0.85, vpy=H*smoothVP.y;
+    const vp3x=W*0.5, vp3y=H*smoothVP.x3y;
+    drawLine(0,vpy,W,vpy,0.8,0.12);
+    const nL=6;
+    for(let i=0;i<=nL;i++){
+      const t=i/nL;
+      drawLine(vp1x+(vp2x-vp1x)*t,vpy,vp3x,vp3y,0.7,0.08*smoothConv);
+      drawLine(vp1x+(vp2x-vp1x)*t,vpy,W*0.5,H,0.7,0.06*smoothConv);
+    }
+    for(const [px,py,lb] of [[vp1x,vpy,'VP1'],[vp2x,vpy,'VP2'],[vp3x,vp3y,'VP3']]){
+      ctx.save(); ctx.fillStyle='rgba(28,28,28,0.5)'; ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(245,239,224,0.85)'; ctx.font='11px Georgia'; ctx.textAlign='center'; ctx.fillText(lb,px,py-10); ctx.restore();
+    }
+    for(const b of boxes) drawBox3pt(b,vp1x,vp2x,vpy,vp3x,vp3y);
+  }
+
+  function drawBox3pt(b,vp1x,vp2x,vpy,vp3x,vp3y){
+    const {x,y} = b;
+    const atmo=atmoAlpha(x,y,vp1x,vpy);
+    const sz=50;
+    ctx.save(); ctx.globalAlpha=0.55*atmo; ctx.strokeStyle='#1C1C1C'; ctx.lineWidth=1.5;
+    drawLine(x,y,vp1x,vpy,1,0.3*atmo); drawLine(x,y,vp2x,vpy,1,0.3*atmo); drawLine(x,y,vp3x,vp3y,1,0.3*atmo);
+    ctx.restore();
+  }
+
+  function perspLoop(now){
+    requestAnimationFrame(perspLoop);
+    const dt=Math.min((now-lastTime)/1000,0.06); lastTime=now;
+    // LagFilter 12 — horizon smoothing
+    const tauH=0.4;
+    smoothHorizon += (1 - Math.exp(-dt/tauH)) * (horizon - smoothHorizon);
+    smoothVP.y = smoothHorizon;
+    // LagFilter 13 — convergence smoothing
+    const tauC=0.3;
+    smoothConv += (1 - Math.exp(-dt/tauC)) * (conv - smoothConv);
+    // Smooth VP positions
+    const tauVP=0.25;
+    smoothVP.x1 += (1-Math.exp(-dt/tauVP))*(vp.x1-smoothVP.x1);
+    smoothVP.x2 += (1-Math.exp(-dt/tauVP))*(vp.x2-smoothVP.x2);
+    smoothVP.x3y += (1-Math.exp(-dt/tauVP))*(vp.x3y-smoothVP.x3y);
+
+    ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H);
+    if(mode==='1pt') draw1pt();
+    else if(mode==='2pt') draw2pt();
+    else draw3pt();
+    // Instruction text
+    ctx.save(); ctx.fillStyle='rgba(28,28,28,0.25)'; ctx.font='italic 12px Georgia';
+    ctx.textAlign='left'; ctx.fillText('Drag vanishing points · Add Box to place solids', 14, H-10); ctx.restore();
+  }
+  requestAnimationFrame(perspLoop);
+
+  document.querySelectorAll('.persp-tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.persp-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); mode=btn.dataset.mode; boxes=[];
+    });
+  });
+  document.getElementById('perspAddBox').addEventListener('click',()=>{
+    boxes.push({ x:W*0.3+Math.random()*W*0.3, y:H*0.3+Math.random()*H*0.3, w:80+Math.random()*60, h:60+Math.random()*40, d:0.4 });
+  });
+  document.getElementById('perspAtmo').addEventListener('click',function(){ showAtmo=!showAtmo; this.classList.toggle('active',showAtmo); });
+  document.getElementById('perspGrid').addEventListener('click',function(){ showGrid=!showGrid; this.classList.toggle('active',showGrid); });
+  document.getElementById('perspClear').addEventListener('click',()=>{ boxes=[]; });
+  document.getElementById('horizonSlider').addEventListener('input',e=>{ horizon=+e.target.value; document.getElementById('horizonVal').textContent=e.target.value; });
+  document.getElementById('convSlider').addEventListener('input',e=>{ conv=+e.target.value; document.getElementById('convVal').textContent=e.target.value; });
+})();
+</script>
+
+<!-- SECTION 4: ANATOMY -->
+<section id="anatomy" class="hidden">
+  <div class="section-header">
+    <h2>Anatomy for Artists</h2>
+    <p>The inner architecture — skeleton, muscle, and living form</p>
+  </div>
+  <div class="anatomy-wrap">
+    <div class="anatomy-controls">
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--light-graphite);margin-bottom:0.5rem;">Layers</div>
+      <label class="layer-toggle"><input type="checkbox" id="layerSkeleton" checked> Skeleton</label>
+      <label class="layer-toggle"><input type="checkbox" id="layerMuscle" checked> Muscle</label>
+      <label class="layer-toggle"><input type="checkbox" id="layerSurface" checked> Surface</label>
+      <label class="layer-toggle"><input type="checkbox" id="layerProportions"> 7-Head Rule</label>
+      <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--light-graphite);margin:0.8rem 0 0.5rem;">Views</div>
+      <div class="view-btns" id="viewBtns">
+        <button class="btn active" data-view="0">Front</button>
+        <button class="btn" data-view="1">3/4</button>
+        <button class="btn" data-view="2">Side</button>
+        <button class="btn" data-view="3">Back</button>
+        <button class="btn" data-view="4">3/4 Back</button>
+      </div>
+      <div class="slider-row" style="margin-top:0.8rem;">
+        <label>Rotate</label>
+        <input type="range" id="anatomyRotate" min="0" max="360" value="0">
+      </div>
+      <button class="btn" id="gestureMode" style="margin-top:0.8rem;">Gesture Mode</button>
+    </div>
+    <canvas id="anatomyCanvas" width="520" height="600"></canvas>
+  </div>
+</section>
+
+<script>
+// ─── ANATOMY SECTION ──────────────────────────────────────────
+(function(){
+  const cvs = document.getElementById('anatomyCanvas');
+  const ctx = cvs.getContext('2d');
+  const W=cvs.width, H=cvs.height;
+  let showSkel=true, showMuscle=true, showSurface=true, showProps=false, gestMode=false;
+  let viewTarget=0, viewSmooth=0, rotTarget=0, rotSmooth=0;
+  let lastTime=performance.now();
+
+  const VIEW_ANGLES=[0,45,90,180,225];
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+
+  function drawJoint(x,y,r,a){
+    ctx.save(); ctx.globalAlpha=a; ctx.strokeStyle='#2A2A2A'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle='rgba(42,42,42,0.15)'; ctx.fill(); ctx.restore();
+  }
+
+  function bone(x1,y1,x2,y2,w,a){
+    ctx.save(); ctx.globalAlpha=a; ctx.strokeStyle='#2A2A2A'; ctx.lineWidth=w; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore();
+  }
+
+  function drawSkeleton(cx,cy,sc,angleView){
+    const cosA=Math.cos(angleView*Math.PI/180);
+    const perspective = (x)=>x*Math.abs(cosA) + cx*(1-Math.abs(cosA));
+    const flip = angleView>90&&angleView<270 ? -1:1;
+
+    // Head
+    drawJoint(cx, cy-sc*0.42, sc*0.09, 0.75);
+    // Cervical spine
+    bone(cx, cy-sc*0.33, cx, cy-sc*0.24, 2, 0.65);
+    // Thoracic spine
+    bone(cx, cy-sc*0.24, cx+flip*sc*0.02, cy+sc*0.04, 2.2, 0.65);
+    // Lumbar
+    bone(cx+flip*sc*0.02, cy+sc*0.04, cx, cy+sc*0.18, 2, 0.6);
+    // Pelvis
+    bone(cx-sc*0.14, cy+sc*0.18, cx+sc*0.14, cy+sc*0.18, 2.5, 0.65);
+    // Clavicles
+    bone(cx, cy-sc*0.24, cx-flip*sc*0.19, cy-sc*0.25, 1.8, 0.6);
+    bone(cx, cy-sc*0.24, cx+flip*sc*0.19, cy-sc*0.25, 1.8, 0.6);
+    // Shoulder joints
+    drawJoint(cx-flip*sc*0.19, cy-sc*0.25, sc*0.035, 0.6);
+    drawJoint(cx+flip*sc*0.19, cy-sc*0.25, sc*0.035, 0.6);
+    // Humerus
+    bone(cx-flip*sc*0.19,cy-sc*0.25, cx-flip*sc*0.22,cy-sc*0.03, 2,0.6);
+    bone(cx+flip*sc*0.19,cy-sc*0.25, cx+flip*sc*0.24,cy-sc*0.02, 2,0.6);
+    // Elbow joints
+    drawJoint(cx-flip*sc*0.22, cy-sc*0.03, sc*0.028, 0.55);
+    drawJoint(cx+flip*sc*0.24, cy-sc*0.02, sc*0.028, 0.55);
+    // Radius/Ulna
+    bone(cx-flip*sc*0.22,cy-sc*0.03, cx-flip*sc*0.18,cy+sc*0.19, 1.6,0.55);
+    bone(cx+flip*sc*0.24,cy-sc*0.02, cx+flip*sc*0.21,cy+sc*0.2, 1.6,0.55);
+    // Wrist joints
+    drawJoint(cx-flip*sc*0.18, cy+sc*0.19, sc*0.022, 0.5);
+    drawJoint(cx+flip*sc*0.21, cy+sc*0.2, sc*0.022, 0.5);
+    // Femur
+    bone(cx-sc*0.1,cy+sc*0.18, cx-sc*0.09,cy+sc*0.44, 2.8,0.65);
+    bone(cx+sc*0.1,cy+sc*0.18, cx+sc*0.09,cy+sc*0.44, 2.8,0.65);
+    // Knee joints
+    drawJoint(cx-sc*0.09, cy+sc*0.44, sc*0.04, 0.6);
+    drawJoint(cx+sc*0.09, cy+sc*0.44, sc*0.04, 0.6);
+    // Tibia
+    bone(cx-sc*0.09,cy+sc*0.44, cx-sc*0.07,cy+sc*0.7, 2.2,0.6);
+    bone(cx+sc*0.09,cy+sc*0.44, cx+sc*0.07,cy+sc*0.7, 2.2,0.6);
+    // Ankle joints
+    drawJoint(cx-sc*0.07, cy+sc*0.7, sc*0.03, 0.55);
+    drawJoint(cx+sc*0.07, cy+sc*0.7, sc*0.03, 0.55);
+    // Hip joints
+    drawJoint(cx-sc*0.12, cy+sc*0.18, sc*0.045, 0.6);
+    drawJoint(cx+sc*0.12, cy+sc*0.18, sc*0.045, 0.6);
+    // Ribcage
+    ctx.save(); ctx.globalAlpha=0.18; ctx.strokeStyle='#2A2A2A'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.ellipse(cx, cy-sc*0.1, sc*0.15, sc*0.17, 0, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMuscles(cx,cy,sc,angleView){
+    const flip=angleView>90&&angleView<270?-1:1;
+    ctx.save(); ctx.globalAlpha=0.22;
+    // Pectorals
+    ctx.fillStyle='#4A3A2A';
+    ctx.beginPath(); ctx.ellipse(cx-flip*sc*0.08,cy-sc*0.18,sc*0.1,sc*0.07,0.2,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+flip*sc*0.08,cy-sc*0.18,sc*0.1,sc*0.07,-0.2,0,Math.PI*2); ctx.fill();
+    // Deltoids
+    ctx.beginPath(); ctx.ellipse(cx-flip*sc*0.19,cy-sc*0.22,sc*0.06,sc*0.09,0.4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+flip*sc*0.19,cy-sc*0.22,sc*0.06,sc*0.09,-0.4,0,Math.PI*2); ctx.fill();
+    // Biceps
+    ctx.beginPath(); ctx.ellipse(cx-flip*sc*0.2,cy-sc*0.14,sc*0.04,sc*0.08,0.1,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+flip*sc*0.22,cy-sc*0.13,sc*0.04,sc*0.08,-0.1,0,Math.PI*2); ctx.fill();
+    // Abs
+    for(let i=0;i<3;i++){
+      ctx.beginPath(); ctx.ellipse(cx-sc*0.05, cy-sc*0.2+i*sc*0.09, sc*0.04,sc*0.035,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(cx+sc*0.05, cy-sc*0.2+i*sc*0.09, sc*0.04,sc*0.035,0,0,Math.PI*2); ctx.fill();
+    }
+    // Quads
+    ctx.globalAlpha=0.2;
+    ctx.beginPath(); ctx.ellipse(cx-sc*0.1,cy+sc*0.32,sc*0.06,sc*0.14,0.05,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+sc*0.1,cy+sc*0.32,sc*0.06,sc*0.14,-0.05,0,Math.PI*2); ctx.fill();
+    // Calves
+    ctx.beginPath(); ctx.ellipse(cx-sc*0.08,cy+sc*0.56,sc*0.04,sc*0.08,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+sc*0.08,cy+sc*0.56,sc*0.04,sc*0.08,0,0,Math.PI*2); ctx.fill();
+    // Trapezius
+    ctx.globalAlpha=0.15;
+    ctx.beginPath(); ctx.ellipse(cx,cy-sc*0.28,sc*0.14,sc*0.05,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSurface(cx,cy,sc,angleView){
+    ctx.save(); ctx.globalAlpha=0.1; ctx.strokeStyle='#1C1C1C'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.lineJoin='round';
+    const flip=angleView>90&&angleView<270?-1:1;
+    // Body outline
+    ctx.beginPath();
+    ctx.moveTo(cx-flip*sc*0.12, cy-sc*0.33);
+    ctx.bezierCurveTo(cx-sc*0.22, cy-sc*0.28, cx-sc*0.16, cy-sc*0.05, cx-sc*0.13, cy+sc*0.18);
+    ctx.lineTo(cx-sc*0.12, cy+sc*0.18);
+    ctx.lineTo(cx+sc*0.12, cy+sc*0.18);
+    ctx.bezierCurveTo(cx+sc*0.16, cy-sc*0.05, cx+sc*0.22, cy-sc*0.28, cx+flip*sc*0.12, cy-sc*0.33);
+    ctx.stroke();
+    // Head silhouette
+    ctx.beginPath(); ctx.ellipse(cx, cy-sc*0.42, sc*0.095, sc*0.115, 0, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawProportions(cx,cy,sc){
+    const totalH = sc*1.14;
+    const headH = totalH/7;
+    ctx.save(); ctx.globalAlpha=0.18; ctx.strokeStyle='#8A2200'; ctx.lineWidth=0.8; ctx.setLineDash([4,4]);
+    for(let i=0;i<=7;i++){
+      const y=cy-sc*0.51+i*headH;
+      ctx.beginPath(); ctx.moveTo(cx-sc*0.4,y); ctx.lineTo(cx+sc*0.4,y); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(138,34,0,0.45)'; ctx.font='10px Georgia'; ctx.textAlign='right';
+    const labels=['Head','Chin','Nipple','Navel','Crotch','Mid-thigh','Knee','Foot'];
+    for(let i=0;i<8;i++) ctx.fillText(labels[i], cx-sc*0.42, cy-sc*0.51+i*headH+3);
+    ctx.restore();
+  }
+
+  function drawGestureMode(cx,cy,sc){
+    const pts=[
+      [cx,cy-sc*0.42],[cx,cy-sc*0.33],[cx,cy+sc*0.04],[cx,cy+sc*0.18],
+      [cx-sc*0.1,cy+sc*0.45],[cx-sc*0.07,cy+sc*0.7],
+      [cx+sc*0.1,cy+sc*0.45],[cx+sc*0.07,cy+sc*0.7],
+      [cx-flip*sc*0.19,cy-sc*0.25],[cx-flip*sc*0.18,cy+sc*0.2],
+      [cx+flip*sc*0.19,cy-sc*0.25],[cx+flip*sc*0.21,cy+sc*0.2]
+    ];
+    ctx.save(); ctx.strokeStyle='#1C1C1C'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.globalAlpha=0.6;
+    // Spine
+    ctx.beginPath();
+    for(let i=0;i<4;i++){ if(i===0)ctx.moveTo(pts[i][0],pts[i][1]); else ctx.lineTo(pts[i][0],pts[i][1]); }
+    ctx.stroke();
+    // Left leg
+    ctx.beginPath(); ctx.moveTo(pts[3][0],pts[3][1]); ctx.lineTo(pts[4][0],pts[4][1]); ctx.lineTo(pts[5][0],pts[5][1]); ctx.stroke();
+    // Right leg
+    ctx.beginPath(); ctx.moveTo(pts[3][0],pts[3][1]); ctx.lineTo(pts[6][0],pts[6][1]); ctx.lineTo(pts[7][0],pts[7][1]); ctx.stroke();
+    // Left arm
+    ctx.beginPath(); ctx.moveTo(pts[8][0],pts[8][1]); ctx.lineTo(pts[9][0],pts[9][1]); ctx.stroke();
+    // Right arm
+    ctx.beginPath(); ctx.moveTo(pts[10][0],pts[10][1]); ctx.lineTo(pts[11][0],pts[11][1]); ctx.stroke();
+    // Head circle
+    ctx.beginPath(); ctx.arc(cx,cy-sc*0.42,sc*0.09,0,Math.PI*2); ctx.stroke();
+    ctx.restore();
+  }
+
+  let flip=1;
+  function anatomyLoop(now){
+    requestAnimationFrame(anatomyLoop);
+    const dt=Math.min((now-lastTime)/1000,0.06); lastTime=now;
+    // LagFilter 14 — anatomy rotation smoothing
+    const tauRot=0.4;
+    rotSmooth += (1 - Math.exp(-dt/tauRot)) * (rotTarget - rotSmooth);
+    // LagFilter 15 — view angle smoothing
+    const tauView=0.5;
+    const targetViewAngle=VIEW_ANGLES[viewTarget]||0;
+    viewSmooth += (1 - Math.exp(-dt/tauView)) * (targetViewAngle - viewSmooth);
+
+    const angle=viewSmooth+rotSmooth;
+    flip=angle>90&&angle<270?-1:1;
+    const cx=W/2, cy=H*0.5, sc=H*0.38;
+
+    ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H);
+    if(!gestMode){
+      if(showSkel) drawSkeleton(cx,cy,sc,angle);
+      if(showMuscle) drawMuscles(cx,cy,sc,angle);
+      if(showSurface) drawSurface(cx,cy,sc,angle);
+      if(showProps) drawProportions(cx,cy,sc);
+    } else {
+      drawGestureMode(cx,cy,sc);
+    }
+    // View label
+    ctx.save(); ctx.fillStyle='rgba(28,28,28,0.3)'; ctx.font='italic 12px Georgia';
+    ctx.textAlign='center'; ctx.fillText('View: '+(angle|0)+'°', W/2, H-8); ctx.restore();
+  }
+  requestAnimationFrame(anatomyLoop);
+
+  document.getElementById('layerSkeleton').addEventListener('change',e=>showSkel=e.target.checked);
+  document.getElementById('layerMuscle').addEventListener('change',e=>showMuscle=e.target.checked);
+  document.getElementById('layerSurface').addEventListener('change',e=>showSurface=e.target.checked);
+  document.getElementById('layerProportions').addEventListener('change',e=>showProps=e.target.checked);
+  document.getElementById('anatomyRotate').addEventListener('input',e=>rotTarget=+e.target.value);
+  document.getElementById('gestureMode').addEventListener('click',function(){ gestMode=!gestMode; this.classList.toggle('active',gestMode); });
+  document.querySelectorAll('#viewBtns .btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#viewBtns .btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); viewTarget=+btn.dataset.view;
+    });
+  });
+})();
+</script>
+
+<!-- SECTION 5: MARK MAKING -->
+<section id="marks" class="hidden">
+  <div class="section-header">
+    <h2>Mark Making</h2>
+    <p>The vocabulary of the hand — six fundamental techniques</p>
+  </div>
+  <div class="marks-wrap">
+    <div class="marks-tools">
+      <button class="btn active" data-tool="hatch">Hatching</button>
+      <button class="btn" data-tool="crosshatch">Cross-Hatch</button>
+      <button class="btn" data-tool="stipple">Stippling</button>
+      <button class="btn" data-tool="scribble">Scribble</button>
+      <button class="btn" data-tool="wash">Wash</button>
+      <button class="btn" data-tool="sgraffito">Sgraffito</button>
+    </div>
+    <canvas id="marksCanvas" height="360"></canvas>
+    <div class="marks-sliders">
+      <div class="slider-row">
+        <label>Angle</label>
+        <input type="range" id="markAngle" min="0" max="180" value="45">
+        <span class="slider-val" id="markAngleVal">45°</span>
+      </div>
+      <div class="slider-row">
+        <label>Spacing</label>
+        <input type="range" id="markSpacing" min="3" max="30" value="10">
+        <span class="slider-val" id="markSpacingVal">10</span>
+      </div>
+      <div class="slider-row">
+        <label>Pressure</label>
+        <input type="range" id="markPressure" min="10" max="100" value="60">
+        <span class="slider-val" id="markPressureVal">60</span>
+      </div>
+      <div class="slider-row">
+        <label>Size</label>
+        <input type="range" id="markSize" min="2" max="40" value="12">
+        <span class="slider-val" id="markSizeVal">12</span>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:0.8rem;">
+      <button class="btn" id="marksClear">Clear</button>
+      <button class="btn" id="marksUndo">Undo</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── MARK MAKING SECTION ──────────────────────────────────────
+(function(){
+  const cvs = document.getElementById('marksCanvas');
+  const ctx = cvs.getContext('2d');
+  let W, H;
+  function resize(){
+    const idata = ctx.getImageData(0,0,cvs.width,cvs.height);
+    W = cvs.width = cvs.offsetWidth;
+    H = cvs.height = 360;
+    ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let activeTool='hatch', markAngle=45, markSpacing=10, markPressure=60, markSize=12;
+  let smoothAngle=45, smoothSpacing=10, smoothPressure=60, smoothSize=12;
+  let drawing=false, lastMx=0, lastMy=0, lastTime=performance.now();
+  let undoStack=[];
+  let scribblePts=[];
+  let lastSaveTime=0;
+  let sgraffito=false;
+
+  // Init sgraffito layer
+  function initSgraffito(){
+    ctx.fillStyle='#3D3D3D'; ctx.fillRect(0,0,W,H);
+  }
+
+  function getPos(e){
+    const r=cvs.getBoundingClientRect();
+    const src=e.touches?e.touches[0]:e;
+    return [(src.clientX-r.left)*(W/r.width),(src.clientY-r.top)*(H/r.height)];
+  }
+
+  cvs.addEventListener('mousedown',e=>{ drawing=true; [lastMx,lastMy]=getPos(e); saveUndo(); });
+  cvs.addEventListener('mouseup',()=>drawing=false);
+  cvs.addEventListener('mouseleave',()=>drawing=false);
+  cvs.addEventListener('mousemove',e=>{ if(!drawing) return; const [x,y]=getPos(e); applyTool(x,y,lastMx,lastMy); lastMx=x; lastMy=y; });
+  cvs.addEventListener('touchstart',e=>{ e.preventDefault(); drawing=true; [lastMx,lastMy]=getPos(e); saveUndo(); },{passive:false});
+  cvs.addEventListener('touchend',()=>drawing=false);
+  cvs.addEventListener('touchmove',e=>{ e.preventDefault(); if(!drawing) return; const [x,y]=getPos(e); applyTool(x,y,lastMx,lastMy); lastMx=x; lastMy=y; },{passive:false});
+
+  function saveUndo(){
+    if(undoStack.length>10) undoStack.shift();
+    undoStack.push(ctx.getImageData(0,0,W,H));
+  }
+
+  function applyTool(x,y,px,py){
+    const now=performance.now();
+    const dt=Math.min((now-lastTime)/1000,0.1); lastTime=now;
+
+    // LagFilter for tool params
+    const tauP=0.2;
+    smoothAngle    += (1-Math.exp(-dt/tauP)) * (markAngle - smoothAngle);
+    smoothSpacing  += (1-Math.exp(-dt/tauP)) * (markSpacing - smoothSpacing);
+    smoothPressure += (1-Math.exp(-dt/tauP)) * (markPressure - smoothPressure);
+    smoothSize     += (1-Math.exp(-dt/tauP)) * (markSize - smoothSize);
+
+    const alpha=(smoothPressure/100)*0.75;
+    const anglR=smoothAngle*Math.PI/180;
+
+    if(activeTool==='hatch'){
+      ctx.save(); ctx.strokeStyle=`rgba(28,28,28,${alpha})`; ctx.lineWidth=1; ctx.lineCap='round';
+      const len=smoothSize*2;
+      ctx.beginPath();
+      ctx.moveTo(x-Math.cos(anglR)*len, y-Math.sin(anglR)*len);
+      ctx.lineTo(x+Math.cos(anglR)*len, y+Math.sin(anglR)*len);
+      ctx.stroke(); ctx.restore();
+    } else if(activeTool==='crosshatch'){
+      const anglR2=anglR+Math.PI/2;
+      const len=smoothSize*1.5;
+      ctx.save(); ctx.strokeStyle=`rgba(28,28,28,${alpha*0.8})`; ctx.lineWidth=0.9; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(x-Math.cos(anglR)*len,y-Math.sin(anglR)*len); ctx.lineTo(x+Math.cos(anglR)*len,y+Math.sin(anglR)*len); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x-Math.cos(anglR2)*len,y-Math.sin(anglR2)*len); ctx.lineTo(x+Math.cos(anglR2)*len,y+Math.sin(anglR2)*len); ctx.stroke();
+      ctx.restore();
+    } else if(activeTool==='stipple'){
+      const nDots=Math.floor(smoothPressure/20)+1;
+      ctx.save(); ctx.fillStyle=`rgba(28,28,28,${alpha*0.8})`;
+      for(let i=0;i<nDots;i++){
+        const ox=(Math.random()-0.5)*smoothSize*2, oy=(Math.random()-0.5)*smoothSize*2;
+        const r=0.5+Math.random()*1.5;
+        ctx.beginPath(); ctx.arc(x+ox,y+oy,r,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    } else if(activeTool==='scribble'){
+      ctx.save(); ctx.strokeStyle=`rgba(28,28,28,${alpha})`; ctx.lineWidth=1.2; ctx.lineCap='round';
+      const jx=(Math.random()-0.5)*smoothSize*1.5, jy=(Math.random()-0.5)*smoothSize*1.5;
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.quadraticCurveTo(px+jx,py+jy,x,y); ctx.stroke(); ctx.restore();
+    } else if(activeTool==='wash'){
+      const grad=ctx.createRadialGradient(x,y,0,x,y,smoothSize*2);
+      grad.addColorStop(0,`rgba(28,28,28,${alpha*0.18})`);
+      grad.addColorStop(1,'rgba(28,28,28,0)');
+      ctx.save(); ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(x,y,smoothSize*2,0,Math.PI*2); ctx.fill(); ctx.restore();
+    } else if(activeTool==='sgraffito'){
+      ctx.save(); ctx.globalCompositeOperation='source-over';
+      ctx.strokeStyle=`rgba(232,224,204,${alpha})`; ctx.lineWidth=smoothSize*0.4; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x,y); ctx.stroke(); ctx.restore();
+    }
+  }
+
+  document.querySelectorAll('.marks-tools .btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.marks-tools .btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); activeTool=btn.dataset.tool;
+      if(activeTool==='sgraffito'&&!sgraffito){ sgraffito=true; saveUndo(); initSgraffito(); }
+    });
+  });
+  document.getElementById('markAngle').addEventListener('input',e=>{ markAngle=+e.target.value; document.getElementById('markAngleVal').textContent=e.target.value+'°'; });
+  document.getElementById('markSpacing').addEventListener('input',e=>{ markSpacing=+e.target.value; document.getElementById('markSpacingVal').textContent=e.target.value; });
+  document.getElementById('markPressure').addEventListener('input',e=>{ markPressure=+e.target.value; document.getElementById('markPressureVal').textContent=e.target.value; });
+  document.getElementById('markSize').addEventListener('input',e=>{ markSize=+e.target.value; document.getElementById('markSizeVal').textContent=e.target.value; });
+  document.getElementById('marksClear').addEventListener('click',()=>{ saveUndo(); sgraffito=false; ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H); });
+  document.getElementById('marksUndo').addEventListener('click',()=>{ if(undoStack.length>0) ctx.putImageData(undoStack.pop(),0,0); });
+})();
+</script>
+
+<!-- SECTION 6: COMPOSITION -->
+<section id="composition" class="hidden">
+  <div class="section-header">
+    <h2>Compositional Drawing</h2>
+    <p>Organizing the picture plane — balance, rhythm, and visual force</p>
+  </div>
+  <div class="comp-wrap">
+    <div class="thumbnails-grid" id="thumbGrid"></div>
+    <div class="comp-tools">
+      <button class="btn active" data-comp="draw">Draw</button>
+      <button class="btn" data-comp="valuemap">Value Map</button>
+      <button class="btn" data-comp="eyeflow">Eye Flow</button>
+      <button class="btn" data-comp="negspace">Negative Space</button>
+      <button class="btn" data-comp="silhouette">Silhouette</button>
+    </div>
+    <canvas id="compCanvas" height="380"></canvas>
+    <div class="btn-row" style="margin-top:0.8rem;">
+      <button class="btn" id="compClear">Clear</button>
+      <button class="btn" id="compUndo">Undo</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── COMPOSITION SECTION ──────────────────────────────────────
+(function(){
+  // ---- Thumbnails ----
+  const thumbGrid = document.getElementById('thumbGrid');
+  const LAYOUTS = [
+    { name:'Rule of Thirds', draw: drawRuleOfThirds },
+    { name:'Golden Spiral', draw: drawGoldenSpiral },
+    { name:'Diagonal', draw: drawDiagonal },
+    { name:'Triangle', draw: drawTriangle },
+    { name:'L-Shape', draw: drawLShape },
+    { name:'Centred', draw: drawCentred }
+  ];
+
+  function drawRuleOfThirds(ctx,w,h){
+    ctx.strokeStyle='rgba(28,28,28,0.25)'; ctx.lineWidth=0.7;
+    for(let i=1;i<3;i++){
+      ctx.beginPath(); ctx.moveTo(w*i/3,0); ctx.lineTo(w*i/3,h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,h*i/3); ctx.lineTo(w,h*i/3); ctx.stroke();
+    }
+    for(let x of [w/3,2*w/3]) for(let y of [h/3,2*h/3]){
+      ctx.save(); ctx.fillStyle='rgba(28,28,28,0.4)'; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill(); ctx.restore();
+    }
+  }
+  function drawGoldenSpiral(ctx,w,h){
+    const phi=1.618; ctx.strokeStyle='rgba(28,28,28,0.3)'; ctx.lineWidth=0.8;
+    let rx=w,ry=h;
+    ctx.beginPath(); ctx.moveTo(0,h);
+    for(let i=0;i<6;i++){
+      const r=Math.min(rx,ry)/phi;
+      if(i%4===0) ctx.arc(rx,0,r,Math.PI*0.5,Math.PI);
+      else if(i%4===1) ctx.arc(0,ry-r,r,0,Math.PI*1.5);
+      else if(i%4===2) ctx.arc(rx-r,ry,r,Math.PI*1.5,0);
+      else ctx.arc(r,r,r,Math.PI,Math.PI*0.5,true);
+      rx=r; ry=r;
+    }
+    ctx.stroke();
+  }
+  function drawDiagonal(ctx,w,h){
+    ctx.strokeStyle='rgba(28,28,28,0.22)'; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(w,h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,h); ctx.lineTo(w,0); ctx.stroke();
+    ctx.fillStyle='rgba(28,28,28,0.12)'; ctx.fillRect(0,0,w*0.45,h*0.45);
+  }
+  function drawTriangle(ctx,w,h){
+    ctx.strokeStyle='rgba(28,28,28,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(w*0.5,h*0.1); ctx.lineTo(w*0.9,h*0.9); ctx.lineTo(w*0.1,h*0.9); ctx.closePath(); ctx.stroke();
+  }
+  function drawLShape(ctx,w,h){
+    ctx.fillStyle='rgba(28,28,28,0.12)';
+    ctx.fillRect(0,0,w*0.25,h); ctx.fillRect(0,h*0.75,w,h*0.25);
+    ctx.strokeStyle='rgba(28,28,28,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(w*0.25,0); ctx.lineTo(w*0.25,h*0.75); ctx.lineTo(w,h*0.75); ctx.stroke();
+  }
+  function drawCentred(ctx,w,h){
+    ctx.strokeStyle='rgba(28,28,28,0.25)'; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.ellipse(w*0.5,h*0.5,w*0.28,h*0.35,0,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w*0.5,0); ctx.lineTo(w*0.5,h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,h*0.5); ctx.lineTo(w,h*0.5); ctx.stroke();
+  }
+
+  LAYOUTS.forEach((layout,i)=>{
+    const cvs=document.createElement('canvas');
+    cvs.className='thumb-canvas'; cvs.width=100; cvs.height=75;
+    const c=cvs.getContext('2d');
+    c.fillStyle='#F5EFE0'; c.fillRect(0,0,100,75);
+    layout.draw(c,100,75);
+    c.fillStyle='rgba(28,28,28,0.3)'; c.font='7px Georgia'; c.textAlign='center';
+    c.fillText(layout.name,50,71);
+    thumbGrid.appendChild(cvs);
+  });
+
+  // ---- Main composition canvas ----
+  const cvs=document.getElementById('compCanvas');
+  const ctx=cvs.getContext('2d');
+  let W,H;
+  function resize(){ W=cvs.width=cvs.offsetWidth; H=cvs.height=380; ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H); }
+  resize(); window.addEventListener('resize',resize);
+
+  let compMode='draw', drawing=false, lastX=0,lastY=0, undoStack=[];
+  let smoothOpacity=1.0, opacityTarget=1.0;
+  let lastTime=performance.now();
+  let paths=[]; // store drawn paths for analysis
+
+  function getPos(e){
+    const r=cvs.getBoundingClientRect(); const s=e.touches?e.touches[0]:e;
+    return [(s.clientX-r.left)*(W/r.width),(s.clientY-r.top)*(H/r.height)];
+  }
+
+  cvs.addEventListener('mousedown',e=>{ drawing=true; [lastX,lastY]=getPos(e); saveUndo(); paths.push([]); });
+  cvs.addEventListener('mouseup',()=>drawing=false);
+  cvs.addEventListener('mouseleave',()=>drawing=false);
+  cvs.addEventListener('mousemove',e=>{ if(!drawing) return; const [x,y]=getPos(e); if(compMode==='draw') drawStroke(lastX,lastY,x,y); if(paths.length) paths[paths.length-1].push([x,y]); lastX=x; lastY=y; });
+
+  function drawStroke(x1,y1,x2,y2){
+    ctx.strokeStyle='rgba(28,28,28,0.7)'; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  }
+
+  function saveUndo(){ if(undoStack.length>8) undoStack.shift(); undoStack.push(ctx.getImageData(0,0,W,H)); }
+
+  function applyValueMap(){
+    const img=ctx.getImageData(0,0,W,H);
+    const d=img.data;
+    for(let i=0;i<d.length;i+=4){
+      const v=(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114);
+      let mapped;
+      if(v>180) mapped=235;
+      else if(v>80) mapped=128;
+      else mapped=30;
+      d[i]=d[i+1]=d[i+2]=mapped; d[i+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+  }
+
+  function applyEyeFlow(){
+    const nArrows=12;
+    ctx.save(); ctx.strokeStyle='rgba(180,60,0,0.45)'; ctx.fillStyle='rgba(180,60,0,0.45)'; ctx.lineWidth=1.5;
+    for(let i=0;i<nArrows;i++){
+      const t=i/nArrows;
+      const x=W*(0.1+t*0.8); const y=H*(0.3+Math.sin(t*Math.PI*2)*0.3);
+      const ang=Math.atan2(Math.cos(t*Math.PI*2)*0.3*H, W*0.8/nArrows);
+      drawArrow(ctx,x,y,ang,20);
+    }
+    ctx.restore();
+  }
+
+  function drawArrow(c,x,y,angle,len){
+    c.beginPath(); c.moveTo(x,y); c.lineTo(x+Math.cos(angle)*len, y+Math.sin(angle)*len);
+    c.stroke();
+    const ax=x+Math.cos(angle)*len, ay=y+Math.sin(angle)*len;
+    c.beginPath(); c.moveTo(ax,ay);
+    c.lineTo(ax-Math.cos(angle-0.4)*8, ay-Math.sin(angle-0.4)*8);
+    c.lineTo(ax-Math.cos(angle+0.4)*8, ay-Math.sin(angle+0.4)*8);
+    c.closePath(); c.fill();
+  }
+
+  function applyNegSpace(){
+    saveUndo();
+    const img=ctx.getImageData(0,0,W,H); const d=img.data;
+    for(let i=0;i<d.length;i+=4){
+      const v=(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114);
+      if(v>200){ d[i]=220; d[i+1]=80; d[i+2]=60; }
+    }
+    ctx.putImageData(img,0,0);
+  }
+
+  function applySilhouette(){
+    saveUndo();
+    const img=ctx.getImageData(0,0,W,H); const d=img.data;
+    for(let i=0;i<d.length;i+=4){
+      const v=(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114);
+      const s=v<200?0:255;
+      d[i]=d[i+1]=d[i+2]=s;
+    }
+    ctx.putImageData(img,0,0);
+  }
+
+  // Animate smooth overlay transitions
+  let overlayAlpha=0, overlayTarget=0;
+  function compLoop(now){
+    requestAnimationFrame(compLoop);
+    const dt=Math.min((now-lastTime)/1000,0.06); lastTime=now;
+    // LagFilter for overlay alpha
+    const tauO=0.3;
+    overlayAlpha += (1-Math.exp(-dt/tauO)) * (overlayTarget - overlayAlpha);
+  }
+  requestAnimationFrame(compLoop);
+
+  document.querySelectorAll('.comp-tools .btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.comp-tools .btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); compMode=btn.dataset.comp;
+      if(compMode==='valuemap'){ saveUndo(); applyValueMap(); compMode='draw'; btn.classList.remove('active'); document.querySelector('.comp-tools .btn').classList.add('active'); }
+      else if(compMode==='eyeflow'){ applyEyeFlow(); compMode='draw'; btn.classList.remove('active'); document.querySelector('.comp-tools .btn').classList.add('active'); }
+      else if(compMode==='negspace'){ applyNegSpace(); compMode='draw'; btn.classList.remove('active'); document.querySelector('.comp-tools .btn').classList.add('active'); }
+      else if(compMode==='silhouette'){ applySilhouette(); compMode='draw'; btn.classList.remove('active'); document.querySelector('.comp-tools .btn').classList.add('active'); }
+    });
+  });
+  document.getElementById('compClear').addEventListener('click',()=>{ saveUndo(); ctx.fillStyle='#F5EFE0'; ctx.fillRect(0,0,W,H); paths=[]; });
+  document.getElementById('compUndo').addEventListener('click',()=>{ if(undoStack.length) ctx.putImageData(undoStack.pop(),0,0); });
+})();
+</script>
+
+<!-- SECTION 7: DRAWING MEDIA -->
+<section id="media" class="hidden">
+  <div class="section-header">
+    <h2>Drawing Media</h2>
+    <p>Each tool carries its own soul — from silverpoint whisper to charcoal thunder</p>
+  </div>
+  <div class="media-wrap">
+    <div class="media-tiles" id="mediaTiles"></div>
+    <canvas id="mediaDrawCanvas" height="340"></canvas>
+    <div class="btn-row" style="margin-top:0.8rem;">
+      <button class="btn" id="mediaClear">Clear</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── MEDIA SECTION ────────────────────────────────────────────
+(function(){
+  const MEDIA = [
+    { id:'graphite', name:'Graphite Pencil',  bg:'#F5EFE0', stroke:'rgba(90,85,80,{a})', lw:1.2, rough:0.3, speed_lw:true },
+    { id:'charcoal', name:'Charcoal',         bg:'#F5EFE0', stroke:'rgba(20,18,16,{a})', lw:3.5, rough:0.9, soft:true },
+    { id:'ink',      name:'Dip Pen Ink',      bg:'#F5EFE0', stroke:'rgba(8,6,4,{a})',    lw:1.0, rough:0,   speed_lw:true, contrast:true },
+    { id:'silver',   name:'Silverpoint',      bg:'#E8E0CC', stroke:'rgba(120,110,90,{a})', lw:0.6, rough:0, delicate:true },
+    { id:'conte',    name:'Conté Crayon',     bg:'#F5EFE0', stroke:'rgba(30,15,5,{a})',  lw:2.5, rough:0.6, chalky:true },
+    { id:'digital',  name:'Digital Stylus',   bg:'#F8F4EB', stroke:'rgba(40,40,44,{a})', lw:1.8, rough:0,   clean:true }
+  ];
+
+  let activeMedium = MEDIA[0];
+  let smoothLW=1.2;
+  let lastDrawTime=performance.now();
+
+  // Build tile canvases
+  const tilesEl=document.getElementById('mediaTiles');
+  MEDIA.forEach(med=>{
+    const tile=document.createElement('div');
+    tile.className='media-tile'; tile.dataset.id=med.id;
+    const cvs=document.createElement('canvas'); cvs.width=200; cvs.height=120;
+    const ctx=cvs.getContext('2d');
+    renderMediaDemo(ctx,cvs.width,cvs.height,med);
+    const nameEl=document.createElement('div'); nameEl.className='media-tile-name'; nameEl.textContent=med.name;
+    tile.appendChild(cvs); tile.appendChild(nameEl);
+    tile.addEventListener('click',()=>{ activateMedium(med); });
+    tilesEl.appendChild(tile);
+  });
+  tilesEl.querySelector('[data-id="graphite"]').classList.add('active');
+
+  function activateMedium(med){
+    activeMedium=med;
+    document.querySelectorAll('.media-tile').forEach(t=>t.classList.remove('active'));
+    document.querySelector(`.media-tile[data-id="${med.id}"]`).classList.add('active');
+    smoothLW=med.lw;
+    const drawCvs=document.getElementById('mediaDrawCanvas');
+    const dCtx=drawCvs.getContext('2d');
+    dCtx.fillStyle=med.bg; dCtx.fillRect(0,0,drawCvs.width,drawCvs.height);
+    if(med.id==='silver'){
+      dCtx.fillStyle='#E8E0CC'; dCtx.fillRect(0,0,drawCvs.width,drawCvs.height);
+      // Toned ground texture
+      for(let i=0;i<800;i++){
+        dCtx.save(); dCtx.globalAlpha=0.04;
+        dCtx.fillStyle='rgba(100,90,60,1)';
+        dCtx.beginPath(); dCtx.arc(Math.random()*drawCvs.width,Math.random()*drawCvs.height,1,0,Math.PI*2); dCtx.fill(); dCtx.restore();
+      }
+    }
+  }
+
+  function renderMediaDemo(ctx,w,h,med){
+    ctx.fillStyle=med.bg; ctx.fillRect(0,0,w,h);
+    const nStrokes=8;
+    for(let i=0;i<nStrokes;i++){
+      const y=h*(0.15+i*0.08);
+      const x0=w*0.05, x1=w*0.95;
+      const alpha=0.4+i*0.07;
+      const lw=med.lw*(0.5+i*0.1);
+      ctx.save();
+      ctx.strokeStyle=med.stroke.replace('{a}',alpha.toFixed(2));
+      ctx.lineWidth=lw; ctx.lineCap='round';
+      if(med.rough>0){
+        ctx.beginPath(); ctx.moveTo(x0,y);
+        for(let x=x0;x<=x1;x+=4){
+          ctx.lineTo(x,y+(Math.random()-0.5)*med.rough*lw*3);
+        }
+        ctx.stroke();
+      } else {
+        ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    // Characteristic mark
+    ctx.save(); ctx.strokeStyle=med.stroke.replace('{a}','0.55'); ctx.lineWidth=med.lw*1.5; ctx.lineCap='round';
+    ctx.beginPath();
+    ctx.moveTo(w*0.1,h*0.88); ctx.bezierCurveTo(w*0.3,h*0.6,w*0.7,h*0.72,w*0.9,h*0.6);
+    if(med.rough>0){
+      const pts=20; for(let j=1;j<=pts;j++){
+        const t=j/pts; const bx=w*(0.1+t*0.8); const by=h*(0.88-t*0.28);
+        ctx.lineTo(bx+(Math.random()-0.5)*med.rough*4, by+(Math.random()-0.5)*med.rough*4);
+      }
+    }
+    ctx.stroke(); ctx.restore();
+  }
+
+  // Draw canvas
+  const drawCvs=document.getElementById('mediaDrawCanvas');
+  const drawCtx=drawCvs.getContext('2d');
+  let DW,DH;
+  function resizeDraw(){ DW=drawCvs.width=drawCvs.offsetWidth; DH=drawCvs.height=340; drawCtx.fillStyle=activeMedium.bg; drawCtx.fillRect(0,0,DW,DH); }
+  resizeDraw(); window.addEventListener('resize',resizeDraw);
+
+  let dDrawing=false, dLX=0,dLY=0, dSpeed=0, lastPX=0,lastPY=0;
+
+  function getPos(e){
+    const r=drawCvs.getBoundingClientRect(); const s=e.touches?e.touches[0]:e;
+    return [(s.clientX-r.left)*(DW/r.width),(s.clientY-r.top)*(DH/r.height)];
+  }
+  drawCvs.addEventListener('mousedown',e=>{ dDrawing=true; [dLX,dLY]=getPos(e); [lastPX,lastPY]=[dLX,dLY]; });
+  drawCvs.addEventListener('mouseup',()=>dDrawing=false);
+  drawCvs.addEventListener('mouseleave',()=>dDrawing=false);
+  drawCvs.addEventListener('mousemove',e=>{
+    if(!dDrawing) return;
+    const [x,y]=getPos(e);
+    const now=performance.now();
+    const dt=Math.min((now-lastDrawTime)/1000,0.1); lastDrawTime=now;
+    const dx=x-lastPX, dy=y-lastPY;
+    const speed=Math.sqrt(dx*dx+dy*dy)/Math.max(dt,0.001);
+    // LagFilter for stroke thickness by speed
+    const tauLW=0.15;
+    const med=activeMedium;
+    let targetLW=med.lw;
+    if(med.speed_lw) targetLW=med.contrast? Math.max(0.4,med.lw-(speed/1200)*med.lw*2) : med.lw+(speed/800)*1.5;
+    smoothLW += (1-Math.exp(-dt/tauLW)) * (targetLW - smoothLW);
+
+    drawCtx.save();
+    const alpha=med.delicate?0.35:0.65;
+    drawCtx.strokeStyle=med.stroke.replace('{a}',alpha.toFixed(2));
+    drawCtx.lineWidth=smoothLW; drawCtx.lineCap='round'; drawCtx.lineJoin='round';
+
+    if(med.rough>0 && med.rough<0.7){
+      // Graphite — slight texture
+      drawCtx.beginPath(); drawCtx.moveTo(dLX,dLY);
+      const mx=(dLX+x)*0.5+(Math.random()-0.5)*med.rough*smoothLW*2;
+      const my=(dLY+y)*0.5+(Math.random()-0.5)*med.rough*smoothLW*2;
+      drawCtx.quadraticCurveTo(mx,my,x,y); drawCtx.stroke();
+      // Granular texture for graphite
+      if(Math.random()<0.3){
+        for(let i=0;i<3;i++){
+          drawCtx.globalAlpha=0.08; drawCtx.fillStyle='rgba(90,80,70,1)';
+          drawCtx.beginPath(); drawCtx.arc(x+(Math.random()-0.5)*4,y+(Math.random()-0.5)*4,0.6,0,Math.PI*2); drawCtx.fill();
+        }
+      }
+    } else if(med.rough>=0.7){
+      // Charcoal — broad soft
+      drawCtx.globalAlpha=0.35;
+      for(let i=0;i<3;i++){
+        drawCtx.lineWidth=smoothLW*(0.6+Math.random()*0.8);
+        drawCtx.beginPath(); drawCtx.moveTo(dLX+(Math.random()-0.5)*3,dLY+(Math.random()-0.5)*3);
+        drawCtx.lineTo(x+(Math.random()-0.5)*3,y+(Math.random()-0.5)*3); drawCtx.stroke();
+      }
+      if(med.soft){
+        const g=drawCtx.createRadialGradient(x,y,0,x,y,smoothLW*2);
+        g.addColorStop(0,'rgba(20,18,16,0.08)'); g.addColorStop(1,'rgba(20,18,16,0)');
+        drawCtx.fillStyle=g; drawCtx.globalAlpha=1;
+        drawCtx.beginPath(); drawCtx.arc(x,y,smoothLW*2,0,Math.PI*2); drawCtx.fill();
+      }
+    } else {
+      drawCtx.beginPath(); drawCtx.moveTo(dLX,dLY); drawCtx.lineTo(x,y); drawCtx.stroke();
+    }
+    drawCtx.restore();
+    [dLX,dLY]=[x,y]; [lastPX,lastPY]=[x,y];
+  });
+  document.getElementById('mediaClear').addEventListener('click',()=>{ drawCtx.fillStyle=activeMedium.bg; drawCtx.fillRect(0,0,DW,DH); });
+})();
+</script>
+
+<!-- SECTION 8: ARTISTS -->
+<section id="artists" class="hidden">
+  <div class="section-header">
+    <h2>Masters of Drawing</h2>
+    <p>Eight artists who redefined what a mark can mean</p>
+  </div>
+  <div class="artists-grid" id="artistsGrid"></div>
+</section>
+
+<script>
+// ─── ARTISTS SECTION ──────────────────────────────────────────
+(function(){
+  const ARTISTS = [
+    {
+      name: 'Leonardo da Vinci',
+      era: '1452–1519 · Italian Renaissance',
+      tradition: 'Universal draughtsmanship — science fused with art',
+      works: ['Studies of Horse Anatomy', 'Vitruvian Man', 'Virgin of the Rocks Studies'],
+      mark: 'Cross-hatching with left-handed parallel strokes; feathery sfumato in chalk',
+      palette: ['#3D3530','#6A5A4A','#9A8A76']
+    },
+    {
+      name: 'Michelangelo',
+      era: '1475–1564 · Italian High Renaissance',
+      tradition: 'Heroic anatomy — the body as divine architecture',
+      works: ['Libyan Sibyl Study', 'Adam Sketch (Sistine)', 'Male Figure Studies'],
+      mark: 'Vigorous contour with dense cross-hatching; red chalk modelling of muscle',
+      palette: ['#3A2820','#6A3A28','#9A6A50']
+    },
+    {
+      name: 'Rembrandt van Rijn',
+      era: '1606–1669 · Dutch Golden Age',
+      tradition: 'Expressive economy — maximum emotion from minimum marks',
+      works: ['Self-Portrait Studies', 'Lion Resting', 'The Flight into Egypt'],
+      mark: 'Reed pen with fluid wash; broken lines that suggest more than they show',
+      palette: ['#2A2010','#5A4828','#8A7850']
+    },
+    {
+      name: 'Egon Schiele',
+      era: '1890–1918 · Austrian Expressionism',
+      tradition: 'Raw psychological line — the body as emotional topography',
+      works: ['Seated Male Nude', 'Female Figure Bending', 'Self-Portraits (1910–18)'],
+      mark: 'Trembling contour with deliberate discontinuities; watercolour washes on bare white',
+      palette: ['#2A1818','#5A2820','#8A5038']
+    },
+    {
+      name: 'Käthe Kollwitz',
+      era: '1867–1945 · German Expressionism',
+      tradition: 'Social conscience in charcoal — suffering made monumental',
+      works: ['Weavers Cycle', 'Death with Woman in Lap', 'Mother with Child'],
+      mark: 'Broad charcoal passages with fingers; tonal massing over delicate line',
+      palette: ['#181818','#3A3028','#5A4A38']
+    },
+    {
+      name: 'Alberto Giacometti',
+      era: '1901–1966 · Swiss Existentialism',
+      tradition: 'Searching line — the figure receding into space and doubt',
+      works: ['Standing Figure Studies', 'Portrait of Annette', 'Studio Interior'],
+      mark: 'Multiple overlapping contours seeking the form; nervous graphite webs',
+      palette: ['#282820','#504840','#787060']
+    },
+    {
+      name: 'David Hockney',
+      era: '1937– · British Contemporary',
+      tradition: 'Joyful observation — line as celebration of the seen world',
+      works: ['My Parents', 'Gregory Sleeping', 'iPhone Drawings (East Yorkshire)'],
+      mark: 'Assured contour with playful colour; flat perspective celebrating picture surface',
+      palette: ['#202838','#405068','#708898']
+    },
+    {
+      name: 'Cy Twombly',
+      era: '1928–2011 · American School of Rome',
+      tradition: 'Mark as language — writing, erasure, and archaeological layering',
+      works: ['Blackboard Paintings', 'Fifty Days at Iliam', 'Natural History I: Mushrooms'],
+      mark: 'Looping crayon scrawl on grey ground; wax and pencil graffiti-archaeology',
+      palette: ['#282828','#484440','#686460']
+    }
+  ];
+
+  function drawArtistAvatar(canvas, artist){
+    const ctx=canvas.getContext('2d'); const W=canvas.width, H=canvas.height;
+    ctx.fillStyle='#2A2A2A'; ctx.fillRect(0,0,W,H);
+    const cx=W/2, cy=H/2, sc=Math.min(W,H)*0.38;
+    const [c1,c2,c3]=artist.palette;
+
+    // Background scribble texture
+    ctx.save(); ctx.globalAlpha=0.12;
+    for(let i=0;i<40;i++){
+      ctx.strokeStyle=c2; ctx.lineWidth=0.7; ctx.lineCap='round';
+      ctx.beginPath();
+      ctx.moveTo(Math.random()*W,Math.random()*H);
+      ctx.bezierCurveTo(Math.random()*W,Math.random()*H,Math.random()*W,Math.random()*H,Math.random()*W,Math.random()*H);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Face oval
+    ctx.save(); ctx.globalAlpha=0.6;
+    ctx.strokeStyle=c3; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.ellipse(cx,cy-sc*0.05,sc*0.42,sc*0.52,0,0,Math.PI*2); ctx.stroke();
+    ctx.restore();
+
+    // Eyes
+    for(const ex of [cx-sc*0.15, cx+sc*0.15]){
+      ctx.save(); ctx.strokeStyle=c3; ctx.lineWidth=1.2; ctx.globalAlpha=0.7;
+      ctx.beginPath(); ctx.ellipse(ex,cy-sc*0.12,sc*0.09,sc*0.06,0,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle=c1; ctx.globalAlpha=0.5;
+      ctx.beginPath(); ctx.arc(ex,cy-sc*0.12,sc*0.03,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
+    // Nose
+    ctx.save(); ctx.strokeStyle=c3; ctx.lineWidth=1; ctx.globalAlpha=0.45;
+    ctx.beginPath(); ctx.moveTo(cx,cy-sc*0.04); ctx.lineTo(cx-sc*0.07,cy+sc*0.1); ctx.lineTo(cx+sc*0.07,cy+sc*0.1); ctx.stroke();
+    ctx.restore();
+
+    // Mouth
+    ctx.save(); ctx.strokeStyle=c3; ctx.lineWidth=1.2; ctx.globalAlpha=0.5;
+    ctx.beginPath(); ctx.moveTo(cx-sc*0.12,cy+sc*0.22); ctx.quadraticCurveTo(cx,cy+sc*0.3,cx+sc*0.12,cy+sc*0.22); ctx.stroke();
+    ctx.restore();
+
+    // Neck + Shoulders
+    ctx.save(); ctx.strokeStyle=c3; ctx.lineWidth=1.5; ctx.globalAlpha=0.4;
+    ctx.beginPath(); ctx.moveTo(cx-sc*0.1,cy+sc*0.48); ctx.lineTo(cx-sc*0.1,cy+sc*0.62); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+sc*0.1,cy+sc*0.48); ctx.lineTo(cx+sc*0.1,cy+sc*0.62); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx-sc*0.35,cy+sc*0.7); ctx.lineTo(cx-sc*0.1,cy+sc*0.62); ctx.lineTo(cx+sc*0.1,cy+sc*0.62); ctx.lineTo(cx+sc*0.35,cy+sc*0.7); ctx.stroke();
+    ctx.restore();
+
+    // Characteristic mark overlay
+    ctx.save(); ctx.globalAlpha=0.18; ctx.strokeStyle=c2; ctx.lineWidth=0.8;
+    if(artist.name.includes('Schiele')){ // trembling contour
+      ctx.beginPath(); ctx.moveTo(W*0.1,H*0.5);
+      for(let x=W*0.1;x<W*0.9;x+=5) ctx.lineTo(x,H*0.5+(Math.random()-0.5)*8);
+      ctx.stroke();
+    } else if(artist.name.includes('Twombly')){ // scrawl
+      for(let i=0;i<5;i++){
+        ctx.beginPath(); ctx.moveTo(Math.random()*W,Math.random()*H);
+        ctx.bezierCurveTo(Math.random()*W,Math.random()*H,Math.random()*W,Math.random()*H,Math.random()*W,Math.random()*H);
+        ctx.stroke();
+      }
+    } else if(artist.name.includes('Leonardo')){ // cross-hatch
+      for(let i=0;i<8;i++){ const y=H*0.1+i*H*0.1; ctx.beginPath(); ctx.moveTo(W*0.1,y); ctx.lineTo(W*0.9,y+15); ctx.stroke(); }
+    } else {
+      ctx.beginPath(); ctx.moveTo(W*0.1,H*0.8); ctx.bezierCurveTo(W*0.35,H*0.5,W*0.65,H*0.6,W*0.9,H*0.4); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  const grid=document.getElementById('artistsGrid');
+  ARTISTS.forEach(artist=>{
+    const card=document.createElement('div'); card.className='artist-card';
+    const canvas=document.createElement('canvas'); canvas.className='artist-avatar'; canvas.width=120; canvas.height=130;
+    drawArtistAvatar(canvas,artist);
+    const name=document.createElement('div'); name.className='artist-name'; name.textContent=artist.name;
+    const era=document.createElement('div'); era.className='artist-era'; era.textContent=artist.era;
+    const trad=document.createElement('div'); trad.className='artist-tradition'; trad.textContent=artist.tradition;
+    const works=document.createElement('div'); works.className='artist-works'; works.innerHTML='<strong style="color:var(--surface);font-size:0.68rem;">Key Works:</strong><br>'+artist.works.join('<br>');
+    const mark=document.createElement('div'); mark.className='artist-mark'; mark.textContent=artist.mark;
+    card.append(canvas,name,era,trad,works,mark); grid.appendChild(card);
+  });
+})();
+</script>
+
+<!-- SECTION 9: GLOSSARY -->
+<section id="glossary" class="hidden">
+  <div class="section-header">
+    <h2>Glossary</h2>
+    <p>The language of drawing — twenty-two essential terms</p>
+  </div>
+  <div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+
+<footer>
+  <p>Drawing World &mdash; The First Language of Seeing &mdash; Built with Canvas 2D</p>
+</footer>
+
+<script>
+// ─── GLOSSARY ─────────────────────────────────────────────────
+(function(){
+  const TERMS = [
+    ['Aerial Perspective', 'The optical effect whereby distant objects appear lighter, bluer, and less distinct — atmosphere absorbs and scatters light between viewer and subject.'],
+    ['Blind Contour', 'Drawing the outline of a subject without looking at the paper — trains the eye to truly observe rather than symbol-draw.'],
+    ['Charcoal', 'Charred vine or compressed carbon sticks; the oldest drawing medium, capable of the softest grays and the deepest blacks.'],
+    ['Chiaroscuro', 'Italian: "light–dark." The dramatic modelling of form through high contrast between illuminated and shadowed areas.'],
+    ['Contour', 'The edge or outline of a form — the perceived boundary where object meets space, rendered as a continuous or broken line.'],
+    ['Cross-Contour', 'Lines that travel across the surface of a form (rather than along its edge) to describe three-dimensional volume and curvature.'],
+    ['Cross-Hatching', 'Overlapping sets of parallel lines at different angles to build tonal value — the darker the area, the denser the crossing.'],
+    ['Foreshortening', 'The visual compression of a form receding away from the viewer — a foreshortened limb appears shortened relative to its actual length.'],
+    ['Gesture', 'The essential movement and energy of a pose captured quickly — prioritizing action, weight, and rhythm over anatomical detail.'],
+    ['Ground', 'The prepared surface on which drawing occurs; also the toned base layer applied before silverpoint or other media.'],
+    ['Hatching', 'Parallel lines drawn in the same direction to suggest tone — closer spacing creates darker value.'],
+    ['Line Weight', 'The variable thickness of a line used to convey depth, emphasis, or edge quality — thick lines advance, thin lines recede.'],
+    ['Negative Space', 'The empty space around and between subjects — treating it as a positive shape improves compositional understanding.'],
+    ['Orthogonal', 'In perspective drawing, lines that recede from the viewer toward a vanishing point along the horizon line.'],
+    ['Picture Plane', 'The imaginary flat surface through which the viewer "looks" — the actual surface of the drawing paper made conceptually explicit.'],
+    ['Proportion', 'The size relationships between parts of a subject — in figure drawing, commonly measured in head-heights (7–8 for the adult figure).'],
+    ['Sgraffito', 'Italian: "scratched." Drawing by removing a top layer to reveal a lighter tone beneath — reversed tonal logic.'],
+    ['Silverpoint', 'Drawing with a silver wire on a specially prepared ground — produces delicate, hair-fine lines that oxidize to a warm gray.'],
+    ['Stippling', 'Building tonal value through density of dots rather than lines — used in engraving, ink illustration, and graphite rendering.'],
+    ['Thumbnail', 'A small, quick compositional study — typically 2–4 cm — used to test value patterns and spatial arrangements before committing.'],
+    ['Tonal Value', 'The relative lightness or darkness of a surface — the scale from pure white to pure black that describes form under light.'],
+    ['Vanishing Point', 'The point on the horizon line where parallel lines converging in perspective appear to meet — the organizing fulcrum of spatial drawing.']
+  ];
+
+  const grid=document.getElementById('glossaryGrid');
+  TERMS.forEach(([term,def])=>{
+    const item=document.createElement('div'); item.className='gloss-item hidden';
+    const termEl=document.createElement('div'); termEl.className='gloss-term'; termEl.textContent=term;
+    const defEl=document.createElement('div'); defEl.className='gloss-def'; defEl.textContent=def;
+    item.append(termEl,defEl); grid.appendChild(item);
+  });
+})();
+
+// ─── INTERSECTION OBSERVER ────────────────────────────────────
+(function(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.replace('hidden','visible'); });
+  },{threshold:0.10});
+  document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+
+  // Also observe sections for nav highlighting
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('.nav-links a');
+  const secObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.style.color='');
+        const link=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if(link) link.style.color='var(--parchment)';
+      }
+    });
+  },{threshold:0.4});
+  sections.forEach(s=>secObs.observe(s));
+})();
+
+// ─── GLOBAL LAGFILTER AMBIENT ANIMATION ──────────────────────
+// Additional LagFilter instances for global smoothing effects
+(function(){
+  let scrollSmooth=0, scrollTarget=0;
+  let navOpacity=1, navOpacityTarget=1;
+  let lastT=performance.now();
+
+  window.addEventListener('scroll',()=>{ scrollTarget=window.scrollY; });
+
+  function globalLoop(now){
+    requestAnimationFrame(globalLoop);
+    const dt=Math.min((now-lastT)/1000,0.06); lastT=now;
+
+    // LagFilter — scroll position smoothing
+    const tauS=0.12;
+    scrollSmooth += (1-Math.exp(-dt/tauS)) * (scrollTarget - scrollSmooth);
+
+    // LagFilter — nav opacity based on scroll
+    const tauN=0.3;
+    const targetNO=scrollSmooth>50?0.97:0.85;
+    navOpacity += (1-Math.exp(-dt/tauN)) * (targetNO - navOpacity);
+    const nav=document.querySelector('nav');
+    if(nav) nav.style.background=`rgba(10,10,10,${navOpacity.toFixed(3)})`;
+  }
+  requestAnimationFrame(globalLoop);
+})();
+
+// ─── HERO CANVAS EXTENDED: Additional mark patterns ───────────
+// Extra ambient gesture loops for richer sketchbook atmosphere
+(function(){
+  // Second layer — cross-contour overlay on hero
+  const heroCanvas = document.getElementById('heroCanvas');
+  if(!heroCanvas) return;
+  // Attach a secondary ambient loop for cross-contour suggestion marks
+  // These run independently and add depth without interfering
+  let ambPhase=0, ambLastT=performance.now();
+  const ambCtx=heroCanvas.getContext('2d');
+
+  // Pre-generate a set of arc paths for continuous overlay
+  const arcPaths=[];
+  for(let i=0;i<24;i++){
+    arcPaths.push({
+      x: Math.random()*1200, y: Math.random()*500,
+      rx: 30+Math.random()*80, ry: 20+Math.random()*50,
+      start: Math.random()*Math.PI*2,
+      sweep: Math.PI*0.3+Math.random()*Math.PI*0.5,
+      speed: 0.1+Math.random()*0.2,
+      phase: Math.random()*Math.PI*2,
+      alpha: 0, alphaTarget: 0.02+Math.random()*0.04,
+      smoothAlpha: 0
+    });
+  }
+
+  function ambLoop(now){
+    requestAnimationFrame(ambLoop);
+    const dt=Math.min((now-ambLastT)/1000,0.06); ambLastT=now;
+    ambPhase+=dt*0.15;
+    const W=heroCanvas.width, H=heroCanvas.height;
+    arcPaths.forEach((p,i)=>{
+      // LagFilter — arc alpha fade in/out
+      const tauA=1.8;
+      const wave=Math.sin(ambPhase*p.speed+p.phase);
+      p.alphaTarget = wave>0.5 ? 0.03+wave*0.04 : 0;
+      p.smoothAlpha += (1-Math.exp(-dt/tauA)) * (p.alphaTarget - p.smoothAlpha);
+
+      if(p.smoothAlpha>0.003){
+        ambCtx.save();
+        ambCtx.globalAlpha=p.smoothAlpha;
+        ambCtx.strokeStyle='#1C1C1C'; ambCtx.lineWidth=0.7; ambCtx.lineCap='round';
+        ambCtx.beginPath();
+        ambCtx.ellipse(p.x*(W/1200), p.y*(H/500), p.rx, p.ry, 0, p.start, p.start+p.sweep);
+        ambCtx.stroke();
+        ambCtx.restore();
+      }
+    });
+  }
+  requestAnimationFrame(ambLoop);
+})();
+
+// ─── MARK MAKING: Hatching demo auto-preview ──────────────────
+(function(){
+  const marksCanvas = document.getElementById('marksCanvas');
+  if(!marksCanvas) return;
+  // Draw initial hatching demonstration when canvas first appears
+  const obs = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      obs.disconnect();
+      const ctx=marksCanvas.getContext('2d');
+      const W=marksCanvas.width||marksCanvas.offsetWidth, H=360;
+      // Draw a gradient-tone hatching demo
+      ctx.save();
+      for(let x=W*0.05;x<W*0.45;x+=7){
+        const alpha=0.05+(x/(W*0.45))*0.25;
+        ctx.strokeStyle=`rgba(28,28,28,${alpha.toFixed(3)})`;
+        ctx.lineWidth=0.9; ctx.lineCap='round';
+        ctx.beginPath(); ctx.moveTo(x, H*0.15); ctx.lineTo(x+20, H*0.55); ctx.stroke();
+      }
+      // Cross hatch on right side
+      const ang=Math.PI/4;
+      for(let i=0;i<20;i++){
+        const x=W*0.55+i*12;
+        const alpha=0.06+i*0.012;
+        ctx.strokeStyle=`rgba(28,28,28,${Math.min(alpha,0.4).toFixed(3)})`;
+        ctx.lineWidth=0.9;
+        ctx.beginPath(); ctx.moveTo(x,H*0.15); ctx.lineTo(x+20,H*0.55); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x-20,H*0.15); ctx.lineTo(x,H*0.55); ctx.stroke();
+      }
+      ctx.restore();
+      // Instruction text
+      ctx.save(); ctx.fillStyle='rgba(28,28,28,0.2)'; ctx.font='italic 13px Georgia';
+      ctx.textAlign='center'; ctx.fillText('Click and drag to draw · Select tool above', W/2, H-10);
+      ctx.restore();
+    }
+  },{threshold:0.1});
+  obs.observe(marksCanvas);
+})();
+
+// ─── COMPOSITION: Thumbnail animation ────────────────────────
+(function(){
+  // Animate thumbnail opacity fade-in with LagFilter
+  const thumbs=document.querySelectorAll('.thumb-canvas');
+  let thumbAlphas=Array.from(thumbs).map(()=>({v:0,target:1}));
+  let tLastT=performance.now();
+  let tStarted=false;
+
+  const tObs=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && !tStarted){
+      tStarted=true; tObs.disconnect();
+      function tLoop(now){
+        const dt=Math.min((now-tLastT)/1000,0.06); tLastT=now;
+        thumbAlphas.forEach((ta,i)=>{
+          const delay=i*0.12;
+          // LagFilter — staggered thumbnail fade
+          const tauTh=0.35;
+          const tgt=now>delay*1000?1:0;
+          ta.v += (1-Math.exp(-dt/tauTh)) * (ta.target - ta.v);
+          if(thumbs[i]) thumbs[i].style.opacity=ta.v.toFixed(3);
+        });
+        requestAnimationFrame(tLoop);
+      }
+      requestAnimationFrame(tLoop);
+    }
+  },{threshold:0.1});
+  const grid=document.getElementById('thumbGrid');
+  if(grid) tObs.observe(grid);
+})();
+
+// ─── PERSPECTIVE: Animated VP beacon pulses ───────────────────
+(function(){
+  // Overlay a soft pulsing beacon on each vanishing point to guide users
+  let beaconPhase=0, beaconLastT=performance.now();
+  let beaconSmooth=0;
+
+  function beaconLoop(now){
+    requestAnimationFrame(beaconLoop);
+    const dt=Math.min((now-beaconLastT)/1000,0.06); beaconLastT=now;
+    beaconPhase+=dt*1.4;
+    // LagFilter — beacon pulse envelope
+    const tauB=0.18;
+    const beaconTarget=0.5+0.5*Math.sin(beaconPhase);
+    beaconSmooth += (1-Math.exp(-dt/tauB)) * (beaconTarget - beaconSmooth);
+    // The actual drawing happens inside the perspLoop; just store value
+    window._beaconAlpha = beaconSmooth * 0.15;
+  }
+  requestAnimationFrame(beaconLoop);
+})();
+
+// ─── ANATOMY: Proportions ruler animation ────────────────────
+(function(){
+  let rulerPhase=0, rulerAlpha=0, rulerAlphaTarget=0;
+  let rLastT=performance.now();
+
+  function rulerLoop(now){
+    requestAnimationFrame(rulerLoop);
+    const dt=Math.min((now-rLastT)/1000,0.06); rLastT=now;
+    rulerPhase+=dt;
+    // LagFilter — ruler line alpha pulse
+    const tauR=0.6;
+    rulerAlphaTarget = 0.08+0.04*Math.sin(rulerPhase*0.8);
+    rulerAlpha += (1-Math.exp(-dt/tauR)) * (rulerAlphaTarget - rulerAlpha);
+    window._rulerAlpha=rulerAlpha;
+  }
+  requestAnimationFrame(rulerLoop);
+})();
+
+// ─── MEDIA SECTION: tile hover LagFilter glow ────────────────
+(function(){
+  const tiles=document.querySelectorAll('.media-tile');
+  tiles.forEach(tile=>{
+    let glowAlpha=0, glowTarget=0;
+    let gLastT=performance.now();
+    tile.addEventListener('mouseenter',()=>glowTarget=1);
+    tile.addEventListener('mouseleave',()=>glowTarget=0);
+    function glowLoop(now){
+      requestAnimationFrame(glowLoop);
+      const dt=Math.min((now-gLastT)/1000,0.06); gLastT=now;
+      // LagFilter — hover glow
+      const tauG=0.18;
+      glowAlpha += (1-Math.exp(-dt/tauG)) * (glowTarget - glowAlpha);
+      tile.style.boxShadow=glowAlpha>0.01 ? `0 0 ${(glowAlpha*12).toFixed(1)}px rgba(245,239,224,${(glowAlpha*0.18).toFixed(3)})` : '';
+    }
+    requestAnimationFrame(glowLoop);
+  });
+})();
+
+// ─── GESTURE CANVAS: touch support enhancement ────────────────
+(function(){
+  const gCvs=document.getElementById('gestureCanvas');
+  if(!gCvs) return;
+  const ctx=gCvs.getContext('2d');
+  let tDrawing=false, tLX=0, tLY=0;
+  let tSmoothX=0, tSmoothY=0, tSmoothLW=2;
+  let tLastTime=performance.now();
+
+  gCvs.addEventListener('touchstart',e=>{ e.preventDefault(); tDrawing=true;
+    const r=gCvs.getBoundingClientRect();
+    tLX=(e.touches[0].clientX-r.left)*(gCvs.width/r.width);
+    tLY=(e.touches[0].clientY-r.top)*(gCvs.height/r.height);
+    tSmoothX=tLX; tSmoothY=tLY;
+  },{passive:false});
+  gCvs.addEventListener('touchend',()=>tDrawing=false);
+  gCvs.addEventListener('touchmove',e=>{ e.preventDefault();
+    if(!tDrawing) return;
+    const r=gCvs.getBoundingClientRect();
+    const tx=(e.touches[0].clientX-r.left)*(gCvs.width/r.width);
+    const ty=(e.touches[0].clientY-r.top)*(gCvs.height/r.height);
+    const now=performance.now();
+    const dt=Math.min((now-tLastTime)/1000,0.1); tLastTime=now;
+    // LagFilter — touch position smoothing
+    const tauTX=0.06;
+    tSmoothX += (1-Math.exp(-dt/tauTX)) * (tx - tSmoothX);
+    tSmoothY += (1-Math.exp(-dt/tauTX)) * (ty - tSmoothY);
+    const qs=document.getElementById('lineQuality');
+    const q=qs?(+qs.value/100):0.7;
+    ctx.strokeStyle='rgba(28,28,28,0.65)'; ctx.lineWidth=1.5+(1-q)*2.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(tLX,tLY); ctx.lineTo(tSmoothX,tSmoothY); ctx.stroke();
+    tLX=tSmoothX; tLY=tSmoothY;
+  },{passive:false});
+})();
+
+// ─── COMPOSITION CANVAS: touch support ───────────────────────
+(function(){
+  const cCvs=document.getElementById('compCanvas');
+  if(!cCvs) return;
+  const ctx=cCvs.getContext('2d');
+  let cDrawing=false, cLX=0,cLY=0;
+
+  cCvs.addEventListener('touchstart',e=>{ e.preventDefault();
+    cDrawing=true;
+    const r=cCvs.getBoundingClientRect();
+    cLX=(e.touches[0].clientX-r.left)*(cCvs.width/r.width);
+    cLY=(e.touches[0].clientY-r.top)*(cCvs.height/r.height);
+  },{passive:false});
+  cCvs.addEventListener('touchend',()=>cDrawing=false);
+  cCvs.addEventListener('touchmove',e=>{ e.preventDefault();
+    if(!cDrawing) return;
+    const r=cCvs.getBoundingClientRect();
+    const x=(e.touches[0].clientX-r.left)*(cCvs.width/r.width);
+    const y=(e.touches[0].clientY-r.top)*(cCvs.height/r.height);
+    ctx.strokeStyle='rgba(28,28,28,0.7)'; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(cLX,cLY); ctx.lineTo(x,y); ctx.stroke();
+    cLX=x; cLY=y;
+  },{passive:false});
+})();
+
+// ─── MEDIA CANVAS: touch support ─────────────────────────────
+(function(){
+  const mCvs=document.getElementById('mediaDrawCanvas');
+  if(!mCvs) return;
+  const ctx=mCvs.getContext('2d');
+  let mDrawing=false, mLX=0,mLY=0, mSmoothLW=2;
+  let mLastT=performance.now();
+
+  function getMed(){ return window._activeMedium || {stroke:'rgba(28,28,28,{a})',lw:2,rough:0,bg:'#F5EFE0'}; }
+
+  mCvs.addEventListener('touchstart',e=>{ e.preventDefault(); mDrawing=true;
+    const r=mCvs.getBoundingClientRect();
+    mLX=(e.touches[0].clientX-r.left)*(mCvs.width/r.width);
+    mLY=(e.touches[0].clientY-r.top)*(mCvs.height/r.height);
+  },{passive:false});
+  mCvs.addEventListener('touchend',()=>mDrawing=false);
+  mCvs.addEventListener('touchmove',e=>{ e.preventDefault();
+    if(!mDrawing) return;
+    const r=mCvs.getBoundingClientRect();
+    const x=(e.touches[0].clientX-r.left)*(mCvs.width/r.width);
+    const y=(e.touches[0].clientY-r.top)*(mCvs.height/r.height);
+    const now=performance.now(); const dt=Math.min((now-mLastT)/1000,0.1); mLastT=now;
+    // LagFilter — touch stroke weight
+    const tauMT=0.12;
+    mSmoothLW += (1-Math.exp(-dt/tauMT)) * (2 - mSmoothLW);
+    ctx.strokeStyle='rgba(28,28,28,0.65)'; ctx.lineWidth=mSmoothLW; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(mLX,mLY); ctx.lineTo(x,y); ctx.stroke();
+    mLX=x; mLY=y;
+  },{passive:false});
+})();
+
+// ─── KEYBOARD SHORTCUTS ───────────────────────────────────────
+(function(){
+  document.addEventListener('keydown', e => {
+    if(e.target.tagName === 'INPUT') return;
+    switch(e.key){
+      case '1': document.querySelector('#gesture canvas') && document.getElementById('timer30').click(); break;
+      case '2': document.getElementById('timer60') && document.getElementById('timer60').click(); break;
+      case '3': document.getElementById('timer120') && document.getElementById('timer120').click(); break;
+      case ' ': e.preventDefault(); const startBtn=document.getElementById('timerStart'); if(startBtn) startBtn.click(); break;
+      case 'c': case 'C': {
+        const active=document.querySelector('.marks-tools .btn.active');
+        if(active && document.getElementById('marksClear')) document.getElementById('marksClear').click();
+        break;
+      }
+      case 'ArrowRight': { const np=document.getElementById('nextPose'); if(np) np.click(); break; }
+      case 'ArrowLeft': { const pp=document.getElementById('prevPose'); if(pp) pp.click(); break; }
+    }
+  });
+})();
+</script>
+</body>
+</html>

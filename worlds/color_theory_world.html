@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring color theory">
+    <meta property="og:title" content="Color Theory World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring color theory">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/color_theory_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Theory World — WAVGEN Learning Universe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080810;--surface:#101018;--border:#1e1e2e;
+  --text:#f0f0f0;--muted:#888;--accent:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+
+/* ── HERO ─────────────────────────────────────── */
+#hero{position:relative;height:440px;overflow:hidden}
+#heroCanvas{width:100%;height:100%;display:block}
+.hero-title{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:clamp(2rem,6vw,4.5rem);font-weight:900;letter-spacing:.35em;
+  color:#fff;text-shadow:0 0 40px rgba(255,255,255,.5);
+  pointer-events:none;text-align:center;line-height:1.1;
+}
+.hero-sub{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  font-size:.85rem;letter-spacing:.2em;color:rgba(255,255,255,.5);
+  text-transform:uppercase;pointer-events:none;
+}
+
+/* ── LAYOUT ───────────────────────────────────── */
+.section{
+  padding:80px 5%;opacity:0;transform:translateY(32px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.section.visible{opacity:1;transform:translateY(0)}
+.section-label{
+  font-size:.7rem;letter-spacing:.3em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:.5rem;
+}
+.section-title{
+  font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;
+  margin-bottom:.4rem;line-height:1.1;
+}
+.section-sub{
+  font-size:1rem;color:var(--muted);margin-bottom:2.5rem;max-width:600px;
+}
+.divider{height:1px;background:var(--border);margin:0 5%}
+
+/* ── CARDS / SURFACES ─────────────────────────── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;
+}
+.swatch{width:100%;height:64px;border-radius:8px;border:1px solid var(--border);margin:.5rem 0;transition:background .1s}
+
+/* ── SLIDERS ──────────────────────────────────── */
+.slider-wrap{display:flex;align-items:center;gap:10px;margin:.45rem 0}
+.slider-wrap label{width:28px;font-size:.8rem;color:var(--muted)}
+.slider-wrap input[type=range]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#333;outline:none}
+.slider-wrap input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:#fff;cursor:pointer;border:2px solid var(--border);
+}
+.slider-wrap .val{width:40px;font-size:.8rem;color:var(--muted);text-align:right}
+
+/* ── COLOR MODELS LAB ─────────────────────────── */
+#models .models-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;
+}
+.model-card{position:relative}
+.model-title{font-size:.85rem;letter-spacing:.15em;color:var(--muted);margin-bottom:10px}
+.hex-out{font-family:monospace;font-size:1rem;color:var(--text);margin:.5rem 0 0}
+
+/* ── HARMONY BUILDER ──────────────────────────── */
+#harmony .harmony-layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+#harmonyWheel{border-radius:50%;cursor:crosshair}
+.harmony-types{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.htype-btn{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);color:var(--muted);font-size:.8rem;cursor:pointer;
+  transition:all .2s;
+}
+.htype-btn.active{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+.palette-swatches{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.palette-swatch{width:48px;height:48px;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s}
+.palette-swatch:hover{transform:scale(1.12)}
+#harmonyScene{border-radius:12px;width:100%;height:220px}
+
+/* ── CONTRAST ─────────────────────────────────── */
+#contrast .contrast-layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.contrast-preview{
+  height:120px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;font-weight:700;
+  border:1px solid var(--border);transition:all .1s;
+}
+.ratio-display{font-size:3rem;font-weight:900;margin:.5rem 0;font-family:monospace}
+.wcag-pills{display:flex;gap:8px;flex-wrap:wrap}
+.wpill{padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.05em}
+.wpill.fail{background:#7f1d1d;color:#fca5a5}
+.wpill.aa{background:#14532d;color:#86efac}
+.wpill.aaa{background:#1e3a5f;color:#93c5fd}
+.wpill.off{background:#222;color:#555}
+#illusions-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+#illusions-wrap canvas{border-radius:8px;width:100%}
+
+/* ── PSYCHOLOGY ───────────────────────────────── */
+#psychology .psych-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+#tempSpectrum{cursor:crosshair;border-radius:8px;width:100%}
+.room-preview{border-radius:12px;overflow:hidden;height:200px}
+#roomCanvas{width:100%;height:100%}
+.emotion-wheel-wrap{text-align:center}
+#emotionCanvas{border-radius:50%;cursor:pointer}
+.emotion-tooltip{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;font-size:.85rem;
+  min-height:60px;margin-top:12px;color:var(--muted);
+}
+
+/* ── PERCEPTUAL ───────────────────────────────── */
+#perceptual .perc-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+#percCanvas{border-radius:8px;width:100%;height:160px}
+.gamut-wrap{text-align:center}
+#gamutCanvas{width:100%;height:260px}
+.delta-display{
+  font-size:2.5rem;font-weight:900;font-family:monospace;
+  margin:.5rem 0;
+}
+
+/* ── PRACTICE ─────────────────────────────────── */
+#practice .practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.brand-result{margin-top:12px;font-size:.85rem;color:var(--muted);line-height:1.7}
+.dataviz-palettes{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.dvrow{display:flex;gap:4px;align-items:center}
+.dvrow span{font-size:.75rem;color:var(--muted);width:80px}
+.dvblock{height:24px;flex:1;border-radius:4px}
+.proportion-bar{display:flex;height:48px;border-radius:8px;overflow:hidden;margin-top:12px}
+
+/* ── ARTISTS ──────────────────────────────────── */
+#artists .scroll-row{
+  display:flex;gap:20px;overflow-x:auto;padding-bottom:16px;
+  scrollbar-width:thin;scrollbar-color:#333 transparent;
+}
+.artist-card{
+  flex:0 0 200px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:18px;cursor:pointer;
+  transition:transform .25s,box-shadow .25s;
+}
+.artist-card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.artist-color{width:40px;height:40px;border-radius:50%;margin-bottom:12px;border:2px solid rgba(255,255,255,.1)}
+.artist-name{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.artist-era{font-size:.75rem;color:var(--muted);margin-bottom:8px}
+.artist-note{font-size:.78rem;color:#999;line-height:1.5}
+
+/* ── GLOSSARY ─────────────────────────────────── */
+#glossary .glossary-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+}
+.gterm{
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.gterm-name{font-size:.9rem;font-weight:700;margin-bottom:3px}
+.gterm-def{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* ── NAV DOTS ─────────────────────────────────── */
+.nav-dots{
+  position:fixed;right:20px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;z-index:99;
+}
+.nav-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.25);cursor:pointer;transition:all .3s;
+}
+.nav-dot.active{background:#fff;transform:scale(1.4)}
+
+/* ── MISC ─────────────────────────────────────── */
+.btn{
+  padding:8px 18px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:.85rem;
+  cursor:pointer;transition:all .2s;
+}
+.btn:hover{background:rgba(255,255,255,.1)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+input[type=color]{
+  -webkit-appearance:none;border:none;width:40px;height:40px;
+  border-radius:8px;cursor:pointer;background:none;padding:0;
+}
+.color-picker-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.color-picker-row label{font-size:.85rem;color:var(--muted);min-width:80px}
+.section-footer{margin-top:2rem;font-size:.8rem;color:#444;font-style:italic}
+@media(max-width:640px){
+  #harmony .harmony-layout{grid-template-columns:1fr}
+  #psychology .psych-layout{grid-template-columns:1fr}
+  #perceptual .perc-layout{grid-template-columns:1fr}
+  #glossary .glossary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="domain-art">
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 1 — HERO
+═══════════════════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-title">COLOR THEORY</div>
+  <div class="hero-sub">A WAVGEN Learning World</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 2 — COLOR MODELS LAB
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="models" data-label="Section 02">
+  <div class="section-label">Section 02</div>
+  <div class="section-title">Color Models Lab</div>
+  <div class="section-sub">Three Ways to Describe Color — RGB, HSL, and HSB are three windows into the same room.</div>
+  <div class="models-grid">
+
+    <!-- RGB -->
+    <div class="card model-card" id="rgbCard">
+      <div class="model-title">RGB — Red · Green · Blue</div>
+      <div class="swatch" id="rgbSwatch"></div>
+      <div class="slider-wrap"><label>R</label><input type="range" id="rR" min="0" max="255" value="220"><span class="val" id="rRv">220</span></div>
+      <div class="slider-wrap"><label>G</label><input type="range" id="rG" min="0" max="255" value="80"><span class="val" id="rGv">80</span></div>
+      <div class="slider-wrap"><label>B</label><input type="range" id="rB" min="0" max="255" value="180"><span class="val" id="rBv">180</span></div>
+      <div class="hex-out" id="rgbHex">#DC50B4</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px">Additive model. Light-based. Screen, projectors, digital displays.</div>
+    </div>
+
+    <!-- HSL -->
+    <div class="card model-card" id="hslCard">
+      <div class="model-title">HSL — Hue · Saturation · Lightness</div>
+      <div class="swatch" id="hslSwatch"></div>
+      <div class="slider-wrap"><label>H</label><input type="range" id="sH" min="0" max="360" value="310"><span class="val" id="sHv">310°</span></div>
+      <div class="slider-wrap"><label>S</label><input type="range" id="sS" min="0" max="100" value="68"><span class="val" id="sSv">68%</span></div>
+      <div class="slider-wrap"><label>L</label><input type="range" id="sL" min="0" max="100" value="59"><span class="val" id="sLv">59%</span></div>
+      <div class="hex-out" id="hslHex">#DC50B4</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px">Perceptual model. Maps directly to human intuition of color experience.</div>
+    </div>
+
+    <!-- HSB/HSV -->
+    <div class="card model-card" id="hsbCard">
+      <div class="model-title">HSB/HSV — Hue · Saturation · Brightness</div>
+      <div class="swatch" id="hsbSwatch"></div>
+      <div class="slider-wrap"><label>H</label><input type="range" id="bH" min="0" max="360" value="310"><span class="val" id="bHv">310°</span></div>
+      <div class="slider-wrap"><label>S</label><input type="range" id="bS" min="0" max="100" value="64"><span class="val" id="bSv">64%</span></div>
+      <div class="slider-wrap"><label>B</label><input type="range" id="bB" min="0" max="100" value="86"><span class="val" id="bBv">86%</span></div>
+      <div class="hex-out" id="hsbHex">#DC50B4</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px">Artist-friendly. Saturation = purity, Brightness = value (not luminance).</div>
+    </div>
+
+  </div>
+  <div class="section-footer">Linked sliders — change any model and the others follow.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 3 — HARMONY BUILDER
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="harmony" data-label="Section 03">
+  <div class="section-label">Section 03</div>
+  <div class="section-title">Harmony Builder</div>
+  <div class="section-sub">The Grammar of Color Relationships — click the wheel to set a base hue, then explore harmony types.</div>
+
+  <div class="harmony-types" id="harmonyTypes"></div>
+
+  <div class="harmony-layout">
+    <div>
+      <canvas id="harmonyWheel" width="260" height="260"></canvas>
+      <div style="margin-top:12px;font-size:.8rem;color:var(--muted)">Click wheel to set base hue</div>
+    </div>
+    <div>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px">Derived Palette</div>
+      <div class="palette-swatches" id="paletteSwatch"></div>
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px;margin-top:8px">Scene Preview</div>
+      <canvas id="harmonyScene" width="500" height="220"></canvas>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px" id="harmonyNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 4 — CONTRAST & ACCESSIBILITY
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="contrast" data-label="Section 04">
+  <div class="section-label">Section 04</div>
+  <div class="section-title">Contrast &amp; Accessibility</div>
+  <div class="section-sub">When Colors Collide — WCAG 2.1 contrast ratios and the science of legibility.</div>
+
+  <div class="contrast-layout">
+    <!-- Pickers + ratio -->
+    <div class="card">
+      <div class="color-picker-row">
+        <label>Foreground</label>
+        <input type="color" id="fgColor" value="#ffffff">
+        <span id="fgHex" style="font-family:monospace;font-size:.85rem">#ffffff</span>
+      </div>
+      <div class="color-picker-row">
+        <label>Background</label>
+        <input type="color" id="bgColor" value="#080810">
+        <span id="bgHex" style="font-family:monospace;font-size:.85rem">#080810</span>
+      </div>
+      <div class="contrast-preview" id="contrastPreview">
+        Sample Text — Aa Bb Cc
+      </div>
+      <div class="ratio-display" id="ratioDisplay">18.9:1</div>
+      <div class="wcag-pills" id="wcagPills"></div>
+    </div>
+
+    <!-- Accessible pairs grid -->
+    <div class="card">
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Foreground colors that pass WCAG AA on your background</div>
+      <canvas id="accessGrid" width="360" height="200"></canvas>
+    </div>
+
+    <!-- Simultaneous contrast + Bezold -->
+    <div class="card" style="grid-column:1/-1">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:12px">Optical Illusions</div>
+      <div id="illusions-wrap">
+        <div>
+          <canvas id="simultCanvas" width="340" height="140"></canvas>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:6px">Simultaneous contrast — the same gray square looks different on dark vs. light.</div>
+        </div>
+        <div>
+          <canvas id="bezoldCanvas" width="340" height="140"></canvas>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:6px">Bezold effect — a small color shifts the apparent color of the whole pattern.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 5 — COLOR PSYCHOLOGY & TEMPERATURE
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="psychology" data-label="Section 05">
+  <div class="section-label">Section 05</div>
+  <div class="section-title">Color Psychology &amp; Temperature</div>
+  <div class="section-sub">What Colors Feel — the emotional and perceptual dimensions of hue, warmth, and cultural context.</div>
+
+  <div class="psych-layout">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px">Warm–Cool Spectrum — drag to explore</div>
+        <canvas id="tempSpectrum" width="400" height="60"></canvas>
+        <div style="font-size:.8rem;color:var(--muted);margin-top:8px" id="tempLabel">Color Temperature: 5600K — Daylight</div>
+      </div>
+      <div class="card room-preview">
+        <canvas id="roomCanvas" width="400" height="200"></canvas>
+      </div>
+    </div>
+    <div class="card emotion-wheel-wrap">
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Emotional Associations — hover hue regions</div>
+      <canvas id="emotionCanvas" width="280" height="280"></canvas>
+      <div class="emotion-tooltip" id="emotionTooltip">Hover over the wheel to explore emotional associations of each hue.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 6 — PERCEPTUAL COLOR SPACES
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="perceptual" data-label="Section 06">
+  <div class="section-label">Section 06</div>
+  <div class="section-title">Perceptual Color Spaces</div>
+  <div class="section-sub">How Machines Learn to See Color — Lab, LCH, and perceptual uniformity vs. RGB gradients.</div>
+
+  <div class="perc-layout">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px">Interpolate two colors — compare RGB vs LAB vs LCH</div>
+        <div class="color-picker-row">
+          <label>Color A</label>
+          <input type="color" id="percA" value="#0000ff">
+        </div>
+        <div class="color-picker-row">
+          <label>Color B</label>
+          <input type="color" id="percB" value="#ffff00">
+        </div>
+        <canvas id="percCanvas" width="500" height="160"></canvas>
+      </div>
+      <div class="card">
+        <div style="font-size:.85rem;color:var(--muted);margin-bottom:6px">Delta E — Perceptual Color Difference</div>
+        <div class="delta-display" id="deltaDisplay">—</div>
+        <div style="font-size:.8rem;color:var(--muted)" id="deltaDesc">Select two colors to compute ΔE</div>
+      </div>
+    </div>
+    <div class="card gamut-wrap">
+      <div style="font-size:.85rem;color:var(--muted);margin-bottom:8px">Color Gamuts — sRGB ⊂ Display-P3 ⊂ Visible</div>
+      <canvas id="gamutCanvas" width="340" height="280"></canvas>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px">The visible gamut (outer) dwarfs what most monitors can show.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 7 — COLOR IN PRACTICE
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="practice" data-label="Section 07">
+  <div class="section-label">Section 07</div>
+  <div class="section-title">Color in Practice</div>
+  <div class="section-sub">Applying Theory to Screens — brand analysis, data visualization palettes, dark mode, and the 60-30-10 rule.</div>
+
+  <div class="practice-grid">
+    <!-- Brand analyzer -->
+    <div class="card">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:10px">Brand Color Analyzer</div>
+      <div class="color-picker-row">
+        <label>Brand Color</label>
+        <input type="color" id="brandColor" value="#4F46E5">
+      </div>
+      <div class="brand-result" id="brandResult"></div>
+    </div>
+
+    <!-- Data viz palettes -->
+    <div class="card">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:10px">Data Visualization Palettes</div>
+      <div class="dataviz-palettes" id="datavizPalettes"></div>
+    </div>
+
+    <!-- Dark mode -->
+    <div class="card">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:10px">Dark Mode Color Shifting</div>
+      <div class="color-picker-row">
+        <label>Light Mode</label>
+        <input type="color" id="lightColor" value="#6366F1">
+      </div>
+      <canvas id="darkModeCanvas" width="300" height="120"></canvas>
+    </div>
+
+    <!-- 60-30-10 -->
+    <div class="card">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:10px">The 60–30–10 Rule</div>
+      <div class="slider-wrap"><label style="width:60px;font-size:.75rem">Dominant</label><input type="range" id="p60" min="40" max="80" value="60"><span class="val" id="p60v">60%</span></div>
+      <div class="slider-wrap"><label style="width:60px;font-size:.75rem">Secondary</label><input type="range" id="p30" min="15" max="45" value="30"><span class="val" id="p30v">30%</span></div>
+      <div class="color-picker-row" style="margin-top:8px">
+        <label>Dom.</label><input type="color" id="domColor" value="#1e1e2e">
+        <label>Sec.</label><input type="color" id="secColor" value="#4F46E5">
+        <label>Acc.</label><input type="color" id="accColor" value="#F59E0B">
+      </div>
+      <div class="proportion-bar" id="propBar"></div>
+      <canvas id="practiceScene" width="300" height="100" style="border-radius:8px;margin-top:10px;width:100%"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 8 — ARTISTS
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="artists" data-label="Section 08">
+  <div class="section-label">Section 08</div>
+  <div class="section-title">Color Masters</div>
+  <div class="section-sub">Eight artists who changed how we see, use, and think about color.</div>
+  <div class="scroll-row" id="artistRow"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+═══════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<section class="section" id="glossary" data-label="Section 09">
+  <div class="section-label">Section 09</div>
+  <div class="section-title">Glossary</div>
+  <div class="section-sub">22 essential terms in the language of color.</div>
+  <div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+
+<div style="height:80px"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  WAVGEN COLOR THEORY WORLD — Main Script
+//  LagFilter MANDATORY on ALL parameter transitions
+// ═══════════════════════════════════════════════════════════
+'use strict';
+
+// ── LagFilter utility ──────────────────────────────────────
+function lagFilter(current, target, dt, tau) {
+  if (!isFinite(dt) || dt <= 0) return current;
+  return current + (1 - Math.exp(-dt / tau)) * (target - current);
+}
+
+// ── COLOR MATH ────────────────────────────────────────────
+function hslToRgb(h, s, l) {
+  s /= 100; l /= 100;
+  const k = n => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return [Math.round(f(0)*255), Math.round(f(8)*255), Math.round(f(4)*255)];
+}
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h, s, l = (max+min)/2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max-min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h=((g-b)/d+(g<b?6:0))/6; break;
+      case g: h=((b-r)/d+2)/6; break;
+      case b: h=((r-g)/d+4)/6; break;
+    }
+  }
+  return [h*360, s*100, l*100];
+}
+function hsbToRgb(h, s, v) {
+  s/=100; v/=100;
+  const i=Math.floor(h/60)%6, f=h/60-Math.floor(h/60);
+  const p=v*(1-s), q=v*(1-f*s), t=v*(1-(1-f)*s);
+  let r,g,b;
+  switch(i){
+    case 0:r=v;g=t;b=p;break; case 1:r=q;g=v;b=p;break;
+    case 2:r=p;g=v;b=t;break; case 3:r=p;g=q;b=v;break;
+    case 4:r=t;g=p;b=v;break; default:r=v;g=p;b=q;
+  }
+  return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+}
+function rgbToHsb(r,g,b) {
+  r/=255;g/=255;b/=255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;
+  let h=0,s=max===0?0:d/max,v=max;
+  if(d!==0){
+    switch(max){
+      case r:h=((g-b)/d%6)/6;break;
+      case g:h=((b-r)/d+2)/6;break;
+      case b:h=((r-g)/d+4)/6;break;
+    }
+    if(h<0)h+=1;
+  }
+  return [h*360,s*100,v*100];
+}
+function rgbToHex(r,g,b){
+  return '#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+}
+function hexToRgb(hex){
+  return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
+}
+function relativeLuminance(r,g,b){
+  const s=[r,g,b].map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});
+  return 0.2126*s[0]+0.7152*s[1]+0.0722*s[2];
+}
+function contrastRatio(rgb1,rgb2){
+  const l1=relativeLuminance(...rgb1),l2=relativeLuminance(...rgb2);
+  const lo=Math.min(l1,l2),hi=Math.max(l1,l2);
+  return (hi+0.05)/(lo+0.05);
+}
+function srgbToLab(r,g,b){
+  let R=r/255,G=g/255,B=b/255;
+  [R,G,B]=[R,G,B].map(v=>v>0.04045?Math.pow((v+0.055)/1.055,2.4):v/12.92);
+  R*=100;G*=100;B*=100;
+  let X=R*0.4124+G*0.3576+B*0.1805,Y=R*0.2126+G*0.7152+B*0.0722,Z=R*0.0193+G*0.1192+B*0.9505;
+  X/=95.047;Y/=100;Z/=108.883;
+  [X,Y,Z]=[X,Y,Z].map(v=>v>0.008856?Math.cbrt(v):7.787*v+16/116);
+  return [116*Y-16,500*(X-Y),200*(Y-Z)];
+}
+function labToSrgb(L,a,b_){
+  let Y=(L+16)/116,X=a/500+Y,Z=Y-b_/200;
+  [X,Y,Z]=[X,Y,Z].map(v=>v*v*v>0.008856?v*v*v:(v-16/116)/7.787);
+  X*=95.047;Y*=100;Z*=108.883;
+  let R=X*3.2406+Y*-1.5372+Z*-0.4986,G=X*-0.9689+Y*1.8758+Z*0.0415,Bl=X*0.0557+Y*-0.204+Z*1.057;
+  [R,G,Bl]=[R,G,Bl].map(v=>{v/=100;v=v>0.0031308?1.055*Math.pow(v,1/2.4)-0.055:12.92*v;return Math.max(0,Math.min(1,v))*255;});
+  return [Math.round(R),Math.round(G),Math.round(Bl)];
+}
+function lerpRgb(c1,c2,t){return [c1[0]+(c2[0]-c1[0])*t,c1[1]+(c2[1]-c1[1])*t,c1[2]+(c2[2]-c1[2])*t];}
+function lerpLab(c1,c2,t){
+  const l1=srgbToLab(...c1),l2=srgbToLab(...c2);
+  return labToSrgb(l1[0]+(l2[0]-l1[0])*t,l1[1]+(l2[1]-l1[1])*t,l1[2]+(l2[2]-l1[2])*t);
+}
+function lerpLch(c1,c2,t){
+  const l1=srgbToLab(...c1),l2=srgbToLab(...c2);
+  const toLch=lab=>{const C=Math.sqrt(lab[1]**2+lab[2]**2),H=Math.atan2(lab[2],lab[1]);return[lab[0],C,H];};
+  const ch1=toLch(l1),ch2=toLch(l2);
+  let dH=ch2[2]-ch1[2];
+  if(dH>Math.PI)dH-=2*Math.PI;if(dH<-Math.PI)dH+=2*Math.PI;
+  const L=ch1[0]+(ch2[0]-ch1[0])*t,C=ch1[1]+(ch2[1]-ch1[1])*t,H=ch1[2]+dH*t;
+  return labToSrgb(L,C*Math.cos(H),C*Math.sin(H));
+}
+function deltaE(c1,c2){
+  const l1=srgbToLab(...c1),l2=srgbToLab(...c2);
+  return Math.sqrt((l1[0]-l2[0])**2+(l1[1]-l2[1])**2+(l1[2]-l2[2])**2);
+}
+
+// ── IntersectionObserver for section reveals ───────────────
+document.querySelectorAll('.section').forEach(s=>{
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+  },{threshold:0.1}).observe(s);
+});
+
+// ── Nav Dots ───────────────────────────────────────────────
+const navIds=['hero','models','harmony','contrast','psychology','perceptual','practice','artists','glossary'];
+const navLabels=['Hero','RGB·HSL','Harmony','Contrast','Emotion','Perceptual','Practice','Artists','Glossary'];
+(function(){
+  const el=document.getElementById('navDots');
+  navIds.forEach((id,i)=>{
+    const d=document.createElement('div');
+    d.className='nav-dot';d.title=navLabels[i];
+    d.onclick=()=>document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    el.appendChild(d);
+  });
+  function update(){
+    const dots=el.querySelectorAll('.nav-dot');
+    const cy=window.scrollY+window.innerHeight/2;
+    navIds.forEach((id,i)=>{
+      const sec=document.getElementById(id);
+      if(!sec)return;
+      const top=sec.offsetTop;
+      dots[i].classList.toggle('active',cy>=top&&cy<top+sec.offsetHeight);
+    });
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 1 — HERO CANVAS
+// ═══════════════════════════════════════════════════════════
+(function initHero(){
+  const canvas=document.getElementById('heroCanvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  const comets=Array.from({length:20},(_,i)=>({
+    hue:(i/20)*360, radius:80+(i%5)*28+i*4,
+    speed:(0.3+i*0.04)*(i%2?1:-1),
+    angle:Math.random()*Math.PI*2, trailLen:16+i*2, trail:[]
+  }));
+
+  // Lag state
+  const lag={pulse:0,pulseTarget:0,angle:0};
+  const BPM=90, beatMs=60000/BPM;
+  let lastBeat=0, last=0, firstFrame=true;
+
+  function draw(ts){
+    if(firstFrame){last=ts;firstFrame=false;requestAnimationFrame(draw);return;}
+    const dt=Math.min((ts-last)/1000,0.05);last=ts;
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    const R=Math.min(W,H)*0.30;
+
+    // Beat pulse trigger
+    if(ts-lastBeat>beatMs){lastBeat=ts;lag.pulseTarget=1;}
+    // LagFilter on pulse — fast attack, slow decay
+    if(lag.pulse<lag.pulseTarget)lag.pulse=lagFilter(lag.pulse,lag.pulseTarget,dt,0.025);
+    else lag.pulse=lagFilter(lag.pulse,0,dt,0.4);
+    lag.pulseTarget=0;
+
+    // LagFilter on rotation angle smoothing (not strictly needed but adds nice inertia)
+    lag.angle+=dt*(0.3*Math.PI*2/60);
+
+    ctx.fillStyle=`rgba(8,8,16,${0.80+lag.pulse*0.08})`;
+    ctx.fillRect(0,0,W,H);
+
+    // Beat flash radial
+    if(lag.pulse>0.01){
+      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H));
+      const flashHue=(lag.angle*57+180)%360;
+      g.addColorStop(0,`hsla(${flashHue},75%,55%,${lag.pulse*0.20})`);
+      g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    }
+
+    // HSL wheel — hue circumference, saturation radial
+    const steps=360;
+    for(let i=0;i<steps;i++){
+      const a1=(i/steps)*Math.PI*2+lag.angle;
+      const a2=((i+1)/steps)*Math.PI*2+lag.angle;
+      const hue=(i/steps)*360;
+      const layers=10;
+      for(let l=0;l<layers;l++){
+        const r0=R*(l/layers),r1=R*((l+1)/layers);
+        const sat=(l/layers)*100;
+        ctx.beginPath();ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,r1,a1,a2);ctx.arc(cx,cy,r0,a2,a1,true);ctx.closePath();
+        ctx.fillStyle=`hsl(${hue},${sat}%,50%)`;ctx.fill();
+      }
+    }
+
+    // White center
+    const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,R*0.22);
+    cg.addColorStop(0,'rgba(255,255,255,0.97)');cg.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=cg;ctx.beginPath();ctx.arc(cx,cy,R*0.22,0,Math.PI*2);ctx.fill();
+
+    // Outer vignette
+    const og=ctx.createRadialGradient(cx,cy,R*0.8,cx,cy,R*1.1);
+    og.addColorStop(0,'rgba(8,8,16,0)');og.addColorStop(1,'rgba(8,8,16,0.9)');
+    ctx.fillStyle=og;ctx.beginPath();ctx.arc(cx,cy,R*1.1,0,Math.PI*2);ctx.fill();
+
+    // Comets — LagFilter on each comet's display radius for smooth appear
+    comets.forEach(c=>{
+      c.angle+=c.speed*dt*0.65;
+      const px=cx+Math.cos(c.angle+lag.angle*0.25)*c.radius;
+      const py=cy+Math.sin(c.angle+lag.angle*0.25)*c.radius;
+      c.trail.push({x:px,y:py});
+      if(c.trail.length>c.trailLen)c.trail.shift();
+      if(c.trail.length<2)return;
+      for(let j=1;j<c.trail.length;j++){
+        const t=j/c.trail.length;
+        ctx.beginPath();ctx.moveTo(c.trail[j-1].x,c.trail[j-1].y);ctx.lineTo(c.trail[j].x,c.trail[j].y);
+        ctx.strokeStyle=`hsla(${c.hue},90%,65%,${t*0.85})`;ctx.lineWidth=t*2.5;ctx.stroke();
+      }
+      const hg=ctx.createRadialGradient(px,py,0,px,py,7);
+      hg.addColorStop(0,`hsla(${c.hue},100%,85%,${0.8+lag.pulse*0.2})`);hg.addColorStop(1,'transparent');
+      ctx.fillStyle=hg;ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 2 — COLOR MODELS LAB
+// ═══════════════════════════════════════════════════════════
+(function initModels(){
+  const rR=document.getElementById('rR'),rG=document.getElementById('rG'),rB=document.getElementById('rB');
+  const sH=document.getElementById('sH'),sS=document.getElementById('sS'),sL=document.getElementById('sL');
+  const bH=document.getElementById('bH'),bS=document.getElementById('bS'),bBl=document.getElementById('bB');
+
+  // Lag filters for smooth swatch transitions
+  const swatchLag={r:220,g:80,b:180};
+  let swatchTarget={r:220,g:80,b:180};
+  let swatchRaf=null;
+
+  function animateSwatch(){
+    const dt=0.016;
+    const tau=0.08;
+    swatchLag.r=lagFilter(swatchLag.r,swatchTarget.r,dt,tau);
+    swatchLag.g=lagFilter(swatchLag.g,swatchTarget.g,dt,tau);
+    swatchLag.b=lagFilter(swatchLag.b,swatchTarget.b,dt,tau);
+    const hex=rgbToHex(swatchLag.r,swatchLag.g,swatchLag.b);
+    document.getElementById('rgbSwatch').style.background=hex;
+    document.getElementById('hslSwatch').style.background=hex;
+    document.getElementById('hsbSwatch').style.background=hex;
+    const diff=Math.abs(swatchLag.r-swatchTarget.r)+Math.abs(swatchLag.g-swatchTarget.g)+Math.abs(swatchLag.b-swatchTarget.b);
+    if(diff>0.5)swatchRaf=requestAnimationFrame(animateSwatch);
+    else swatchRaf=null;
+  }
+
+  function updateAll(source){
+    let r=parseInt(rR.value),g=parseInt(rG.value),b=parseInt(rB.value);
+    const [H,S,L]=rgbToHsl(r,g,b);
+    const [Hb,Sb,Bv]=rgbToHsb(r,g,b);
+    const hex=rgbToHex(r,g,b);
+
+    if(source!=='hsl'){sH.value=Math.round(H);sS.value=Math.round(S);sL.value=Math.round(L);}
+    if(source!=='hsb'){bH.value=Math.round(Hb);bS.value=Math.round(Sb);bBl.value=Math.round(Bv);}
+    if(source!=='rgb'){rR.value=r;rG.value=g;rB.value=b;}
+
+    document.getElementById('rRv').textContent=r;
+    document.getElementById('rGv').textContent=g;
+    document.getElementById('rBv').textContent=b;
+    document.getElementById('sHv').textContent=Math.round(H)+'°';
+    document.getElementById('sSv').textContent=Math.round(S)+'%';
+    document.getElementById('sLv').textContent=Math.round(L)+'%';
+    document.getElementById('bHv').textContent=Math.round(Hb)+'°';
+    document.getElementById('bSv').textContent=Math.round(Sb)+'%';
+    document.getElementById('bBv').textContent=Math.round(Bv)+'%';
+    document.getElementById('rgbHex').textContent=hex.toUpperCase();
+    document.getElementById('hslHex').textContent=hex.toUpperCase();
+    document.getElementById('hsbHex').textContent=hex.toUpperCase();
+
+    // Lag-filtered swatch update
+    swatchTarget={r,g,b};
+    if(!swatchRaf)swatchRaf=requestAnimationFrame(animateSwatch);
+  }
+
+  [rR,rG,rB].forEach(s=>s.addEventListener('input',()=>updateAll('rgb')));
+  [sH,sS,sL].forEach(s=>s.addEventListener('input',()=>{
+    const [r,g,b]=hslToRgb(+sH.value,+sS.value,+sL.value);
+    rR.value=r;rG.value=g;rB.value=b;updateAll('hsl');
+  }));
+  [bH,bS,bBl].forEach(s=>s.addEventListener('input',()=>{
+    const [r,g,b]=hsbToRgb(+bH.value,+bS.value,+bBl.value);
+    rR.value=r;rG.value=g;rB.value=b;updateAll('hsb');
+  }));
+  updateAll('rgb');
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 3 — HARMONY BUILDER
+// ═══════════════════════════════════════════════════════════
+(function initHarmony(){
+  const HARMONIES=[
+    {name:'Complementary',   angles:[0,180]},
+    {name:'Triadic',         angles:[0,120,240]},
+    {name:'Tetradic',        angles:[0,90,180,270]},
+    {name:'Split-Comp',      angles:[0,150,210]},
+    {name:'Analogous',       angles:[0,30,60,-30,-60]},
+    {name:'Monochromatic',   angles:[0,0,0,0],mono:true},
+    {name:'Dbl Split-Comp',  angles:[0,30,150,210,330]},
+    {name:'Square',          angles:[0,90,180,270]},
+  ];
+
+  const ARTIST_REFS=[
+    'Rothko used complementary pairs for emotional tension.',
+    'Delacroix favored triadic schemes in his Romantic compositions.',
+    'Mondrian\'s primary tetradic — pure hue geometry.',
+    'Van Gogh\'s Starry Night uses split-complementary cool/warm contrast.',
+    'Monet built entire series from tight analogous palettes.',
+    'Turner\'s atmospheric mists — monochromatic fog and light.',
+    'Klimt layered double split-complementary gold and teal.',
+    'Itten\'s Bauhaus square studies — systematic visual vibration.',
+  ];
+
+  let baseHue=220, harmonyIdx=0;
+  const lagHue={v:220}; // LagFilter on wheel display
+
+  // Build harmony type buttons
+  const typesEl=document.getElementById('harmonyTypes');
+  HARMONIES.forEach((h,i)=>{
+    const btn=document.createElement('button');
+    btn.className='htype-btn'+(i===0?' active':'');
+    btn.textContent=h.name;
+    btn.onclick=()=>{
+      harmonyIdx=i;
+      document.querySelectorAll('.htype-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+      renderHarmony();
+    };
+    typesEl.appendChild(btn);
+  });
+
+  // Wheel canvas
+  const wCanvas=document.getElementById('harmonyWheel');
+  const wCtx=wCanvas.getContext('2d');
+  const WS=260, wCx=WS/2, wCy=WS/2, wR=WS/2-8;
+
+  function getHarmonyColors(){
+    const h=HARMONIES[harmonyIdx];
+    if(h.mono){
+      return [0,25,50,75,100].map((l,i)=>{
+        const [r,g,b]=hslToRgb(baseHue,60,l);
+        return{hue:baseHue,hex:rgbToHex(r,g,b)};
+      });
+    }
+    return h.angles.map(a=>{
+      const hue=((baseHue+a)%360+360)%360;
+      const [r,g,b]=hslToRgb(hue,75,55);
+      return{hue,hex:rgbToHex(r,g,b)};
+    });
+  }
+
+  function drawWheel(){
+    // LagFilter on lagHue for smooth wheel indicator
+    lagHue.v=lagFilter(lagHue.v,baseHue,0.016,0.12);
+
+    wCtx.clearRect(0,0,WS,WS);
+    // Draw hue wheel
+    const steps=360;
+    for(let i=0;i<steps;i++){
+      const a=(i/steps)*Math.PI*2-Math.PI/2;
+      const a2=((i+1)/steps)*Math.PI*2-Math.PI/2;
+      wCtx.beginPath();
+      wCtx.moveTo(wCx,wCy);
+      wCtx.arc(wCx,wCy,wR,a,a2);
+      wCtx.closePath();
+      wCtx.fillStyle=`hsl(${i},80%,55%)`;
+      wCtx.fill();
+    }
+    // White center
+    wCtx.beginPath();wCtx.arc(wCx,wCy,wR*0.38,0,Math.PI*2);
+    wCtx.fillStyle='#101018';wCtx.fill();
+
+    // Harmony dots
+    const colors=getHarmonyColors();
+    colors.forEach((c,i)=>{
+      const angle=(c.hue/360)*Math.PI*2-Math.PI/2;
+      const dr=wR*0.69;
+      const dx=wCx+Math.cos(angle)*dr, dy=wCy+Math.sin(angle)*dr;
+      wCtx.beginPath();wCtx.arc(dx,dy,9,0,Math.PI*2);
+      wCtx.fillStyle=c.hex;wCtx.fill();
+      wCtx.strokeStyle='#fff';wCtx.lineWidth=2;wCtx.stroke();
+    });
+
+    // Line connectors
+    if(colors.length>=2){
+      wCtx.save();wCtx.globalAlpha=0.4;wCtx.strokeStyle='#fff';wCtx.lineWidth=1.5;
+      const pts=colors.map(c=>{
+        const a=(c.hue/360)*Math.PI*2-Math.PI/2, dr=wR*0.69;
+        return{x:wCx+Math.cos(a)*dr,y:wCy+Math.sin(a)*dr};
+      });
+      wCtx.beginPath();pts.forEach((p,i)=>i===0?wCtx.moveTo(p.x,p.y):wCtx.lineTo(p.x,p.y));
+      wCtx.closePath();wCtx.stroke();wCtx.restore();
+    }
+  }
+
+  function drawScene(colors){
+    const canvas=document.getElementById('harmonyScene');
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width,H=canvas.height;
+    const hexes=colors.map(c=>c.hex);
+    const get=(i)=>hexes[i%hexes.length]||hexes[0];
+
+    ctx.clearRect(0,0,W,H);
+    // Sky
+    const sky=ctx.createLinearGradient(0,0,0,H*0.55);
+    sky.addColorStop(0,get(1));sky.addColorStop(1,get(0));
+    ctx.fillStyle=sky;ctx.fillRect(0,0,W,H*0.55);
+    // Ground
+    ctx.fillStyle=get(2);ctx.fillRect(0,H*0.55,W,H*0.45);
+    // Sun / Moon circle
+    ctx.beginPath();ctx.arc(W*0.78,H*0.22,28,0,Math.PI*2);
+    ctx.fillStyle=get(hexes.length>3?3:0);ctx.fill();
+    // Mountain
+    ctx.beginPath();ctx.moveTo(W*0.1,H*0.55);ctx.lineTo(W*0.38,H*0.18);ctx.lineTo(W*0.66,H*0.55);ctx.closePath();
+    ctx.fillStyle=get(hexes.length>2?2:1);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*0.35,H*0.55);ctx.lineTo(W*0.58,H*0.25);ctx.lineTo(W*0.80,H*0.55);ctx.closePath();
+    ctx.fillStyle=get(1);ctx.globalAlpha=0.7;ctx.fill();ctx.globalAlpha=1;
+    // Trees
+    for(let t=0;t<5;t++){
+      const tx=W*(0.08+t*0.18),ty=H*0.55;
+      ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(tx-10,ty-30);ctx.lineTo(tx+10,ty-30);ctx.closePath();
+      ctx.fillStyle=get(hexes.length>4?4:2);ctx.fill();
+    }
+    // Reflection in "water"
+    ctx.globalAlpha=0.3;
+    const ref=ctx.createLinearGradient(0,H*0.55,0,H);
+    ref.addColorStop(0,get(0));ref.addColorStop(1,'#080810');
+    ctx.fillStyle=ref;ctx.fillRect(0,H*0.75,W,H*0.25);
+    ctx.globalAlpha=1;
+  }
+
+  function renderHarmony(){
+    drawWheel();
+    const colors=getHarmonyColors();
+
+    // Update swatches
+    const swEl=document.getElementById('paletteSwatch');
+    swEl.innerHTML='';
+    colors.forEach(c=>{
+      const d=document.createElement('div');
+      d.className='palette-swatch';
+      d.style.background=c.hex;
+      d.title=c.hex;
+      swEl.appendChild(d);
+    });
+
+    drawScene(colors);
+    document.getElementById('harmonyNote').textContent=ARTIST_REFS[harmonyIdx]||'';
+  }
+
+  // Click on wheel to set base hue
+  wCanvas.addEventListener('click',e=>{
+    const rect=wCanvas.getBoundingClientRect();
+    const x=e.clientX-rect.left-wCx, y=e.clientY-rect.top-wCy;
+    const dist=Math.sqrt(x*x+y*y);
+    if(dist>wR*0.35&&dist<wR){
+      let angle=Math.atan2(y,x)+Math.PI/2;
+      if(angle<0)angle+=Math.PI*2;
+      baseHue=(angle/(Math.PI*2))*360;
+      renderHarmony();
+    }
+  });
+
+  // Wheel animation loop for smooth lagHue
+  function wheelLoop(){lagHue.v=lagFilter(lagHue.v,baseHue,0.016,0.12);drawWheel();requestAnimationFrame(wheelLoop);}
+  wheelLoop();
+  renderHarmony();
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 4 — CONTRAST & ACCESSIBILITY
+// ═══════════════════════════════════════════════════════════
+(function initContrast(){
+  const fgPicker=document.getElementById('fgColor');
+  const bgPicker=document.getElementById('bgColor');
+
+  // Lag state for contrast ratio display
+  const lag={ratio:18.9,targetRatio:18.9};
+  let rafId=null;
+
+  function animateRatio(){
+    lag.ratio=lagFilter(lag.ratio,lag.targetRatio,0.016,0.12);
+    document.getElementById('ratioDisplay').textContent=lag.ratio.toFixed(1)+':1';
+    if(Math.abs(lag.ratio-lag.targetRatio)>0.05)rafId=requestAnimationFrame(animateRatio);
+    else{document.getElementById('ratioDisplay').textContent=lag.targetRatio.toFixed(1)+':1';rafId=null;}
+  }
+
+  function updateContrast(){
+    const fg=hexToRgb(fgPicker.value);
+    const bg=hexToRgb(bgPicker.value);
+    document.getElementById('fgHex').textContent=fgPicker.value;
+    document.getElementById('bgHex').textContent=bgPicker.value;
+
+    const prev=document.getElementById('contrastPreview');
+    prev.style.color=fgPicker.value;
+    prev.style.background=bgPicker.value;
+
+    const cr=contrastRatio(fg,bg);
+    lag.targetRatio=cr;
+    if(!rafId)rafId=requestAnimationFrame(animateRatio);
+
+    // WCAG pills
+    const pills=document.getElementById('wcagPills');
+    pills.innerHTML='';
+    const defs=[
+      {label:'Fail',cls:'fail',pass:cr<4.5},
+      {label:'AA Normal',cls:'aa',pass:cr>=4.5},
+      {label:'AA Large',cls:'aa',pass:cr>=3},
+      {label:'AAA',cls:'aaa',pass:cr>=7},
+    ];
+    defs.forEach(d=>{
+      if(d.label==='Fail'&&cr>=4.5)return;
+      const p=document.createElement('span');
+      p.className='wpill '+(d.pass?d.cls:'off');
+      p.textContent=d.label+(d.pass?' ✓':' ✗');
+      pills.appendChild(p);
+    });
+
+    drawAccessGrid(bg);
+  }
+
+  function drawAccessGrid(bg){
+    const canvas=document.getElementById('accessGrid');
+    if(!canvas)return;
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,W,H);
+    const cols=18,rows=10;
+    const cw=W/cols,ch=H/rows;
+    for(let row=0;row<rows;row++){
+      for(let col=0;col<cols;col++){
+        const hue=(col/cols)*360;
+        const light=20+row*7;
+        const [r,g,b]=hslToRgb(hue,80,light);
+        const cr=contrastRatio([r,g,b],bg);
+        const passes=cr>=4.5;
+        ctx.fillStyle=rgbToHex(r,g,b);
+        ctx.fillRect(col*cw,row*ch,cw-1,ch-1);
+        if(passes){
+          ctx.strokeStyle='rgba(255,255,255,0.8)';
+          ctx.lineWidth=2;
+          ctx.strokeRect(col*cw+1,row*ch+1,cw-3,ch-3);
+        }
+      }
+    }
+    // Legend
+    ctx.fillStyle='rgba(255,255,255,0.6)';
+    ctx.font='10px monospace';
+    ctx.fillText('White border = passes AA (4.5:1)',8,H-6);
+  }
+
+  // Simultaneous contrast illusion
+  function drawSimultaneous(){
+    const c=document.getElementById('simultCanvas');
+    if(!c)return;
+    const ctx=c.getContext('2d');
+    const W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    // Left half: dark bg
+    ctx.fillStyle='#1a1a1a';ctx.fillRect(0,0,W/2,H);
+    // Right half: light bg
+    ctx.fillStyle='#d0d0d0';ctx.fillRect(W/2,0,W/2,H);
+    // Same gray square on each side
+    const grayHex='#888888';
+    const sw=50,sh=50;
+    ctx.fillStyle=grayHex;
+    ctx.fillRect(W/4-sw/2,H/2-sh/2,sw,sh);
+    ctx.fillRect(W*3/4-sw/2,H/2-sh/2,sw,sh);
+    // Labels
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='11px system-ui';
+    ctx.fillText('Same gray',W/4-28,H-10);
+    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillText('Same gray',W*3/4-28,H-10);
+  }
+
+  // Bezold effect
+  function drawBezold(){
+    const c=document.getElementById('bezoldCanvas');
+    if(!c)return;
+    const ctx=c.getContext('2d');
+    const W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    const sz=14;
+    // Left: pink stripes
+    for(let y=0;y<H;y+=sz*2){
+      for(let x=0;x<W/2;x+=sz){
+        ctx.fillStyle=(Math.floor(x/sz)%2===0)?'#e8c0c0':'#888';
+        ctx.fillRect(x,y,sz,sz);ctx.fillRect(x,y+sz,sz,sz);
+      }
+    }
+    // Right: blue stripes
+    for(let y=0;y<H;y+=sz*2){
+      for(let x=W/2;x<W;x+=sz){
+        ctx.fillStyle=(Math.floor(x/sz)%2===0)?'#8888cc':'#888';
+        ctx.fillRect(x,y,sz,sz);ctx.fillRect(x,y+sz,sz,sz);
+      }
+    }
+    // Label — center divider
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.fillRect(W/2-1,0,2,H);
+    ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='11px system-ui';
+    ctx.fillText('Pink mix',8,H-10);
+    ctx.fillText('Blue mix',W/2+8,H-10);
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.fillText('← same gray, different context →',W/2-95,14);
+  }
+
+  fgPicker.addEventListener('input',updateContrast);
+  bgPicker.addEventListener('input',updateContrast);
+  updateContrast();
+  drawSimultaneous();
+  drawBezold();
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 5 — COLOR PSYCHOLOGY & TEMPERATURE
+// ═══════════════════════════════════════════════════════════
+(function initPsychology(){
+  const EMOTIONS=[
+    {hue:0,   name:'Red',     emotions:'Energy, passion, urgency, danger, love. Used in warnings and brand CTAs.',cultures:'West: danger/love. China: luck. India: purity.'},
+    {hue:30,  name:'Orange',  emotions:'Warmth, enthusiasm, creativity, appetite. Friendly but assertive.',cultures:'West: creativity. India: sacred. Netherlands: national color.'},
+    {hue:60,  name:'Yellow',  emotions:'Optimism, clarity, warmth. Attention-grabbing; also anxiety in excess.',cultures:'West: caution/happiness. China: imperial. Egypt: mourning.'},
+    {hue:120, name:'Green',   emotions:'Nature, growth, calm, safety. Associated with health and prosperity.',cultures:'Universal nature link. Islam: sacred. West: envy.'},
+    {hue:180, name:'Cyan',    emotions:'Clarity, freshness, technology. Cool and precise.',cultures:'Modernist/tech associations globally.'},
+    {hue:210, name:'Blue',    emotions:'Trust, calm, depth, stability. Most universally liked color.',cultures:'West: trust/sadness. Middle East: protection. Global: reliability.'},
+    {hue:270, name:'Purple',  emotions:'Royalty, mystery, spirituality, creativity. Rare in nature.',cultures:'West: royalty/luxury. East: mourning. Japan: ceremony.'},
+    {hue:300, name:'Magenta', emotions:'Passion, innovation, unconventional. High-energy, non-traditional.',cultures:'Post-modern: queer identity. Branding: disruptive.'},
+    {hue:330, name:'Pink',    emotions:'Tenderness, romance, playfulness. Culturally gendered associations.',cultures:'West: femininity. Japan: cherry blossoms/youth. Sports: toughness (Baker-Miller pink).'},
+  ];
+
+  const KELVIN=[
+    {k:3000,label:'3000K — Candlelight/Tungsten',hsl:[28,100,58]},
+    {k:4500,label:'4500K — Fluorescent',hsl:[48,70,72]},
+    {k:5600,label:'5600K — Daylight',hsl:[210,30,92]},
+    {k:7500,label:'7500K — Overcast Sky',hsl:[210,60,82]},
+    {k:9000,label:'9000K — Clear Blue Sky',hsl:[215,80,72]},
+  ];
+
+  // Temp spectrum canvas
+  const specCanvas=document.getElementById('tempSpectrum');
+  const specCtx=specCanvas.getContext('2d');
+
+  function resizeSpec(){specCanvas.width=specCanvas.offsetWidth;specCanvas.height=specCanvas.offsetHeight;}
+  resizeSpec();window.addEventListener('resize',resizeSpec);
+
+  function drawSpectrum(){
+    const W=specCanvas.width,H=specCanvas.height;
+    const g=specCtx.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,'hsl(10,100%,50%)');    // deep warm
+    g.addColorStop(0.3,'hsl(40,100%,65%)');  // golden
+    g.addColorStop(0.5,'hsl(55,80%,80%)');   // daylight neutral
+    g.addColorStop(0.7,'hsl(200,60%,80%)');  // cool
+    g.addColorStop(1,'hsl(215,100%,60%)');   // deep cool
+    specCtx.fillStyle=g;specCtx.fillRect(0,0,W,H);
+
+    // Cursor indicator
+    const cx=specLag.x*W;
+    specCtx.fillStyle='rgba(0,0,0,0.4)';
+    specCtx.fillRect(cx-1,0,2,H);
+    specCtx.beginPath();specCtx.arc(cx,H/2,8,0,Math.PI*2);
+    specCtx.fillStyle='#fff';specCtx.fill();
+    specCtx.strokeStyle='rgba(0,0,0,0.4)';specCtx.lineWidth=2;specCtx.stroke();
+  }
+
+  // Room canvas
+  const roomCanvas=document.getElementById('roomCanvas');
+  const roomCtx=roomCanvas.getContext('2d');
+
+  function resizeRoom(){roomCanvas.width=roomCanvas.offsetWidth;roomCanvas.height=roomCanvas.offsetHeight;}
+  resizeRoom();window.addEventListener('resize',resizeRoom);
+
+  const specLag={x:0.5,targetX:0.5};
+
+  function getKelvinColor(t){
+    // t 0..1: 0=warm(3000K), 1=cool(9000K)
+    const r=255,g=Math.round(180+t*60),b=Math.round(80+t*175);
+    return[Math.min(255,r),Math.min(255,g),Math.min(255,b)];
+  }
+
+  function drawRoom(){
+    const W=roomCanvas.width,H=roomCanvas.height;
+    const t=specLag.x;
+    const [lr,lg,lb]=getKelvinColor(t);
+    const lightHex=rgbToHex(lr,lg,lb);
+    const ambAlpha=0.45;
+
+    roomCtx.clearRect(0,0,W,H);
+    // Floor
+    const floor=roomCtx.createLinearGradient(0,H*0.5,0,H);
+    floor.addColorStop(0,`rgba(${lr},${lg},${lb},0.3)`);
+    floor.addColorStop(1,'#0a0a12');
+    roomCtx.fillStyle=floor;roomCtx.fillRect(0,H*0.5,W,H);
+    // Back wall
+    const wall=roomCtx.createLinearGradient(0,0,0,H*0.6);
+    wall.addColorStop(0,`rgba(${lr},${lg},${lb},0.18)`);
+    wall.addColorStop(1,'#12121c');
+    roomCtx.fillStyle=wall;roomCtx.fillRect(0,0,W,H*0.6);
+    // Window
+    const wx=W*0.6,wy=H*0.08,ww=W*0.3,wh=H*0.38;
+    const wg=roomCtx.createRadialGradient(wx+ww/2,wy,0,wx+ww/2,wy+wh/2,ww);
+    wg.addColorStop(0,lightHex);wg.addColorStop(1,`rgba(${lr},${lg},${lb},0.1)`);
+    roomCtx.fillStyle=wg;roomCtx.fillRect(wx,wy,ww,wh);
+    roomCtx.strokeStyle=`rgba(${lr},${lg},${lb},0.4)`;roomCtx.lineWidth=2;roomCtx.strokeRect(wx,wy,ww,wh);
+    // Desk
+    roomCtx.fillStyle=`rgba(${lr*0.4|0},${lg*0.3|0},${lb*0.2|0},0.8)`;
+    roomCtx.fillRect(W*0.1,H*0.65,W*0.45,H*0.08);
+    // Floor line
+    roomCtx.strokeStyle=`rgba(${lr},${lg},${lb},0.15)`;roomCtx.lineWidth=1;
+    roomCtx.beginPath();roomCtx.moveTo(0,H*0.5);roomCtx.lineTo(W,H*0.5);roomCtx.stroke();
+    // Kelvin label
+    const kLabel=t<0.25?'3000K Tungsten':t<0.45?'4500K Fluorescent':t<0.6?'5600K Daylight':t<0.8?'7500K Overcast':'9000K Sky';
+    roomCtx.fillStyle=`rgba(${lr},${lg},${lb},0.7)`;
+    roomCtx.font=`bold 12px system-ui`;roomCtx.fillText(kLabel,10,20);
+  }
+
+  // Lag loop for temperature cursor
+  let roomRaf=null;
+  function tempLoop(){
+    specLag.x=lagFilter(specLag.x,specLag.targetX,0.016,0.15);
+    drawSpectrum();drawRoom();
+    const diff=Math.abs(specLag.x-specLag.targetX);
+    if(diff>0.001)roomRaf=requestAnimationFrame(tempLoop);
+    else roomRaf=null;
+  }
+
+  // Spectrum interactions
+  function onSpecInput(e){
+    const rect=specCanvas.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width;
+    specLag.targetX=Math.max(0,Math.min(1,x));
+    const t=specLag.targetX;
+    const k=Math.round(3000+t*6000);
+    document.getElementById('tempLabel').textContent=`Color Temperature: ~${k}K`;
+    if(!roomRaf)roomRaf=requestAnimationFrame(tempLoop);
+  }
+  let specDragging=false;
+  specCanvas.addEventListener('mousedown',e=>{specDragging=true;onSpecInput(e);});
+  window.addEventListener('mousemove',e=>{if(specDragging)onSpecInput(e);});
+  window.addEventListener('mouseup',()=>specDragging=false);
+  specCanvas.addEventListener('touchmove',e=>{e.preventDefault();onSpecInput(e.touches[0]);},{passive:false});
+
+  // Emotion wheel
+  const emCanvas=document.getElementById('emotionCanvas');
+  const emCtx=emCanvas.getContext('2d');
+  const emS=280,emCx=emS/2,emCy=emS/2,emR=emS/2-6;
+
+  function drawEmotionWheel(){
+    emCtx.clearRect(0,0,emS,emS);
+    const steps=360;
+    for(let i=0;i<steps;i++){
+      const a=(i/steps)*Math.PI*2-Math.PI/2;
+      const a2=((i+1)/steps)*Math.PI*2-Math.PI/2;
+      emCtx.beginPath();emCtx.moveTo(emCx,emCy);
+      emCtx.arc(emCx,emCy,emR,a,a2);emCtx.closePath();
+      emCtx.fillStyle=`hsl(${i},75%,55%)`;emCtx.fill();
+    }
+    emCtx.beginPath();emCtx.arc(emCx,emCy,emR*0.35,0,Math.PI*2);
+    emCtx.fillStyle='#101018';emCtx.fill();
+  }
+  drawEmotionWheel();
+
+  emCanvas.addEventListener('mousemove',e=>{
+    const rect=emCanvas.getBoundingClientRect();
+    const x=e.clientX-rect.left-emCx,y=e.clientY-rect.top-emCy;
+    const dist=Math.sqrt(x*x+y*y);
+    if(dist<emR*0.35||dist>emR)return;
+    let angle=Math.atan2(y,x)+Math.PI/2;
+    if(angle<0)angle+=Math.PI*2;
+    const hue=((angle/(Math.PI*2))*360+360)%360;
+    const em=EMOTIONS.reduce((best,e2)=>{
+      const d=Math.abs(((e2.hue-hue)+360)%360);
+      const d2=Math.abs(((hue-e2.hue)+360)%360);
+      return Math.min(d,d2)<Math.abs(((best.hue-hue)+360)%360)?e2:best;
+    },EMOTIONS[0]);
+    document.getElementById('emotionTooltip').innerHTML=
+      `<strong style="color:hsl(${em.hue},75%,65%)">${em.name}</strong><br>${em.emotions}<br><em style="font-size:.75rem;color:#666">${em.cultures}</em>`;
+  });
+
+  drawSpectrum();drawRoom();
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 6 — PERCEPTUAL COLOR SPACES
+// ═══════════════════════════════════════════════════════════
+(function initPerceptual(){
+  const percAInput=document.getElementById('percA');
+  const percBInput=document.getElementById('percB');
+  const percCanvas=document.getElementById('percCanvas');
+  const percCtx=percCanvas.getContext('2d');
+
+  // Lag state for smooth gradient updates
+  const lag={cA:[0,0,255],cB:[255,255,0],targetA:[0,0,255],targetB:[255,255,0]};
+  let gradRaf=null;
+
+  function resizePerc(){percCanvas.width=percCanvas.offsetWidth;percCanvas.height=percCanvas.offsetHeight||160;}
+  resizePerc();window.addEventListener('resize',resizePerc);
+
+  function drawGradients(){
+    const W=percCanvas.width,H=percCanvas.height;
+    if(W<10||H<10)return;
+    const cA=lag.cA,cB=lag.cB;
+    const rowH=Math.floor(H/3);
+    const labels=['RGB','Lab','LCH'];
+    const N=W;
+
+    for(let row=0;row<3;row++){
+      const y=row*rowH;
+      for(let x=0;x<N;x++){
+        const t=x/N;
+        let rgb;
+        if(row===0)rgb=[cA[0]+(cB[0]-cA[0])*t,cA[1]+(cB[1]-cA[1])*t,cA[2]+(cB[2]-cA[2])*t];
+        else if(row===1)rgb=lerpLab(cA,cB,t);
+        else rgb=lerpLch(cA,cB,t);
+        percCtx.fillStyle=`rgb(${rgb[0]|0},${rgb[1]|0},${rgb[2]|0})`;
+        percCtx.fillRect(x,y,1,rowH);
+      }
+      // Label
+      percCtx.fillStyle='rgba(255,255,255,0.7)';
+      percCtx.font='bold 12px monospace';
+      percCtx.fillText(labels[row],8,y+rowH/2+5);
+    }
+  }
+
+  function animateGrad(){
+    const tau=0.09;const dt=0.016;
+    for(let i=0;i<3;i++){
+      lag.cA[i]=lagFilter(lag.cA[i],lag.targetA[i],dt,tau);
+      lag.cB[i]=lagFilter(lag.cB[i],lag.targetB[i],dt,tau);
+    }
+    drawGradients();
+    updateDelta();
+    const diff=lag.cA.reduce((s,v,i)=>s+Math.abs(v-lag.targetA[i]),0)+lag.cB.reduce((s,v,i)=>s+Math.abs(v-lag.targetB[i]),0);
+    if(diff>1)gradRaf=requestAnimationFrame(animateGrad);
+    else gradRaf=null;
+  }
+
+  function updateDelta(){
+    const de=deltaE(lag.cA.map(v=>Math.round(v)),lag.cB.map(v=>Math.round(v)));
+    const el=document.getElementById('deltaDisplay');
+    if(el)el.textContent='ΔE '+de.toFixed(1);
+    const desc=document.getElementById('deltaDesc');
+    if(desc){
+      if(de<1)desc.textContent='< 1 — Imperceptible difference';
+      else if(de<3)desc.textContent='1–3 — Just noticeable';
+      else if(de<6)desc.textContent='3–6 — Moderate difference';
+      else if(de<12)desc.textContent='6–12 — Large difference';
+      else desc.textContent='> 12 — Very large difference';
+    }
+  }
+
+  percAInput.addEventListener('input',()=>{
+    lag.targetA=hexToRgb(percAInput.value);
+    if(!gradRaf)gradRaf=requestAnimationFrame(animateGrad);
+  });
+  percBInput.addEventListener('input',()=>{
+    lag.targetB=hexToRgb(percBInput.value);
+    if(!gradRaf)gradRaf=requestAnimationFrame(animateGrad);
+  });
+
+  // Gamut visualization
+  const gamutCanvas=document.getElementById('gamutCanvas');
+  const gamutCtx=gamutCanvas.getContext('2d');
+
+  function drawGamut(){
+    const W=gamutCanvas.width,H=gamutCanvas.height;
+    gamutCtx.clearRect(0,0,W,H);
+    const cx=W/2,base=H-30,scale=Math.min(W,H)*0.75;
+
+    // Visible gamut (horseshoe approximation — simplified CIE xy)
+    const visible=[[0.17,0.01],[0.08,0.84],[0.73,0.27],[0.17,0.01]];
+    const toScreen=([x,y])=>[cx+(x-0.33)*scale*1.2,base-(y-0.05)*scale*1.4];
+
+    // Fill visible gamut with spectral colors
+    gamutCtx.save();
+    gamutCtx.beginPath();
+    visible.forEach(([x,y],i)=>{const[sx,sy]=toScreen([x,y]);i===0?gamutCtx.moveTo(sx,sy):gamutCtx.lineTo(sx,sy);});
+    gamutCtx.closePath();
+    const steps=80;
+    for(let i=0;i<=steps;i++){
+      const t=i/steps;
+      const hue=t*300;
+      const[r,g,b]=hslToRgb(hue,90,50);
+      const x=0.17+(0.73-0.17)*Math.sin(t*Math.PI)*0.8,y=0.01+(0.84-0.01)*Math.sin(t*Math.PI*0.7)*0.7;
+    }
+    gamutCtx.clip();
+    // Rainbow fill
+    for(let i=0;i<=W;i++){
+      const t=i/W;
+      const hue=t*360,sat=50+t*40,lit=40+Math.sin(t*Math.PI)*20;
+      gamutCtx.strokeStyle=`hsl(${hue},${sat}%,${lit}%)`;
+      gamutCtx.beginPath();gamutCtx.moveTo(i,0);gamutCtx.lineTo(i,H);gamutCtx.stroke();
+    }
+    gamutCtx.restore();
+
+    // Visible gamut outline
+    gamutCtx.beginPath();
+    [[0.17,0.01],[0.08,0.84],[0.73,0.27]].forEach(([x,y],i)=>{
+      const[sx,sy]=toScreen([x,y]);i===0?gamutCtx.moveTo(sx,sy):gamutCtx.lineTo(sx,sy);
+    });
+    gamutCtx.closePath();
+    gamutCtx.strokeStyle='rgba(255,255,255,0.7)';gamutCtx.lineWidth=2;gamutCtx.stroke();
+
+    // Display-P3 triangle
+    const p3=[[0.68,0.32],[0.265,0.69],[0.15,0.06]];
+    gamutCtx.beginPath();
+    p3.forEach(([x,y],i)=>{const[sx,sy]=toScreen([x,y]);i===0?gamutCtx.moveTo(sx,sy):gamutCtx.lineTo(sx,sy);});
+    gamutCtx.closePath();
+    gamutCtx.strokeStyle='rgba(100,200,255,0.85)';gamutCtx.lineWidth=2;gamutCtx.stroke();
+    gamutCtx.fillStyle='rgba(100,200,255,0.08)';gamutCtx.fill();
+
+    // sRGB triangle
+    const srgb=[[0.64,0.33],[0.30,0.60],[0.15,0.06]];
+    gamutCtx.beginPath();
+    srgb.forEach(([x,y],i)=>{const[sx,sy]=toScreen([x,y]);i===0?gamutCtx.moveTo(sx,sy):gamutCtx.lineTo(sx,sy);});
+    gamutCtx.closePath();
+    gamutCtx.strokeStyle='rgba(255,255,255,0.95)';gamutCtx.lineWidth=2;gamutCtx.stroke();
+    gamutCtx.fillStyle='rgba(255,255,255,0.10)';gamutCtx.fill();
+
+    // Legend
+    const legend=[
+      {color:'rgba(255,255,255,0.9)',label:'sRGB'},
+      {color:'rgba(100,200,255,0.85)',label:'Display-P3'},
+      {color:'rgba(255,255,255,0.5)',label:'Visible Gamut'},
+    ];
+    legend.forEach((l,i)=>{
+      gamutCtx.fillStyle=l.color;gamutCtx.font='bold 12px system-ui';
+      gamutCtx.fillText(l.label,10,H-12-i*18);
+    });
+  }
+  drawGamut();
+
+  // Init gradient
+  setTimeout(()=>{resizePerc();drawGradients();updateDelta();},100);
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 7 — COLOR IN PRACTICE
+// ═══════════════════════════════════════════════════════════
+(function initPractice(){
+  // ── Brand analyzer ────────────────────────────────────────
+  function analyzeBrand(){
+    const hex=document.getElementById('brandColor').value;
+    const [r,g,b]=hexToRgb(hex);
+    const [H,S,L]=rgbToHsl(r,g,b);
+    const [,Sb,Bv]=rgbToHsb(r,g,b);
+    const complH=(H+180)%360;
+    const [cr,cg,cb]=hslToRgb(complH,S,L);
+    const temp=H<60||H>300?'Warm':'Cool';
+    const vibe=S>70?'Vibrant':'Muted';
+    const profile=L<35?'Dark':'L>65?Light:Mid-tone';
+
+    document.getElementById('brandResult').innerHTML=`
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <div style="width:36px;height:36px;border-radius:6px;background:${hex}"></div>
+        <div style="width:36px;height:36px;border-radius:6px;background:${rgbToHex(cr,cg,cb)}"></div>
+        <div style="font-size:.75rem;color:var(--muted);padding-top:4px">Complementary pair</div>
+      </div>
+      <b>Hue:</b> ${Math.round(H)}° (${temp})<br>
+      <b>Saturation:</b> ${Math.round(S)}% (${vibe})<br>
+      <b>Lightness:</b> ${Math.round(L)}%<br>
+      <b>Best harmony:</b> ${S>60?'Complementary or Triadic':'Analogous or Monochromatic'}<br>
+      <b>Use for:</b> ${H<30||H>330?'CTAs, alerts, urgency':H<90?'Optimism, energy, food':H<180?'Growth, health, eco':H<260?'Trust, tech, calm':'Luxury, creativity'}
+    `;
+  }
+  document.getElementById('brandColor').addEventListener('input',analyzeBrand);
+  analyzeBrand();
+
+  // ── Data viz palettes ────────────────────────────────────
+  function buildDataviz(){
+    const el=document.getElementById('datavizPalettes');
+    const palettes=[
+      {name:'Sequential',colors:Array.from({length:6},(_,i)=>hslToRgb(220,70,20+i*12))},
+      {name:'Diverging', colors:Array.from({length:6},(_,i)=>{
+        if(i<3)return hslToRgb(220,70,30+i*15);
+        return hslToRgb(10,70,30+(i-3)*15);
+      })},
+      {name:'Categorical',colors:[[220,70,55],[40,80,60],[130,60,50],[300,65,55],[180,70,45],[60,80,55]].map(([h,s,l])=>hslToRgb(h,s,l))},
+    ];
+    el.innerHTML='';
+    palettes.forEach(p=>{
+      const row=document.createElement('div');row.className='dvrow';
+      const span=document.createElement('span');span.textContent=p.name;row.appendChild(span);
+      p.colors.forEach(([r,g,b])=>{
+        const d=document.createElement('div');d.className='dvblock';
+        d.style.background=rgbToHex(r,g,b);row.appendChild(d);
+      });
+      el.appendChild(row);
+    });
+  }
+  buildDataviz();
+
+  // ── Dark mode generator ──────────────────────────────────
+  const darkCanvas=document.getElementById('darkModeCanvas');
+  const darkCtx=darkCanvas.getContext('2d');
+
+  // LagFilter on dark mode color transition
+  const darkLag={h:99,s:84,l:54,targetH:99,targetS:84,targetL:54};
+  let darkRaf=null;
+
+  function drawDarkMode(){
+    const W=darkCanvas.width,H=darkCanvas.height;
+    const {h,s,l}=darkLag;
+    // Dark mode: reduce lightness, slightly desaturate
+    const darkL=Math.max(8,l-40);const darkS=Math.max(20,s-15);
+    // Shift for dark bg (complement the role of lightness)
+    const adaptedL=l>50?l-40:l+30;
+
+    darkCtx.clearRect(0,0,W,H);
+    // Light mode half
+    darkCtx.fillStyle=`hsl(${h},${s}%,${l}%)`;darkCtx.fillRect(0,0,W/2,H);
+    darkCtx.fillStyle=`rgba(0,0,0,0.15)`;darkCtx.fillRect(0,0,W/2,H);
+    darkCtx.fillStyle='#fff';darkCtx.font='bold 11px system-ui';darkCtx.textAlign='center';
+    darkCtx.fillText('Light Mode',W/4,H/2+4);
+    // Dark mode half
+    darkCtx.fillStyle='#0d0d18';darkCtx.fillRect(W/2,0,W/2,H);
+    darkCtx.fillStyle=`hsl(${h},${darkS}%,${adaptedL}%)`;
+    darkCtx.fillRect(W/2+10,10,W/2-20,H-20);
+    darkCtx.fillStyle='rgba(0,0,0,0.5)';darkCtx.fillRect(W/2,0,W/2,H);
+    darkCtx.fillStyle=`hsl(${h},${darkS}%,${adaptedL}%)`;
+    darkCtx.fillRect(W/2+10,H*0.25,W/2-20,H*0.5);
+    darkCtx.fillStyle='rgba(255,255,255,0.8)';darkCtx.fillText('Dark Mode',W*3/4,H/2+4);
+    darkCtx.textAlign='left';
+
+    // Divider
+    darkCtx.fillStyle='rgba(255,255,255,0.15)';darkCtx.fillRect(W/2-1,0,2,H);
+    // Hex labels
+    darkCtx.fillStyle='rgba(255,255,255,0.5)';darkCtx.font='10px monospace';
+    darkCtx.fillText(`hsl(${h},${s}%,${l}%)`,4,14);
+    darkCtx.fillText(`hsl(${h},${darkS}%,${adaptedL}%)`,W/2+4,14);
+  }
+
+  function animateDark(){
+    const tau=0.1;const dt=0.016;
+    darkLag.h=lagFilter(darkLag.h,darkLag.targetH,dt,tau);
+    darkLag.s=lagFilter(darkLag.s,darkLag.targetS,dt,tau);
+    darkLag.l=lagFilter(darkLag.l,darkLag.targetL,dt,tau);
+    drawDarkMode();
+    const diff=Math.abs(darkLag.h-darkLag.targetH)+Math.abs(darkLag.s-darkLag.targetS)+Math.abs(darkLag.l-darkLag.targetL);
+    if(diff>0.2)darkRaf=requestAnimationFrame(animateDark);
+    else darkRaf=null;
+  }
+
+  document.getElementById('lightColor').addEventListener('input',e=>{
+    const [r,g,b]=hexToRgb(e.target.value);
+    const [H,S,L]=rgbToHsl(r,g,b);
+    darkLag.targetH=H;darkLag.targetS=S;darkLag.targetL=L;
+    if(!darkRaf)darkRaf=requestAnimationFrame(animateDark);
+  });
+  drawDarkMode();
+
+  // ── 60-30-10 Rule ────────────────────────────────────────
+  const propBar=document.getElementById('propBar');
+  const practiceScene=document.getElementById('practiceScene');
+  const pSceneCtx=practiceScene.getContext('2d');
+
+  // Lag state for proportions
+  const propLag={p60:60,p30:30,targetP60:60,targetP30:30};
+  let propRaf=null;
+
+  function getAccent(){return 100-propLag.p60-propLag.p30;}
+
+  function drawPropBar(){
+    const dom=document.getElementById('domColor').value;
+    const sec=document.getElementById('secColor').value;
+    const acc=document.getElementById('accColor').value;
+    const a=getAccent();
+    const total=propLag.p60+propLag.p30+Math.max(0,a);
+    propBar.innerHTML='';
+    [[dom,propLag.p60/total],[sec,propLag.p30/total],[acc,Math.max(0,a)/total]].forEach(([col,frac])=>{
+      const d=document.createElement('div');
+      d.style.flex=frac;d.style.background=col;
+      d.style.transition='flex 0.1s';
+      propBar.appendChild(d);
+    });
+  }
+
+  function drawPracticeScene(){
+    const W=practiceScene.width,H=practiceScene.height;
+    const dom=document.getElementById('domColor').value;
+    const sec=document.getElementById('secColor').value;
+    const acc=document.getElementById('accColor').value;
+    pSceneCtx.clearRect(0,0,W,H);
+    // Background (dominant)
+    pSceneCtx.fillStyle=dom;pSceneCtx.fillRect(0,0,W,H);
+    // Sidebar (secondary)
+    pSceneCtx.fillStyle=sec;pSceneCtx.fillRect(0,0,W*0.28,H);
+    // Cards (dominant overlay)
+    const [r,g,b]=hexToRgb(dom);
+    pSceneCtx.fillStyle=`rgba(${r+20},${g+20},${b+20},0.6)`;
+    [0.35,0.62].forEach(x=>{pSceneCtx.fillRect(W*x,H*0.15,W*0.22,H*0.7);});
+    // Accent elements (buttons/highlights)
+    pSceneCtx.fillStyle=acc;
+    pSceneCtx.fillRect(W*0.32,H*0.75,W*0.12,H*0.15);
+    pSceneCtx.beginPath();pSceneCtx.arc(W*0.12,H*0.85,8,0,Math.PI*2);pSceneCtx.fill();
+    // Text lines (muted)
+    pSceneCtx.fillStyle='rgba(255,255,255,0.3)';
+    [0.25,0.38,0.51,0.64].forEach(y=>{pSceneCtx.fillRect(W*0.31,H*y,W*0.5,4);});
+  }
+
+  function animateProp(){
+    const tau=0.12;const dt=0.016;
+    propLag.p60=lagFilter(propLag.p60,propLag.targetP60,dt,tau);
+    propLag.p30=lagFilter(propLag.p30,propLag.targetP30,dt,tau);
+    drawPropBar();drawPracticeScene();
+    const diff=Math.abs(propLag.p60-propLag.targetP60)+Math.abs(propLag.p30-propLag.targetP30);
+    if(diff>0.2)propRaf=requestAnimationFrame(animateProp);
+    else propRaf=null;
+  }
+
+  document.getElementById('p60').addEventListener('input',e=>{
+    const v=+e.target.value;document.getElementById('p60v').textContent=v+'%';
+    propLag.targetP60=v;if(!propRaf)propRaf=requestAnimationFrame(animateProp);
+  });
+  document.getElementById('p30').addEventListener('input',e=>{
+    const v=+e.target.value;document.getElementById('p30v').textContent=v+'%';
+    propLag.targetP30=v;if(!propRaf)propRaf=requestAnimationFrame(animateProp);
+  });
+  ['domColor','secColor','accColor'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',()=>{drawPropBar();drawPracticeScene();});
+  });
+
+  drawPropBar();drawPracticeScene();
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 8 — ARTISTS
+// ═══════════════════════════════════════════════════════════
+(function initArtists(){
+  const ARTISTS=[
+    {name:'Josef Albers',era:'1888–1976',color:'#e8a020',work:'Interaction of Color (1963)',note:'Demonstrated that the same color looks different depending on its neighbors. Father of modern color theory.',hue:38},
+    {name:'Johannes Itten',era:'1888–1967',color:'#c04030',work:'Bauhaus Color Theory',note:'Defined seven color contrasts: hue, light-dark, cold-warm, complementary, simultaneous, saturation, extension.',hue:8},
+    {name:'Michel Chevreul',era:'1786–1889',color:'#4060c8',work:'Simultaneous Contrast (1839)',note:'Discovered simultaneous contrast while improving tapestry dyes at Gobelins. Influenced the Impressionists.',hue:224},
+    {name:'Albert Munsell',era:'1858–1918',color:'#60a048',work:'Munsell Color System',note:'Created the first scientific notation for color using Hue, Value, and Chroma. Still used in industry today.',hue:100},
+    {name:'James Turrell',era:'1943–',color:'#9040e0',work:'Roden Crater & Ganzfeld',note:'Uses pure light as sculpture. His Ganzfeld installations immerse viewers in a single color field, erasing depth perception.',hue:275},
+    {name:'Ellsworth Kelly',era:'1923–2015',color:'#e03030',work:'Hard-Edge Color Field',note:'Painted large flat fields of pure, unmodulated color. Proved color itself — without form — could carry emotional weight.',hue:0},
+    {name:'Mark Rothko',era:'1903–1970',color:'#c84020',work:'Multiforms & Color Field',note:'Treated color as an emotional field. His large rectangles of luminous color induce meditative, sometimes overwhelming states.',hue:16},
+    {name:'Bridget Riley',era:'1931–',color:'#e0e000',work:'Op Art',note:'Exploits simultaneous contrast and after-images to create optical vibration. Color itself becomes kinetic.',hue:60},
+  ];
+
+  const row=document.getElementById('artistRow');
+  ARTISTS.forEach(a=>{
+    const card=document.createElement('div');card.className='artist-card';
+    card.innerHTML=`
+      <div class="artist-color" style="background:${a.color};box-shadow:0 0 16px ${a.color}55"></div>
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-era">${a.era}</div>
+      <div class="artist-note" style="color:#777;font-size:.73rem;margin-bottom:6px;font-style:italic">${a.work}</div>
+      <div class="artist-note">${a.note}</div>
+    `;
+    // Hover: glow in artist's color
+    card.addEventListener('mouseenter',()=>{
+      card.style.borderColor=a.color+'88';
+      card.style.boxShadow=`0 16px 40px rgba(0,0,0,.5),0 0 24px ${a.color}33`;
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.borderColor='';card.style.boxShadow='';
+    });
+    row.appendChild(card);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  SECTION 9 — GLOSSARY
+// ═══════════════════════════════════════════════════════════
+(function initGlossary(){
+  const TERMS=[
+    {term:'Additive Color',def:'Color mixing where adding light wavelengths produces lighter results. RGB is additive — red + green = yellow.'},
+    {term:'Analogous',def:'Colors adjacent on the color wheel (e.g. red, orange, yellow). Create harmonious, naturalistic palettes.'},
+    {term:'Chroma',def:'The purity or intensity of a color, free from white, gray, or black. Equivalent to saturation in HSL.'},
+    {term:'CMYK',def:'Cyan-Magenta-Yellow-Key (Black). Subtractive model used in print; pigments absorb light rather than emit it.'},
+    {term:'Color Gamut',def:'The full range of colors a device can display or a model can represent. sRGB ⊂ Display-P3 ⊂ visible.'},
+    {term:'Color Temperature',def:'The warmth or coolness of a white light, measured in Kelvin. 3000K=warm tungsten, 6500K=daylight.'},
+    {term:'Complementary',def:'Colors directly opposite on the color wheel (180° apart). Maximum contrast; can cause vibration when paired.'},
+    {term:'Delta E',def:'A number quantifying the perceptual difference between two colors. ΔE < 1 is imperceptible; > 10 is obvious.'},
+    {term:'Hue',def:'The pure attribute of color — the quality that makes red different from blue. Measured 0°–360° on the wheel.'},
+    {term:'Lab Color',def:'A device-independent color space (CIELAB) designed to match human visual perception. L=lightness, a/b=opponent axes.'},
+    {term:'Lightness',def:'How light or dark a color is. In HSL, 0%=black, 50%=pure hue, 100%=white.'},
+    {term:'LCH',def:'Lightness-Chroma-Hue: a cylindrical form of Lab. More intuitive than Lab while remaining perceptually uniform.'},
+    {term:'Luminance',def:'The objective measure of light intensity (cd/m²). Distinct from lightness, which is perceptual/subjective.'},
+    {term:'Munsell',def:'A color order system by Albert Munsell using Hue, Value, and Chroma. Basis for many industrial color standards.'},
+    {term:'Saturation',def:'The vividness of a color relative to its lightness. A gray has 0% saturation; a pure hue has 100%.'},
+    {term:'Simultaneous Contrast',def:'When adjacent colors mutually affect each other\'s appearance. A gray square looks lighter on dark than on light.'},
+    {term:'Split-Complementary',def:'A base color plus the two colors adjacent to its complement. High contrast but less tension than complementary.'},
+    {term:'Subtractive Color',def:'Mixing pigments or dyes that absorb wavelengths. Adding pigments makes the result darker. CMYK is subtractive.'},
+    {term:'Triadic',def:'Three colors evenly spaced 120° apart on the color wheel. Vibrant and balanced, often used in illustration.'},
+    {term:'Value',def:'In Munsell\'s system, the lightness dimension from black (0) to white (10). Equivalent to lightness in HSL.'},
+    {term:'WCAG',def:'Web Content Accessibility Guidelines. Defines minimum contrast ratios: 4.5:1 for AA, 7:1 for AAA normal text.'},
+    {term:'White Balance',def:'Adjustment to neutralize a scene\'s color cast to appear as if lit by neutral white light. Corrects for Kelvin temperature.'},
+  ];
+
+  const grid=document.getElementById('glossaryGrid');
+  TERMS.sort((a,b)=>a.term.localeCompare(b.term)).forEach(t=>{
+    const d=document.createElement('div');d.className='gterm';
+    d.innerHTML=`<div class="gterm-name">${t.term}</div><div class="gterm-def">${t.def}</div>`;
+    grid.appendChild(d);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════
+//  FINAL INIT — ensure all canvases sized correctly
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  // Force resize events for any canvas that depends on offsetWidth
+  window.dispatchEvent(new Event('resize'));
+});
+</script>
+</body>
+</html>

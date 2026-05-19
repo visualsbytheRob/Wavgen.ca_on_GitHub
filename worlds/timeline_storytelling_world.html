@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring timeline storytelling">
+    <meta property="og:title" content="Timeline Storytelling World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring timeline storytelling">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/timeline_storytelling_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeline Storytelling World — The Architecture of Narrative</title>
+<style>
+/* ── CSS TOKENS ── */
+:root {
+  --black:#050508; --surface:#0d0d14; --border:#1e1e2e;
+  --text:#e2e8f0; --dim:#64748b; --accent:#f59e0b;
+  --accent2:#fcd34d; --amber-glow:rgba(245,158,11,0.15);
+  --red:#ef4444; --blue:#3b82f6; --green:#22c55e;
+  --purple:#a855f7; --cyan:#06b6d4;
+  --radius:12px; --radius-sm:6px;
+  --transition:0.35s cubic-bezier(0.4,0,0.2,1);
+  --font-mono:'Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--black); color:var(--text);
+  font-family:'Segoe UI',system-ui,sans-serif;
+  line-height:1.6; overflow-x:hidden;
+}
+/* ── FILM GRAIN OVERLAY ── */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.35; animation:grain 0.4s steps(1) infinite;
+}
+@keyframes grain{0%,100%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,2px)}}
+
+/* ── NAV ── */
+nav{
+  position:sticky; top:0; z-index:100;
+  background:rgba(5,5,8,0.92); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:0; padding:0 24px;
+  height:52px; overflow-x:auto;
+}
+nav::-webkit-scrollbar{height:0}
+.nav-logo{
+  font-family:var(--font-mono); font-size:11px; color:var(--accent);
+  letter-spacing:0.12em; white-space:nowrap; margin-right:20px;
+  flex-shrink:0;
+}
+.nav-links{display:flex;gap:2px;flex-shrink:0}
+.nav-link{
+  padding:6px 11px; font-size:11px; letter-spacing:0.05em;
+  color:var(--dim); text-decoration:none; border-radius:var(--radius-sm);
+  transition:var(--transition); white-space:nowrap;
+  cursor:pointer; background:none; border:none;
+}
+.nav-link:hover,.nav-link.active{color:var(--accent);background:var(--amber-glow)}
+
+/* ── SECTIONS ── */
+section{
+  padding:72px 24px; max-width:900px; margin:0 auto;
+  border-bottom:1px solid var(--border);
+  opacity:0; transform:translateY(28px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+section.visible{opacity:1;transform:translateY(0)}
+.section-label{
+  font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em;
+  color:var(--accent); text-transform:uppercase; margin-bottom:8px;
+}
+.section-title{
+  font-size:clamp(22px,4vw,34px); font-weight:700;
+  color:var(--text); margin-bottom:12px; line-height:1.2;
+}
+.section-sub{font-size:15px;color:var(--dim);margin-bottom:32px;max-width:680px}
+
+/* ── CANVAS CONTAINERS ── */
+.canvas-wrap{
+  border:1px solid var(--border); border-radius:var(--radius);
+  background:var(--surface); overflow:hidden; position:relative;
+  margin-bottom:24px;
+}
+canvas{display:block}
+
+/* ── BADGES ── */
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.badge{
+  padding:4px 12px; border-radius:20px; font-size:11px;
+  border:1px solid var(--border); color:var(--dim);
+  font-family:var(--font-mono); letter-spacing:0.06em;
+}
+.badge.amber{border-color:var(--accent);color:var(--accent);background:var(--amber-glow)}
+
+/* ── BUTTONS ── */
+.btn{
+  padding:8px 18px; border-radius:var(--radius-sm); font-size:12px;
+  font-family:var(--font-mono); letter-spacing:0.08em; cursor:pointer;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--dim); transition:var(--transition); text-transform:uppercase;
+}
+.btn:hover,.btn.active{border-color:var(--accent);color:var(--accent);background:var(--amber-glow)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+
+/* ── INFO CARDS ── */
+.info-card{
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 20px; background:var(--surface); margin-bottom:16px;
+  font-size:13px; color:var(--dim); line-height:1.7;
+}
+.info-card strong{color:var(--text)}
+
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+
+/* ── ARTIST CARDS ── */
+.artist-card{
+  border:1px solid var(--accent); border-radius:var(--radius);
+  padding:16px; background:var(--surface);
+  transition:var(--transition); cursor:default;
+}
+.artist-card:hover{transform:translateY(-4px);background:var(--amber-glow);box-shadow:0 8px 32px rgba(245,158,11,0.12)}
+.artist-name{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.artist-tag{font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:0.1em;margin-bottom:8px}
+.artist-desc{font-size:12px;color:var(--dim);line-height:1.6}
+
+/* ── BEAT SHEET ── */
+.beat-list{display:flex;flex-direction:column;gap:8px}
+.beat-item{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface); transition:var(--transition);
+}
+.beat-item:hover{border-color:var(--accent)}
+.beat-item input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
+.beat-pct{font-family:var(--font-mono);font-size:10px;color:var(--accent);width:36px;flex-shrink:0}
+.beat-name{font-size:13px;color:var(--text);flex-shrink:0;width:180px}
+.beat-input{
+  flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);
+  color:var(--dim);font-size:12px;padding:2px 6px;outline:none;
+  transition:var(--transition);
+}
+.beat-input:focus{border-color:var(--accent);color:var(--text)}
+
+/* ── GLOSSARY ── */
+.gloss-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gloss-item{padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface)}
+.gloss-term{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;font-family:var(--font-mono)}
+.gloss-def{font-size:12px;color:var(--dim);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center; padding:32px 24px;
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--dim); letter-spacing:0.15em; text-transform:uppercase;
+  border-top:1px solid var(--border);
+}
+footer span{color:var(--accent)}
+
+/* ── CONTROLS ── */
+.ctrl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.ctrl-label{font-size:11px;color:var(--dim);font-family:var(--font-mono);letter-spacing:0.06em}
+select,input[type=range]{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:4px 8px;border-radius:var(--radius-sm);
+  font-size:12px;cursor:pointer;outline:none;
+}
+select:focus,input[type=range]:focus{border-color:var(--accent)}
+input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;padding:0}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;
+  background:var(--accent);border-radius:50%;cursor:pointer;
+}
+
+/* ── STAT BAR ── */
+.stat-row{display:flex;gap:20px;flex-wrap:wrap;padding:12px 0}
+.stat-item{text-align:center}
+.stat-val{font-size:20px;font-weight:700;color:var(--accent);font-family:var(--font-mono)}
+.stat-lbl{font-size:10px;color:var(--dim);letter-spacing:0.1em}
+
+/* ── COLOR PICKER STRIP ── */
+.color-strip{display:flex;gap:6px;align-items:center;margin-bottom:12px}
+.color-dot{
+  width:22px;height:22px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:var(--transition);
+}
+.color-dot:hover,.color-dot.selected{border-color:var(--text);transform:scale(1.15)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--dim)}
+
+/* ── HERO LAYOUT ── */
+#hero{padding:52px 24px 60px;max-width:900px;margin:0 auto;opacity:1;transform:none}
+.hero-title{
+  font-size:clamp(28px,5vw,52px); font-weight:900; line-height:1.1;
+  color:var(--text); margin-bottom:10px;
+}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:16px;color:var(--dim);margin-bottom:24px;max-width:600px}
+
+/* ── UTILITY ── */
+.mt8{margin-top:8px} .mt16{margin-top:16px} .mt24{margin-top:24px}
+.amber{color:var(--accent)} .dim{color:var(--dim)}
+.mono{font-family:var(--font-mono)}
+</style>
+</head>
+<body class="domain-video">
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">◈ WAVGEN TSW</div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="scrollTo('hero')">Hero</button>
+    <button class="nav-link" onclick="scrollTo('s2')">Structure</button>
+    <button class="nav-link" onclick="scrollTo('s3')">Emotional Arc</button>
+    <button class="nav-link" onclick="scrollTo('s4')">Branching</button>
+    <button class="nav-link" onclick="scrollTo('s5')">Pacing</button>
+    <button class="nav-link" onclick="scrollTo('s6')">Space Map</button>
+    <button class="nav-link" onclick="scrollTo('s7')">Time Tools</button>
+    <button class="nav-link" onclick="scrollTo('s8')">Craft</button>
+    <button class="nav-link" onclick="scrollTo('s9')">Glossary</button>
+  </div>
+</nav>
+
+<!-- ── SECTION 1: HERO ── -->
+<section id="hero">
+  <div class="section-label">Section 01 — The Story Machine</div>
+  <h1 class="hero-title">TIMELINE<br><span>STORYTELLING</span> WORLD</h1>
+  <p class="hero-sub">Every story is a journey through time. How you arrange that journey determines everything.</p>
+  <div class="badge-row">
+    <div class="badge amber">Story Beats</div>
+    <div class="badge amber">Arc Type</div>
+    <div class="badge amber">Duration</div>
+    <div class="badge amber">Emotional Register</div>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="heroCanvas" width="800" height="420"></canvas>
+  </div>
+</section>
+
+<!-- ── SECTION 2: STORY STRUCTURE ANALYZER ── -->
+<section id="s2">
+  <div class="section-label">Section 02 — Story Structure Analyzer</div>
+  <h2 class="section-title">Narrative Architecture</h2>
+  <p class="section-sub">Three foundational story structures from different traditions. Click to activate, then draw your own tension curve.</p>
+  <div class="btn-row" id="structBtns">
+    <button class="btn active" onclick="setStruct(0)">Three-Act (Aristotle)</button>
+    <button class="btn" onclick="setStruct(1)">Hero's Journey (Campbell)</button>
+    <button class="btn" onclick="setStruct(2)">Kishōtenketsu (Japanese 4-Act)</button>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="structCanvas" width="700" height="320"></canvas>
+  </div>
+  <div class="info-card" style="margin-top:8px">
+    <strong>Draw Your Story:</strong> Click and drag on the canvas above to sketch your own tension curve. It will overlay on the selected structure template.
+    <span class="amber">Different cultures structure stories differently.</span> Western cinema defaults to 3-act. Anime often uses Kishōtenketsu. Neither is inherently superior.
+  </div>
+</section>
+
+<!-- ── SECTION 3: EMOTIONAL ARC DESIGNER ── -->
+<section id="s3">
+  <div class="section-label">Section 03 — Emotional Arc Designer</div>
+  <h2 class="section-title">The Emotional Journey</h2>
+  <p class="section-sub">Click to place beat nodes, label them, and build a Bézier emotional arc. Load famous film presets to study their emotional architecture.</p>
+  <div class="ctrl-row">
+    <span class="ctrl-label">EMOTION:</span>
+    <div class="color-strip" id="emotionColors"></div>
+    <span class="ctrl-label">FILM:</span>
+    <select id="filmPreset" onchange="loadFilmPreset()">
+      <option value="">— Load Preset —</option>
+      <option value="laLaLand">La La Land</option>
+      <option value="up">Up (Pixar)</option>
+      <option value="ncfom">No Country for Old Men</option>
+      <option value="parasite">Parasite</option>
+      <option value="esotsm">Eternal Sunshine</option>
+    </select>
+    <button class="btn" onclick="clearArc()">Clear</button>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="arcCanvas" width="700" height="340"></canvas>
+  </div>
+  <div class="info-card">
+    <strong>Instructions:</strong> Click anywhere on the canvas to place an emotional beat node.
+    Y-axis = intensity (bottom = despair, top = euphoria). X-axis = story time (left = opening, right = ending).
+    After 4+ nodes, a smooth curve connects them. <span class="amber">Place 4+ nodes to see the Bézier arc emerge.</span>
+  </div>
+</section>
+
+<!-- ── SECTION 4: BRANCHING TIMELINE BUILDER ── -->
+<section id="s4">
+  <div class="section-label">Section 04 — Branching Timeline Builder</div>
+  <h2 class="section-title">Fork in the Story</h2>
+  <p class="section-sub">Click on the timeline spine to add branch points. Play the animation to see a story dot navigate the forks.</p>
+  <div class="ctrl-row">
+    <button class="btn" onclick="addBranch()">+ Add Branch Point</button>
+    <button class="btn" onclick="clearBranches()">Clear</button>
+    <button class="btn" id="playBtn" onclick="playTimeline()">▶ Play</button>
+    <span class="ctrl-label">REFERENCE:</span>
+    <select id="filmTimeline" onchange="loadTimelinePreset()">
+      <option value="">— Load Film —</option>
+      <option value="rashomon">Rashomon</option>
+      <option value="lola">Run Lola Run</option>
+      <option value="memento">Memento</option>
+      <option value="sliding">Sliding Doors</option>
+    </select>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="branchCanvas" width="640" height="380"></canvas>
+  </div>
+  <div class="info-card">
+    <strong>Amber</strong> = main path · <strong style="color:var(--cyan)">Cyan</strong> = alternative ·
+    <strong>White</strong> = flashback · <strong style="color:var(--dim)">Dim</strong> = path not taken.
+    At branch points, the story dot pauses and chooses a direction.
+  </div>
+</section>
+
+<!-- ── SECTION 5: MONTAGE PACING STUDIO ── -->
+<section id="s5">
+  <div class="section-label">Section 05 — Montage Pacing Studio</div>
+  <h2 class="section-title">The Rhythm of Cuts</h2>
+  <p class="section-sub">Build a shot-length timeline. Each block = one shot. Width = duration. Color = emotional register. Drag edges to resize.</p>
+  <div class="ctrl-row">
+    <button class="btn" onclick="addShot()">+ Add Shot</button>
+    <button class="btn" onclick="deleteSelectedShot()">✕ Delete Selected</button>
+    <span class="ctrl-label">COLOR:</span>
+    <div class="color-strip" id="shotColors"></div>
+    <select id="filmPacing" onchange="loadPacingPreset()">
+      <option value="">— Load Film —</option>
+      <option value="breathless">Breathless</option>
+      <option value="2001">2001: A Space Odyssey</option>
+      <option value="fury">Mad Max: Fury Road</option>
+    </select>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="pacingCanvas" width="700" height="280"></canvas>
+  </div>
+  <div class="stat-row" id="pacingStats">
+    <div class="stat-item"><div class="stat-val" id="statShots">0</div><div class="stat-lbl">SHOTS</div></div>
+    <div class="stat-item"><div class="stat-val" id="statAvg">0.0s</div><div class="stat-lbl">AVG LENGTH</div></div>
+    <div class="stat-item"><div class="stat-val" id="statCPM">0</div><div class="stat-lbl">CUTS/MIN</div></div>
+    <div class="stat-item"><div class="stat-val" id="statPacing">—</div><div class="stat-lbl">ASSESSMENT</div></div>
+  </div>
+</section>
+
+<!-- ── SECTION 6: NARRATIVE SPACE MAP ── -->
+<section id="s6">
+  <div class="section-label">Section 06 — Narrative Space Map</div>
+  <h2 class="section-title">Where the Story Lives</h2>
+  <p class="section-sub">Click to place locations. Then click two locations to draw a movement path. Animate the protagonist's journey through space.</p>
+  <div class="ctrl-row">
+    <button class="btn" id="modePlace" onclick="setMapMode('place')" class="active">+ Place Location</button>
+    <button class="btn" id="modeConnect" onclick="setMapMode('connect')">→ Draw Path</button>
+    <button class="btn" onclick="clearMap()">Clear</button>
+    <button class="btn" id="mapPlayBtn" onclick="playMapJourney()">▶ Animate Journey</button>
+    <select id="mapPreset" onchange="loadMapPreset()">
+      <option value="">— Load World —</option>
+      <option value="wizard">The Wizard of Oz</option>
+      <option value="odyssey">The Odyssey</option>
+      <option value="shining">The Shining</option>
+    </select>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="mapCanvas" width="640" height="400"></canvas>
+  </div>
+  <div class="info-card">
+    <strong>Place mode:</strong> Click empty canvas = new location node. 
+    <strong>Connect mode:</strong> Click two nodes to draw a movement path between them.
+    <span class="amber">The Wizard of Oz</span> traces a circle — Dorothy never truly goes linear.
+  </div>
+</section>
+
+<!-- ── SECTION 7: TIME MANIPULATION TOOLS ── -->
+<section id="s7">
+  <div class="section-label">Section 07 — Time Manipulation Tools</div>
+  <h2 class="section-title">Bending the Clock</h2>
+  <p class="section-sub">Three cinematic techniques for non-linear time — each demonstrated with an interactive canvas.</p>
+
+  <div class="grid-2" style="margin-bottom:24px">
+    <!-- Flashback Machine -->
+    <div>
+      <div class="section-label" style="margin-bottom:8px">Flashback Machine</div>
+      <div class="canvas-wrap">
+        <canvas id="flashCanvas" width="400" height="240"></canvas>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">PAST ←</span>
+        <input type="range" id="flashSlider" min="0" max="100" value="0" oninput="updateFlash(this.value)" style="flex:1">
+        <span class="ctrl-label">→ PRESENT</span>
+      </div>
+      <div class="info-card" style="font-size:11px">
+        Slide left to enter the flashback — desaturated, warm-vignetted, soft-edged past. 
+        <em>The Godfather II</em> uses cold/warm tones to distinguish past from present timelines.
+      </div>
+    </div>
+
+    <!-- Parallel Timeline -->
+    <div>
+      <div class="section-label" style="margin-bottom:8px">Parallel Timeline Viewer</div>
+      <div class="canvas-wrap">
+        <canvas id="parallelCanvas" width="400" height="240"></canvas>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">CONVERGENCE:</span>
+        <input type="range" id="convergenceSlider" min="10" max="90" value="70" oninput="updateConvergence(this.value)" style="flex:1">
+      </div>
+      <div class="info-card" style="font-size:11px">
+        Drag to move the convergence point where two parallel timelines merge.
+        <em>Dunkirk</em> runs land/sea/air stories at different time scales until they converge.
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Compression -->
+  <div>
+    <div class="section-label" style="margin-bottom:8px">Time Compression / Expansion</div>
+    <div class="canvas-wrap">
+      <canvas id="timeCanvas" width="700" height="240"></canvas>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">SPEED:</span>
+      <input type="range" id="speedSlider" min="0" max="100" value="33" oninput="updateSpeed(this.value)" style="flex:1">
+      <span class="ctrl-label" id="speedLabel">1×</span>
+    </div>
+    <div class="info-card">
+      Drag the speed dial from 0.1× (ultra slow) → 1× (normal) → 100× (time-lapse).
+      Time compression/expansion is a <span class="amber">directorial choice</span>, not just an editing trick.
+      A sunrise can take 3 minutes or 3 seconds depending on what the story needs.
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 8: CRAFT TOOLS + ARTIST CARDS ── -->
+<section id="s8">
+  <div class="section-label">Section 08 — Screenwriting Structure + Artists</div>
+  <h2 class="section-title">The Craft Layer</h2>
+  <p class="section-sub">The Save the Cat beat sheet and eight directors/writers who mastered narrative time.</p>
+
+  <div class="info-card" style="margin-bottom:20px">
+    <strong style="color:var(--accent)">The 15-Beat Sheet</strong> — Blake Snyder's Save the Cat framework. 
+    Check off each beat as you plan or analyze a story. Each beat has a suggested story position.
+  </div>
+  <div class="beat-list" id="beatList"></div>
+
+  <h3 class="section-title mt24" style="font-size:22px">Master Storytellers</h3>
+  <p class="section-sub">Eight directors and writers who reshaped how we think about narrative time.</p>
+  <div class="grid-2 mt16" id="artistCards"></div>
+</section>
+
+<!-- ── SECTION 9: GLOSSARY ── -->
+<section id="s9">
+  <div class="section-label">Section 09 — Glossary</div>
+  <h2 class="section-title">The Language of Story</h2>
+  <p class="section-sub">22 essential terms in narrative theory and screenwriting craft.</p>
+  <div class="gloss-grid" id="glossGrid"></div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span>WAVGEN TIMELINE STORYTELLING WORLD</span> — App 10 of the Video Universe — The Waveform Generation — wavgen.ca
+</footer>
+
+
+<script>
+// ── UTILITY: LagFilter ──────────────────────────────────────────────────────
+class LagFilter {
+  constructor(strength=0.08){this.v=null;this.s=strength}
+  update(target){
+    if(this.v===null)this.v=target;
+    this.v+=(target-this.v)*this.s;
+    return this.v;
+  }
+}
+
+// ── UTILITY: NAV SCROLL ─────────────────────────────────────────────────────
+function scrollTo(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── UTILITY: IntersectionObserver scroll-reveal ─────────────────────────────
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');}
+  });
+},{threshold:0.08});
+document.querySelectorAll('section').forEach(s=>{
+  if(s.id!=='hero')revealObs.observe(s);
+  else s.classList.add('visible');
+});
+
+// ── NAV ACTIVE ──────────────────────────────────────────────────────────────
+const navLinks=document.querySelectorAll('.nav-link');
+const sectionIds=['hero','s2','s3','s4','s5','s6','s7','s8','s9'];
+const sectionEls=sectionIds.map(id=>document.getElementById(id));
+const navObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const idx=sectionEls.indexOf(e.target);
+      navLinks.forEach((l,i)=>l.classList.toggle('active',i===idx));
+    }
+  });
+},{threshold:0.3});
+sectionEls.forEach(s=>{if(s)navObs.observe(s);});
+
+// ── COLOR PALETTES ──────────────────────────────────────────────────────────
+const EMOTION_COLORS=[
+  {key:'joy',    color:'#f59e0b', label:'Joy/Hope'},
+  {key:'sad',    color:'#3b82f6', label:'Sadness/Loss'},
+  {key:'fear',   color:'#ef4444', label:'Fear/Tension'},
+  {key:'anger',  color:'#f97316', label:'Anger/Conflict'},
+  {key:'peace',  color:'#22c55e', label:'Peace/Resolution'},
+  {key:'wonder', color:'#a855f7', label:'Mystery/Wonder'},
+];
+let activeEmotion=EMOTION_COLORS[0];
+
+function buildColorStrip(containerId, onSelect){
+  const c=document.getElementById(containerId);
+  if(!c)return;
+  EMOTION_COLORS.forEach((e,i)=>{
+    const d=document.createElement('div');
+    d.className='color-dot'+(i===0?' selected':'');
+    d.style.background=e.color;
+    d.title=e.label;
+    d.onclick=()=>{
+      c.querySelectorAll('.color-dot').forEach(x=>x.classList.remove('selected'));
+      d.classList.add('selected');
+      onSelect(e);
+    };
+    c.appendChild(d);
+  });
+}
+buildColorStrip('emotionColors',(e)=>{activeEmotion=e;});
+buildColorStrip('shotColors',(e)=>{activeShotColor=e;});
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 1 — HERO: Film Strip Canvas
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  const BEATS=[
+    {label:'INCITING\nINCIDENT', palette:['#f59e0b','#fcd34d','#fef3c7'], mood:'joy'},
+    {label:'CALL TO\nADVENTURE', palette:['#3b82f6','#60a5fa','#1e3a5f'], mood:'wonder'},
+    {label:'REFUSAL', palette:['#64748b','#94a3b8','#1e293b'], mood:'doubt'},
+    {label:'CROSSING\nTHRESHOLD', palette:['#f59e0b','#ef4444','#7c2d12'], mood:'tension'},
+    {label:'ORDEAL', palette:['#0a0a0f','#1e1e2e','#ef4444'], mood:'crisis'},
+    {label:'DARK NIGHT', palette:['#1e1e2e','#0f172a','#3b82f6'], mood:'despair'},
+    {label:'REVELATION', palette:['#a855f7','#7c3aed','#f59e0b'], mood:'wonder'},
+    {label:'CLIMAX', palette:['#ef4444','#f97316','#fcd34d'], mood:'crisis'},
+    {label:'RESOLUTION', palette:['#22c55e','#f59e0b','#fef3c7'], mood:'joy'},
+    {label:'RETURN', palette:['#f59e0b','#fcd34d','#fffbeb'], mood:'hope'},
+    {label:'CHANGED\nHERO', palette:['#22c55e','#86efac','#d1fae5'], mood:'peace'},
+    {label:'FINAL\nIMAGE', palette:['#f59e0b','#92400e','#1c1917'], mood:'resolution'},
+  ];
+
+  const FRAME_W=96, FRAME_H=240, GAP=18, SPROCKET=8;
+  const STRIP_H=FRAME_H+80, STRIP_Y=(H-STRIP_H)/2;
+  const totalW=(FRAME_W+GAP)*BEATS.length;
+  let offset=0;
+  const offsetLag=new LagFilter(0.04);
+  let targetOffset=0;
+  const SCROLL_SPEED=0.4;
+
+  function drawBeat(ctx,x,y,beat,idx){
+    // Frame border
+    ctx.save();
+    ctx.strokeStyle='rgba(245,158,11,0.5)';
+    ctx.lineWidth=1.5;
+    ctx.strokeRect(x,y,FRAME_W,FRAME_H);
+
+    // Background gradient
+    const g=ctx.createLinearGradient(x,y,x+FRAME_W,y+FRAME_H);
+    g.addColorStop(0,beat.palette[0]);
+    g.addColorStop(0.5,beat.palette[1]);
+    g.addColorStop(1,beat.palette[2]);
+    ctx.fillStyle=g;
+    ctx.fillRect(x+1,y+1,FRAME_W-2,FRAME_H-2);
+
+    // Simple geometric composition per mood
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x+1,y+1,FRAME_W-2,FRAME_H-2);
+    ctx.clip();
+    if(beat.mood==='joy'||beat.mood==='hope'){
+      // Rising sun shape
+      ctx.fillStyle='rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.arc(x+FRAME_W/2,y+FRAME_H*0.75,30,Math.PI,0);
+      ctx.fill();
+      for(let r=0;r<6;r++){
+        const angle=-Math.PI+r*(Math.PI/5);
+        ctx.strokeStyle='rgba(255,255,255,0.12)';
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(x+FRAME_W/2,y+FRAME_H*0.75);
+        ctx.lineTo(x+FRAME_W/2+Math.cos(angle)*50,y+FRAME_H*0.75+Math.sin(angle)*50);
+        ctx.stroke();
+      }
+    } else if(beat.mood==='crisis'||beat.mood==='tension'){
+      // Jagged diagonal lines
+      ctx.strokeStyle='rgba(255,255,255,0.2)';
+      ctx.lineWidth=2;
+      for(let i=0;i<5;i++){
+        const yy=y+FRAME_H*0.3+i*20;
+        ctx.beginPath();
+        ctx.moveTo(x+5,yy);
+        ctx.lineTo(x+FRAME_W*0.4,yy-15);
+        ctx.lineTo(x+FRAME_W*0.6,yy+15);
+        ctx.lineTo(x+FRAME_W-5,yy-10);
+        ctx.stroke();
+      }
+    } else if(beat.mood==='despair'||beat.mood==='doubt'){
+      // Descending stairs
+      ctx.fillStyle='rgba(255,255,255,0.08)';
+      for(let i=0;i<5;i++){
+        ctx.fillRect(x+5+i*16,y+FRAME_H*0.5+i*18,14,14);
+      }
+    } else if(beat.mood==='wonder'){
+      // Concentric circles
+      for(let r=10;r<50;r+=12){
+        ctx.strokeStyle=`rgba(255,255,255,${0.2-r*0.003})`;
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.arc(x+FRAME_W/2,y+FRAME_H/2,r,0,Math.PI*2);
+        ctx.stroke();
+      }
+    } else if(beat.mood==='peace'||beat.mood==='resolution'){
+      // Horizontal calm lines
+      ctx.strokeStyle='rgba(255,255,255,0.12)';
+      ctx.lineWidth=1.5;
+      for(let i=0;i<8;i++){
+        const yy=y+FRAME_H*0.3+i*18;
+        ctx.beginPath();
+        ctx.moveTo(x+8,yy);
+        ctx.lineTo(x+FRAME_W-8,yy);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+
+    // Beat label
+    ctx.fillStyle='rgba(0,0,0,0.6)';
+    ctx.fillRect(x+1,y+FRAME_H-36,FRAME_W-2,35);
+    ctx.fillStyle='#f59e0b';
+    ctx.font='bold 8px "Courier New"';
+    ctx.textAlign='center';
+    const lines=beat.label.split('\n');
+    lines.forEach((ln,li)=>{
+      ctx.fillText(ln,x+FRAME_W/2,y+FRAME_H-22+li*11);
+    });
+    ctx.restore();
+  }
+
+  function draw(ts){
+    ctx.clearRect(0,0,W,H);
+
+    // Background
+    const bgG=ctx.createLinearGradient(0,0,0,H);
+    bgG.addColorStop(0,'#050508');
+    bgG.addColorStop(1,'#0d0d14');
+    ctx.fillStyle=bgG;
+    ctx.fillRect(0,0,W,H);
+
+    // Auto scroll
+    targetOffset+=SCROLL_SPEED;
+    if(targetOffset>totalW) targetOffset=0;
+    offset=offsetLag.update(targetOffset);
+
+    const stripY=STRIP_Y+20;
+
+    // Film strip body
+    ctx.fillStyle='#0a0a12';
+    ctx.fillRect(0,stripY-8,W,STRIP_H+16);
+    ctx.strokeStyle='rgba(245,158,11,0.2)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(0,stripY-8,W,STRIP_H+16);
+
+    // Sprocket holes top and bottom
+    for(let sx=-GAP;sx<W+GAP*2;sx+=GAP*2){
+      const hx=sx-((offset%(GAP*2)));
+      ctx.fillStyle='rgba(245,158,11,0.4)';
+      // top
+      ctx.beginPath();
+      ctx.arc(hx,stripY-4,SPROCKET/2,0,Math.PI*2);
+      ctx.fill();
+      // bottom
+      ctx.beginPath();
+      ctx.arc(hx,stripY+STRIP_H+4,SPROCKET/2,0,Math.PI*2);
+      ctx.fill();
+    }
+
+    // Draw frames
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0,stripY,W,STRIP_H);
+    ctx.clip();
+    for(let i=-1;i<Math.ceil(W/(FRAME_W+GAP))+2;i++){
+      const baseX=i*(FRAME_W+GAP)-((offset)%(totalW))+10;
+      const beatIdx=((i%(BEATS.length))+BEATS.length)%BEATS.length;
+      drawBeat(ctx,baseX,stripY+20,BEATS[beatIdx],beatIdx);
+    }
+    ctx.restore();
+
+    // Playhead line
+    const phX=W/2;
+    const grad=ctx.createLinearGradient(phX,0,phX,H);
+    grad.addColorStop(0,'rgba(245,158,11,0)');
+    grad.addColorStop(0.3,'rgba(245,158,11,0.8)');
+    grad.addColorStop(0.7,'rgba(245,158,11,0.8)');
+    grad.addColorStop(1,'rgba(245,158,11,0)');
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=2;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(phX,0);
+    ctx.lineTo(phX,H);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b';
+    ctx.font='bold 9px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('◆ NOW',phX,16);
+
+    // Title overlay (top)
+    ctx.fillStyle='rgba(5,5,8,0.5)';
+    ctx.fillRect(0,0,W,stripY-8);
+    ctx.fillRect(0,stripY+STRIP_H+8,W,H-(stripY+STRIP_H+8));
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 2 — STORY STRUCTURE ANALYZER
+// SYSTEM: StoryArcVisualizer
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('structCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  let activeStruct=0;
+  let userCurve=[];
+  let isDrawing=false;
+
+  // Structure definitions
+  const STRUCTS=[
+    {
+      name:'Three-Act Structure',
+      draw:drawThreeAct,
+      color:'#f59e0b',
+    },
+    {
+      name:"Hero's Journey",
+      draw:drawHeroJourney,
+      color:'#a855f7',
+    },
+    {
+      name:'Kishōtenketsu',
+      draw:drawKisho,
+      color:'#22c55e',
+    },
+  ];
+
+  function drawThreeAct(ctx,W,H){
+    const pad=40, plotH=H-80;
+    // Rising action: gentle slope up
+    const pts=[
+      {x:pad,y:plotH*0.85},
+      {x:W*0.28,y:plotH*0.6},
+      {x:W*0.5,y:plotH*0.3},
+      {x:W*0.6,y:plotH*0.05}, // CLIMAX
+      {x:W*0.7,y:plotH*0.35},
+      {x:W-pad,y:plotH*0.2},
+    ];
+    ctx.strokeStyle=STRUCTS[0].color;
+    ctx.lineWidth=3;
+    ctx.shadowColor=STRUCTS[0].color;
+    ctx.shadowBlur=8;
+    drawCurve(ctx,pts);
+    ctx.shadowBlur=0;
+
+    // Labels
+    const labels=[
+      {x:pad,y:plotH+16,t:'SETUP'},
+      {x:W*0.27,y:plotH*0.6-14,t:'RISING ACTION'},
+      {x:W*0.6,y:plotH*0.05-14,t:'CLIMAX'},
+      {x:W*0.82,y:plotH*0.22-14,t:'RESOLUTION'},
+    ];
+    ctx.fillStyle='rgba(245,158,11,0.7)';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    labels.forEach(l=>ctx.fillText(l.t,l.x,l.y));
+
+    // Act dividers
+    ctx.strokeStyle='rgba(245,158,11,0.2)';
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    [W*0.25,W*0.75].forEach(x=>{
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,plotH+30);ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(245,158,11,0.4)';
+    ctx.font='8px "Courier New"';
+    ctx.fillText('ACT I',W*0.12,plotH+30);
+    ctx.fillText('ACT II',W*0.5,plotH+30);
+    ctx.fillText('ACT III',W*0.875,plotH+30);
+  }
+
+  function drawHeroJourney(ctx,W,H){
+    const cx=W/2, cy=(H-40)/2+10, rx=W*0.36, ry=(H-60)/2;
+    const stages=[
+      {pct:0,   label:'ORDINARY WORLD'},
+      {pct:0.1, label:'CALL TO\nADVENTURE'},
+      {pct:0.2, label:'REFUSAL'},
+      {pct:0.3, label:'CROSSING'},
+      {pct:0.42,label:'TESTS &\nALLIES'},
+      {pct:0.5, label:'ORDEAL'},
+      {pct:0.62,label:'REWARD'},
+      {pct:0.73,label:'ROAD BACK'},
+      {pct:0.82,label:'RESURRECTION'},
+      {pct:0.92,label:'RETURN WITH\nELIXIR'},
+    ];
+
+    ctx.strokeStyle=STRUCTS[1].color;
+    ctx.lineWidth=2;
+    ctx.shadowColor=STRUCTS[1].color;
+    ctx.shadowBlur=6;
+    ctx.beginPath();
+    ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    stages.forEach((s,i)=>{
+      const angle=-Math.PI/2+s.pct*Math.PI*2;
+      const px=cx+Math.cos(angle)*rx;
+      const py=cy+Math.sin(angle)*ry;
+      ctx.fillStyle=STRUCTS[1].color;
+      ctx.beginPath();
+      ctx.arc(px,py,5,0,Math.PI*2);
+      ctx.fill();
+      const lx=cx+Math.cos(angle)*(rx+28);
+      const ly=cy+Math.sin(angle)*(ry+28);
+      ctx.fillStyle='rgba(168,85,247,0.8)';
+      ctx.font='7px "Courier New"';
+      ctx.textAlign='center';
+      const lines=s.label.split('\n');
+      lines.forEach((ln,li)=>ctx.fillText(ln,lx,ly-4+li*9));
+    });
+    ctx.fillStyle='rgba(168,85,247,0.15)';
+    ctx.beginPath();
+    ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  function drawKisho(ctx,W,H){
+    const pad=40, plotH=H-80;
+    const pts=[
+      {x:pad,y:plotH*0.7},
+      {x:W*0.18,y:plotH*0.55},
+      {x:W*0.33,y:plotH*0.35}, // KI ends
+      {x:W*0.35,y:plotH*0.35},
+      {x:W*0.5,y:plotH*0.38}, // SHO plateau
+      {x:W*0.6,y:plotH*0.35},
+      {x:W*0.62,y:plotH*0.1},  // TEN — surprise twist UP
+      {x:W*0.72,y:plotH*0.45}, // KETSU reconciliation
+      {x:W*0.85,y:plotH*0.3},
+      {x:W-pad,y:plotH*0.25},
+    ];
+    ctx.strokeStyle=STRUCTS[2].color;
+    ctx.lineWidth=3;
+    ctx.shadowColor=STRUCTS[2].color;
+    ctx.shadowBlur=8;
+    drawCurve(ctx,pts);
+    ctx.shadowBlur=0;
+
+    const labels=[
+      {x:W*0.17,y:plotH+16,t:'KI (Intro)'},
+      {x:W*0.43,y:plotH+16,t:'SHŌ (Development)'},
+      {x:W*0.62,y:plotH*0.1-14,t:'TEN (Twist)'},
+      {x:W*0.82,y:plotH+16,t:'KETSU (Reconcile)'},
+    ];
+    ctx.strokeStyle='rgba(34,197,94,0.15)';
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    [W*0.33,W*0.62,W*0.73].forEach(x=>{
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,plotH+30);ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(34,197,94,0.7)';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    labels.forEach(l=>ctx.fillText(l.t,l.x,l.y));
+  }
+
+  function drawCurve(ctx,pts){
+    if(pts.length<2)return;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y);
+    for(let i=1;i<pts.length-1;i++){
+      const mx=(pts[i].x+pts[i+1].x)/2;
+      const my=(pts[i].y+pts[i+1].y)/2;
+      ctx.quadraticCurveTo(pts[i].x,pts[i].y,mx,my);
+    }
+    ctx.lineTo(pts[pts.length-1].x,pts[pts.length-1].y);
+    ctx.stroke();
+  }
+
+  function drawGrid(ctx,W,H){
+    ctx.strokeStyle='rgba(30,30,46,0.8)';
+    ctx.lineWidth=1;
+    for(let y=0;y<H-40;y+=40){
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    }
+    // Y axis label
+    ctx.save();
+    ctx.translate(12,(H-40)/2);
+    ctx.rotate(-Math.PI/2);
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('TENSION →',0,0);
+    ctx.restore();
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('STORY TIME (0% → 100%)',W/2,H-8);
+  }
+
+  function render(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+    drawGrid(ctx,W,H);
+    STRUCTS[activeStruct].draw(ctx,W,H);
+
+    // Draw user curve overlay
+    if(userCurve.length>1){
+      ctx.strokeStyle='rgba(255,255,255,0.5)';
+      ctx.lineWidth=2;
+      ctx.setLineDash([6,4]);
+      ctx.beginPath();
+      ctx.moveTo(userCurve[0].x,userCurve[0].y);
+      userCurve.forEach(p=>ctx.lineTo(p.x,p.y));
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+  render();
+
+  canvas.addEventListener('mousedown',(e)=>{
+    isDrawing=true;
+    userCurve=[];
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width, sy=canvas.height/r.height;
+    userCurve.push({x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy});
+  });
+  canvas.addEventListener('mousemove',(e)=>{
+    if(!isDrawing)return;
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width, sy=canvas.height/r.height;
+    userCurve.push({x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy});
+    render();
+  });
+  canvas.addEventListener('mouseup',()=>{isDrawing=false;});
+  canvas.addEventListener('mouseleave',()=>{isDrawing=false;});
+
+  window.setStruct=function(idx){
+    activeStruct=idx;
+    const btns=document.querySelectorAll('#structBtns .btn');
+    btns.forEach((b,i)=>b.classList.toggle('active',i===idx));
+    userCurve=[];
+    render();
+  };
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 3 — EMOTIONAL ARC DESIGNER
+// SYSTEM: EmotionalArcDesigner
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('arcCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let nodes=[];
+  const PAD=50;
+
+  const FILM_PRESETS={
+    laLaLand:[
+      {xPct:0.0,yPct:0.4,emotion:'joy',label:'Dreaming in LA'},
+      {xPct:0.15,yPct:0.55,emotion:'joy',label:'They Meet'},
+      {xPct:0.28,yPct:0.2,emotion:'joy',label:'Falling in Love'},
+      {xPct:0.45,yPct:0.3,emotion:'joy',label:'First Success'},
+      {xPct:0.6,yPct:0.5,emotion:'sad',label:'Compromise'},
+      {xPct:0.75,yPct:0.7,emotion:'sad',label:'Breakup'},
+      {xPct:0.88,yPct:0.15,emotion:'wonder',label:'Success Alone'},
+      {xPct:1.0,yPct:0.85,emotion:'sad',label:'What Could\'ve Been'},
+    ],
+    up:[
+      {xPct:0.0,yPct:0.2,emotion:'joy',label:'Childhood Wonder'},
+      {xPct:0.08,yPct:0.05,emotion:'joy',label:'Ellie & Carl'},
+      {xPct:0.15,yPct:0.85,emotion:'sad',label:'Ellie Dies'},
+      {xPct:0.25,yPct:0.7,emotion:'sad',label:'Alone'},
+      {xPct:0.38,yPct:0.45,emotion:'anger',label:'Adventure Begins'},
+      {xPct:0.55,yPct:0.5,emotion:'fear',label:'Muntz Revealed'},
+      {xPct:0.7,yPct:0.3,emotion:'wonder',label:'Floating House'},
+      {xPct:0.85,yPct:0.15,emotion:'peace',label:'New Family'},
+      {xPct:1.0,yPct:0.2,emotion:'joy',label:'Acceptance'},
+    ],
+    ncfom:[
+      {xPct:0.0,yPct:0.6,emotion:'fear',label:'Money Found'},
+      {xPct:0.2,yPct:0.7,emotion:'fear',label:'Chigurh Pursues'},
+      {xPct:0.4,yPct:0.75,emotion:'fear',label:'Cat & Mouse'},
+      {xPct:0.55,yPct:0.8,emotion:'fear',label:'Motel Massacre'},
+      {xPct:0.7,yPct:0.85,emotion:'sad',label:'Carla Jean Dies (off-screen)'},
+      {xPct:0.85,yPct:0.8,emotion:'sad',label:'Moss Dies (off-screen)'},
+      {xPct:1.0,yPct:0.75,emotion:'sad',label:'Bell Retires — No Resolution'},
+    ],
+    parasite:[
+      {xPct:0.0,yPct:0.8,emotion:'sad',label:'Basement Poverty'},
+      {xPct:0.15,yPct:0.6,emotion:'wonder',label:'Enter the Park House'},
+      {xPct:0.3,yPct:0.4,emotion:'joy',label:'All Installed'},
+      {xPct:0.45,yPct:0.3,emotion:'joy',label:'The Good Life'},
+      {xPct:0.52,yPct:0.6,emotion:'fear',label:'Rain — The Party'},
+      {xPct:0.65,yPct:0.2,emotion:'anger',label:'Basement Truth'},
+      {xPct:0.78,yPct:0.05,emotion:'fear',label:'The Massacre'},
+      {xPct:0.88,yPct:0.85,emotion:'sad',label:'Aftermath'},
+      {xPct:1.0,yPct:0.9,emotion:'sad',label:'Impossible Dream'},
+    ],
+    esotsm:[
+      {xPct:0.0,yPct:0.5,emotion:'wonder',label:'Valentine\'s Day (disoriented)'},
+      {xPct:0.15,yPct:0.4,emotion:'sad',label:'Clementine Erased'},
+      {xPct:0.3,yPct:0.6,emotion:'sad',label:'Memories Dissolving'},
+      {xPct:0.45,yPct:0.3,emotion:'joy',label:'Hidden Good Memories'},
+      {xPct:0.6,yPct:0.5,emotion:'fear',label:'Joel Fights Erasure'},
+      {xPct:0.72,yPct:0.2,emotion:'joy',label:'Montauk Memory'},
+      {xPct:0.85,yPct:0.55,emotion:'wonder',label:'They Meet Again'},
+      {xPct:1.0,yPct:0.35,emotion:'peace',label:'\'Okay\''},
+    ],
+  };
+
+  function xToCanvas(xPct){return PAD+(W-PAD*2)*xPct;}
+  function yToCanvas(yPct){return PAD+(H-PAD*2)*yPct;}
+
+  function drawArcCanvas(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='rgba(30,30,46,0.7)';
+    ctx.lineWidth=1;
+    for(let i=0;i<=10;i++){
+      const x=PAD+(W-PAD*2)*i/10;
+      const y=PAD+(H-PAD*2)*i/10;
+      ctx.beginPath();ctx.moveTo(x,PAD);ctx.lineTo(x,H-PAD);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();
+    }
+
+    // Axes labels
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('OPENING',PAD,H-8);
+    ctx.fillText('ENDING',W-PAD,H-8);
+    ctx.textAlign='left';
+    ctx.fillText('EUPHORIA',6,PAD+4);
+    ctx.fillText('DESPAIR',6,H-PAD);
+
+    // Y axis emotional intensity marker (dashed midline)
+    ctx.strokeStyle='rgba(245,158,11,0.1)';
+    ctx.setLineDash([4,6]);
+    ctx.beginPath();ctx.moveTo(PAD,(H)/2);ctx.lineTo(W-PAD,(H)/2);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw Bézier curve through nodes
+    if(nodes.length>=2){
+      ctx.save();
+      ctx.shadowColor='rgba(255,255,255,0.4)';
+      ctx.shadowBlur=6;
+      ctx.strokeStyle='rgba(255,255,255,0.5)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      const pts=nodes.map(n=>({x:xToCanvas(n.xPct),y:yToCanvas(n.yPct)}));
+      ctx.moveTo(pts[0].x,pts[0].y);
+      if(pts.length===2){
+        ctx.lineTo(pts[1].x,pts[1].y);
+      } else {
+        for(let i=0;i<pts.length-1;i++){
+          const cp1x=(pts[i].x+pts[i+1].x)/2;
+          const cp1y=pts[i].y;
+          const cp2x=(pts[i].x+pts[i+1].x)/2;
+          const cp2y=pts[i+1].y;
+          ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,pts[i+1].x,pts[i+1].y);
+        }
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // Filled area under curve
+      ctx.save();
+      ctx.beginPath();
+      const pp=nodes.map(n=>({x:xToCanvas(n.xPct),y:yToCanvas(n.yPct)}));
+      ctx.moveTo(pp[0].x,H-PAD);
+      ctx.lineTo(pp[0].x,pp[0].y);
+      if(pp.length===2){
+        ctx.lineTo(pp[1].x,pp[1].y);
+      } else {
+        for(let i=0;i<pp.length-1;i++){
+          const cp1x=(pp[i].x+pp[i+1].x)/2;
+          const cp1y=pp[i].y;
+          const cp2x=(pp[i].x+pp[i+1].x)/2;
+          const cp2y=pp[i+1].y;
+          ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,pp[i+1].x,pp[i+1].y);
+        }
+      }
+      ctx.lineTo(pp[pp.length-1].x,H-PAD);
+      ctx.closePath();
+      const fillG=ctx.createLinearGradient(0,PAD,0,H-PAD);
+      fillG.addColorStop(0,'rgba(245,158,11,0.12)');
+      fillG.addColorStop(1,'rgba(245,158,11,0.02)');
+      ctx.fillStyle=fillG;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Draw nodes
+    nodes.forEach((n,i)=>{
+      const px=xToCanvas(n.xPct);
+      const py=yToCanvas(n.yPct);
+      const ec=EMOTION_COLORS.find(e=>e.key===n.emotion)||EMOTION_COLORS[0];
+      ctx.beginPath();
+      ctx.arc(px,py,8,0,Math.PI*2);
+      ctx.fillStyle=ec.color;
+      ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.4)';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+      // Label
+      if(n.label){
+        ctx.fillStyle=ec.color;
+        ctx.font='8px "Courier New"';
+        ctx.textAlign='center';
+        ctx.fillText(n.label,px,py-14);
+      }
+    });
+  }
+  drawArcCanvas();
+
+  canvas.addEventListener('click',(e)=>{
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width, sy=canvas.height/r.height;
+    const cx=(e.clientX-r.left)*sx;
+    const cy=(e.clientY-r.top)*sy;
+    const xPct=Math.max(0,Math.min(1,(cx-PAD)/(W-PAD*2)));
+    const yPct=Math.max(0,Math.min(1,(cy-PAD)/(H-PAD*2)));
+    nodes.push({xPct,yPct,emotion:activeEmotion.key,label:''});
+    nodes.sort((a,b)=>a.xPct-b.xPct);
+    drawArcCanvas();
+  });
+
+  window.loadFilmPreset=function(){
+    const key=document.getElementById('filmPreset').value;
+    if(!key)return;
+    nodes=FILM_PRESETS[key].map(n=>({...n}));
+    drawArcCanvas();
+    document.getElementById('filmPreset').value='';
+  };
+  window.clearArc=function(){nodes=[];drawArcCanvas();};
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 4 — BRANCHING TIMELINE BUILDER
+// SYSTEM: BranchingTimelineBuilder
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('branchCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let branches=[];
+  let dotPos=0;
+  let dotAnimating=false;
+  let dotPath=[];
+  let dotPathIdx=0;
+  let dotPauseTick=0;
+  let animRAF=null;
+
+  const SPINE_Y=H/2;
+  const SPINE_X0=40, SPINE_X1=W-40;
+  const BRANCH_AMP=80;
+
+  const TIMELINE_PRESETS={
+    rashomon:{
+      label:'Rashomon — 4 Perspectives',
+      branches:[
+        {xPct:0.25,type:'parallel',label:'Bandit\'s Version'},
+        {xPct:0.5,type:'parallel',label:'Wife\'s Version'},
+        {xPct:0.75,type:'parallel',label:'Samurai\'s Ghost'},
+      ]
+    },
+    lola:{
+      label:'Run Lola Run — 3 Runs',
+      branches:[
+        {xPct:0.33,type:'reset',label:'Run 1 Ends'},
+        {xPct:0.66,type:'reset',label:'Run 2 Ends'},
+      ]
+    },
+    memento:{
+      label:'Memento — Reversed',
+      branches:[
+        {xPct:0.15,type:'flashback',label:'Scene B'},
+        {xPct:0.35,type:'flashback',label:'Scene C'},
+        {xPct:0.55,type:'flashback',label:'Scene D'},
+        {xPct:0.75,type:'flashback',label:'Scene E'},
+      ]
+    },
+    sliding:{
+      label:'Sliding Doors — Split at Decision',
+      branches:[
+        {xPct:0.2,type:'split',label:'Catches Train'},
+      ]
+    },
+  };
+
+  function getBranchColor(type){
+    return type==='parallel'?'#06b6d4':
+           type==='reset'?'#ef4444':
+           type==='flashback'?'rgba(255,255,255,0.7)':
+           type==='split'?'#a855f7':'#f59e0b';
+  }
+
+  function xFromPct(pct){return SPINE_X0+pct*(SPINE_X1-SPINE_X0);}
+
+  function drawBranchCanvas(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+
+    // Time axis arrow
+    ctx.strokeStyle='rgba(245,158,11,0.15)';
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,8]);
+    ctx.beginPath();ctx.moveTo(SPINE_X0,SPINE_Y);ctx.lineTo(SPINE_X1,SPINE_Y);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Main spine
+    ctx.strokeStyle='#f59e0b';
+    ctx.lineWidth=3;
+    ctx.shadowColor='#f59e0b';
+    ctx.shadowBlur=6;
+    ctx.beginPath();
+    ctx.moveTo(SPINE_X0,SPINE_Y);
+    ctx.lineTo(SPINE_X1,SPINE_Y);
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // Arrow head
+    ctx.fillStyle='#f59e0b';
+    ctx.beginPath();
+    ctx.moveTo(SPINE_X1,SPINE_Y);
+    ctx.lineTo(SPINE_X1-10,SPINE_Y-5);
+    ctx.lineTo(SPINE_X1-10,SPINE_Y+5);
+    ctx.fill();
+    ctx.font='9px "Courier New"';
+    ctx.fillStyle='rgba(245,158,11,0.6)';
+    ctx.textAlign='left';
+    ctx.fillText('START',SPINE_X0,SPINE_Y-14);
+    ctx.textAlign='right';
+    ctx.fillText('END',SPINE_X1,SPINE_Y-14);
+
+    // Draw branches
+    branches.forEach((b,i)=>{
+      const bx=xFromPct(b.xPct);
+      const col=getBranchColor(b.type);
+      const dir=i%2===0?-1:1; // alternating above/below
+
+      // Branch fork
+      ctx.strokeStyle=col;
+      ctx.lineWidth=2;
+      ctx.shadowColor=col;
+      ctx.shadowBlur=4;
+      ctx.beginPath();
+      ctx.moveTo(bx,SPINE_Y);
+      ctx.quadraticCurveTo(bx+40,SPINE_Y+dir*BRANCH_AMP*0.5,bx+100,SPINE_Y+dir*BRANCH_AMP);
+      ctx.stroke();
+      ctx.shadowBlur=0;
+
+      // Endpoint card
+      ctx.fillStyle='rgba(13,13,20,0.9)';
+      ctx.strokeStyle=col;
+      ctx.lineWidth=1.5;
+      const ex=bx+100, ey=SPINE_Y+dir*BRANCH_AMP;
+      ctx.beginPath();
+      ctx.roundRect(ex-36,ey-14,72,28,4);
+      ctx.fill();ctx.stroke();
+
+      ctx.fillStyle=col;
+      ctx.font='bold 9px "Courier New"';
+      ctx.textAlign='center';
+      ctx.fillText(b.label||`PATH ${i+1}`,ex,ey+4);
+
+      // Fork dot
+      ctx.fillStyle=col;
+      ctx.beginPath();
+      ctx.arc(bx,SPINE_Y,6,0,Math.PI*2);
+      ctx.fill();
+    });
+
+    // Animated dot
+    if(dotPos>0){
+      ctx.fillStyle='#ffffff';
+      ctx.shadowColor='#ffffff';
+      ctx.shadowBlur=10;
+      ctx.beginPath();
+      ctx.arc(dotPos,SPINE_Y,7,0,Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur=0;
+    }
+
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('AMBER = main · CYAN = alternative · WHITE = flashback · DIM = not taken',W/2,H-8);
+  }
+  drawBranchCanvas();
+
+  function animateDot(){
+    if(!dotAnimating){dotPos=0;drawBranchCanvas();return;}
+    if(dotPos<SPINE_X0){dotPos=SPINE_X0;}
+    if(dotPauseTick>0){
+      dotPauseTick--;
+      drawBranchCanvas();
+      animRAF=requestAnimationFrame(animateDot);
+      return;
+    }
+    dotPos+=2.5;
+    // Check branch points
+    branches.forEach(b=>{
+      const bx=xFromPct(b.xPct);
+      if(Math.abs(dotPos-bx)<3 && dotPauseTick===0){
+        dotPauseTick=30; // pause 30 frames
+      }
+    });
+    if(dotPos>=SPINE_X1){
+      dotAnimating=false;
+      dotPos=0;
+    }
+    drawBranchCanvas();
+    if(dotAnimating) animRAF=requestAnimationFrame(animateDot);
+  }
+
+  window.addBranch=function(){
+    const xPct=0.2+Math.random()*0.6;
+    const types=['parallel','split','flashback','reset'];
+    branches.push({xPct,type:types[Math.floor(Math.random()*types.length)],label:`FORK ${branches.length+1}`});
+    branches.sort((a,b)=>a.xPct-b.xPct);
+    drawBranchCanvas();
+  };
+  window.clearBranches=function(){branches=[];dotPos=0;dotAnimating=false;if(animRAF)cancelAnimationFrame(animRAF);drawBranchCanvas();};
+  window.playTimeline=function(){
+    dotAnimating=true;dotPos=SPINE_X0;dotPauseTick=0;
+    if(animRAF)cancelAnimationFrame(animRAF);
+    animRAF=requestAnimationFrame(animateDot);
+  };
+  window.loadTimelinePreset=function(){
+    const key=document.getElementById('filmTimeline').value;
+    if(!key)return;
+    const p=TIMELINE_PRESETS[key];
+    if(!p)return;
+    branches=p.branches.map(b=>({...b}));
+    drawBranchCanvas();
+    document.getElementById('filmTimeline').value='';
+  };
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 5 — MONTAGE PACING STUDIO
+// SYSTEM: MontagePacingStudio
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('pacingCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+
+  let shots=[];
+  let selectedShot=-1;
+  let dragging=null;
+  let activeShotColorLocal=EMOTION_COLORS[0];
+  let dragStartX=0;
+
+  // expose to color strip
+  window.activeShotColor=EMOTION_COLORS[0];
+
+  const TRACK_Y=60, TRACK_H=120, PIE_CY=220, PIE_R=30;
+  const MIN_W=8;
+
+  const PACING_PRESETS={
+    breathless:[
+      ...Array.from({length:24},(_,i)=>({dur:0.5+Math.random()*1.5,color:EMOTION_COLORS[Math.floor(Math.random()*6)].color}))
+    ],
+    '2001':[
+      {dur:18,color:'#3b82f6'},{dur:12,color:'#64748b'},{dur:24,color:'#3b82f6'},
+      {dur:8,color:'#f59e0b'},{dur:30,color:'#0a0a0f'},{dur:16,color:'#3b82f6'},
+    ],
+    fury:[
+      ...Array.from({length:40},(_,i)=>({dur:0.2+Math.random()*0.8,color:EMOTION_COLORS[Math.floor(Math.random()*3)].color}))
+    ],
+  };
+
+  function getTotalDur(){return shots.reduce((s,sh)=>s+sh.dur,0);}
+
+  function shotsToPixels(){
+    const total=getTotalDur()||1;
+    const usableW=W-20;
+    let x=10;
+    return shots.map(sh=>{
+      const w=Math.max(MIN_W,(sh.dur/total)*usableW);
+      const r={x,w,sh};
+      x+=w+2;
+      return r;
+    });
+  }
+
+  function updateStats(){
+    const n=shots.length;
+    const total=getTotalDur();
+    const avg=n?total/n:0;
+    const cpm=total?Math.round((n/total)*60):0;
+    let assessment='—';
+    if(n>0){
+      if(avg<1.5)assessment='FRANTIC';
+      else if(avg<4)assessment='DYNAMIC';
+      else assessment='SLOW BURN';
+    }
+    document.getElementById('statShots').textContent=n;
+    document.getElementById('statAvg').textContent=avg.toFixed(1)+'s';
+    document.getElementById('statCPM').textContent=cpm;
+    document.getElementById('statPacing').textContent=assessment;
+  }
+
+  function drawPacing(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+
+    // Track background
+    ctx.fillStyle='rgba(30,30,46,0.4)';
+    ctx.beginPath();
+    ctx.roundRect(10,TRACK_Y,W-20,TRACK_H,6);
+    ctx.fill();
+    ctx.strokeStyle='rgba(30,30,46,0.8)';
+    ctx.lineWidth=1;
+    ctx.stroke();
+
+    // Draw shots
+    const mapped=shotsToPixels();
+    mapped.forEach((m,i)=>{
+      const isSelected=(i===selectedShot);
+      ctx.fillStyle=m.sh.color||'#f59e0b';
+      ctx.globalAlpha=isSelected?1:0.8;
+      ctx.beginPath();
+      ctx.roundRect(m.x,TRACK_Y+4,m.w,TRACK_H-8,3);
+      ctx.fill();
+      ctx.globalAlpha=1;
+      if(isSelected){
+        ctx.strokeStyle='#ffffff';
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.roundRect(m.x,TRACK_Y+4,m.w,TRACK_H-8,3);
+        ctx.stroke();
+      }
+      // Duration label if wide enough
+      if(m.w>28){
+        ctx.fillStyle='rgba(0,0,0,0.7)';
+        ctx.font='8px "Courier New"';
+        ctx.textAlign='center';
+        ctx.fillText(m.sh.dur.toFixed(1)+'s',m.x+m.w/2,TRACK_Y+TRACK_H/2+4);
+      }
+      // Resize handle on right edge
+      ctx.fillStyle='rgba(255,255,255,0.2)';
+      ctx.fillRect(m.x+m.w-3,TRACK_Y+4,3,TRACK_H-8);
+    });
+
+    // Timeline ruler
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='center';
+    const total=getTotalDur();
+    for(let t=0;t<=total;t+=Math.max(1,Math.round(total/8))){
+      const px=10+(t/Math.max(total,1))*(W-20);
+      ctx.fillText(t+'s',px,TRACK_Y-6);
+      ctx.strokeStyle='rgba(100,116,139,0.2)';
+      ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(px,TRACK_Y);ctx.lineTo(px,TRACK_Y+TRACK_H);ctx.stroke();
+    }
+
+    // Emotional distribution pie
+    if(shots.length>0){
+      const counts={};
+      shots.forEach(sh=>{counts[sh.color]=(counts[sh.color]||0)+sh.dur;});
+      const entries=Object.entries(counts);
+      let startAngle=0;
+      const total2=getTotalDur();
+      const PIE_X=W-PIE_R-16;
+      entries.forEach(([col,dur])=>{
+        const sweep=(dur/total2)*Math.PI*2;
+        ctx.fillStyle=col;
+        ctx.beginPath();
+        ctx.moveTo(PIE_X,PIE_CY);
+        ctx.arc(PIE_X,PIE_CY,PIE_R,startAngle,startAngle+sweep);
+        ctx.fill();
+        startAngle+=sweep;
+      });
+      ctx.fillStyle='#64748b';
+      ctx.font='8px "Courier New"';
+      ctx.textAlign='center';
+      ctx.fillText('EMOTION',PIE_X,PIE_CY+PIE_R+12);
+    }
+
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='left';
+    ctx.fillText('Click shots to select · Drag right edge to resize',12,H-8);
+    updateStats();
+  }
+  drawPacing();
+
+  canvas.addEventListener('click',(e)=>{
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width;
+    const cx=(e.clientX-r.left)*sx;
+    const cy_=(e.clientY-r.top)*(canvas.height/r.height);
+    if(cy_<TRACK_Y||cy_>TRACK_Y+TRACK_H)return;
+    const mapped=shotsToPixels();
+    let hit=-1;
+    for(let i=0;i<mapped.length;i++){
+      if(cx>=mapped[i].x&&cx<=mapped[i].x+mapped[i].w){hit=i;break;}
+    }
+    selectedShot=hit;
+    drawPacing();
+  });
+
+  canvas.addEventListener('mousedown',(e)=>{
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width;
+    const cx=(e.clientX-r.left)*sx;
+    const cy_=(e.clientY-r.top)*(canvas.height/r.height);
+    if(cy_<TRACK_Y||cy_>TRACK_Y+TRACK_H)return;
+    const mapped=shotsToPixels();
+    for(let i=0;i<mapped.length;i++){
+      const m=mapped[i];
+      if(cx>=m.x+m.w-8&&cx<=m.x+m.w+4){
+        dragging={shotIdx:i,startX:cx,startDur:m.sh.dur,totalDur:getTotalDur()};
+        break;
+      }
+    }
+  });
+  canvas.addEventListener('mousemove',(e)=>{
+    if(!dragging)return;
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width;
+    const cx=(e.clientX-r.left)*sx;
+    const delta=cx-dragging.startX;
+    const pxPerSec=(W-20)/Math.max(dragging.totalDur,1);
+    const newDur=Math.max(0.1,dragging.startDur+delta/pxPerSec);
+    shots[dragging.shotIdx].dur=parseFloat(newDur.toFixed(1));
+    drawPacing();
+  });
+  canvas.addEventListener('mouseup',()=>{dragging=null;});
+  canvas.addEventListener('mouseleave',()=>{dragging=null;});
+
+  window.addShot=function(){
+    shots.push({dur:2,color:window.activeShotColor.color||'#f59e0b'});
+    drawPacing();
+  };
+  window.deleteSelectedShot=function(){
+    if(selectedShot>=0&&selectedShot<shots.length){
+      shots.splice(selectedShot,1);
+      selectedShot=-1;
+      drawPacing();
+    }
+  };
+  window.loadPacingPreset=function(){
+    const key=document.getElementById('filmPacing').value;
+    if(!key)return;
+    shots=PACING_PRESETS[key].map(s=>({...s}));
+    selectedShot=-1;
+    drawPacing();
+    document.getElementById('filmPacing').value='';
+  };
+
+  // Re-render when shot color changes
+  const origColorStrip=buildColorStrip;
+  document.getElementById('shotColors')&&buildColorStrip('shotColors',(e)=>{
+    window.activeShotColor=e;
+    if(selectedShot>=0&&selectedShot<shots.length){
+      shots[selectedShot].color=e.color;
+      drawPacing();
+    }
+  });
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 6 — NARRATIVE SPACE MAP
+// SYSTEM: NarrativeSpaceMap
+// ════════════════════════════════════════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('mapCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let locations=[];
+  let paths=[];
+  let mapMode='place';
+  let connectStart=-1;
+  let journeyDot=null;
+  let journeyStep=0;
+  let journeyT=0;
+  let journeyAnimRAF=null;
+
+  const MAP_PRESETS={
+    wizard:{
+      label:'The Wizard of Oz',
+      locations:[
+        {x:90,y:300,label:'Kansas'},
+        {x:200,y:180,label:'Munchkinland'},
+        {x:320,y:260,label:'Yellow\nBrick Road'},
+        {x:480,y:160,label:'Emerald City'},
+        {x:580,y:280,label:"Witch's Castle"},
+        {x:90,y:300,label:'Kansas (Return)'},
+      ],
+      paths:[
+        {from:0,to:1,emotion:'joy',label:'Tornado'},
+        {from:1,to:2,emotion:'wonder',label:'Follow the road'},
+        {from:2,to:3,emotion:'joy',label:'Enter the city'},
+        {from:3,to:4,emotion:'fear',label:'Save Toto'},
+        {from:4,to:5,emotion:'peace',label:'Click heels'},
+      ],
+    },
+    odyssey:{
+      label:'The Odyssey',
+      locations:[
+        {x:100,y:200,label:'Troy'},
+        {x:200,y:120,label:'Cicones'},
+        {x:290,y:80,label:"Cyclops'sIsland"},
+        {x:400,y:100,label:'Aeolia'},
+        {x:490,y:180,label:"Circe's Isle"},
+        {x:540,y:280,label:'Underworld'},
+        {x:460,y:340,label:'Sirens'},
+        {x:350,y:320,label:'Scylla &\nCharybdis'},
+        {x:240,y:340,label:'Helios\' Isle'},
+        {x:110,y:360,label:'Ithaca'},
+      ],
+      paths:[
+        {from:0,to:1,emotion:'anger'},{from:1,to:2,emotion:'fear'},
+        {from:2,to:3,emotion:'wonder'},{from:3,to:4,emotion:'wonder'},
+        {from:4,to:5,emotion:'fear'},{from:5,to:6,emotion:'fear'},
+        {from:6,to:7,emotion:'fear'},{from:7,to:8,emotion:'anger'},
+        {from:8,to:9,emotion:'joy'},
+      ],
+    },
+    shining:{
+      label:'The Shining — Overlook Hotel',
+      locations:[
+        {x:320,y:200,label:'Lobby'},
+        {x:180,y:200,label:'Room 237'},
+        {x:460,y:200,label:'Ballroom'},
+        {x:320,y:100,label:'Hedge Maze\nEntrance'},
+        {x:320,y:320,label:'Boiler Room'},
+        {x:200,y:100,label:'Hedge Maze\nDeep'},
+      ],
+      paths:[
+        {from:0,to:1,emotion:'fear'},{from:0,to:2,emotion:'wonder'},
+        {from:0,to:3,emotion:'fear'},{from:0,to:4,emotion:'anger'},
+        {from:3,to:5,emotion:'fear'},
+      ],
+    },
+  };
+
+  function getEmotionColor(emo){
+    const e=EMOTION_COLORS.find(x=>x.key===emo);
+    return e?e.color:'#f59e0b';
+  }
+
+  function drawMap(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+
+    // Subtle grid
+    ctx.strokeStyle='rgba(30,30,46,0.5)';
+    ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // Draw paths
+    paths.forEach((p,i)=>{
+      const from=locations[p.from], to=locations[p.to];
+      if(!from||!to)return;
+      const col=getEmotionColor(p.emotion);
+      ctx.strokeStyle=col;
+      ctx.lineWidth=2;
+      ctx.shadowColor=col;
+      ctx.shadowBlur=4;
+      ctx.beginPath();
+      ctx.moveTo(from.x,from.y);
+      const mx=(from.x+to.x)/2, my=(from.y+to.y)/2-30;
+      ctx.quadraticCurveTo(mx,my,to.x,to.y);
+      ctx.stroke();
+      ctx.shadowBlur=0;
+      // Arrowhead
+      const angle=Math.atan2(to.y-my,to.x-mx);
+      ctx.fillStyle=col;
+      ctx.beginPath();
+      ctx.moveTo(to.x,to.y);
+      ctx.lineTo(to.x-10*Math.cos(angle-0.4),to.y-10*Math.sin(angle-0.4));
+      ctx.lineTo(to.x-10*Math.cos(angle+0.4),to.y-10*Math.sin(angle+0.4));
+      ctx.fill();
+      // Label
+      if(p.label){
+        ctx.fillStyle=col;
+        ctx.font='8px "Courier New"';
+        ctx.textAlign='center';
+        ctx.fillText(p.label,mx,my-4);
+      }
+    });
+
+    // Draw location nodes
+    locations.forEach((loc,i)=>{
+      ctx.beginPath();
+      ctx.arc(loc.x,loc.y,16,0,Math.PI*2);
+      const grad=ctx.createRadialGradient(loc.x,loc.y,4,loc.x,loc.y,16);
+      grad.addColorStop(0,'rgba(245,158,11,0.3)');
+      grad.addColorStop(1,'rgba(245,158,11,0.05)');
+      ctx.fillStyle=grad;
+      ctx.fill();
+      ctx.strokeStyle=(connectStart===i)?'#ffffff':'rgba(245,158,11,0.7)';
+      ctx.lineWidth=(connectStart===i)?2.5:1.5;
+      ctx.stroke();
+      // Label
+      const lines=loc.label.split('\n');
+      ctx.fillStyle='#f59e0b';
+      ctx.font='bold 9px "Courier New"';
+      ctx.textAlign='center';
+      lines.forEach((ln,li)=>ctx.fillText(ln,loc.x,loc.y+24+li*11));
+      // Index
+      ctx.fillStyle='rgba(245,158,11,0.6)';
+      ctx.font='8px "Courier New"';
+      ctx.textAlign='center';
+      ctx.fillText(i+1,loc.x,loc.y+4);
+    });
+
+    // Journey dot
+    if(journeyDot){
+      ctx.fillStyle='#ffffff';
+      ctx.shadowColor='#ffffff';
+      ctx.shadowBlur=12;
+      ctx.beginPath();
+      ctx.arc(journeyDot.x,journeyDot.y,8,0,Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur=0;
+    }
+
+    ctx.fillStyle='#64748b';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='left';
+    ctx.fillText(`MODE: ${mapMode.toUpperCase()} · ${locations.length} locations · ${paths.length} paths`,8,H-8);
+  }
+  drawMap();
+
+  canvas.addEventListener('click',(e)=>{
+    const r=canvas.getBoundingClientRect();
+    const sx=canvas.width/r.width, sy=canvas.height/r.height;
+    const cx=(e.clientX-r.left)*sx;
+    const cy=(e.clientY-r.top)*sy;
+
+    if(mapMode==='place'){
+      const hit=locations.findIndex(l=>Math.hypot(l.x-cx,l.y-cy)<20);
+      if(hit===-1){
+        locations.push({x:Math.round(cx),y:Math.round(cy),label:`LOC ${locations.length+1}`});
+      }
+      drawMap();
+    } else if(mapMode==='connect'){
+      const hit=locations.findIndex(l=>Math.hypot(l.x-cx,l.y-cy)<22);
+      if(hit===-1)return;
+      if(connectStart===-1){
+        connectStart=hit;
+      } else {
+        if(connectStart!==hit){
+          paths.push({from:connectStart,to:hit,emotion:activeEmotion.key,label:''});
+        }
+        connectStart=-1;
+      }
+      drawMap();
+    }
+  });
+
+  function animateJourney(){
+    if(!paths.length||!locations.length)return;
+    const p=paths[journeyStep];
+    const from=locations[p.from], to=locations[p.to];
+    if(!from||!to)return;
+    journeyT+=0.02;
+    if(journeyT>=1){
+      journeyT=0;
+      journeyStep=(journeyStep+1)%paths.length;
+    }
+    // Quadratic bezier interpolation
+    const mx=(from.x+to.x)/2, my=(from.y+to.y)/2-30;
+    const t=journeyT;
+    const x=(1-t)*(1-t)*from.x+2*(1-t)*t*mx+t*t*to.x;
+    const y=(1-t)*(1-t)*from.y+2*(1-t)*t*my+t*t*to.y;
+    journeyDot={x,y};
+    drawMap();
+    journeyAnimRAF=requestAnimationFrame(animateJourney);
+  }
+
+  window.setMapMode=function(m){
+    mapMode=m;
+    connectStart=-1;
+    document.getElementById('modePlace').classList.toggle('active',m==='place');
+    document.getElementById('modeConnect').classList.toggle('active',m==='connect');
+    drawMap();
+  };
+  window.clearMap=function(){locations=[];paths=[];connectStart=-1;journeyDot=null;if(journeyAnimRAF)cancelAnimationFrame(journeyAnimRAF);drawMap();};
+  window.playMapJourney=function(){
+    if(!paths.length)return;
+    journeyStep=0;journeyT=0;
+    if(journeyAnimRAF)cancelAnimationFrame(journeyAnimRAF);
+    journeyAnimRAF=requestAnimationFrame(animateJourney);
+  };
+  window.loadMapPreset=function(){
+    const key=document.getElementById('mapPreset').value;
+    if(!key)return;
+    const p=MAP_PRESETS[key];
+    if(!p)return;
+    locations=p.locations.map(l=>({...l}));
+    paths=p.paths.map(p2=>({...p2}));
+    journeyDot=null;
+    drawMap();
+    document.getElementById('mapPreset').value='';
+  };
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 7 — TIME MANIPULATION TOOLS
+// ════════════════════════════════════════════════════════════════════════════
+
+// — Flashback Machine —
+(function(){
+  const canvas=document.getElementById('flashCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let blend=0; // 0=present, 1=past
+
+  function drawFlash(b){
+    ctx.clearRect(0,0,W,H);
+    // Present scene (cool, sharp, neutral)
+    const presentBg=ctx.createLinearGradient(0,0,W,H);
+    presentBg.addColorStop(0,'#0d1a2e');
+    presentBg.addColorStop(1,'#1e2d44');
+    // Past scene (warm, vignetted, soft)
+    const pastBg=ctx.createLinearGradient(0,0,W,H);
+    pastBg.addColorStop(0,'#2a1a0a');
+    pastBg.addColorStop(1,'#4a2e0e');
+
+    // Draw blended background
+    ctx.globalAlpha=1-b;
+    ctx.fillStyle=presentBg;
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=b;
+    ctx.fillStyle=pastBg;
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+
+    // Present scene elements (geometric, sharp)
+    ctx.save();
+    ctx.globalAlpha=Math.max(0,1-b*1.5);
+    // City buildings silhouette
+    const bldgs=[[30,160,50,80],[90,140,40,100],[140,120,60,120],[210,150,45,90],[265,130,55,110],[330,155,40,85]];
+    ctx.fillStyle='#0a1525';
+    bldgs.forEach(([x,y,w,h])=>ctx.fillRect(x,y,w,h));
+    // Windows
+    ctx.fillStyle='#3b82f6';
+    bldgs.forEach(([x,y,w,h])=>{
+      for(let wy=y+10;wy<y+h-10;wy+=15){
+        for(let wx=x+8;wx<x+w-8;wx+=14){
+          if(Math.random()>0.4)ctx.fillRect(wx,wy,6,8);
+        }
+      }
+    });
+    ctx.fillStyle='#60a5fa';
+    ctx.font='bold 11px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('PRESENT',W/2,H-16);
+    ctx.restore();
+
+    // Past scene elements (soft, warm)
+    ctx.save();
+    ctx.globalAlpha=Math.max(0,b*1.5-0.3);
+    // Soft landscape
+    const hillGrad=ctx.createLinearGradient(0,H*0.5,0,H);
+    hillGrad.addColorStop(0,'#5c3a0a');
+    hillGrad.addColorStop(1,'#2a1a05');
+    ctx.fillStyle=hillGrad;
+    ctx.beginPath();
+    ctx.moveTo(0,H);
+    ctx.lineTo(0,H*0.65);
+    ctx.quadraticCurveTo(W*0.3,H*0.45,W*0.5,H*0.6);
+    ctx.quadraticCurveTo(W*0.7,H*0.75,W,H*0.55);
+    ctx.lineTo(W,H);
+    ctx.fill();
+    // Warm sun
+    const sunG=ctx.createRadialGradient(W*0.75,H*0.25,5,W*0.75,H*0.25,40);
+    sunG.addColorStop(0,'rgba(253,200,100,0.9)');
+    sunG.addColorStop(1,'rgba(253,200,100,0)');
+    ctx.fillStyle=sunG;
+    ctx.beginPath();ctx.arc(W*0.75,H*0.25,40,0,Math.PI*2);ctx.fill();
+    // Vignette
+    const vig=ctx.createRadialGradient(W/2,H/2,H*0.2,W/2,H/2,H*0.7);
+    vig.addColorStop(0,'rgba(0,0,0,0)');
+    vig.addColorStop(1,'rgba(20,8,0,0.8)');
+    ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(253,200,100,0.7)';
+    ctx.font='bold 11px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('PAST — MEMORY',W/2,H-16);
+    ctx.restore();
+
+    // Soft-edge blur simulation overlay when past
+    if(b>0.2){
+      ctx.globalAlpha=b*0.3;
+      ctx.fillStyle='rgba(180,100,30,0.15)';
+      ctx.fillRect(0,0,W,H);
+      ctx.globalAlpha=1;
+    }
+
+    // Label
+    ctx.fillStyle='rgba(245,158,11,0.6)';
+    ctx.font='9px "Courier New"';
+    ctx.textAlign='left';
+    ctx.fillText(`BLEND: ${Math.round(b*100)}% PAST`,8,18);
+  }
+  drawFlash(0);
+
+  window.updateFlash=function(val){
+    blend=(100-parseInt(val))/100;
+    drawFlash(blend);
+  };
+})();
+
+// — Parallel Timeline Viewer —
+(function(){
+  const canvas=document.getElementById('parallelCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let convergePct=0.7;
+  let tick=0;
+
+  const TRACKS=[
+    {label:'LAND — 1 WEEK',color:'#f59e0b',speed:1,y:H*0.28},
+    {label:'SEA — 1 DAY',color:'#06b6d4',speed:2.5,y:H*0.55},
+    {label:'AIR — 1 HOUR',color:'#a855f7',speed:6,y:H*0.78},
+  ];
+  const TRACK_H=28;
+  const PAD_X=10;
+
+  function drawParallel(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0d0d14';
+    ctx.fillRect(0,0,W,H);
+
+    const convX=PAD_X+(W-PAD_X*2)*convergePct;
+
+    TRACKS.forEach((tr,ti)=>{
+      const trackW=convX-PAD_X;
+      // Track background
+      ctx.fillStyle='rgba(30,30,46,0.4)';
+      ctx.beginPath();
+      ctx.roundRect(PAD_X,tr.y-TRACK_H/2,trackW,TRACK_H,3);
+      ctx.fill();
+      ctx.strokeStyle=tr.color;
+      ctx.lineWidth=1;
+      ctx.beginPath();
+      ctx.roundRect(PAD_X,tr.y-TRACK_H/2,trackW,TRACK_H,3);
+      ctx.stroke();
+
+      // Animated progress dot
+      const dotX=PAD_X+((tick*tr.speed*0.4)%(trackW));
+      ctx.fillStyle=tr.color;
+      ctx.shadowColor=tr.color;
+      ctx.shadowBlur=8;
+      ctx.beginPath();
+      ctx.arc(Math.min(dotX,trackW),tr.y,7,0,Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur=0;
+
+      // Label
+      ctx.fillStyle=tr.color;
+      ctx.font='bold 9px "Courier New"';
+      ctx.textAlign='left';
+      ctx.fillText(tr.label,PAD_X+4,tr.y-TRACK_H/2-4);
+    });
+
+    // Convergence zone - tracks merge
+    const mergeGrad=ctx.createLinearGradient(convX-30,0,convX+50,0);
+    mergeGrad.addColorStop(0,'rgba(245,158,11,0)');
+    mergeGrad.addColorStop(0.5,'rgba(245,158,11,0.2)');
+    mergeGrad.addColorStop(1,'rgba(245,158,11,0)');
+    ctx.fillStyle=mergeGrad;
+    ctx.fillRect(convX-30,TRACKS[0].y-20,80,TRACKS[TRACKS.length-1].y+20-TRACKS[0].y+20);
+
+    // Convergence line
+    ctx.strokeStyle='rgba(245,158,11,0.6)';
+    ctx.lineWidth=2;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(convX,0);
+    ctx.lineTo(convX,H-20);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b';
+    ctx.font='bold 8px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('CONVERGENCE',convX,H-8);
+
+    // After convergence: single merged track
+    ctx.fillStyle='rgba(245,158,11,0.15)';
+    ctx.beginPath();
+    ctx.roundRect(convX,H/2-14,W-convX-PAD_X,28,3);
+    ctx.fill();
+    ctx.strokeStyle='rgba(245,158,11,0.4)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+    ctx.fillStyle='rgba(245,158,11,0.7)';
+    ctx.font='8px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText('MERGED STORY',convX+(W-convX-PAD_X)/2,H/2+4);
+
+    tick++;
+    requestAnimationFrame(drawParallel);
+  }
+  drawParallel();
+
+  window.updateConvergence=function(val){convergePct=parseInt(val)/100;};
+})();
+
+// — Time Compression/Expansion —
+(function(){
+  const canvas=document.getElementById('timeCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let speed=1;
+  let sunAngle=0;
+  let tick=0;
+
+  const SPEEDS=[0.1,0.25,0.5,1,2,5,10,25,50,100];
+
+  function drawTimeCanvas(){
+    ctx.clearRect(0,0,W,H);
+
+    // Sky gradient based on sun position
+    const dayPct=(sunAngle%(Math.PI*2))/(Math.PI*2);
+    const isDawn=dayPct<0.3;
+    const isDay=dayPct>=0.15&&dayPct<0.6;
+    const isDusk=dayPct>=0.55&&dayPct<0.75;
+    const isNight=dayPct>=0.72||dayPct<0.05;
+
+    let skyTop, skyBot;
+    if(isNight){skyTop='#020208';skyBot='#0a0510';}
+    else if(isDawn){skyTop='#1a0510';skyBot='#7c3a1a';}
+    else if(isDay){skyTop='#1a3a6a';skyBot='#3a6a9a';}
+    else{skyTop='#2a0a10';skyBot='#6a2a0a';}
+
+    const skyG=ctx.createLinearGradient(0,0,0,H*0.75);
+    skyG.addColorStop(0,skyTop);
+    skyG.addColorStop(1,skyBot);
+    ctx.fillStyle=skyG;
+    ctx.fillRect(0,0,W,H*0.75);
+
+    // Ground
+    const groundG=ctx.createLinearGradient(0,H*0.75,0,H);
+    groundG.addColorStop(0,'#1a2a0a');
+    groundG.addColorStop(1,'#0a1505');
+    ctx.fillStyle=groundG;
+    ctx.fillRect(0,H*0.75,W,H*0.25);
+
+    // Horizon line
+    ctx.strokeStyle='rgba(255,255,255,0.05)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,H*0.75);ctx.lineTo(W,H*0.75);ctx.stroke();
+
+    // Sun/Moon path
+    const cx=W*0.5;
+    const cy_=H*0.75;
+    const radius=H*0.6;
+    // Sun follows arc below horizon on night side
+    const sunX=cx+Math.sin(sunAngle-Math.PI/2)*radius*1.2;
+    const sunY=cy_-Math.cos(sunAngle-Math.PI/2)*radius;
+
+    if(sunY<H*0.75+20){
+      // Draw sun
+      const sunCol=isNight?'#c0c0e0':(isDawn||isDusk?'#f97316':'#fcd34d');
+      const sunR=isNight?12:18;
+      const sunGrad=ctx.createRadialGradient(sunX,sunY,2,sunX,sunY,sunR*3);
+      sunGrad.addColorStop(0,sunCol);
+      sunGrad.addColorStop(0.3,sunCol+'80');
+      sunGrad.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=sunGrad;
+      ctx.beginPath();ctx.arc(sunX,sunY,sunR*3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=sunCol;
+      ctx.beginPath();ctx.arc(sunX,sunY,sunR,0,Math.PI*2);ctx.fill();
+    }
+
+    // Stars when night
+    if(isNight||dayPct<0.1){
+      ctx.fillStyle='rgba(255,255,255,0.6)';
+      for(let i=0;i<30;i++){
+        const sx=(i*137.5)%W;
+        const sy=(i*73.3)%(H*0.7);
+        const flicker=Math.sin(tick*0.05+i)*0.4+0.6;
+        ctx.globalAlpha=flicker*0.8;
+        ctx.beginPath();ctx.arc(sx,sy,1.2,0,Math.PI*2);ctx.fill();
+      }
+      ctx.globalAlpha=1;
+    }
+
+    // Time display
+    const hours=Math.floor(dayPct*24);
+    const mins=Math.floor((dayPct*24-hours)*60);
+    const timeStr=`${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}`;
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.fillRect(W-120,8,112,44);
+    ctx.strokeStyle='rgba(245,158,11,0.3)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(W-120,8,112,44);
+    ctx.fillStyle='#f59e0b';
+    ctx.font='bold 20px "Courier New"';
+    ctx.textAlign='center';
+    ctx.fillText(timeStr,W-64,34);
+    ctx.fillStyle='rgba(245,158,11,0.5)';
+    ctx.font='8px "Courier New"';
+    ctx.fillText(speed+'× speed',W-64,46);
+
+    // Speed tape at bottom
+    ctx.fillStyle='rgba(5,5,8,0.8)';
+    ctx.fillRect(0,H-36,W,36);
+    const labelSpeeds=['0.1×','0.25×','0.5×','1×','2×','5×','10×','25×','50×','100×'];
+    labelSpeeds.forEach((lbl,i)=>{
+      const lx=60+i*(W-120)/9;
+      const isActive=(SPEEDS[i]===speed);
+      ctx.fillStyle=isActive?'#f59e0b':'#64748b';
+      ctx.font=isActive?'bold 9px "Courier New"':'8px "Courier New"';
+      ctx.textAlign='center';
+      ctx.fillText(lbl,lx,H-12);
+      if(isActive){
+        ctx.fillStyle='#f59e0b';
+        ctx.beginPath();ctx.arc(lx,H-28,3,0,Math.PI*2);ctx.fill();
+      }
+    });
+
+    sunAngle+=speed*0.002;
+    tick++;
+    requestAnimationFrame(drawTimeCanvas);
+  }
+  drawTimeCanvas();
+
+  window.updateSpeed=function(val){
+    const pct=parseInt(val)/100;
+    const idx=Math.min(SPEEDS.length-1,Math.floor(pct*(SPEEDS.length)));
+    speed=SPEEDS[idx];
+    document.getElementById('speedLabel').textContent=speed+'×';
+  };
+})();
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 8 — BEAT SHEET + ARTIST CARDS
+// ════════════════════════════════════════════════════════════════════════════
+const BEATS_DATA=[
+  {pct:'1%',   name:'Opening Image',        hint:'First impression — the "before" state of your world'},
+  {pct:'5%',   name:'Theme Stated',         hint:'Someone states the thematic argument (often unnoticed)'},
+  {pct:'1–10%',name:'Setup',                hint:'Introduce protagonist, world, and the flaws that must change'},
+  {pct:'10%',  name:'Catalyst',             hint:'The event that disrupts the status quo — no going back'},
+  {pct:'12–20%',name:'Debate',             hint:'Hero hesitates — do they accept the challenge?'},
+  {pct:'25%',  name:'Break Into Two',       hint:'Hero commits. Story shifts into Act 2 gear'},
+  {pct:'30%',  name:'B Story',              hint:'Introduce the love story or thematic subplot'},
+  {pct:'30–55%',name:'Fun & Games',        hint:'The promise of the premise — deliver what the poster sold'},
+  {pct:'50%',  name:'Midpoint',             hint:'False peak (comedy) or false defeat (drama). Stakes raised'},
+  {pct:'55–75%',name:'Bad Guys Close In',  hint:'Everything that can go wrong, does. Hero retreats'},
+  {pct:'75%',  name:'All Is Lost',          hint:'The lowest point. The "whiff of death" moment'},
+  {pct:'75–80%',name:'Dark Night of the Soul',hint:'Hero sits in the darkness before the dawn'},
+  {pct:'80%',  name:'Break Into Three',     hint:'A-story and B-story collide. New solution emerges'},
+  {pct:'80–99%',name:'Finale',             hint:'Execute the new plan. Defeat antagonist, prove the theme'},
+  {pct:'99%',  name:'Final Image',          hint:'Mirror of Opening Image — show how far we\'ve come'},
+];
+
+const beatList=document.getElementById('beatList');
+if(beatList){
+  BEATS_DATA.forEach((b,i)=>{
+    const item=document.createElement('div');
+    item.className='beat-item';
+    item.innerHTML=`
+      <input type="checkbox" id="beat${i}">
+      <div class="beat-pct">${b.pct}</div>
+      <div class="beat-name">${b.name}</div>
+      <input class="beat-input" type="text" placeholder="${b.hint}" title="${b.hint}">
+    `;
+    beatList.appendChild(item);
+  });
+}
+
+const ARTISTS=[
+  {
+    name:'Charlie Kaufman',
+    tag:'NON-LINEAR · META-NARRATIVE · RECURSIVE',
+    desc:'Kaufman folds stories inside stories — characters who know they\'re characters, screenwriters writing themselves. Synecdoche, New York collapses an entire life into a theatre set.',
+  },
+  {
+    name:'Christopher Nolan',
+    tag:'TEMPORAL PUZZLES · PARALLEL EDITING · MEMORY',
+    desc:'Nolan treats time as a puzzle box. Memento runs backwards. Interstellar bends it physically. Dunkirk runs three timescales simultaneously. Structure IS the subject.',
+  },
+  {
+    name:'Agnès Varda',
+    tag:'ESSAY FILM · ASSOCIATIVE MONTAGE · DIGRESSION',
+    desc:'Varda taught us that a film can meander with intention. The Gleaners & I links images by feeling, not logic. Time in her films breathes rather than marches.',
+  },
+  {
+    name:'Andrei Tarkovsky',
+    tag:'POETIC CINEMA · SLOW TIME · SCULPTING IN TIME',
+    desc:'Tarkovsky called filmmaking "sculpting in time." His shots last as long as the feeling demands — not the action. Stalker, The Mirror: time as texture, not container.',
+  },
+  {
+    name:'Billy Wilder',
+    tag:'THREE-ACT MASTER · STRUCTURE · ECONOMY',
+    desc:'Every scene in a Wilder film does at least three things at once. Sunset Boulevard announces its ending in the first shot. Structure in service of surprise.',
+  },
+  {
+    name:'Guillermo del Toro',
+    tag:'MYTH STRUCTURE · FAIRY TALE ARC · SYMBOL',
+    desc:'Del Toro follows the hero\'s journey while subverting who the monster really is. Pan\'s Labyrinth is structured as both a fairy tale and a civil-war thriller simultaneously.',
+  },
+  {
+    name:'Wong Kar-wai',
+    tag:'EMOTION OVER PLOT · FRAGMENTED TIME · MOOD',
+    desc:'In the Mood for Love has almost no plot — only feeling. Wong edits by emotion, not causality. Time loops, repeats, and distorts because memory works that way.',
+  },
+  {
+    name:'Syd Field',
+    tag:'3-ACT CODIFIER · PARADIGM · SCREENWRITING THEORY',
+    desc:'Field\'s 1979 Screenplay codified the three-act structure for Hollywood. His "paradigm" — setup/confrontation/resolution at specific page counts — became the default grammar of commercial cinema.',
+  },
+];
+
+const artistCards=document.getElementById('artistCards');
+if(artistCards){
+  ARTISTS.forEach(a=>{
+    const card=document.createElement('div');
+    card.className='artist-card';
+    card.innerHTML=`
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-tag">${a.tag}</div>
+      <div class="artist-desc">${a.desc}</div>
+    `;
+    artistCards.appendChild(card);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SECTION 9 — GLOSSARY
+// ════════════════════════════════════════════════════════════════════════════
+const GLOSSARY=[
+  {term:'Act Break',def:'A major structural turning point that shifts the story into a new phase or direction.'},
+  {term:'Antagonist',def:'The force — person, system, or internal conflict — that opposes the protagonist\'s goal.'},
+  {term:'Backstory',def:'Events that occurred before the story begins that shaped the characters and situation.'},
+  {term:'Beat',def:'The smallest unit of dramatic action — a moment of change in a scene or relationship.'},
+  {term:'Catalyst',def:'The inciting incident that disrupts the status quo and sets the story in motion.'},
+  {term:'Character Arc',def:'The internal transformation a character undergoes across the story\'s timeline.'},
+  {term:'Climax',def:'The moment of highest tension where the central conflict reaches its crisis point.'},
+  {term:'Denouement',def:'The resolution phase after the climax where loose ends are tied up and a new equilibrium forms.'},
+  {term:'Exposition',def:'Information delivered to orient the audience — character background, world rules, prior events.'},
+  {term:'Flashback',def:'A narrative device that interrupts the present timeline to show events from the past.'},
+  {term:'Flashforward',def:'A scene that jumps ahead in time to show future events before the story reaches them.'},
+  {term:'Inciting Incident',def:'The event that disrupts normal life and launches the protagonist into the central conflict.'},
+  {term:'Kishōtenketsu',def:'A Japanese 4-act structure: introduction (ki), development (shō), twist (ten), reconciliation (ketsu).'},
+  {term:'MacGuffin',def:'An object or goal that motivates characters but has no intrinsic narrative significance itself.'},
+  {term:'Midpoint',def:'The structural center of a story — a false peak or false defeat that raises the stakes.'},
+  {term:'Montage',def:'A sequence of images or shots edited together to compress time or convey a theme through juxtaposition.'},
+  {term:'Non-Linear Narrative',def:'A story told out of chronological order — using flashbacks, parallel timelines, or fragmented structure.'},
+  {term:'Plot Point',def:'A significant event that spins the story in a new direction, changing what must happen next.'},
+  {term:'Protagonist',def:'The central character whose goal and internal need drive the story forward.'},
+  {term:'Rising Action',def:'The escalating series of events and complications that build tension toward the climax.'},
+  {term:'Subtext',def:'The underlying meaning beneath dialogue or action — what characters mean but don\'t say directly.'},
+  {term:'Three-Act Structure',def:'The Western narrative framework dividing a story into Setup, Confrontation, and Resolution.'},
+];
+
+const glossGrid=document.getElementById('glossGrid');
+if(glossGrid){
+  GLOSSARY.forEach(g=>{
+    const item=document.createElement('div');
+    item.className='gloss-item';
+    item.innerHTML=`<div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div>`;
+    glossGrid.appendChild(item);
+  });
+}
+
+</script>
+</body>
+</html>

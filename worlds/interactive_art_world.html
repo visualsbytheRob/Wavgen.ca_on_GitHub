@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring interactive art">
+    <meta property="og:title" content="Interactive Art World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring interactive art">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/interactive_art_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Art World</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: #050505;
+  color: #FFFFFF;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+:root {
+  --bg: #050505;
+  --magenta: #FF2D78;
+  --projection: #FFFFFF;
+  --surface: #1A1A1A;
+  --soft-pink: #FF8EC8;
+  --dim: rgba(255,255,255,0.12);
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(5,5,5,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,45,120,0.25);
+  padding: 0 2rem;
+  height: 52px;
+  display: flex; align-items: center; gap: 0;
+}
+.nav-brand {
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--magenta); text-transform: uppercase; margin-right: auto;
+}
+.nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+.nav-links a {
+  color: rgba(255,255,255,0.55); text-decoration: none;
+  font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0 0.9rem; height: 52px; display: flex; align-items: center;
+  transition: color 0.2s;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.nav-links a:hover { color: var(--magenta); }
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 80px 2rem 60px;
+  max-width: 1200px; margin: 0 auto;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+section#hero {
+  max-width: 100%; padding: 52px 0 0;
+  opacity: 1; transform: none;
+}
+
+/* ===== HEADINGS ===== */
+.section-label {
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--magenta); margin-bottom: 0.5rem;
+}
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 300; letter-spacing: -0.02em;
+  color: var(--projection); margin-bottom: 1rem;
+}
+h2 strong { font-weight: 800; }
+h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--soft-pink); }
+p { color: rgba(255,255,255,0.72); max-width: 70ch; margin-bottom: 0.9rem; }
+
+/* ===== HERO ===== */
+#hero-canvas {
+  display: block; width: 100%; height: 430px;
+  cursor: crosshair; background: #050505;
+}
+.hero-overlay {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 430px; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 2.5rem 3rem;
+  pointer-events: none;
+}
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 900;
+  letter-spacing: -0.03em; color: var(--projection);
+  text-shadow: 0 0 40px rgba(255,45,120,0.6);
+  line-height: 1;
+}
+.hero-sub {
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  color: var(--soft-pink); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-top: 0.6rem;
+}
+.hero-wrap { position: relative; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface); border: 1px solid rgba(255,45,120,0.15);
+  border-radius: 4px; padding: 1.25rem 1.5rem;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.card:hover { border-color: var(--magenta); transform: translateY(-2px); }
+
+/* ===== CANVAS CONTAINERS ===== */
+.canvas-wrap {
+  position: relative; background: #0a0a0a;
+  border: 1px solid rgba(255,45,120,0.2); border-radius: 4px;
+  overflow: hidden; cursor: crosshair;
+}
+.canvas-label {
+  position: absolute; top: 8px; left: 12px;
+  font-size: 0.65rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--magenta);
+  pointer-events: none;
+}
+.canvas-output {
+  position: absolute; bottom: 8px; right: 12px;
+  font-size: 0.7rem; font-family: monospace;
+  color: var(--soft-pink); pointer-events: none;
+}
+
+/* ===== HISTORY SECTION ===== */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item {
+  border-left: 2px solid rgba(255,45,120,0.2);
+  padding: 0 0 0 1.5rem; margin-left: 1rem;
+  cursor: pointer; transition: border-color 0.2s;
+  position: relative;
+}
+.timeline-item::before {
+  content: ''; position: absolute; left: -6px; top: 1rem;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--magenta);
+  transition: background 0.2s;
+}
+.timeline-item:hover { border-color: var(--magenta); }
+.timeline-item:hover::before { background: var(--magenta); }
+.timeline-header {
+  padding: 0.9rem 0; display: flex; align-items: baseline; gap: 1rem;
+}
+.timeline-year {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--magenta); min-width: 52px;
+}
+.timeline-title { font-size: 1rem; font-weight: 600; color: var(--projection); }
+.timeline-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+  padding-bottom: 0;
+}
+.timeline-item.open .timeline-body { max-height: 320px; padding-bottom: 1rem; }
+.timeline-body-inner {
+  display: grid; grid-template-columns: 1fr 180px; gap: 1rem;
+  align-items: start;
+}
+.timeline-mini-canvas {
+  width: 180px; height: 120px; border-radius: 3px;
+  background: #0a0a0a; border: 1px solid rgba(255,45,120,0.2);
+  display: block;
+}
+
+/* ===== SENSORS SECTION ===== */
+.sensors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem; margin: 1.5rem 0;
+}
+.sensor-card { background: var(--surface); border-radius: 4px; overflow: hidden; }
+.sensor-canvas { display: block; width: 100%; aspect-ratio: 1; cursor: crosshair; }
+.sensor-info { padding: 0.6rem 0.8rem; }
+.sensor-name { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--magenta); }
+.sensor-val { font-size: 0.65rem; font-family: monospace; color: var(--soft-pink); margin-top: 2px; }
+
+/* ===== ENVIRONMENT SECTION ===== */
+.env-wrap { display: grid; grid-template-columns: 1fr 260px; gap: 1.5rem; align-items: start; }
+#env-canvas { display: block; width: 100%; aspect-ratio: 4/3; cursor: crosshair; }
+.env-panel { display: flex; flex-direction: column; gap: 0.75rem; }
+.env-btn {
+  background: var(--surface); border: 1px solid rgba(255,45,120,0.3);
+  color: var(--projection); padding: 0.5rem 1rem;
+  font-size: 0.8rem; border-radius: 3px; cursor: pointer;
+  text-align: left; transition: border-color 0.2s, background 0.2s;
+  letter-spacing: 0.04em;
+}
+.env-btn:hover, .env-btn.active { border-color: var(--magenta); background: rgba(255,45,120,0.08); }
+.env-btn.active { color: var(--magenta); }
+.env-score { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+.env-score span { color: var(--soft-pink); font-weight: 700; font-size: 1rem; }
+
+/* ===== EMBODIMENT SECTION ===== */
+.embodiment-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,45,120,0.2); }
+.e-tab {
+  padding: 0.6rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer;
+  color: rgba(255,255,255,0.45); border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+}
+.e-tab.active { color: var(--magenta); border-bottom-color: var(--magenta); }
+.e-panel { display: none; }
+.e-panel.active { display: block; }
+#brush-canvas { display: block; width: 100%; height: 360px; cursor: crosshair; }
+#shadow-canvas { display: block; width: 100%; height: 300px; cursor: crosshair; }
+#breath-canvas { display: block; width: 100%; height: 300px; cursor: crosshair; }
+
+/* ===== INSTALLATIONS SECTION ===== */
+.inst-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem; margin-top: 1.5rem;
+}
+.inst-card { background: var(--surface); border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,45,120,0.1); transition: border-color 0.25s; }
+.inst-card:hover { border-color: var(--magenta); }
+.inst-canvas { display: block; width: 100%; height: 180px; }
+.inst-info { padding: 0.8rem 1rem; }
+.inst-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--soft-pink); }
+.inst-desc { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 0.25rem; }
+
+/* ===== CO-CREATOR SECTION ===== */
+.co-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,45,120,0.2); }
+.co-tab {
+  padding: 0.6rem 1.2rem; font-size: 0.78rem; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer;
+  color: rgba(255,255,255,0.45); border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+}
+.co-tab.active { color: var(--magenta); border-bottom-color: var(--magenta); }
+.co-panel { display: none; }
+.co-panel.active { display: block; }
+.co-concept {
+  background: rgba(255,45,120,0.06); border-left: 3px solid var(--magenta);
+  padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 0.82rem;
+  color: rgba(255,255,255,0.7); border-radius: 0 3px 3px 0;
+}
+#collab-canvas { display: block; width: 100%; height: 340px; cursor: crosshair; }
+#narrative-canvas { display: block; width: 100%; height: 340px; cursor: crosshair; }
+#emergent-canvas { display: block; width: 100%; height: 340px; cursor: crosshair; }
+
+/* ===== ARTISTS SECTION ===== */
+.artists-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem; margin-top: 1.5rem;
+}
+.artist-card {
+  background: var(--surface); border: 1px solid rgba(255,45,120,0.12);
+  border-radius: 4px; overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.artist-card:hover { border-color: var(--magenta); transform: translateY(-3px); }
+.artist-avatar { width: 100%; height: 120px; display: block; }
+.artist-body { padding: 1rem 1.1rem; }
+.artist-name { font-size: 1rem; font-weight: 700; color: var(--projection); }
+.artist-era { font-size: 0.68rem; color: var(--magenta); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.artist-medium { font-size: 0.75rem; color: var(--soft-pink); margin-top: 0.3rem; }
+.artist-works { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.4rem; }
+.artist-philosophy { font-size: 0.72rem; color: rgba(255,255,255,0.65); margin-top: 0.6rem; font-style: italic; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 0.5rem; }
+
+/* ===== GLOSSARY SECTION ===== */
+.glossary-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0; border: 1px solid rgba(255,45,120,0.12);
+  border-radius: 4px; overflow: hidden; margin-top: 1.5rem;
+}
+.gloss-item {
+  padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,45,120,0.08);
+  border-right: 1px solid rgba(255,45,120,0.08);
+}
+.gloss-item:nth-child(even) { border-right: none; }
+.gloss-term { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--magenta); }
+.gloss-def { font-size: 0.73rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1.1rem; font-size: 0.8rem; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer; border-radius: 3px;
+  transition: all 0.2s; border: 1px solid var(--magenta);
+  background: transparent; color: var(--magenta);
+}
+.btn:hover { background: var(--magenta); color: #050505; }
+.btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+
+/* ===== CHAIN SENSOR ===== */
+.chain-indicator {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.7rem; color: rgba(255,255,255,0.4);
+  margin-top: 0.5rem; font-family: monospace;
+}
+.chain-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,45,120,0.3); transition: background 0.3s; }
+.chain-dot.active { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); }
+
+/* ===== MISC ===== */
+.divider { height: 1px; background: rgba(255,45,120,0.1); margin: 0.5rem 0 1.5rem; }
+.tag {
+  display: inline-block; padding: 0.15rem 0.5rem;
+  background: rgba(255,45,120,0.12); border-radius: 2px;
+  font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--soft-pink); margin-right: 0.3rem; margin-bottom: 0.3rem;
+}
+footer {
+  text-align: center; padding: 2.5rem 1rem;
+  font-size: 0.7rem; color: rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255,45,120,0.08);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+</style>
+</head>
+<body class="domain-art">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Interactive Art World</div>
+  <div class="nav-links">
+    <a href="#history">History</a>
+    <a href="#sensors">Sensors</a>
+    <a href="#environment">Environment</a>
+    <a href="#embodiment">Embodiment</a>
+    <a href="#installations">Installations</a>
+    <a href="#co-creator">Co-Creator</a>
+    <a href="#artists">Artists</a>
+    <a href="#glossary">Glossary</a>
+  </div>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section id="hero">
+  <div class="hero-wrap">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-overlay">
+      <div class="hero-title">Interactive<br>Art</div>
+      <div class="hero-sub">The audience is the medium</div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== HERO CANVAS =====
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Mouse state
+  let mxRaw = W/2, myRaw = H/2;
+  let mx = W/2, my = H/2;           // LagFiltered position
+  let mvx = 0, mvy = 0;             // LagFiltered velocity
+  let prevMxRaw = W/2, prevMyRaw = H/2;
+  let mSpeed = 0, mSpeedSmooth = 0; // LagFiltered speed
+  let lastT = performance.now();
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mxRaw = e.clientX - r.left;
+    myRaw = e.clientY - r.top;
+  });
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    mxRaw = e.touches[0].clientX - r.left;
+    myRaw = e.touches[0].clientY - r.top;
+  }, { passive: false });
+
+  // Explosion particles
+  const particles = [];
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const cx = e.clientX - r.left, cy = e.clientY - r.top;
+    for (let i = 0; i < 48; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 2 + Math.random() * 7;
+      particles.push({ x: cx, y: cy, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd,
+        life: 1, size: 2 + Math.random()*4, color: Math.random() > 0.5 ? '#FF2D78' : '#FFFFFF' });
+    }
+  });
+
+  // Orbital shapes
+  const NUM_SHAPES = 32;
+  const shapes = Array.from({ length: NUM_SHAPES }, (_, i) => ({
+    baseAngle: (i / NUM_SHAPES) * Math.PI * 2,
+    angle: (i / NUM_SHAPES) * Math.PI * 2,
+    orbitR: 60 + (i % 6) * 28,
+    size: 3 + (i % 4) * 3,
+    speed: 0.006 + (i % 5) * 0.003,
+    x: W/2, y: H/2,
+    targetX: W/2, targetY: H/2,
+    smoothX: W/2, smoothY: H/2,   // LagFiltered shape position
+    phase: Math.random() * Math.PI * 2,
+    type: i % 3,  // 0=circle, 1=rect, 2=line
+  }));
+
+  // Ambient orbit center (LagFiltered toward cursor)
+  let orbitCX = W/2, orbitCY = H/2;
+
+  // Background pulse
+  let bgAlpha = 0, bgAlphaTarget = 0;
+
+  function draw(ts) {
+    const dt = Math.min((ts - lastT) / 1000, 0.05);
+    lastT = ts;
+    const tau1 = 0.12, tau2 = 0.07, tau3 = 0.25;
+
+    // LagFilter 1 & 2: smooth cursor position
+    mx += (1 - Math.exp(-dt / tau1)) * (mxRaw - mx);
+    my += (1 - Math.exp(-dt / tau1)) * (myRaw - my);
+
+    // LagFilter 3 & 4: smooth velocity
+    const rawVx = (mxRaw - prevMxRaw) / (dt + 0.001);
+    const rawVy = (myRaw - prevMyRaw) / (dt + 0.001);
+    mvx += (1 - Math.exp(-dt / tau2)) * (rawVx - mvx);
+    mvy += (1 - Math.exp(-dt / tau2)) * (rawVy - mvy);
+    prevMxRaw = mxRaw; prevMyRaw = myRaw;
+
+    // Speed magnitude
+    mSpeed = Math.sqrt(mvx*mvx + mvy*mvy);
+    // LagFilter 5: smooth speed
+    mSpeedSmooth += (1 - Math.exp(-dt / tau3)) * (mSpeed - mSpeedSmooth);
+
+    // LagFilter 6 & 7: orbit center follows cursor
+    orbitCX += (1 - Math.exp(-dt / 0.2)) * (mx - orbitCX);
+    orbitCY += (1 - Math.exp(-dt / 0.2)) * (my - orbitCY);
+
+    // Magenta brightness based on speed
+    const speedNorm = Math.min(mSpeedSmooth / 600, 1);
+    bgAlphaTarget = 0.05 + speedNorm * 0.35;
+    // LagFilter 8: smooth bg brightness
+    bgAlpha += (1 - Math.exp(-dt / 0.4)) * (bgAlphaTarget - bgAlpha);
+
+    // Phosphor persistence
+    ctx.fillStyle = 'rgba(0,0,0,0.04)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Magenta field
+    const grd = ctx.createRadialGradient(orbitCX, orbitCY, 0, orbitCX, orbitCY, Math.max(W,H)*0.6);
+    grd.addColorStop(0, `rgba(255,45,120,${bgAlpha})`);
+    grd.addColorStop(1, 'rgba(255,45,120,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+
+    // Update & draw shapes
+    shapes.forEach((s, i) => {
+      s.angle += s.speed * (1 + speedNorm * 2.5);
+      // Distort radius when still
+      const stillFactor = 1 - speedNorm;
+      const distort = Math.sin(s.phase + ts * 0.001 * (i % 3 + 1)) * stillFactor * 18;
+      const r = s.orbitR + distort;
+      s.targetX = orbitCX + Math.cos(s.angle) * r;
+      s.targetY = orbitCY + Math.sin(s.angle) * r;
+      // LagFilter 9 & 10: smooth shape position
+      s.smoothX += (1 - Math.exp(-dt / 0.08)) * (s.targetX - s.smoothX);
+      s.smoothY += (1 - Math.exp(-dt / 0.08)) * (s.targetY - s.smoothY);
+
+      const alpha = 0.25 + speedNorm * 0.55;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      if (s.type === 0) {
+        ctx.beginPath();
+        ctx.arc(s.smoothX, s.smoothY, s.size, 0, Math.PI * 2);
+        ctx.strokeStyle = i % 4 === 0 ? '#FF2D78' : '#FFFFFF';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      } else if (s.type === 1) {
+        ctx.strokeStyle = '#FF8EC8';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(s.smoothX - s.size/2, s.smoothY - s.size/2, s.size, s.size);
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(orbitCX, orbitCY);
+        ctx.lineTo(s.smoothX, s.smoothY);
+        ctx.strokeStyle = 'rgba(255,45,120,0.18)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
+
+    // Explosion particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.vx *= 0.94; p.vy *= 0.94;
+      p.life -= dt * 1.2;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      ctx.globalAlpha = p.life * 0.9;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Cursor dot
+    ctx.beginPath();
+    ctx.arc(mx, my, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#FF2D78';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(mx, my, 10 + speedNorm * 12, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,45,120,0.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<!-- SECTION 2: PARTICIPATORY ART HISTORY -->
+<section id="history">
+  <div class="section-label">Origins &amp; Movements</div>
+  <h2><strong>Participatory</strong> Art History</h2>
+  <p>From Allan Kaprow's Happenings to teamLab's immersive worlds, art has progressively dissolved the boundary between maker and viewer — placing the audience inside the work itself.</p>
+  <div class="divider"></div>
+  <div class="timeline" id="timeline-root">
+    <!-- Items injected by JS -->
+  </div>
+</section>
+
+<!-- SECTION 3: SENSOR SIMULATION LAB -->
+<section id="sensors">
+  <div class="section-label">Technological Systems</div>
+  <h2><strong>Sensor</strong> Simulation Lab</h2>
+  <p>Interactive installations use sensors as the nervous system — translating physical presence into data. Each canvas below simulates a sensor type using your mouse as a proxy for a physical body.</p>
+  <div class="sensors-grid" id="sensors-grid"></div>
+  <div class="chain-indicator" id="chain-indicator">
+    <span>Sensor chain:</span>
+    <div class="chain-dot" id="cd0"></div>
+    <span style="font-size:0.55rem">→</span>
+    <div class="chain-dot" id="cd1"></div>
+    <span style="font-size:0.55rem">→</span>
+    <div class="chain-dot" id="cd2"></div>
+    <span style="font-size:0.55rem">→</span>
+    <div class="chain-dot" id="cd3"></div>
+    <span style="font-size:0.55rem">→</span>
+    <div class="chain-dot" id="cd4"></div>
+    <span style="font-size:0.55rem">→</span>
+    <div class="chain-dot" id="cd5"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn" id="chain-btn">Chain Sensors</button>
+  </div>
+</section>
+
+<script>
+// ===== HISTORY SECTION =====
+(function() {
+  const items = [
+    {
+      year: '1960s', title: 'Happenings', subtitle: 'Allan Kaprow & the unscripted event',
+      body: `Kaprow coined "Happenings" — ephemeral, unscripted events where audience members became performers. <em>18 Happenings in 6 Parts</em> (1959) required visitors to move between rooms on instruction, erasing the passive viewer entirely.`,
+      artists: ['Allan Kaprow', 'Jim Dine', 'Carolee Schneemann'],
+      works: ['18 Happenings in 6 Parts', 'Car Crash', 'Eye Body'],
+      tags: ['performance', 'participation', 'ephemeral'],
+      demoFn: drawHappenings,
+    },
+    {
+      year: 'c.1960', title: 'Fluxus', subtitle: 'Anti-art, instruction-based, participatory',
+      body: `Fluxus rejected the art object entirely. Works were instructions — the participant's action <em>was</em> the art. Yoko Ono's <em>Grapefruit</em> book gave readers instructions: "Make a hole. Place your eye against it."`,
+      artists: ['George Maciunas', 'Yoko Ono', 'Nam June Paik', 'Joseph Beuys'],
+      works: ['Grapefruit (Ono)', 'Piano Activities (Corner)', 'Water Yam (Brecht)'],
+      tags: ['instruction', 'anti-art', 'scores'],
+      demoFn: drawFluxus,
+    },
+    {
+      year: '1970s', title: 'Mail Art', subtitle: 'Network-based, distributed participation',
+      body: `Mail Art used postal systems as a distributed gallery. Anyone could participate by sending work to a network address. Ray Johnson's New York Correspondence School made connectivity itself the medium — decades before the internet.`,
+      artists: ['Ray Johnson', 'Robert Filliou', 'Ulises Carrión'],
+      works: ['New York Correspondence School', 'The Eternal Network', 'Mail Art Shows'],
+      tags: ['network', 'distribution', 'post'],
+      demoFn: drawMailArt,
+    },
+    {
+      year: '1974', title: 'Video Art', subtitle: 'Nam June Paik — viewer activates the work',
+      body: `Paik's closed-circuit installations placed cameras and monitors so visitors saw themselves in real time, transformed. <em>TV Buddha</em> looped a Buddha statue watching its own image — presence and representation collapsing together.`,
+      artists: ['Nam June Paik', 'Vito Acconci', 'Peter Campus'],
+      works: ['TV Buddha', 'Participation TV', 'Mem'],
+      tags: ['video', 'feedback', 'closed-circuit'],
+      demoFn: drawVideoArt,
+    },
+    {
+      year: '1980–90s', title: 'Interactive Installations', subtitle: 'Computer-based, sensor-responsive',
+      body: `Artists began using infrared sensors, cameras, and microcomputers to create environments that responded to visitors. Myron Krueger's <em>VIDEOPLACE</em> mapped body silhouettes into synthetic interaction spaces — the first "responsive environments."`,
+      artists: ['Myron Krueger', 'Jeffrey Shaw', 'David Rokeby'],
+      works: ['VIDEOPLACE', 'The Legible City', 'Very Nervous System'],
+      tags: ['sensors', 'computer', 'real-time'],
+      demoFn: drawInteractive,
+    },
+    {
+      year: '1990s', title: 'Net Art', subtitle: 'Internet as medium, distributed participation',
+      body: `Net art turned the browser into a gallery and the network into the canvas. Works like Olia Lialina's <em>My Boyfriend Came Back from the War</em> existed only as web navigation — the viewer's clicks wrote the story.`,
+      artists: ['Olia Lialina', 'JODI', 'Vuk Ćosić'],
+      works: ['My Boyfriend Came Back...', 'wwwwwwwww.jodi.org', 'ASCII History of Moving Images'],
+      tags: ['internet', 'hypertext', 'browser'],
+      demoFn: drawNetArt,
+    },
+    {
+      year: '2000s', title: 'Social Practice', subtitle: 'Community-based, art as social action',
+      body: `Social Practice artists dissolved the studio into public space. Tino Sehgal's constructed situations hired "interpreters" to engage visitors in philosophical dialogue — no objects, no documentation. The interaction was everything.`,
+      artists: ['Tino Sehgal', 'Rirkrit Tiravanija', 'Thomas Hirschhorn'],
+      works: ['This is So Contemporary', 'Untitled (Free)', 'Gramsci Monument'],
+      tags: ['community', 'relational', 'social'],
+      demoFn: drawSocial,
+    },
+    {
+      year: '2010s', title: 'AR/VR Art', subtitle: 'Embodied digital participation',
+      body: `Virtual and augmented reality placed audiences fully inside the artwork. teamLab's digital art museums required visitors to walk through, become surrounded by, and alter living visual ecosystems — presence literally changed the work in real time.`,
+      artists: ['teamLab', 'Marshmallow Laser Feast', 'Chris Milk'],
+      works: ['Crystal Universe', 'In the Eyes of the Animal', 'Clouds over Sidra'],
+      tags: ['VR', 'AR', 'immersive', 'embodied'],
+      demoFn: drawARVR,
+    },
+  ];
+
+  // Mini canvas demo functions
+  function drawHappenings(ctx, w, h, t) {
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle='#050505'; ctx.fillRect(0,0,w,h);
+    const n = 6;
+    for(let i=0;i<n;i++){
+      const a = (i/n)*Math.PI*2 + t*0.5;
+      const x = w/2 + Math.cos(a)*40;
+      const y = h/2 + Math.sin(a)*30;
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+      ctx.fillStyle='#FF2D78'; ctx.globalAlpha=0.7+0.3*Math.sin(t+i); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.fillRect(w/2-25,h/2-15,50,30);
+    ctx.fillStyle='#FFF'; ctx.font='7px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('HAPPENINGS', w/2, h/2+4);
+  }
+  function drawFluxus(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.15)'; ctx.fillRect(0,0,w,h);
+    const words = ['MAKE','DO','PLAY','ACT','OPEN','FOLD'];
+    const i = Math.floor(t*0.7) % words.length;
+    ctx.font=`${12+Math.sin(t)*3}px monospace`; ctx.textAlign='center';
+    ctx.fillStyle='#FF2D78'; ctx.globalAlpha=0.6+Math.sin(t*2)*0.3;
+    ctx.fillText(words[i], w/2, h/2+4);
+    ctx.globalAlpha=1;
+  }
+  function drawMailArt(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.1)'; ctx.fillRect(0,0,w,h);
+    for(let i=0;i<4;i++){
+      const x = 10+Math.sin(t*0.4+i)*w*0.3;
+      const y = 10+Math.cos(t*0.3+i*1.3)*h*0.3;
+      ctx.strokeStyle='rgba(255,45,120,0.5)'; ctx.lineWidth=0.8;
+      ctx.strokeRect(x,y,40,28);
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+40,y+14); ctx.lineTo(x,y+28);
+      ctx.stroke();
+    }
+  }
+  function drawVideoArt(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.18)'; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(255,45,120,0.6)'; ctx.lineWidth=1;
+    ctx.strokeRect(w*0.15,h*0.15,w*0.7,h*0.7);
+    // Feedback echo
+    for(let i=0;i<3;i++){
+      const s = 0.6 - i*0.15;
+      ctx.globalAlpha=0.3-i*0.08;
+      ctx.strokeRect(w*(0.5-s*0.35)+Math.sin(t+i)*3, h*(0.5-s*0.35)+Math.cos(t+i)*3, w*s*0.7, h*s*0.7);
+    }
+    ctx.globalAlpha=1;
+    ctx.beginPath(); ctx.arc(w/2,h/2,8,0,Math.PI*2);
+    ctx.fillStyle='#FF8EC8'; ctx.fill();
+  }
+  function drawInteractive(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.12)'; ctx.fillRect(0,0,w,h);
+    const cx=w/2+Math.sin(t*0.6)*20, cy=h/2+Math.cos(t*0.4)*15;
+    const rings = 4;
+    for(let i=0;i<rings;i++){
+      ctx.beginPath(); ctx.arc(cx,cy,(i+1)*16,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(255,45,120,${0.5-i*0.1})`; ctx.lineWidth=1; ctx.stroke();
+    }
+    ctx.fillStyle='#FFFFFF'; ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fill();
+  }
+  function drawNetArt(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.1)'; ctx.fillRect(0,0,w,h);
+    const pts = [[w*0.2,h*0.3],[w*0.5,h*0.15],[w*0.8,h*0.3],[w*0.7,h*0.7],[w*0.3,h*0.7]];
+    pts.forEach((p,i) => {
+      pts.forEach((q,j) => {
+        if(i>=j) return;
+        const pulse = 0.3+0.3*Math.sin(t*1.2+i+j);
+        ctx.strokeStyle=`rgba(255,45,120,${pulse})`; ctx.lineWidth=0.8;
+        ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(q[0],q[1]); ctx.stroke();
+      });
+      ctx.beginPath(); ctx.arc(p[0],p[1],3,0,Math.PI*2);
+      ctx.fillStyle='#FFFFFF'; ctx.fill();
+    });
+  }
+  function drawSocial(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.12)'; ctx.fillRect(0,0,w,h);
+    const people = 5;
+    for(let i=0;i<people;i++){
+      const a = (i/people)*Math.PI*2 + t*0.15;
+      const x = w/2+Math.cos(a)*38, y=h/2+Math.sin(a)*28;
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+      ctx.fillStyle='#FF8EC8'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(x,y+5); ctx.lineTo(x,y+18);
+      ctx.strokeStyle='#FF8EC8'; ctx.lineWidth=1.5; ctx.stroke();
+    }
+  }
+  function drawARVR(ctx, w, h, t) {
+    ctx.fillStyle='rgba(5,5,5,0.1)'; ctx.fillRect(0,0,w,h);
+    const hue = (t * 40) % 360;
+    const grd = ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,50);
+    grd.addColorStop(0, `hsla(${hue},100%,65%,0.4)`);
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grd; ctx.fillRect(0,0,w,h);
+    for(let i=0;i<6;i++){
+      const a = (i/6)*Math.PI*2+t*0.3;
+      const r = 20+i*8;
+      ctx.strokeStyle=`rgba(255,255,255,${0.15+i*0.05})`;
+      ctx.beginPath(); ctx.arc(w/2,h/2,r,a,a+Math.PI*0.5); ctx.stroke();
+    }
+  }
+
+  const demoFns = [drawHappenings,drawFluxus,drawMailArt,drawVideoArt,drawInteractive,drawNetArt,drawSocial,drawARVR];
+  const demoCtxs = [];
+
+  const root = document.getElementById('timeline-root');
+  items.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.innerHTML = `
+      <div class="timeline-header">
+        <span class="timeline-year">${item.year}</span>
+        <span class="timeline-title">${item.title}</span>
+      </div>
+      <div class="timeline-body">
+        <div class="timeline-body-inner">
+          <div>
+            <p style="margin:0 0 0.5rem">${item.body}</p>
+            <div style="margin-bottom:0.35rem"><strong style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em">Artists:</strong>
+              <span style="font-size:0.75rem;color:#FF8EC8"> ${item.artists.join(', ')}</span></div>
+            <div style="margin-bottom:0.5rem"><strong style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em">Key Works:</strong>
+              <span style="font-size:0.75rem;color:rgba(255,255,255,0.6)"> ${item.works.join(' · ')}</span></div>
+            <div>${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <canvas class="timeline-mini-canvas" id="mini-${idx}" width="180" height="120"></canvas>
+        </div>
+      </div>`;
+    root.appendChild(div);
+    div.querySelector('.timeline-header').addEventListener('click', () => {
+      const isOpen = div.classList.contains('open');
+      root.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('open'));
+      if (!isOpen) div.classList.add('open');
+    });
+  });
+
+  // Animate mini canvases
+  let t0 = performance.now();
+  function animateMinis(ts) {
+    const t = (ts - t0) / 1000;
+    items.forEach((item, idx) => {
+      const c = document.getElementById(`mini-${idx}`);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      item.demoFn(ctx, 180, 120, t);
+    });
+    requestAnimationFrame(animateMinis);
+  }
+  requestAnimationFrame(animateMinis);
+})();
+
+// ===== SENSOR LAB =====
+(function() {
+  const SENSOR_SIZE = 200;
+  const sensors = [
+    { id: 'presence', name: 'Presence Sensor', desc: 'cursor in zone = presence', val: '0%' },
+    { id: 'distance', name: 'Distance Sensor', desc: 'distance from center', val: '0.0' },
+    { id: 'velocity', name: 'Velocity Sensor', desc: 'mouse speed → visual', val: '0 px/s' },
+    { id: 'direction', name: 'Direction Sensor', desc: 'movement angle steers element', val: '0°' },
+    { id: 'dwell', name: 'Dwell Sensor', desc: 'stillness triggers event', val: '0%' },
+    { id: 'multipresence', name: 'Multi-Presence', desc: 'click = body in space', val: '0 bodies' },
+  ];
+
+  const grid = document.getElementById('sensors-grid');
+  sensors.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'sensor-card';
+    card.innerHTML = `
+      <canvas class="sensor-canvas" id="sc-${s.id}" width="${SENSOR_SIZE}" height="${SENSOR_SIZE}"></canvas>
+      <div class="sensor-info">
+        <div class="sensor-name">${s.name}</div>
+        <div class="sensor-val" id="sv-${s.id}">${s.desc}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Global mouse tracking for sensors
+  let gmx = 0, gmy = 0, gpx = 0, gpy = 0;
+  let gvx = 0, gvy = 0, gspeed = 0, gspeedSmooth = 0;
+  let gangle = 0, gangleSmooth = 0;
+  let gLastT = performance.now();
+
+  window.addEventListener('mousemove', e => { gmx = e.clientX; gmy = e.clientY; });
+
+  // Multi-presence bodies
+  const bodies = [];
+  const mpCanvas = document.getElementById('sc-multipresence');
+  if (mpCanvas) {
+    mpCanvas.addEventListener('click', e => {
+      const r = mpCanvas.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (bodies.length >= 8) bodies.shift();
+      bodies.push({ x, y, life: 1, smoothX: x, smoothY: y });
+    });
+  }
+
+  // Dwell state
+  let dwellTimer = 0, dwellSmooth = 0, dwellTriggered = false;
+  let prevDwellX = gmx, prevDwellY = gmy;
+
+  // Per-sensor lag state
+  let presenceSmooth = 0;
+  let distSmooth = 0;
+  let velSmooth = 0;
+  let dirSmooth = 0;
+  let chainActive = false;
+
+  function sensorLoop(ts) {
+    const dt = Math.min((ts - gLastT) / 1000, 0.05);
+    gLastT = ts;
+
+    const rawVx = (gmx - gpx) / (dt + 0.001);
+    const rawVy = (gmy - gpy) / (dt + 0.001);
+    // LagFilter 11 & 12: sensor velocity
+    gvx += (1 - Math.exp(-dt / 0.07)) * (rawVx - gvx);
+    gvy += (1 - Math.exp(-dt / 0.07)) * (rawVy - gvy);
+    gspeed = Math.sqrt(gvx*gvx + gvy*gvy);
+    // LagFilter 13: smooth speed
+    gspeedSmooth += (1 - Math.exp(-dt / 0.2)) * (gspeed - gspeedSmooth);
+
+    const rawAngle = Math.atan2(gvy, gvx) * 180 / Math.PI;
+    // LagFilter 14: smooth angle
+    gangleSmooth += (1 - Math.exp(-dt / 0.15)) * (rawAngle - gangleSmooth);
+
+    gpx = gmx; gpy = gmy;
+
+    // ---- Presence sensor ----
+    const pc = document.getElementById('sc-presence');
+    if (pc) {
+      const r = pc.getBoundingClientRect();
+      const lx = gmx - r.left, ly = gmy - r.top;
+      const inZone = lx > 40 && lx < 160 && ly > 40 && ly < 160 ? 1 : 0;
+      // LagFilter 15: smooth presence
+      presenceSmooth += (1 - Math.exp(-dt / 0.15)) * (inZone - presenceSmooth);
+
+      const ctx = pc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.2)'; ctx.fillRect(0,0,200,200);
+      // Zone rect
+      const zc = `rgba(255,45,120,${0.12 + presenceSmooth * 0.25})`;
+      ctx.fillStyle = zc; ctx.fillRect(40,40,120,120);
+      ctx.strokeStyle = `rgba(255,45,120,${0.4 + presenceSmooth * 0.5})`;
+      ctx.lineWidth = 1.5; ctx.strokeRect(40,40,120,120);
+      // Pulse ring when present
+      if (presenceSmooth > 0.5) {
+        const ring = (ts % 1200) / 1200;
+        ctx.beginPath(); ctx.arc(100,100,20+ring*50,0,Math.PI*2);
+        ctx.strokeStyle = `rgba(255,45,120,${(1-ring)*0.6})`; ctx.lineWidth=1; ctx.stroke();
+      }
+      ctx.fillStyle = '#FFFFFF'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(inZone ? 'DETECTED' : 'EMPTY', 100, 180);
+      document.getElementById('sv-presence').textContent = `${Math.round(presenceSmooth*100)}% presence`;
+      if (chainActive) { document.getElementById('cd0').classList.toggle('active', presenceSmooth > 0.5); }
+    }
+
+    // ---- Distance sensor ----
+    const dc = document.getElementById('sc-distance');
+    if (dc) {
+      const r = dc.getBoundingClientRect();
+      const lx = gmx - r.left - 100, ly = gmy - r.top - 100;
+      const rawDist = Math.sqrt(lx*lx + ly*ly);
+      const norm = Math.min(rawDist / 100, 1);
+      distSmooth += (1 - Math.exp(-dt / 0.18)) * (norm - distSmooth);
+      const ctx = dc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.2)'; ctx.fillRect(0,0,200,200);
+      for (let i = 4; i >= 1; i--) {
+        ctx.beginPath(); ctx.arc(100,100,i*22,0,Math.PI*2);
+        ctx.strokeStyle = `rgba(255,45,120,${0.15+i*0.06})`; ctx.lineWidth=1; ctx.stroke();
+      }
+      const bright = 0.3 + (1-distSmooth) * 0.7;
+      ctx.beginPath(); ctx.arc(100,100,6,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,45,120,${bright})`; ctx.fill();
+      const dotX = 100 + Math.min(lx, 95), dotY = 100 + Math.min(ly, 95);
+      ctx.beginPath(); ctx.arc(Math.min(Math.max(dotX,5),195), Math.min(Math.max(dotY,5),195), 4,0,Math.PI*2);
+      ctx.fillStyle='#FF8EC8'; ctx.fill();
+      document.getElementById('sv-distance').textContent = `dist: ${rawDist.toFixed(0)}px | ${(distSmooth*100).toFixed(0)}%`;
+      if (chainActive) document.getElementById('cd1').classList.toggle('active', distSmooth > 0.5);
+    }
+
+    // ---- Velocity sensor ----
+    const vc = document.getElementById('sc-velocity');
+    if (vc) {
+      const ctx = vc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.15)'; ctx.fillRect(0,0,200,200);
+      const barH = Math.min(gspeedSmooth / 8, 1) * 160;
+      const barColor = `rgba(255,${Math.round(45 + (1-Math.min(gspeedSmooth/800,1))*130)},120,0.85)`;
+      ctx.fillStyle = barColor;
+      ctx.fillRect(80, 200-barH, 40, barH);
+      ctx.strokeStyle = 'rgba(255,45,120,0.3)'; ctx.lineWidth=1;
+      ctx.strokeRect(80,40,40,160);
+      // Speed bands
+      [0.25,0.5,0.75].forEach(f => {
+        ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=0.5;
+        ctx.beginPath(); ctx.moveTo(70, 200-f*160); ctx.lineTo(130, 200-f*160); ctx.stroke();
+      });
+      document.getElementById('sv-velocity').textContent = `${gspeedSmooth.toFixed(0)} px/s`;
+      if (chainActive) document.getElementById('cd2').classList.toggle('active', gspeedSmooth > 200);
+    }
+
+    // ---- Direction sensor ----
+    const dirc = document.getElementById('sc-direction');
+    if (dirc) {
+      const ctx = dirc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.18)'; ctx.fillRect(0,0,200,200);
+      ctx.strokeStyle = 'rgba(255,45,120,0.2)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(100,100,60,0,Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(100,100,30,0,Math.PI*2); ctx.stroke();
+      // Direction arrow
+      const rad = gangleSmooth * Math.PI / 180;
+      const ax = 100 + Math.cos(rad)*55, ay = 100 + Math.sin(rad)*55;
+      ctx.beginPath(); ctx.moveTo(100,100); ctx.lineTo(ax,ay);
+      ctx.strokeStyle='#FF2D78'; ctx.lineWidth=2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(ax,ay,4,0,Math.PI*2); ctx.fillStyle='#FF2D78'; ctx.fill();
+      // N/S/E/W labels
+      [['N',100,28],['S',100,178],['E',178,104],['W',22,104]].forEach(([l,x,y]) => {
+        ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='9px sans-serif'; ctx.textAlign='center'; ctx.fillText(l,x,y);
+      });
+      document.getElementById('sv-direction').textContent = `${gangleSmooth.toFixed(1)}°`;
+      if (chainActive) document.getElementById('cd3').classList.toggle('active', gspeed > 50);
+    }
+
+    // ---- Dwell sensor ----
+    const dwc = document.getElementById('sc-dwell');
+    if (dwc) {
+      const moveDist = Math.sqrt((gmx-prevDwellX)**2+(gmy-prevDwellY)**2);
+      if (moveDist > 8) { dwellTimer = 0; dwellTriggered = false; }
+      else { dwellTimer = Math.min(dwellTimer + dt, 2); }
+      prevDwellX = gmx; prevDwellY = gmy;
+      const dwellFrac = dwellTimer / 2;
+      dwellSmooth += (1 - Math.exp(-dt / 0.1)) * (dwellFrac - dwellSmooth);
+      if (dwellFrac >= 1 && !dwellTriggered) dwellTriggered = true;
+
+      const ctx = dwc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.2)'; ctx.fillRect(0,0,200,200);
+      ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(100,100,60,0,Math.PI*2); ctx.stroke();
+      // Fill arc
+      ctx.beginPath(); ctx.moveTo(100,100);
+      ctx.arc(100,100,60,-Math.PI/2,-Math.PI/2+dwellSmooth*Math.PI*2);
+      ctx.fillStyle=`rgba(255,45,120,${0.2+dwellSmooth*0.5})`; ctx.fill();
+      if (dwellTriggered) {
+        ctx.beginPath(); ctx.arc(100,100,10,0,Math.PI*2);
+        ctx.fillStyle='#FF2D78'; ctx.fill();
+      }
+      ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='9px monospace'; ctx.textAlign='center';
+      ctx.fillText(`${(dwellSmooth*100).toFixed(0)}%`, 100, 104);
+      document.getElementById('sv-dwell').textContent = `dwell: ${(dwellSmooth*2).toFixed(2)}s`;
+      if (chainActive) document.getElementById('cd4').classList.toggle('active', dwellSmooth > 0.8);
+    }
+
+    // ---- Multi-presence sensor ----
+    const mpc = document.getElementById('sc-multipresence');
+    if (mpc) {
+      const ctx = mpc.getContext('2d');
+      ctx.fillStyle = 'rgba(5,5,5,0.25)'; ctx.fillRect(0,0,200,200);
+      ctx.strokeStyle='rgba(255,45,120,0.12)'; ctx.lineWidth=0.5;
+      for(let x=0;x<=200;x+=25) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,200); ctx.stroke(); }
+      for(let y=0;y<=200;y+=25) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(200,y); ctx.stroke(); }
+      bodies.forEach((b,i) => {
+        b.life = Math.max(0, b.life - dt * 0.15);
+        ctx.globalAlpha = 0.4 + b.life * 0.5;
+        ctx.beginPath(); ctx.arc(b.x, b.y, 8+i*2, 0, Math.PI*2);
+        ctx.strokeStyle='#FF2D78'; ctx.lineWidth=1; ctx.stroke();
+        ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2);
+        ctx.fillStyle='#FF8EC8'; ctx.fill();
+      });
+      ctx.globalAlpha=1;
+      document.getElementById('sv-multipresence').textContent = `${bodies.length} bodies`;
+      if (chainActive) document.getElementById('cd5').classList.toggle('active', bodies.length >= 3);
+    }
+
+    requestAnimationFrame(sensorLoop);
+  }
+  requestAnimationFrame(sensorLoop);
+
+  document.getElementById('chain-btn').addEventListener('click', function() {
+    chainActive = !chainActive;
+    this.textContent = chainActive ? 'Unchain Sensors' : 'Chain Sensors';
+    this.classList.toggle('active', chainActive);
+  });
+})();
+</script>
+
+<!-- SECTION 4: RESPONSIVE ENVIRONMENT BUILDER -->
+<section id="environment">
+  <div class="section-label">Spatial Systems</div>
+  <h2><strong>Responsive Environment</strong> Builder</h2>
+  <p>Construct a simulated interactive installation. Click the canvas to place trigger zones, select their response type, then launch visitors to watch your environment come alive.</p>
+  <div class="env-wrap">
+    <div class="canvas-wrap" style="flex:1">
+      <canvas id="env-canvas" width="600" height="400"></canvas>
+      <div class="canvas-label">INSTALLATION FLOOR PLAN</div>
+    </div>
+    <div class="env-panel">
+      <div class="env-btn active" id="env-mode-trigger" data-mode="trigger">+ Place Trigger</div>
+      <div class="env-btn" id="env-mode-visitor" data-mode="visitor">+ Add Visitor Path</div>
+      <div class="divider"></div>
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.35rem">Trigger Response</div>
+      <div class="env-btn active" data-resp="color">Color Shift</div>
+      <div class="env-btn" data-resp="particle">Particle Burst</div>
+      <div class="env-btn" data-resp="light">Light Pulse</div>
+      <div class="env-btn" data-resp="sound">Sound Cue</div>
+      <div class="divider"></div>
+      <button class="btn" id="env-simulate">Simulate Visitors</button>
+      <button class="btn" id="env-clear">Clear All</button>
+      <button class="btn" id="env-export">Export JSON</button>
+      <div class="divider"></div>
+      <div class="env-score">Interactions: <span id="env-score">0</span></div>
+      <div class="env-score">Active zones: <span id="env-zones">0</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: EMBODIMENT & GESTURE -->
+<section id="embodiment">
+  <div class="section-label">Physicality &amp; Motion</div>
+  <h2><strong>Embodiment</strong> &amp; Gesture</h2>
+  <p>The body as instrument. These three paradigms explore how physical movement — its speed, direction, rhythm — becomes material for artistic expression.</p>
+  <div class="embodiment-tabs">
+    <div class="e-tab active" data-tab="brush">Body as Brush</div>
+    <div class="e-tab" data-tab="shadow">Shadow Puppetry</div>
+    <div class="e-tab" data-tab="breath">Breath Sync</div>
+  </div>
+  <div class="e-panel active" id="ep-brush">
+    <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:0.75rem">Move your mouse across the canvas — speed determines brush size, direction determines hue. Your movement trace is a portrait.</p>
+    <div class="canvas-wrap">
+      <canvas id="brush-canvas" width="800" height="360"></canvas>
+      <div class="canvas-label">MOVEMENT PORTRAIT</div>
+    </div>
+    <div class="btn-row"><button class="btn" id="brush-clear">Clear Canvas</button></div>
+  </div>
+  <div class="e-panel" id="ep-shadow">
+    <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:0.75rem">Move your mouse to control the shadow hand. The animated elements respond to your puppetry.</p>
+    <div class="canvas-wrap">
+      <canvas id="shadow-canvas" width="800" height="300"></canvas>
+      <div class="canvas-label">SHADOW STAGE</div>
+    </div>
+  </div>
+  <div class="e-panel" id="ep-breath">
+    <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:0.75rem">Move your mouse slowly up and down at a breathing rhythm (~4s per cycle). The canvas atmosphere synchronizes to your breath.</p>
+    <div class="canvas-wrap">
+      <canvas id="breath-canvas" width="800" height="300"></canvas>
+      <div class="canvas-label">BREATH RESONANCE</div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== ENVIRONMENT BUILDER =====
+(function() {
+  const canvas = document.getElementById('env-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 600, H = 400;
+  let mode = 'trigger';
+  let respType = 'color';
+  const triggers = [];
+  const visitors = [];
+  const particles = [];
+  let simRunning = false;
+  let interactionScore = 0;
+  let lastT = performance.now();
+
+  // Mode buttons
+  document.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+    });
+  });
+  document.querySelectorAll('[data-resp]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-resp]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      respType = btn.dataset.resp;
+    });
+  });
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const x = (e.clientX - r.left) * (W / r.width);
+    const y = (e.clientY - r.top) * (H / r.height);
+    if (mode === 'trigger') {
+      triggers.push({ x, y, radius: 35, type: respType,
+        activation: 0, activationSmooth: 0, heatmap: 0 });
+      document.getElementById('env-zones').textContent = triggers.length;
+    } else {
+      visitors.push({ x: Math.random()*W, y: Math.random()*H,
+        tx: x, ty: y, vx: 0, vy: 0, speed: 1.5+Math.random(),
+        smoothX: Math.random()*W, smoothY: Math.random()*H });
+    }
+  });
+
+  document.getElementById('env-simulate').addEventListener('click', () => {
+    simRunning = !simRunning;
+    document.getElementById('env-simulate').textContent = simRunning ? 'Pause Simulation' : 'Simulate Visitors';
+    if (simRunning && visitors.length === 0) {
+      for (let i = 0; i < 6; i++) {
+        visitors.push({ x: Math.random()*W, y: Math.random()*H,
+          tx: Math.random()*W, ty: Math.random()*H,
+          vx: 0, vy: 0, speed: 1+Math.random()*1.5,
+          smoothX: Math.random()*W, smoothY: Math.random()*H });
+      }
+    }
+  });
+
+  document.getElementById('env-clear').addEventListener('click', () => {
+    triggers.length = 0; visitors.length = 0; particles.length = 0;
+    interactionScore = 0; simRunning = false;
+    document.getElementById('env-score').textContent = 0;
+    document.getElementById('env-zones').textContent = 0;
+    document.getElementById('env-simulate').textContent = 'Simulate Visitors';
+  });
+
+  document.getElementById('env-export').addEventListener('click', () => {
+    const spec = {
+      installation: { name: 'Custom Installation', date: new Date().toISOString(),
+        triggers: triggers.map(t => ({ x: t.x.toFixed(0), y: t.y.toFixed(0), type: t.type, radius: t.radius })),
+        visitors: visitors.length, totalInteractions: interactionScore }
+    };
+    const blob = new Blob([JSON.stringify(spec, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'installation_spec.json'; a.click();
+  });
+
+  const respColors = { color: '#FF2D78', particle: '#FF8EC8', light: '#FFFFFF', sound: '#FF2D78' };
+
+  function envLoop(ts) {
+    const dt = Math.min((ts - lastT) / 1000, 0.05);
+    lastT = ts;
+
+    ctx.fillStyle = 'rgba(10,10,10,0.35)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,45,120,0.05)'; ctx.lineWidth = 0.5;
+    for (let x = 0; x <= W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y <= H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // Update triggers heatmap
+    triggers.forEach(t => {
+      t.activation = 0;
+    });
+
+    // Update visitors
+    if (simRunning) {
+      visitors.forEach(v => {
+        if (Math.random() < 0.003) { v.tx = Math.random()*W; v.ty = Math.random()*H; }
+        const dx = v.tx - v.x, dy = v.ty - v.y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 8) { v.tx = Math.random()*W; v.ty = Math.random()*H; }
+        else {
+          v.vx += (dx/d * v.speed - v.vx) * 0.08;
+          v.vy += (dy/d * v.speed - v.vy) * 0.08;
+          v.x += v.vx; v.y += v.vy;
+        }
+        // LagFilter env visitor smooth position
+        v.smoothX += (1 - Math.exp(-dt / 0.12)) * (v.x - v.smoothX);
+        v.smoothY += (1 - Math.exp(-dt / 0.12)) * (v.y - v.smoothY);
+
+        // Check triggers
+        triggers.forEach(t => {
+          const dd = Math.sqrt((v.x-t.x)**2+(v.y-t.y)**2);
+          if (dd < t.radius) {
+            t.activation = 1;
+            t.heatmap = Math.min(t.heatmap + dt * 0.4, 1);
+          }
+        });
+      });
+    }
+
+    // Draw trigger zones + responses
+    triggers.forEach(t => {
+      // LagFilter trigger activation
+      t.activationSmooth += (1 - Math.exp(-dt / 0.18)) * (t.activation - t.activationSmooth);
+      if (t.activation && !t._prevActive) { interactionScore++; document.getElementById('env-score').textContent = interactionScore; }
+      t._prevActive = t.activation;
+
+      const a = t.activationSmooth;
+      // Heatmap ring
+      ctx.beginPath(); ctx.arc(t.x, t.y, t.radius, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,45,120,${0.04 + t.heatmap * 0.12})`; ctx.fill();
+      ctx.strokeStyle = `rgba(${respColors[t.type].slice(1).match(/../g).map(h=>parseInt(h,16)).join(',')},${0.3+a*0.6})`;
+      ctx.lineWidth = 1+a; ctx.stroke();
+
+      // Response visualization
+      if (t.type === 'color' && a > 0.1) {
+        ctx.fillStyle = `rgba(255,45,120,${a*0.3})`; ctx.fillRect(t.x-t.radius,t.y-t.radius,t.radius*2,t.radius*2);
+      }
+      if (t.type === 'light' && a > 0.1) {
+        const grd = ctx.createRadialGradient(t.x,t.y,0,t.x,t.y,t.radius*1.5);
+        grd.addColorStop(0,`rgba(255,255,255,${a*0.25})`); grd.addColorStop(1,'rgba(255,255,255,0)');
+        ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(t.x,t.y,t.radius*1.5,0,Math.PI*2); ctx.fill();
+      }
+      if (t.type === 'particle' && a > 0.5 && Math.random() < 0.4) {
+        const ang = Math.random()*Math.PI*2;
+        particles.push({x:t.x,y:t.y,vx:Math.cos(ang)*2,vy:Math.sin(ang)*2,life:0.8,size:3});
+      }
+      if (t.type === 'sound' && a > 0.1) {
+        const rings = 3;
+        for (let i=0;i<rings;i++) {
+          const phase = ((ts/1000*0.8+i*0.33)%1);
+          ctx.beginPath(); ctx.arc(t.x,t.y,phase*t.radius*1.3,0,Math.PI*2);
+          ctx.strokeStyle=`rgba(255,45,120,${(1-phase)*a*0.5})`; ctx.lineWidth=0.8; ctx.stroke();
+        }
+      }
+
+      // Label
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '8px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(t.type.toUpperCase(), t.x, t.y + 3);
+    });
+
+    // Particles
+    for (let i=particles.length-1;i>=0;i--) {
+      const p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.life-=dt*1.5;
+      if(p.life<=0){particles.splice(i,1);continue;}
+      ctx.globalAlpha=p.life; ctx.fillStyle='#FF8EC8';
+      ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // Visitors
+    visitors.forEach((v,i) => {
+      ctx.beginPath(); ctx.arc(v.smoothX, v.smoothY, 5, 0, Math.PI*2);
+      ctx.fillStyle = '#FFFFFF'; ctx.globalAlpha = 0.85; ctx.fill();
+      ctx.beginPath(); ctx.arc(v.smoothX, v.smoothY, 8, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth=0.8; ctx.stroke();
+      ctx.globalAlpha=1;
+    });
+
+    requestAnimationFrame(envLoop);
+  }
+  requestAnimationFrame(envLoop);
+})();
+
+// ===== EMBODIMENT SECTION =====
+(function() {
+  // Tab switching
+  document.querySelectorAll('.e-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.e-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.e-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('ep-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---- Body as Brush ----
+  const brushCanvas = document.getElementById('brush-canvas');
+  const bctx = brushCanvas.getContext('2d');
+  let bW = brushCanvas.width, bH = brushCanvas.height;
+  bctx.fillStyle = '#050505'; bctx.fillRect(0,0,bW,bH);
+  let bmx = bW/2, bmy = bH/2, bpx = bW/2, bpy = bH/2;
+  let bmxS = bW/2, bmyS = bH/2; // smoothed
+  let bvx = 0, bvy = 0, bspeed = 0, bspeedS = 0;
+  let bhue = 0, bhuS = 0;
+  let bLastT = performance.now();
+  let brushActive = false;
+
+  brushCanvas.addEventListener('mousemove', e => {
+    const r = brushCanvas.getBoundingClientRect();
+    bmx = (e.clientX - r.left) * (bW / r.width);
+    bmy = (e.clientY - r.top) * (bH / r.height);
+    brushActive = true;
+  });
+  brushCanvas.addEventListener('mouseleave', () => { brushActive = false; });
+
+  document.getElementById('brush-clear').addEventListener('click', () => {
+    bctx.fillStyle='#050505'; bctx.fillRect(0,0,bW,bH);
+  });
+
+  function brushLoop(ts) {
+    const dt = Math.min((ts - bLastT)/1000, 0.05);
+    bLastT = ts;
+    if (!brushActive) { requestAnimationFrame(brushLoop); return; }
+
+    const rawVx = (bmx - bpx) / (dt + 0.001);
+    const rawVy = (bmy - bpy) / (dt + 0.001);
+    bpx = bmx; bpy = bmy;
+    // LagFilter brush velocity
+    bvx += (1 - Math.exp(-dt / 0.06)) * (rawVx - bvx);
+    bvy += (1 - Math.exp(-dt / 0.06)) * (rawVy - bvy);
+    bspeed = Math.sqrt(bvx*bvx+bvy*bvy);
+    // LagFilter brush speed
+    bspeedS += (1 - Math.exp(-dt / 0.15)) * (bspeed - bspeedS);
+    // LagFilter brush position
+    bmxS += (1 - Math.exp(-dt / 0.05)) * (bmx - bmxS);
+    bmyS += (1 - Math.exp(-dt / 0.05)) * (bmy - bmyS);
+
+    const rawHue = (Math.atan2(bvy, bvx) / (Math.PI*2) + 1) % 1 * 360;
+    // LagFilter hue
+    bhuS += (1 - Math.exp(-dt / 0.3)) * (rawHue - bhuS);
+
+    const size = 2 + Math.min(bspeedS / 80, 1) * 22;
+    const alpha = 0.35 + Math.min(bspeedS / 600, 0.5);
+    bctx.globalAlpha = alpha;
+    bctx.beginPath();
+    bctx.arc(bmxS, bmyS, size, 0, Math.PI*2);
+    bctx.fillStyle = `hsl(${bhuS},90%,62%)`;
+    bctx.fill();
+    bctx.globalAlpha = 1;
+
+    requestAnimationFrame(brushLoop);
+  }
+  requestAnimationFrame(brushLoop);
+
+  // ---- Shadow Puppetry ----
+  const shadowCanvas = document.getElementById('shadow-canvas');
+  const sctx = shadowCanvas.getContext('2d');
+  const sW = shadowCanvas.width, sH = shadowCanvas.height;
+  let smx = sW/2, smy = sH*0.7;
+  let smxS = sW/2, smyS = sH*0.7;
+  let sLastT = performance.now();
+
+  // Floating elements
+  const floaters = Array.from({length:8}, (_,i) => ({
+    x: 60 + i * 95, y: sH*0.3 + Math.sin(i)*30,
+    baseY: sH*0.3 + Math.sin(i)*30,
+    vx: 0, vy: 0, size: 12+i*4,
+    phase: i * 0.7,
+  }));
+
+  shadowCanvas.addEventListener('mousemove', e => {
+    const r = shadowCanvas.getBoundingClientRect();
+    smx = (e.clientX - r.left) * (sW / r.width);
+    smy = (e.clientY - r.top) * (sH / r.height);
+  });
+
+  function shadowLoop(ts) {
+    const dt = Math.min((ts - sLastT)/1000, 0.05);
+    sLastT = ts;
+    const t = ts / 1000;
+    // LagFilter shadow hand position
+    smxS += (1 - Math.exp(-dt / 0.1)) * (smx - smxS);
+    smyS += (1 - Math.exp(-dt / 0.1)) * (smy - smyS);
+
+    sctx.fillStyle = 'rgba(5,5,5,0.55)'; sctx.fillRect(0,0,sW,sH);
+
+    // Ambient light from top
+    const grd = sctx.createLinearGradient(0,0,0,sH);
+    grd.addColorStop(0,'rgba(255,45,120,0.06)');
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    sctx.fillStyle=grd; sctx.fillRect(0,0,sW,sH);
+
+    // Ground / stage floor
+    sctx.fillStyle='rgba(255,45,120,0.05)';
+    sctx.fillRect(0, sH*0.72, sW, sH*0.28);
+    sctx.strokeStyle='rgba(255,45,120,0.3)'; sctx.lineWidth=1;
+    sctx.beginPath(); sctx.moveTo(0,sH*0.72); sctx.lineTo(sW,sH*0.72); sctx.stroke();
+
+    // Floaters react to shadow hand
+    floaters.forEach(f => {
+      const dx = smxS - f.x, dy = smyS - f.y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      const repel = Math.max(0, 1 - d/90);
+      f.vy += (-dy/Math.max(d,1) * repel * 3 - f.vy * 0.12);
+      f.vx += (-dx/Math.max(d,1) * repel * 2 - f.vx * 0.1);
+      f.y += f.vy * dt * 60;
+      f.x += f.vx * dt * 60;
+      f.y += (f.baseY + Math.sin(t*0.8+f.phase)*10 - f.y) * 0.04;
+      f.x += (60 + floaters.indexOf(f)*95 - f.x) * 0.02;
+
+      const shadowLen = Math.max(0, (sH*0.72 - f.y) * 0.3);
+      const shadowAlpha = 0.12 * (1 - d/200);
+      sctx.save();
+      sctx.globalAlpha = Math.max(0.02, shadowAlpha);
+      sctx.beginPath();
+      sctx.ellipse(f.x, sH*0.72, f.size * 0.8, 4, 0, 0, Math.PI*2);
+      sctx.fillStyle='rgba(0,0,0,0.6)'; sctx.fill();
+      sctx.restore();
+
+      sctx.globalAlpha = 0.7 + repel * 0.3;
+      sctx.fillStyle = '#FFFFFF';
+      sctx.beginPath(); sctx.arc(f.x, f.y, f.size, 0, Math.PI*2); sctx.fill();
+      sctx.globalAlpha=1;
+    });
+
+    // Hand shadow
+    const hx = smxS, hy = Math.min(smyS, sH*0.7);
+    const fingers = 5;
+    for (let fi = 0; fi < fingers; fi++) {
+      const fa = -0.5 + fi * 0.26;
+      const fLen = 30 + fi * 5;
+      const fx = hx + Math.sin(fa) * fLen;
+      const fy = hy - Math.cos(fa) * fLen;
+      sctx.beginPath(); sctx.moveTo(hx, hy); sctx.lineTo(fx, fy);
+      sctx.strokeStyle='rgba(10,10,10,0.9)'; sctx.lineWidth = 6-fi; sctx.stroke();
+      sctx.beginPath(); sctx.arc(fx, fy, 4, 0, Math.PI*2);
+      sctx.fillStyle='rgba(10,10,10,0.9)'; sctx.fill();
+    }
+    sctx.beginPath(); sctx.arc(hx, hy, 12, 0, Math.PI*2);
+    sctx.fillStyle='rgba(10,10,10,0.85)'; sctx.fill();
+
+    requestAnimationFrame(shadowLoop);
+  }
+  requestAnimationFrame(shadowLoop);
+
+  // ---- Breath Sync ----
+  const breathCanvas = document.getElementById('breath-canvas');
+  const rctx = breathCanvas.getContext('2d');
+  const rW = breathCanvas.width, rH = breathCanvas.height;
+  let rmy = rH/2, rmyPrev = rH/2;
+  let breathPhase = 0, breathPhaseS = 0;
+  let breathVel = 0, breathVelS = 0;
+  let bLastT2 = performance.now();
+
+  breathCanvas.addEventListener('mousemove', e => {
+    const r = breathCanvas.getBoundingClientRect();
+    rmy = (e.clientY - r.top) * (rH / r.height);
+  });
+
+  function breathLoop(ts) {
+    const dt = Math.min((ts - bLastT2)/1000, 0.05);
+    bLastT2 = ts;
+    const rawVel = (rmy - rmyPrev) / (dt + 0.001);
+    rmyPrev = rmy;
+    // LagFilter breath velocity
+    breathVelS += (1 - Math.exp(-dt / 0.5)) * (rawVel - breathVelS);
+    // Phase: moving up = exhale, down = inhale (map y to 0..1)
+    const rawPhase = rmy / rH;
+    // LagFilter breath phase
+    breathPhaseS += (1 - Math.exp(-dt / 0.8)) * (rawPhase - breathPhaseS);
+
+    rctx.fillStyle = 'rgba(5,5,5,0.08)'; rctx.fillRect(0,0,rW,rH);
+
+    // Atmosphere pulse
+    const pulse = breathPhaseS;
+    const grd = rctx.createRadialGradient(rW/2,rH/2,0,rW/2,rH/2,rW*0.6);
+    grd.addColorStop(0,`rgba(255,45,120,${0.04+pulse*0.12})`);
+    grd.addColorStop(0.5,`rgba(255,142,200,${0.02+pulse*0.06})`);
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    rctx.fillStyle=grd; rctx.fillRect(0,0,rW,rH);
+
+    // Breathing rings
+    const numRings = 7;
+    for(let i=0;i<numRings;i++){
+      const r = 20 + i*28 + pulse*30;
+      const a = 0.4 - i*0.05 + (1-pulse)*0.1;
+      rctx.beginPath(); rctx.arc(rW/2,rH/2,r,0,Math.PI*2);
+      rctx.strokeStyle=`rgba(255,${Math.round(45+pulse*130)},120,${Math.max(0,a)})`;
+      rctx.lineWidth=1.5-i*0.15; rctx.stroke();
+    }
+
+    // Breath indicator dot
+    const dotY = rH * breathPhaseS;
+    rctx.beginPath(); rctx.arc(20, dotY, 5, 0, Math.PI*2);
+    rctx.fillStyle='#FF2D78'; rctx.fill();
+    rctx.fillStyle='rgba(255,255,255,0.3)'; rctx.font='9px monospace'; rctx.textAlign='left';
+    rctx.fillText(pulse < 0.5 ? 'INHALE' : 'EXHALE', 32, dotY+4);
+
+    requestAnimationFrame(breathLoop);
+  }
+  requestAnimationFrame(breathLoop);
+})();
+</script>
+
+<!-- SECTION 6: IMMERSIVE INSTALLATION TYPES -->
+<section id="installations">
+  <div class="section-label">Typologies</div>
+  <h2><strong>Immersive Installation</strong> Types</h2>
+  <p>Four canonical archetypes that have defined the field of interactive installation — each with a distinct relationship to space, light, sound, data, and the visiting body.</p>
+  <div class="inst-grid">
+    <div class="inst-card">
+      <canvas class="inst-canvas" id="inst-light" width="280" height="180"></canvas>
+      <div class="inst-info">
+        <div class="inst-title">Light Installation</div>
+        <div class="inst-desc">Move mouse over canvas — RGB light projections mix on the virtual surface. Based on Turrell, Eliasson, and Dan Flavin.</div>
+      </div>
+    </div>
+    <div class="inst-card">
+      <canvas class="inst-canvas" id="inst-sound" width="280" height="180"></canvas>
+      <div class="inst-info">
+        <div class="inst-title">Sound Installation (Visual)</div>
+        <div class="inst-desc">Click to place wave sources. Concentric rings propagate and interfere. Based on Alvin Lucier, Janet Cardiff.</div>
+      </div>
+    </div>
+    <div class="inst-card">
+      <canvas class="inst-canvas" id="inst-env" width="280" height="180"></canvas>
+      <div class="inst-info">
+        <div class="inst-title">Environmental Installation</div>
+        <div class="inst-desc">Mouse trail generates a thermal map — warm where you lingered, cool where you haven't been. Based on teamLab heat-presence works.</div>
+      </div>
+    </div>
+    <div class="inst-card">
+      <canvas class="inst-canvas" id="inst-data" width="280" height="180"></canvas>
+      <div class="inst-info">
+        <div class="inst-title">Data Installation</div>
+        <div class="inst-desc">Live simulated data (time, visitor count, heartbeat) drives a visual sculpture that evolves moment to moment. Based on Ryoji Ikeda.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: AUDIENCE AS CO-CREATOR -->
+<section id="co-creator">
+  <div class="section-label">Participation &amp; Emergence</div>
+  <h2><strong>Audience</strong> as Co-Creator</h2>
+  <p>These three works only exist through your participation. The artwork is not pre-made — it emerges from the interaction itself.</p>
+  <div class="co-tabs">
+    <div class="co-tab active" data-cotab="collab">Collaborative Canvas</div>
+    <div class="co-tab" data-cotab="narrative">Decision Narrative</div>
+    <div class="co-tab" data-cotab="emergent">Emergent System</div>
+  </div>
+
+  <div class="co-panel active" id="cop-collab">
+    <div class="co-concept">
+      <strong style="color:#FF8EC8">Concept:</strong> Inspired by Yoko Ono's <em>Instruction Paintings</em> — the canvas starts empty. Your mouse movements leave permanent marks. After 60 seconds of interaction, "the work" is complete: a unique piece that only exists because of this session.
+    </div>
+    <canvas id="collab-canvas" width="800" height="340"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="collab-reset">New Canvas</button>
+      <span id="collab-timer" style="font-size:0.75rem;color:var(--soft-pink);align-self:center;font-family:monospace">Time: 0s / 60s</span>
+    </div>
+  </div>
+
+  <div class="co-panel" id="cop-narrative">
+    <div class="co-concept">
+      <strong style="color:#FF8EC8">Concept:</strong> Inspired by Olia Lialina's <em>My Boyfriend Came Back from the War</em> — a branching visual narrative. Your mouse position at each fork determines the path. Move left or right, then click to choose. The artwork is always unique to this reading.
+    </div>
+    <canvas id="narrative-canvas" width="800" height="340"></canvas>
+    <div class="btn-row"><button class="btn" id="narrative-reset">Restart Narrative</button></div>
+  </div>
+
+  <div class="co-panel" id="cop-emergent">
+    <div class="co-concept">
+      <strong style="color:#FF8EC8">Concept:</strong> Inspired by John Conway's <em>Game of Life</em> and Lozano-Hemmer's <em>Pulse Room</em> — click to plant up to 8 agents. Watch them interact, repel, attract, and build a visual pattern. The final form is entirely emergent and unpredictable.
+    </div>
+    <canvas id="emergent-canvas" width="800" height="340"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="emergent-reset">Clear Agents</button>
+      <span id="emergent-count" style="font-size:0.75rem;color:var(--soft-pink);align-self:center;font-family:monospace">0 / 8 agents</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== INSTALLATIONS =====
+(function() {
+  let lastT = performance.now();
+
+  // ---- Light Installation ----
+  const lc = document.getElementById('inst-light');
+  const lctx = lc.getContext('2d');
+  const lW = lc.width, lH = lc.height;
+  let lmx = lW/2, lmy = lH/2;
+  let lmxS = lW/2, lmyS = lH/2;
+  let lLastT = performance.now();
+  lc.addEventListener('mousemove', e => { const r=lc.getBoundingClientRect(); lmx=e.clientX-r.left; lmy=e.clientY-r.top; });
+  function lightLoop(ts) {
+    const dt=Math.min((ts-lLastT)/1000,0.05); lLastT=ts;
+    // LagFilter light position
+    lmxS += (1 - Math.exp(-dt/0.12)) * (lmx - lmxS);
+    lmyS += (1 - Math.exp(-dt/0.12)) * (lmy - lmyS);
+    lctx.fillStyle='rgba(5,5,5,0.25)'; lctx.fillRect(0,0,lW,lH);
+    const sources = [
+      {x:lmxS, y:lmyS, r:255, g:45, b:120},
+      {x:lW-lmxS*0.5, y:lmyS*0.5, r:45, g:180, b:255},
+      {x:lmxS*0.4, y:lH-lmyS*0.6, r:255, g:255, b:100},
+    ];
+    sources.forEach(s => {
+      const grd = lctx.createRadialGradient(s.x,s.y,0,s.x,s.y,100);
+      grd.addColorStop(0,`rgba(${s.r},${s.g},${s.b},0.45)`);
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      lctx.globalCompositeOperation='screen';
+      lctx.fillStyle=grd; lctx.fillRect(0,0,lW,lH);
+    });
+    lctx.globalCompositeOperation='source-over';
+    requestAnimationFrame(lightLoop);
+  }
+  requestAnimationFrame(lightLoop);
+
+  // ---- Sound Installation ----
+  const sc = document.getElementById('inst-sound');
+  const sctx = sc.getContext('2d');
+  const sW = sc.width, sH = sc.height;
+  const soundSources = [];
+  let sLastT = performance.now();
+  sc.addEventListener('click', e => {
+    const r=sc.getBoundingClientRect();
+    if (soundSources.length >= 5) soundSources.shift();
+    soundSources.push({x:e.clientX-r.left, y:e.clientY-r.top, born:performance.now()});
+  });
+  function soundLoop(ts) {
+    const dt=Math.min((ts-sLastT)/1000,0.05); sLastT=ts;
+    sctx.fillStyle='rgba(5,5,5,0.18)'; sctx.fillRect(0,0,sW,sH);
+    soundSources.forEach((s,si) => {
+      const age = (ts - s.born) / 1000;
+      for (let i=0;i<8;i++) {
+        const ring = (age * 40 + i * 22) % 160;
+        const alpha = Math.max(0, 0.5 - ring/160) * 0.7;
+        sctx.beginPath(); sctx.arc(s.x,s.y,ring,0,Math.PI*2);
+        sctx.strokeStyle=`rgba(255,45,120,${alpha})`; sctx.lineWidth=1; sctx.stroke();
+      }
+      sctx.beginPath(); sctx.arc(s.x,s.y,4,0,Math.PI*2);
+      sctx.fillStyle='#FF2D78'; sctx.fill();
+    });
+    if (soundSources.length === 0) {
+      sctx.fillStyle='rgba(255,255,255,0.15)'; sctx.font='11px sans-serif'; sctx.textAlign='center';
+      sctx.fillText('Click to place sound sources', sW/2, sH/2);
+    }
+    requestAnimationFrame(soundLoop);
+  }
+  requestAnimationFrame(soundLoop);
+
+  // ---- Environmental/Thermal ----
+  const ec = document.getElementById('inst-env');
+  const ectx = ec.getContext('2d');
+  const eW = ec.width, eH = ec.height;
+  const heatmap = new Float32Array(eW * eH);
+  let emx = eW/2, emy = eH/2;
+  let eLastT = performance.now();
+  ec.addEventListener('mousemove', e => {
+    const r=ec.getBoundingClientRect();
+    emx=(e.clientX-r.left)*(eW/r.width)|0;
+    emy=(e.clientY-r.top)*(eH/r.height)|0;
+  });
+  function envThermal(ts) {
+    const dt=Math.min((ts-eLastT)/1000,0.05); eLastT=ts;
+    // Add heat at cursor
+    for(let dy=-12;dy<=12;dy++) for(let dx=-12;dx<=12;dx++) {
+      const d=Math.sqrt(dx*dx+dy*dy); if(d>12) continue;
+      const ix=(emx+dx)|0, iy=(emy+dy)|0;
+      if(ix<0||ix>=eW||iy<0||iy>=eH) continue;
+      heatmap[iy*eW+ix] = Math.min(heatmap[iy*eW+ix] + dt*(1-d/12)*0.8, 1);
+    }
+    // Cool down
+    for(let i=0;i<heatmap.length;i++) heatmap[i]*=0.998;
+
+    const imgData = ectx.createImageData(eW, eH);
+    for(let i=0;i<heatmap.length;i++){
+      const v=heatmap[i];
+      imgData.data[i*4]   = Math.round(v*255);
+      imgData.data[i*4+1] = Math.round(v*45);
+      imgData.data[i*4+2] = Math.round(v*120);
+      imgData.data[i*4+3] = Math.round(30+v*200);
+    }
+    ectx.fillStyle='#050505'; ectx.fillRect(0,0,eW,eH);
+    ectx.putImageData(imgData, 0, 0);
+    requestAnimationFrame(envThermal);
+  }
+  requestAnimationFrame(envThermal);
+
+  // ---- Data Installation ----
+  const dc = document.getElementById('inst-data');
+  const dctx = dc.getContext('2d');
+  const dW = dc.width, dH = dc.height;
+  let dLastT = performance.now();
+  let dVisitors = 0; let dVisitorTimer = 0;
+  let dHeartPhase = 0;
+  // Lag state for data sculpture
+  let dHeartSmooth = 0, dVisSmooth = 0, dTimeSmooth = 0;
+  function dataLoop(ts) {
+    const dt=Math.min((ts-dLastT)/1000,0.05); dLastT=ts;
+    const t = ts/1000;
+    dHeartPhase += dt * 1.1;
+    dVisitorTimer += dt;
+    if(dVisitorTimer > 3.7) { dVisitors = (dVisitors+1)%42; dVisitorTimer=0; }
+
+    const heartbeat = 0.5 + 0.5*Math.sin(dHeartPhase * Math.PI * 2);
+    const timeFrac = ((t % 60) / 60);
+    // LagFilter data values
+    dHeartSmooth += (1 - Math.exp(-dt/0.15)) * (heartbeat - dHeartSmooth);
+    dVisSmooth += (1 - Math.exp(-dt/0.6)) * (dVisitors/42 - dVisSmooth);
+    dTimeSmooth += (1 - Math.exp(-dt/1.2)) * (timeFrac - dTimeSmooth);
+
+    dctx.fillStyle='rgba(5,5,5,0.22)'; dctx.fillRect(0,0,dW,dH);
+
+    // Data bars
+    const bars = [
+      { label:'HEART', val:dHeartSmooth, color:'#FF2D78', x:30 },
+      { label:'VISIT', val:dVisSmooth, color:'#FF8EC8', x:90 },
+      { label:'TIME', val:dTimeSmooth, color:'#FFFFFF', x:150 },
+    ];
+    bars.forEach(b => {
+      const bh = b.val * 100;
+      dctx.fillStyle=b.color; dctx.globalAlpha=0.8;
+      dctx.fillRect(b.x, dH-20-bh, 30, bh);
+      dctx.globalAlpha=1;
+      dctx.fillStyle='rgba(255,255,255,0.3)'; dctx.font='7px monospace'; dctx.textAlign='center';
+      dctx.fillText(b.label, b.x+15, dH-8);
+    });
+
+    // Ikeda-style data stream
+    dctx.fillStyle='rgba(255,45,120,0.5)'; dctx.font='7px monospace'; dctx.textAlign='left';
+    for(let row=0;row<10;row++){
+      const str = Array.from({length:20},()=>Math.random()>0.5?'1':'0').join('');
+      const fade = (row/10)*0.6;
+      dctx.globalAlpha = 0.04 + (1-fade)*dHeartSmooth*0.25;
+      dctx.fillText(str, 200, 16 + row*12);
+    }
+    dctx.globalAlpha=1;
+
+    // Sculpture spiral
+    const cx=220, cy=dH/2;
+    for(let i=0;i<40;i++){
+      const a=(i/40)*Math.PI*2+t*0.3;
+      const r=20 + i*2 * dVisSmooth;
+      const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r*(0.5+dHeartSmooth*0.5);
+      dctx.beginPath(); dctx.arc(x,y,1.5,0,Math.PI*2);
+      dctx.fillStyle=`rgba(255,45,120,${0.2+dHeartSmooth*0.7})`; dctx.fill();
+    }
+
+    requestAnimationFrame(dataLoop);
+  }
+  requestAnimationFrame(dataLoop);
+})();
+
+// ===== CO-CREATOR SECTION =====
+(function() {
+  // Tab switching
+  document.querySelectorAll('.co-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.co-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.co-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('cop-'+tab.dataset.cotab).classList.add('active');
+    });
+  });
+
+  // ---- Collaborative Canvas ----
+  const collabC = document.getElementById('collab-canvas');
+  const cctx = collabC.getContext('2d');
+  const cW = collabC.width, cH = collabC.height;
+  cctx.fillStyle='#050505'; cctx.fillRect(0,0,cW,cH);
+  let cmx=cW/2,cmy=cH/2,cpx=cW/2,cpy=cH/2;
+  let cmxS=cW/2,cmyS=cH/2,cvx=0,cvy=0,cspeedS=0;
+  let cLastT=performance.now(), cElapsed=0, cRunning=false, cDone=false;
+  let cLastMoveT=performance.now();
+  let cHue=0, cHueS=0;
+
+  collabC.addEventListener('mousemove', e => {
+    const r=collabC.getBoundingClientRect();
+    cmx=(e.clientX-r.left)*(cW/r.width);
+    cmy=(e.clientY-r.top)*(cH/r.height);
+    if(!cRunning && !cDone) cRunning=true;
+    cLastMoveT=performance.now();
+  });
+
+  document.getElementById('collab-reset').addEventListener('click', () => {
+    cctx.fillStyle='#050505'; cctx.fillRect(0,0,cW,cH);
+    cElapsed=0; cRunning=false; cDone=false;
+    document.getElementById('collab-timer').textContent='Time: 0s / 60s';
+  });
+
+  function collabLoop(ts) {
+    const dt=Math.min((ts-cLastT)/1000,0.05); cLastT=ts;
+    if(cRunning && !cDone) cElapsed+=dt;
+    if(cElapsed>=60) { cDone=true; cRunning=false; }
+
+    const rawVx=(cmx-cpx)/(dt+0.001), rawVy=(cmy-cpy)/(dt+0.001);
+    cpx=cmx; cpy=cmy;
+    cvx+=(1-Math.exp(-dt/0.06))*(rawVx-cvx);
+    cvy+=(1-Math.exp(-dt/0.06))*(rawVy-cvy);
+    const cspeed=Math.sqrt(cvx*cvx+cvy*cvy);
+    cspeedS+=(1-Math.exp(-dt/0.14))*(cspeed-cspeedS);
+    cmxS+=(1-Math.exp(-dt/0.05))*(cmx-cmxS);
+    cmyS+=(1-Math.exp(-dt/0.05))*(cmy-cmyS);
+    const rawH=(Math.atan2(cvy,cvx)/(Math.PI*2)+1)%1*360;
+    cHueS+=(1-Math.exp(-dt/0.25))*(rawH-cHueS);
+
+    if(cRunning && !cDone){
+      const size=1.5+Math.min(cspeedS/100,1)*14;
+      const alpha=0.25+Math.min(cspeedS/600,0.55);
+      cctx.globalAlpha=alpha;
+      cctx.beginPath(); cctx.arc(cmxS,cmyS,size,0,Math.PI*2);
+      cctx.fillStyle=`hsl(${cHueS},80%,65%)`; cctx.fill();
+      cctx.globalAlpha=1;
+    }
+    if(cDone) {
+      cctx.fillStyle='rgba(255,45,120,0.06)';
+      cctx.fillRect(0,0,cW,cH);
+      cctx.fillStyle='rgba(255,45,120,0.7)'; cctx.font='bold 18px sans-serif'; cctx.textAlign='center';
+      cctx.fillText('THE WORK IS COMPLETE', cW/2, 28);
+    }
+    document.getElementById('collab-timer').textContent = `Time: ${Math.min(cElapsed,60).toFixed(1)}s / 60s${cDone?' — DONE':''}`;
+    requestAnimationFrame(collabLoop);
+  }
+  requestAnimationFrame(collabLoop);
+
+  // ---- Decision Narrative ----
+  const narC = document.getElementById('narrative-canvas');
+  const nctx = narC.getContext('2d');
+  const nW=narC.width, nH=narC.height;
+  let nmx=nW/2, nmy=nH/2, nmxS=nW/2;
+  let nLastT=performance.now();
+  const chapters = [
+    { text:'A figure stands at the threshold.', left:'Enter alone', right:'Wait for another' },
+    { text:'The room breathes.', left:'Follow the sound', right:'Move toward light' },
+    { text:'Something shifts.', left:'Reach out', right:'Step back' },
+    { text:'The moment holds.', left:'Speak', right:'Remain silent' },
+    { text:'And then — everything changes.', left:'End', right:'Begin again' },
+  ];
+  let nChapter=0, nChoice=null, nChoiceT=null, nTransition=1;
+
+  narC.addEventListener('mousemove', e => {
+    const r=narC.getBoundingClientRect();
+    nmx=(e.clientX-r.left)*(nW/r.width);
+    nmy=(e.clientY-r.top)*(nH/r.height);
+  });
+  narC.addEventListener('click', () => {
+    if(nChoice!==null) return;
+    nChoice = nmxS < nW/2 ? 'left' : 'right';
+    nChoiceT = performance.now();
+  });
+  document.getElementById('narrative-reset').addEventListener('click', () => {
+    nChapter=0; nChoice=null; nChoiceT=null; nTransition=0;
+  });
+
+  function narrativeLoop(ts) {
+    const dt=Math.min((ts-nLastT)/1000,0.05); nLastT=ts;
+    nmxS+=(1-Math.exp(-dt/0.15))*(nmx-nmxS);
+    nTransition+=(1-Math.exp(-dt/0.4))*(1-nTransition);
+
+    nctx.fillStyle='rgba(5,5,5,0.18)'; nctx.fillRect(0,0,nW,nH);
+    const ch=chapters[Math.min(nChapter, chapters.length-1)];
+
+    // Side highlight
+    const side = nmxS < nW/2 ? 'left' : 'right';
+    if(!nChoice){
+      nctx.fillStyle = side==='left' ? 'rgba(255,45,120,0.04)' : 'rgba(255,45,120,0.04)';
+      const hx = side==='left' ? 0 : nW/2;
+      nctx.fillRect(hx, 0, nW/2, nH);
+      nctx.strokeStyle='rgba(255,45,120,0.15)'; nctx.lineWidth=1;
+      nctx.beginPath(); nctx.moveTo(nW/2,20); nctx.lineTo(nW/2,nH-20); nctx.stroke();
+    }
+
+    nctx.globalAlpha=nTransition;
+    nctx.fillStyle='#FFFFFF'; nctx.font=`italic ${18}px Georgia,serif`; nctx.textAlign='center';
+    nctx.fillText(ch.text, nW/2, nH/2-30);
+
+    if(!nChoice) {
+      nctx.font='13px sans-serif';
+      nctx.fillStyle=side==='left'?'#FF2D78':'rgba(255,255,255,0.3)';
+      nctx.textAlign='center'; nctx.fillText('← '+ch.left, nW/4, nH*0.72);
+      nctx.fillStyle=side==='right'?'#FF2D78':'rgba(255,255,255,0.3)';
+      nctx.textAlign='center'; nctx.fillText(ch.right+' →', nW*0.75, nH*0.72);
+      nctx.font='10px sans-serif'; nctx.fillStyle='rgba(255,255,255,0.2)';
+      nctx.textAlign='center'; nctx.fillText('click to choose', nW/2, nH-20);
+    } else {
+      const elapsed=(ts-nChoiceT)/1000;
+      if(elapsed>1.4 && nChapter<chapters.length-1){ nChapter++; nChoice=null; nChoiceT=null; nTransition=0; }
+      nctx.font='12px sans-serif'; nctx.fillStyle='#FF2D78'; nctx.textAlign='center';
+      nctx.fillText(`You chose: ${nChoice==='left'?ch.left:ch.right}`, nW/2, nH*0.72);
+    }
+    nctx.globalAlpha=1;
+    nctx.fillStyle='rgba(255,255,255,0.15)'; nctx.font='9px monospace'; nctx.textAlign='right';
+    nctx.fillText(`${nChapter+1}/${chapters.length}`, nW-12, nH-12);
+
+    requestAnimationFrame(narrativeLoop);
+  }
+  requestAnimationFrame(narrativeLoop);
+
+  // ---- Emergent System ----
+  const emgC = document.getElementById('emergent-canvas');
+  const ectx = emgC.getContext('2d');
+  const eW=emgC.width, eH=emgC.height;
+  const agents = [];
+  let eLastT=performance.now();
+
+  emgC.addEventListener('click', e => {
+    if(agents.length>=8) return;
+    const r=emgC.getBoundingClientRect();
+    const x=(e.clientX-r.left)*(eW/r.width);
+    const y=(e.clientY-r.top)*(eH/r.height);
+    const hue=agents.length*45;
+    agents.push({x,y,vx:(Math.random()-0.5)*1.5,vy:(Math.random()-0.5)*1.5,
+      hue, trailX:x, trailY:y,
+      smoothX:x, smoothY:y,
+      size:8+agents.length*2});
+    document.getElementById('emergent-count').textContent=`${agents.length}/8 agents`;
+  });
+
+  document.getElementById('emergent-reset').addEventListener('click', () => {
+    agents.length=0;
+    ectx.fillStyle='#050505'; ectx.fillRect(0,0,eW,eH);
+    document.getElementById('emergent-count').textContent='0/8 agents';
+  });
+  ectx.fillStyle='#050505'; ectx.fillRect(0,0,eW,eH);
+
+  function emergentLoop(ts) {
+    const dt=Math.min((ts-eLastT)/1000,0.05); eLastT=ts;
+
+    ectx.fillStyle='rgba(5,5,5,0.04)'; ectx.fillRect(0,0,eW,eH);
+
+    agents.forEach((a,i) => {
+      // Agent-agent forces
+      agents.forEach((b,j) => {
+        if(i===j) return;
+        const dx=b.x-a.x, dy=b.y-a.y;
+        const d=Math.sqrt(dx*dx+dy*dy)+0.01;
+        const attract = d > 120 ? 0.08/d : 0;
+        const repel = d < 60 ? -1.5/(d*d) : 0;
+        const f = (attract+repel) * dt*60;
+        a.vx += dx/d * f;
+        a.vy += dy/d * f;
+      });
+      // Wall bounce
+      if(a.x<10||a.x>eW-10) a.vx*=-0.85;
+      if(a.y<10||a.y>eH-10) a.vy*=-0.85;
+      a.vx*=0.97; a.vy*=0.97;
+      a.x+=a.vx*dt*60; a.y+=a.vy*dt*60;
+      a.x=Math.max(10,Math.min(eW-10,a.x));
+      a.y=Math.max(10,Math.min(eH-10,a.y));
+      // LagFilter agent smooth display
+      a.smoothX+=(1-Math.exp(-dt/0.06))*(a.x-a.smoothX);
+      a.smoothY+=(1-Math.exp(-dt/0.06))*(a.y-a.smoothY);
+
+      // Draw connection lines
+      agents.forEach((b,j)=>{
+        if(j<=i) return;
+        const dx=b.smoothX-a.smoothX, dy=b.smoothY-a.smoothY;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<150){
+          ectx.globalAlpha=(1-d/150)*0.35;
+          ectx.strokeStyle=`hsl(${(a.hue+b.hue)/2},80%,55%)`;
+          ectx.lineWidth=0.8;
+          ectx.beginPath(); ectx.moveTo(a.smoothX,a.smoothY); ectx.lineTo(b.smoothX,b.smoothY); ectx.stroke();
+        }
+      });
+      ectx.globalAlpha=1;
+
+      // Trail
+      ectx.beginPath(); ectx.arc(a.smoothX,a.smoothY,a.size*0.5,0,Math.PI*2);
+      ectx.fillStyle=`hsla(${a.hue},80%,60%,0.12)`; ectx.fill();
+
+      // Agent dot
+      ectx.beginPath(); ectx.arc(a.smoothX,a.smoothY,a.size,0,Math.PI*2);
+      ectx.fillStyle=`hsla(${a.hue},80%,60%,0.85)`; ectx.fill();
+      ectx.beginPath(); ectx.arc(a.smoothX,a.smoothY,3,0,Math.PI*2);
+      ectx.fillStyle='#FFFFFF'; ectx.fill();
+    });
+
+    if(agents.length===0){
+      ectx.fillStyle='rgba(255,255,255,0.15)'; ectx.font='13px sans-serif'; ectx.textAlign='center';
+      ectx.fillText('Click to plant agents', eW/2, eH/2);
+    }
+
+    requestAnimationFrame(emergentLoop);
+  }
+  requestAnimationFrame(emergentLoop);
+})();
+</script>
+
+<!-- SECTION 8: ARTISTS -->
+<section id="artists">
+  <div class="section-label">Key Practitioners</div>
+  <h2><strong>Artists</strong> of Interactive Art</h2>
+  <p>Eight figures who fundamentally changed the relationship between artwork and audience — making participation not a supplement, but the very substance of the work.</p>
+  <div class="artists-grid" id="artists-grid"></div>
+</section>
+
+<!-- SECTION 9: GLOSSARY -->
+<section id="glossary">
+  <div class="section-label">Terminology</div>
+  <h2><strong>Glossary</strong></h2>
+  <p>Core vocabulary for understanding interactive, participatory, and responsive art systems.</p>
+  <div class="glossary-grid" id="glossary-grid"></div>
+</section>
+
+<footer>Interactive Art World &nbsp;·&nbsp; Participatory &amp; Responsive Art &nbsp;·&nbsp; Audience as Medium</footer>
+
+<script>
+// ===== ARTISTS SECTION =====
+(function() {
+  const artists = [
+    {
+      name: 'Nam June Paik',
+      era: '1960s–2000s', medium: 'Video, Installation, Performance',
+      works: ['TV Buddha (1974)', 'TV Garden (1974)', 'Electronic Superhighway (1995)'],
+      philosophy: 'Television is the canvas of the 21st century. Paik made the viewer\'s reflection — literally and figuratively — central to his closed-circuit video works.',
+      hues: [0, 330, 15],
+    },
+    {
+      name: 'Yoko Ono',
+      era: '1960s–present', medium: 'Instruction Art, Performance, Fluxus',
+      works: ['Grapefruit (1964)', 'Cut Piece (1964)', 'Wish Tree (1996)'],
+      philosophy: 'The artwork is an instruction; the participant is the performer. Ono distributed agency entirely to the audience, completing the work through their action.',
+      hues: [300, 20, 340],
+    },
+    {
+      name: 'Allan Kaprow',
+      era: '1960s–2000s', medium: 'Happenings, Environmental Art',
+      works: ['18 Happenings in 6 Parts (1959)', 'Yard (1961)', 'Fluids (1967)'],
+      philosophy: 'The line between art and life must be kept fluid, even indistinct. Kaprow erased the audience-performer boundary, making everyday action into artistic event.',
+      hues: [200, 170, 220],
+    },
+    {
+      name: 'Rafael Lozano-Hemmer',
+      era: '1990s–present', medium: 'Electronic Installation, Biometrics',
+      works: ['Pulse Room (2006)', 'Body Movies (2001)', 'Vectorial Elevation (1999)'],
+      philosophy: 'Presence activates the work. Lozano-Hemmer\'s installations use biometric data — heartbeats, breathing, shadows — to make the visitor\'s body the generator of the artwork.',
+      hues: [350, 20, 330],
+    },
+    {
+      name: 'teamLab',
+      era: '2001–present', medium: 'Digital Installation, Immersive Environments',
+      works: ['Crystal Universe (2015)', 'Borderless (2018)', 'Ever Blossoming Life Rock (2017)'],
+      philosophy: 'The boundary between body and art dissolves. teamLab\'s digital ecologies change in real time in response to visitors — presence literally alters the living artwork.',
+      hues: [220, 280, 160],
+    },
+    {
+      name: 'Ryoji Ikeda',
+      era: '1990s–present', medium: 'Data Art, Sound, Minimal Electronics',
+      works: ['test pattern (2008)', 'data.tron (2008)', 'superposition (2012)'],
+      philosophy: 'Data is the raw material of reality. Ikeda translates the invisible — binary code, mathematical constants — into overwhelming audiovisual experience, making pure information perceptible.',
+      hues: [0, 0, 60],
+    },
+    {
+      name: 'Olafur Eliasson',
+      era: '1990s–present', medium: 'Large-Scale Installation, Environment',
+      works: ['The Weather Project (2003)', 'Ice Watch (2014)', 'In Real Life (ongoing)'],
+      philosophy: 'You are the co-producer of this reality. Eliasson\'s environments make the conditions of perception visible — light, atmosphere, movement — asking visitors to notice their own presence.',
+      hues: [40, 15, 55],
+    },
+    {
+      name: 'Random International',
+      era: '2005–present', medium: 'Kinetic Installation, Robotic Systems',
+      works: ['Rain Room (2012)', 'Swarm Study (2011)', 'Future Self (2012)'],
+      philosophy: 'The machine responds to the human. Random International builds systems that sense, track, and react to individual bodies — creating an uncanny intimacy between visitor and mechanism.',
+      hues: [210, 195, 240],
+    },
+  ];
+
+  const grid = document.getElementById('artists-grid');
+  artists.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'artist-card';
+
+    // Geometric avatar canvas
+    const av = document.createElement('canvas');
+    av.className = 'artist-avatar';
+    av.width = 240; av.height = 120;
+    card.appendChild(av);
+
+    const ctx = av.getContext('2d');
+    // Draw abstract portrait
+    ctx.fillStyle = '#1A1A1A'; ctx.fillRect(0,0,240,120);
+    const [h1,h2,h3] = a.hues;
+    const grd = ctx.createLinearGradient(0,0,240,120);
+    grd.addColorStop(0,`hsla(${h1},70%,40%,0.6)`);
+    grd.addColorStop(0.5,`hsla(${h2},80%,50%,0.4)`);
+    grd.addColorStop(1,`hsla(${h3},60%,35%,0.6)`);
+    ctx.fillStyle=grd; ctx.fillRect(0,0,240,120);
+
+    // Geometric shapes
+    ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(120,60,35,0,Math.PI*2); ctx.stroke();
+    ctx.strokeStyle='rgba(255,45,120,0.7)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.rect(88,28,64,64); ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.moveTo(55,10); ctx.lineTo(185,110); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(185,10); ctx.lineTo(55,110); ctx.stroke();
+    ctx.fillStyle='rgba(255,45,120,0.8)';
+    ctx.beginPath(); ctx.arc(120,60,6,0,Math.PI*2); ctx.fill();
+
+    // Name initial
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.font='bold 42px Arial'; ctx.textAlign='center';
+    ctx.fillText(a.name.split(' ').map(w=>w[0]).join(''), 120, 72);
+
+    const body = document.createElement('div');
+    body.className = 'artist-body';
+    body.innerHTML = `
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-era">${a.era}</div>
+      <div class="artist-medium">${a.medium}</div>
+      <div class="artist-works">${a.works.join(' · ')}</div>
+      <div class="artist-philosophy">"${a.philosophy}"</div>`;
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+})();
+
+// ===== GLOSSARY SECTION =====
+(function() {
+  const terms = [
+    ['Affordance', 'The perceived properties of an object or system that suggest how it can be used. In interactive art, affordances invite participation.'],
+    ['Agency', 'The capacity of an audience member to make meaningful choices that affect the artwork. A work has agency when choices produce real consequences.'],
+    ['Audience', 'In participatory art, not a passive receiver but an active co-producer. The audience\'s presence, movement, or input generates the work.'],
+    ['Biofeedback', 'Physiological data — heartrate, breathing, skin conductance — used as input to an artwork, making the body\'s invisible state visible.'],
+    ['Co-creation', 'A mode of artistic production where audience participation is not incidental but constitutive — the work cannot exist without the participant.'],
+    ['Embodiment', 'The grounding of perception and meaning in the physical body. Embodied interaction recognizes that the body, not just the mind, engages art.'],
+    ['Emergence', 'Complex patterns or behaviors arising from simple rules and local interactions. Emergent artworks cannot be predicted from their components alone.'],
+    ['Feedback Loop', 'A system in which output becomes input. Closed-circuit video, biometric response systems, and social dynamics all operate as feedback loops.'],
+    ['Haptic', 'Relating to the sense of touch. Haptic interfaces communicate through physical sensation — vibration, pressure, temperature, texture.'],
+    ['Immersion', 'A perceptual state where the environment feels total — surrounding, enveloping, or replacing ordinary reality. Immersion erases the frame of the artwork.'],
+    ['Installation', 'An artwork defined by its occupation of a specific space. Viewers enter and move through an installation rather than viewing it from outside.'],
+    ['Interactivity', 'A quality of systems that respond to input in meaningful, non-trivial ways. True interactivity requires that choices produce differentiated outcomes.'],
+    ['Latency', 'The delay between an action and its response. In real-time interactive art, minimizing latency is crucial; perceptible lag breaks the sense of presence.'],
+    ['Mapping', 'The relationship between input and output parameters. A mapping determines how a physical gesture becomes a visual or sonic event.'],
+    ['Participatory', 'A mode of art production where audience action is required for the work to function. Participation is structural, not optional.'],
+    ['Presence', 'The felt sense of "being there." In interactive art, presence refers both to the visitor\'s physical being and to the perceptual sense of inhabiting a virtual space.'],
+    ['Proximity', 'Physical closeness as artistic input. Proximity sensors translate spatial relationship — near/far — into parameters that shape the work.'],
+    ['Responsive', 'A system or environment that perceives and reacts to the actions or presence of participants. Responsiveness is the technical basis of interactivity.'],
+    ['Sensor', 'A device that detects physical phenomena — motion, heat, pressure, sound, light — and converts them into data that can drive an artistic system.'],
+    ['Social Practice', 'Art that engages communities and social structures as its primary medium, prioritizing relationships, dialogue, and collective action over objects.'],
+    ['Telematics', 'The transmission of presence across distance. Telematic art connects participants in different locations through network systems, making geography irrelevant.'],
+    ['Threshold', 'A boundary or limit within an interactive system. Crossing a threshold — spatial, temporal, or behavioral — triggers a change in the artwork\'s state.'],
+  ];
+
+  const glossGrid = document.getElementById('glossary-grid');
+  terms.forEach(([term, def]) => {
+    const item = document.createElement('div');
+    item.className = 'gloss-item';
+    item.innerHTML = `<div class="gloss-term">${term}</div><div class="gloss-def">${def}</div>`;
+    glossGrid.appendChild(item);
+  });
+})();
+
+// ===== INTERSECTION OBSERVER =====
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('section').forEach(s => {
+    if (s.id !== 'hero') observer.observe(s);
+    else s.classList.add('visible');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring mixing mastering">
+    <meta property="og:title" content="Mixing Mastering Lab — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring mixing mastering">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/mixing_mastering_lab.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN — Mixing & Mastering Lab</title>
+<style>
+:root {
+  --black:#050508; --surface:#0d0d14; --border:#1e1e2e;
+  --text:#e2e8f0; --dim:#64748b; --accent:#6366f1;
+  --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
+  --cyan:#06b6d4; --orange:#f97316; --yellow:#eab308;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Courier New',monospace;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(5,5,8,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);padding:0 1rem;display:flex;align-items:center;
+  gap:0.2rem;flex-wrap:wrap;min-height:48px}
+nav a{font-size:0.65rem;color:var(--dim);padding:6px 8px;border-radius:4px;
+  letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;white-space:nowrap}
+nav a:hover,nav a.active{color:var(--accent);background:rgba(99,102,241,0.1)}
+nav .logo{font-size:0.75rem;font-weight:700;color:var(--accent);margin-right:0.5rem;
+  letter-spacing:0.1em;white-space:nowrap}
+
+/* LAYOUT */
+section{padding:4rem 1rem;max-width:1200px;margin:0 auto}
+.section-title{font-size:1.6rem;font-weight:700;letter-spacing:0.05em;
+  color:var(--text);margin-bottom:0.5rem;text-transform:uppercase}
+.section-sub{color:var(--dim);font-size:0.85rem;margin-bottom:2rem;letter-spacing:0.03em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem}
+.edu-card{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.25);
+  border-radius:8px;padding:1.2rem;margin-top:1rem}
+.edu-card p{font-size:0.8rem;color:var(--dim);line-height:1.7}
+.edu-card strong{color:var(--accent)}
+
+/* ANIMATIONS */
+.hidden{opacity:0;transform:translateY(40px);transition:all 0.7s ease}
+.visible{opacity:1;transform:none}
+.stagger-1{transition-delay:0.1s}.stagger-2{transition-delay:0.2s}
+.stagger-3{transition-delay:0.3s}.stagger-4{transition-delay:0.4s}.stagger-5{transition-delay:0.5s}
+
+/* HERO */
+#hero{max-width:100%;padding:0;position:relative;height:400px;overflow:hidden}
+#hero-canvas{width:100%;height:100%;display:block}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,transparent 40%,rgba(5,5,8,0.8) 100%);
+  pointer-events:none}
+.hero-title{font-size:clamp(1.4rem,4vw,2.8rem);font-weight:700;letter-spacing:0.15em;
+  text-align:center;color:#fff;text-shadow:0 0 30px var(--accent)}
+.hero-sub{font-size:0.85rem;color:var(--dim);letter-spacing:0.08em;margin-top:0.5rem;text-align:center}
+.hero-badges{display:flex;gap:1rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center}
+.badge{background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.4);
+  border-radius:4px;padding:4px 12px;font-size:0.7rem;letter-spacing:0.08em;
+  color:var(--accent);display:flex;flex-direction:column;align-items:center}
+.badge-val{font-size:1rem;font-weight:700;color:#fff}
+
+/* CANVAS WRAPPERS */
+.canvas-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  background:var(--black);position:relative}
+canvas{display:block}
+
+/* CONTROLS */
+.ctrl-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.ctrl-group{display:flex;flex-direction:column;gap:4px;min-width:120px}
+label{font-size:0.7rem;color:var(--dim);letter-spacing:0.05em;text-transform:uppercase}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--border);
+  border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;
+  border-radius:50%;background:var(--accent);cursor:pointer}
+.val-display{font-size:0.8rem;color:var(--accent);font-weight:700;min-width:60px}
+
+btn,.btn{background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.4);
+  border-radius:6px;color:var(--accent);font-family:'Courier New',monospace;
+  font-size:0.72rem;letter-spacing:0.06em;padding:6px 14px;cursor:pointer;
+  text-transform:uppercase;transition:all 0.2s}
+btn:hover,.btn:hover,.btn.active{background:rgba(99,102,241,0.35);border-color:var(--accent)}
+.btn-row{display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.8rem}
+
+/* FREQUENCY CLASSROOM */
+.freq-zones-legend{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.zone-tag{font-size:0.65rem;padding:3px 10px;border-radius:3px;cursor:pointer;
+  font-weight:600;letter-spacing:0.04em;transition:all 0.2s}
+.zone-tag:hover{filter:brightness(1.3)}
+
+/* LUFS TABLE */
+.lufs-table{width:100%;border-collapse:collapse;margin-top:1rem}
+.lufs-table th{font-size:0.7rem;color:var(--dim);text-align:left;padding:6px 10px;
+  border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:0.05em}
+.lufs-table td{font-size:0.8rem;padding:8px 10px;border-bottom:1px solid rgba(30,30,46,0.5)}
+.lufs-table tr:hover td{background:rgba(99,102,241,0.05)}
+.delta-pos{color:var(--green)}.delta-neg{color:var(--red)}.delta-zero{color:var(--dim)}
+
+/* EQ TRAINER */
+.eq-bands{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.8rem}
+.eq-band{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:90px;
+  background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px}
+.eq-band label{font-size:0.62rem}
+
+/* GRID LAYOUTS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:700px){.two-col,.three-col,.four-col{grid-template-columns:1fr}}
+
+/* ARTISTS GRID */
+.artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:1.2rem;transition:border-color 0.2s}
+.artist-card:hover{border-color:var(--accent)}
+.artist-name{font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:0.3rem}
+.artist-role{font-size:0.7rem;color:var(--accent);letter-spacing:0.05em;text-transform:uppercase}
+.artist-desc{font-size:0.75rem;color:var(--dim);margin-top:0.5rem;line-height:1.5}
+
+/* GLOSSARY */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.8rem}
+.gloss-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem}
+.gloss-term{font-size:0.8rem;font-weight:700;color:var(--accent);margin-bottom:0.3rem}
+.gloss-def{font-size:0.72rem;color:var(--dim);line-height:1.5}
+
+/* ANALOG CHAIN */
+.chain-stages{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin:1rem 0}
+.chain-stage{background:var(--surface);border:2px solid var(--border);border-radius:8px;
+  padding:0.8rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;flex:1;min-width:100px}
+.chain-stage.active{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+.chain-stage-name{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.chain-arrow{color:var(--dim);font-size:1.2rem}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);
+  color:var(--dim);font-size:0.7rem;letter-spacing:0.08em}
+
+/* SCORE */
+.score-display{font-size:2rem;font-weight:700;color:var(--accent);text-align:center;padding:1rem}
+.problem-type{font-size:0.75rem;color:var(--amber);text-transform:uppercase;
+  letter-spacing:0.08em;margin-bottom:0.5rem}
+.success-msg{color:var(--green);font-size:0.85rem;font-weight:700;text-align:center;padding:0.5rem}
+
+/* VU METER */
+.vu-pair{display:flex;gap:3px}
+.vu-bar{width:8px;border-radius:2px 2px 0 0;background:var(--border);
+  height:60px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+</style>
+</head>
+<body class="domain-music">
+
+<nav>
+  <span class="logo">WAVGEN</span>
+  <a href="#hero">Console</a>
+  <a href="#frequency-classroom">Frequencies</a>
+  <a href="#compressor-lab">Compressors</a>
+  <a href="#lufs-calculator">LUFS</a>
+  <a href="#eq-trainer">EQ Trainer</a>
+  <a href="#stereo-field">Stereo</a>
+  <a href="#parallel-compression">Parallel</a>
+  <a href="#vinyl-mastering">Vinyl</a>
+  <a href="#analog-chain">Analog Chain</a>
+  <a href="#artists">Artists</a>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section id="hero" style="max-width:100%;padding:0">
+  <canvas id="hero-canvas" height="400"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">MIXING &amp; MASTERING LAB</div>
+    <div class="hero-sub">The craft of making sound its best</div>
+    <div class="hero-badges">
+      <div class="badge"><span class="badge-val" id="b-lufs">−14.2</span>LUFS</div>
+      <div class="badge"><span class="badge-val" id="b-peak">−0.3</span>TRUE PEAK</div>
+      <div class="badge"><span class="badge-val" id="b-dr">12.4</span>DYN RANGE</div>
+      <div class="badge"><span class="badge-val" id="b-sw">68%</span>STEREO WIDTH</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: FREQUENCY CLASSROOM -->
+<section id="frequency-classroom" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">The Frequency Classroom</div>
+  <div class="section-sub">Click a zone to isolate and hear it · Overlay instruments to see frequency competition</div>
+</div>
+<div class="hidden stagger-2 canvas-wrap" style="margin-bottom:1rem">
+  <canvas id="freq-canvas" height="220" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-3 freq-zones-legend" id="zone-legend"></div>
+<div class="hidden stagger-3 btn-row">
+  <button class="btn" id="freq-play-btn" onclick="toggleFreqPlay()">▶ PLAY TONE</button>
+  <button class="btn" onclick="clearInstrOverlay()">CLEAR OVERLAY</button>
+  <span style="font-size:0.7rem;color:var(--dim);align-self:center">INSTRUMENTS:</span>
+  <button class="btn" onclick="toggleInstr('piano')">PIANO</button>
+  <button class="btn" onclick="toggleInstr('kick')">KICK DRUM</button>
+  <button class="btn" onclick="toggleInstr('vocal')">VOCAL</button>
+  <button class="btn" onclick="toggleInstr('hihat')">HI-HAT</button>
+  <button class="btn" onclick="toggleInstr('bass')">BASS GTR</button>
+</div>
+<div class="hidden stagger-4 edu-card" id="freq-tooltip" style="min-height:80px">
+  <p><strong>Click a frequency zone above</strong> to isolate it and hear what that range sounds like.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 3: COMPRESSOR TYPE LABORATORY -->
+<section id="compressor-lab" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">Compressor Type Laboratory</div>
+  <div class="section-sub">Four compression characters — same source, different response curves</div>
+</div>
+<div class="hidden stagger-2 four-col" id="comp-cards"></div>
+<div class="hidden stagger-3 canvas-wrap" style="margin-top:1rem">
+  <canvas id="comp-canvas" height="180" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-4 ctrl-row">
+  <span style="font-size:0.7rem;color:var(--dim)">A/B COMPARE:</span>
+  <button class="btn" id="ab-a-btn" onclick="setAB('a')">A: VCA</button>
+  <button class="btn" id="ab-b-btn" onclick="setAB('b')">B: FET</button>
+  <button class="btn" id="comp-play-btn" onclick="toggleCompPlay()">▶ PLAY</button>
+</div>
+<div class="hidden stagger-5 edu-card">
+  <p><strong>Circuit topology shapes character:</strong> VCA (voltage-controlled amplifier) responds in microseconds — ideal for bus glue. FET (field-effect transistor) adds harmonic edge and punch. Optical compressors react to light intensity — inherently non-linear, musical. Variable-Mu uses tube gain reduction — the slowest and most gentle, for "gluing" a mix.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 4: LUFS TARGET CALCULATOR -->
+<section id="lufs-calculator" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">LUFS Target Calculator</div>
+  <div class="section-sub">How streaming platforms respond to your master's loudness</div>
+</div>
+<div class="hidden stagger-2 ctrl-row">
+  <div class="ctrl-group" style="flex:1;max-width:400px">
+    <label>Integrated LUFS: <span class="val-display" id="lufs-val">−14.0</span></label>
+    <input type="range" id="lufs-slider" min="-25" max="-6" step="0.5" value="-14"
+      oninput="updateLUFS(this.value)">
+    <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--dim)">
+      <span>−25 (quiet)</span><span>−6 (loud war)</span>
+    </div>
+  </div>
+</div>
+<div class="hidden stagger-3 canvas-wrap" style="margin:1rem 0">
+  <canvas id="lufs-canvas" height="120" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-3">
+  <table class="lufs-table">
+    <thead><tr>
+      <th>Platform</th><th>Target LUFS</th><th>Your Track</th><th>Action</th><th>Result</th>
+    </tr></thead>
+    <tbody id="lufs-tbody"></tbody>
+  </table>
+</div>
+<div class="hidden stagger-4 edu-card">
+  <p><strong>The loudness war is over. The platforms won.</strong> Every major streaming platform applies loudness normalization. Mastering louder than the target means your track gets turned DOWN to match — and you've lost dynamic range for nothing. Master at −14 LUFS for streaming, −23 LUFS for broadcast. Leave headroom. Let the dynamics breathe.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 5: EQ DECISION TRAINER -->
+<section id="eq-trainer" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">EQ Decision Trainer</div>
+  <div class="section-sub">Find and fix frequency problems — train your ears</div>
+</div>
+<div class="hidden stagger-2 two-col">
+  <div>
+    <div class="problem-type" id="eq-problem-type">READY TO TRAIN</div>
+    <div class="edu-card" id="eq-instructions" style="margin-top:0">
+      <p>A reference tone plays with an injected frequency problem. Use the 5-band parametric EQ below to find and fix it. When you're within ±2dB and ±200Hz of the solution, you pass!</p>
+    </div>
+    <div class="btn-row" style="margin-top:0.8rem">
+      <button class="btn" id="eq-play-btn" onclick="toggleEQPlay()">▶ PLAY</button>
+      <button class="btn" onclick="newEQProblem()">NEW PROBLEM</button>
+      <button class="btn" onclick="revealEQAnswer()">REVEAL</button>
+    </div>
+    <div id="eq-success" class="success-msg" style="display:none">✓ CORRECT! EQ problem solved!</div>
+    <div class="score-display" id="eq-score">0 / 0</div>
+  </div>
+  <div>
+    <div class="canvas-wrap">
+      <canvas id="eq-canvas" height="200" style="width:100%"></canvas>
+    </div>
+  </div>
+</div>
+<div class="hidden stagger-3" id="eq-bands-container" style="margin-top:1rem"></div>
+</div>
+</section>
+
+<!-- SECTION 6: STEREO FIELD VISUALIZER -->
+<section id="stereo-field" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">Stereo Field Visualizer</div>
+  <div class="section-sub">Phase scope (Lissajous) — visualizing stereo width and mono compatibility</div>
+</div>
+<div class="hidden stagger-2 two-col">
+  <div class="canvas-wrap">
+    <canvas id="phase-canvas" height="280" style="width:100%"></canvas>
+  </div>
+  <div>
+    <div class="ctrl-group" style="margin-bottom:1rem">
+      <label>M/S WIDTH: <span class="val-display" id="width-val">50%</span></label>
+      <input type="range" id="width-slider" min="0" max="100" value="50"
+        oninput="updateWidth(this.value)">
+    </div>
+    <div class="btn-row" style="margin-bottom:1rem">
+      <button class="btn" onclick="setStereoMode('balanced')">BALANCED MIX</button>
+      <button class="btn" onclick="setStereoMode('wide')">OVER-WIDE</button>
+      <button class="btn" onclick="setStereoMode('mono')">MONO RECORDING</button>
+    </div>
+    <button class="btn" id="mono-check-btn" onclick="toggleMonoCheck()" style="margin-bottom:1rem;width:100%">⊕ MONO CHECK</button>
+    <button class="btn" id="stereo-play-btn" onclick="toggleStereoPlay()" style="width:100%;margin-bottom:1rem">▶ PLAY</button>
+    <div class="edu-card">
+      <p><strong>Reading the phase scope:</strong> Vertical line = perfect mono. Oval tilted 45° = healthy stereo. Nearly horizontal = over-wide (mono-incompatible). Red areas = out-of-phase content that will cancel in mono.</p>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 7: PARALLEL COMPRESSION -->
+<section id="parallel-compression" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">Parallel Compression Builder</div>
+  <div class="section-sub">New York compression — blend dynamics with density</div>
+</div>
+<div class="hidden stagger-2 canvas-wrap">
+  <canvas id="parallel-canvas" height="180" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-3 ctrl-row">
+  <div class="ctrl-group" style="flex:1;max-width:300px">
+    <label>WET BLEND: <span class="val-display" id="blend-val">40%</span></label>
+    <input type="range" id="blend-slider" min="0" max="100" value="40"
+      oninput="updateBlend(this.value)">
+  </div>
+  <div class="ctrl-group" style="flex:1;max-width:200px">
+    <label>THRESHOLD: <span class="val-display" id="pc-thresh-val">−20dB</span></label>
+    <input type="range" id="pc-thresh" min="-40" max="-6" value="-20"
+      oninput="updatePCThresh(this.value)">
+  </div>
+  <div class="ctrl-group" style="flex:1;max-width:200px">
+    <label>RATIO: <span class="val-display" id="pc-ratio-val">4:1</span></label>
+    <input type="range" id="pc-ratio" min="1" max="20" value="4"
+      oninput="updatePCRatio(this.value)">
+  </div>
+  <button class="btn" id="pc-play-btn" onclick="togglePCPlay()">▶ PLAY</button>
+  <button class="btn" onclick="setNYCPreset()">NYC PRESET</button>
+</div>
+<div class="hidden stagger-4 edu-card">
+  <p><strong>Parallel compression</strong> preserves the natural transients and dynamics of the dry signal while adding the density and sustained body of a heavily compressed version underneath. At 40% wet blend, you get the best of both: punch from the dry, sustain from the wet. The "New York" technique uses infinite ratio on the wet path.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 8: VINYL MASTERING LAB -->
+<section id="vinyl-mastering" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">Vinyl Mastering Lab</div>
+  <div class="section-sub">The physical constraints of the groove — a different master entirely</div>
+</div>
+<div class="hidden stagger-2 canvas-wrap">
+  <canvas id="vinyl-canvas" height="200" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-3 three-col" id="vinyl-stages"></div>
+<div class="hidden stagger-4 ctrl-group" style="max-width:300px;margin-top:1rem">
+  <label>BASS MONO CROSSOVER: <span class="val-display" id="vinyl-xover-val">150Hz</span></label>
+  <input type="range" id="vinyl-xover" min="60" max="300" value="150"
+    oninput="updateVinylXover(this.value)">
+</div>
+<div class="hidden stagger-5 edu-card">
+  <p><strong>Vinyl is not digital.</strong> The physical groove has hard limits. Bass below ~150Hz must be mono — a wide stereo bass causes the stylus to skip. Sibilance cuts too deep and damages the groove wall. The cutter head has maximum excursion limits that translate directly to maximum level. A vinyl master requires different processing than a streaming master.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 9: ANALOG RECORDING CHAIN -->
+<section id="analog-chain" style="max-width:100%;padding:2rem 1rem 0">
+<div style="max-width:1200px;margin:0 auto">
+<div class="hidden stagger-1">
+  <div class="section-title">The Analog Recording Chain</div>
+  <div class="section-sub">From source to DAW — gain staging every step of the way</div>
+</div>
+<div class="hidden stagger-2 chain-stages" id="chain-stages"></div>
+<div class="hidden stagger-3 canvas-wrap">
+  <canvas id="chain-canvas" height="200" style="width:100%"></canvas>
+</div>
+<div class="hidden stagger-4" id="chain-edu-card">
+  <div class="edu-card">
+    <p>Click a stage above to learn about its role in the signal chain. <strong>Gain staging</strong> is the art of setting levels optimally at each stage — above the noise floor, below clipping.</p>
+  </div>
+</div>
+<div class="hidden stagger-4 ctrl-row" style="margin-top:1rem">
+  <div class="ctrl-group" style="flex:1;max-width:300px">
+    <label>INPUT LEVEL: <span class="val-display" id="chain-level-val">−18dBFS</span></label>
+    <input type="range" id="chain-level" min="-40" max="0" value="-18"
+      oninput="updateChainLevel(this.value)">
+  </div>
+  <button class="btn" id="chain-play-btn" onclick="toggleChainPlay()">▶ PLAY</button>
+  <button class="btn" onclick="simulatePreampSat()">SATURATE PREAMP</button>
+  <button class="btn" onclick="simulateADClip()">CLIP A/D</button>
+</div>
+</div>
+</section>
+
+<!-- SECTION 10: ARTISTS + GLOSSARY -->
+<section id="artists">
+<div class="hidden stagger-1">
+  <div class="section-title">Mix Engineers &amp; Mastering Icons</div>
+  <div class="section-sub">The architects of recorded sound</div>
+</div>
+<div class="hidden stagger-2 artist-grid" id="artist-grid"></div>
+<div class="hidden stagger-3" style="margin-top:3rem">
+  <div class="section-title">Glossary</div>
+  <div class="section-sub">24 essential mixing and mastering terms</div>
+</div>
+<div class="hidden stagger-4 glossary-grid" id="glossary-grid"></div>
+</section>
+
+<footer>WAVGEN MIXING &amp; MASTERING LAB — Part of The Waveform Generation Music Universe — wavgen.ca</footer>
+
+<script>
+'use strict';
+// ─── AUDIO CONTEXT ───────────────────────────────────────────────────────────
+let actx = null;
+function getACtx() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+
+// ─── LAG FILTER ──────────────────────────────────────────────────────────────
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = 0; }
+  update(target, dt) {
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+// ─── INTERSECTION OBSERVER ────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => obs.observe(el));
+
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const id = e.target.id;
+    const link = document.querySelector(`nav a[href="#${id}"]`);
+    if (link) link.classList.toggle('active', e.isIntersecting);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('section[id]').forEach(s => navObs.observe(s));
+
+// ─── HERO CANVAS ─────────────────────────────────────────────────────────────
+const heroCanvas = document.getElementById('hero-canvas');
+const hCtx = heroCanvas.getContext('2d');
+let heroW = 0, heroH = 400;
+const NUM_CHANNELS = 10;
+const channelLags = Array.from({length:NUM_CHANNELS}, () => new LagFilter(0.3));
+const channelTargets = Array.from({length:NUM_CHANNELS}, () => Math.random());
+let heroT = 0;
+
+function resizeHero() {
+  heroW = heroCanvas.offsetWidth;
+  heroCanvas.width = heroW;
+  heroCanvas.height = heroH;
+}
+
+function drawHero(ts) {
+  const dt = 0.016;
+  heroT += dt;
+  hCtx.fillStyle = 'rgba(5,5,8,0.18)';
+  hCtx.fillRect(0, 0, heroW, heroH);
+
+  const stripW = Math.floor(heroW / (NUM_CHANNELS + 2));
+  const padX = (heroW - stripW * NUM_CHANNELS) / 2;
+
+  for (let i = 0; i < NUM_CHANNELS; i++) {
+    if (Math.random() < 0.04) channelTargets[i] = 0.1 + Math.random() * 0.85;
+    const lvl = channelLags[i].update(channelTargets[i], dt);
+    const x = padX + i * stripW;
+    const isMain = i >= NUM_CHANNELS - 2;
+    const accent = isMain ? '#f59e0b' : '#6366f1';
+    const accentFade = isMain ? 'rgba(245,158,11,' : 'rgba(99,102,241,';
+
+    // Strip background
+    hCtx.fillStyle = 'rgba(13,13,20,0.7)';
+    hCtx.fillRect(x + 2, 60, stripW - 4, heroH - 100);
+
+    // Fader track
+    const faderY = 80 + (heroH - 200) * (1 - 0.5 - Math.sin(heroT * 0.3 + i) * 0.15);
+    hCtx.fillStyle = 'rgba(30,30,46,0.9)';
+    hCtx.fillRect(x + stripW/2 - 1, 80, 2, heroH - 180);
+    // Fader knob
+    hCtx.fillStyle = accent;
+    hCtx.shadowBlur = 8; hCtx.shadowColor = accent;
+    hCtx.fillRect(x + 6, faderY - 6, stripW - 12, 12);
+    hCtx.shadowBlur = 0;
+
+    // VU meter segments
+    const meterH = heroH - 200;
+    const meterY = heroH - 120;
+    const numSegs = 20;
+    const litSegs = Math.floor(lvl * numSegs);
+    for (let s = 0; s < numSegs; s++) {
+      const sy = meterY - (s + 1) * (meterH / numSegs) + 2;
+      const sh = meterH / numSegs - 2;
+      let col;
+      if (s < litSegs) {
+        if (s < numSegs * 0.6) col = '#22c55e';
+        else if (s < numSegs * 0.85) col = '#f59e0b';
+        else col = '#ef4444';
+        hCtx.fillStyle = col;
+        hCtx.shadowBlur = 4; hCtx.shadowColor = col;
+      } else {
+        hCtx.fillStyle = 'rgba(30,30,46,0.6)';
+        hCtx.shadowBlur = 0;
+      }
+      hCtx.fillRect(x + 4, sy, stripW - 8, sh);
+    }
+    hCtx.shadowBlur = 0;
+
+    // Channel label
+    hCtx.fillStyle = isMain ? '#f59e0b' : 'rgba(99,102,241,0.7)';
+    hCtx.font = `bold ${Math.max(8, stripW * 0.35)}px 'Courier New'`;
+    hCtx.textAlign = 'center';
+    hCtx.fillText(isMain ? (i === NUM_CHANNELS-2 ? 'L' : 'R') : (i+1), x + stripW/2, heroH - 72);
+    if (isMain) {
+      hCtx.fillStyle = '#f59e0b';
+      hCtx.font = '8px Courier New';
+      hCtx.fillText('MASTER', x + stripW/2, heroH - 62);
+    }
+  }
+
+  // Animated badge values
+  if (Math.floor(heroT * 2) % 3 === 0) {
+    document.getElementById('b-lufs').textContent = (-14 + Math.sin(heroT * 0.5) * 0.4).toFixed(1);
+    document.getElementById('b-peak').textContent = (-0.3 - Math.abs(Math.sin(heroT * 0.7)) * 0.2).toFixed(1);
+    document.getElementById('b-dr').textContent = (12 + Math.sin(heroT * 0.3) * 0.5).toFixed(1);
+    document.getElementById('b-sw').textContent = Math.round(68 + Math.sin(heroT * 0.4) * 3) + '%';
+  }
+  requestAnimationFrame(drawHero);
+}
+
+window.addEventListener('resize', resizeHero);
+resizeHero();
+requestAnimationFrame(drawHero);
+
+// ─── FREQUENCY CLASSROOM ──────────────────────────────────────────────────────
+const freqZones = [
+  { name:'Sub Bass', range:'20–80Hz', color:'#7c3aed', lo:20, hi:80,
+    instruments:'Kick drum sub, bass guitar fundamentals, pipe organ',
+    problems:'Can cause speaker damage if boosted; often inaudible on small speakers',
+    listen:'Feel it more than hear it — room vibration, chest pressure' },
+  { name:'Bass', range:'80–250Hz', color:'#d97706', lo:80, hi:250,
+    instruments:'Bass guitar body, kick drum punch, piano low register, male vocals',
+    problems:'Overloading here creates "muddy" mixes; masking between kick and bass',
+    listen:'The warmth and body of a mix — too much sounds boomy, too little sounds thin' },
+  { name:'Low Mid', range:'250–500Hz', color:'#ea580c', lo:250, hi:500,
+    instruments:'Guitar body, piano, horns, low vocals — the "mud zone"',
+    problems:'Most common mixing mistake — excess here makes everything sound muffled',
+    listen:'The cardboard box sound — cut carefully here to add clarity' },
+  { name:'Mids', range:'500Hz–2kHz', color:'#16a34a', lo:500, hi:2000,
+    instruments:'Most instruments have significant energy here — vocals, guitars, snare',
+    problems:'The most critical region for intelligibility; also where ear fatigue lives',
+    listen:'Forward presence vs. honky nasal quality; where the mix sits in the face' },
+  { name:'Upper Mid', range:'2–6kHz', color:'#ca8a04', lo:2000, hi:6000,
+    instruments:'Vocal presence, guitar pick attack, snare crack, piano hammer',
+    problems:'Too much causes harshness and listening fatigue; key for vocal intelligibility',
+    listen:'The "presence zone" — makes things feel close and upfront or harsh' },
+  { name:'Presence', range:'6–10kHz', color:'#0891b2', lo:6000, hi:10000,
+    instruments:'Cymbals, sibilance, string detail, breath in vocals',
+    problems:'Over-boosting creates sibilance; too little sounds dull and distant',
+    listen:'Air and definition — hi-hat shimmer, vocal consonants, string bow detail' },
+  { name:'Air', range:'10–20kHz', color:'#60a5fa', lo:10000, hi:20000,
+    instruments:'Cymbal shimmer, room air, acoustic guitar sparkle, reverb tails',
+    problems:'Only audible on good speakers/headphones; often rolled off in mastering',
+    listen:'The open, airy quality of a recording — the sense of space above the music' },
+];
+
+const instrRanges = {
+  piano:   { lo:28, hi:4186, color:'rgba(147,197,253,0.3)', label:'Piano' },
+  kick:    { lo:40, hi:8000, color:'rgba(239,68,68,0.3)',   label:'Kick Drum' },
+  vocal:   { lo:85, hi:8000, color:'rgba(34,197,94,0.3)',   label:'Vocal' },
+  hihat:   { lo:3000, hi:18000, color:'rgba(250,204,21,0.3)', label:'Hi-Hat' },
+  bass:    { lo:40, hi:1000, color:'rgba(168,85,247,0.3)',  label:'Bass Guitar' },
+};
+
+let activeInstrs = new Set();
+let selectedZone = null;
+let freqPlaying = false;
+let freqNode = null, freqFilter = null;
+
+const freqCanvas = document.getElementById('freq-canvas');
+const fCtx = freqCanvas.getContext('2d');
+
+function freqLog(hz) {
+  return (Math.log10(hz) - Math.log10(20)) / (Math.log10(20000) - Math.log10(20));
+}
+
+function drawFreqCanvas() {
+  const W = freqCanvas.offsetWidth, H = 220;
+  freqCanvas.width = W; freqCanvas.height = H;
+  fCtx.fillStyle = '#050508'; fCtx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000].forEach(f => {
+    const x = freqLog(f) * W;
+    fCtx.strokeStyle = 'rgba(30,30,46,0.8)'; fCtx.lineWidth = 1;
+    fCtx.beginPath(); fCtx.moveTo(x, 0); fCtx.lineTo(x, H); fCtx.stroke();
+    fCtx.fillStyle = 'rgba(100,116,139,0.6)'; fCtx.font = '9px Courier New'; fCtx.textAlign = 'center';
+    const label = f >= 1000 ? (f/1000)+'k' : f+'';
+    fCtx.fillText(label, x, H - 4);
+  });
+
+  // Zone bands
+  freqZones.forEach((z, i) => {
+    const x1 = freqLog(z.lo) * W, x2 = freqLog(z.hi) * W;
+    const alpha = selectedZone === i ? 0.45 : 0.18;
+    fCtx.fillStyle = z.color + Math.round(alpha * 255).toString(16).padStart(2,'0');
+    fCtx.fillRect(x1, 20, x2 - x1, H - 35);
+    if (selectedZone === i) {
+      fCtx.strokeStyle = z.color; fCtx.lineWidth = 2;
+      fCtx.strokeRect(x1, 20, x2 - x1, H - 35);
+    }
+    // Zone label
+    fCtx.fillStyle = z.color; fCtx.font = 'bold 9px Courier New'; fCtx.textAlign = 'center';
+    const cx = (x1 + x2) / 2;
+    fCtx.fillText(z.name.toUpperCase(), cx, 36);
+    fCtx.fillStyle = 'rgba(100,116,139,0.7)'; fCtx.font = '8px Courier New';
+    fCtx.fillText(z.range, cx, 48);
+  });
+
+  // Instrument overlays
+  activeInstrs.forEach(key => {
+    const ir = instrRanges[key];
+    const x1 = Math.max(0, freqLog(Math.max(20, ir.lo)) * W);
+    const x2 = Math.min(W, freqLog(Math.min(20000, ir.hi)) * W);
+    fCtx.fillStyle = ir.color;
+    fCtx.fillRect(x1, 55, x2 - x1, H - 75);
+    fCtx.fillStyle = 'rgba(255,255,255,0.7)'; fCtx.font = 'bold 10px Courier New';
+    fCtx.textAlign = 'center';
+    fCtx.fillText(ir.label, (x1 + x2) / 2, 72);
+  });
+
+  if (activeInstrs.size > 1) {
+    fCtx.fillStyle = 'rgba(239,68,68,0.7)'; fCtx.font = '9px Courier New';
+    fCtx.textAlign = 'center';
+    fCtx.fillText('⚠ FREQUENCY MASKING — competing instruments overlap here', W/2, H - 18);
+  }
+}
+
+function buildZoneLegend() {
+  const el = document.getElementById('zone-legend');
+  freqZones.forEach((z, i) => {
+    const tag = document.createElement('div');
+    tag.className = 'zone-tag';
+    tag.style.background = z.color + '33'; tag.style.color = z.color;
+    tag.style.border = `1px solid ${z.color}66`;
+    tag.textContent = z.name;
+    tag.onclick = () => selectZone(i);
+    el.appendChild(tag);
+  });
+}
+
+function selectZone(i) {
+  selectedZone = i;
+  const z = freqZones[i];
+  document.getElementById('freq-tooltip').innerHTML = `
+    <p><strong>${z.name} (${z.range})</strong></p>
+    <p style="margin-top:0.5rem"><strong>Instruments:</strong> ${z.instruments}</p>
+    <p style="margin-top:0.3rem"><strong>Common problems:</strong> ${z.problems}</p>
+    <p style="margin-top:0.3rem"><strong>Listen for:</strong> ${z.listen}</p>`;
+  if (freqPlaying) playFreqZone(z);
+  drawFreqCanvas();
+}
+
+function toggleFreqPlay() {
+  const ac = getACtx();
+  freqPlaying = !freqPlaying;
+  document.getElementById('freq-play-btn').textContent = freqPlaying ? '■ STOP' : '▶ PLAY TONE';
+  if (freqPlaying && selectedZone !== null) playFreqZone(freqZones[selectedZone]);
+  else if (!freqPlaying && freqNode) { freqNode.stop(); freqNode = null; }
+}
+
+function playFreqZone(z) {
+  const ac = getACtx();
+  if (freqNode) { try { freqNode.stop(); } catch(e){} }
+  const src = ac.createOscillator();
+  const filt = ac.createBiquadFilter();
+  const gain = ac.createGain();
+  src.type = 'sawtooth';
+  src.frequency.value = Math.sqrt(z.lo * z.hi);
+  filt.type = 'bandpass';
+  filt.frequency.value = Math.sqrt(z.lo * z.hi);
+  filt.Q.value = 2;
+  gain.gain.value = 0.15;
+  src.connect(filt); filt.connect(gain); gain.connect(ac.destination);
+  src.start();
+  freqNode = src;
+}
+
+function toggleInstr(key) {
+  if (activeInstrs.has(key)) activeInstrs.delete(key);
+  else activeInstrs.add(key);
+  drawFreqCanvas();
+}
+
+function clearInstrOverlay() { activeInstrs.clear(); drawFreqCanvas(); }
+
+buildZoneLegend();
+drawFreqCanvas();
+window.addEventListener('resize', drawFreqCanvas);
+
+// ─── COMPRESSOR LAB ───────────────────────────────────────────────────────────
+const compTypes = [
+  { id:'vca',  name:'VCA',          model:'SSL Bus',    attack:0.003, release:0.1,  ratio:4,  desc:'Voltage-Controlled Amplifier. Lightning-fast response, transparent and clean. The SSL G-Bus compressor defined modern rock and pop. Surgical precision — adds punch without color.',       color:'#6366f1' },
+  { id:'fet',  name:'FET',          model:'UA 1176',    attack:0.001, release:0.05, ratio:8,  desc:'Field-Effect Transistor. Aggressive and punchy — adds harmonic edge on transients. The 1176 is the most tracked-to compressor in history. "All-buttons-in" mode for thick color.',   color:'#f97316' },
+  { id:'opto', name:'Optical',      model:'Teletronix LA-2A', attack:0.01, release:0.5, ratio:3, desc:'Light-dependent resistor responds to average level. Inherently musical non-linearity — slow attack lets transients through naturally. The LA-2A defines smooth vocal compression.', color:'#22c55e' },
+  { id:'vmu',  name:'Variable-Mu',  model:'Fairchild 670', attack:0.05, release:1.0, ratio:2, desc:'Tube gain reduction by varying the bias voltage. The slowest and most transparent — applies so gently the music barely notices. The Fairchild 670 glues masters together like nothing else.', color:'#f59e0b' },
+];
+
+let compPlaying = false, compSources = [], compABState = {a:'vca', b:'fet'};
+let compT = 0, compAnimId = null;
+const compLags = compTypes.map(() => new LagFilter(0.08));
+const compTargetGR = compTypes.map(() => 0);
+
+const compCanvas = document.getElementById('comp-canvas');
+const cCtx = compCanvas.getContext('2d');
+
+function buildCompCards() {
+  const container = document.getElementById('comp-cards');
+  compTypes.forEach((ct, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.borderColor = ct.color + '44';
+    card.innerHTML = `
+      <div style="font-size:0.65rem;color:${ct.color};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem">${ct.model}</div>
+      <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${ct.name}</div>
+      <div style="font-size:0.7rem;color:var(--dim);line-height:1.6">${ct.desc}</div>
+      <div style="margin-top:0.8rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-size:0.65rem;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:3px;padding:2px 8px;color:var(--dim)">ATK ${ct.attack*1000}ms</span>
+        <span style="font-size:0.65rem;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:3px;padding:2px 8px;color:var(--dim)">REL ${ct.release*1000}ms</span>
+        <span style="font-size:0.65rem;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:3px;padding:2px 8px;color:var(--dim)">${ct.ratio}:1</span>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function drawCompCanvas() {
+  const W = compCanvas.offsetWidth, H = 180;
+  compCanvas.width = W; compCanvas.height = H;
+  const ac = getACtx ? getACtx() : null;
+
+  compT += 0.025;
+  cCtx.fillStyle = 'rgba(5,5,8,0.2)'; cCtx.fillRect(0,0,W,H);
+
+  const slotW = W / compTypes.length;
+  const drum = Math.max(0, Math.sin(compT * 8) > 0.7 ? Math.sin(compT * 8) : 0);
+
+  compTypes.forEach((ct, i) => {
+    const x0 = i * slotW;
+    // GR simulation: faster attack = more GR on transient
+    let targetGR = drum * (1 / ct.attack * 0.002) * (ct.ratio / 8);
+    targetGR = Math.min(1, targetGR);
+    const gr = compLags[i].update(targetGR, 0.025);
+
+    // Background
+    cCtx.fillStyle = 'rgba(13,13,20,0.4)';
+    cCtx.fillRect(x0 + 2, 0, slotW - 4, H);
+
+    // GR envelope bar (flipped — more GR = shorter bar)
+    const barH = H - 40;
+    const grH = gr * barH;
+    const grad = cCtx.createLinearGradient(0, H - 20, 0, H - 20 - barH);
+    grad.addColorStop(0, ct.color);
+    grad.addColorStop(0.7, ct.color + '88');
+    grad.addColorStop(1, ct.color + '22');
+    cCtx.fillStyle = grad;
+    cCtx.shadowBlur = gr > 0.1 ? 10 : 0; cCtx.shadowColor = ct.color;
+    cCtx.fillRect(x0 + 8, H - 20 - grH, slotW - 16, grH);
+    cCtx.shadowBlur = 0;
+
+    // GR label
+    cCtx.fillStyle = ct.color; cCtx.font = 'bold 11px Courier New'; cCtx.textAlign = 'center';
+    cCtx.fillText(ct.name, x0 + slotW/2, 18);
+    const grDB = (gr * 12).toFixed(1);
+    cCtx.fillStyle = 'rgba(255,255,255,0.6)'; cCtx.font = '9px Courier New';
+    cCtx.fillText(`GR: ${grDB}dB`, x0 + slotW/2, H - 5);
+
+    // Divider
+    if (i < compTypes.length - 1) {
+      cCtx.strokeStyle = 'rgba(30,30,46,0.8)'; cCtx.lineWidth = 1;
+      cCtx.beginPath(); cCtx.moveTo((i+1)*slotW, 0); cCtx.lineTo((i+1)*slotW, H); cCtx.stroke();
+    }
+  });
+  if (compPlaying || true) compAnimId = requestAnimationFrame(drawCompCanvas);
+}
+
+function setAB(slot) {
+  const types = compTypes.map(c => c.id);
+  const cur = slot === 'a' ? compABState.a : compABState.b;
+  const idx = types.indexOf(cur);
+  const next = types[(idx + 1) % types.length];
+  if (slot === 'a') { compABState.a = next; document.getElementById('ab-a-btn').textContent = `A: ${next.toUpperCase()}`; }
+  else { compABState.b = next; document.getElementById('ab-b-btn').textContent = `B: ${next.toUpperCase()}`; }
+}
+
+let compPlayNode = null;
+function toggleCompPlay() {
+  compPlaying = !compPlaying;
+  document.getElementById('comp-play-btn').textContent = compPlaying ? '■ STOP' : '▶ PLAY';
+  if (compPlaying) {
+    const ac = getACtx();
+    const osc = ac.createOscillator(); const g = ac.createGain();
+    osc.type = 'sawtooth'; osc.frequency.value = 110;
+    g.gain.value = 0.08; osc.connect(g); g.connect(ac.destination); osc.start();
+    compPlayNode = osc;
+  } else if (compPlayNode) { try { compPlayNode.stop(); } catch(e){} compPlayNode = null; }
+}
+
+buildCompCards();
+requestAnimationFrame(drawCompCanvas);
+
+// ─── LUFS CALCULATOR ─────────────────────────────────────────────────────────
+const platforms = [
+  { name:'Spotify',      target:-14, normalize:true  },
+  { name:'Apple Music',  target:-16, normalize:true  },
+  { name:'YouTube',      target:-14, normalize:true  },
+  { name:'Tidal',        target:-14, normalize:true  },
+  { name:'Bandcamp',     target:null, normalize:false },
+  { name:'Amazon Music', target:-14, normalize:true  },
+];
+
+let currentLUFS = -14;
+const lufsCanvas = document.getElementById('lufs-canvas');
+const lCtx = lufsCanvas.getContext('2d');
+
+function updateLUFS(val) {
+  currentLUFS = parseFloat(val);
+  document.getElementById('lufs-val').textContent = currentLUFS.toFixed(1);
+  renderLUFSTable();
+  drawLUFSCanvas();
+}
+
+function renderLUFSTable() {
+  const tbody = document.getElementById('lufs-tbody');
+  tbody.innerHTML = '';
+  platforms.forEach(p => {
+    const tr = document.createElement('tr');
+    let delta = '', action = '', cls = 'delta-zero', result = '';
+    if (!p.normalize) {
+      delta = '—'; action = 'No normalization'; result = 'Full level';
+    } else {
+      const d = p.target - currentLUFS;
+      if (Math.abs(d) < 0.1) { delta = '0.0 dB'; action = 'No adjustment'; cls='delta-zero'; result='✓ Optimal'; }
+      else if (d > 0) { delta = `+${d.toFixed(1)} dB`; action = 'Volume UP'; cls='delta-pos'; result='↑ Boosted to target'; }
+      else { delta = `${d.toFixed(1)} dB`; action = 'Volume DOWN ⚠'; cls='delta-neg'; result='↓ Turned down — dynamic range lost!'; }
+    }
+    tr.innerHTML = `<td>${p.name}</td><td>${p.normalize ? p.target+' LUFS' : 'None'}</td>
+      <td>${currentLUFS.toFixed(1)} LUFS</td>
+      <td class="${cls}">${action}</td><td>${result}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function drawLUFSCanvas() {
+  const W = lufsCanvas.offsetWidth, H = 120;
+  lufsCanvas.width = W; lufsCanvas.height = H;
+  lCtx.fillStyle = '#050508'; lCtx.fillRect(0,0,W,H);
+
+  // Waveform comparison: before and after normalization
+  const mid = H / 2;
+  const refLUFS = -14;
+  const normGain = Math.min(0, refLUFS - currentLUFS);
+  const displayAmp = Math.pow(10, normGain/20);
+
+  // Draw waveform label
+  lCtx.fillStyle = 'rgba(99,102,241,0.5)'; lCtx.font = '9px Courier New';
+  lCtx.textAlign = 'left'; lCtx.fillText('YOUR MASTER', 8, 14);
+  lCtx.fillStyle = 'rgba(34,197,94,0.5)';
+  lCtx.fillText('AFTER NORMALIZATION', W/2 + 8, 14);
+
+  // Left half — original
+  for (let x = 0; x < W/2 - 4; x++) {
+    const t = x / (W/2 - 4);
+    const amp = Math.sin(t * Math.PI * 30) * Math.cos(t * Math.PI * 7) * 0.5;
+    const origAmp = amp * (H * 0.35);
+    lCtx.fillStyle = '#6366f1';
+    lCtx.fillRect(x, mid - Math.abs(origAmp), 1, Math.abs(origAmp)*2);
+  }
+
+  // Right half — normalized
+  lCtx.strokeStyle = 'rgba(30,30,46,0.8)'; lCtx.lineWidth = 1;
+  lCtx.beginPath(); lCtx.moveTo(W/2, 0); lCtx.lineTo(W/2, H); lCtx.stroke();
+  for (let x = 0; x < W/2 - 4; x++) {
+    const t = x / (W/2 - 4);
+    const amp = Math.sin(t * Math.PI * 30) * Math.cos(t * Math.PI * 7) * 0.5;
+    const normA = amp * (H * 0.35) * displayAmp;
+    const col = normGain < -0.5 ? '#ef4444' : '#22c55e';
+    lCtx.fillStyle = col;
+    lCtx.fillRect(W/2 + 4 + x, mid - Math.abs(normA), 1, Math.abs(normA)*2);
+  }
+  if (normGain < -0.5) {
+    lCtx.fillStyle = '#ef4444'; lCtx.font = 'bold 9px Courier New';
+    lCtx.textAlign = 'center';
+    lCtx.fillText(`TURNED DOWN ${normGain.toFixed(1)}dB — dynamic range permanently lost`, W * 0.75, H - 6);
+  }
+}
+
+renderLUFSTable();
+drawLUFSCanvas();
+window.addEventListener('resize', () => { drawLUFSCanvas(); drawFreqCanvas(); });
+
+// ─── EQ TRAINER ───────────────────────────────────────────────────────────────
+const eqBandDefs = [
+  { name:'LF',  freq:100,  freqMin:20,   freqMax:500,  gain:0, q:1.0 },
+  { name:'LMF', freq:400,  freqMin:100,  freqMax:2000, gain:0, q:1.0 },
+  { name:'MF',  freq:1000, freqMin:200,  freqMax:5000, gain:0, q:1.0 },
+  { name:'HMF', freq:4000, freqMin:1000, freqMax:12000,gain:0, q:1.0 },
+  { name:'HF',  freq:8000, freqMin:2000, freqMax:20000,gain:0, q:1.0 },
+];
+
+const eqProblems = [
+  { band:1, gain:8,  q:2.5, desc:'Mud buildup at 350Hz — cuts everything sounds boxy', hint:'Cut somewhere between 200–600Hz' },
+  { band:3, gain:9,  q:3.0, desc:'Harsh resonance at 3kHz — listener fatigue spikes here', hint:'Cut somewhere between 1.5–5kHz' },
+  { band:0, gain:10, q:2.0, desc:'Excessive bass boom at 80Hz — masking the kick drum', hint:'Cut somewhere below 200Hz' },
+  { band:4, gain:8,  q:2.5, desc:'Sibilance peak at 8kHz — painful on headphones', hint:'Cut somewhere between 5–12kHz' },
+  { band:2, gain:7,  q:4.0, desc:'Nasal honk at 1kHz — vocals sound like a megaphone', hint:'Cut somewhere between 600Hz–2kHz' },
+];
+
+let currentEQProblem = null, eqScore = {correct:0, total:0};
+let eqPlaying = false, eqNodes = {};
+let eqUserGains = [0,0,0,0,0], eqUserFreqs = [100,400,1000,4000,8000];
+
+const eqCanvas = document.getElementById('eq-canvas');
+const eCtx = eqCanvas.getContext('2d');
+
+function buildEQBands() {
+  const container = document.getElementById('eq-bands-container');
+  container.innerHTML = '<div class="eq-bands" id="eq-bands-inner"></div>';
+  const inner = document.getElementById('eq-bands-inner');
+  eqBandDefs.forEach((b, i) => {
+    const div = document.createElement('div'); div.className = 'eq-band';
+    div.innerHTML = `
+      <label>${b.name}</label>
+      <div class="val-display" id="eq-g-val-${i}" style="text-align:center">0dB</div>
+      <label>Gain</label>
+      <input type="range" min="-12" max="12" value="0" step="0.5" style="width:80px"
+        oninput="setEQGain(${i},this.value)">
+      <label>Freq</label>
+      <input type="range" min="${b.freqMin}" max="${b.freqMax}" value="${b.freq}" step="10"
+        oninput="setEQFreq(${i},this.value)">
+      <div class="val-display" id="eq-f-val-${i}" style="font-size:0.65rem;text-align:center">${b.freq}Hz</div>`;
+    inner.appendChild(div);
+  });
+}
+
+function setEQGain(i, val) {
+  eqUserGains[i] = parseFloat(val);
+  document.getElementById(`eq-g-val-${i}`).textContent = (val > 0 ? '+' : '') + parseFloat(val).toFixed(1) + 'dB';
+  applyEQToNodes(); drawEQCanvas(); checkEQSolution();
+}
+
+function setEQFreq(i, val) {
+  eqUserFreqs[i] = parseFloat(val);
+  const v = parseFloat(val);
+  document.getElementById(`eq-f-val-${i}`).textContent = v >= 1000 ? (v/1000).toFixed(1)+'kHz' : v+'Hz';
+  applyEQToNodes(); drawEQCanvas(); checkEQSolution();
+}
+
+function applyEQToNodes() {
+  if (!eqNodes.filters) return;
+  eqNodes.filters.forEach((f, i) => {
+    f.frequency.value = eqUserFreqs[i];
+    f.gain.value = eqUserGains[i];
+  });
+}
+
+function drawEQCanvas() {
+  const W = eqCanvas.offsetWidth || 400, H = 200;
+  eqCanvas.width = W; eqCanvas.height = H;
+  eCtx.fillStyle = '#050508'; eCtx.fillRect(0,0,W,H);
+
+  // Grid
+  const dBLines = [-12,-6,0,6,12];
+  dBLines.forEach(db => {
+    const y = H/2 - (db/12)*(H*0.4);
+    eCtx.strokeStyle = db === 0 ? 'rgba(99,102,241,0.3)' : 'rgba(30,30,46,0.6)';
+    eCtx.lineWidth = db === 0 ? 1.5 : 1;
+    eCtx.beginPath(); eCtx.moveTo(0,y); eCtx.lineTo(W,y); eCtx.stroke();
+    eCtx.fillStyle = 'rgba(100,116,139,0.5)'; eCtx.font = '8px Courier New';
+    eCtx.textAlign = 'left'; eCtx.fillText((db>0?'+':'')+db+'dB', 2, y-2);
+  });
+
+  // EQ curve
+  eCtx.beginPath();
+  const pts = [];
+  for (let px = 0; px < W; px++) {
+    const t = px / W;
+    const hz = Math.pow(10, Math.log10(20) + t*(Math.log10(20000)-Math.log10(20)));
+    let totalGain = 0;
+    eqBandDefs.forEach((b, i) => {
+      const f0 = eqUserFreqs[i], Q = b.q, G = eqUserGains[i];
+      if (Math.abs(G) < 0.1) return;
+      const w = hz/f0, denom = w*w + w/Q + 1;
+      const resp = G * (1 - (w*w)/(denom));
+      totalGain += resp * 0.5;
+    });
+    const y = H/2 - (totalGain/12)*(H*0.4);
+    pts.push([px, y]);
+    if (px===0) eCtx.moveTo(px, y); else eCtx.lineTo(px, y);
+  }
+  eCtx.strokeStyle = '#6366f1'; eCtx.lineWidth = 2.5;
+  eCtx.shadowBlur = 8; eCtx.shadowColor = '#6366f1';
+  eCtx.stroke(); eCtx.shadowBlur = 0;
+
+  // Problem frequency marker
+  if (currentEQProblem) {
+    const pFreq = eqBandDefs[currentEQProblem.band].freq;
+    const px = (Math.log10(pFreq)-Math.log10(20))/(Math.log10(20000)-Math.log10(20))*W;
+    eCtx.strokeStyle = 'rgba(239,68,68,0.3)'; eCtx.lineWidth = 1; eCtx.setLineDash([4,4]);
+    eCtx.beginPath(); eCtx.moveTo(px,0); eCtx.lineTo(px,H); eCtx.stroke();
+    eCtx.setLineDash([]);
+  }
+}
+
+function newEQProblem() {
+  currentEQProblem = eqProblems[Math.floor(Math.random() * eqProblems.length)];
+  eqScore.total++;
+  document.getElementById('eq-problem-type').textContent = `PROBLEM: ${currentEQProblem.hint}`;
+  document.getElementById('eq-instructions').querySelector('p').textContent = currentEQProblem.hint + ' — use the EQ below to fix it.';
+  document.getElementById('eq-success').style.display = 'none';
+  document.getElementById('eq-score').textContent = `${eqScore.correct} / ${eqScore.total}`;
+  eqUserGains = [0,0,0,0,0];
+  eqUserFreqs = eqBandDefs.map(b=>b.freq);
+  document.querySelectorAll('#eq-bands-inner input[type=range]').forEach((inp,idx) => {
+    if (idx%2===0) { inp.value=0; } else { inp.value = eqBandDefs[Math.floor(idx/2)].freq; }
+  });
+  document.querySelectorAll('[id^="eq-g-val-"]').forEach(el => el.textContent = '0dB');
+  document.querySelectorAll('[id^="eq-f-val-"]').forEach((el,i) => el.textContent = eqBandDefs[i].freq+'Hz');
+  if (eqPlaying) startEQAudio();
+  drawEQCanvas();
+}
+
+function revealEQAnswer() {
+  if (!currentEQProblem) return;
+  const p = currentEQProblem;
+  document.getElementById('eq-instructions').querySelector('p').innerHTML =
+    `<strong>Problem was:</strong> ${p.desc} — Band ${p.band+1}, ${p.gain}dB boost at ${eqBandDefs[p.band].freq}Hz`;
+}
+
+function checkEQSolution() {
+  if (!currentEQProblem) return;
+  const p = currentEQProblem;
+  const bandGain = eqUserGains[p.band];
+  const bandFreq = eqUserFreqs[p.band];
+  const targetFreq = eqBandDefs[p.band].freq;
+  if (bandGain < -p.gain + 2 && Math.abs(bandFreq - targetFreq) < targetFreq * 0.5) {
+    document.getElementById('eq-success').style.display = 'block';
+    eqScore.correct++;
+    document.getElementById('eq-score').textContent = `${eqScore.correct} / ${eqScore.total}`;
+  }
+}
+
+function startEQAudio() {
+  const ac = getACtx();
+  if (eqNodes.src) { try { eqNodes.src.stop(); } catch(e){} }
+  const src = ac.createOscillator();
+  const noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
+  const data = noiseBuf.getChannelData(0);
+  for (let i=0;i<data.length;i++) data[i] = Math.random()*2-1;
+  const noiseNode = ac.createBufferSource();
+  noiseNode.buffer = noiseBuf; noiseNode.loop = true;
+  const filters = eqBandDefs.map((b,i) => {
+    const f = ac.createBiquadFilter();
+    f.type = 'peaking'; f.frequency.value = eqUserFreqs[i];
+    f.Q.value = b.q; f.gain.value = eqUserGains[i];
+    return f;
+  });
+  // Problem boost filter
+  if (currentEQProblem) {
+    const pb = ac.createBiquadFilter();
+    pb.type = 'peaking';
+    pb.frequency.value = eqBandDefs[currentEQProblem.band].freq;
+    pb.Q.value = currentEQProblem.q;
+    pb.gain.value = currentEQProblem.gain;
+    noiseNode.connect(pb); pb.connect(filters[0]);
+  } else {
+    noiseNode.connect(filters[0]);
+  }
+  for (let i=0;i<filters.length-1;i++) filters[i].connect(filters[i+1]);
+  const gainNode = ac.createGain(); gainNode.gain.value = 0.12;
+  filters[filters.length-1].connect(gainNode); gainNode.connect(ac.destination);
+  noiseNode.start();
+  eqNodes = {src:noiseNode, filters, gain:gainNode};
+}
+
+function toggleEQPlay() {
+  eqPlaying = !eqPlaying;
+  document.getElementById('eq-play-btn').textContent = eqPlaying ? '■ STOP' : '▶ PLAY';
+  if (eqPlaying) startEQAudio();
+  else { if (eqNodes.src) { try { eqNodes.src.stop(); } catch(e){} eqNodes={}; } }
+}
+
+buildEQBands();
+drawEQCanvas();
+newEQProblem();
+
+// ─── STEREO FIELD VISUALIZER ─────────────────────────────────────────────────
+const phaseCanvas = document.getElementById('phase-canvas');
+const pCtx = phaseCanvas.getContext('2d');
+let stereoPlaying = false, stereoNodes = {}, stereoMode = 'balanced';
+let monoCheck = false, stereoWidth = 0.5, stereoT = 0;
+const phaseDots = [];
+
+function setStereoMode(mode) {
+  stereoMode = mode;
+  const widths = {balanced:0.5, wide:0.95, mono:0};
+  stereoWidth = widths[mode];
+  document.getElementById('width-slider').value = stereoWidth * 100;
+  document.getElementById('width-val').textContent = Math.round(stereoWidth * 100) + '%';
+  if (stereoPlaying) startStereoAudio();
+}
+
+function updateWidth(val) {
+  stereoWidth = val / 100;
+  document.getElementById('width-val').textContent = val + '%';
+  if (stereoPlaying) startStereoAudio();
+}
+
+function toggleMonoCheck() {
+  monoCheck = !monoCheck;
+  document.getElementById('mono-check-btn').textContent = monoCheck ? '⊗ MONO ACTIVE' : '⊕ MONO CHECK';
+  document.getElementById('mono-check-btn').style.background = monoCheck ? 'rgba(239,68,68,0.2)' : '';
+  document.getElementById('mono-check-btn').style.borderColor = monoCheck ? '#ef4444' : '';
+}
+
+function startStereoAudio() {
+  const ac = getACtx();
+  if (stereoNodes.osc) { try { stereoNodes.osc.stop(); } catch(e){} }
+  const osc1 = ac.createOscillator(), osc2 = ac.createOscillator();
+  const gainL = ac.createGain(), gainR = ac.createGain();
+  const merger = ac.createChannelMerger(2);
+  const masterGain = ac.createGain();
+  osc1.frequency.value = 220; osc1.type = 'sawtooth';
+  osc2.frequency.value = 220 * (1 + stereoWidth * 0.01); osc2.type = 'sawtooth';
+  const eff = monoCheck ? 0 : stereoWidth;
+  gainL.gain.value = 0.5 + eff * 0.3;
+  gainR.gain.value = 0.5 - eff * 0.1;
+  osc1.connect(gainL); osc2.connect(gainR);
+  gainL.connect(merger, 0, 0); gainR.connect(merger, 0, 1);
+  masterGain.gain.value = 0.1;
+  merger.connect(masterGain); masterGain.connect(ac.destination);
+  osc1.start(); osc2.start();
+  stereoNodes = {osc: osc1, osc2, gainL, gainR, merger, masterGain};
+}
+
+function toggleStereoPlay() {
+  stereoPlaying = !stereoPlaying;
+  document.getElementById('stereo-play-btn').textContent = stereoPlaying ? '■ STOP' : '▶ PLAY';
+  if (stereoPlaying) startStereoAudio();
+  else { if (stereoNodes.osc) { try { stereoNodes.osc.stop(); stereoNodes.osc2.stop(); } catch(e){} stereoNodes={}; } }
+}
+
+function drawPhaseScope() {
+  const W = phaseCanvas.offsetWidth || 280, H = 280;
+  phaseCanvas.width = W; phaseCanvas.height = H;
+  stereoT += 0.04;
+
+  pCtx.fillStyle = 'rgba(5,5,8,0.15)'; pCtx.fillRect(0,0,W,H);
+  const cx = W/2, cy = H/2, R = Math.min(W,H)*0.42;
+
+  // Grid
+  pCtx.strokeStyle = 'rgba(30,30,46,0.6)'; pCtx.lineWidth = 1;
+  pCtx.beginPath(); pCtx.moveTo(cx,cy-R); pCtx.lineTo(cx,cy+R); pCtx.stroke();
+  pCtx.beginPath(); pCtx.moveTo(cx-R,cy); pCtx.lineTo(cx+R,cy); pCtx.stroke();
+  pCtx.beginPath(); pCtx.moveTo(cx-R,cy-R); pCtx.lineTo(cx+R,cy+R); pCtx.stroke();
+  pCtx.beginPath(); pCtx.moveTo(cx+R,cy-R); pCtx.lineTo(cx-R,cy+R); pCtx.stroke();
+  pCtx.strokeStyle = 'rgba(30,30,46,0.3)';
+  pCtx.beginPath(); pCtx.arc(cx,cy,R,0,Math.PI*2); pCtx.stroke();
+
+  // Labels
+  pCtx.fillStyle = 'rgba(100,116,139,0.6)'; pCtx.font = '9px Courier New'; pCtx.textAlign='center';
+  pCtx.fillText('L+R', cx, cy-R-4);
+  pCtx.fillText('L−R', cx+R+14, cy+3);
+  pCtx.fillText('M', cx, cy-R+12); pCtx.fillText('S', cx+R-12, cy);
+
+  // Generate Lissajous points
+  const eff = monoCheck ? 0 : stereoWidth;
+  const numPts = 80;
+  for (let j = 0; j < numPts; j++) {
+    const t = stereoT - j * 0.05;
+    const L = Math.sin(t * 3.1) * Math.cos(t * 0.7) * 0.8;
+    const R2 = L * (1 - eff * 1.2) + Math.sin(t * 2.9 + eff * Math.PI * 0.3) * eff * 0.6;
+    const Ls = L + R2, Rs = L - R2;
+    const x = cx + Rs * R * 0.9;
+    const y = cy - Ls * R * 0.9;
+    const inPhase = L * R2 >= 0;
+    const alpha = (1 - j/numPts) * 0.8;
+    const col = inPhase ? `rgba(99,102,241,${alpha})` : `rgba(239,68,68,${alpha})`;
+    const sz = (1 - j/numPts) * 3 + 0.5;
+    pCtx.fillStyle = col;
+    pCtx.shadowBlur = j < 10 ? 8 : 0; pCtx.shadowColor = col;
+    pCtx.fillRect(x - sz/2, y - sz/2, sz, sz);
+  }
+  pCtx.shadowBlur = 0;
+
+  // Width readout
+  pCtx.fillStyle = 'rgba(99,102,241,0.7)'; pCtx.font = 'bold 10px Courier New';
+  pCtx.textAlign = 'left';
+  pCtx.fillText(monoCheck ? 'MONO CHECK ACTIVE' : `WIDTH: ${Math.round(eff*100)}%`, 8, H-8);
+
+  requestAnimationFrame(drawPhaseScope);
+}
+requestAnimationFrame(drawPhaseScope);
+
+// ─── PARALLEL COMPRESSION ─────────────────────────────────────────────────────
+let pcBlend = 0.4, pcThresh = -20, pcRatio = 4;
+let pcPlaying = false, pcNodes = {};
+const pcCanvas = document.getElementById('parallel-canvas');
+const pcCtx = pcCanvas.getContext('2d');
+let pcT = 0;
+
+function updateBlend(val) { pcBlend = val/100; document.getElementById('blend-val').textContent = val+'%'; }
+function updatePCThresh(val) { pcThresh = parseFloat(val); document.getElementById('pc-thresh-val').textContent = val+'dB'; applyPCSettings(); }
+function updatePCRatio(val) { pcRatio = parseFloat(val); document.getElementById('pc-ratio-val').textContent = val+':1'; applyPCSettings(); }
+
+function setNYCPreset() {
+  pcBlend=0.4; pcThresh=-25; pcRatio=20;
+  document.getElementById('blend-slider').value=40;
+  document.getElementById('pc-thresh').value=-25;
+  document.getElementById('pc-ratio').value=20;
+  document.getElementById('blend-val').textContent='40%';
+  document.getElementById('pc-thresh-val').textContent='-25dB';
+  document.getElementById('pc-ratio-val').textContent='20:1';
+  applyPCSettings();
+}
+
+function applyPCSettings() {
+  if (pcNodes.comp) {
+    pcNodes.comp.threshold.value = pcThresh;
+    pcNodes.comp.ratio.value = pcRatio;
+  }
+  if (pcNodes.wetGain && pcNodes.dryGain) {
+    pcNodes.wetGain.gain.value = pcBlend * 0.15;
+    pcNodes.dryGain.gain.value = (1-pcBlend) * 0.15;
+  }
+}
+
+function togglePCPlay() {
+  pcPlaying = !pcPlaying;
+  document.getElementById('pc-play-btn').textContent = pcPlaying ? '■ STOP' : '▶ PLAY';
+  if (pcPlaying) {
+    const ac = getACtx();
+    const buf = ac.createBuffer(1, ac.sampleRate*2, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0;i<d.length;i++) {
+      const t = i/ac.sampleRate;
+      const beat = Math.sin(t*Math.PI*8)>0.5?Math.random()*0.8:0;
+      d[i] = beat * Math.exp(-((t%0.5)*8)) * (Math.random()*2-1);
+    }
+    const src = ac.createBufferSource(); src.buffer=buf; src.loop=true;
+    const splitter = ac.createChannelSplitter(1);
+    const dryGain = ac.createGain(); dryGain.gain.value=(1-pcBlend)*0.15;
+    const comp = ac.createDynamicsCompressor();
+    comp.threshold.value=pcThresh; comp.ratio.value=pcRatio;
+    comp.attack.value=0.003; comp.release.value=0.15;
+    const wetGain = ac.createGain(); wetGain.gain.value=pcBlend*0.15;
+    const master = ac.createGain(); master.gain.value=1;
+    src.connect(dryGain); src.connect(comp);
+    comp.connect(wetGain);
+    dryGain.connect(master); wetGain.connect(master);
+    master.connect(ac.destination);
+    src.start();
+    pcNodes = {src, comp, dryGain, wetGain, master};
+  } else {
+    if (pcNodes.src) { try { pcNodes.src.stop(); } catch(e){} pcNodes={}; }
+  }
+}
+
+function drawParallelCanvas() {
+  const W = pcCanvas.offsetWidth || 600, H = 180;
+  pcCanvas.width = W; pcCanvas.height = H;
+  pcT += 0.04;
+  pcCtx.fillStyle = 'rgba(5,5,8,0.2)'; pcCtx.fillRect(0,0,W,H);
+
+  const hw = W/2 - 10, mid = H/2;
+  const labels = ['DRY (TRANSIENTS INTACT)', 'WET (COMPRESSED)'];
+  const colors = ['#6366f1', '#f59e0b'];
+
+  [0,1].forEach(side => {
+    const ox = side*(hw+20);
+    pcCtx.fillStyle='rgba(13,13,20,0.5)'; pcCtx.fillRect(ox,0,hw,H);
+    pcCtx.fillStyle=colors[side]; pcCtx.font='9px Courier New'; pcCtx.textAlign='center';
+    pcCtx.fillText(labels[side], ox+hw/2, 14);
+
+    for (let x=0; x<hw; x++) {
+      const t = x/hw + pcT;
+      let amp = Math.sin(t*Math.PI*12)*Math.cos(t*Math.PI*5);
+      if (side===0) {
+        amp *= Math.abs(Math.sin(t*Math.PI*4))>0.7?1:0.25;
+      } else {
+        const comp = Math.min(1, Math.pow(10, pcThresh/20)*Math.pow(1/pcRatio,0.5)*4);
+        amp *= 0.5 + comp*0.5;
+        amp = Math.tanh(amp * (1 + pcBlend));
+      }
+      const h2 = amp * (H*0.35);
+      pcCtx.fillStyle = colors[side] + 'bb';
+      pcCtx.shadowBlur = Math.abs(h2)>H*0.1?6:0; pcCtx.shadowColor=colors[side];
+      pcCtx.fillRect(ox+x, mid-Math.abs(h2), 1, Math.abs(h2)*2);
+    }
+    pcCtx.shadowBlur=0;
+  });
+
+  pcCtx.fillStyle='rgba(99,102,241,0.4)'; pcCtx.font='bold 10px Courier New'; pcCtx.textAlign='center';
+  pcCtx.fillText(`BLEND: ${Math.round(pcBlend*100)}% WET`, W/2, H-6);
+  requestAnimationFrame(drawParallelCanvas);
+}
+requestAnimationFrame(drawParallelCanvas);
+
+// ─── VINYL MASTERING LAB ─────────────────────────────────────────────────────
+const vinylStages = [
+  { name:'Mono Bass\nBelow 150Hz', icon:'⊕', on:true,
+    desc:'Sums L+R below the crossover frequency. Wide bass causes stylus skipping — the groove simply cannot cut a stereo low end. This is why vinyl sounds different from digital.' },
+  { name:'De-Esser\n4–8kHz', icon:'↓S', on:true,
+    desc:'Frequency-selective gain reduction targeting sibilance. Sibilance cuts too deep into the groove wall and can cause skipping. The de-esser only compresses when sibilance exceeds the threshold.' },
+  { name:'Level Safety\nMax Excursion', icon:'◈', on:true,
+    desc:'A look-ahead limiter that ensures the cutter head never exceeds maximum groove width. Violating this destroys the lacquer disk and requires a new cut.' },
+];
+
+let vinylXover = 150, vinylStageStates = [true,true,true];
+
+const vinylCanvas = document.getElementById('vinyl-canvas');
+const vCtx = vinylCanvas.getContext('2d');
+let vinylT = 0;
+
+function buildVinylStages() {
+  const container = document.getElementById('vinyl-stages');
+  vinylStages.forEach((s, i) => {
+    const div = document.createElement('div'); div.className='card';
+    div.style.borderColor = vinylStageStates[i]?'rgba(99,102,241,0.4)':'rgba(30,30,46,0.4)';
+    div.innerHTML=`
+      <div style="font-size:1.5rem;text-align:center;margin-bottom:0.5rem">${s.icon}</div>
+      <div style="font-size:0.75rem;font-weight:700;text-align:center;white-space:pre-line;margin-bottom:0.5rem">${s.name}</div>
+      <div style="font-size:0.7rem;color:var(--dim);line-height:1.5;margin-bottom:0.8rem">${s.desc}</div>
+      <button class="btn" id="vinyl-stage-btn-${i}" onclick="toggleVinylStage(${i})"
+        style="width:100%">${vinylStageStates[i]?'ON ✓':'OFF'}</button>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleVinylStage(i) {
+  vinylStageStates[i] = !vinylStageStates[i];
+  const btn = document.getElementById(`vinyl-stage-btn-${i}`);
+  btn.textContent = vinylStageStates[i]?'ON ✓':'OFF';
+  btn.style.background = vinylStageStates[i]?'rgba(99,102,241,0.35)':'rgba(239,68,68,0.15)';
+  btn.style.borderColor = vinylStageStates[i]?'var(--accent)':'#ef4444';
+}
+
+function updateVinylXover(val) {
+  vinylXover = parseFloat(val);
+  document.getElementById('vinyl-xover-val').textContent = val+'Hz';
+}
+
+function drawVinylCanvas() {
+  const W = vinylCanvas.offsetWidth || 600, H = 200;
+  vinylCanvas.width = W; vinylCanvas.height = H;
+  vinylT += 0.03;
+  vCtx.fillStyle='rgba(5,5,8,0.2)'; vCtx.fillRect(0,0,W,H);
+
+  // Groove cross-section
+  const grooveY = H*0.5, grooveW = W*0.55;
+  const grooveX = (W-grooveW)/2;
+
+  // Safe zone
+  vCtx.fillStyle='rgba(34,197,94,0.08)';
+  vCtx.fillRect(grooveX, grooveY-H*0.3, grooveW, H*0.6);
+  vCtx.strokeStyle='rgba(34,197,94,0.3)'; vCtx.lineWidth=1; vCtx.setLineDash([4,4]);
+  vCtx.strokeRect(grooveX, grooveY-H*0.3, grooveW, H*0.6);
+  vCtx.setLineDash([]);
+  vCtx.fillStyle='rgba(34,197,94,0.4)'; vCtx.font='8px Courier New'; vCtx.textAlign='left';
+  vCtx.fillText('SAFE GROOVE ZONE', grooveX+4, grooveY-H*0.3+12);
+
+  // Vinyl groove waveform
+  vCtx.beginPath();
+  for (let x=0; x<grooveW; x++) {
+    const t = x/grooveW;
+    let amp = Math.sin(t*Math.PI*25+vinylT)*Math.cos(t*Math.PI*8+vinylT*0.5)*0.4;
+    // Mono bass effect
+    if (vinylStageStates[0]) { amp *= 0.7; }
+    // Level safety
+    const limit = vinylStageStates[2] ? 0.8 : 1.0;
+    amp = Math.tanh(amp/limit)*limit;
+    // Wide stereo channel
+    const spread = vinylStageStates[1] ? 0.5 : 0.8;
+    const y = grooveY + amp * H * spread;
+    if (x===0) vCtx.moveTo(grooveX+x, y); else vCtx.lineTo(grooveX+x, y);
+  }
+  vCtx.strokeStyle='#6366f1'; vCtx.lineWidth=2;
+  vCtx.shadowBlur=6; vCtx.shadowColor='#6366f1'; vCtx.stroke(); vCtx.shadowBlur=0;
+
+  // Danger zone indicators
+  if (!vinylStageStates[2]) {
+    vCtx.fillStyle='rgba(239,68,68,0.15)';
+    vCtx.fillRect(grooveX, grooveY-H*0.45, grooveW, H*0.15);
+    vCtx.fillRect(grooveX, grooveY+H*0.3, grooveW, H*0.15);
+    vCtx.fillStyle='#ef4444'; vCtx.font='bold 9px Courier New'; vCtx.textAlign='center';
+    vCtx.fillText('⚠ CUTTER HEAD OVERLOAD — WILL DAMAGE LACQUER', W/2, grooveY-H*0.37);
+  }
+
+  // Bass mono indicator
+  const xoverPos = grooveX + (Math.log10(vinylXover)-Math.log10(20))/(Math.log10(20000)-Math.log10(20))*grooveW;
+  vCtx.strokeStyle='rgba(245,158,11,0.6)'; vCtx.lineWidth=1.5; vCtx.setLineDash([3,3]);
+  vCtx.beginPath(); vCtx.moveTo(xoverPos, 10); vCtx.lineTo(xoverPos, H-10); vCtx.stroke();
+  vCtx.setLineDash([]);
+  vCtx.fillStyle='#f59e0b'; vCtx.font='8px Courier New'; vCtx.textAlign='center';
+  vCtx.fillText('↕ MONO BELOW', xoverPos, 22);
+  vCtx.fillText(vinylXover+'Hz', xoverPos, 32);
+
+  // Processing chain labels
+  vCtx.fillStyle='rgba(100,116,139,0.5)'; vCtx.font='9px Courier New'; vCtx.textAlign='left';
+  vCtx.fillText('SOURCE', 4, H-8);
+  vCtx.textAlign='right';
+  vCtx.fillText('CUTTER HEAD →', W-4, H-8);
+  requestAnimationFrame(drawVinylCanvas);
+}
+
+buildVinylStages();
+requestAnimationFrame(drawVinylCanvas);
+
+// ─── ANALOG RECORDING CHAIN ───────────────────────────────────────────────────
+const chainStageData = [
+  { name:'Microphone', icon:'🎙', sub:'Dynamic / Condenser',
+    desc:'Converts acoustic energy to electrical signal. Output level is typically −50 to −60dBu. Phantom power (+48V) for condenser mics. The quality of the mic and its placement is more important than any processing that follows.',
+    noise:-80, clip:-10, ideal:-30 },
+  { name:'Preamp', icon:'⚡', sub:'Gain Stage 1',
+    desc:'Amplifies the microphone signal by 40–70dB to line level. This is where transformer saturation and harmonic color can be added musically. Overdriving a good preamp produces 2nd harmonic distortion — warm and pleasing. A/D clipping is harsh and unpleasant.',
+    noise:-90, clip:0, ideal:-18 },
+  { name:'A/D Converter', icon:'◎', sub:'Analog → Digital',
+    desc:'Converts continuous analog voltage to discrete digital samples at 44.1–192kHz. The sample rate must be at least 2× the highest frequency. At 24-bit, the noise floor is 144dB below full scale. Digital clipping = hard brick wall distortion — avoid at all costs.',
+    noise:-144, clip:0, ideal:-18 },
+  { name:'DAW', icon:'💻', sub:'Digital Audio Workstation',
+    desc:'The digital recording environment. Operates at 32-bit float internally — virtually impossible to clip inside the DAW. Leave headroom: record at −18dBFS for maximum dynamic range and mixing flexibility. A "hot" recording buys nothing and costs headroom.',
+    noise:-192, clip:0, ideal:-18 },
+];
+
+let activeChainStage = 1, chainLevel = -18, chainSatMode = false, chainClipMode = false;
+let chainPlaying = false, chainNodes = {};
+let chainT = 0;
+const chainCanvas = document.getElementById('chain-canvas');
+const ccCtx = chainCanvas.getContext('2d');
+const chainLags = chainStageData.map(() => new LagFilter(0.4));
+
+function buildChainStages() {
+  const container = document.getElementById('chain-stages');
+  chainStageData.forEach((s, i) => {
+    if (i > 0) {
+      const arrow = document.createElement('div'); arrow.className='chain-arrow'; arrow.textContent='→';
+      container.appendChild(arrow);
+    }
+    const div = document.createElement('div');
+    div.className='chain-stage' + (i===activeChainStage?' active':'');
+    div.id=`chain-stage-${i}`;
+    div.onclick = () => selectChainStage(i);
+    div.innerHTML=`<div style="font-size:1.3rem">${s.icon}</div>
+      <div class="chain-stage-name">${s.name}</div>
+      <div style="font-size:0.65rem;color:var(--dim)">${s.sub}</div>`;
+    container.appendChild(div);
+  });
+}
+
+function selectChainStage(i) {
+  activeChainStage = i;
+  document.querySelectorAll('.chain-stage').forEach((el,j) =>
+    el.classList.toggle('active', j===i));
+  const s = chainStageData[i];
+  document.getElementById('chain-edu-card').innerHTML=`<div class="edu-card">
+    <p><strong>${s.icon} ${s.name}:</strong> ${s.desc}</p>
+    <p style="margin-top:0.5rem">
+      <strong>Noise floor:</strong> ${s.noise}dBFS &nbsp;|&nbsp;
+      <strong>Clip point:</strong> ${s.clip}dBFS &nbsp;|&nbsp;
+      <strong>Ideal level:</strong> ${s.ideal}dBFS
+    </p></div>`;
+}
+
+function updateChainLevel(val) {
+  chainLevel = parseFloat(val);
+  document.getElementById('chain-level-val').textContent = val+'dBFS';
+}
+
+function simulatePreampSat() { chainSatMode=true; chainClipMode=false;
+  document.getElementById('chain-edu-card').innerHTML='<div class="edu-card"><p><strong>Preamp Saturation:</strong> Transformer cores saturate at high levels, producing even-order harmonic distortion (2nd, 4th harmonics). This is musically pleasing — the basis of "tape warmth" and "analog color." Drive it hard and the sound thickens rather than breaks.</p></div>'; }
+function simulateADClip() { chainClipMode=true; chainSatMode=false;
+  document.getElementById('chain-edu-card').innerHTML='<div class="edu-card"><p><strong>A/D Clipping:</strong> When digital values exceed full scale (0dBFS), the waveform is hard-clipped — all peaks become flat-topped rectangles. This generates harsh, inharmonic distortion that cannot be recovered. Unlike tape saturation, digital clipping is always destructive.</p></div>'; }
+
+function drawChainCanvas() {
+  const W = chainCanvas.offsetWidth||600, H=200;
+  chainCanvas.width=W; chainCanvas.height=H;
+  chainT+=0.04;
+  ccCtx.fillStyle='rgba(5,5,8,0.2)'; ccCtx.fillRect(0,0,W,H);
+
+  const stageW = W/chainStageData.length;
+  chainStageData.forEach((s,i)=>{
+    const x0=i*stageW, cx=x0+stageW/2;
+    // Level meter
+    const inputLvl = chainLevel + i*2;
+    const normLvl = (inputLvl-s.noise)/(s.clip-s.noise);
+    const lagLvl = chainLags[i].update(Math.max(0,Math.min(1,normLvl+Math.sin(chainT*4+i)*0.1)), 0.04);
+    const meterH=H*0.55, meterY=H*0.15, mw=stageW*0.25;
+    const mx=cx-mw/2;
+
+    // Meter background
+    ccCtx.fillStyle='rgba(13,13,20,0.6)'; ccCtx.fillRect(mx,meterY,mw,meterH);
+
+    // Ideal zone
+    const idealNorm=(s.ideal-s.noise)/(s.clip-s.noise);
+    const idealY=meterY+meterH*(1-idealNorm);
+    ccCtx.fillStyle='rgba(34,197,94,0.12)';
+    ccCtx.fillRect(mx,idealY-meterH*0.15,mw,meterH*0.15);
+
+    // Level fill
+    const fillH=lagLvl*meterH;
+    const isClipping=(chainClipMode&&i===2)||lagLvl>0.95;
+    const col=isClipping?'#ef4444':lagLvl>0.85?'#f59e0b':'#22c55e';
+    ccCtx.fillStyle=col; ccCtx.shadowBlur=isClipping?12:4; ccCtx.shadowColor=col;
+    ccCtx.fillRect(mx,meterY+meterH-fillH,mw,fillH);
+    ccCtx.shadowBlur=0;
+
+    // Saturation distortion display
+    if (chainSatMode&&i===1&&lagLvl>0.7) {
+      const satAmt=(lagLvl-0.7)*3;
+      ccCtx.strokeStyle=`rgba(245,158,11,${satAmt*0.5})`;
+      ccCtx.lineWidth=1;
+      for(let dy=-2;dy<=2;dy++) {
+        ccCtx.beginPath();
+        ccCtx.moveTo(mx,meterY+meterH-fillH+dy*4);
+        ccCtx.lineTo(mx+mw,meterY+meterH-fillH+dy*4);
+        ccCtx.stroke();
+      }
+    }
+
+    // Label
+    ccCtx.fillStyle=i===activeChainStage?'#6366f1':'rgba(100,116,139,0.7)';
+    ccCtx.font=`bold 8px Courier New`; ccCtx.textAlign='center';
+    ccCtx.fillText(s.name.toUpperCase(),cx,H-8);
+    ccCtx.fillStyle='rgba(100,116,139,0.5)'; ccCtx.font='7px Courier New';
+    ccCtx.fillText(inputLvl.toFixed(0)+'dBFS',cx,H-18);
+
+    // Divider
+    if(i<chainStageData.length-1){
+      ccCtx.strokeStyle='rgba(99,102,241,0.2)'; ccCtx.lineWidth=1; ccCtx.setLineDash([3,3]);
+      ccCtx.beginPath(); ccCtx.moveTo((i+1)*stageW,meterY); ccCtx.lineTo((i+1)*stageW,meterY+meterH); ccCtx.stroke();
+      ccCtx.setLineDash([]);
+    }
+  });
+  requestAnimationFrame(drawChainCanvas);
+}
+
+function toggleChainPlay() {
+  chainPlaying=!chainPlaying;
+  document.getElementById('chain-play-btn').textContent=chainPlaying?'■ STOP':'▶ PLAY';
+  if(chainPlaying){
+    const ac=getACtx();
+    const osc=ac.createOscillator(), g=ac.createGain();
+    osc.type='sawtooth'; osc.frequency.value=110;
+    g.gain.value=Math.pow(10,chainLevel/20)*0.3;
+    osc.connect(g); g.connect(ac.destination); osc.start();
+    chainNodes={osc,g};
+  } else { if(chainNodes.osc){try{chainNodes.osc.stop();}catch(e){} chainNodes={};} }
+}
+
+buildChainStages();
+selectChainStage(1);
+requestAnimationFrame(drawChainCanvas);
+
+// ─── ARTISTS DATA ─────────────────────────────────────────────────────────────
+const artists = [
+  { name:'Bob Ludwig', role:'Mastering Engineer', desc:'Gateway Mastering. Credits include Nirvana, Beck, Daft Punk, U2, and thousands more. Multiple Grammy Awards. Defined the sound of modern mastering.' },
+  { name:'Tchad Blake', role:'Mix Engineer', desc:'Known for unconventional mic techniques and deep, wide, psychedelic mixes. Tom Waits, Crowded House, Arctic Monkeys. Pioneer of weird that works.' },
+  { name:'Bob Clearmountain', role:'Mix Engineer', desc:'Springsteen\'s "Born in the USA," Bryan Adams, David Bowie. Master of radio-ready clarity and dynamics. Invented the click-to-buy era of mixing.' },
+  { name:'Steve Albini', role:'Recording Engineer', desc:'Nirvana\'s "In Utero," Pixies\' "Surfer Rosa," PJ Harvey. Champion of live, honest recording. Opposed the digital loudness war his entire career.' },
+  { name:'Abbey Road Studios', role:'Recording Facility', desc:'London facility where The Beatles changed everything. EMI TG12345 console. Artificial double-tracking (ADT), reverse tape effects — invention lab.' },
+  { name:'Mandy Parnell', role:'Mastering Engineer', desc:'Björk, FKA Twigs, Aphex Twin. Pioneered mastering for streaming. First mastering engineer to win a Grammy for mastering an electronic album.' },
+  { name:'Alan Moulder', role:'Mix Engineer', desc:'Shoegaze and alternative rock specialist. My Bloody Valentine\'s "Loveless," Nine Inch Nails, Smashing Pumpkins. Turns noise into art.' },
+  { name:'Shawn Everett', role:'Mix Engineer', desc:'Alabama Shakes\' "Sound & Color," The War on Drugs. Known for meticulous, adventurous mixing. Multiple Grammy wins. Defies genre boundaries.' },
+];
+
+const glossary = [
+  { term:'EQ', def:'Equalization — boosting or cutting specific frequency ranges to shape tonal balance.' },
+  { term:'Compression', def:'Dynamic range reduction — quieter signals are raised, louder signals are lowered, reducing variation.' },
+  { term:'Limiting', def:'Extreme compression with high ratio (∞:1) to prevent a signal from exceeding a threshold.' },
+  { term:'LUFS', def:'Loudness Units relative to Full Scale — a perceptual loudness measurement standard used for streaming normalization.' },
+  { term:'True Peak', def:'The highest intersample peak level — accounts for peaks that occur between digital samples during D/A conversion.' },
+  { term:'Dynamic Range', def:'The difference between the quietest and loudest parts of a recording, measured in dB.' },
+  { term:'Stereo Width', def:'The spread of audio information between left and right channels. Measured via correlation or M/S analysis.' },
+  { term:'Mid/Side (M/S)', def:'A technique that encodes stereo as a center (mid) and difference (side) signal, allowing independent processing.' },
+  { term:'Parallel Compression', def:'Blending a heavily compressed signal with the uncompressed original — retaining transients while adding density.' },
+  { term:'Sidechain', def:'Using one audio signal to control processing of another — e.g., kick drum triggering bass compression.' },
+  { term:'Bus', def:'A summed routing path. Groups of tracks feed into a bus for collective processing (e.g., drum bus, mix bus).' },
+  { term:'Gain Staging', def:'Setting optimal levels at each stage of the signal chain — above the noise floor, below clipping.' },
+  { term:'Headroom', def:'The margin between the average operating level and the maximum before clipping. Typically 6–18dB in a mix.' },
+  { term:'Noise Floor', def:'The level of background noise in a system — the bottom of the usable dynamic range.' },
+  { term:'Frequency Balance', def:'The overall tonal distribution across the frequency spectrum — the foundation of a professional mix.' },
+  { term:'Masking', def:'When two sounds occupy the same frequency range simultaneously, one makes the other harder to hear.' },
+  { term:'Reference Track', def:'A professionally mixed/mastered commercial track used as a benchmark during mixing and mastering.' },
+  { term:'Dithering', def:'Adding low-level noise before bit-depth reduction to minimize quantization distortion artifacts.' },
+  { term:'Bit Depth', def:'Number of bits per sample — determines dynamic range. 16-bit = 96dB, 24-bit = 144dB theoretical range.' },
+  { term:'Sample Rate', def:'Number of samples per second (Hz). Must be ≥2× the highest frequency. 44.1kHz captures up to 22.05kHz.' },
+  { term:'Analog Summing', def:'Combining multiple tracks in an analog mixer to introduce subtle saturation and three-dimensionality.' },
+  { term:'Phase Correlation', def:'A measure of how well left and right channels align in time. +1 = mono-compatible, −1 = out of phase.' },
+  { term:'Mono Compatibility', def:'Whether a stereo mix sounds good when collapsed to mono — critical for phone speakers and club PA systems.' },
+  { term:'Transient', def:'The fast attack portion of a sound — the initial hit of a drum, pluck of a string. Preserved in parallel compression.' },
+];
+
+function buildArtistGrid() {
+  const grid = document.getElementById('artist-grid');
+  artists.forEach(a => {
+    const div = document.createElement('div'); div.className='artist-card';
+    div.innerHTML=`<div class="artist-name">${a.name}</div>
+      <div class="artist-role">${a.role}</div>
+      <div class="artist-desc">${a.desc}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function buildGlossary() {
+  const grid = document.getElementById('glossary-grid');
+  glossary.forEach(g => {
+    const div = document.createElement('div'); div.className='gloss-item';
+    div.innerHTML=`<div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+buildArtistGrid();
+buildGlossary();
+
+// ─── RESIZE ALL CANVASES ──────────────────────────────────────────────────────
+function resizeAllCanvases() {
+  resizeHero();
+  drawFreqCanvas();
+  drawLUFSCanvas();
+}
+window.addEventListener('resize', resizeAllCanvases);
+
+</script>
+</body>
+</html>
+    

@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring davinci resolve">
+    <meta property="og:title" content="Davinci Resolve World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring davinci resolve">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/davinci_resolve_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DaVinci Resolve World — WAVGEN</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0f;
+  --surface:#111118;
+  --border:#1e1e2e;
+  --text:#e2e2f0;
+  --dim:#6b6b8a;
+  --accent:#d97706;
+  --accent2:#dc2626;
+  --accent3:#34d399;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;height:52px}
+.nav-logo{font-size:13px;font-weight:700;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-right:auto;white-space:nowrap}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap}
+.nav-links a{color:var(--dim);font-size:11px;text-decoration:none;padding:6px 10px;border-radius:4px;letter-spacing:0.5px;transition:color 0.2s,background 0.2s}
+.nav-links a:hover{color:var(--text);background:var(--border)}
+.section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.section-title{font-size:32px;font-weight:700;margin-bottom:8px;line-height:1.2}
+.section-sub{font-size:14px;color:var(--dim);margin-bottom:32px;line-height:1.6}
+.hidden{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+.visible{opacity:1;transform:none}
+.stagger-1{transition-delay:0ms}
+.stagger-2{transition-delay:100ms}
+.stagger-3{transition-delay:200ms}
+.stagger-4{transition-delay:300ms}
+.stagger-5{transition-delay:400ms}
+.hero-title{font-size:clamp(28px,5vw,52px);font-weight:800;letter-spacing:4px;text-transform:uppercase;margin-top:28px;color:var(--text)}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:13px;letter-spacing:2px;color:var(--dim);margin-top:10px}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.badge{padding:5px 14px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--dim);letter-spacing:1px}
+.badge.active{border-color:var(--accent);color:var(--accent)}
+.scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+.scope-panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px}
+.scope-panel canvas{width:100%;display:block;border-radius:3px}
+.scope-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.controls-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.ctrl-group{display:flex;flex-direction:column;gap:4px;min-width:120px;flex:1}
+.ctrl-group label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.ctrl-group input[type=range]{width:100%;accent-color:var(--accent)}
+.ctrl-val{font-size:11px;color:var(--accent);text-align:right}
+.wheels-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.wheel-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center}
+.wheel-card canvas{display:block;margin:0 auto;cursor:crosshair}
+.wheel-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.wheel-val{font-size:10px;color:var(--accent);margin-top:6px}
+.preview-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.preview-box{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px}
+.preview-box canvas{width:100%;display:block;border-radius:3px}
+.lut-presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.lut-btn{padding:6px 14px;background:var(--border);border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:11px;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+.lut-btn:hover,.lut-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+.toggle-ba{padding:7px 18px;background:transparent;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font-size:11px;cursor:pointer;letter-spacing:1px;margin-top:8px;transition:all 0.2s}
+.toggle-ba:hover{background:var(--accent);color:#000}
+.node-palette{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.node-chip{padding:6px 14px;background:var(--border);border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:11px;cursor:grab;letter-spacing:1px;transition:all 0.2s;user-select:none}
+.node-chip:hover{border-color:var(--accent);color:var(--accent)}
+.graph-presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.graph-btn{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:11px;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+.graph-btn:hover,.graph-btn.active{border-color:var(--accent3);color:var(--accent3)}
+.lut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.lut-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;cursor:pointer;transition:all 0.2s;text-align:center}
+.lut-card:hover,.lut-card.selected{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 20px rgba(217,119,6,0.2)}
+.lut-card canvas{width:100%;height:60px;display:block;border-radius:3px;margin-bottom:6px}
+.lut-card-name{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+.lut-card.selected .lut-card-name{color:var(--accent)}
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:start}
+.compare-box{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px}
+.compare-box canvas{width:100%;display:block;border-radius:3px}
+.compare-box h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.intensity-row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.intensity-row label{font-size:11px;color:var(--dim);white-space:nowrap}
+.intensity-row input{flex:1;accent-color:var(--accent)}
+.intensity-row span{font-size:11px;color:var(--accent);min-width:34px;text-align:right}
+.pipeline-wrap{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding-bottom:8px;margin-bottom:20px}
+.pipeline-step{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;min-width:140px;flex:1;cursor:pointer;transition:border-color 0.2s}
+.pipeline-step.active{border-color:var(--accent)}
+.pipeline-step.disabled{opacity:0.4}
+.pipeline-arrow{color:var(--dim);font-size:18px;align-self:center;flex-shrink:0}
+.step-num{font-size:10px;color:var(--dim);margin-bottom:4px}
+.step-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.step-toggle{display:flex;align-items:center;gap:6px;margin-top:8px}
+.step-toggle input[type=checkbox]{accent-color:var(--accent)}
+.step-toggle label{font-size:10px;color:var(--dim)}
+.step-intensity input{width:100%;accent-color:var(--accent);margin-top:4px}
+.step-intensity label{font-size:10px;color:var(--dim)}
+.film-preview-wrap{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+.film-stocks{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stock-btn{padding:6px 14px;background:var(--border);border:1px solid var(--border);border-radius:4px;color:var(--dim);font-size:11px;cursor:pointer;letter-spacing:1px;transition:all 0.2s}
+.stock-btn:hover,.stock-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+.export-btn{padding:10px 24px;background:var(--accent2);border:none;border-radius:4px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:1px;white-space:nowrap;transition:opacity 0.2s}
+.export-btn:hover{opacity:0.85}
+#page-nav-wrap{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start;margin-top:20px}
+#isometric-canvas{display:block;border:1px solid var(--border);border-radius:6px;cursor:pointer}
+.page-detail{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px;min-height:200px}
+.page-detail h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.page-detail p{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px}
+.page-tools{display:flex;gap:8px;flex-wrap:wrap}
+.tool-tag{padding:4px 10px;background:var(--border);border-radius:4px;font-size:11px;color:var(--text)}
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;transition:all 0.3s}
+.artist-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 8px 32px rgba(217,119,6,0.15)}
+.artist-avatar{width:48px;height:48px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;border:2px solid var(--border);transition:border-color 0.3s}
+.artist-card:hover .artist-avatar{border-color:var(--accent)}
+.artist-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.artist-role{font-size:11px;color:var(--accent);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.artist-bio{font-size:12px;color:var(--dim);line-height:1.6}
+.artist-credits{font-size:11px;color:var(--dim);margin-top:8px;font-style:italic}
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.gloss-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;transition:border-color 0.2s}
+.gloss-item:hover{border-color:var(--accent)}
+.gloss-term{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.gloss-def{font-size:12px;color:var(--dim);line-height:1.6}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:700px){.wheels-wrap{grid-template-columns:1fr}.scope-grid{grid-template-columns:1fr}.glossary-grid{grid-template-columns:1fr}#page-nav-wrap{grid-template-columns:1fr}.compare-wrap{grid-template-columns:1fr}.preview-wrap{grid-template-columns:1fr}.film-preview-wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="domain-video">
+
+<nav>
+  <div class="nav-logo">&#9632; DaVinci Resolve World</div>
+  <div class="nav-links">
+    <a href="#hero">Hero</a><a href="#scopes">Scopes</a><a href="#wheels">Wheels</a>
+    <a href="#nodes">Nodes</a><a href="#luts">LUTs</a><a href="#filmlook">Film</a>
+    <a href="#pages">Pages</a><a href="#artists">Artists</a><a href="#glossary">Glossary</a>
+  </div>
+</nav>
+
+<!-- S1: HERO -->
+<div id="hero" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 24px 40px;text-align:center">
+  <canvas id="hero-canvas" width="1100" height="440" style="width:100%;max-width:1100px;height:440px;border:1px solid var(--border);border-radius:4px;background:var(--surface);display:block"></canvas>
+  <div class="hero-title hidden stagger-1">DAVINCI <span>RESOLVE</span> WORLD</div>
+  <div class="hero-sub hidden stagger-2">color science &nbsp;&middot;&nbsp; node grading &nbsp;&middot;&nbsp; cinematic finishing</div>
+  <div class="hero-badges hidden stagger-3">
+    <span class="badge active">Waveform Monitor</span>
+    <span class="badge active">Vectorscope</span>
+    <span class="badge active">Film Grades</span>
+    <span class="badge">Node Graph</span>
+    <span class="badge">LUT Museum</span>
+    <span class="badge">Scopes Lab</span>
+  </div>
+</div>
+
+<!-- S2: SCOPES -->
+<section id="scopes" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 02</div>
+  <div class="section-title hidden stagger-2">Scopes Explorer</div>
+  <div class="section-sub hidden stagger-3">Real-time video scopes. Adjust parameters and watch all four scopes update simultaneously.</div>
+  <div class="scope-grid hidden stagger-4">
+    <div class="scope-panel"><div class="scope-label">Waveform Monitor</div><canvas id="scope-waveform" width="480" height="200"></canvas></div>
+    <div class="scope-panel"><div class="scope-label">Vectorscope</div><canvas id="scope-vector" width="480" height="200"></canvas></div>
+    <div class="scope-panel"><div class="scope-label">Parade (RGB)</div><canvas id="scope-parade" width="480" height="200"></canvas></div>
+    <div class="scope-panel"><div class="scope-label">Histogram</div><canvas id="scope-histogram" width="480" height="200"></canvas></div>
+  </div>
+  <div class="controls-row hidden stagger-5">
+    <div class="ctrl-group"><label>Exposure</label><input type="range" id="sc-exposure" min="-2" max="2" step="0.01" value="0"><div class="ctrl-val" id="sc-exposure-val">0.00</div></div>
+    <div class="ctrl-group"><label>Temperature</label><input type="range" id="sc-temp" min="-100" max="100" step="1" value="0"><div class="ctrl-val" id="sc-temp-val">0</div></div>
+    <div class="ctrl-group"><label>Tint</label><input type="range" id="sc-tint" min="-100" max="100" step="1" value="0"><div class="ctrl-val" id="sc-tint-val">0</div></div>
+    <div class="ctrl-group"><label>Saturation</label><input type="range" id="sc-sat" min="0" max="200" step="1" value="100"><div class="ctrl-val" id="sc-sat-val">100</div></div>
+  </div>
+  <canvas id="scope-source" width="480" height="270" style="display:none"></canvas>
+</section>
+
+<!-- S3: COLOR WHEELS -->
+<section id="wheels" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 03</div>
+  <div class="section-title hidden stagger-2">Color Wheel Colorist</div>
+  <div class="section-sub hidden stagger-3">Drag inside each wheel to set hue and saturation. Preview updates live with LagFilter-smoothed transitions.</div>
+  <div class="wheels-wrap hidden stagger-4">
+    <div class="wheel-card"><div class="wheel-name">Lift (Shadows)</div><canvas id="wheel-lift" width="180" height="180"></canvas><div class="wheel-val" id="wheel-lift-val">H:0 S:0%</div></div>
+    <div class="wheel-card"><div class="wheel-name">Gamma (Midtones)</div><canvas id="wheel-gamma" width="180" height="180"></canvas><div class="wheel-val" id="wheel-gamma-val">H:0 S:0%</div></div>
+    <div class="wheel-card"><div class="wheel-name">Gain (Highlights)</div><canvas id="wheel-gain" width="180" height="180"></canvas><div class="wheel-val" id="wheel-gain-val">H:0 S:0%</div></div>
+  </div>
+  <div style="margin-bottom:10px" class="hidden stagger-4">
+    <label style="font-size:11px;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Master Offset</label>
+    <input type="range" id="master-offset" min="-0.3" max="0.3" step="0.01" value="0" style="width:200px;accent-color:var(--accent);margin:0 10px;vertical-align:middle">
+    <span id="master-offset-val" style="font-size:11px;color:var(--accent)">0.00</span>
+  </div>
+  <div class="lut-presets hidden stagger-5">
+    <button class="lut-btn" data-lut="teal-orange">Teal &amp; Orange</button>
+    <button class="lut-btn" data-lut="bleach">Bleach Bypass</button>
+    <button class="lut-btn" data-lut="warm">Warm Film</button>
+    <button class="lut-btn" data-lut="cool">Cool Noir</button>
+    <button class="lut-btn" data-lut="natural">Natural</button>
+    <button class="toggle-ba" id="toggle-ba">Before / After</button>
+  </div>
+  <div class="preview-wrap hidden stagger-5">
+    <div class="preview-box"><div class="scope-label" id="preview-label">GRADE PREVIEW</div><canvas id="grade-preview" width="540" height="270"></canvas></div>
+    <div class="preview-box"><div class="scope-label">WAVEFORM</div><canvas id="grade-waveform" width="540" height="270"></canvas></div>
+  </div>
+</section>
+
+<!-- S4: NODE GRAPH -->
+<section id="nodes" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 04</div>
+  <div class="section-title hidden stagger-2">Node Graph Builder</div>
+  <div class="section-sub hidden stagger-3">Drag node types onto the canvas. Click output port then input port to connect with animated cables. Signal flows left to right.</div>
+  <div class="node-palette hidden stagger-4">
+    <div class="node-chip" draggable="true" data-type="Serial">Serial</div>
+    <div class="node-chip" draggable="true" data-type="Parallel">Parallel</div>
+    <div class="node-chip" draggable="true" data-type="Layer">Layer</div>
+    <div class="node-chip" draggable="true" data-type="Outside">Outside</div>
+    <div class="node-chip" draggable="true" data-type="Corrector">Corrector</div>
+  </div>
+  <div id="node-canvas-wrap" style="width:100%;height:360px;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:6px">
+    <canvas id="node-canvas" width="1100" height="360" style="width:100%;height:360px;display:block;cursor:default"></canvas>
+  </div>
+  <div class="graph-presets hidden stagger-5">
+    <button class="graph-btn" data-graph="basic">Basic Grade</button>
+    <button class="graph-btn" data-graph="power">Power Window</button>
+    <button class="graph-btn" data-graph="log">Log Conversion</button>
+    <button class="graph-btn" data-graph="skin">Skin + Sky</button>
+  </div>
+</section>
+
+<!-- S5: LUT MUSEUM -->
+<section id="luts" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 05</div>
+  <div class="section-title hidden stagger-2">LUT Museum</div>
+  <div class="section-sub hidden stagger-3">12 cinematic LUTs simulated via canvas color transforms. Click any card to apply with intensity control.</div>
+  <div class="lut-grid hidden stagger-4" id="lut-grid"></div>
+  <div class="intensity-row hidden stagger-5">
+    <label>Intensity</label>
+    <input type="range" id="lut-intensity" min="0" max="100" value="100">
+    <span id="lut-intensity-val">100%</span>
+  </div>
+  <div class="compare-wrap hidden stagger-5">
+    <div class="compare-box"><h4>Original (LOG)</h4><canvas id="lut-before" width="500" height="281"></canvas></div>
+    <div class="compare-box"><h4>With LUT Applied</h4><canvas id="lut-after" width="500" height="281"></canvas></div>
+  </div>
+</section>
+
+<!-- S6: FILM LOOK -->
+<section id="filmlook" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 06</div>
+  <div class="section-title hidden stagger-2">Film Look Generator</div>
+  <div class="section-sub hidden stagger-3">5-step cinematic pipeline. Toggle each stage and dial intensity to build your film look.</div>
+  <div class="pipeline-wrap hidden stagger-4" id="pipeline-wrap"></div>
+  <div class="film-preview-wrap hidden stagger-5">
+    <div class="preview-box"><div class="scope-label">FILM PREVIEW</div><canvas id="film-preview" width="720" height="405"></canvas></div>
+    <div>
+      <div class="scope-label" style="margin-bottom:8px">FILM STOCKS</div>
+      <div class="film-stocks" id="film-stocks"></div>
+      <button class="export-btn" style="margin-top:16px;display:block" id="export-film-btn">&#8681; Export Frame PNG</button>
+    </div>
+  </div>
+</section>
+
+<!-- S7: PAGE NAVIGATOR -->
+<section id="pages" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 07</div>
+  <div class="section-title hidden stagger-2">Page Navigator</div>
+  <div class="section-sub hidden stagger-3">Click any floor to explore DaVinci Resolve's six pages and their role in the post-production pipeline.</div>
+  <div id="page-nav-wrap" class="hidden stagger-4">
+    <canvas id="isometric-canvas" width="280" height="440"></canvas>
+    <div class="page-detail" id="page-detail">
+      <h3 style="color:var(--accent)">Click a Floor</h3>
+      <p>Select any floor of the DaVinci tower to learn about that page.</p>
+    </div>
+  </div>
+</section>
+
+<!-- S8: ARTISTS -->
+<section id="artists" style="max-width:1200px;margin:0 auto;padding:80px 24px 60px">
+  <div class="section-label hidden stagger-1">Section 08</div>
+  <div class="section-title hidden stagger-2">Master Colorists &amp; Contributors</div>
+  <div class="section-sub hidden stagger-3">The artists, engineers, and educators who define the DaVinci Resolve ecosystem.</div>
+  <div class="artists-grid">
+    <div class="artist-card hidden stagger-1"><div class="artist-avatar">🎬</div><div class="artist-name">Stefan Sonnenfeld</div><div class="artist-role">Hollywood Colorist</div><div class="artist-bio">Head colorist at Company 3, defining the bold saturated palette of modern blockbusters.</div><div class="artist-credits">The Dark Knight · Man of Steel · Top Gun: Maverick</div></div>
+    <div class="artist-card hidden stagger-2"><div class="artist-avatar">🌙</div><div class="artist-name">Tom Poole</div><div class="artist-role">Narrative Colorist</div><div class="artist-bio">Renowned for nuanced, character-driven color that serves emotional storytelling above style.</div><div class="artist-credits">Moonlight (2016) · If Beale Street Could Talk</div></div>
+    <div class="artist-card hidden stagger-3"><div class="artist-avatar">📷</div><div class="artist-name">Roger Deakins</div><div class="artist-role">Cinematographer</div><div class="artist-bio">Two-time Oscar winner whose controlled, natural cinematic light sets the industry benchmark.</div><div class="artist-credits">Blade Runner 2049 · 1917 · No Country for Old Men</div></div>
+    <div class="artist-card hidden stagger-4"><div class="artist-avatar">⚙️</div><div class="artist-name">Grant Petty</div><div class="artist-role">CEO, Blackmagic Design</div><div class="artist-bio">Democratized professional post-production tools by making DaVinci Resolve free worldwide.</div><div class="artist-credits">DaVinci Resolve · BMPCC · HyperDeck</div></div>
+    <div class="artist-card hidden stagger-5"><div class="artist-avatar">🎓</div><div class="artist-name">Casey Faris</div><div class="artist-role">Resolve Educator</div><div class="artist-bio">Most-subscribed DaVinci Resolve educator on YouTube, bridging beginner to professional levels.</div><div class="artist-credits">YouTube · Online Courses · Community</div></div>
+    <div class="artist-card hidden stagger-1"><div class="artist-avatar">🌿</div><div class="artist-name">Siggy Ferstl</div><div class="artist-role">Painterly Colorist</div><div class="artist-bio">Known for naturalistic approaches that honor the photography rather than imposing style.</div><div class="artist-credits">Tree of Life · The Thin Red Line · The New World</div></div>
+    <div class="artist-card hidden stagger-2"><div class="artist-avatar">☀️</div><div class="artist-name">Emmanuel Lubezki</div><div class="artist-role">DP / Natural Light</div><div class="artist-bio">Three-time Oscar winner whose natural-light philosophy creates extraordinary color challenges.</div><div class="artist-credits">The Revenant · Birdman · Gravity</div></div>
+    <div class="artist-card hidden stagger-3"><div class="artist-avatar">🇬🇧</div><div class="artist-name">Darren Mostyn</div><div class="artist-role">UK Colorist / Educator</div><div class="artist-bio">Prominent UK colorist and Resolve trainer known for detailed technique breakdowns.</div><div class="artist-credits">Commercial · Broadcast · Online Education</div></div>
+  </div>
+</section>
+
+<!-- S9: GLOSSARY -->
+<section id="glossary" style="max-width:1200px;margin:0 auto;padding:80px 24px 80px">
+  <div class="section-label hidden stagger-1">Section 09</div>
+  <div class="section-title hidden stagger-2">Glossary</div>
+  <div class="section-sub hidden stagger-3">22 essential DaVinci Resolve and color science terms.</div>
+  <div class="glossary-grid hidden stagger-4">
+    <div class="gloss-item"><div class="gloss-term">Bleach Bypass</div><div class="gloss-def">A chemical process emulation that desaturates and increases contrast by skipping silver bleaching — creates a gritty, high-contrast look.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Color Managed Workflow</div><div class="gloss-def">A pipeline where every stage has a defined color space, ensuring consistent color from camera through delivery.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Color Space</div><div class="gloss-def">A mathematical model mapping colors to values. Common: Rec.709 (HD), DCI-P3 (cinema), ACES (VFX pipeline).</div></div>
+    <div class="gloss-item"><div class="gloss-term">CST (Color Space Transform)</div><div class="gloss-def">A Resolve node converting footage between color spaces — e.g. ARRI LogC to DaVinci Wide Gamut.</div></div>
+    <div class="gloss-item"><div class="gloss-term">DaVinci Neural Engine</div><div class="gloss-def">Blackmagic's AI framework powering face detection, scene cut analysis, noise reduction, and smart color matching.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Fusion</div><div class="gloss-def">The node-based compositing page built into Resolve for 2D/3D VFX, motion graphics, keying, and tracking.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gallery Still</div><div class="gloss-def">A saved snapshot of a clip's grade, used as a reference or to apply grades to other clips via drag-and-drop.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gain</div><div class="gloss-def">The highlights wheel in Resolve's primary corrector. Raising gain lifts bright areas; hue shifts highlight color.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gamma</div><div class="gloss-def">The midtones wheel — controls mid-range luminance and is the most visually impactful for overall image feeling.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Lift</div><div class="gloss-def">The shadows wheel. Raising lift brings up black levels — critical for creating a film base or milky shadow look.</div></div>
+    <div class="gloss-item"><div class="gloss-term">LOG</div><div class="gloss-def">Logarithmic camera encoding preserving wide dynamic range at the cost of a flat, desaturated appearance requiring a LUT or grade.</div></div>
+    <div class="gloss-item"><div class="gloss-term">LUT (Look-Up Table)</div><div class="gloss-def">A file mapping input color values to output values — used for technical conversions or creative cinematic looks.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Node</div><div class="gloss-def">The fundamental building block of Resolve's Color page — each applies corrections combined in a graph structure.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Outside Node</div><div class="gloss-def">Receives the inverse of a qualifier/power window mask — grades everything outside the selected area.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Parade</div><div class="gloss-def">A scope showing R, G, B waveforms side by side — essential for identifying color casts and balancing neutrals.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Power Window</div><div class="gloss-def">A geometric mask (circle, rectangle, polygon, gradient) isolating a region for secondary color correction.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Primary Correction</div><div class="gloss-def">A global grade affecting the entire image — lift/gamma/gain, contrast, saturation before any secondary isolations.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Qualifier</div><div class="gloss-def">Resolve's keying tool selecting pixels by hue, saturation, or luminance for secondary color corrections.</div></div>
+    <div class="gloss-item"><div class="gloss-term">RAW</div><div class="gloss-def">Unprocessed sensor data. Resolve's RAW panel lets you adjust ISO, color temp, and tint before any node processing.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Secondary Correction</div><div class="gloss-def">A grade applied to a specific part of the image isolated by a qualifier or power window, not globally.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Vectorscope</div><div class="gloss-def">A circular scope where angle indicates hue and distance from center indicates saturation. Skin tone lies on a diagonal reference line.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Waveform Monitor</div><div class="gloss-def">Shows luminance per pixel column. Flat images compress near midpoint; high-contrast scenes show peaks near 1023 and valleys near 0.</div></div>
+  </div>
+</section>
+
+<script>
+'use strict';
+
+// ============================================================
+// LAGFILTER — MANDATORY ON ALL ANIMATED PARAMETERS
+// ============================================================
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = null; }
+  update(target, dt) {
+    if (this.value === null) this.value = target;
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function hsl2rgb(h, s, l) {
+  s /= 100; l /= 100;
+  const k = n => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return [Math.round(f(0)*255), Math.round(f(8)*255), Math.round(f(4)*255)];
+}
+
+function rgb2hsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h, s, l = (max+min)/2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch(max) {
+      case r: h = ((g-b)/d + (g<b?6:0))/6; break;
+      case g: h = ((b-r)/d + 2)/6; break;
+      case b: h = ((r-g)/d + 4)/6; break;
+    }
+  }
+  return [h*360, s*100, l*100];
+}
+
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+// ============================================================
+// SECTION 1 — HERO CANVAS (3 scopes side by side)
+// ============================================================
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const third = W / 3;
+
+  // LagFilters for hero animations
+  const lfDrift = new LagFilter(2.0);
+  const lfVecPhase = new LagFilter(1.5);
+  const lfFilmScroll = new LagFilter(0.8);
+
+  let driftTarget = 0;
+  let vecPhaseTarget = 0;
+  let filmScrollTarget = 0;
+  let filmScrollPos = 0;
+  let lastTime = null;
+  let frameCount = 0;
+
+  // Synthetic film frame colors for filmstrip section
+  const filmGrades = [
+    // [shadows rgb, mids rgb, highlights rgb, name]
+    { s:[20,15,30], m:[180,140,90], h:[255,230,200], name:'Warm' },
+    { s:[10,20,30], m:[80,120,160], h:[200,220,240], name:'Cool' },
+    { s:[10,40,40], m:[80,160,140], h:[230,200,60], name:'Teal-Orng' },
+    { s:[5,5,5],    m:[100,100,100], h:[220,220,220], name:'Noir' },
+    { s:[20,22,18], m:[130,135,125], h:[240,242,235], name:'Natural' },
+    { s:[30,25,10], m:[160,150,120], h:[220,210,180], name:'Bleach' },
+  ];
+
+  function drawHeroWaveform(t) {
+    const x0 = 0, y0 = 0, w = third, h = H;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(x0,y0,w,h); ctx.clip();
+    ctx.fillStyle = 'rgba(10,10,15,0.05)';
+    ctx.fillRect(x0,y0,w,h);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(30,30,46,0.5)'; ctx.lineWidth = 0.5;
+    for (let i=0;i<=4;i++) {
+      const yy = y0 + (i/4)*h;
+      ctx.beginPath(); ctx.moveTo(x0,yy); ctx.lineTo(x0+w,yy); ctx.stroke();
+    }
+    ctx.strokeStyle = 'rgba(30,30,46,0.3)'; ctx.lineWidth = 0.3;
+    for (let i=0;i<=8;i++) {
+      const xx = x0 + (i/8)*w;
+      ctx.beginPath(); ctx.moveTo(xx,y0); ctx.lineTo(xx,y0+h); ctx.stroke();
+    }
+
+    // Labels
+    ctx.fillStyle = 'rgba(107,107,138,0.6)'; ctx.font = '9px monospace';
+    ctx.fillText('1023', x0+3, y0+11);
+    ctx.fillText('512',  x0+3, y0+h/2+4);
+    ctx.fillText('0',    x0+3, y0+h-3);
+    ctx.fillText('WAVEFORM', x0+w/2-26, y0+h-3);
+
+    // Drift value (LagFilter)
+    const drift = lfDrift.update(driftTarget, 0.016) * 0.05;
+
+    // Draw luminance trace — simulated film scene
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 1.2;
+    ctx.shadowColor = '#d97706';
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    const cols = Math.floor(w);
+    for (let xi=0; xi<cols; xi++) {
+      const px = xi/cols;
+      // Simulate sky (top) / ground transition / skin zone
+      let lum;
+      if (px < 0.35) {
+        // sky zone — high luminance with variation
+        lum = 0.65 + 0.15*Math.sin(t*0.7 + px*8) + 0.05*Math.sin(t*1.3+px*14) + drift;
+      } else if (px < 0.55) {
+        // horizon transition
+        lum = 0.45 + 0.1*Math.sin(t*0.5+px*6) + drift;
+      } else if (px < 0.75) {
+        // skin / subject zone
+        lum = 0.55 + 0.08*Math.sin(t*0.9+px*10) + 0.03*Math.cos(t*2.1) + drift;
+      } else {
+        // shadow zone
+        lum = 0.18 + 0.06*Math.sin(t*0.6+px*12) + drift;
+      }
+      lum = clamp(lum, 0.01, 0.99);
+      const yy = y0 + h - lum * (h - 4) - 2;
+      if (xi === 0) ctx.moveTo(x0+xi, yy);
+      else ctx.lineTo(x0+xi, yy);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
+
+  // Vectorscope color points orbiting
+  const vecColors = [
+    { name:'Skin', hue:25,  sat:0.45, orbit:0.03, speed:0.11 },
+    { name:'Sky',  hue:210, sat:0.55, orbit:0.04, speed:0.07 },
+    { name:'Shad', hue:260, sat:0.25, orbit:0.02, speed:0.13 },
+    { name:'Foil', hue:120, sat:0.5,  orbit:0.05, speed:0.09 },
+    { name:'Gold', hue:45,  sat:0.7,  orbit:0.035,speed:0.15 },
+    { name:'Neon', hue:300, sat:0.6,  orbit:0.025,speed:0.12 },
+  ];
+  const vecLagFilters = vecColors.map(()=>({r:new LagFilter(0.4),a:new LagFilter(0.4)}));
+
+  function drawHeroVectorscope(t) {
+    const cx = third + third/2, cy = H/2;
+    const radius = Math.min(third, H)/2 - 14;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(third, 0, third, H); ctx.clip();
+    ctx.fillStyle = 'rgba(10,10,15,0.05)';
+    ctx.fillRect(third, 0, third, H);
+
+    // Outer ring
+    ctx.strokeStyle = 'rgba(30,30,46,0.7)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI*2); ctx.stroke();
+    // Inner rings
+    [0.25,0.5,0.75].forEach(r=>{
+      ctx.strokeStyle = 'rgba(30,30,46,0.4)';
+      ctx.beginPath(); ctx.arc(cx,cy,radius*r,0,Math.PI*2); ctx.stroke();
+    });
+
+    // I/Q axis lines
+    ctx.strokeStyle = 'rgba(107,107,138,0.4)'; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(third+4, cy); ctx.lineTo(third+third-4, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, 4); ctx.lineTo(cx, H-4); ctx.stroke();
+
+    // Amber target boxes at standard color positions
+    const targetAngles = [
+      {a:-0.52, name:'R', col:'#dc2626'},
+      {a:0.52,  name:'B', col:'#3b82f6'},
+      {a:2.09,  name:'G', col:'#34d399'},
+      {a:-1.57, name:'Mg',col:'#d97706'},
+    ];
+    targetAngles.forEach(({a,name,col})=>{
+      const tx = cx + Math.cos(a)*radius*0.8;
+      const ty = cy + Math.sin(a)*radius*0.8;
+      ctx.strokeStyle = col; ctx.lineWidth = 1.2;
+      ctx.strokeRect(tx-5, ty-5, 10, 10);
+      ctx.fillStyle = col; ctx.font = '8px monospace';
+      ctx.fillText(name, tx+7, ty+3);
+    });
+
+    // Skin tone line
+    ctx.strokeStyle = 'rgba(217,119,6,0.4)'; ctx.lineWidth = 0.8;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(0.44)*radius, cy + Math.sin(0.44)*radius);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(217,119,6,0.5)'; ctx.font='8px monospace';
+    ctx.fillText('SKIN', cx+Math.cos(0.44)*radius*0.9, cy+Math.sin(0.44)*radius*0.9+3);
+
+    // Color dots orbiting with LagFilter
+    const vecPhase = lfVecPhase.update(vecPhaseTarget, 0.016);
+    vecColors.forEach((vc, i) => {
+      const targetR = (0.2 + vc.sat * 0.7) * radius;
+      const targetA = (vc.hue / 180) * Math.PI + t * vc.speed + vecPhase * 0.3 + vc.orbit * Math.sin(t*1.7+i);
+      const r = vecLagFilters[i].r.update(targetR, 0.016);
+      const a = vecLagFilters[i].a.update(targetA, 0.016);
+      const dx = cx + Math.cos(a)*r;
+      const dy = cy + Math.sin(a)*r;
+      const [rr,gg,bb] = hsl2rgb(vc.hue, 80, 60);
+      ctx.beginPath(); ctx.arc(dx, dy, 4, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${rr},${gg},${bb},0.85)`;
+      ctx.shadowColor = `rgb(${rr},${gg},${bb})`; ctx.shadowBlur = 6;
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+
+    // Phosphor trail accumulation dots (ambient)
+    for (let i=0;i<6;i++) {
+      const ang = t*0.3 + i*1.047;
+      const r2 = (0.1+Math.sin(t*0.5+i)*0.15)*radius;
+      const dx = cx + Math.cos(ang)*r2;
+      const dy = cy + Math.sin(ang)*r2;
+      ctx.beginPath(); ctx.arc(dx, dy, 1.5, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(52,211,153,0.3)';
+      ctx.fill();
+    }
+
+    ctx.fillStyle = 'rgba(107,107,138,0.6)'; ctx.font='9px monospace';
+    ctx.fillText('VECTORSCOPE', cx-30, H-3);
+    ctx.restore();
+  }
+
+  let filmFrameCache = null;
+  function getFilmFrameCache() {
+    if (filmFrameCache) return filmFrameCache;
+    filmFrameCache = filmGrades.map(grade => {
+      const oc = document.createElement('canvas');
+      oc.width=80; oc.height=50;
+      const oc2 = oc.getContext('2d');
+      // sky gradient
+      const grad = oc2.createLinearGradient(0,0,0,30);
+      grad.addColorStop(0,`rgb(${grade.h[0]},${grade.h[1]},${grade.h[2]})`);
+      grad.addColorStop(1,`rgb(${grade.m[0]},${grade.m[1]},${grade.m[2]})`);
+      oc2.fillStyle=grad; oc2.fillRect(0,0,80,30);
+      // ground
+      oc2.fillStyle=`rgb(${grade.s[0]},${grade.s[1]},${grade.s[2]})`;
+      oc2.fillRect(0,30,80,20);
+      // subject silhouette
+      oc2.fillStyle=`rgba(${grade.m[0]},${grade.m[1]},${grade.m[2]},0.7)`;
+      oc2.beginPath(); oc2.ellipse(40,22,10,18,0,0,Math.PI*2); oc2.fill();
+      // label
+      oc2.fillStyle='rgba(255,255,255,0.6)'; oc2.font='6px monospace';
+      oc2.fillText(grade.name,2,48);
+      return oc;
+    });
+    return filmFrameCache;
+  }
+
+  function drawHeroFilmstrip(t) {
+    const x0 = third*2, y0 = 0, w = third, h = H;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(x0,y0,w,h); ctx.clip();
+    ctx.fillStyle='rgba(10,10,15,0.05)'; ctx.fillRect(x0,y0,w,h);
+
+    // Film perforations
+    const perfW=8, perfH=14, perfX=x0+6;
+    ctx.fillStyle='rgba(30,30,46,0.8)';
+    for(let yi=0;yi<Math.ceil(h/28)+1;yi++){
+      const yp = ((yi*28 - filmScrollPos*0.5) % h + h) % h;
+      ctx.fillRect(perfX, y0+yp, perfW, perfH);
+      ctx.fillRect(x0+w-perfX-perfW, y0+yp, perfW, perfH);
+    }
+
+    // Frame thumbnails scrolling
+    const frameH = 66, frameW = w - 36, fPad=4;
+    const frames = getFilmFrameCache();
+    const scrollY = filmScrollPos % (frameH + fPad);
+
+    for(let fi=-1; fi<Math.ceil(h/frameH)+2; fi++) {
+      const baseY = y0 + fi*(frameH+fPad) - scrollY;
+      const fIdx = ((fi + Math.floor(filmScrollPos/(frameH+fPad))) % frames.length + frames.length) % frames.length;
+      if (baseY > y0+h || baseY+frameH < y0) continue;
+      ctx.drawImage(frames[fIdx], x0+18, baseY, frameW, frameH);
+      // Frame border
+      ctx.strokeStyle='rgba(217,119,6,0.4)'; ctx.lineWidth=0.8;
+      ctx.strokeRect(x0+18, baseY, frameW, frameH);
+    }
+
+    // Scan line overlay
+    const scanY = y0 + ((t*80) % h);
+    ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(x0+16,scanY); ctx.lineTo(x0+w-16,scanY); ctx.stroke();
+
+    ctx.fillStyle='rgba(107,107,138,0.6)'; ctx.font='9px monospace';
+    ctx.fillText('FILM STRIP', x0+w/2-24, y0+h-3);
+    ctx.restore();
+  }
+
+  function heroDividers() {
+    ctx.strokeStyle='rgba(30,30,46,0.8)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(third,0); ctx.lineTo(third,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(third*2,0); ctx.lineTo(third*2,H); ctx.stroke();
+  }
+
+  function heroLoop(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = Math.min((ts - lastTime)/1000, 0.1);
+    lastTime = ts;
+    frameCount++;
+    const t = ts / 1000;
+
+    // Update lag targets periodically
+    if (frameCount % 120 === 0) driftTarget = (Math.random()-0.5)*0.3;
+    if (frameCount % 80 === 0) vecPhaseTarget = (Math.random()-0.5)*0.5;
+
+    filmScrollPos += lfFilmScroll.update(1.2, dt) * dt * 28;
+
+    // Phosphor persistence
+    ctx.fillStyle='rgba(10,10,15,0.05)';
+    ctx.fillRect(0,0,W,H);
+
+    drawHeroWaveform(t);
+    drawHeroVectorscope(t);
+    drawHeroFilmstrip(t);
+    heroDividers();
+
+    requestAnimationFrame(heroLoop);
+  }
+
+  requestAnimationFrame(heroLoop);
+})();
+
+// ============================================================
+// SECTION 2 — SCOPES EXPLORER
+// ============================================================
+(function initScopes() {
+  const sourceCanvas = document.getElementById('scope-source');
+  const wfCanvas = document.getElementById('scope-waveform');
+  const vcCanvas = document.getElementById('scope-vector');
+  const prCanvas = document.getElementById('scope-parade');
+  const hiCanvas = document.getElementById('scope-histogram');
+  if (!sourceCanvas || !wfCanvas) return;
+
+  const sCtx = sourceCanvas.getContext('2d');
+  const wCtx = wfCanvas.getContext('2d');
+  const vCtx = vcCanvas.getContext('2d');
+  const pCtx = prCanvas.getContext('2d');
+  const hCtx = hiCanvas.getContext('2d');
+
+  // LagFilters for all scope parameters
+  const lfExposure = new LagFilter(0.25);
+  const lfTemp     = new LagFilter(0.25);
+  const lfTint     = new LagFilter(0.25);
+  const lfSat      = new LagFilter(0.25);
+
+  let expTarget=0, tempTarget=0, tintTarget=0, satTarget=100;
+
+  // Wire up sliders
+  const sliders = [
+    { el: document.getElementById('sc-exposure'), val: document.getElementById('sc-exposure-val'),
+      onChange: v => { expTarget=parseFloat(v); } },
+    { el: document.getElementById('sc-temp'), val: document.getElementById('sc-temp-val'),
+      onChange: v => { tempTarget=parseFloat(v); } },
+    { el: document.getElementById('sc-tint'), val: document.getElementById('sc-tint-val'),
+      onChange: v => { tintTarget=parseFloat(v); } },
+    { el: document.getElementById('sc-sat'), val: document.getElementById('sc-sat-val'),
+      onChange: v => { satTarget=parseFloat(v); } },
+  ];
+  sliders.forEach(s => {
+    if (!s.el) return;
+    s.el.addEventListener('input', e => {
+      s.onChange(e.target.value);
+      if (s.val) s.val.textContent = parseFloat(e.target.value).toFixed(s.el.step && s.el.step<1?2:0);
+    });
+  });
+
+  // Draw synthetic reference image into sourceCanvas
+  function drawSource(exposure, temp, tint, sat) {
+    const W = sourceCanvas.width, H = sourceCanvas.height;
+    sCtx.clearRect(0,0,W,H);
+
+    // Sky gradient
+    const skyGrad = sCtx.createLinearGradient(0,0,0,H*0.45);
+    skyGrad.addColorStop(0,'#1a4a80');
+    skyGrad.addColorStop(1,'#4a90d9');
+    sCtx.fillStyle = skyGrad; sCtx.fillRect(0,0,W,H*0.45);
+
+    // Ground
+    const gndGrad = sCtx.createLinearGradient(0,H*0.45,0,H);
+    gndGrad.addColorStop(0,'#3a6b20');
+    gndGrad.addColorStop(1,'#1a3a10');
+    sCtx.fillStyle = gndGrad; sCtx.fillRect(0,H*0.45,W,H*0.55);
+
+    // Skin zone rectangle
+    sCtx.fillStyle = '#c87040';
+    sCtx.fillRect(W*0.3, H*0.15, W*0.2, H*0.45);
+
+    // Color patches row
+    const patches = ['#dc2626','#d97706','#34d399','#3b82f6','#8b5cf6','#ec4899'];
+    patches.forEach((c,i) => {
+      sCtx.fillStyle = c;
+      sCtx.fillRect(i*(W/6), H*0.7, W/6, H*0.3);
+    });
+
+    // White/gray/black chips
+    sCtx.fillStyle='#ffffff'; sCtx.fillRect(W*0.7,H*0.15,W*0.07,H*0.2);
+    sCtx.fillStyle='#808080'; sCtx.fillRect(W*0.79,H*0.15,W*0.07,H*0.2);
+    sCtx.fillStyle='#101010'; sCtx.fillRect(W*0.88,H*0.15,W*0.07,H*0.2);
+
+    // Apply adjustments via getImageData
+    const id = sCtx.getImageData(0,0,W,H);
+    const d = id.data;
+    const expMul = Math.pow(2, exposure);
+    const tMul = temp/200;
+    const tiMul = tint/200;
+
+    for (let i=0;i<d.length;i+=4) {
+      let r=d[i]/255, g=d[i+1]/255, b=d[i+2]/255;
+      // Exposure
+      r*=expMul; g*=expMul; b*=expMul;
+      // Temperature (warm/cool shift)
+      r+=tMul*0.15; b-=tMul*0.15;
+      // Tint (green/magenta)
+      g+=tiMul*0.1; r-=tiMul*0.05; b-=tiMul*0.05;
+      // Saturation
+      const lum = 0.2126*r + 0.7152*g + 0.0722*b;
+      const sf = sat/100;
+      r = lum + (r-lum)*sf;
+      g = lum + (g-lum)*sf;
+      b = lum + (b-lum)*sf;
+      d[i]=clamp(r*255,0,255);
+      d[i+1]=clamp(g*255,0,255);
+      d[i+2]=clamp(b*255,0,255);
+    }
+    sCtx.putImageData(id,0,0);
+  }
+
+  function drawWaveform(id, ctx) {
+    const W=ctx.canvas.width, H=ctx.canvas.height;
+    const sW=sourceCanvas.width, sH=sourceCanvas.height;
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle='rgba(30,30,46,0.7)'; ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){const y=H-(i/4)*H;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.fillStyle='rgba(107,107,138,0.5)'; ctx.font='8px monospace';
+    ['1023','768','512','256','0'].forEach((l,i)=>ctx.fillText(l,2,(i/4)*(H-4)+6));
+
+    ctx.strokeStyle='#d97706'; ctx.lineWidth=1;
+    ctx.shadowColor='#d97706'; ctx.shadowBlur=3;
+    ctx.beginPath();
+    const stride = Math.max(1, Math.floor(sW/W));
+    for(let xi=0;xi<W;xi++){
+      const sx=Math.floor(xi*sW/W);
+      let sumLum=0, cnt=0;
+      for(let sy=0;sy<sH;sy+=4){
+        const idx=(sy*sW+sx)*4;
+        const r=id.data[idx]/255,g=id.data[idx+1]/255,b=id.data[idx+2]/255;
+        sumLum += 0.2126*r+0.7152*g+0.0722*b;
+        cnt++;
+      }
+      const lum=sumLum/cnt;
+      const y=H-lum*(H-4)-2;
+      if(xi===0)ctx.moveTo(xi,y); else ctx.lineTo(xi,y);
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(107,107,138,0.4)'; ctx.font='8px monospace';
+    ctx.fillText('WAVEFORM',2,H-2);
+  }
+
+  function drawVectorscope(id, ctx) {
+    const W=ctx.canvas.width, H=ctx.canvas.height;
+    const cx=W/2, cy=H/2, radius=Math.min(W,H)/2-12;
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+    // Rings
+    [1,0.75,0.5,0.25].forEach(r=>{
+      ctx.strokeStyle=r===1?'rgba(30,30,46,0.8)':'rgba(30,30,46,0.4)';
+      ctx.lineWidth=r===1?1:0.5;
+      ctx.beginPath(); ctx.arc(cx,cy,radius*r,0,Math.PI*2); ctx.stroke();
+    });
+    // Axes
+    ctx.strokeStyle='rgba(107,107,138,0.4)'; ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(cx-radius,cy);ctx.lineTo(cx+radius,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy-radius);ctx.lineTo(cx,cy+radius);ctx.stroke();
+    // Skin tone line
+    ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=0.8; ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(0.44)*radius,cy+Math.sin(0.44)*radius);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(217,119,6,0.6)';ctx.font='7px monospace';
+    ctx.fillText('SKIN',cx+Math.cos(0.44)*radius*0.88,cy+Math.sin(0.44)*radius*0.88+3);
+    // Sky reference
+    ctx.fillStyle='rgba(59,130,246,0.6)';
+    ctx.fillText('SKY',cx+Math.cos(-1.2)*radius*0.6,cy+Math.sin(-1.2)*radius*0.6+3);
+
+    // Plot color dots
+    const sW=sourceCanvas.width, sH=sourceCanvas.height;
+    const step=Math.max(4,Math.floor(sH/40));
+    for(let sy=0;sy<sH;sy+=step){
+      for(let sx=0;sx<sW;sx+=step){
+        const idx=(sy*sW+sx)*4;
+        const r=id.data[idx]/255,g=id.data[idx+1]/255,b=id.data[idx+2]/255;
+        // RGB to YCbCr approximation
+        const Y=0.299*r+0.587*g+0.114*b;
+        const Cb=-0.169*r-0.331*g+0.5*b;
+        const Cr=0.5*r-0.419*g-0.081*b;
+        const px=cx+Cb*radius*1.6;
+        const py=cy-Cr*radius*1.6;
+        ctx.beginPath();ctx.arc(px,py,1.2,0,Math.PI*2);
+        ctx.fillStyle=`rgba(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)},0.5)`;
+        ctx.fill();
+      }
+    }
+    ctx.fillStyle='rgba(107,107,138,0.4)';ctx.font='8px monospace';
+    ctx.fillText('VECTORSCOPE',2,H-2);
+  }
+
+  function drawParade(id, ctx) {
+    const W=ctx.canvas.width, H=ctx.canvas.height;
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+    const cW=Math.floor(W/3)-4;
+    const sW=sourceCanvas.width, sH=sourceCanvas.height;
+    const channels=[
+      {name:'R',col:'#dc2626',off:0,idx:0},
+      {name:'G',col:'#34d399',off:Math.floor(W/3)+2,idx:1},
+      {name:'B',col:'#3b82f6',off:Math.floor(W*2/3)+4,idx:2},
+    ];
+    channels.forEach(ch=>{
+      const x0=ch.off;
+      ctx.strokeStyle='rgba(30,30,46,0.5)';ctx.lineWidth=0.5;
+      for(let i=0;i<=4;i++){const y=H-(i/4)*(H-4)-2;ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x0+cW,y);ctx.stroke();}
+      ctx.strokeStyle=ch.col;ctx.lineWidth=1;
+      ctx.shadowColor=ch.col;ctx.shadowBlur=3;
+      ctx.beginPath();
+      for(let xi=0;xi<cW;xi++){
+        const sx=Math.floor(xi*sW/cW);
+        let sum=0,cnt=0;
+        for(let sy=0;sy<sH;sy+=4){
+          const i2=(sy*sW+sx)*4;
+          sum+=id.data[i2+ch.idx]/255;cnt++;
+        }
+        const val=sum/cnt;
+        const y=H-val*(H-4)-2;
+        if(xi===0)ctx.moveTo(x0+xi,y);else ctx.lineTo(x0+xi,y);
+      }
+      ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle=ch.col;ctx.font='8px monospace';
+      ctx.fillText(ch.name,x0+2,H-2);
+    });
+    ctx.fillStyle='rgba(107,107,138,0.4)';ctx.font='8px monospace';
+    ctx.fillText('PARADE',W/2-18,H-2);
+  }
+
+  function drawHistogram(id, ctx) {
+    const W=ctx.canvas.width, H=ctx.canvas.height;
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+    const bins=new Array(256).fill(0);
+    const sW=sourceCanvas.width, sH=sourceCanvas.height;
+    for(let i=0;i<id.data.length;i+=4){
+      const r=id.data[i],g=id.data[i+1],b=id.data[i+2];
+      const lum=Math.round(0.2126*r+0.7152*g+0.0722*b);
+      bins[lum]++;
+    }
+    const maxBin=Math.max(...bins)*1.05;
+    // Gradient fill
+    const grad=ctx.createLinearGradient(0,0,W,0);
+    grad.addColorStop(0,'rgba(107,107,138,0.4)');
+    grad.addColorStop(0.5,'rgba(217,119,6,0.5)');
+    grad.addColorStop(1,'rgba(255,255,255,0.4)');
+    ctx.fillStyle=grad;
+    ctx.beginPath();ctx.moveTo(0,H);
+    for(let i=0;i<256;i++){
+      const x=(i/255)*W;
+      const y=H-(bins[i]/maxBin)*(H-4)-2;
+      ctx.lineTo(x,y);
+    }
+    ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+    // Outline
+    ctx.strokeStyle='rgba(217,119,6,0.7)';ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let i=0;i<256;i++){
+      const x=(i/255)*W;
+      const y=H-(bins[i]/maxBin)*(H-4)-2;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // Grid
+    ctx.strokeStyle='rgba(30,30,46,0.5)';ctx.lineWidth=0.5;
+    [0.25,0.5,0.75].forEach(p=>{ctx.beginPath();ctx.moveTo(p*W,0);ctx.lineTo(p*W,H);ctx.stroke();});
+    ctx.fillStyle='rgba(107,107,138,0.4)';ctx.font='8px monospace';
+    ctx.fillText('HISTOGRAM',2,H-2);
+    ['0','64','128','192','255'].forEach((l,i)=>ctx.fillText(l,i*(W-8)/4,H-10));
+  }
+
+  let scopeLastTime=null;
+  function scopeLoop(ts) {
+    if(!scopeLastTime)scopeLastTime=ts;
+    const dt=Math.min((ts-scopeLastTime)/1000,0.1);
+    scopeLastTime=ts;
+
+    const exp=lfExposure.update(expTarget,dt);
+    const tmp=lfTemp.update(tempTarget,dt);
+    const ti=lfTint.update(tintTarget,dt);
+    const sa=lfSat.update(satTarget,dt);
+
+    drawSource(exp,tmp,ti,sa);
+    const id=sCtx.getImageData(0,0,sourceCanvas.width,sourceCanvas.height);
+
+    drawWaveform(id, wCtx);
+    drawVectorscope(id, vCtx);
+    drawParade(id, pCtx);
+    drawHistogram(id, hCtx);
+
+    requestAnimationFrame(scopeLoop);
+  }
+  requestAnimationFrame(scopeLoop);
+})();
+
+// ============================================================
+// SECTION 3 — COLOR WHEEL COLORIST
+// ============================================================
+(function initWheels() {
+  const wheels = [
+    { id:'wheel-lift',  valId:'wheel-lift-val',  label:'Lift' },
+    { id:'wheel-gamma', valId:'wheel-gamma-val', label:'Gamma' },
+    { id:'wheel-gain',  valId:'wheel-gain-val',  label:'Gain' },
+  ];
+
+  // State for each wheel: hue (0-360), sat (0-1)
+  const wState = wheels.map(() => ({
+    hue:0, sat:0,
+    lfHue: new LagFilter(0.3),
+    lfSat: new LagFilter(0.3),
+  }));
+
+  const lfOffset = new LagFilter(0.3);
+  let offsetTarget = 0;
+  let showBefore = false;
+  let currentLut = null;
+
+  // LUT presets (applied to whole grade)
+  const LUT_PRESETS = {
+    'teal-orange': { lift:{h:180,s:0.5}, gamma:{h:0,s:0}, gain:{h:30,s:0.55} },
+    'bleach':      { lift:{h:0,s:0}, gamma:{h:0,s:0}, gain:{h:0,s:0}, desat:0.4, contr:1.3 },
+    'warm':        { lift:{h:30,s:0.3}, gamma:{h:35,s:0.2}, gain:{h:40,s:0.4} },
+    'cool':        { lift:{h:220,s:0.4}, gamma:{h:210,s:0.2}, gain:{h:200,s:0.3} },
+    'natural':     { lift:{h:0,s:0.05}, gamma:{h:0,s:0.05}, gain:{h:0,s:0.05} },
+  };
+
+  // Draw a single color wheel canvas
+  function drawWheel(canvas, hue, sat) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W/2, cy = H/2, R = Math.min(W,H)/2 - 6;
+    ctx.clearRect(0,0,W,H);
+
+    // Draw color ring
+    for (let a=0; a<360; a+=1) {
+      const rad = (a * Math.PI/180);
+      const [r,g,b] = hsl2rgb(a, 100, 50);
+      ctx.strokeStyle = `rgb(${r},${g},${b})`;
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.arc(cx,cy,R-4, rad, rad+Math.PI/180*2);
+      ctx.stroke();
+    }
+
+    // White center gradient
+    const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,R-4);
+    grad.addColorStop(0,'rgba(255,255,255,1)');
+    grad.addColorStop(0.6,'rgba(255,255,255,0.4)');
+    grad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx,cy,R-4,0,Math.PI*2); ctx.fill();
+
+    // Dark overlay for depth
+    const darkGrad = ctx.createRadialGradient(cx,cy,0,cx,cy,R-4);
+    darkGrad.addColorStop(0,'rgba(10,10,15,0.0)');
+    darkGrad.addColorStop(0.85,'rgba(10,10,15,0.0)');
+    darkGrad.addColorStop(1,'rgba(10,10,15,0.5)');
+    ctx.fillStyle = darkGrad;
+    ctx.beginPath(); ctx.arc(cx,cy,R-4,0,Math.PI*2); ctx.fill();
+
+    // Draw indicator dot
+    const dotRad = (hue * Math.PI/180);
+    const dotR = sat * (R - 10);
+    const dx = cx + Math.cos(dotRad) * dotR;
+    const dy = cy + Math.sin(dotRad) * dotR;
+    ctx.beginPath(); ctx.arc(dx,dy,7,0,Math.PI*2);
+    ctx.fillStyle = '#d97706';
+    ctx.shadowColor='#d97706'; ctx.shadowBlur=8;
+    ctx.fill(); ctx.shadowBlur=0;
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // Center neutral dot
+    ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.fill();
+  }
+
+  // Wire up wheel interaction
+  wheels.forEach((w, wi) => {
+    const canvas = document.getElementById(w.id);
+    if (!canvas) return;
+    const valEl = document.getElementById(w.valId);
+    let dragging = false;
+
+    function updateFromPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = canvas.width/2, cy = canvas.height/2;
+      const R = Math.min(canvas.width,canvas.height)/2 - 6;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const mx = (clientX - rect.left) * scaleX - cx;
+      const my = (clientY - rect.top) * scaleY - cy;
+      const dist = Math.sqrt(mx*mx + my*my);
+      const hue = ((Math.atan2(my,mx) * 180/Math.PI) + 360) % 360;
+      const sat = clamp(dist / (R-10), 0, 1);
+      wState[wi].hue = hue;
+      wState[wi].sat = sat;
+      if (valEl) valEl.textContent = `H:${Math.round(hue)} S:${Math.round(sat*100)}%`;
+    }
+
+    canvas.addEventListener('mousedown', e => { dragging=true; updateFromPos(e); });
+    canvas.addEventListener('mousemove', e => { if(dragging) updateFromPos(e); });
+    canvas.addEventListener('mouseup', () => dragging=false);
+    canvas.addEventListener('mouseleave', () => dragging=false);
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); dragging=true; updateFromPos(e); }, {passive:false});
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if(dragging)updateFromPos(e); }, {passive:false});
+    canvas.addEventListener('touchend', () => dragging=false);
+  });
+
+  // Master offset slider
+  const offsetSlider = document.getElementById('master-offset');
+  const offsetVal = document.getElementById('master-offset-val');
+  if (offsetSlider) {
+    offsetSlider.addEventListener('input', e => {
+      offsetTarget = parseFloat(e.target.value);
+      if (offsetVal) offsetVal.textContent = offsetTarget.toFixed(2);
+    });
+  }
+
+  // LUT preset buttons
+  document.querySelectorAll('#wheels .lut-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lk = btn.dataset.lut;
+      document.querySelectorAll('#wheels .lut-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const preset = LUT_PRESETS[lk];
+      if (preset) {
+        wState[0].hue = preset.lift.h; wState[0].sat = preset.lift.s;
+        wState[1].hue = preset.gamma.h; wState[1].sat = preset.gamma.s;
+        wState[2].hue = preset.gain.h; wState[2].sat = preset.gain.s;
+        currentLut = preset;
+        ['lift','gamma','gain'].forEach((n,i)=>{
+          const v=document.getElementById('wheel-'+n+'-val');
+          if(v) v.textContent=`H:${Math.round(wState[i].hue)} S:${Math.round(wState[i].sat*100)}%`;
+        });
+      }
+    });
+  });
+
+  // Before/After toggle
+  const toggleBtn = document.getElementById('toggle-ba');
+  const previewLabel = document.getElementById('preview-label');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      showBefore = !showBefore;
+      if (previewLabel) previewLabel.textContent = showBefore ? 'BEFORE (ORIGINAL)' : 'GRADE PREVIEW';
+    });
+  }
+
+  // Draw synthetic film scene
+  function drawScene(ctx, W, H, liftH, liftS, gammaH, gammaS, gainH, gainS, offset) {
+    ctx.clearRect(0,0,W,H);
+
+    // Sky zone
+    const skyGrad = ctx.createLinearGradient(0,0,0,H*0.5);
+    skyGrad.addColorStop(0,'#1a3d6e');
+    skyGrad.addColorStop(1,'#3a7fd4');
+    ctx.fillStyle = skyGrad; ctx.fillRect(0,0,W,H*0.5);
+
+    // Ground
+    ctx.fillStyle = '#2a5a18'; ctx.fillRect(0,H*0.5,W,H*0.5);
+
+    // Subject (skin) zone
+    ctx.fillStyle = '#b86030'; ctx.fillRect(W*0.35,H*0.1,W*0.15,H*0.55);
+
+    // Shadow area
+    ctx.fillStyle = '#101820'; ctx.fillRect(W*0.8,H*0.1,W*0.18,H*0.65);
+
+    // Gray card
+    ctx.fillStyle = '#808080'; ctx.fillRect(W*0.02,H*0.1,W*0.1,H*0.2);
+
+    // Apply color grade via image data
+    const id = ctx.getImageData(0,0,W,H);
+    const d = id.data;
+
+    // Convert wheel hue/sat to RGB tint multipliers
+    function wheelToRGB(h, s, label) {
+      if (s < 0.01) return [1,1,1];
+      const [r,g,b] = hsl2rgb(h, 80, 50);
+      const base = 1 + s * 0.4;
+      return [
+        1 + (r/255 - 0.5) * s * 0.6,
+        1 + (g/255 - 0.5) * s * 0.6,
+        1 + (b/255 - 0.5) * s * 0.6,
+      ];
+    }
+
+    const liftMul = wheelToRGB(liftH, liftS, 'lift');
+    const gammaMul = wheelToRGB(gammaH, gammaS, 'gamma');
+    const gainMul = wheelToRGB(gainH, gainS, 'gain');
+
+    for (let i=0;i<d.length;i+=4) {
+      let r=d[i]/255, g=d[i+1]/255, b=d[i+2]/255;
+      const lum = 0.2126*r + 0.7152*g + 0.0722*b;
+
+      // Lift affects shadows
+      const liftW = Math.max(0, 1 - lum*2);
+      r += (liftMul[0]-1)*liftW + 0.08*liftS*liftW;
+      g += (liftMul[1]-1)*liftW + 0.08*liftS*liftW;
+      b += (liftMul[2]-1)*liftW + 0.08*liftS*liftW;
+
+      // Gamma affects midtones
+      const gammaW = Math.max(0, 1 - Math.abs(lum-0.5)*2.5);
+      r += (gammaMul[0]-1)*gammaW;
+      g += (gammaMul[1]-1)*gammaW;
+      b += (gammaMul[2]-1)*gammaW;
+
+      // Gain affects highlights
+      const gainW = Math.max(0, lum*2-1);
+      r += (gainMul[0]-1)*gainW;
+      g += (gainMul[1]-1)*gainW;
+      b += (gainMul[2]-1)*gainW;
+
+      // Master offset
+      r+=offset; g+=offset; b+=offset;
+
+      // Bleach bypass desaturation (if LUT has it)
+      if (currentLut && currentLut.desat) {
+        const gl = 0.2126*r+0.7152*g+0.0722*b;
+        const ds = currentLut.desat;
+        r=r*(1-ds)+gl*ds; g=g*(1-ds)+gl*ds; b=b*(1-ds)+gl*ds;
+      }
+      if (currentLut && currentLut.contr) {
+        const c=currentLut.contr;
+        r=(r-0.5)*c+0.5; g=(g-0.5)*c+0.5; b=(b-0.5)*c+0.5;
+      }
+
+      d[i]=clamp(r*255,0,255);
+      d[i+1]=clamp(g*255,0,255);
+      d[i+2]=clamp(b*255,0,255);
+    }
+    ctx.putImageData(id,0,0);
+  }
+
+  function drawGradeWaveform(src, ctx) {
+    const W=ctx.canvas.width, H=ctx.canvas.height;
+    ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(30,30,46,0.5)';ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){const y=(i/4)*H;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    const sW=src.width, sH=src.height;
+    const sCtx=src.getContext('2d');
+    const id=sCtx.getImageData(0,0,sW,sH);
+    ctx.strokeStyle='#d97706';ctx.lineWidth=1;
+    ctx.shadowColor='#d97706';ctx.shadowBlur=3;
+    ctx.beginPath();
+    for(let xi=0;xi<W;xi++){
+      const sx=Math.floor(xi*sW/W);
+      let sum=0,cnt=0;
+      for(let sy=0;sy<sH;sy+=3){
+        const i2=(sy*sW+sx)*4;
+        sum+=(0.2126*id.data[i2]+0.7152*id.data[i2+1]+0.0722*id.data[i2+2])/255;
+        cnt++;
+      }
+      const y=H-(sum/cnt)*(H-4)-2;
+      if(xi===0)ctx.moveTo(xi,y);else ctx.lineTo(xi,y);
+    }
+    ctx.stroke();ctx.shadowBlur=0;
+  }
+
+  const gradeCanvas = document.getElementById('grade-preview');
+  const gradeWfCanvas = document.getElementById('grade-waveform');
+  const offscreenGrade = document.createElement('canvas');
+  offscreenGrade.width=540; offscreenGrade.height=270;
+  const offscreenOrig = document.createElement('canvas');
+  offscreenOrig.width=540; offscreenOrig.height=270;
+
+  // Draw ungraded version once
+  drawScene(offscreenOrig.getContext('2d'),540,270,0,0,0,0,0,0,0);
+
+  let wheelLastTime=null;
+  function wheelsLoop(ts) {
+    if(!wheelLastTime)wheelLastTime=ts;
+    const dt=Math.min((ts-wheelLastTime)/1000,0.1);
+    wheelLastTime=ts;
+
+    const offset = lfOffset.update(offsetTarget, dt);
+
+    // Draw and smooth wheels
+    wheels.forEach((w, wi) => {
+      const canvas = document.getElementById(w.id);
+      if(!canvas) return;
+      const sh = wState[wi].hue;
+      const ss = wState[wi].sat;
+      const smoothH = wState[wi].lfHue.update(sh, dt);
+      const smoothS = wState[wi].lfSat.update(ss, dt);
+      drawWheel(canvas, smoothH, smoothS);
+    });
+
+    // Draw graded preview
+    if (gradeCanvas) {
+      const gCtx = gradeCanvas.getContext('2d');
+      const W=gradeCanvas.width, H=gradeCanvas.height;
+      const ls=wState[0], ms=wState[1], gs=wState[2];
+      if (showBefore) {
+        gCtx.drawImage(offscreenOrig,0,0,W,H);
+      } else {
+        drawScene(offscreenGrade.getContext('2d'),offscreenGrade.width,offscreenGrade.height,
+          wState[0].lfHue.value||0, wState[0].lfSat.value||0,
+          wState[1].lfHue.value||0, wState[1].lfSat.value||0,
+          wState[2].lfHue.value||0, wState[2].lfSat.value||0,
+          offset);
+        gCtx.drawImage(offscreenGrade,0,0,W,H);
+      }
+    }
+
+    if (gradeWfCanvas) {
+      drawGradeWaveform(showBefore ? offscreenOrig : offscreenGrade, gradeWfCanvas.getContext('2d'));
+    }
+
+    requestAnimationFrame(wheelsLoop);
+  }
+  requestAnimationFrame(wheelsLoop);
+})();
+
+// ============================================================
+// SECTION 4 — NODE GRAPH BUILDER
+// ============================================================
+(function initNodeGraph() {
+  const canvas = document.getElementById('node-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('node-canvas-wrap');
+
+  const NODE_TYPES = {
+    Serial:    { col:'#d97706', icon:'S', desc:'Serial correction node' },
+    Parallel:  { col:'#3b82f6', icon:'P', desc:'Parallel blend node' },
+    Layer:     { col:'#8b5cf6', icon:'L', desc:'Layer composite node' },
+    Outside:   { col:'#dc2626', icon:'O', desc:'Outside/inverse node' },
+    Corrector: { col:'#34d399', icon:'C', desc:'Basic grade corrector' },
+  };
+
+  const NODE_W = 100, NODE_H = 58;
+
+  let nodes = [];
+  let cables = [];
+  let pendingPort = null; // {nodeIdx, type:'out'|'in'}
+  let draggingNode = null; // {idx, offX, offY}
+  let signalDots = []; // {cableIdx, t, speed}
+  const lfDots = [];
+
+  // Preset graphs
+  const PRESETS = {
+    basic: [
+      {type:'Serial', x:60,  y:150, hue:0,  sat:0.3, label:'Primary'},
+      {type:'Serial', x:220, y:150, hue:30, sat:0.4, label:'Contrast'},
+      {type:'Serial', x:380, y:150, hue:210,sat:0.3, label:'Color'},
+    ],
+    power: [
+      {type:'Serial',    x:60,  y:150, hue:0,   sat:0.2, label:'Primary'},
+      {type:'Corrector', x:220, y:80,  hue:30,  sat:0.5, label:'Window'},
+      {type:'Outside',   x:220, y:230, hue:210, sat:0.3, label:'Outside'},
+      {type:'Serial',    x:400, y:150, hue:0,   sat:0.2, label:'Final'},
+    ],
+    log: [
+      {type:'Corrector', x:60,  y:150, hue:35,  sat:0.2, label:'Log Input'},
+      {type:'Layer',     x:220, y:150, hue:0,   sat:0.0, label:'LUT Apply'},
+      {type:'Serial',    x:380, y:150, hue:25,  sat:0.4, label:'Trim'},
+      {type:'Serial',    x:540, y:150, hue:0,   sat:0.1, label:'Output'},
+    ],
+    skin: [
+      {type:'Serial',    x:60,  y:150, hue:0,   sat:0.2, label:'Primary'},
+      {type:'Corrector', x:220, y:80,  hue:25,  sat:0.6, label:'Skin'},
+      {type:'Corrector', x:220, y:230, hue:210, sat:0.5, label:'Sky'},
+      {type:'Parallel',  x:400, y:150, hue:0,   sat:0.1, label:'Merge'},
+      {type:'Serial',    x:560, y:150, hue:0,   sat:0.15, label:'Final'},
+    ],
+  };
+
+  const PRESET_CABLES = {
+    basic: [[0,1],[1,2]],
+    power: [[0,1],[0,2],[1,3],[2,3]],
+    log:   [[0,1],[1,2],[2,3]],
+    skin:  [[0,1],[0,2],[1,3],[2,3],[3,4]],
+  };
+
+  function loadPreset(key) {
+    const p = PRESETS[key];
+    const c = PRESET_CABLES[key];
+    if (!p) return;
+    nodes = p.map((n,i) => ({
+      ...n, idx:i,
+      lfX: new LagFilter(0.5), lfY: new LagFilter(0.5),
+      lfHue: new LagFilter(0.4), lfSat: new LagFilter(0.4),
+    }));
+    cables = (c||[]).map(([a,b]) => ({from:a, to:b, lfT: new LagFilter(0.3)}));
+    signalDots = cables.map((_,i) => ({cableIdx:i, t:Math.random(), speed:0.15+Math.random()*0.1}));
+    document.querySelectorAll('.graph-btn').forEach(b=>b.classList.remove('active'));
+    const btn=document.querySelector(`.graph-btn[data-graph="${key}"]`);
+    if(btn)btn.classList.add('active');
+  }
+
+  // Drag from palette
+  document.querySelectorAll('.node-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('nodeType', chip.dataset.type);
+    });
+  });
+
+  const wrapEl = document.getElementById('node-canvas-wrap');
+  if (wrapEl) {
+    wrapEl.addEventListener('dragover', e => e.preventDefault());
+    wrapEl.addEventListener('drop', e => {
+      e.preventDefault();
+      const type = e.dataTransfer.getData('nodeType');
+      if (!type) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX - NODE_W/2;
+      const y = (e.clientY - rect.top) * scaleY - NODE_H/2;
+      nodes.push({
+        type, x: clamp(x,10,canvas.width-NODE_W-10),
+        y: clamp(y,10,canvas.height-NODE_H-10),
+        hue: Math.random()*360, sat: 0.3+Math.random()*0.4,
+        label: type, idx: nodes.length,
+        lfX: new LagFilter(0.5), lfY: new LagFilter(0.5),
+        lfHue: new LagFilter(0.4), lfSat: new LagFilter(0.4),
+      });
+    });
+  }
+
+  // Mouse interaction for node dragging and port clicking
+  let mouseX=0, mouseY=0;
+  canvas.addEventListener('mousedown', e => {
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(canvas.width/rect.width);
+    const my=(e.clientY-rect.top)*(canvas.height/rect.height);
+    // Check ports first
+    for(let i=0;i<nodes.length;i++){
+      const n=nodes[i];
+      const nx=n.lfX.value||n.x, ny=n.lfY.value||n.y;
+      const outX=nx+NODE_W, outY=ny+NODE_H/2;
+      const inX=nx, inY=ny+NODE_H/2;
+      if(Math.hypot(mx-outX,my-outY)<8){
+        pendingPort={nodeIdx:i,type:'out',x:outX,y:outY}; return;
+      }
+      if(Math.hypot(mx-inX,my-inY)<8 && pendingPort && pendingPort.type==='out' && pendingPort.nodeIdx!==i){
+        cables.push({from:pendingPort.nodeIdx,to:i,lfT:new LagFilter(0.3)});
+        signalDots.push({cableIdx:cables.length-1,t:Math.random(),speed:0.15+Math.random()*0.1});
+        pendingPort=null; return;
+      }
+    }
+    pendingPort=null;
+    // Check node body drag
+    for(let i=nodes.length-1;i>=0;i--){
+      const n=nodes[i];
+      const nx=n.lfX.value||n.x, ny=n.lfY.value||n.y;
+      if(mx>=nx&&mx<=nx+NODE_W&&my>=ny&&my<=ny+NODE_H){
+        draggingNode={idx:i,offX:mx-nx,offY:my-ny}; return;
+      }
+    }
+  });
+  canvas.addEventListener('mousemove', e => {
+    const rect=canvas.getBoundingClientRect();
+    mouseX=(e.clientX-rect.left)*(canvas.width/rect.width);
+    mouseY=(e.clientY-rect.top)*(canvas.height/rect.height);
+    if(draggingNode){
+      nodes[draggingNode.idx].x=clamp(mouseX-draggingNode.offX,10,canvas.width-NODE_W-10);
+      nodes[draggingNode.idx].y=clamp(mouseY-draggingNode.offY,10,canvas.height-NODE_H-10);
+    }
+  });
+  canvas.addEventListener('mouseup', () => { draggingNode=null; });
+
+  document.querySelectorAll('.graph-btn').forEach(btn => {
+    btn.addEventListener('click', () => loadPreset(btn.dataset.graph));
+  });
+
+  // Draw cable between two points (bezier)
+  function drawCable(x1,y1,x2,y2,col,alpha) {
+    const dx=(x2-x1)*0.5;
+    ctx.strokeStyle=`rgba(${col},${alpha})`;
+    ctx.lineWidth=1.8;
+    ctx.shadowColor=`rgba(${col},0.4)`;
+    ctx.shadowBlur=4;
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.bezierCurveTo(x1+dx,y1,x2-dx,y2,x2,y2);
+    ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+
+  // Draw signal dot along cable
+  function dotOnBezier(t,x1,y1,x2,y2) {
+    const dx=(x2-x1)*0.5;
+    const mt=1-t;
+    const cx1=x1+dx, cx2=x2-dx;
+    const x=mt*mt*mt*x1+3*mt*mt*t*cx1+3*mt*t*t*cx2+t*t*t*x2;
+    const y=mt*mt*mt*y1+3*mt*mt*t*y1+3*mt*t*t*y2+t*t*t*y2;
+    return {x,y};
+  }
+
+  function drawNode(n, dt) {
+    const nx = n.lfX.update(n.x, dt);
+    const ny = n.lfY.update(n.y, dt);
+    const nh = n.lfHue.update(n.hue, dt);
+    const ns = n.lfSat.update(n.sat, dt);
+    const nt = NODE_TYPES[n.type];
+    const [r,g,b] = hsl2rgb(nh, 70, 45);
+    const colStr = `rgb(${r},${g},${b})`;
+
+    // Node body
+    ctx.fillStyle = '#111118';
+    ctx.strokeStyle = colStr;
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = colStr; ctx.shadowBlur = ns*12;
+    roundRect(ctx, nx, ny, NODE_W, NODE_H, 5);
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
+
+    // Type icon circle
+    ctx.fillStyle = colStr;
+    ctx.beginPath(); ctx.arc(nx+14,ny+14,8,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 9px monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(nt.icon, nx+14, ny+14);
+
+    // Label
+    ctx.fillStyle='rgba(226,226,240,0.9)'; ctx.font='10px monospace';
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(n.label||n.type, nx+26, ny+8);
+
+    // Saturation bar
+    ctx.fillStyle='rgba(30,30,46,0.8)';
+    ctx.fillRect(nx+8, ny+36, NODE_W-16, 6);
+    ctx.fillStyle=colStr;
+    ctx.fillRect(nx+8, ny+36, (NODE_W-16)*ns, 6);
+
+    // Out port (right)
+    ctx.beginPath(); ctx.arc(nx+NODE_W, ny+NODE_H/2, 5, 0, Math.PI*2);
+    ctx.fillStyle=colStr; ctx.strokeStyle='#111'; ctx.lineWidth=1.5;
+    ctx.fill(); ctx.stroke();
+
+    // In port (left)
+    ctx.beginPath(); ctx.arc(nx, ny+NODE_H/2, 5, 0, Math.PI*2);
+    ctx.fillStyle='#1e1e2e'; ctx.strokeStyle=colStr; ctx.lineWidth=1.5;
+    ctx.fill(); ctx.stroke();
+  }
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+  }
+
+  let nodeLastTime=null;
+  function nodeLoop(ts) {
+    if(!nodeLastTime)nodeLastTime=ts;
+    const dt=Math.min((ts-nodeLastTime)/1000,0.1);
+    nodeLastTime=ts;
+
+    const W=canvas.width,H=canvas.height;
+    ctx.fillStyle='rgba(10,10,15,0.15)';
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='rgba(30,30,46,0.3)'; ctx.lineWidth=0.5;
+    for(let xi=0;xi<W;xi+=40){ctx.beginPath();ctx.moveTo(xi,0);ctx.lineTo(xi,H);ctx.stroke();}
+    for(let yi=0;yi<H;yi+=40){ctx.beginPath();ctx.moveTo(0,yi);ctx.lineTo(W,yi);ctx.stroke();}
+
+    // Draw cables
+    cables.forEach((cable,ci) => {
+      const fn=nodes[cable.from],tn=nodes[cable.to];
+      if(!fn||!tn)return;
+      const x1=(fn.lfX.value||fn.x)+NODE_W, y1=(fn.lfY.value||fn.y)+NODE_H/2;
+      const x2=(tn.lfX.value||tn.x),         y2=(tn.lfY.value||tn.y)+NODE_H/2;
+      const nt=NODE_TYPES[fn.type];
+      const [r,g,b]=hsl2rgb(fn.hue,70,45);
+      drawCable(x1,y1,x2,y2,`${r},${g},${b}`,0.7);
+    });
+
+    // Signal dots along cables
+    signalDots.forEach(dot => {
+      const cable=cables[dot.cableIdx];
+      if(!cable)return;
+      const fn=nodes[cable.from],tn=nodes[cable.to];
+      if(!fn||!tn)return;
+      dot.t=(dot.t+dot.speed*dt)%1;
+      const x1=(fn.lfX.value||fn.x)+NODE_W, y1=(fn.lfY.value||fn.y)+NODE_H/2;
+      const x2=(tn.lfX.value||tn.x),         y2=(tn.lfY.value||tn.y)+NODE_H/2;
+      const dx=(x2-x1)*0.5;
+      const mt=1-dot.t,t=dot.t;
+      const px=mt*mt*mt*x1+3*mt*mt*t*(x1+dx)+3*mt*t*t*(x2-dx)+t*t*t*x2;
+      const py=mt*mt*mt*y1+3*mt*mt*t*y1+3*mt*t*t*y2+t*t*t*y2;
+      const [r,g,b]=hsl2rgb(fn.hue,80,60);
+      ctx.beginPath(); ctx.arc(px,py,3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${r},${g},${b},0.9)`;
+      ctx.shadowColor=`rgb(${r},${g},${b})`; ctx.shadowBlur=6;
+      ctx.fill(); ctx.shadowBlur=0;
+    });
+
+    // Pending port wire
+    if(pendingPort){
+      const fn=nodes[pendingPort.nodeIdx];
+      const x1=(fn.lfX.value||fn.x)+NODE_W,y1=(fn.lfY.value||fn.y)+NODE_H/2;
+      drawCable(x1,y1,mouseX,mouseY,'217,119,6',0.5);
+    }
+
+    // Draw nodes
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    nodes.forEach(n => drawNode(n, dt));
+
+    // Empty state hint
+    if(nodes.length===0){
+      ctx.fillStyle='rgba(107,107,138,0.4)';
+      ctx.font='13px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('Drag node types here, or click a preset below',W/2,H/2);
+    }
+
+    requestAnimationFrame(nodeLoop);
+  }
+
+  loadPreset('basic');
+  requestAnimationFrame(nodeLoop);
+})();
+
+// ============================================================
+// SECTION 5 — LUT MUSEUM
+// ============================================================
+(function initLutMuseum() {
+  const LUT_DEFS = [
+    { name:'Kodak 2383',  fn: (r,g,b) => [r*0.95+0.02, g*0.9+0.03, b*0.8+0.04] },
+    { name:'Fuji 3510',   fn: (r,g,b) => [r*1.05, g*0.98, b*0.88] },
+    { name:'Teal & Orange', fn: (r,g,b) => {
+        const l=0.2126*r+0.7152*g+0.0722*b;
+        return [l>0.5?r+(r-l)*0.6:r*(0.8), g*0.88, l<0.5?b+(b-l)*0.5:b*0.9];
+    }},
+    { name:'Bleach Bypass', fn: (r,g,b) => {
+        const l=0.2126*r+0.7152*g+0.0722*b;
+        return [(r*0.3+l*0.7)*1.1-0.05, (g*0.3+l*0.7)*1.1-0.05, (b*0.3+l*0.7)*1.05-0.05];
+    }},
+    { name:'Tobacco',     fn: (r,g,b) => [r*1.1, g*0.95, b*0.7] },
+    { name:'Day for Night', fn: (r,g,b) => [r*0.6, g*0.65, b*0.9] },
+    { name:'Neon Noir',   fn: (r,g,b) => {
+        const l=0.2126*r+0.7152*g+0.0722*b;
+        return [l*0.3+r*0.4, l*0.2+g*0.3, l*0.6+b*0.8];
+    }},
+    { name:'Log Conversion', fn: (r,g,b) => {
+        const lc = v => Math.pow(clamp(v,0,1),0.45)*1.1;
+        return [lc(r), lc(g), lc(b)];
+    }},
+    { name:'Vintage Desat', fn: (r,g,b) => {
+        const l=0.2126*r+0.7152*g+0.0722*b;
+        return [r*0.5+l*0.5+0.03, g*0.5+l*0.5+0.01, b*0.4+l*0.6-0.02];
+    }},
+    { name:'Golden Hour', fn: (r,g,b) => [r*1.15+0.04, g*1.0+0.02, b*0.7] },
+    { name:'Blue Steel',  fn: (r,g,b) => [r*0.8, g*0.88, b*1.15] },
+    { name:'Horror Night', fn: (r,g,b) => {
+        const l=0.2126*r+0.7152*g+0.0722*b;
+        return [l*0.4+0.05, l*0.5, l*0.3+b*0.5];
+    }},
+  ];
+
+  let selectedLut = 0;
+  const lfIntensity = new LagFilter(0.3);
+  let intensityTarget = 1.0;
+
+  // Draw synthetic LOG source image
+  function drawLogSource(ctx, W, H) {
+    ctx.clearRect(0,0,W,H);
+    // Flat LOG-style gradient
+    const grad = ctx.createLinearGradient(0,0,W,0);
+    grad.addColorStop(0,'#1a1a2a'); grad.addColorStop(0.3,'#3a5a4a');
+    grad.addColorStop(0.6,'#5a4a3a'); grad.addColorStop(1,'#4a3a5a');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+    // Sky
+    ctx.fillStyle='#2a3a4a'; ctx.fillRect(0,0,W,H*0.4);
+    // Ground
+    ctx.fillStyle='#2a3a2a'; ctx.fillRect(0,H*0.4,W,H*0.6);
+    // Subject silhouette
+    ctx.fillStyle='#4a3a2a'; ctx.fillRect(W*0.35,H*0.1,W*0.15,H*0.6);
+    // Patches
+    const flatCols=['#3a2020','#3a3020','#203a20','#202a3a','#302040','#302030'];
+    flatCols.forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(i*(W/6),H*0.7,W/6,H*0.3);});
+    // Chip row
+    ctx.fillStyle='#505050'; ctx.fillRect(W*0.7,H*0.1,W*0.08,H*0.2);
+    ctx.fillStyle='#303030'; ctx.fillRect(W*0.8,H*0.1,W*0.08,H*0.2);
+    ctx.fillStyle='#181818'; ctx.fillRect(W*0.9,H*0.1,W*0.08,H*0.2);
+  }
+
+  function applyLut(srcCtx, dstCtx, W, H, lutFn, intensity) {
+    const id = srcCtx.getImageData(0,0,W,H);
+    const out = new ImageData(W,H);
+    for(let i=0;i<id.data.length;i+=4){
+      const r=id.data[i]/255,g=id.data[i+1]/255,b=id.data[i+2]/255;
+      const [lr,lg,lb]=lutFn(r,g,b);
+      out.data[i]   = clamp((r*(1-intensity)+clamp(lr,0,1)*intensity)*255,0,255);
+      out.data[i+1] = clamp((g*(1-intensity)+clamp(lg,0,1)*intensity)*255,0,255);
+      out.data[i+2] = clamp((b*(1-intensity)+clamp(lb,0,1)*intensity)*255,0,255);
+      out.data[i+3] = 255;
+    }
+    dstCtx.putImageData(out,0,0);
+  }
+
+  // Build LUT grid
+  const grid = document.getElementById('lut-grid');
+  if (!grid) return;
+
+  const srcOffscreen = document.createElement('canvas');
+  srcOffscreen.width=160; srcOffscreen.height=90;
+  drawLogSource(srcOffscreen.getContext('2d'),160,90);
+
+  LUT_DEFS.forEach((lut,i) => {
+    const card = document.createElement('div');
+    card.className = 'lut-card' + (i===0?' selected':'');
+    const thumbC = document.createElement('canvas');
+    thumbC.width=160; thumbC.height=60;
+    // Draw thumbnail
+    const tc=thumbC.getContext('2d');
+    const tsrc=document.createElement('canvas');
+    tsrc.width=160;tsrc.height=60;
+    drawLogSource(tsrc.getContext('2d'),160,60);
+    applyLut(tsrc.getContext('2d'),tc,160,60,lut.fn,1.0);
+    card.appendChild(thumbC);
+    const label=document.createElement('div');
+    label.className='lut-card-name'; label.textContent=lut.name;
+    card.appendChild(label);
+    card.addEventListener('click',()=>{
+      selectedLut=i;
+      document.querySelectorAll('.lut-card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+    grid.appendChild(card);
+  });
+
+  // Intensity slider
+  const intSlider = document.getElementById('lut-intensity');
+  const intVal = document.getElementById('lut-intensity-val');
+  if (intSlider) {
+    intSlider.addEventListener('input', e => {
+      intensityTarget = parseInt(e.target.value)/100;
+      if(intVal) intVal.textContent = e.target.value+'%';
+    });
+  }
+
+  // Before/after canvases
+  const beforeC = document.getElementById('lut-before');
+  const afterC  = document.getElementById('lut-after');
+  if (!beforeC||!afterC) return;
+
+  // Draw source once into before canvas
+  const bCtx=beforeC.getContext('2d');
+  drawLogSource(bCtx,beforeC.width,beforeC.height);
+
+  const srcBig=document.createElement('canvas');
+  srcBig.width=500;srcBig.height=281;
+  drawLogSource(srcBig.getContext('2d'),500,281);
+
+  let lutLastTime=null;
+  function lutLoop(ts){
+    if(!lutLastTime)lutLastTime=ts;
+    const dt=Math.min((ts-lutLastTime)/1000,0.1);
+    lutLastTime=ts;
+    const intensity=lfIntensity.update(intensityTarget,dt);
+    const aCtx=afterC.getContext('2d');
+    applyLut(srcBig.getContext('2d'),aCtx,afterC.width,afterC.height,LUT_DEFS[selectedLut].fn,intensity);
+    requestAnimationFrame(lutLoop);
+  }
+  requestAnimationFrame(lutLoop);
+})();
+
+// ============================================================
+// SECTION 6 — FILM LOOK GENERATOR
+// ============================================================
+(function initFilmLook() {
+  const STEPS = [
+    { id:'step-log',      name:'LOG Input',        desc:'Flat, desaturated camera original' },
+    { id:'step-lut',      name:'LUT Conversion',   desc:'Apply log-to-display curve' },
+    { id:'step-lift',     name:'Shadow Lift',       desc:'Raise blacks for film base' },
+    { id:'step-rolloff',  name:'Highlight Rolloff', desc:'Compress highlights gracefully' },
+    { id:'step-grain',    name:'Film Grain',        desc:'Procedural grain overlay' },
+  ];
+
+  const FILM_STOCKS = [
+    { name:'Kodak Vision3', warm:0.08, sat:1.1,  contrast:1.05, lift:0.02, grain:0.04 },
+    { name:'Fuji Velvia',   warm:0.04, sat:1.3,  contrast:1.1,  lift:0.01, grain:0.02 },
+    { name:'Agfa Vista',    warm:0.06, sat:1.05, contrast:1.0,  lift:0.03, grain:0.05 },
+    { name:'Ilford HP5',    warm:0.0,  sat:0.0,  contrast:1.15, lift:0.04, grain:0.07 },
+    { name:'Polaroid',      warm:0.1,  sat:0.8,  contrast:0.9,  lift:0.08, grain:0.06 },
+    { name:'Cinestill 800T',warm:-0.05,sat:1.0,  contrast:1.05, lift:0.03, grain:0.08 },
+  ];
+
+  // Step state
+  const stepState = STEPS.map((s,i)=>({
+    enabled: true,
+    intensity: 1.0,
+    lfIntensity: new LagFilter(0.3),
+    target: 1.0,
+  }));
+  let currentStock = 0;
+
+  // Build pipeline UI
+  const pipeWrap = document.getElementById('pipeline-wrap');
+  if (!pipeWrap) return;
+
+  STEPS.forEach((step,i) => {
+    if (i>0) {
+      const arr=document.createElement('div');
+      arr.className='pipeline-arrow'; arr.textContent='▶';
+      pipeWrap.appendChild(arr);
+    }
+    const div=document.createElement('div');
+    div.className='pipeline-step active';
+    div.innerHTML=`
+      <div class="step-num">Step ${i+1}</div>
+      <div class="step-name">${step.name}</div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:6px">${step.desc}</div>
+      <div class="step-toggle">
+        <input type="checkbox" id="${step.id}-chk" checked>
+        <label for="${step.id}-chk">Active</label>
+      </div>
+      <div class="step-intensity">
+        <label>Intensity</label>
+        <input type="range" id="${step.id}-int" min="0" max="100" value="100">
+      </div>`;
+    pipeWrap.appendChild(div);
+
+    const chk=div.querySelector(`#${step.id}-chk`);
+    const inr=div.querySelector(`#${step.id}-int`);
+    chk.addEventListener('change',()=>{
+      stepState[i].enabled=chk.checked;
+      div.classList.toggle('active',chk.checked);
+      div.classList.toggle('disabled',!chk.checked);
+    });
+    inr.addEventListener('input',()=>{ stepState[i].target=parseInt(inr.value)/100; });
+  });
+
+  // Film stock buttons
+  const stockWrap=document.getElementById('film-stocks');
+  if(stockWrap){
+    FILM_STOCKS.forEach((fs,i)=>{
+      const btn=document.createElement('button');
+      btn.className='stock-btn'+(i===0?' active':'');
+      btn.textContent=fs.name;
+      btn.addEventListener('click',()=>{
+        currentStock=i;
+        document.querySelectorAll('.stock-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+      stockWrap.appendChild(btn);
+    });
+  }
+
+  // Export button
+  const exportBtn=document.getElementById('export-film-btn');
+  const filmCanvas=document.getElementById('film-preview');
+  if(exportBtn&&filmCanvas){
+    exportBtn.addEventListener('click',()=>{
+      const link=document.createElement('a');
+      link.download='film_look.png';
+      link.href=filmCanvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  if(!filmCanvas)return;
+  const filmCtx=filmCanvas.getContext('2d');
+  const W=filmCanvas.width,H=filmCanvas.height;
+
+  // Source scene for film look
+  function drawFilmSource(ctx,W,H){
+    ctx.clearRect(0,0,W,H);
+    const skyG=ctx.createLinearGradient(0,0,0,H*0.45);
+    skyG.addColorStop(0,'#1a3560'); skyG.addColorStop(1,'#4890d0');
+    ctx.fillStyle=skyG; ctx.fillRect(0,0,W,H*0.45);
+    const gndG=ctx.createLinearGradient(0,H*0.45,0,H);
+    gndG.addColorStop(0,'#2a5c18'); gndG.addColorStop(1,'#1a3a10');
+    ctx.fillStyle=gndG; ctx.fillRect(0,H*0.45,W,H*0.55);
+    // Subject
+    ctx.fillStyle='#b06030'; ctx.fillRect(W*0.38,H*0.1,W*0.14,H*0.56);
+    // Window lit area
+    ctx.fillStyle='rgba(255,200,100,0.15)';
+    ctx.fillRect(W*0.55,H*0.05,W*0.12,H*0.3);
+    // Shadow
+    ctx.fillStyle='#0a1018'; ctx.fillRect(W*0.78,H*0.08,W*0.18,H*0.68);
+    // Color patches
+    ['#c82020','#c87020','#20a840','#2060b8','#7030a0','#c03060'].forEach((c,i)=>{
+      ctx.fillStyle=c; ctx.fillRect(i*(W/6),H*0.75,W/6,H*0.25);
+    });
+  }
+
+  // LOG flatten
+  function applyLogFlatten(id){
+    const d=id.data;
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255;
+      const fl=v=>clamp(0.2+v*0.55,0,1);
+      d[i]=fl(r)*255; d[i+1]=fl(g)*255; d[i+2]=fl(b)*255;
+    }
+  }
+  // LUT conversion (log curve)
+  function applyLutConv(id,intensity){
+    const d=id.data;
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255;
+      const lc=v=>clamp(Math.pow(v,0.5)*1.1,0,1);
+      d[i]=(r*(1-intensity)+lc(r)*intensity)*255;
+      d[i+1]=(g*(1-intensity)+lc(g)*intensity)*255;
+      d[i+2]=(b*(1-intensity)+lc(b)*intensity)*255;
+    }
+  }
+  // Shadow lift
+  function applyShadowLift(id,intensity,liftAmt){
+    const d=id.data;
+    const lift=liftAmt*intensity;
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255;
+      const lum=0.2126*r+0.7152*g+0.0722*b;
+      const w=Math.max(0,1-lum*3)*intensity;
+      d[i]=clamp((r+lift*w)*255,0,255);
+      d[i+1]=clamp((g+lift*w)*255,0,255);
+      d[i+2]=clamp((b+lift*w)*255,0,255);
+    }
+  }
+  // Highlight rolloff
+  function applyRolloff(id,intensity){
+    const d=id.data;
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255;
+      const roll=v=>{const comp=1-v;return 1-Math.pow(comp,1/(1+intensity));};
+      d[i]=clamp((r*(1-intensity)+roll(r)*intensity)*255,0,255);
+      d[i+1]=clamp((g*(1-intensity)+roll(g)*intensity)*255,0,255);
+      d[i+2]=clamp((b*(1-intensity)+roll(b)*intensity)*255,0,255);
+    }
+  }
+  // Film grain
+  let grainSeed=0;
+  function applyGrain(id,intensity,grainAmount){
+    const d=id.data;
+    const amt=intensity*grainAmount*80;
+    for(let i=0;i<d.length;i+=4){
+      const noise=(Math.random()-0.5)*amt;
+      d[i]=clamp(d[i]+noise,0,255);
+      d[i+1]=clamp(d[i+1]+noise*0.9,0,255);
+      d[i+2]=clamp(d[i+2]+noise*0.85,0,255);
+    }
+  }
+  // Film stock color
+  function applyStock(id,stock){
+    const d=id.data;
+    const s=FILM_STOCKS[stock];
+    for(let i=0;i<d.length;i+=4){
+      let r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255;
+      // Warmth
+      r+=s.warm; b-=s.warm*0.5;
+      // Saturation
+      const lum=0.2126*r+0.7152*g+0.0722*b;
+      r=lum+(r-lum)*s.sat; g=lum+(g-lum)*s.sat; b=lum+(b-lum)*s.sat;
+      // Contrast
+      r=(r-0.5)*s.contrast+0.5; g=(g-0.5)*s.contrast+0.5; b=(b-0.5)*s.contrast+0.5;
+      d[i]=clamp(r*255,0,255); d[i+1]=clamp(g*255,0,255); d[i+2]=clamp(b*255,0,255);
+    }
+  }
+
+  const srcOff=document.createElement('canvas');
+  srcOff.width=W; srcOff.height=H;
+  drawFilmSource(srcOff.getContext('2d'),W,H);
+
+  let filmLastTime=null;
+  function filmLoop(ts){
+    if(!filmLastTime)filmLastTime=ts;
+    const dt=Math.min((ts-filmLastTime)/1000,0.1);
+    filmLastTime=ts;
+
+    // Update intensities
+    stepState.forEach(s=>{ s.intensity=s.lfIntensity.update(s.target,dt); });
+
+    // Build composited image
+    const tmp=document.createElement('canvas');
+    tmp.width=W; tmp.height=H;
+    const tCtx=tmp.getContext('2d');
+    tCtx.drawImage(srcOff,0,0);
+    const id=tCtx.getImageData(0,0,W,H);
+
+    const stock=FILM_STOCKS[currentStock];
+    if(stepState[0].enabled) applyLogFlatten(id);
+    if(stepState[1].enabled) applyLutConv(id,stepState[1].intensity);
+    if(stepState[2].enabled) applyShadowLift(id,stepState[2].intensity,stock.lift);
+    if(stepState[3].enabled) applyRolloff(id,stepState[3].intensity*0.6);
+    applyStock(id,currentStock);
+    if(stepState[4].enabled) applyGrain(id,stepState[4].intensity,stock.grain);
+
+    filmCtx.putImageData(id,0,0);
+
+    // Vignette overlay
+    const vig=filmCtx.createRadialGradient(W/2,H/2,H*0.2,W/2,H/2,H*0.7);
+    vig.addColorStop(0,'rgba(0,0,0,0)');
+    vig.addColorStop(1,'rgba(0,0,0,0.35)');
+    filmCtx.fillStyle=vig; filmCtx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(filmLoop);
+  }
+  requestAnimationFrame(filmLoop);
+})();
+
+// ============================================================
+// SECTION 7 — PAGE NAVIGATOR (Isometric Tower)
+// ============================================================
+(function initPageNav() {
+  const canvas = document.getElementById('isometric-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  const PAGE_DEFS = [
+    { name:'Deliver',   col:'#dc2626', icon:'⬆', desc:'Export your project in any format — H.264, ProRes, IMF, DCP. Set render queues, custom presets, and burn-ins.', tools:['Render Queue','Custom Presets','IMF/DCP','Burn-Ins'], workflow:'Final step: configure delivery settings and submit to render.' },
+    { name:'Fairlight', col:'#8b5cf6', icon:'♪', desc:'Professional DAW built into Resolve. ADR, noise reduction, Foley, mix bus processing, and Atmos support.', tools:['ADR','Noise Reduction','Mix Bus','Atmos'], workflow:'Step 5: audio finishing and dialogue cleanup.' },
+    { name:'Color',     col:'#34d399', icon:'◑', desc:'The industry-standard color grading environment. Nodes, scopes, qualifiers, power windows, OpenFX.', tools:['Node Tree','Scopes','Qualifier','OpenFX'], workflow:'Step 4: primary and secondary color correction.' },
+    { name:'Fusion',    col:'#3b82f6', icon:'✦', desc:'Node-based 2D/3D compositing, keying, tracking, particle effects, and motion graphics pipeline.', tools:['Compositor','3D Space','Keyer','Tracker'], workflow:'Step 3: VFX, compositing, and motion graphics.' },
+    { name:'Edit',      col:'#d97706', icon:'✂', desc:'Full-featured timeline editor. Multicam, magnetic timeline, speed ramps, subtitle tools, and audio sync.', tools:['Timeline','Multicam','Speed Ramps','Subtitles'], workflow:'Step 2: assemble and refine your edit.' },
+    { name:'Cut',       col:'#f59e0b', icon:'⚡', desc:'Streamlined fast-cut page with source tape, smart insert, sync bin, and DaVinci Neural Engine cut detection.', tools:['Smart Insert','Sync Bin','Source Tape','Cut Detection'], workflow:'Step 1: fast assembly and rough cut.' },
+  ];
+
+  const lfFloor = new LagFilter(0.5);
+  const lfElevator = new LagFilter(0.6);
+  let selectedFloor = null;
+  let elevatorTarget = 0;
+  let elevatorPos = 0;
+  let hoverFloor = null;
+
+  // Isometric floor dimensions
+  const FLOOR_H = 52, GAP = 8;
+  const ISO_W = 200, ISO_D = 60;
+  const startX = W/2, startY = H - 30;
+
+  function floorY(fi) {
+    return startY - fi * (FLOOR_H + GAP);
+  }
+
+  function drawFloor(fi, floor, hover, selected) {
+    const y = floorY(fi);
+    const x = startX;
+    const col = floor.col;
+    const alpha = selected ? 1.0 : hover ? 0.85 : 0.65;
+
+    // Parse col to rgba
+    const r=parseInt(col.slice(1,3),16);
+    const g=parseInt(col.slice(3,5),16);
+    const b=parseInt(col.slice(5,7),16);
+
+    // Top face
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+ISO_W/2, y-ISO_D/2);
+    ctx.lineTo(x+ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.lineTo(x, y-FLOOR_H);
+    ctx.lineTo(x-ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.lineTo(x-ISO_W/2, y-ISO_D/2);
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${r},${g},${b},${alpha*0.4})`;
+    ctx.strokeStyle=`rgba(${r},${g},${b},${alpha})`;
+    ctx.lineWidth=1.5;
+    if(selected){ctx.shadowColor=col;ctx.shadowBlur=16;}
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
+
+    // Top face highlight
+    ctx.beginPath();
+    ctx.moveTo(x, y-FLOOR_H);
+    ctx.lineTo(x+ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.lineTo(x, y-ISO_D-FLOOR_H);
+    ctx.lineTo(x-ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${r},${g},${b},${alpha*0.6})`;
+    ctx.fill();
+
+    // Floor label
+    ctx.fillStyle=`rgba(${r},${g},${b},1)`;
+    ctx.font=`bold 10px monospace`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(floor.icon+' '+floor.name, x, y-FLOOR_H*0.5-ISO_D*0.15);
+
+    // Right face
+    ctx.beginPath();
+    ctx.moveTo(x+ISO_W/2, y-ISO_D/2);
+    ctx.lineTo(x+ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.lineTo(x, y-FLOOR_H);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${Math.floor(r*0.5)},${Math.floor(g*0.5)},${Math.floor(b*0.5)},${alpha*0.5})`;
+    ctx.fill();
+    ctx.strokeStyle=`rgba(${r},${g},${b},${alpha*0.5})`; ctx.lineWidth=0.5;
+    ctx.stroke();
+
+    // Left face
+    ctx.beginPath();
+    ctx.moveTo(x-ISO_W/2, y-ISO_D/2);
+    ctx.lineTo(x-ISO_W/2, y-ISO_D/2-FLOOR_H);
+    ctx.lineTo(x, y-FLOOR_H);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${Math.floor(r*0.35)},${Math.floor(g*0.35)},${Math.floor(b*0.35)},${alpha*0.4})`;
+    ctx.fill();
+    ctx.strokeStyle=`rgba(${r},${g},${b},${alpha*0.3})`; ctx.lineWidth=0.5;
+    ctx.stroke();
+  }
+
+  function drawElevator(pos) {
+    const ep = lfElevator.update(elevatorTarget, 0.016);
+    const x = startX + ISO_W*0.35;
+    const y = floorY(ep) - FLOOR_H*0.4;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI*2);
+    ctx.fillStyle='#d97706';
+    ctx.shadowColor='#d97706'; ctx.shadowBlur=8;
+    ctx.fill(); ctx.shadowBlur=0;
+    // Shaft line
+    ctx.strokeStyle='rgba(217,119,6,0.3)'; ctx.lineWidth=1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(x, floorY(0)-10); ctx.lineTo(x, floorY(5)-FLOOR_H);
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  canvas.addEventListener('click', e => {
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    for(let fi=0;fi<PAGE_DEFS.length;fi++){
+      const fy=floorY(fi);
+      // Hit test: rough bounding box
+      if(my>fy-FLOOR_H-ISO_D&&my<fy&&Math.abs(mx-startX)<ISO_W/2+20){
+        selectedFloor=fi;
+        elevatorTarget=fi;
+        const detail=document.getElementById('page-detail');
+        if(detail){
+          const pd=PAGE_DEFS[fi];
+          detail.innerHTML=`
+            <h3 style="color:${pd.col}">${pd.icon} ${pd.name} Page</h3>
+            <p>${pd.desc}</p>
+            <div style="font-size:11px;color:var(--dim);margin-bottom:8px;font-style:italic">${pd.workflow}</div>
+            <div class="page-tools">${pd.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>`;
+        }
+        break;
+      }
+    }
+  });
+
+  canvas.addEventListener('mousemove', e => {
+    const rect=canvas.getBoundingClientRect();
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    hoverFloor=null;
+    for(let fi=0;fi<PAGE_DEFS.length;fi++){
+      const fy=floorY(fi);
+      if(my>fy-FLOOR_H-ISO_D&&my<fy&&Math.abs(mx-startX)<ISO_W/2+20){
+        hoverFloor=fi; break;
+      }
+    }
+    canvas.style.cursor=hoverFloor!==null?'pointer':'default';
+  });
+
+  let isoLastTime=null;
+  function isoLoop(ts){
+    if(!isoLastTime)isoLastTime=ts;
+    const dt=Math.min((ts-isoLastTime)/1000,0.1);
+    isoLastTime=ts;
+
+    ctx.fillStyle='rgba(10,10,15,0.08)';
+    ctx.fillRect(0,0,W,H);
+
+    // Draw floors bottom to top
+    for(let fi=0;fi<PAGE_DEFS.length;fi++){
+      drawFloor(fi, PAGE_DEFS[fi], hoverFloor===fi, selectedFloor===fi);
+    }
+
+    drawElevator(elevatorTarget);
+
+    // Base platform shadow
+    ctx.beginPath();
+    ctx.ellipse(startX, startY+8, ISO_W*0.6, 14, 0, 0, Math.PI*2);
+    ctx.fillStyle='rgba(10,10,15,0.6)';
+    ctx.fill();
+
+    requestAnimationFrame(isoLoop);
+  }
+  requestAnimationFrame(isoLoop);
+})();
+
+// ============================================================
+// INTERSECTION OBSERVER — REVEAL ANIMATIONS
+// ============================================================
+(function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+})();
+
+// ============================================================
+// NAV — ACTIVE LINK HIGHLIGHTING
+// ============================================================
+(function initNav() {
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#'+id
+            ? 'var(--accent)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => obs.observe(s));
+})();
+
+// ============================================================
+// GLOBAL PHOSPHOR HEARTBEAT — keep canvases alive off-screen
+// ============================================================
+// Each canvas has its own rAF loop; nothing extra needed.
+// All LagFilter instances are created per-module above.
+
+console.log('%cDaVinci Resolve World — WAVGEN loaded', 'color:#d97706;font-size:14px;font-weight:bold');
+console.log('%c9 sections · Hero + 8 interactive modules · LagFilter throughout', 'color:#6b6b8a;font-size:11px');
+</script>
+</body>
+</html>

@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring generative art">
+    <meta property="og:title" content="Generative Art World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring generative art">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/generative_art_world.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WAVGEN — Generative Art World</title>
+<style>
+:root{
+  --black:#05050c; --surface:#0d0d1a; --border:#1a1a2e;
+  --text:#e0e0f0; --dim:#6b6b8a;
+  --accent:#f0c040; --accent2:#6366f1; --accent3:#f43f5e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Courier New',monospace;overflow-x:hidden;line-height:1.6;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,12,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:46px;gap:18px;flex-wrap:nowrap;overflow-x:auto;}
+nav .logo{color:var(--accent);font-weight:bold;font-size:13px;letter-spacing:.2em;white-space:nowrap;}
+nav a{color:var(--dim);text-decoration:none;font-size:10px;letter-spacing:.1em;transition:color .2s;white-space:nowrap;}
+nav a:hover{color:var(--accent);}
+section{padding:56px 0;border-bottom:1px solid var(--border);}
+.si{max-width:920px;margin:0 auto;padding:0 20px;}
+.slbl{font-size:10px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+.stit{font-size:26px;font-weight:bold;color:var(--text);margin-bottom:6px;letter-spacing:.04em;}
+.ssub{font-size:12px;color:var(--dim);margin-bottom:28px;letter-spacing:.1em;}
+.cc{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center;}
+.cg{display:flex;flex-direction:column;gap:3px;}
+.clbl{font-size:10px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;}
+input[type=range]{-webkit-appearance:none;height:2px;background:var(--border);border-radius:1px;outline:none;width:110px;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--accent);cursor:pointer;}
+button{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 12px;font-family:inherit;font-size:10px;letter-spacing:.1em;cursor:pointer;border-radius:2px;transition:border-color .2s,color .2s,background .2s;}
+button:hover{border-color:var(--accent);color:var(--accent);}
+button.active{border-color:var(--accent);color:var(--accent);background:rgba(240,192,64,.08);}
+select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:4px 8px;font-family:inherit;font-size:10px;border-radius:2px;cursor:pointer;outline:none;}
+select:hover{border-color:var(--accent);}
+.hidden{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+.visible{opacity:1;transform:none;}
+.tabs{display:flex;gap:4px;margin-bottom:14px;}
+.tab-btn{flex:1;font-size:11px;}
+.val{color:var(--accent);font-size:10px;min-width:34px;display:inline-block;}
+/* Hero */
+#hero{padding:46px 0 0;height:440px;position:relative;border-bottom:1px solid var(--border);overflow:hidden;}
+#hero-canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
+.hero-ov{position:absolute;top:0;left:0;padding:60px 28px 28px;pointer-events:none;}
+.hero-tit{font-size:40px;font-weight:bold;color:var(--accent);letter-spacing:.15em;text-shadow:0 0 40px rgba(240,192,64,.35);line-height:1.1;}
+.hero-sub{font-size:11px;color:var(--dim);letter-spacing:.2em;margin-top:6px;}
+.hero-era{position:absolute;bottom:18px;right:20px;font-size:9px;color:var(--dim);letter-spacing:.2em;}
+/* Artist cards */
+.artist-card{flex:0 0 160px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px;cursor:default;transition:transform .2s,border-color .2s;}
+.artist-card:hover{transform:translateY(-4px);border-color:var(--accent2);}
+.artist-name{font-size:12px;font-weight:bold;color:var(--accent);margin-bottom:4px;}
+.artist-era{font-size:9px;color:var(--dim);margin-bottom:6px;}
+.artist-work{font-size:10px;color:var(--text);margin-bottom:6px;font-style:italic;}
+.artist-desc{font-size:9px;color:var(--dim);line-height:1.5;}
+/* Glossary */
+.gterm{margin-bottom:10px;}
+.gword{font-size:11px;font-weight:bold;color:var(--accent);margin-bottom:2px;}
+.gdef{font-size:10px;color:var(--dim);line-height:1.5;}
+/* Evo grid */
+.evo-cell{cursor:pointer;border:2px solid var(--border);border-radius:2px;transition:border-color .2s;}
+.evo-cell:hover{border-color:var(--accent2);}
+.evo-cell.selected{border-color:var(--accent);}
+/* Noise grid */
+.noise-item{text-align:center;}
+.noise-lbl{font-size:9px;color:var(--accent);letter-spacing:.1em;margin-top:5px;text-transform:uppercase;}
+.noise-desc{font-size:9px;color:var(--dim);margin-top:2px;}
+</style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <span class="logo">WAVGEN</span>
+  <a href="#s2">FLOW FIELD</a>
+  <a href="#s3">L-SYSTEM</a>
+  <a href="#s4">REACT-DIFF</a>
+  <a href="#s5">ATTRACTORS</a>
+  <a href="#s6">EVOLUTION</a>
+  <a href="#s7">NOISE</a>
+  <a href="#s8">ARTISTS</a>
+  <a href="#s9">GLOSSARY</a>
+</nav>
+
+<!-- ═══ SECTION 1: HERO ═══ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-ov">
+    <div class="hero-tit">GENERATIVE<br>ART</div>
+    <div class="hero-sub">A LIVING ARTWORK THAT EXPLAINS ITSELF THROUGH BEAUTY</div>
+  </div>
+  <div class="hero-era" id="hero-era">ERA 1 · FIELD EPOCH</div>
+</section>
+
+<!-- ═══ SECTION 2: FLOW FIELD STUDIO ═══ -->
+<section id="s2">
+ <div class="si hidden">
+  <div class="slbl">Section 02</div>
+  <div class="stit">Flow Field Studio</div>
+  <div class="ssub">INVISIBLE FORCES MADE VISIBLE · DRAG ATTRACTORS · WATCH EMERGENCE</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+   <div class="cc"><canvas id="ff-canvas" width="440" height="440"></canvas></div>
+   <div style="flex:1;min-width:180px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start">
+     <div class="cg"><span class="clbl">Algorithm</span>
+      <select id="ff-algo">
+       <option value="sincos">Sin+Cos</option><option value="curl">Curl Noise</option>
+       <option value="radial">Radial</option><option value="vortex">Vortex</option>
+       <option value="magnetic">Magnetic</option>
+      </select></div>
+     <div class="cg"><span class="clbl">Resolution <span class="val" id="ff-res-v">20</span></span>
+      <input type="range" id="ff-res" min="10" max="60" value="20"></div>
+     <div class="cg"><span class="clbl">Particles <span class="val" id="ff-cnt-v">200</span></span>
+      <input type="range" id="ff-cnt" min="50" max="500" value="200"></div>
+     <div class="cg"><span class="clbl">Trail <span class="val" id="ff-trail-v">20</span></span>
+      <input type="range" id="ff-trail" min="5" max="50" value="20"></div>
+     <div class="cg"><span class="clbl">Size <span class="val" id="ff-sz-v">2</span></span>
+      <input type="range" id="ff-sz" min="1" max="4" value="2" step=".5"></div>
+     <div class="cg"><span class="clbl">Color</span>
+      <select id="ff-col"><option value="velocity">Velocity</option>
+       <option value="age">Age</option><option value="position">Position</option></select></div>
+     <div class="ctrls" style="gap:6px;margin-top:6px">
+      <button id="ff-field-btn">Show Field</button>
+      <button id="ff-attract-btn">Attract All</button>
+      <button id="ff-add-att">+ Attractor</button>
+     </div>
+     <div style="font-size:9px;color:var(--dim);margin-top:6px">
+      Attractors: <span id="ff-att-cnt" style="color:var(--accent)">3</span>/8 · Click to place
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 3: L-SYSTEM GARDEN ═══ -->
+<section id="s3">
+ <div class="si hidden">
+  <div class="slbl">Section 03</div>
+  <div class="stit">L-System Garden</div>
+  <div class="ssub">GRAMMAR OF GROWTH · RECURSIVE BOTANICAL FORMS</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+   <div class="cc"><canvas id="ls-canvas" width="500" height="500"></canvas></div>
+   <div style="flex:1;min-width:180px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:8px">
+     <div class="cg"><span class="clbl">Organism</span>
+      <select id="ls-preset" style="width:170px"></select></div>
+     <div id="ls-rules" style="font-size:9px;color:var(--dim);line-height:1.9;font-family:'Courier New',monospace;background:var(--surface);border:1px solid var(--border);padding:7px;border-radius:2px;width:170px;min-height:60px"></div>
+     <div class="cg"><span class="clbl">Iterations <span class="val" id="ls-iter-v">4</span></span>
+      <input type="range" id="ls-iter" min="1" max="8" value="4"></div>
+     <div class="cg"><span class="clbl">Angle <span class="val" id="ls-ang-v">25°</span></span>
+      <input type="range" id="ls-ang" min="5" max="90" value="25"></div>
+     <div class="ctrls" style="gap:6px;margin-top:4px">
+      <button id="ls-draw">Draw</button>
+      <button id="ls-grow">Grow</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 4: REACTION-DIFFUSION ═══ -->
+<section id="s4">
+ <div class="si hidden">
+  <div class="slbl">Section 04</div>
+  <div class="stit">Reaction-Diffusion Lab</div>
+  <div class="ssub">CHEMISTRY AS CANVAS · GRAY-SCOTT MODEL · TURING PATTERNS</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+   <div class="cc">
+    <canvas id="rd-canvas" width="240" height="180"
+     style="width:480px;height:360px;image-rendering:pixelated;display:block"></canvas>
+   </div>
+   <div style="flex:1;min-width:180px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:8px">
+     <div class="cg"><span class="clbl">Preset</span>
+      <select id="rd-preset" style="width:150px"></select></div>
+     <div class="cg"><span class="clbl">Feed Rate <span class="val" id="rd-f-v">0.055</span></span>
+      <input type="range" id="rd-f" min="0.01" max="0.08" value="0.055" step=".001"></div>
+     <div class="cg"><span class="clbl">Kill Rate <span class="val" id="rd-k-v">0.062</span></span>
+      <input type="range" id="rd-k" min="0.04" max="0.07" value="0.062" step=".001"></div>
+     <div class="cg"><span class="clbl">Speed <span class="val" id="rd-spd-v">4</span>×</span>
+      <input type="range" id="rd-spd" min="1" max="8" value="4"></div>
+     <div class="ctrls" style="gap:6px;margin-top:4px">
+      <button id="rd-tog">Pause</button>
+      <button id="rd-seed">Randomize</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 5: CHAOS & ATTRACTORS ═══ -->
+<section id="s5">
+ <div class="si hidden">
+  <div class="slbl">Section 05</div>
+  <div class="stit">Chaos &amp; Attractors</div>
+  <div class="ssub">DETERMINISTIC INFINITY · ORDER HIDING INSIDE CHAOS</div>
+  <div class="tabs">
+   <button class="tab-btn active" data-tab="lorenz">Lorenz</button>
+   <button class="tab-btn" data-tab="clifford">Clifford</button>
+   <button class="tab-btn" data-tab="henon">Hénon</button>
+  </div>
+  <div id="tab-lorenz" style="display:flex;gap:16px;flex-wrap:wrap">
+   <div class="cc"><canvas id="lorenz-canvas" width="500" height="400"></canvas></div>
+   <div style="flex:1;min-width:150px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:7px">
+     <div class="cg"><span class="clbl">σ sigma <span class="val" id="lor-σ-v">10</span></span>
+      <input type="range" id="lor-σ" min="1" max="20" value="10" step=".5"></div>
+     <div class="cg"><span class="clbl">ρ rho <span class="val" id="lor-ρ-v">28</span></span>
+      <input type="range" id="lor-ρ" min="1" max="50" value="28" step=".5"></div>
+     <div class="cg"><span class="clbl">β beta <span class="val" id="lor-β-v">2.67</span></span>
+      <input type="range" id="lor-β" min=".5" max="6" value="2.667" step=".1"></div>
+     <div class="cg"><span class="clbl">Rotation <span class="val" id="lor-rot-v">0°</span></span>
+      <input type="range" id="lor-rot" min="0" max="360" value="0"></div>
+     <button id="lor-export">Export PNG</button>
+    </div></div></div>
+  <div id="tab-clifford" style="display:none;flex-wrap:wrap;gap:16px">
+   <div class="cc"><canvas id="clifford-canvas" width="500" height="400"></canvas></div>
+   <div style="flex:1;min-width:150px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:7px">
+     <div class="cg"><span class="clbl">a <span class="val" id="clf-a-v">-1.4</span></span>
+      <input type="range" id="clf-a" min="-3" max="3" value="-1.4" step=".05"></div>
+     <div class="cg"><span class="clbl">b <span class="val" id="clf-b-v">1.6</span></span>
+      <input type="range" id="clf-b" min="-3" max="3" value="1.6" step=".05"></div>
+     <div class="cg"><span class="clbl">c <span class="val" id="clf-c-v">1.0</span></span>
+      <input type="range" id="clf-c" min="-3" max="3" value="1.0" step=".05"></div>
+     <div class="cg"><span class="clbl">d <span class="val" id="clf-d-v">0.7</span></span>
+      <input type="range" id="clf-d" min="-3" max="3" value="0.7" step=".05"></div>
+     <button id="clf-render">Render 50K</button>
+     <button id="clf-export">Export PNG</button>
+    </div></div></div>
+  <div id="tab-henon" style="display:none;flex-wrap:wrap;gap:16px">
+   <div class="cc"><canvas id="henon-canvas" width="500" height="400"></canvas></div>
+   <div style="flex:1;min-width:150px">
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:7px">
+     <div class="cg"><span class="clbl">a <span class="val" id="hen-a-v">1.4</span></span>
+      <input type="range" id="hen-a" min=".5" max="2" value="1.4" step=".01"></div>
+     <div class="cg"><span class="clbl">b <span class="val" id="hen-b-v">0.3</span></span>
+      <input type="range" id="hen-b" min="0" max=".8" value=".3" step=".01"></div>
+     <div class="cg"><span class="clbl">Iterations <span class="val" id="hen-iter-v">50000</span></span>
+      <input type="range" id="hen-iter" min="1000" max="100000" value="50000" step="1000"></div>
+     <button id="hen-render">Render</button>
+     <button id="hen-export">Export PNG</button>
+    </div></div></div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 6: EVOLUTIONARY CANVAS ═══ -->
+<section id="s6">
+ <div class="si hidden">
+  <div class="slbl">Section 06</div>
+  <div class="stit">Evolutionary Canvas</div>
+  <div class="ssub">ART THAT BREEDS · GENETIC ALGORITHMS · EMERGENCE THROUGH SELECTION</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+   <div>
+    <div id="evo-grid" style="display:grid;grid-template-columns:repeat(4,100px);gap:5px"></div>
+   </div>
+   <div style="flex:1;min-width:180px">
+    <div style="font-size:9px;color:var(--dim);margin-bottom:8px">Click 2 organisms to breed offspring</div>
+    <div class="ctrls" style="flex-direction:column;align-items:flex-start;gap:7px">
+     <div>Generation: <span class="val" id="evo-gen">1</span>
+      &nbsp;Diversity: <span class="val" id="evo-div">100%</span></div>
+     <button id="evo-auto">Auto-Evolve</button>
+     <button id="evo-reset">Reset Population</button>
+     <div style="font-size:9px;color:var(--dim)" id="evo-status">Select 2 organisms to breed</div>
+    </div>
+    <div id="evo-prev-wrap" style="display:none;margin-top:12px">
+     <div class="cc" style="width:200px">
+      <canvas id="evo-prev" width="200" height="200"></canvas>
+     </div>
+     <div style="font-size:9px;color:var(--dim);margin-top:4px">Click organism to preview</div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 7: NOISE TAXONOMY ═══ -->
+<section id="s7">
+ <div class="si hidden">
+  <div class="slbl">Section 07</div>
+  <div class="stit">Noise Taxonomy</div>
+  <div class="ssub">THE MANY FACES OF RANDOMNESS · FROM CHAOS TO ORDER</div>
+  <div id="noise-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:680px"></div>
+  <div class="ctrls" style="margin-top:14px;gap:10px;align-items:center">
+   <div class="cg"><span class="clbl">Octaves <span class="val" id="n-oct-v">4</span></span>
+    <input type="range" id="n-oct" min="1" max="8" value="4"></div>
+   <div class="cg"><span class="clbl">Scale <span class="val" id="n-scl-v">1×</span></span>
+    <input type="range" id="n-scl" min="1" max="8" value="4"></div>
+   <button id="n-anim">Animate Time</button>
+   <button id="n-quiz-btn">Mystery Quiz</button>
+  </div>
+  <div id="n-quiz-area" style="display:none;margin-top:14px;background:var(--surface);border:1px solid var(--border);padding:14px;border-radius:3px">
+   <div style="font-size:11px;color:var(--dim);margin-bottom:8px">Which noise type is this?</div>
+   <canvas id="n-quiz-c" width="200" height="200" style="border:1px solid var(--border);display:block"></canvas>
+   <div id="n-quiz-btns" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+   <div id="n-quiz-res" style="font-size:11px;margin-top:6px"></div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 8: ARTISTS ═══ -->
+<section id="s8">
+ <div class="si hidden">
+  <div class="slbl">Section 08</div>
+  <div class="stit">Generative Artists</div>
+  <div class="ssub">THE PIONEERS WHO TAUGHT MACHINES TO MAKE ART</div>
+  <div id="artists-row" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:14px"></div>
+ </div>
+</section>
+
+<!-- ═══ SECTION 9: GLOSSARY ═══ -->
+<section id="s9">
+ <div class="si hidden">
+  <div class="slbl">Section 09</div>
+  <div class="stit">Glossary</div>
+  <div class="ssub">22 TERMS · THE LANGUAGE OF GENERATIVE ART</div>
+  <div id="glossary-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 28px"></div>
+ </div>
+</section>
+
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════ */
+const $  = id => document.getElementById(id);
+const lerp = (a,b,t) => a+(b-a)*t;
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const rand = (a,b) => Math.random()*(b-a)+a;
+const tau = Math.PI*2;
+
+/* LagFilter — MANDATORY on all parameter transitions */
+const lag = (cur,tgt,dt,tc) => cur + (1-Math.exp(-dt/tc))*(tgt-cur);
+
+function hsl(h,s,l){
+  h=((h%360)+360)%360; s/=100; l/=100;
+  const a=s*Math.min(l,1-l);
+  const f=n=>{const k=(n+h/30)%12;return l-a*Math.max(Math.min(k-3,9-k,1),-1);};
+  return `rgb(${Math.round(f(0)*255)},${Math.round(f(8)*255)},${Math.round(f(4)*255)})`;
+}
+function hash21(x,y){let h=Math.sin(x*127.1+y*311.7)*43758.5453;return h-Math.floor(h);}
+
+/* ═══════════════════════════════════════════
+   SECTION 1 — HERO CANVAS
+═══════════════════════════════════════════ */
+(function heroCanvas(){
+  const cv=document.getElementById('hero-canvas');
+  const cx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  resize(); window.addEventListener('resize',resize);
+
+  /* Flow field — lag-filtered params */
+  const F={freq:.004,freqT:.004,amp:1.2,ampT:1.2,twist:.6,twistT:.6,t:0};
+  /* Attractors */
+  const ATT=[
+    {x:.3,y:.4,vx:.00014,vy:.00009,str:.0012},
+    {x:.7,y:.6,vx:-.00010,vy:.00013,str:.0010},
+    {x:.5,y:.25,vx:.00012,vy:-.00010,str:.0008}
+  ];
+  /* Particles */
+  const PN=500;
+  const px=new Float32Array(PN),py=new Float32Array(PN);
+  const pvxL=new Float32Array(PN),pvyL=new Float32Array(PN);
+  for(let i=0;i<PN;i++){px[i]=Math.random();py[i]=Math.random();}
+
+  /* Era system */
+  const ERA_NAMES=['FIELD EPOCH','VORTEX AGE','SPIRAL ERA','CHAOS BLOOM','ATTRACTOR PHASE'];
+  let era=1,eraTimer=0;
+  const ERA_DUR=8;
+
+  /* Generation flash */
+  let genFlash=0,beatTimer=0;
+  const BEAT=0.5; // 120 BPM
+
+  function flowAngle(x,y,t){
+    const nx=x*F.freq, ny=y*F.freq;
+    const base=Math.sin(nx+t*.3)*Math.cos(ny-t*.2)*Math.PI;
+    const tw=Math.cos(nx*.7-t*.15)*Math.sin(ny*1.3+t*.25)*Math.PI*F.twist;
+    return base+tw;
+  }
+
+  let last=0;
+  function frame(ts){
+    const dt=Math.min((ts-last)/1000,.05); last=ts;
+    cx.fillStyle='rgba(5,5,12,0.04)';
+    cx.fillRect(0,0,W,H);
+
+    /* Lag-filter field params */
+    F.freq=lag(F.freq,F.freqT,dt,2.0);
+    F.amp =lag(F.amp ,F.ampT ,dt,2.0);
+    F.twist=lag(F.twist,F.twistT,dt,2.0);
+    F.t+=dt*.4;
+
+    /* Era transitions */
+    eraTimer+=dt;
+    if(eraTimer>ERA_DUR){
+      eraTimer=0; era++;
+      document.getElementById('hero-era').textContent=`ERA ${era} · ${ERA_NAMES[(era-1)%ERA_NAMES.length]}`;
+      F.freqT=rand(.002,.009); F.ampT=rand(.7,2.0); F.twistT=rand(.2,1.3);
+    }
+
+    /* Beat / generation flash */
+    beatTimer+=dt;
+    if(beatTimer>BEAT*120){beatTimer=0;genFlash=1.0;}
+    genFlash=lag(genFlash,0,dt,.3);
+
+    /* Move attractors */
+    ATT.forEach(a=>{
+      a.x+=a.vx; a.y+=a.vy;
+      if(a.x<.08||a.x>.92)a.vx*=-1;
+      if(a.y<.08||a.y>.92)a.vy*=-1;
+    });
+
+    /* Update particles */
+    for(let i=0;i<PN;i++){
+      const wx=px[i]*W, wy=py[i]*H;
+      const ang=flowAngle(wx,wy,F.t);
+      let fx=Math.cos(ang)*.0008*F.amp;
+      let fy=Math.sin(ang)*.0008*F.amp;
+      ATT.forEach(a=>{
+        const ax=a.x-px[i],ay=a.y-py[i];
+        const d2=ax*ax+ay*ay+.0001;
+        fx+=ax*a.str/d2; fy+=ay*a.str/d2;
+      });
+      pvxL[i]=lag(pvxL[i],fx,dt,.12);
+      pvyL[i]=lag(pvyL[i],fy,dt,.12);
+      px[i]+=pvxL[i]; py[i]+=pvyL[i];
+      if(px[i]<0)px[i]=1; if(px[i]>1)px[i]=0;
+      if(py[i]<0)py[i]=1; if(py[i]>1)py[i]=0;
+      const vmag=Math.sqrt(pvxL[i]*pvxL[i]+pvyL[i]*pvyL[i]);
+      const t2=clamp(vmag/.003,0,1);
+      let r,g,b;
+      if(t2<.33){r=99;g=102;b=241;}
+      else if(t2<.66){r=240;g=192;b=64;}
+      else{r=244;g=63;b=94;}
+      const fl=genFlash;
+      if(fl>.05){r=lerp(r,255,fl);g=lerp(g,255,fl);b=lerp(b,255,fl);}
+      cx.fillStyle=`rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},.7)`;
+      cx.fillRect(px[i]*W-1,py[i]*H-1,2,2);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 2 — FLOW FIELD STUDIO
+═══════════════════════════════════════════ */
+(function flowFieldStudio(){
+  const cv=document.getElementById('ff-canvas');
+  const cx=cv.getContext('2d');
+  const W=440,H=440;
+
+  let pCount=200,pCountT=200;
+  let trailLen=20,trailLenT=20;
+  let pSize=2,pSizeT=2;
+  let fieldRes=20,fieldResT=20;
+  let showField=false,algo='sincos',colorMode='velocity';
+  let attractAll=false,attractAllTimer=0;
+
+  let attractors=[
+    {x:110,y:140,str:.8},{x:310,y:280,str:.7},{x:220,y:340,str:.6}
+  ];
+  let draggingIdx=-1;
+
+  const MAX_P=500;
+  const ppx=new Float32Array(MAX_P),ppy=new Float32Array(MAX_P);
+  const pvxL=new Float32Array(MAX_P),pvyL=new Float32Array(MAX_P);
+  const pAge=new Float32Array(MAX_P);
+  const pHist=Array.from({length:MAX_P},()=>[]);
+  for(let i=0;i<MAX_P;i++){ppx[i]=rand(0,W);ppy[i]=rand(0,H);}
+
+  let time=0;
+
+  function fieldAngle(x,y,t){
+    const nx=x/W,ny=y/H;
+    switch(algo){
+      case'sincos': return Math.sin(nx*6.28+t*.5)*Math.cos(ny*6.28-t*.3)*Math.PI*1.5;
+      case'curl':{const cx2=Math.cos(nx*5.2+ny*3.1+t*.4),cy2=Math.sin(nx*3.7-ny*4.9+t*.3);return Math.atan2(cy2,cx2)*2;}
+      case'radial':{const dx=nx-.5,dy=ny-.5;return Math.atan2(dy,dx)+Math.sin(Math.sqrt(dx*dx+dy*dy)*8-t*2);}
+      case'vortex':{const dx=nx-.5,dy=ny-.5;return Math.atan2(dy,dx)+Math.PI*.5+Math.sin(t*.6)*Math.PI;}
+      case'magnetic':{let ax=0,ay=0;attractors.forEach(a=>{const dx=(x-a.x)/W,dy=(y-a.y)/H;const d2=dx*dx+dy*dy+.001;ax-=dy*a.str/d2;ay+=dx*a.str/d2;});return Math.atan2(ay,ax)+t*.1;}
+      default:return 0;
+    }
+  }
+
+  function pColor(i,vmag){
+    if(colorMode==='velocity'){const t2=clamp(vmag/3,0,1);if(t2<.33)return'rgba(99,102,241,.8)';if(t2<.66)return'rgba(240,192,64,.8)';return'rgba(244,63,94,.8)';}
+    if(colorMode==='age'){return hsl((pAge[i]*2)%360,70,60)+'cc';}
+    return hsl((ppx[i]/W*200+ppy[i]/H*160)%360,65,55)+'cc';
+  }
+
+  /* Wire controls */
+  function wire(id,vId,cb){const el=document.getElementById(id),vEl=vId?document.getElementById(vId):null;el.addEventListener('input',()=>{const v=parseFloat(el.value);if(vEl)vEl.textContent=v.toFixed(el.step&&parseFloat(el.step)<1?1:0);cb(v);});}
+  wire('ff-res','ff-res-v',v=>{fieldResT=v;});
+  wire('ff-cnt','ff-cnt-v',v=>{pCountT=v;});
+  wire('ff-trail','ff-trail-v',v=>{trailLenT=v;});
+  wire('ff-sz','ff-sz-v',v=>{pSizeT=v;});
+  document.getElementById('ff-algo').addEventListener('change',e=>{algo=e.target.value;});
+  document.getElementById('ff-col').addEventListener('change',e=>{colorMode=e.target.value;});
+  document.getElementById('ff-field-btn').addEventListener('click',function(){showField=!showField;this.textContent=showField?'Hide Field':'Show Field';this.classList.toggle('active',showField);});
+  document.getElementById('ff-attract-btn').addEventListener('click',()=>{attractAll=true;attractAllTimer=3;});
+  document.getElementById('ff-add-att').addEventListener('click',()=>{
+    if(attractors.length<8){attractors.push({x:rand(40,400),y:rand(40,400),str:.6});document.getElementById('ff-att-cnt').textContent=attractors.length;}
+  });
+
+  cv.addEventListener('mousedown',e=>{
+    const r=cv.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(W/r.width),my=(e.clientY-r.top)*(H/r.height);
+    let found=false;
+    attractors.forEach((a,i)=>{if(Math.hypot(mx-a.x,my-a.y)<14){draggingIdx=i;found=true;}});
+    if(!found&&attractors.length<8){attractors.push({x:mx,y:my,str:.6});document.getElementById('ff-att-cnt').textContent=attractors.length;}
+  });
+  cv.addEventListener('mousemove',e=>{
+    if(draggingIdx<0)return;
+    const r=cv.getBoundingClientRect();
+    attractors[draggingIdx].x=(e.clientX-r.left)*(W/r.width);
+    attractors[draggingIdx].y=(e.clientY-r.top)*(H/r.height);
+  });
+  cv.addEventListener('mouseup',()=>{draggingIdx=-1;});
+
+  let lastT=0;
+  function frame(ts){
+    const dt=Math.min((ts-lastT)/1000,.05); lastT=ts; time+=dt;
+
+    pCount=lag(pCount,pCountT,dt,.8);
+    trailLen=lag(trailLen,trailLenT,dt,.8);
+    pSize=lag(pSize,pSizeT,dt,.8);
+
+    if(attractAll){attractAllTimer-=dt;if(attractAllTimer<=0)attractAll=false;}
+
+    cx.fillStyle='rgba(5,5,12,0.20)';cx.fillRect(0,0,W,H);
+
+    const activeP=Math.round(pCount);
+
+    if(showField){
+      const step=Math.round(fieldRes)*2;
+      for(let gx=step/2;gx<W;gx+=step){
+        for(let gy=step/2;gy<H;gy+=step){
+          const ang=fieldAngle(gx,gy,time);
+          const ex=gx+Math.cos(ang)*9,ey=gy+Math.sin(ang)*9;
+          cx.beginPath();cx.moveTo(gx,gy);cx.lineTo(ex,ey);
+          cx.strokeStyle='rgba(99,102,241,0.22)';cx.lineWidth=.7;cx.stroke();
+        }
+      }
+    }
+
+    for(let i=0;i<activeP;i++){
+      let fx=0,fy=0;
+      if(attractAll){
+        const dx=W/2-ppx[i],dy=H/2-ppy[i];
+        const d2=dx*dx+dy*dy+100;
+        fx=dx*.6/d2*1000; fy=dy*.6/d2*1000;
+      }else{
+        const ang=fieldAngle(ppx[i],ppy[i],time);
+        fx=Math.cos(ang)*1.5; fy=Math.sin(ang)*1.5;
+        attractors.forEach(a=>{
+          const dx=a.x-ppx[i],dy=a.y-ppy[i];
+          const d2=dx*dx+dy*dy+100;
+          fx+=dx*a.str*40/d2; fy+=dy*a.str*40/d2;
+        });
+      }
+      pvxL[i]=lag(pvxL[i],fx,dt,.07);
+      pvyL[i]=lag(pvyL[i],fy,dt,.07);
+      ppx[i]+=pvxL[i]; ppy[i]+=pvyL[i]; pAge[i]++;
+      if(ppx[i]<0)ppx[i]=W; if(ppx[i]>W)ppx[i]=0;
+      if(ppy[i]<0)ppy[i]=H; if(ppy[i]>H)ppy[i]=0;
+
+      const h=pHist[i];
+      h.push([ppx[i],ppy[i]]);
+      const maxT=Math.round(trailLen);
+      if(h.length>maxT)h.splice(0,h.length-maxT);
+      if(h.length>1){
+        const vmag=Math.sqrt(pvxL[i]*pvxL[i]+pvyL[i]*pvyL[i]);
+        cx.strokeStyle=pColor(i,vmag);
+        cx.lineWidth=pSize;
+        cx.beginPath();cx.moveTo(h[0][0],h[0][1]);
+        for(let j=1;j<h.length;j++)cx.lineTo(h[j][0],h[j][1]);
+        cx.stroke();
+      }
+    }
+
+    attractors.forEach(a=>{
+      cx.beginPath();cx.arc(a.x,a.y,7,0,tau);
+      cx.strokeStyle='rgba(240,192,64,.55)';cx.lineWidth=1.5;cx.stroke();
+      cx.fillStyle='rgba(240,192,64,.10)';cx.fill();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 3 — L-SYSTEM GARDEN
+═══════════════════════════════════════════ */
+(function lSystemGarden(){
+  const cv=document.getElementById('ls-canvas');
+  const cx=cv.getContext('2d');
+  const W=500,H=500;
+
+  const PRESETS=[
+    {name:'Fern',axiom:'X',rules:{X:'F+[[X]-X]-F[-FX]+X',F:'FF'},angle:25,iter:5,color:'#4ade80'},
+    {name:'Tree',axiom:'F',rules:{F:'FF+[+F-F-F]-[-F+F+F]'},angle:22.5,iter:4,color:'#a3e635'},
+    {name:'Coral',axiom:'F',rules:{F:'F[+F]F[-F][F]'},angle:20,iter:5,color:'#f43f5e'},
+    {name:'Snowflake',axiom:'F++F++F',rules:{F:'F-F++F-F'},angle:60,iter:4,color:'#60a5fa'},
+    {name:'Dragon Curve',axiom:'FX',rules:{X:'X+YF+',Y:'-FX-Y'},angle:90,iter:10,color:'#c084fc'},
+    {name:'Koch Island',axiom:'F+F+F+F',rules:{F:'F+F-F-FF+F+F-F'},angle:90,iter:3,color:'#f0c040'},
+    {name:'Hilbert Curve',axiom:'A',rules:{A:'-BF+AFA+FB-',B:'+AF-BFB-FA+'},angle:90,iter:5,color:'#6366f1'},
+    {name:'Penrose',axiom:'[X]++[X]++[X]++[X]++[X]',rules:{F:'',W:'YF++ZF----XF[-YF----WF]++',X:'+YF--ZF[---WF--XF]+',Y:'-WF++XF[+++YF++ZF]-',Z:'--YF++++WF[+ZF++++XF]--XF'},angle:36,iter:4,color:'#fb923c'}
+  ];
+
+  /* Populate select */
+  const sel=document.getElementById('ls-preset');
+  PRESETS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;sel.appendChild(o);});
+
+  let currentPreset=PRESETS[0];
+  let iterTarget=4,iterCurrent=4;
+  let angleTarget=25,angleCurrent=25;
+  let animating=false,animFrame=0;
+  let drawnSegments=[],totalSegments=0;
+
+  function updateRulesDisplay(p){
+    const el=document.getElementById('ls-rules');
+    let html=`Axiom: ${p.axiom}<br>`;
+    Object.entries(p.rules).forEach(([k,v])=>{if(v)html+=`${k}→${v}<br>`;});
+    el.innerHTML=html;
+  }
+
+  function generate(preset,iters){
+    let str=preset.axiom;
+    for(let i=0;i<iters;i++){
+      let next='';
+      for(const c of str)next+=preset.rules[c]||c;
+      str=next;
+      if(str.length>200000)break;
+    }
+    return str;
+  }
+
+  function computeSegments(str,angle){
+    const segs=[];
+    let x=0,y=0,a=-Math.PI/2;
+    const stack=[];
+    const rad=angle*Math.PI/180;
+    for(const c of str){
+      switch(c){
+        case'F':{const nx=x+Math.cos(a)*10,ny=y+Math.sin(a)*10;segs.push([x,y,nx,ny,stack.length]);x=nx;y=ny;break;}
+        case'f':{x+=Math.cos(a)*10;y+=Math.sin(a)*10;break;}
+        case'+':{a+=rad;break;}
+        case'-':{a-=rad;break;}
+        case'[':{stack.push([x,y,a]);break;}
+        case']':{const s=stack.pop();x=s[0];y=s[1];a=s[2];break;}
+      }
+    }
+    return segs;
+  }
+
+  function autoscale(segs){
+    if(!segs.length)return{dx:W/2,dy:H/2,sc:1};
+    let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;
+    segs.forEach(s=>{mnx=Math.min(mnx,s[0],s[2]);mxx=Math.max(mxx,s[0],s[2]);mny=Math.min(mny,s[1],s[3]);mxy=Math.max(mxy,s[1],s[3]);});
+    const sw=mxx-mnx||1,sh=mxy-mny||1;
+    const sc=Math.min((W-40)/sw,(H-40)/sh)*.9;
+    const cx2=(mnx+mxx)/2,cy2=(mny+mxy)/2;
+    return{dx:W/2-cx2*sc,dy:H/2-cy2*sc,sc};
+  }
+
+  function drawAll(segs,preset,anim,upTo){
+    cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+    if(!segs.length)return;
+    const {dx,dy,sc}=autoscale(segs);
+    const maxDepth=segs.reduce((m,s)=>Math.max(m,s[4]),0)||1;
+    const lim=anim?Math.min(upTo,segs.length):segs.length;
+    for(let i=0;i<lim;i++){
+      const s=segs[i];
+      const t=i/segs.length;
+      /* Gradient: root=brown/amber → tip=green/cyan */
+      const h=lerp(30,160,t);
+      const sat=lerp(60,80,t);
+      const lit=lerp(40,65,t);
+      cx.strokeStyle=hsl(h,sat,lit);
+      cx.lineWidth=Math.max(.4,2-s[4]*.12);
+      cx.beginPath();
+      cx.moveTo(s[0]*sc+dx,s[1]*sc+dy);
+      cx.lineTo(s[2]*sc+dx,s[3]*sc+dy);
+      cx.stroke();
+    }
+  }
+
+  function drawNow(){
+    animating=false;
+    const str=generate(currentPreset,Math.round(iterCurrent));
+    drawnSegments=computeSegments(str,angleCurrent);
+    drawAll(drawnSegments,currentPreset,false,0);
+  }
+
+  function growNow(){
+    const str=generate(currentPreset,Math.round(iterCurrent));
+    drawnSegments=computeSegments(str,angleCurrent);
+    animating=true;animFrame=0;
+    const growBtn=document.getElementById('ls-grow');
+    growBtn.classList.add('active');
+    function step(){
+      if(!animating){growBtn.classList.remove('active');return;}
+      animFrame+=Math.max(1,Math.floor(drawnSegments.length/300));
+      drawAll(drawnSegments,currentPreset,true,animFrame);
+      if(animFrame<drawnSegments.length)requestAnimationFrame(step);
+      else{animating=false;growBtn.classList.remove('active');}
+    }
+    requestAnimationFrame(step);
+  }
+
+  sel.addEventListener('change',()=>{
+    currentPreset=PRESETS[parseInt(sel.value)];
+    angleTarget=currentPreset.angle;
+    document.getElementById('ls-ang').value=angleTarget;
+    document.getElementById('ls-ang-v').textContent=angleTarget+'°';
+    angleCurrent=angleTarget;
+    updateRulesDisplay(currentPreset);
+    drawNow();
+  });
+
+  document.getElementById('ls-iter').addEventListener('input',function(){
+    iterTarget=parseInt(this.value);
+    document.getElementById('ls-iter-v').textContent=iterTarget;
+    iterCurrent=iterTarget;
+  });
+  document.getElementById('ls-ang').addEventListener('input',function(){
+    angleTarget=parseInt(this.value);
+    document.getElementById('ls-ang-v').textContent=angleTarget+'°';
+    angleCurrent=angleTarget;
+  });
+  document.getElementById('ls-draw').addEventListener('click',drawNow);
+  document.getElementById('ls-grow').addEventListener('click',growNow);
+
+  updateRulesDisplay(currentPreset);
+  drawNow();
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 4 — REACTION-DIFFUSION (Gray-Scott)
+═══════════════════════════════════════════ */
+(function reactionDiffusion(){
+  const cv=document.getElementById('rd-canvas');
+  const cx=cv.getContext('2d');
+  const GW=240,GH=180;
+
+  /* Grid buffers — U concentration, V concentration */
+  let u=new Float32Array(GW*GH),v=new Float32Array(GW*GH);
+  let u2=new Float32Array(GW*GH),v2=new Float32Array(GW*GH);
+
+  const PRESETS=[
+    {name:'Spots',    f:.035,k:.065},
+    {name:'Stripes',  f:.060,k:.061},
+    {name:'Maze',     f:.029,k:.057},
+    {name:'Coral',    f:.058,k:.065},
+    {name:'Fingerprint',f:.055,k:.062},
+    {name:'Solitons', f:.030,k:.060},
+    {name:'Worms',    f:.078,k:.061},
+    {name:'Chaos',    f:.026,k:.051}
+  ];
+
+  /* Populate select */
+  const sel=document.getElementById('rd-preset');
+  PRESETS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;sel.appendChild(o);});
+
+  /* Lag-filtered params */
+  let F=0.055,FT=0.055,K=0.062,KT=0.062;
+  let speed=4,speedT=4;
+  let running=true;
+
+  function seed(){
+    u.fill(1); v.fill(0);
+    for(let n=0;n<12;n++){
+      const cx2=Math.floor(Math.random()*GW),cy2=Math.floor(Math.random()*GH);
+      const r=6;
+      for(let dx=-r;dx<=r;dx++)for(let dy=-r;dy<=r;dy++){
+        const ix=((cx2+dx+GW)%GW)+((cy2+dy+GH)%GH)*GW;
+        u[ix]=0.5+Math.random()*0.5;v[ix]=0.25+Math.random()*0.25;
+      }
+    }
+  }
+
+  function step(){
+    const Du=.2,Dv=.1;
+    for(let y=0;y<GH;y++){
+      for(let x=0;x<GW;x++){
+        const i=x+y*GW;
+        const l=((x-1+GW)%GW)+y*GW,r=(x+1)%GW+y*GW;
+        const t=x+((y-1+GH)%GH)*GW,b=x+((y+1)%GH)*GW;
+        const lapU=u[l]+u[r]+u[t]+u[b]-4*u[i];
+        const lapV=v[l]+v[r]+v[t]+v[b]-4*v[i];
+        const uvv=u[i]*v[i]*v[i];
+        u2[i]=clamp(u[i]+Du*lapU-uvv+F*(1-u[i]),0,1);
+        v2[i]=clamp(v[i]+Dv*lapV+uvv-(K+F)*v[i],0,1);
+      }
+    }
+    [u,u2]=[u2,u]; [v,v2]=[v2,v];
+  }
+
+  /* ImageData for display */
+  const img=cx.createImageData(GW,GH);
+
+  function render(){
+    /* Map: U→luminance, V→hue gold(60)→indigo(240) */
+    for(let i=0;i<GW*GH;i++){
+      const uv=u[i],vv=v[i];
+      /* Gold + indigo blend by V concentration */
+      const blend=clamp(vv*4,0,1);
+      const r=lerp(240,99,blend)*uv;
+      const g=lerp(192,102,blend)*uv;
+      const b=lerp(64,241,blend)*uv;
+      img.data[i*4  ]=clamp(Math.round(r),0,255);
+      img.data[i*4+1]=clamp(Math.round(g),0,255);
+      img.data[i*4+2]=clamp(Math.round(b),0,255);
+      img.data[i*4+3]=255;
+    }
+    cx.putImageData(img,0,0);
+  }
+
+  /* Wire controls */
+  sel.addEventListener('change',()=>{
+    const p=PRESETS[parseInt(sel.value)];
+    FT=p.f;KT=p.k;
+    document.getElementById('rd-f').value=p.f;
+    document.getElementById('rd-k').value=p.k;
+    document.getElementById('rd-f-v').textContent=p.f.toFixed(3);
+    document.getElementById('rd-k-v').textContent=p.k.toFixed(3);
+  });
+  document.getElementById('rd-f').addEventListener('input',function(){FT=parseFloat(this.value);document.getElementById('rd-f-v').textContent=FT.toFixed(3);});
+  document.getElementById('rd-k').addEventListener('input',function(){KT=parseFloat(this.value);document.getElementById('rd-k-v').textContent=KT.toFixed(3);});
+  document.getElementById('rd-spd').addEventListener('input',function(){speedT=parseInt(this.value);document.getElementById('rd-spd-v').textContent=speedT;});
+  document.getElementById('rd-tog').addEventListener('click',function(){
+    running=!running;this.textContent=running?'Pause':'Resume';this.classList.toggle('active',!running);
+    if(running)rdFrame(performance.now());
+  });
+  document.getElementById('rd-seed').addEventListener('click',()=>{seed();});
+
+  let lastRD=0;
+  function rdFrame(ts){
+    if(!running)return;
+    const dt=Math.min((ts-lastRD)/1000,.05); lastRD=ts;
+    /* Lag-filter F and K */
+    F=lag(F,FT,dt,1.5);
+    K=lag(K,KT,dt,1.5);
+    speed=lag(speed,speedT,dt,.8);
+    const steps=Math.round(speed);
+    for(let s=0;s<steps;s++)step();
+    render();
+    requestAnimationFrame(rdFrame);
+  }
+
+  seed();
+  rdFrame(performance.now());
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 5 — CHAOS & ATTRACTORS
+═══════════════════════════════════════════ */
+(function chaosAttractors(){
+
+  /* ── Tab switching ── */
+  const tabBtns=document.querySelectorAll('#s5 .tab-btn');
+  const panels={lorenz:document.getElementById('tab-lorenz'),clifford:document.getElementById('tab-clifford'),henon:document.getElementById('tab-henon')};
+  let activeTab='lorenz';
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      tabBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const t=btn.dataset.tab;
+      Object.keys(panels).forEach(k=>{panels[k].style.display=k===t?'flex':'none';});
+      activeTab=t;
+    });
+  });
+
+  /* ══════════════════════
+     LORENZ ATTRACTOR
+  ══════════════════════ */
+  (function lorenz(){
+    const cv=document.getElementById('lorenz-canvas');
+    const cx=cv.getContext('2d');
+    const W=500,H=400;
+
+    /* Lag-filtered params */
+    let sigma=10,sigmaT=10;
+    let rho=28,rhoT=28;
+    let beta=2.667,betaT=2.667;
+    let rotAngle=0,rotAngleT=0;
+
+    /* Trail of 3D points */
+    const MAX_PTS=8000;
+    let pts=[];
+    let lx=0.1,ly=0,lz=0;
+
+    cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+
+    document.getElementById('lor-σ').addEventListener('input',function(){sigmaT=parseFloat(this.value);document.getElementById('lor-σ-v').textContent=sigmaT.toFixed(1);});
+    document.getElementById('lor-ρ').addEventListener('input',function(){rhoT=parseFloat(this.value);document.getElementById('lor-ρ-v').textContent=rhoT.toFixed(1);});
+    document.getElementById('lor-β').addEventListener('input',function(){betaT=parseFloat(this.value);document.getElementById('lor-β-v').textContent=betaT.toFixed(2);});
+    document.getElementById('lor-rot').addEventListener('input',function(){rotAngleT=parseFloat(this.value);document.getElementById('lor-rot-v').textContent=Math.round(rotAngleT)+'°';});
+    document.getElementById('lor-export').addEventListener('click',()=>{
+      const a=document.createElement('a');a.href=cv.toDataURL('image/png');a.download='lorenz.png';a.click();
+    });
+
+    let lastT=0;
+    function frame(ts){
+      if(activeTab!=='lorenz'){requestAnimationFrame(frame);return;}
+      const dt=Math.min((ts-lastT)/1000,.05);lastT=ts;
+
+      sigma=lag(sigma,sigmaT,dt,1.5);
+      rho  =lag(rho,  rhoT,  dt,1.5);
+      beta =lag(beta, betaT, dt,1.5);
+      rotAngle=lag(rotAngle,rotAngleT,dt,1.0);
+
+      /* Phosphor persistence */
+      cx.fillStyle='rgba(5,5,12,0.04)';cx.fillRect(0,0,W,H);
+
+      /* Integrate 30 steps per frame */
+      const dts=0.003;
+      for(let s=0;s<30;s++){
+        const dx=sigma*(ly-lx);
+        const dy=lx*(rho-lz)-ly;
+        const dz=lx*ly-beta*lz;
+        lx+=dx*dts; ly+=dy*dts; lz+=dz*dts;
+        pts.push([lx,ly,lz]);
+        if(pts.length>MAX_PTS)pts.shift();
+      }
+
+      /* Project 3D→2D with rotation */
+      const rad=rotAngle*Math.PI/180;
+      const cosr=Math.cos(rad),sinr=Math.sin(rad);
+      const sc=6;
+      cx.lineWidth=.7;
+      for(let i=1;i<pts.length;i++){
+        const p=pts[i],pp=pts[i-1];
+        /* Rotate around Y axis */
+        const rx=p[0]*cosr+p[2]*sinr;
+        const ry=p[1];
+        const prx=pp[0]*cosr+pp[2]*sinr;
+        const pry=pp[1];
+        const sx=W/2+rx*sc,sy=H/2-ry*sc;
+        const psx=W/2+prx*sc,psy=H/2-pry*sc;
+        const t=i/pts.length;
+        const h=lerp(200,60,t);
+        cx.strokeStyle=`hsla(${h},80%,55%,${t*.8+.1})`;
+        cx.beginPath();cx.moveTo(psx,psy);cx.lineTo(sx,sy);cx.stroke();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* ══════════════════════
+     CLIFFORD ATTRACTOR
+  ══════════════════════ */
+  (function clifford(){
+    const cv=document.getElementById('clifford-canvas');
+    const cx=cv.getContext('2d');
+    const W=500,H=400;
+
+    let a=-1.4,b=1.6,c=1.0,d=0.7;
+
+    document.getElementById('clf-a').addEventListener('input',function(){a=parseFloat(this.value);document.getElementById('clf-a-v').textContent=a.toFixed(2);});
+    document.getElementById('clf-b').addEventListener('input',function(){b=parseFloat(this.value);document.getElementById('clf-b-v').textContent=b.toFixed(2);});
+    document.getElementById('clf-c').addEventListener('input',function(){c=parseFloat(this.value);document.getElementById('clf-c-v').textContent=c.toFixed(2);});
+    document.getElementById('clf-d').addEventListener('input',function(){d=parseFloat(this.value);document.getElementById('clf-d-v').textContent=d.toFixed(2);});
+    document.getElementById('clf-export').addEventListener('click',()=>{
+      const el=document.createElement('a');el.href=cv.toDataURL('image/png');el.download='clifford.png';el.click();
+    });
+
+    function renderClifford(){
+      cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+      const N=50000;
+      let x=0.1,y=0;
+      /* Find bounds */
+      let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;
+      let tx=x,ty=y;
+      for(let i=0;i<2000;i++){
+        const nx=Math.sin(a*ty)+c*Math.cos(a*tx);
+        const ny=Math.sin(b*tx)+d*Math.cos(b*ty);
+        tx=nx;ty=ny;
+        mnx=Math.min(mnx,tx);mxx=Math.max(mxx,tx);
+        mny=Math.min(mny,ty);mxy=Math.max(mxy,ty);
+      }
+      const sw=mxx-mnx||1,sh=mxy-mny||1;
+      const sc=Math.min((W-20)/sw,(H-20)/sh)*.9;
+      const ox=W/2-(mnx+mxx)/2*sc,oy=H/2-(mny+mxy)/2*sc;
+
+      for(let i=0;i<N;i++){
+        const nx=Math.sin(a*y)+c*Math.cos(a*x);
+        const ny=Math.sin(b*x)+d*Math.cos(b*y);
+        x=nx;y=ny;
+        const sx=x*sc+ox,sy=y*sc+oy;
+        if(sx<0||sx>W||sy<0||sy>H)continue;
+        const t=i/N;
+        const h=lerp(240,60,t);
+        cx.fillStyle=`hsla(${h},80%,60%,0.15)`;
+        cx.fillRect(sx,sy,1,1);
+      }
+    }
+
+    document.getElementById('clf-render').addEventListener('click',renderClifford);
+
+    function frame(){
+      if(activeTab!=='clifford'){requestAnimationFrame(frame);return;}
+      /* Phosphor persistence for idle state */
+      requestAnimationFrame(frame);
+    }
+    cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+    /* Draw initial on first view */
+    const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){renderClifford();obs.disconnect();}},{threshold:.1});
+    obs.observe(cv);
+    requestAnimationFrame(frame);
+  })();
+
+  /* ══════════════════════
+     HENON MAP
+  ══════════════════════ */
+  (function henon(){
+    const cv=document.getElementById('henon-canvas');
+    const cx=cv.getContext('2d');
+    const W=500,H=400;
+
+    let ha=1.4,hb=0.3,hIter=50000;
+
+    document.getElementById('hen-a').addEventListener('input',function(){ha=parseFloat(this.value);document.getElementById('hen-a-v').textContent=ha.toFixed(2);});
+    document.getElementById('hen-b').addEventListener('input',function(){hb=parseFloat(this.value);document.getElementById('hen-b-v').textContent=hb.toFixed(2);});
+    document.getElementById('hen-iter').addEventListener('input',function(){hIter=parseInt(this.value);document.getElementById('hen-iter-v').textContent=hIter;});
+    document.getElementById('hen-export').addEventListener('click',()=>{
+      const el=document.createElement('a');el.href=cv.toDataURL('image/png');el.download='henon.png';el.click();
+    });
+
+    function renderHenon(){
+      cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+      let x=0.1,y=0.1;
+      const pts=[];
+      for(let i=0;i<hIter;i++){
+        const nx=1-ha*x*x+y;
+        const ny=hb*x;
+        x=nx;y=ny;
+        if(Math.abs(x)>10||Math.abs(y)>10){x=0.1;y=0.1;continue;}
+        pts.push([x,y]);
+      }
+      if(!pts.length)return;
+      let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;
+      pts.forEach(p=>{mnx=Math.min(mnx,p[0]);mxx=Math.max(mxx,p[0]);mny=Math.min(mny,p[1]);mxy=Math.max(mxy,p[1]);});
+      const sw=mxx-mnx||1,sh=mxy-mny||1;
+      const sc=Math.min((W-20)/sw,(H-20)/sh)*.88;
+      const ox=W/2-(mnx+mxx)/2*sc,oy=H/2-(mny+mxy)/2*sc;
+      pts.forEach((p,i)=>{
+        const t=i/pts.length;
+        cx.fillStyle=`hsla(${lerp(60,300,t)},75%,55%,0.5)`;
+        cx.fillRect(p[0]*sc+ox,p[1]*sc+oy,1.5,1.5);
+      });
+    }
+
+    document.getElementById('hen-render').addEventListener('click',renderHenon);
+    const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){renderHenon();obs.disconnect();}},{threshold:.1});
+    obs.observe(cv);
+  })();
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 6 — EVOLUTIONARY CANVAS
+═══════════════════════════════════════════ */
+(function evolutionaryCanvas(){
+  const GRID_SIZE=12;
+  const GENOME_LEN=20; // 5 shapes + 5 colors + 5 motions + 5 interactions
+  let population=[];
+  let generation=1;
+  let selected=[];
+  let autoEvolving=false;
+  let autoTimer=null;
+
+  /* Create random genome */
+  function randomGenome(){return Array.from({length:GENOME_LEN},()=>Math.random());}
+
+  /* Crossover + mutation */
+  function breed(g1,g2){
+    return g1.map((v,i)=>{
+      let val=Math.random()<.5?v:g2[i];
+      if(Math.random()<.05)val=Math.random(); // 5% mutation
+      return val;
+    });
+  }
+
+  /* Fitness: complexity + symmetry + variety */
+  function fitness(genome){
+    let score=0;
+    for(let i=0;i<GENOME_LEN;i++)score+=genome[i];
+    const symm=genome.slice(0,5).reduce((s,v,i)=>s+Math.abs(v-genome[i+5]),0);
+    score+=5-symm;
+    return score/GENOME_LEN;
+  }
+
+  /* Draw organism on a canvas */
+  function drawOrganism(cv,genome,size){
+    const cx=cv.getContext('2d');
+    const W=size||100,H=size||100;
+    cv.width=W;cv.height=H;
+    cx.fillStyle='rgba(5,5,12,1)';cx.fillRect(0,0,W,H);
+    const g=genome;
+    const t=performance.now()*0.001;
+
+    /* 5 shapes driven by genome */
+    for(let i=0;i<5;i++){
+      const shape=Math.floor(g[i]*4); // 0=circle,1=rect,2=line,3=triangle
+      const hue=g[5+i]*360;
+      const sat=50+g[5+i]*50;
+      const lit=40+g[5+i]*30;
+      const alpha=.4+g[10+i]*.4;
+      const motion=g[10+i];
+      const interact=g[15+i];
+
+      /* Position with motion */
+      const bx=g[i]*(W*.7)+W*.15;
+      const by=g[5+i]*(H*.7)+H*.15;
+      const mx=Math.sin(t*(.5+motion)+i)*W*interact*.15;
+      const my=Math.cos(t*(.7+motion*1.3)+i)*H*interact*.12;
+      const x=bx+mx, y=by+my;
+      const r=W*(.06+g[i]*.12);
+
+      cx.fillStyle=`hsla(${hue},${sat}%,${lit}%,${alpha})`;
+      cx.strokeStyle=`hsla(${(hue+120)%360},${sat}%,${lit+20}%,${alpha*.6})`;
+      cx.lineWidth=.8;
+
+      switch(shape){
+        case 0:
+          cx.beginPath();cx.arc(x,y,r,0,Math.PI*2);cx.fill();cx.stroke();
+          break;
+        case 1:
+          cx.fillRect(x-r,y-r,r*2,r*2);cx.strokeRect(x-r,y-r,r*2,r*2);
+          break;
+        case 2:
+          const ang=g[i]*Math.PI*2+t*motion*.5;
+          cx.beginPath();cx.moveTo(x-Math.cos(ang)*r*1.5,y-Math.sin(ang)*r*1.5);
+          cx.lineTo(x+Math.cos(ang)*r*1.5,y+Math.sin(ang)*r*1.5);
+          cx.strokeStyle=`hsla(${hue},${sat}%,${lit+10}%,${alpha+.2})`;
+          cx.lineWidth=1.5;cx.stroke();
+          break;
+        case 3:
+          cx.beginPath();
+          cx.moveTo(x,y-r);cx.lineTo(x+r*.87,y+r*.5);cx.lineTo(x-r*.87,y+r*.5);
+          cx.closePath();cx.fill();cx.stroke();
+          break;
+      }
+    }
+  }
+
+  /* Animated draw (uses rAF for living organisms) */
+  function startOrganismLoop(cv,genome){
+    let alive=true;
+    const size=parseInt(cv.width)||100;
+    function loop(){
+      if(!alive)return;
+      drawOrganism(cv,genome,size);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+    return ()=>{alive=false;};
+  }
+
+  const stopFns=[];
+
+  /* Build grid */
+  function buildGrid(){
+    const grid=document.getElementById('evo-grid');
+    grid.innerHTML='';
+    stopFns.forEach(f=>f&&f());stopFns.length=0;
+    selected=[];
+
+    population.forEach((genome,idx)=>{
+      const div=document.createElement('div');
+      div.className='evo-cell';
+      const cv=document.createElement('canvas');
+      cv.width=96;cv.height=96;
+      div.appendChild(cv);
+      grid.appendChild(div);
+
+      const stop=startOrganismLoop(cv,genome);
+      stopFns.push(stop);
+
+      div.addEventListener('click',()=>{
+        if(selected.includes(idx)){
+          selected=selected.filter(i=>i!==idx);
+          div.classList.remove('selected');
+        }else if(selected.length<2){
+          selected.push(idx);
+          div.classList.add('selected');
+          if(selected.length===2)breedSelected();
+        }
+        showPreview(genome);
+      });
+    });
+    updateStats();
+  }
+
+  function breedSelected(){
+    if(selected.length!==2)return;
+    const child=breed(population[selected[0]],population[selected[1]]);
+    /* Replace least-fit organism */
+    let minFit=Infinity,minIdx=0;
+    population.forEach((g,i)=>{const f=fitness(g);if(f<minFit&&!selected.includes(i)){minFit=f;minIdx=i;}});
+    population[minIdx]=child;
+    generation++;
+    selected=[];
+    buildGrid();
+    document.getElementById('evo-status').textContent=`Bred generation ${generation}! Child placed.`;
+  }
+
+  function showPreview(genome){
+    const wrap=document.getElementById('evo-prev-wrap');
+    const cv=document.getElementById('evo-prev');
+    wrap.style.display='block';
+    let alive=true;
+    function loop(){if(!alive)return;drawOrganism(cv,genome,200);requestAnimationFrame(loop);}
+    requestAnimationFrame(loop);
+  }
+
+  function updateStats(){
+    document.getElementById('evo-gen').textContent=generation;
+    /* Diversity: average pairwise genome distance */
+    let totalDist=0,pairs=0;
+    for(let i=0;i<population.length;i++){
+      for(let j=i+1;j<population.length;j++){
+        let d=0;
+        for(let k=0;k<GENOME_LEN;k++)d+=Math.abs(population[i][k]-population[j][k]);
+        totalDist+=d/GENOME_LEN;pairs++;
+      }
+    }
+    const div=pairs>0?Math.round(totalDist/pairs*100):100;
+    document.getElementById('evo-div').textContent=div+'%';
+  }
+
+  /* Initialize population */
+  function init(){
+    stopFns.forEach(f=>f&&f());stopFns.length=0;
+    population=Array.from({length:GRID_SIZE},()=>randomGenome());
+    generation=1;selected=[];
+    buildGrid();
+    document.getElementById('evo-status').textContent='Select 2 organisms to breed';
+  }
+
+  /* Auto-evolve: tournament selection */
+  function autoEvolveStep(){
+    const fits=population.map(fitness);
+    /* Kill weakest, breed from top 4 */
+    const sorted=[...fits.keys()].sort((a,b)=>fits[b]-fits[a]);
+    const parents=sorted.slice(0,4);
+    const worst=sorted[sorted.length-1];
+    const p1=parents[Math.floor(Math.random()*2)];
+    const p2=parents[2+Math.floor(Math.random()*2)];
+    population[worst]=breed(population[p1],population[p2]);
+    generation++;
+    buildGrid();
+    document.getElementById('evo-status').textContent=`Auto-evolving... Gen ${generation}`;
+  }
+
+  document.getElementById('evo-auto').addEventListener('click',function(){
+    autoEvolving=!autoEvolving;
+    this.classList.toggle('active',autoEvolving);
+    this.textContent=autoEvolving?'Stop Auto':'Auto-Evolve';
+    if(autoEvolving){
+      function loop(){if(!autoEvolving)return;autoEvolveStep();autoTimer=setTimeout(loop,800);}
+      loop();
+    }else{clearTimeout(autoTimer);}
+  });
+  document.getElementById('evo-reset').addEventListener('click',init);
+
+  init();
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 7 — NOISE TAXONOMY
+═══════════════════════════════════════════ */
+(function noiseTaxonomy(){
+  const NOISE_TYPES=[
+    {id:'random',  name:'Pure Random',    desc:'White noise — zero correlation',   char:'harsh · grainy'},
+    {id:'value',   name:'Value Noise',    desc:'Smoothly interpolated random grid',char:'smooth · blobby'},
+    {id:'perlin',  name:'Perlin-like',    desc:'Gradient noise — organic flow',    char:'organic · flowing'},
+    {id:'worley',  name:'Worley/Cell',    desc:'Distance to nearest point',        char:'crystalline cells'},
+    {id:'fbm',     name:'Fractal (fBm)',  desc:'Layered octaves of noise',         char:'detailed · natural'},
+    {id:'warp',    name:'Domain Warp',    desc:'Noise warped by another noise',    char:'swirling · complex'}
+  ];
+  const SZ=200;
+  let octaves=4,octavesT=4;
+  let scale=1,scaleT=1;
+  let animating=false;
+  let animTime=0;
+  let canvases={};
+
+  /* Build noise grid */
+  const grid=document.getElementById('noise-grid');
+  NOISE_TYPES.forEach(nt=>{
+    const div=document.createElement('div');div.className='noise-item';
+    const cv=document.createElement('canvas');cv.width=SZ;cv.height=SZ;cv.style.border='1px solid var(--border)';
+    const lbl=document.createElement('div');lbl.className='noise-lbl';lbl.textContent=nt.name;
+    const dsc=document.createElement('div');dsc.className='noise-desc';dsc.textContent=nt.char;
+    div.appendChild(cv);div.appendChild(lbl);div.appendChild(dsc);
+    grid.appendChild(div);
+    canvases[nt.id]=cv;
+  });
+
+  /* Noise functions */
+  function fade(t){return t*t*t*(t*(t*6-15)+10);}
+  function gradNoise(x,y){
+    const ix=Math.floor(x),iy=Math.floor(y);
+    const fx=x-ix,fy=y-iy;
+    const u=fade(fx),v=fade(fy);
+    const h00=hash21(ix,iy),h10=hash21(ix+1,iy);
+    const h01=hash21(ix,iy+1),h11=hash21(ix+1,iy+1);
+    const g00=Math.cos(h00*tau)*fx+Math.sin(h00*tau)*fy;
+    const g10=Math.cos(h10*tau)*(fx-1)+Math.sin(h10*tau)*fy;
+    const g01=Math.cos(h01*tau)*fx+Math.sin(h01*tau)*(fy-1);
+    const g11=Math.cos(h11*tau)*(fx-1)+Math.sin(h11*tau)*(fy-1);
+    return lerp(lerp(g00,g10,u),lerp(g01,g11,u),v)*.5+.5;
+  }
+
+  function valueNoise(x,y){
+    const ix=Math.floor(x),iy=Math.floor(y);
+    const fx=fade(x-ix),fy=fade(y-iy);
+    return lerp(lerp(hash21(ix,iy),hash21(ix+1,iy),fx),lerp(hash21(ix,iy+1),hash21(ix+1,iy+1),fx),fy);
+  }
+
+  function worleyNoise(x,y){
+    const ix=Math.floor(x),iy=Math.floor(y);
+    let minD=1e9;
+    for(let cy=-1;cy<=1;cy++)for(let cx2=-1;cx2<=1;cx2++){
+      const fx=hash21(ix+cx2,iy+cy),fy=hash21(ix+cx2+73.4,iy+cy+19.7);
+      const dx=x-(ix+cx2+fx),dy=y-(iy+cy+fy);
+      minD=Math.min(minD,dx*dx+dy*dy);
+    }
+    return clamp(1-Math.sqrt(minD),0,1);
+  }
+
+  function fbm(x,y,octs){
+    let v=0,amp=1,freq=1,total=0;
+    for(let i=0;i<octs;i++){v+=gradNoise(x*freq,y*freq)*amp;total+=amp;amp*=.5;freq*=2;}
+    return v/total;
+  }
+
+  function warpNoise(x,y,octs){
+    const wx=fbm(x+1.7,y+9.2,octs);
+    const wy=fbm(x+8.3,y+2.8,octs);
+    return fbm(x+4*wx,y+4*wy,octs);
+  }
+
+  function renderNoise(id,t){
+    const cv=canvases[id];
+    if(!cv)return;
+    const cx=cv.getContext('2d');
+    const img=cx.createImageData(SZ,SZ);
+    const sc=scale*.02;
+    const oct=Math.round(octaves);
+
+    for(let py=0;py<SZ;py++){
+      for(let px=0;px<SZ;px++){
+        const x=(px+.5)*sc+t*.5,y=(py+.5)*sc+t*.3;
+        let v=0;
+        switch(id){
+          case'random': v=Math.random(); break;
+          case'value':  v=valueNoise(x,y); break;
+          case'perlin': v=gradNoise(x,y); break;
+          case'worley': v=worleyNoise(x*2,y*2); break;
+          case'fbm':    v=fbm(x,y,oct); break;
+          case'warp':   v=warpNoise(x,y,oct); break;
+        }
+        v=clamp(v,0,1);
+        const lum=Math.round(v*255);
+        const i=(py*SZ+px)*4;
+        img.data[i]=lum; img.data[i+1]=lum; img.data[i+2]=lum; img.data[i+3]=255;
+      }
+    }
+    cx.putImageData(img,0,0);
+  }
+
+  function renderAll(t){NOISE_TYPES.forEach(nt=>renderNoise(nt.id,t));}
+
+  /* Wire controls */
+  document.getElementById('n-oct').addEventListener('input',function(){
+    octavesT=parseInt(this.value);document.getElementById('n-oct-v').textContent=octavesT;
+    if(!animating)renderAll(0);
+  });
+  document.getElementById('n-scl').addEventListener('input',function(){
+    const sv=parseInt(this.value);
+    scaleT=sv*.5;
+    document.getElementById('n-scl-v').textContent=scaleT.toFixed(1)+'x';
+    if(!animating)renderAll(0);
+  });
+
+  let animRAF=null;
+  document.getElementById('n-anim').addEventListener('click',function(){
+    animating=!animating;this.classList.toggle('active',animating);this.textContent=animating?'Stop Animation':'Animate Time';
+    if(animating){
+      function loop(){
+        if(!animating)return;
+        animTime+=.03;
+        octaves=lag(octaves,octavesT,.016,.4);
+        scale=lag(scale,scaleT,.016,.4);
+        renderAll(animTime);
+        animRAF=requestAnimationFrame(loop);
+      }
+      loop();
+    }else cancelAnimationFrame(animRAF);
+  });
+
+  /* Quiz */
+  let quizType='';
+  document.getElementById('n-quiz-btn').addEventListener('click',function(){
+    const area=document.getElementById('n-quiz-area');
+    area.style.display=area.style.display==='none'?'block':'none';
+    if(area.style.display==='block')startQuiz();
+  });
+
+  function startQuiz(){
+    const types=NOISE_TYPES.map(n=>n.id);
+    quizType=types[Math.floor(Math.random()*types.length)];
+    const qcv=document.getElementById('n-quiz-c');
+    const qcx=qcv.getContext('2d');
+    const img=qcx.createImageData(200,200);
+    const sc=scale*.02;
+    for(let py=0;py<200;py++){
+      for(let px=0;px<200;px++){
+        const x=(px+.5)*sc,y=(py+.5)*sc;
+        let v=0;
+        switch(quizType){
+          case'random':v=Math.random();break;
+          case'value':v=valueNoise(x,y);break;
+          case'perlin':v=gradNoise(x,y);break;
+          case'worley':v=worleyNoise(x*2,y*2);break;
+          case'fbm':v=fbm(x,y,4);break;
+          case'warp':v=warpNoise(x,y,4);break;
+        }
+        v=clamp(v,0,1);const lum=Math.round(v*255);
+        const i=(py*200+px)*4;
+        img.data[i]=lum;img.data[i+1]=lum;img.data[i+2]=lum;img.data[i+3]=255;
+      }
+    }
+    qcx.putImageData(img,0,0);
+    const btns=document.getElementById('n-quiz-btns');
+    btns.innerHTML='';
+    document.getElementById('n-quiz-res').textContent='';
+    NOISE_TYPES.forEach(nt=>{
+      const b=document.createElement('button');b.textContent=nt.name;
+      b.addEventListener('click',()=>{
+        const res=document.getElementById('n-quiz-res');
+        if(nt.id===quizType){res.style.color='var(--accent)';res.textContent='Correct! '+NOISE_TYPES.find(n=>n.id===quizType).desc;}
+        else{res.style.color='var(--accent3)';res.textContent='Incorrect — that was '+NOISE_TYPES.find(n=>n.id===quizType).name+'.';}
+        btns.querySelectorAll('button').forEach(b2=>{b2.disabled=true;});
+        setTimeout(startQuiz,2500);
+      });
+      btns.appendChild(b);
+    });
+  }
+
+  /* Initial render */
+  setTimeout(()=>{renderAll(0);},100);
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 8 — ARTISTS
+═══════════════════════════════════════════ */
+(function buildArtists(){
+  const ARTISTS=[
+    {name:'Vera Molnár',era:'1924–2023',work:'"Interruptions" (1968)',desc:'Pioneer of computer art. Used algorithms to generate structured yet unpredictable geometric forms decades before personal computers.'},
+    {name:'Harold Cohen',era:'1928–2016',work:'AARON (1970s–2010s)',desc:'Created AARON, an autonomous painting robot. Explored what it means for a machine to understand and create visual art.'},
+    {name:'Casey Reas',era:'1972–',work:'"Software Structures"',desc:'Co-creator of Processing language. Translates behavioral rules into dynamic visual forms rooted in conceptual art.'},
+    {name:'Scott Draves',era:'1968–',work:'Electric Sheep',desc:'Genetic algorithm screensavers evolved by distributed computing and user votes. Pioneer of collaborative evolutionary art.'},
+    {name:'Refik Anadol',era:'1985–',work:'Machine Hallucinations',desc:'Large-scale data sculptures and immersive installations using machine learning to visualize collective memories.'},
+    {name:'Tyler Hobbs',era:'1987–',work:'Fidenza (2021)',desc:'Flow field-based generative art on blockchain. His Fidenza algorithm produces richly varied compositions from a single rule set.'},
+    {name:'Jen Stark',era:'1983–',work:'Paper Topographies',desc:'Paper sculpture translated into generative infinite zoom animations. Explores depth, color gradients, and organic growth.'},
+    {name:'Jared Tarbell',era:'1973–',work:'complexification.net',desc:'Organic generative systems — Substrate, Buddhabrot, Dendron. His work feels alive, as if grown rather than programmed.'}
+  ];
+  const row=document.getElementById('artists-row');
+  ARTISTS.forEach(a=>{
+    const d=document.createElement('div');d.className='artist-card';
+    d.innerHTML=`<div class="artist-name">${a.name}</div><div class="artist-era">${a.era}</div><div class="artist-work">${a.work}</div><div class="artist-desc">${a.desc}</div>`;
+    row.appendChild(d);
+  });
+})();
+
+/* ═══════════════════════════════════════════
+   SECTION 9 — GLOSSARY
+═══════════════════════════════════════════ */
+(function buildGlossary(){
+  const TERMS=[
+    {w:'Agent',d:'An autonomous entity in a simulation that perceives its environment and acts on rules, producing emergent collective behavior.'},
+    {w:'Attractor',d:'A set of values toward which a dynamic system tends to evolve. Strange attractors have fractal structure and never repeat.'},
+    {w:'Bifurcation',d:'A sudden qualitative change in a system\'s behavior as a parameter crosses a critical threshold. The onset of chaos.'},
+    {w:'Chaos Theory',d:'The study of systems that are deterministic yet sensitively dependent on initial conditions — small changes, vast differences.'},
+    {w:'Emergent',d:'Properties or patterns that arise from simple rules interacting, which could not be predicted from individual components alone.'},
+    {w:'Evolution',d:'Iterative variation and selection applied to generative parameters or "genomes," producing increasingly fit or complex outputs.'},
+    {w:'Feed/Kill Rate',d:'Parameters in reaction-diffusion models controlling how fast chemicals are supplied (F) and removed (K), shaping pattern type.'},
+    {w:'Fitness Function',d:'A measure of how well an organism or solution solves a problem, driving selection in evolutionary algorithms.'},
+    {w:'Flow Field',d:'A vector field assigning a direction to every point in space. Particles following it trace paths that reveal invisible structure.'},
+    {w:'Fractal Dimension',d:'A non-integer dimension measuring self-similarity across scales. A coastline may have dimension 1.25 — between line and plane.'},
+    {w:'Gene',d:'A single parameter in a generative genome. Genes encode shape, color, motion, or behavior and are inherited through breeding.'},
+    {w:'Gray-Scott',d:'A reaction-diffusion model of two chemicals U and V producing Turing patterns: spots, stripes, mazes, and complex forms.'},
+    {w:'L-System',d:'A parallel rewriting system invented by Lindenmayer to model plant growth. Simple rules iterated produce complex fractal forms.'},
+    {w:'Lorenz',d:'A system of differential equations exhibiting chaos, visualized as a butterfly-shaped strange attractor in 3D phase space.'},
+    {w:'Mutation',d:'Random change in a genome parameter, introducing novelty into an evolutionary population and preventing premature convergence.'},
+    {w:'Perlin Noise',d:'Gradient noise invented by Ken Perlin (Tron, 1982). Smooth, coherent randomness used for terrain, clouds, and texture.'},
+    {w:'Phenotype',d:'The observable visual form that a genome produces when expressed — the artwork itself, as opposed to its genetic encoding.'},
+    {w:'Production Rule',d:'In L-systems, a rule replacing one symbol with a string: F → F+F-F-F+F. Applied in parallel at each iteration step.'},
+    {w:'Reaction-Diffusion',d:'A system modeling two chemicals diffusing through space and reacting with each other, producing Turing-like biological patterns.'},
+    {w:'Self-Organization',d:'The spontaneous emergence of order from initially disordered states, driven by local interactions rather than central control.'},
+    {w:'Strange Attractor',d:'An attractor with fractal structure. Trajectories are confined to it but never repeat — deterministic chaos made visible.'},
+    {w:'Turtle Graphics',d:'A drawing system where a "turtle" moves forward and turns, tracing paths. L-systems are interpreted via turtle graphics.'}
+  ];
+  const grid=document.getElementById('glossary-grid');
+  TERMS.forEach(t=>{
+    const d=document.createElement('div');d.className='gterm';
+    d.innerHTML=`<div class="gword">${t.w}</div><div class="gdef">${t.d}</div>`;
+    grid.appendChild(d);
+  });
+})();
+
+/* ═══════════════════════════════════════════
+   INTERSECTION OBSERVER — SCROLL REVEALS
+═══════════════════════════════════════════ */
+(function scrollReveal(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.replace('hidden','visible');});
+  },{threshold:.10});
+  document.querySelectorAll('.hidden').forEach(el=>io.observe(el));
+})();
+
+</script>
+</body>
+</html>

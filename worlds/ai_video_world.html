@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring ai video">
+    <meta property="og:title" content="Ai Video World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring ai video">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/ai_video_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Video World — WAVGEN Video Universe</title>
+<style>
+:root {
+  --black:#050508;
+  --surface:#0d0d14;
+  --border:#1e1e2e;
+  --text:#e2e8f0;
+  --dim:#64748b;
+  --accent:#06b6d4;
+  --accent-glow: 0 0 12px rgba(6,182,212,0.6);
+  --accent-glow-lg: 0 0 24px rgba(6,182,212,0.4), 0 0 48px rgba(6,182,212,0.2);
+  --radius:8px;
+  --transition:0.3s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scrollbar-color:var(--border) var(--black)}
+body{background:var(--black);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+canvas{display:block}
+button{cursor:pointer;font-family:inherit}
+nav{position:sticky;top:0;z-index:100;background:rgba(5,5,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nav-logo{font-size:0.85rem;font-weight:700;letter-spacing:0.15em;color:var(--accent);text-shadow:var(--accent-glow)}
+.nav-links{display:flex;gap:1.2rem;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.08em;color:var(--dim);transition:color var(--transition)}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+section.sec{padding:4.5rem 2rem;max-width:1100px;margin:0 auto}
+.section-label{font-size:0.7rem;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1}
+h2{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;margin-bottom:0.75rem}
+h3{font-size:1rem;font-weight:600;margin-bottom:0.4rem}
+p{color:var(--dim);margin-bottom:0.75rem}
+.glow-text{color:var(--accent);text-shadow:var(--accent-glow)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem}
+.edu-card{background:linear-gradient(135deg,rgba(6,182,212,0.07),rgba(6,182,212,0.02));border:1px solid rgba(6,182,212,0.25);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-top:1.5rem}
+.edu-card p{color:var(--text);font-style:italic;margin:0;font-size:0.85rem;line-height:1.7}
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1.1rem;border-radius:6px;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;border:none;transition:all var(--transition)}
+.btn-primary{background:var(--accent);color:var(--black)}
+.btn-primary:hover{box-shadow:var(--accent-glow);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:rgba(6,182,212,0.1);box-shadow:var(--accent-glow)}
+.btn-sm{padding:0.35rem 0.75rem;font-size:0.73rem}
+.slider-wrap{display:flex;align-items:center;gap:0.75rem;margin-top:0.75rem;flex-wrap:wrap}
+.slider-label{font-size:0.7rem;letter-spacing:0.1em;color:var(--dim);white-space:nowrap;min-width:80px}
+input[type=range]{flex:1;min-width:120px;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;background:var(--border);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:var(--accent-glow);cursor:pointer}
+.slider-val{font-size:0.73rem;color:var(--accent);min-width:28px;text-align:right;font-variant-numeric:tabular-nums}
+.badge-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem}
+.badge{background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);border-radius:4px;padding:0.2rem 0.6rem;font-size:0.67rem;letter-spacing:0.1em;color:var(--accent)}
+.canvas-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative}
+.canvas-label{position:absolute;top:0.4rem;left:0.6rem;font-size:0.62rem;letter-spacing:0.12em;color:var(--accent);background:rgba(5,5,8,0.75);padding:0.15rem 0.45rem;border-radius:3px;text-transform:uppercase;pointer-events:none}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:none}
+.stagger1{transition-delay:0.1s}.stagger2{transition-delay:0.2s}.stagger3{transition-delay:0.3s}.stagger4{transition-delay:0.4s}
+.col2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.col3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.col4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:768px){.col2,.col3,.col4{grid-template-columns:1fr}.nav-links{display:none}}
+.sec-divider{border:none;border-top:1px solid var(--border);margin:0}
+.expand-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:0.65rem;overflow:hidden}
+.expand-header{display:flex;justify-content:space-between;align-items:center;padding:0.9rem 1.2rem;cursor:pointer;user-select:none;font-size:0.85rem;font-weight:600}
+.expand-header:hover{background:rgba(6,182,212,0.04)}
+.expand-icon{color:var(--accent);font-size:1.1rem;transition:transform var(--transition);line-height:1}
+.expand-icon.open{transform:rotate(45deg)}
+.expand-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.expand-body.open{max-height:400px}
+.expand-body-inner{padding:0 1.2rem 1rem;font-size:0.82rem;color:var(--dim);line-height:1.65}
+.quiz-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.quiz-canvas-wrap{position:relative;cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid var(--border);transition:border-color var(--transition)}
+.quiz-canvas-wrap:hover{border-color:var(--accent)}
+.quiz-canvas-wrap.correct-pick{border-color:#22c55e}
+.quiz-canvas-wrap.wrong-pick{border-color:#ef4444}
+.quiz-canvas-label{text-align:center;font-size:0.7rem;color:var(--dim);margin-top:0.4rem}
+.timeline{position:relative;padding-left:1.75rem;margin-top:1.25rem}
+.timeline::before{content:'';position:absolute;left:0.4rem;top:0;bottom:0;width:1px;background:var(--border)}
+.timeline-item{position:relative;margin-bottom:0.9rem}
+.timeline-item::before{content:'';position:absolute;left:-1.45rem;top:0.35rem;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:var(--accent-glow)}
+.timeline-year{font-size:0.68rem;font-weight:700;color:var(--accent);margin-bottom:0.05rem}
+.timeline-text{font-size:0.76rem;color:var(--dim);margin:0}
+.ethics-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;margin-bottom:1.25rem}
+.ethics-tag{font-size:0.65rem;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem}
+.ethics-scenario{color:var(--text);font-size:0.86rem;margin-bottom:1rem;line-height:1.7}
+.ethics-options{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+.ethics-btn{background:rgba(6,182,212,0.04);border:1px solid rgba(6,182,212,0.18);border-radius:5px;padding:0.55rem 0.85rem;font-size:0.76rem;color:var(--text);cursor:pointer;transition:all var(--transition);text-align:left;line-height:1.45}
+.ethics-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(6,182,212,0.1)}
+.ethics-btn.chosen{border-color:var(--accent);background:rgba(6,182,212,0.14);color:var(--accent)}
+.ethics-consequence{margin-top:0.85rem;padding:0.65rem 1rem;background:rgba(6,182,212,0.06);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;font-size:0.8rem;color:var(--text);display:none;line-height:1.6}
+.ethics-consequence.show{display:block}
+.ethics-final{background:linear-gradient(135deg,rgba(6,182,212,0.1),rgba(6,182,212,0.03));border:1px solid rgba(6,182,212,0.35);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-top:1.5rem;display:none}
+.ethics-final.show{display:block}
+.ethics-final p{color:var(--text);font-size:1rem;font-style:italic;margin:0}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;transition:all var(--transition)}
+.artist-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--accent-glow)}
+.artist-name{font-size:0.88rem;font-weight:700;color:var(--accent);margin-bottom:0.2rem}
+.artist-role{font-size:0.68rem;letter-spacing:0.08em;color:var(--dim);text-transform:uppercase;margin-bottom:0.5rem}
+.artist-desc{font-size:0.76rem;color:var(--text);line-height:1.5;margin:0}
+.artist-insight{font-size:0.71rem;color:var(--dim);font-style:italic;margin-top:0.5rem;border-top:1px solid var(--border);padding-top:0.5rem}
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.glossary-item{padding:0.55rem 0.85rem;border-bottom:1px solid var(--border)}
+.glossary-item:nth-child(odd){border-right:1px solid var(--border)}
+.glossary-term{font-size:0.76rem;font-weight:700;color:var(--accent);margin-bottom:0.12rem}
+.glossary-def{font-size:0.71rem;color:var(--dim);line-height:1.4;margin:0}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.7rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase}
+footer span{color:var(--accent)}
+.score-pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.85rem;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);border-radius:20px;font-size:0.78rem;color:var(--accent);font-weight:700}
+.prompt-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.65rem 0.9rem;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none;transition:border-color var(--transition)}
+.prompt-input:focus{border-color:var(--accent)}
+.prompt-suggestions{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.prompt-tag{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);border-radius:20px;padding:0.15rem 0.6rem;font-size:0.68rem;color:var(--accent);cursor:pointer;transition:background var(--transition)}
+.prompt-tag:hover{background:rgba(6,182,212,0.18)}
+.prompt-field-label{font-size:0.7rem;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;margin-bottom:0.35rem;margin-top:0.9rem}
+.combined-prompt{width:100%;background:rgba(6,182,212,0.04);border:1px solid rgba(6,182,212,0.25);border-radius:6px;padding:0.85rem 1rem;color:var(--text);font-size:0.82rem;font-family:'Courier New',monospace;min-height:70px;resize:vertical;outline:none}
+.checklist{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.75rem}
+.checklist li{display:flex;gap:0.5rem;align-items:flex-start;font-size:0.8rem;color:var(--dim);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:0.55rem 0.75rem}
+.check-num{color:var(--accent);font-weight:700;font-size:0.75rem;min-width:16px}
+.nerf-controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-top:0.85rem}
+</style>
+</head>
+<body class="domain-video">
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⬡ WAVGEN · AI VIDEO WORLD</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Diffusion</a></li>
+      <li><a href="#prompt-lab">Prompt Lab</a></li>
+      <li><a href="#coherence">Coherence</a></li>
+      <li><a href="#deepfake">Deepfake</a></li>
+      <li><a href="#motion-brush">Motion Brush</a></li>
+      <li><a href="#nerf">NeRF</a></li>
+      <li><a href="#ethics">Ethics</a></li>
+      <li><a href="#artists">Artists</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══ SECTION 1 · HERO ═══ -->
+<section class="sec" id="hero">
+  <div class="section-label">App 06 · Video Universe · WAVGEN</div>
+  <h1 class="glow-text" style="margin-bottom:0.35rem">AI VIDEO WORLD</h1>
+  <p style="font-size:0.95rem;color:var(--dim);margin-bottom:0.15rem">The Frontier of the Moving Image</p>
+  <p style="font-size:0.85rem;color:var(--dim);font-style:italic;margin-bottom:0.5rem">The image that never existed. The frame that cannot exist again.</p>
+  <div class="badge-row" style="margin-bottom:1.75rem">
+    <span class="badge">Diffusion Steps</span>
+    <span class="badge">Latent Space</span>
+    <span class="badge">Guidance Scale</span>
+    <span class="badge">Seed</span>
+  </div>
+
+  <div class="reveal">
+    <div class="canvas-wrap" style="max-width:700px">
+      <canvas id="diffusion-canvas" width="700" height="380" style="width:100%;height:auto"></canvas>
+      <div class="canvas-label">THE DIFFUSION ENGINE</div>
+    </div>
+    <div class="slider-wrap" style="max-width:700px;margin-top:0.9rem">
+      <span class="slider-label">STEP (0–50)</span>
+      <input type="range" id="diffusion-step" min="0" max="50" value="0">
+      <span class="slider-val" id="diffusion-step-val">0</span>
+      <button class="btn btn-primary btn-sm" id="diffusion-generate" style="margin-left:0.5rem">⟳ GENERATE NEW</button>
+    </div>
+  </div>
+
+  <div style="margin-top:1.25rem;display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap" class="reveal stagger2">
+    <div>
+      <div class="section-label" style="margin-bottom:0.35rem">LATENT SPACE</div>
+      <div class="canvas-wrap"><canvas id="latent-canvas" width="200" height="80" style="display:block"></canvas></div>
+    </div>
+    <div class="edu-card" style="flex:1;min-width:200px;margin-top:0">
+      <p>The diffusion process starts with pure Gaussian noise and iteratively removes it, guided by a learned distribution. Each denoising step refines the latent representation toward a coherent image. The latent space (left) is the compressed abstract manifold where generation occurs.</p>
+    </div>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 2 · PROMPT LAB ═══ -->
+<section class="sec" id="prompt-lab">
+  <div class="section-label">Section 02</div>
+  <h2>Prompt Lab</h2>
+  <p>Professional AI video prompts are structured taxonomies — not sentences. Build one below.</p>
+
+  <div class="col2" style="margin-top:1.25rem">
+    <div class="reveal">
+      <div class="prompt-field-label" style="margin-top:0">Subject</div>
+      <input class="prompt-input" id="pl-subject" type="text" placeholder="what / who is in the scene…">
+      <div class="prompt-suggestions">
+        <span class="prompt-tag" data-field="pl-subject">a lone figure</span>
+        <span class="prompt-tag" data-field="pl-subject">a burning city</span>
+        <span class="prompt-tag" data-field="pl-subject">a chrome robot</span>
+      </div>
+
+      <div class="prompt-field-label">Action</div>
+      <input class="prompt-input" id="pl-action" type="text" placeholder="what is happening…">
+      <div class="prompt-suggestions">
+        <span class="prompt-tag" data-field="pl-action">walking slowly</span>
+        <span class="prompt-tag" data-field="pl-action">dissolving into light</span>
+        <span class="prompt-tag" data-field="pl-action">rotating</span>
+      </div>
+
+      <div class="prompt-field-label">Style / Reference</div>
+      <input class="prompt-input" id="pl-style" type="text" placeholder="visual aesthetic…">
+      <div class="prompt-suggestions">
+        <span class="prompt-tag" data-field="pl-style">cinematic, 35mm film grain</span>
+        <span class="prompt-tag" data-field="pl-style">Tarkovsky slow cinema</span>
+        <span class="prompt-tag" data-field="pl-style">Studio Ghibli watercolor</span>
+      </div>
+
+      <div class="prompt-field-label">Camera / Lighting</div>
+      <input class="prompt-input" id="pl-camera" type="text" placeholder="technical parameters…">
+      <div class="prompt-suggestions">
+        <span class="prompt-tag" data-field="pl-camera">dolly shot</span>
+        <span class="prompt-tag" data-field="pl-camera">golden hour</span>
+        <span class="prompt-tag" data-field="pl-camera">extreme close-up</span>
+      </div>
+
+      <button class="btn btn-primary" id="pl-combine" style="margin-top:1rem">COMBINE PROMPT ↓</button>
+    </div>
+
+    <div class="reveal stagger2">
+      <div class="prompt-field-label" style="margin-top:0">COMBINED PROMPT OUTPUT</div>
+      <textarea class="combined-prompt" id="pl-output" readonly placeholder="Your assembled prompt will appear here…"></textarea>
+
+      <div style="margin-top:1.25rem">
+        <div class="section-label" style="margin-bottom:0.65rem">PROMPT QUALITY COMPARISON</div>
+        <div class="col2" style="gap:0.75rem">
+          <div>
+            <div class="canvas-wrap"><canvas id="vague-canvas" width="280" height="180" style="width:100%;height:auto"></canvas></div>
+            <div style="font-size:0.68rem;color:#ef4444;text-align:center;margin-top:0.35rem;letter-spacing:0.05em">VAGUE PROMPT</div>
+          </div>
+          <div>
+            <div class="canvas-wrap"><canvas id="detailed-canvas" width="280" height="180" style="width:100%;height:auto"></canvas></div>
+            <div style="font-size:0.68rem;color:#22c55e;text-align:center;margin-top:0.35rem;letter-spacing:0.05em">DETAILED PROMPT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-card reveal stagger3">
+    <p>AI video generation responds to specificity. "A man walking" produces generic results. "35mm, slow dolly, golden hour, lone silhouette, Terrence Malick" produces intention. Every field in your prompt is a constraint that narrows the generation space toward your vision.</p>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 3 · COHERENCE PROBLEM ═══ -->
+<section class="sec" id="coherence">
+  <div class="section-label">Section 03</div>
+  <h2>The Coherence Problem</h2>
+  <p>AI video must produce 24 consistent frames per second. Each frame must agree with every other frame about who, what, and where.</p>
+
+  <div class="reveal" style="margin-top:1.25rem">
+    <div class="canvas-wrap" style="max-width:700px">
+      <canvas id="coherence-canvas" width="700" height="240" style="width:100%;height:auto"></canvas>
+      <div class="canvas-label">6-FRAME SEQUENCE</div>
+    </div>
+
+    <div class="slider-wrap" style="max-width:700px;margin-top:0.9rem">
+      <span class="slider-label">COHERENCE</span>
+      <input type="range" id="coherence-slider" min="0" max="100" value="100">
+      <span class="slider-val" id="coherence-val">100</span>
+    </div>
+    <div id="coherence-warning" style="margin-top:0.5rem;font-size:0.75rem;color:#f97316;letter-spacing:0.08em;display:none">
+      ⚠ TEMPORAL CONSISTENCY DEGRADATION DETECTED
+    </div>
+  </div>
+
+  <div style="margin-top:1.75rem" class="reveal stagger2">
+    <h3>Approaches to the Coherence Problem</h3>
+
+    <div class="expand-card">
+      <div class="expand-header" onclick="toggleExpand(this)">
+        <span>① Video-to-Video: Inherit Coherence from Source</span>
+        <span class="expand-icon">+</span>
+      </div>
+      <div class="expand-body">
+        <div class="expand-body-inner">Start from a real video clip and use AI to restyle it — adding artistic filters, changing the visual style, or altering surface details. Since the source video already handles temporal consistency (real physics, real camera), the AI only needs to maintain style coherence, not structural coherence. Used in tools like Runway ML's Video-to-Video and EbSynth.</div>
+      </div>
+    </div>
+
+    <div class="expand-card">
+      <div class="expand-header" onclick="toggleExpand(this)">
+        <span>② Conditioning Frames: Keyframe Interpolation</span>
+        <span class="expand-icon">+</span>
+      </div>
+      <div class="expand-body">
+        <div class="expand-body-inner">Provide explicit keyframes (start frame, middle frame, end frame) and let the AI interpolate the motion between them. The model is constrained to begin and end at your specified images, dramatically reducing drift. Used by Pika Labs and Stable Video Diffusion's keyframe interpolation modes.</div>
+      </div>
+    </div>
+
+    <div class="expand-card">
+      <div class="expand-header" onclick="toggleExpand(this)">
+        <span>③ ControlNet / Pose Guidance: Structural Constraints</span>
+        <span class="expand-icon">+</span>
+      </div>
+      <div class="expand-body">
+        <div class="expand-body-inner">Extract depth maps, pose skeletons, or edge maps from each frame and use these as hard constraints during generation. The AI must produce an image that matches the structural skeleton, even as it varies surface details. Pose-guided generation ensures a character's body proportions remain consistent across frames even when appearance changes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-card reveal stagger3">
+    <p>The coherence problem is the central unsolved challenge of AI video. An image generator produces one frame. A video generator must produce 24 per second — all consistent with each other about who the character is, where the light sources are, and what just happened in the previous frame.</p>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 4 · DEEPFAKE DETECTION ═══ -->
+<section class="sec" id="deepfake">
+  <div class="section-label">Section 04</div>
+  <h2>Deepfake Detection Clinic</h2>
+  <p>Knowing how deepfakes work is essential for media literacy. This section teaches detection, not creation.</p>
+
+  <div class="col2" style="margin-top:1.25rem;gap:2rem">
+    <div class="reveal">
+      <h3 style="color:var(--accent);margin-bottom:0.75rem">Detection Checklist</h3>
+      <ul class="checklist">
+        <li><span class="check-num">01</span><span><strong>Blinking</strong> — AI faces often don't blink naturally; timing is off or absent</span></li>
+        <li><span class="check-num">02</span><span><strong>Hair edges</strong> — strands blur or merge with background at boundaries</span></li>
+        <li><span class="check-num">03</span><span><strong>Ears</strong> — frequently inconsistent, warped, or wrong shape</span></li>
+        <li><span class="check-num">04</span><span><strong>Teeth</strong> — weird geometry, extra teeth, unnatural gum color</span></li>
+        <li><span class="check-num">05</span><span><strong>Neck lighting</strong> — mismatch between face and neck illumination</span></li>
+        <li><span class="check-num">06</span><span><strong>Background bleed</strong> — warping or color bleeding at face boundaries</span></li>
+        <li><span class="check-num">07</span><span><strong>Eye highlights</strong> — reflections don't match actual light source direction</span></li>
+        <li><span class="check-num">08</span><span><strong>Temporal drift</strong> — face subtly changes between video frames</span></li>
+      </ul>
+
+      <h3 style="margin-top:1.5rem;margin-bottom:0.75rem">Deepfake Timeline</h3>
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-year">2017</div><div class="timeline-text">Reddit user "deepfakes" releases faceswap tool — term becomes generic</div></div>
+        <div class="timeline-item"><div class="timeline-year">2018–19</div><div class="timeline-text">GAN-based face synthesis reaches photorealism; detection race begins</div></div>
+        <div class="timeline-item"><div class="timeline-year">2020–21</div><div class="timeline-text">Commercial tools democratize creation; first legislation in US states</div></div>
+        <div class="timeline-item"><div class="timeline-year">2022–23</div><div class="timeline-text">Diffusion models surpass GANs; real-time deepfake on consumer hardware</div></div>
+        <div class="timeline-item"><div class="timeline-year">2024</div><div class="timeline-text">C2PA provenance standards, AI watermarking, EU AI Act enforcement begins</div></div>
+      </div>
+    </div>
+
+    <div class="reveal stagger2">
+      <h3 style="color:var(--accent);margin-bottom:0.5rem">Spot the Fake — Quiz</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+        <p style="margin:0;font-size:0.8rem">Click the image you think is the deepfake.</p>
+        <div class="score-pill">Score: <span id="quiz-score">0</span> / <span id="quiz-total">3</span></div>
+      </div>
+
+      <div class="quiz-pair">
+        <div class="quiz-canvas-wrap" id="quiz-a" onclick="quizPick('a')">
+          <canvas id="quiz-canvas-a" width="220" height="170" style="width:100%;height:auto"></canvas>
+          <div class="quiz-canvas-label" id="quiz-label-a">Option A</div>
+        </div>
+        <div class="quiz-canvas-wrap" id="quiz-b" onclick="quizPick('b')">
+          <canvas id="quiz-canvas-b" width="220" height="170" style="width:100%;height:auto"></canvas>
+          <div class="quiz-canvas-label" id="quiz-label-b">Option B</div>
+        </div>
+      </div>
+
+      <div id="quiz-reveal" style="display:none;margin-top:0.85rem;padding:0.65rem 1rem;background:rgba(6,182,212,0.07);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;font-size:0.79rem;color:var(--text);line-height:1.6"></div>
+      <div style="margin-top:0.75rem;display:flex;gap:0.65rem;align-items:center">
+        <button class="btn btn-outline btn-sm" id="quiz-next" onclick="quizNext()" style="display:none">NEXT ROUND →</button>
+        <div id="quiz-round-label" style="font-size:0.7rem;color:var(--dim)">Round 1 of 3</div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 5 · MOTION BRUSH ═══ -->
+<section class="sec" id="motion-brush">
+  <div class="section-label">Section 05</div>
+  <h2>Motion Brush Simulator</h2>
+  <p>Paint motion vectors onto regions of an image — then preview the directed animation.</p>
+
+  <div class="reveal" style="margin-top:1.25rem">
+    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:0.75rem">
+      <div style="font-size:0.75rem;color:var(--dim)">
+        <span style="color:var(--accent)">■</span> Red=Right &nbsp;
+        <span style="color:#3b82f6">■</span> Blue=Left &nbsp;
+        <span style="color:#22c55e">■</span> Green=Up &nbsp;
+        <span style="color:#f59e0b">■</span> Yellow=Down
+      </div>
+      <button class="btn btn-outline btn-sm" id="mb-clear">CLEAR VECTORS</button>
+      <button class="btn btn-primary btn-sm" id="mb-preview">▶ PREVIEW MOTION</button>
+      <button class="btn btn-outline btn-sm" id="mb-stop" style="display:none">■ STOP</button>
+    </div>
+
+    <div class="canvas-wrap" style="max-width:600px;cursor:crosshair">
+      <canvas id="motion-canvas" width="600" height="340" style="width:100%;height:auto"></canvas>
+      <div class="canvas-label">MOTION BRUSH CANVAS — CLICK &amp; DRAG TO PAINT</div>
+    </div>
+
+    <div style="margin-top:0.85rem;display:flex;gap:1rem;flex-wrap:wrap">
+      <div class="card" style="flex:1;min-width:180px;font-size:0.78rem">
+        <strong style="color:var(--accent)">WITHOUT Motion Brush</strong>
+        <p style="margin-top:0.35rem;margin-bottom:0">Entire scene moves as one with camera pan — no independent element control.</p>
+      </div>
+      <div class="card" style="flex:1;min-width:180px;font-size:0.78rem">
+        <strong style="color:#22c55e">WITH Motion Brush</strong>
+        <p style="margin-top:0.35rem;margin-bottom:0">Painted regions move independently — person steps forward while trees sway separately.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-card reveal stagger2">
+    <p>Motion brush is how tools like Runway ML Gen-3 and Kling allow creators to direct AI video generation. Instead of hoping the AI guesses your intent, you explicitly paint where and how motion should occur — transforming the generation from stochastic to intentional.</p>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 6 · NERF EXPLORER ═══ -->
+<section class="sec" id="nerf">
+  <div class="section-label">Section 06</div>
+  <h2>NeRF Explorer</h2>
+  <p>Neural Radiance Fields reconstruct 3D scenes from 2D photographs — enabling novel view synthesis from any angle.</p>
+
+  <div class="col2" style="margin-top:1.25rem;gap:2rem">
+    <div class="reveal">
+      <div class="canvas-wrap">
+        <canvas id="nerf-canvas" width="420" height="300" style="width:100%;height:auto"></canvas>
+        <div class="canvas-label">NERF SCENE</div>
+      </div>
+      <div class="nerf-controls">
+        <span class="slider-label">CAMERA ANGLE</span>
+        <input type="range" id="nerf-angle" min="0" max="360" value="0" style="flex:1">
+        <span class="slider-val" id="nerf-angle-val">0°</span>
+      </div>
+      <div style="display:flex;gap:0.65rem;margin-top:0.75rem;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" id="nerf-failure-toggle" onclick="toggleNeRFFailure()">SHOW FAILURE MODES</button>
+        <button class="btn btn-outline btn-sm" id="nerf-auto-toggle" onclick="toggleNeRFAuto()">▶ AUTO ROTATE</button>
+      </div>
+    </div>
+
+    <div class="reveal stagger2">
+      <h3>8 Training Views</h3>
+      <p style="font-size:0.8rem">NeRF is trained on a fixed set of photographs. The camera ring shows the 8 capture positions. Novel views (between cameras) are synthesized — quality degrades at extreme novel angles.</p>
+      <canvas id="nerf-ring" width="280" height="180" style="width:100%;max-width:280px;display:block;margin:0.75rem auto"></canvas>
+
+      <div class="expand-card" style="margin-top:1rem">
+        <div class="expand-header" onclick="toggleExpand(this)">
+          <span>NeRF → Gaussian Splatting (2023)</span>
+          <span class="expand-icon">+</span>
+        </div>
+        <div class="expand-body">
+          <div class="expand-body-inner">3D Gaussian Splatting (2023, Kerbl et al.) replaced NeRF for most real-time applications by using <em>explicit</em> 3D Gaussian primitives instead of an implicit neural field. Each Gaussian has a 3D position, opacity, and color (view-dependent). Rendering is a simple splat operation — 100× faster than NeRF. Same reconstruction quality, real-time playback on consumer GPU. NeRF remains relevant for research; Gaussian Splatting dominates production.</div>
+        </div>
+      </div>
+
+      <div id="nerf-failure-info" style="display:none;margin-top:0.75rem;padding:0.65rem 1rem;background:rgba(239,68,68,0.07);border-left:3px solid #ef4444;border-radius:0 4px 4px 0;font-size:0.79rem;color:var(--text);line-height:1.6">
+        <strong style="color:#ef4444">Failure Mode Active:</strong> Floaters (random fog-like voxels), incorrect edge geometry, view-dependent color bleeding, and geometry smearing at sparse-view angles are visible.
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-card reveal stagger3">
+    <p>NeRF captured research imagination in 2020 by synthesizing photorealistic novel views from as few as 20 photographs. It represented a paradigm shift: a neural network <em>is</em> the 3D scene — not a mesh or point cloud, but a function that maps 3D position + view direction to color and density.</p>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 7 · ETHICS BOARD ═══ -->
+<section class="sec" id="ethics">
+  <div class="section-label">Section 07</div>
+  <h2>The Ethics Board</h2>
+  <p>Every synthetic media decision is a moral choice. Four realistic scenarios — no single correct answer provided. Make your choice, see the consequences.</p>
+
+  <div style="margin-top:1.75rem">
+    <!-- Card 1 -->
+    <div class="ethics-card reveal">
+      <div class="ethics-tag">Card 01 · The Historical Speech</div>
+      <div class="ethics-scenario">You have high-quality audio of a politician from 20 years ago saying things that now seem out of context. You could use AI video to create a plausible-looking speech of them saying those words in a modern setting to "restore context" for a documentary.</div>
+      <div class="ethics-options">
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e1','A')"><strong>A)</strong> Create it with clear, prominent disclosure</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e1','B')"><strong>B)</strong> Create it without disclosure — art is interpretation</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e1','C')"><strong>C)</strong> Use only the original audio, no synthetic video</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e1','D')"><strong>D)</strong> Don't use it at all — the ambiguity is too high</button>
+      </div>
+      <div class="ethics-consequence" id="e1-consequence"></div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="ethics-card reveal stagger1">
+      <div class="ethics-tag">Card 02 · The Memorial</div>
+      <div class="ethics-scenario">A family lost a loved one. They have home video footage and want an AI to recreate the person's voice and appearance to say goodbye at a private memorial service. The person left no instructions about posthumous AI use.</div>
+      <div class="ethics-options">
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e2','A')"><strong>A)</strong> Help create it — grief processing is legitimate</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e2','B')"><strong>B)</strong> Decline — consent after death is impossible</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e2','C')"><strong>C)</strong> Create it but ensure it stays private, never shared</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e2','D')"><strong>D)</strong> Recommend a different memorial approach</button>
+      </div>
+      <div class="ethics-consequence" id="e2-consequence"></div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="ethics-card reveal stagger2">
+      <div class="ethics-tag">Card 03 · The Visual Effects</div>
+      <div class="ethics-scenario">A studio wants to use an actor's likeness from 10 years ago to de-age them digitally in a new film. The actor has personally agreed and is paid. However, their performers' union has not yet approved AI likeness use in contracts.</div>
+      <div class="ethics-options">
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e3','A')"><strong>A)</strong> Proceed — the actor's personal consent is sufficient</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e3','B')"><strong>B)</strong> Wait for union agreement — precedent matters</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e3','C')"><strong>C)</strong> Negotiate a usage fee structure with both parties</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e3','D')"><strong>D)</strong> Use a different (younger) actor instead</button>
+      </div>
+      <div class="ethics-consequence" id="e3-consequence"></div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="ethics-card reveal stagger3">
+      <div class="ethics-tag">Card 04 · The Satire</div>
+      <div class="ethics-scenario">You want to create clearly-labeled satirical AI video of a public figure saying absurd things for a comedy show. The content would be labeled "PARODY — AI GENERATED" on screen throughout. The figure is a living elected official.</div>
+      <div class="ethics-options">
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e4','A')"><strong>A)</strong> Proceed — satire of public figures is protected speech</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e4','B')"><strong>B)</strong> Check local election laws first — timing matters</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e4','C')"><strong>C)</strong> Use voice parody only, avoid facial likeness entirely</button>
+        <button class="ethics-btn" onclick="ethicsChoose(this,'e4','D')"><strong>D)</strong> Consult a media lawyer before publishing</button>
+      </div>
+      <div class="ethics-consequence" id="e4-consequence"></div>
+    </div>
+
+    <div class="ethics-final" id="ethics-final">
+      <p>"Every synthetic media decision is a moral choice. The tools are neutral. The intention and the disclosure are everything."</p>
+    </div>
+  </div>
+</section>
+<hr class="sec-divider">
+
+<!-- ═══ SECTION 8 · ARTISTS + GLOSSARY ═══ -->
+<section class="sec" id="artists">
+  <div class="section-label">Section 08</div>
+  <h2>Artists &amp; Studios</h2>
+  <p>The people and organizations defining the frontier of AI video.</p>
+
+  <div class="col4" style="margin-top:1.25rem">
+    <div class="artist-card reveal">
+      <div class="artist-name">Runway ML</div>
+      <div class="artist-role">AI Video Pioneer Studio</div>
+      <div class="artist-desc">Creators of Gen-1, Gen-2, and Gen-3 Alpha. First to offer commercial text-to-video and video-to-video tools at production quality. Acts as the bridge between AI research and working filmmakers.</div>
+      <div class="artist-insight">"We're building the next generation of storytelling tools."</div>
+    </div>
+    <div class="artist-card reveal stagger1">
+      <div class="artist-name">Pika Labs</div>
+      <div class="artist-role">Creative AI Video Startup</div>
+      <div class="artist-desc">Rapid iteration on consumer-accessible AI video. Known for Pika 1.0's motion brush and lip sync features. Made high-quality text-to-video available to non-technical creators via Discord and web app.</div>
+      <div class="artist-insight">Democratization as design principle.</div>
+    </div>
+    <div class="artist-card reveal stagger2">
+      <div class="artist-name">Sora / OpenAI</div>
+      <div class="artist-role">Text-to-Video Research</div>
+      <div class="artist-desc">Sora (2024) demonstrated world-model-level video generation — coherent physics, camera motion, and long-form temporal consistency. Trained on video as a spatiotemporal data format rather than frame sequences.</div>
+      <div class="artist-insight">Video generation as physics simulation.</div>
+    </div>
+    <div class="artist-card reveal stagger3">
+      <div class="artist-name">Google DeepMind</div>
+      <div class="artist-role">Lumiere · Veo Research</div>
+      <div class="artist-desc">Lumiere introduced space-time diffusion for full-clip generation. Veo (2024) extended to high-resolution, multi-shot cinematic sequences with director-level prompt adherence and reference-image conditioning.</div>
+      <div class="artist-insight">Research at cinema resolution.</div>
+    </div>
+    <div class="artist-card reveal">
+      <div class="artist-name">Alexander Mordvintsev</div>
+      <div class="artist-role">DeepDream Creator · Google</div>
+      <div class="artist-desc">Created DeepDream (2015), the first widely seen neural network visual art. Showed that CNNs contain learnable visual hallucinations — planting the seed for the generative AI art movement that followed.</div>
+      <div class="artist-insight">The network dreams what it has learned to see.</div>
+    </div>
+    <div class="artist-card reveal stagger1">
+      <div class="artist-name">Holly Herndon &amp; Mat Dryhurst</div>
+      <div class="artist-role">AI Ethics in Art · Spawn AI</div>
+      <div class="artist-desc">Created Spawn (2019) — an AI trained only on collaborative community data with explicit consent. Pioneered "data dignity" — the principle that artists must have rights over how their work trains AI systems.</div>
+      <div class="artist-insight">"The dataset is the politics."</div>
+    </div>
+    <div class="artist-card reveal stagger2">
+      <div class="artist-name">Refik Anadol</div>
+      <div class="artist-role">AI Data Sculpture · MoMA</div>
+      <div class="artist-desc">Creates large-scale architectural AI installations — "Machine Hallucinations" trained on city datasets. Brought AI generative art to major institutions including MoMA. Frames AI as a medium for collective memory.</div>
+      <div class="artist-insight">"Data is the new pigment."</div>
+    </div>
+    <div class="artist-card reveal stagger3">
+      <div class="artist-name">Grimes</div>
+      <div class="artist-role">AI Voice Licensing · Aurora AI</div>
+      <div class="artist-desc">Publicly licensed her voice model for fan use (elf.tech), splitting royalties 50/50. Pioneer of voluntary AI licensing as an artist business model. Aurora AI is her synthetic voice released as creative commons for non-commercial use.</div>
+      <div class="artist-insight">Consent + compensation as the framework.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:3.5rem" class="reveal">
+    <h2>Glossary</h2>
+    <p>22 essential terms in AI video and generative media.</p>
+    <div class="glossary-grid" style="margin-top:1rem">
+      <div class="glossary-item"><div class="glossary-term">Conditioning</div><div class="glossary-def">Providing reference signals (images, poses, depth) to constrain AI generation toward a specific output.</div></div>
+      <div class="glossary-item"><div class="glossary-term">ControlNet</div><div class="glossary-def">Neural network architecture that adds structural constraints (edges, pose, depth) to diffusion model outputs.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Deepfake</div><div class="glossary-def">AI-synthesized video of a real person saying or doing something they did not say or do.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Diffusion Model</div><div class="glossary-def">Generative model that learns to reverse a noise-addition process, producing images by iterative denoising.</div></div>
+      <div class="glossary-item"><div class="glossary-term">GAN</div><div class="glossary-def">Generative Adversarial Network — two competing networks: a generator creating images and a discriminator judging them.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Gaussian Splatting</div><div class="glossary-def">3D scene representation using explicit Gaussian primitives; enables real-time novel view synthesis.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Guidance Scale</div><div class="glossary-def">Parameter controlling how strongly the model follows the text prompt vs. producing varied outputs.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Image-to-Video</div><div class="glossary-def">Generating a video clip from a single still image, animating it with plausible motion.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Inpainting</div><div class="glossary-def">Filling a masked region of an image or video with AI-generated content that matches the surrounding context.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Latent Space</div><div class="glossary-def">Compressed abstract representation space where diffusion models generate before decoding to pixel space.</div></div>
+      <div class="glossary-item"><div class="glossary-term">LoRA</div><div class="glossary-def">Low-Rank Adaptation — efficient fine-tuning method allowing a model to learn a new style from a small dataset.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Motion Brush</div><div class="glossary-def">Tool for painting directional motion vectors onto image regions to direct AI video generation.</div></div>
+      <div class="glossary-item"><div class="glossary-term">NeRF</div><div class="glossary-def">Neural Radiance Field — implicit neural representation of a 3D scene enabling novel view synthesis.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Noise Schedule</div><div class="glossary-def">The function controlling how much noise is added at each diffusion timestep during training and inference.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Outpainting</div><div class="glossary-def">Extending an image beyond its original borders using AI generation that matches the existing content.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Prompt Engineering</div><div class="glossary-def">The practice of crafting text inputs to AI models to produce desired outputs reliably.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Seed</div><div class="glossary-def">Random number initializing the noise used in generation — same seed + same prompt = same output.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Temporal Consistency</div><div class="glossary-def">The property of a video where all frames agree on the scene's contents, lighting, and character appearance.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Text-to-Video</div><div class="glossary-def">Generating video directly from a text description, without a source image or video.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Training Data</div><div class="glossary-def">The dataset of images, videos, or text used to train a generative model.</div></div>
+      <div class="glossary-item"><div class="glossary-term">VAE</div><div class="glossary-def">Variational Autoencoder — encoder/decoder architecture used to compress images into latent space and back.</div></div>
+      <div class="glossary-item"><div class="glossary-term">Video-to-Video</div><div class="glossary-def">Using AI to restyle or transform an existing video clip, inheriting its temporal coherence.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>WAVGEN AI VIDEO WORLD</span> — App 06 of the Video Universe — The Waveform Generation — <span>wavgen.ca</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// UTILITY: LagFilter — smooth slider-driven canvas transitions
+// ═══════════════════════════════════════════════════════════════════════
+class LagFilter {
+  constructor(initialValue, smoothing = 0.08) {
+    this.current = initialValue;
+    this.target = initialValue;
+    this.smoothing = smoothing;
+  }
+  setTarget(v) { this.target = v; }
+  update() {
+    this.current += (this.target - this.current) * this.smoothing;
+    return this.current;
+  }
+  isSettled(eps = 0.01) { return Math.abs(this.target - this.current) < eps; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// UTILITY: IntersectionObserver scroll-reveal
+// ═══════════════════════════════════════════════════════════════════════
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ═══════════════════════════════════════════════════════════════════════
+// UTILITY: Nav active link on scroll
+// ═══════════════════════════════════════════════════════════════════════
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section.sec');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const match = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if (match) match.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => navObserver.observe(s));
+
+// ═══════════════════════════════════════════════════════════════════════
+// UTILITY: Expand/collapse cards
+// ═══════════════════════════════════════════════════════════════════════
+function toggleExpand(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.expand-icon');
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: DiffusionStepVisualizer
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('diffusion-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 700, H = 380;
+  let seed = Math.random() * 1000 | 0;
+  let currentStep = 0;
+  let targetStep = 0;
+  let autoPlaying = true;
+  let autoFrame = 0;
+  const lagStep = new LagFilter(0, 0.06);
+
+  // Seeded pseudo-random
+  function seededRand(s) { let x = Math.sin(s) * 10000; return x - Math.floor(x); }
+
+  // Generate procedural cityscape image data at full resolution
+  function getCityPixel(x, y, s) {
+    const nx = x / W, ny = y / H;
+    // Sky gradient
+    if (ny < 0.55) {
+      const r = Math.floor(10 + ny * 60 + seededRand(s * 31 + x * 0.01) * 8);
+      const g = Math.floor(15 + ny * 80);
+      const b = Math.floor(30 + ny * 120);
+      return [r, g, b];
+    }
+    // Ground
+    if (ny > 0.88) {
+      const v = Math.floor(15 + seededRand(s * 7 + x * 0.05 + y) * 12);
+      return [v, v + 3, v + 5];
+    }
+    // Buildings
+    const bw = 45 + seededRand(s * 13 + Math.floor(nx * 15)) * 25;
+    const bh = 0.25 + seededRand(s * 17 + Math.floor(nx * 15)) * 0.35;
+    const bx = (Math.floor(nx * 15) / 15) * W;
+    if (x > bx && x < bx + bw && ny > (0.88 - bh)) {
+      const lit = seededRand(s * 5 + Math.floor(nx * 15)) > 0.5;
+      const base = lit ? 35 : 22;
+      const wr = seededRand(s * 3 + Math.floor(nx * 15) + Math.floor(ny * 20)) > 0.7;
+      const r = wr ? base + 40 : base + Math.floor(seededRand(s + x * 0.1 + y) * 15);
+      const g = wr ? base + 38 : base + Math.floor(seededRand(s + x * 0.2 + y) * 12);
+      const b = wr ? base + 20 : base + Math.floor(seededRand(s + x * 0.3 + y) * 25);
+      return [r, g, b];
+    }
+    // Accent glow near horizon
+    const glow = Math.max(0, 1 - Math.abs(ny - 0.55) * 20);
+    return [Math.floor(6 * glow), Math.floor(182 * glow * 0.4), Math.floor(212 * glow * 0.6)];
+  }
+
+  function renderDiffusion(step) {
+    const t = step / 50;
+    const imgData = ctx.createImageData(W, H);
+    const d = imgData.data;
+    // Use coarser sampling for performance
+    const scale = 2;
+    for (let py = 0; py < H; py += scale) {
+      for (let px = 0; px < W; px += scale) {
+        const noiseAmt = 1 - t;
+        // Noise pixel
+        const ns = seededRand(seed * 100 + px * 7 + py * 13);
+        const nv = ns * 255;
+        // City pixel
+        const [cr, cg, cb] = getCityPixel(px, py, seed);
+        // Blend
+        let r, g, b;
+        if (t < 0.3) {
+          const bt = t / 0.3;
+          r = nv * (1 - bt) + (cr * 0.3 + 128 * 0.7) * bt;
+          g = nv * (1 - bt) + (cg * 0.3 + 128 * 0.7) * bt;
+          b = nv * (1 - bt) + (cb * 0.3 + 128 * 0.7) * bt;
+        } else if (t < 0.6) {
+          const bt = (t - 0.3) / 0.3;
+          r = (cr * 0.3 + 128 * 0.7) * (1 - bt) + cr * bt;
+          g = (cg * 0.3 + 128 * 0.7) * (1 - bt) + cg * bt;
+          b = (cb * 0.3 + 128 * 0.7) * (1 - bt) + cb * bt;
+        } else {
+          const bt = (t - 0.6) / 0.4;
+          const noise2 = seededRand(seed * 77 + px * 3 + py * 11) * 12 * (1 - bt);
+          r = cr + noise2;
+          g = cg + noise2 * 0.8;
+          b = cb + noise2 * 0.6;
+        }
+        // Fill scaled block
+        for (let dy = 0; dy < scale && py + dy < H; dy++) {
+          for (let dx = 0; dx < scale && px + dx < W; dx++) {
+            const i = ((py + dy) * W + (px + dx)) * 4;
+            d[i] = Math.min(255, Math.max(0, r));
+            d[i+1] = Math.min(255, Math.max(0, g));
+            d[i+2] = Math.min(255, Math.max(0, b));
+            d[i+3] = 255;
+          }
+        }
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+    // Draw step indicator
+    ctx.fillStyle = 'rgba(6,182,212,0.15)';
+    ctx.fillRect(0, H - 24, (step / 50) * W, 24);
+    ctx.fillStyle = '#06b6d4';
+    ctx.font = '11px monospace';
+    ctx.fillText(`STEP ${step}/50  T=${t.toFixed(2)}`, 10, H - 8);
+  }
+
+  // Latent canvas animation
+  const latentCanvas = document.getElementById('latent-canvas');
+  const lctx = latentCanvas.getContext('2d');
+  let latentTime = 0;
+  function renderLatent() {
+    latentTime += 0.015;
+    const lw = latentCanvas.width, lh = latentCanvas.height;
+    const img = lctx.createImageData(lw, lh);
+    const ld = img.data;
+    for (let y = 0; y < lh; y++) {
+      for (let x = 0; x < lw; x++) {
+        const nx = x / lw, ny = y / lh;
+        const wave1 = Math.sin(nx * 6 + latentTime) * Math.cos(ny * 4 - latentTime * 0.7);
+        const wave2 = Math.sin(nx * 3 - latentTime * 1.3 + ny * 5) * 0.5;
+        const v = (wave1 + wave2 + 1) / 2;
+        const i = (y * lw + x) * 4;
+        ld[i]   = Math.floor(6 + v * 180);
+        ld[i+1] = Math.floor(182 * (1 - v) * 0.4 + v * 20);
+        ld[i+2] = Math.floor(212 * v * 0.7 + (1-v) * 180);
+        ld[i+3] = 255;
+      }
+    }
+    lctx.putImageData(img, 0, 0);
+  }
+
+  const stepSlider = document.getElementById('diffusion-step');
+  const stepVal = document.getElementById('diffusion-step-val');
+  let userDriving = false;
+  stepSlider.addEventListener('input', () => {
+    userDriving = true;
+    autoPlaying = false;
+    targetStep = +stepSlider.value;
+    stepVal.textContent = stepSlider.value;
+    lagStep.setTarget(targetStep);
+  });
+  document.getElementById('diffusion-generate').addEventListener('click', () => {
+    seed = Math.random() * 9999 | 0;
+    currentStep = 0;
+    targetStep = 0;
+    stepSlider.value = 0;
+    stepVal.textContent = '0';
+    lagStep.current = 0;
+    lagStep.target = 0;
+    autoPlaying = true;
+    autoFrame = 0;
+  });
+
+  let lastDiffTime = 0;
+  function diffLoop(ts) {
+    requestAnimationFrame(diffLoop);
+    renderLatent();
+    if (autoPlaying) {
+      autoFrame++;
+      if (autoFrame % 3 === 0) {
+        if (currentStep < 50) {
+          currentStep++;
+          stepSlider.value = currentStep;
+          stepVal.textContent = currentStep;
+          lagStep.setTarget(currentStep);
+        } else {
+          setTimeout(() => {
+            seed = Math.random() * 9999 | 0;
+            currentStep = 0;
+            stepSlider.value = 0;
+            stepVal.textContent = '0';
+            lagStep.current = 0;
+            lagStep.target = 0;
+          }, 1200);
+          autoPlaying = false;
+          setTimeout(() => { autoPlaying = true; autoFrame = 0; }, 2500);
+        }
+      }
+    }
+    const smoothed = lagStep.update();
+    const displayStep = Math.round(smoothed);
+    if (Math.abs(displayStep - lastDiffTime) > 0.4 || autoPlaying) {
+      renderDiffusion(Math.round(smoothed));
+      lastDiffTime = displayStep;
+    }
+  }
+  renderDiffusion(0);
+  requestAnimationFrame(diffLoop);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: PromptTaxonomyBuilder
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  // Suggestion tag click
+  document.querySelectorAll('.prompt-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      const fieldId = tag.dataset.field;
+      const input = document.getElementById(fieldId);
+      if (input) { input.value = tag.textContent.trim(); input.dispatchEvent(new Event('input')); }
+    });
+  });
+
+  document.getElementById('pl-combine').addEventListener('click', () => {
+    const subject = document.getElementById('pl-subject').value.trim() || 'a subject';
+    const action = document.getElementById('pl-action').value.trim() || 'doing something';
+    const style = document.getElementById('pl-style').value.trim() || 'default style';
+    const camera = document.getElementById('pl-camera').value.trim() || 'standard shot';
+    const out = `${subject}, ${action}. ${style}. ${camera}. High quality, professional, detailed.`;
+    document.getElementById('pl-output').value = out;
+    renderComparison();
+  });
+
+  const vagueCtx = document.getElementById('vague-canvas').getContext('2d');
+  const detCtx = document.getElementById('detailed-canvas').getContext('2d');
+
+  function renderVague(ctx, w, h) {
+    // Blurry, undefined, low contrast
+    const id = ctx.createImageData(w, h);
+    const d = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = 80 + Math.random() * 60;
+      d[i] = v; d[i+1] = v; d[i+2] = v + 10; d[i+3] = 255;
+    }
+    ctx.putImageData(id, 0, 0);
+    // Vague blobs
+    for (let i = 0; i < 5; i++) {
+      const grd = ctx.createRadialGradient(Math.random()*w, Math.random()*h, 5, Math.random()*w, Math.random()*h, 40+Math.random()*40);
+      grd.addColorStop(0, 'rgba(120,120,130,0.4)');
+      grd.addColorStop(1, 'rgba(80,80,90,0)');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.fillStyle = 'rgba(100,100,110,0.6)';
+    ctx.font = '11px monospace';
+    ctx.fillText('LOW SPECIFICITY', 8, h - 8);
+  }
+
+  function renderDetailed(ctx, w, h) {
+    // Sky
+    const sky = ctx.createLinearGradient(0, 0, 0, h * 0.55);
+    sky.addColorStop(0, '#0a0a1a');
+    sky.addColorStop(1, '#1a3045');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, w, h * 0.55);
+    // Golden horizon
+    const hor = ctx.createLinearGradient(0, h * 0.45, 0, h * 0.65);
+    hor.addColorStop(0, 'rgba(251,146,60,0)');
+    hor.addColorStop(0.5, 'rgba(251,146,60,0.5)');
+    hor.addColorStop(1, 'rgba(251,146,60,0)');
+    ctx.fillStyle = hor;
+    ctx.fillRect(0, 0, w, h);
+    // Ground
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, h * 0.72, w, h * 0.28);
+    // Silhouette figure
+    ctx.fillStyle = '#000';
+    const fx = w * 0.5, fy = h * 0.45;
+    ctx.beginPath();
+    ctx.arc(fx, fy, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillRect(fx - 4, fy + 10, 8, 22);
+    ctx.fillRect(fx - 10, fy + 12, 8, 2);
+    ctx.fillRect(fx + 2, fy + 12, 8, 2);
+    ctx.fillRect(fx - 5, fy + 32, 5, 14);
+    ctx.fillRect(fx, fy + 32, 5, 14);
+    // Film grain overlay
+    const grain = ctx.createImageData(w, h);
+    for (let i = 0; i < grain.data.length; i += 4) {
+      const v = (Math.random() - 0.5) * 30;
+      grain.data[i] = grain.data[i+1] = grain.data[i+2] = 128 + v;
+      grain.data[i+3] = 18;
+    }
+    ctx.putImageData(grain, 0, 0);
+    ctx.fillStyle = 'rgba(6,182,212,0.7)';
+    ctx.font = '11px monospace';
+    ctx.fillText('HIGH SPECIFICITY', 8, h - 8);
+  }
+
+  function renderComparison() {
+    renderVague(vagueCtx, 280, 180);
+    renderDetailed(detCtx, 280, 180);
+  }
+  renderComparison();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: TemporalCoherenceVisualizer
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('coherence-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 700, H = 240;
+  const lagCoh = new LagFilter(100, 0.07);
+  const slider = document.getElementById('coherence-slider');
+  const valEl = document.getElementById('coherence-val');
+  const warning = document.getElementById('coherence-warning');
+  let cohTarget = 100;
+  let animId;
+
+  slider.addEventListener('input', () => {
+    cohTarget = +slider.value;
+    valEl.textContent = cohTarget;
+    lagCoh.setTarget(cohTarget);
+    warning.style.display = cohTarget < 70 ? 'block' : 'none';
+    warning.style.opacity = cohTarget < 70 ? String((70 - cohTarget) / 70) : '0';
+  });
+
+  // Base character features per seed
+  function drawFrame(ctx, fx, fy, fw, fh, coherence, frameIdx, baseSeed) {
+    const rng = (n) => (Math.sin(baseSeed * 31 + n * 17.3) * 0.5 + 0.5);
+    const drift = (1 - coherence / 100);
+    // BG color drift
+    const bgH = rng(frameIdx * 7) * drift * 40;
+    const bg = `hsl(${220 + bgH},${30 + drift * 20}%,${10 + drift * 8}%)`;
+    ctx.fillStyle = bg;
+    ctx.fillRect(fx, fy, fw, fh);
+    // Skin tone — drifts with incoherence
+    const skinR = Math.floor(200 + rng(frameIdx * 3) * drift * 60 - drift * 30);
+    const skinG = Math.floor(160 + rng(frameIdx * 5) * drift * 40 - drift * 20);
+    const skinB = Math.floor(130 + rng(frameIdx * 9) * drift * 50);
+    // Face position drift
+    const px = fx + fw * 0.5 + rng(frameIdx * 11) * drift * 10 - drift * 5;
+    const py = fy + fh * 0.42 + rng(frameIdx * 13) * drift * 8 - drift * 4;
+    // Head
+    ctx.fillStyle = `rgb(${skinR},${skinG},${skinB})`;
+    ctx.beginPath();
+    const headW = 22 + rng(frameIdx * 2) * drift * 8;
+    const headH = 28 + rng(frameIdx * 4) * drift * 8;
+    ctx.ellipse(px, py, headW, headH, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Hair color drift
+    const hairDark = coherence > 50;
+    ctx.fillStyle = hairDark ? '#2a1a08' : `hsl(${30 + rng(frameIdx * 6) * drift * 180},40%,${20 + rng(frameIdx) * drift * 40}%)`;
+    ctx.beginPath();
+    ctx.ellipse(px, py - headH * 0.4, headW * 0.95, headH * 0.55, 0, Math.PI, 0);
+    ctx.fill();
+    // Eyes
+    ctx.fillStyle = `rgb(${50 + rng(frameIdx*7)*drift*100},${60 + rng(frameIdx*8)*drift*80},${180 + rng(frameIdx*9)*drift*75})`;
+    ctx.beginPath(); ctx.arc(px - 7, py - 4, 3 + rng(frameIdx)*drift, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(px + 7, py - 4, 3 + rng(frameIdx+1)*drift, 0, Math.PI*2); ctx.fill();
+    // Body
+    const bodyR = skinR - 30; const bodyG = skinG - 20;
+    ctx.fillStyle = coherence > 60 ? '#1a3a6a' : `hsl(${rng(frameIdx*3)*360*drift + 220*(1-drift)},${40+drift*40}%,${25+drift*15}%)`;
+    ctx.fillRect(px - 16, py + headH, 32, fh * 0.35);
+    // Frame number
+    ctx.fillStyle = 'rgba(6,182,212,0.7)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`F${frameIdx+1}`, fx + 5, fy + fh - 6);
+    // Artifact: at low coherence draw glitch lines
+    if (drift > 0.5) {
+      for (let i = 0; i < Math.floor(drift * 4); i++) {
+        const ly = fy + rng(frameIdx * 20 + i * 7) * fh;
+        ctx.fillStyle = `rgba(${Math.floor(rng(i)*255)},0,${Math.floor(rng(i+1)*200)},0.4)`;
+        ctx.fillRect(fx, ly, fw, 2);
+      }
+    }
+  }
+
+  let t = 0;
+  function cohLoop() {
+    animId = requestAnimationFrame(cohLoop);
+    t++;
+    const c = lagCoh.update();
+    if (!lagCoh.isSettled() || t % 90 === 0) {
+      ctx.clearRect(0, 0, W, H);
+      const frameW = Math.floor(W / 6) - 4;
+      const frameH = H - 20;
+      for (let i = 0; i < 6; i++) {
+        const fx = i * (frameW + 4) + 2;
+        drawFrame(ctx, fx, 10, frameW, frameH, c, i, 42);
+      }
+      // Label
+      ctx.fillStyle = c > 70 ? '#22c55e' : c > 40 ? '#f59e0b' : '#ef4444';
+      ctx.font = '11px monospace';
+      ctx.fillText(`COHERENCE: ${c.toFixed(0)}%`, W - 140, H - 4);
+    }
+  }
+  cohLoop();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: Deepfake Detection Quiz
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const quizRounds = [
+    { fake: 'b', artifact: 'Blinking', hint: 'The right image (B) shows unnatural blink — eyes are partially open at an impossible mid-blink state, a common GAN artifact.' },
+    { fake: 'a', artifact: 'Hair Edges', hint: 'The left image (A) has hair edges merging with background — individual strands smear into the background color, typical of diffusion model boundary artifacts.' },
+    { fake: 'b', artifact: 'Eye Highlights', hint: 'The right image (B) has eye reflections inconsistent with the light source direction — the specular highlight is on the wrong side of the pupil.' }
+  ];
+  let round = 0;
+  let score = 0;
+  let answered = false;
+
+  function seededRNG(s) { return function(n) { let x = Math.sin(s + n) * 10000; return x - Math.floor(x); }; }
+
+  function drawNormalFace(ctx, w, h, rng) {
+    // Clean procedural face
+    ctx.fillStyle = '#0a1520';
+    ctx.fillRect(0, 0, w, h);
+    // Background subtle gradient
+    const bg = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w*0.8);
+    bg.addColorStop(0, 'rgba(30,50,80,0.5)');
+    bg.addColorStop(1, 'rgba(5,10,20,0)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+    // Face
+    ctx.fillStyle = `rgb(195,155,125)`;
+    ctx.beginPath(); ctx.ellipse(w/2, h*0.45, 38, 48, 0, 0, Math.PI*2); ctx.fill();
+    // Hair - clean edges
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.ellipse(w/2, h*0.26, 40, 32, 0, Math.PI, 0); ctx.fill();
+    ctx.fillRect(w/2-40, h*0.2, 80, 20);
+    // Eyes — natural blink (fully open or fully closed, not half)
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(w/2-14, h*0.41, 9, 6, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(w/2+14, h*0.41, 9, 6, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#2a4a8a';
+    ctx.beginPath(); ctx.arc(w/2-14, h*0.41, 5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w/2+14, h*0.41, 5, 0, Math.PI*2); ctx.fill();
+    // Consistent highlight — light from upper-left
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.beginPath(); ctx.arc(w/2-16, h*0.395, 2, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w/2+12, h*0.395, 2, 0, Math.PI*2); ctx.fill();
+    // Nose, mouth
+    ctx.strokeStyle = 'rgba(140,100,75,0.6)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(w/2, h*0.45); ctx.lineTo(w/2-4, h*0.53); ctx.lineTo(w/2+4, h*0.53); ctx.stroke();
+    ctx.beginPath(); ctx.arc(w/2, h*0.6, 9, 0.1*Math.PI, 0.9*Math.PI); ctx.stroke();
+    // Neck — matching lighting
+    ctx.fillStyle = 'rgb(185,148,120)';
+    ctx.fillRect(w/2-10, h*0.72, 20, 18);
+    // Label
+    ctx.fillStyle = 'rgba(34,197,94,0.8)'; ctx.font = '9px monospace';
+    ctx.fillText('AUTHENTIC', 5, h-5);
+  }
+
+  function drawFakeFace(ctx, w, h, rng, artifactType) {
+    // Same base as normal
+    ctx.fillStyle = '#0a1520'; ctx.fillRect(0, 0, w, h);
+    const bg = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w*0.8);
+    bg.addColorStop(0, 'rgba(30,50,80,0.5)'); bg.addColorStop(1, 'rgba(5,10,20,0)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = `rgb(195,155,125)`;
+    ctx.beginPath(); ctx.ellipse(w/2, h*0.45, 38, 48, 0, 0, Math.PI*2); ctx.fill();
+    // Hair — blurry edges (artifact)
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.ellipse(w/2, h*0.26, 40, 32, 0, Math.PI, 0); ctx.fill();
+    if (artifactType === 'Hair Edges') {
+      // Smeared hair edges
+      for (let i = 0; i < 30; i++) {
+        const hx = w/2 - 40 + rng(i*3) * 80;
+        const hy = h*0.15 + rng(i*7) * 25;
+        const col = Math.floor(rng(i*11) * 20);
+        const bg2 = `rgba(${col},${col/2},0,${0.3 + rng(i)*0.5})`;
+        ctx.fillStyle = bg2;
+        ctx.fillRect(hx, hy, 3 + rng(i*5)*10, 2);
+      }
+    }
+    ctx.fillRect(w/2-40, h*0.2, 80, 20);
+    // Eyes with artifact
+    ctx.fillStyle = '#fff';
+    if (artifactType === 'Blinking') {
+      // Half-blink — unnatural
+      ctx.beginPath(); ctx.ellipse(w/2-14, h*0.41, 9, 6, 0, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(w/2+14, h*0.41, 9, 3, 0, 0, Math.PI*2); ctx.fill();
+      // Half-closed lid
+      ctx.fillStyle = 'rgb(195,155,125)';
+      ctx.fillRect(w/2+5, h*0.405, 18, 4);
+    } else {
+      ctx.beginPath(); ctx.ellipse(w/2-14, h*0.41, 9, 6, 0, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(w/2+14, h*0.41, 9, 6, 0, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle = '#2a4a8a';
+    ctx.beginPath(); ctx.arc(w/2-14, h*0.41, 5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w/2+14, h*0.41, 5, 0, Math.PI*2); ctx.fill();
+    if (artifactType === 'Eye Highlights') {
+      // Wrong highlight direction (upper-right instead of upper-left)
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.beginPath(); ctx.arc(w/2-11, h*0.425, 2, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(w/2+17, h*0.395, 2, 0, Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.beginPath(); ctx.arc(w/2-16, h*0.395, 2, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(w/2+12, h*0.395, 2, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.strokeStyle = 'rgba(140,100,75,0.6)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(w/2, h*0.45); ctx.lineTo(w/2-4, h*0.53); ctx.lineTo(w/2+4, h*0.53); ctx.stroke();
+    ctx.beginPath(); ctx.arc(w/2, h*0.6, 9, 0.1*Math.PI, 0.9*Math.PI); ctx.stroke();
+    // Mismatched neck lighting
+    ctx.fillStyle = 'rgb(155,125,100)';
+    ctx.fillRect(w/2-10, h*0.72, 20, 18);
+    ctx.fillStyle = 'rgba(239,68,68,0.7)'; ctx.font = '9px monospace';
+    ctx.fillText('SYNTHETIC', 5, h-5);
+  }
+
+  function loadRound() {
+    answered = false;
+    const r = quizRounds[round % quizRounds.length];
+    const rng = seededRNG(round * 100);
+    const ctxA = document.getElementById('quiz-canvas-a').getContext('2d');
+    const ctxB = document.getElementById('quiz-canvas-b').getContext('2d');
+    document.getElementById('quiz-a').className = 'quiz-canvas-wrap';
+    document.getElementById('quiz-b').className = 'quiz-canvas-wrap';
+    document.getElementById('quiz-reveal').style.display = 'none';
+    document.getElementById('quiz-next').style.display = 'none';
+    document.getElementById('quiz-round-label').textContent = `Round ${round+1} of ${quizRounds.length}`;
+    if (r.fake === 'a') {
+      drawFakeFace(ctxA, 220, 170, rng, r.artifact);
+      drawNormalFace(ctxB, 220, 170, rng);
+    } else {
+      drawNormalFace(ctxA, 220, 170, rng);
+      drawFakeFace(ctxB, 220, 170, rng, r.artifact);
+    }
+    document.getElementById('quiz-label-a').textContent = 'Option A';
+    document.getElementById('quiz-label-b').textContent = 'Option B';
+  }
+
+  window.quizPick = function(choice) {
+    if (answered) return;
+    answered = true;
+    const r = quizRounds[round % quizRounds.length];
+    const correct = choice === r.fake;
+    if (correct) score++;
+    document.getElementById('quiz-score').textContent = score;
+    const picked = document.getElementById(`quiz-${choice}`);
+    const other = document.getElementById(`quiz-${choice === 'a' ? 'b' : 'a'}`);
+    picked.classList.add(correct ? 'correct-pick' : 'wrong-pick');
+    const revealEl = document.getElementById('quiz-reveal');
+    revealEl.style.display = 'block';
+    revealEl.innerHTML = `<strong style="color:${correct ? '#22c55e' : '#ef4444'}">${correct ? '✓ CORRECT' : '✗ INCORRECT'}</strong> — Telltale sign: <strong>${r.artifact}</strong>. ${r.hint}`;
+    const nextBtn = document.getElementById('quiz-next');
+    nextBtn.style.display = round < quizRounds.length - 1 ? 'inline-flex' : 'none';
+    document.getElementById('quiz-round-label').textContent = round === quizRounds.length - 1 ? `Final score: ${score}/${quizRounds.length}` : `Round ${round+1} of ${quizRounds.length}`;
+  };
+
+  window.quizNext = function() {
+    round = Math.min(round + 1, quizRounds.length - 1);
+    loadRound();
+  };
+
+  loadRound();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: MotionBrushSimulator
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('motion-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 600, H = 340;
+  let vectors = [];
+  let isDragging = false;
+  let dragStart = null;
+  let previewAnim = null;
+  let previewTime = 0;
+
+  function drawScene(offsets) {
+    offsets = offsets || {};
+    ctx.clearRect(0, 0, W, H);
+    // Sky
+    const sky = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+    sky.addColorStop(0, '#05050f');
+    sky.addColorStop(1, '#1a2a3a');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H * 0.55);
+    // Clouds
+    const cloudOff = offsets.cloud || {x:0,y:0};
+    ctx.fillStyle = 'rgba(180,200,220,0.15)';
+    [[80,60],[200,45],[350,55],[480,65],[560,50]].forEach(([cx,cy]) => {
+      ctx.beginPath(); ctx.ellipse(cx+cloudOff.x, cy+cloudOff.y, 55, 18, 0, 0, Math.PI*2); ctx.fill();
+    });
+    // Ground
+    ctx.fillStyle = '#0d1a0d'; ctx.fillRect(0, H*0.55, W, H*0.45);
+    // Trees
+    const treeOff = offsets.trees || {x:0,y:0};
+    [[80,H*0.55],[160,H*0.52],[480,H*0.54],[540,H*0.51]].forEach(([tx,ty]) => {
+      ctx.fillStyle = '#0a2a0a';
+      ctx.beginPath(); ctx.moveTo(tx+treeOff.x, ty+treeOff.y); ctx.lineTo(tx-18+treeOff.x, ty+50+treeOff.y); ctx.lineTo(tx+18+treeOff.x, ty+50+treeOff.y); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(tx+treeOff.x, ty-30+treeOff.y); ctx.lineTo(tx-22+treeOff.x, ty+20+treeOff.y); ctx.lineTo(tx+22+treeOff.x, ty+20+treeOff.y); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#0f350f';
+      ctx.beginPath(); ctx.moveTo(tx+treeOff.x, ty-50+treeOff.y); ctx.lineTo(tx-16+treeOff.x, ty-5+treeOff.y); ctx.lineTo(tx+16+treeOff.x, ty-5+treeOff.y); ctx.closePath(); ctx.fill();
+    });
+    // Person
+    const personOff = offsets.person || {x:0,y:0};
+    const px = W/2 + personOff.x, py = H*0.42 + personOff.y;
+    ctx.fillStyle = '#1a3a6a';
+    ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#e2c8a0';
+    ctx.beginPath(); ctx.arc(px, py, 12, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#1a3a6a';
+    ctx.fillRect(px-12, py+14, 24, 32);
+    ctx.fillRect(px-20, py+17, 9, 2);
+    ctx.fillRect(px+11, py+17, 9, 2);
+    ctx.fillRect(px-10, py+46, 8, 18);
+    ctx.fillRect(px+2, py+46, 8, 18);
+    // Path
+    ctx.strokeStyle = 'rgba(6,182,212,0.15)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, H*0.85); ctx.lineTo(W, H*0.85); ctx.stroke();
+    // Draw motion vector overlays
+    vectors.forEach(v => {
+      const dx = v.ex - v.sx, dy = v.ey - v.sy;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      if (len < 3) return;
+      const col = getVectorColor(dx, dy);
+      ctx.fillStyle = col.replace('1)', '0.18)');
+      ctx.fillRect(v.sx - 30, v.sy - 30, 60, 60);
+      ctx.strokeStyle = col; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(v.sx, v.sy);
+      const scale = Math.min(len, 50) / len;
+      ctx.lineTo(v.sx + dx * scale, v.sy + dy * scale); ctx.stroke();
+      const angle = Math.atan2(dy * scale, dx * scale);
+      const arrowLen = 8;
+      ctx.beginPath();
+      ctx.moveTo(v.sx + dx * scale, v.sy + dy * scale);
+      ctx.lineTo(v.sx + dx*scale - arrowLen*Math.cos(angle-0.4), v.sy + dy*scale - arrowLen*Math.sin(angle-0.4));
+      ctx.moveTo(v.sx + dx * scale, v.sy + dy * scale);
+      ctx.lineTo(v.sx + dx*scale - arrowLen*Math.cos(angle+0.4), v.sy + dy*scale - arrowLen*Math.sin(angle+0.4));
+      ctx.stroke();
+    });
+  }
+
+  function getVectorColor(dx, dy) {
+    const adx = Math.abs(dx), ady = Math.abs(dy);
+    if (adx > ady) return dx > 0 ? 'rgba(239,68,68,1)' : 'rgba(59,130,246,1)';
+    return dy > 0 ? 'rgba(245,158,11,1)' : 'rgba(34,197,94,1)';
+  }
+
+  function getRect(x, y) {
+    const bounds = canvas.getBoundingClientRect();
+    const scaleX = W / bounds.width, scaleY = H / bounds.height;
+    return { x: (x - bounds.left) * scaleX, y: (y - bounds.top) * scaleY };
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const p = getRect(e.clientX, e.clientY);
+    isDragging = true;
+    dragStart = p;
+  });
+  canvas.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const p = getRect(e.clientX, e.clientY);
+    drawScene();
+    // Preview current drag
+    const dx = p.x - dragStart.x, dy = p.y - dragStart.y;
+    const col = getVectorColor(dx, dy);
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(dragStart.x, dragStart.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    ctx.setLineDash([]);
+  });
+  canvas.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const p = getRect(e.clientX, e.clientY);
+    const dx = p.x - dragStart.x, dy = p.y - dragStart.y;
+    if (Math.sqrt(dx*dx+dy*dy) > 8) {
+      vectors.push({ sx: dragStart.x, sy: dragStart.y, ex: p.x, ey: p.y });
+    }
+    drawScene();
+  });
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const p = getRect(t.clientX, t.clientY);
+    isDragging = true; dragStart = p;
+  }, {passive:false});
+  canvas.addEventListener('touchend', e => {
+    e.preventDefault();
+    if (!isDragging) return;
+    isDragging = false;
+    const t = e.changedTouches[0];
+    const p = getRect(t.clientX, t.clientY);
+    const dx = p.x - dragStart.x, dy = p.y - dragStart.y;
+    if (Math.sqrt(dx*dx+dy*dy) > 8) vectors.push({ sx: dragStart.x, sy: dragStart.y, ex: p.x, ey: p.y });
+    drawScene();
+  }, {passive:false});
+
+  document.getElementById('mb-clear').addEventListener('click', () => {
+    vectors = [];
+    if (previewAnim) { cancelAnimationFrame(previewAnim); previewAnim = null; }
+    document.getElementById('mb-preview').style.display = 'inline-flex';
+    document.getElementById('mb-stop').style.display = 'none';
+    drawScene();
+  });
+
+  document.getElementById('mb-preview').addEventListener('click', startPreview);
+  document.getElementById('mb-stop').addEventListener('click', stopPreview);
+
+  function startPreview() {
+    previewTime = 0;
+    document.getElementById('mb-preview').style.display = 'none';
+    document.getElementById('mb-stop').style.display = 'inline-flex';
+    function previewFrame() {
+      previewTime += 0.04;
+      const offsets = computeOffsets(previewTime);
+      drawScene(offsets);
+      previewAnim = requestAnimationFrame(previewFrame);
+    }
+    previewAnim = requestAnimationFrame(previewFrame);
+  }
+
+  function stopPreview() {
+    if (previewAnim) { cancelAnimationFrame(previewAnim); previewAnim = null; }
+    document.getElementById('mb-preview').style.display = 'inline-flex';
+    document.getElementById('mb-stop').style.display = 'none';
+    drawScene();
+  }
+
+  function computeOffsets(t) {
+    const offs = { person: {x:0,y:0}, trees: {x:0,y:0}, cloud: {x:0,y:0} };
+    vectors.forEach(v => {
+      const dx = (v.ex - v.sx) * 0.03;
+      const dy = (v.ey - v.sy) * 0.03;
+      const px = (v.sx + v.ex) / 2, py = (v.sy + v.ey) / 2;
+      // Assign to region based on position
+      if (py < H * 0.35) {
+        offs.cloud.x += Math.sin(t) * dx * 15;
+        offs.cloud.y += Math.sin(t * 0.8) * dy * 8;
+      } else if (py > H * 0.4 && py < H * 0.65 && px > W*0.3 && px < W*0.7) {
+        offs.person.x += Math.sin(t * 1.2) * dx * 20;
+        offs.person.y += Math.sin(t * 0.6) * dy * 10;
+      } else {
+        offs.trees.x += Math.sin(t * 0.9 + 0.5) * dx * 12;
+        offs.trees.y += Math.sin(t * 1.1) * dy * 5;
+      }
+    });
+    return offs;
+  }
+
+  drawScene();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: NeRFSimulator
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('nerf-canvas');
+  const ctx = canvas.getContext('2d');
+  const ringCanvas = document.getElementById('nerf-ring');
+  const rctx = ringCanvas.getContext('2d');
+  const W = 420, H = 300;
+  const RW = 280, RH = 180;
+  let angle = 0;
+  let lagAngle = new LagFilter(0, 0.06);
+  let failureMode = false;
+  let autoRotate = false;
+  let autoDir = 1;
+  let rafId;
+
+  const angleSlider = document.getElementById('nerf-angle');
+  const angleVal = document.getElementById('nerf-angle-val');
+
+  angleSlider.addEventListener('input', () => {
+    angle = +angleSlider.value;
+    angleVal.textContent = angle + '°';
+    lagAngle.setTarget(angle);
+    autoRotate = false;
+    document.getElementById('nerf-auto-toggle').textContent = '▶ AUTO ROTATE';
+  });
+
+  window.toggleNeRFFailure = function() {
+    failureMode = !failureMode;
+    const btn = document.getElementById('nerf-failure-toggle');
+    btn.textContent = failureMode ? 'HIDE FAILURE MODES' : 'SHOW FAILURE MODES';
+    btn.style.borderColor = failureMode ? '#ef4444' : '';
+    btn.style.color = failureMode ? '#ef4444' : '';
+    document.getElementById('nerf-failure-info').style.display = failureMode ? 'block' : 'none';
+  };
+
+  window.toggleNeRFAuto = function() {
+    autoRotate = !autoRotate;
+    document.getElementById('nerf-auto-toggle').textContent = autoRotate ? '■ STOP ROTATION' : '▶ AUTO ROTATE';
+  };
+
+  // Camera positions: 8 evenly spaced around a circle
+  const NUM_CAMS = 8;
+  const CAM_ANGLES = Array.from({length: NUM_CAMS}, (_, i) => (i / NUM_CAMS) * 360);
+
+  // Determine quality of view at given angle (based on proximity to nearest training camera)
+  function getViewQuality(a) {
+    const minDist = Math.min(...CAM_ANGLES.map(ca => {
+      let d = Math.abs(ca - a) % 360;
+      return Math.min(d, 360 - d);
+    }));
+    const halfStep = 180 / NUM_CAMS; // max distance to nearest camera
+    return Math.max(0, 1 - minDist / halfStep);
+  }
+
+  // Draw NeRF head/object from a given angle using perspective projection
+  function drawNeRFObject(ctx, w, h, viewAngle, quality, failure) {
+    ctx.clearRect(0, 0, w, h);
+    // Background
+    const bg = ctx.createRadialGradient(w/2, h/2, 10, w/2, h/2, w * 0.8);
+    bg.addColorStop(0, '#0d1520');
+    bg.addColorStop(1, '#050508');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+
+    const rad = viewAngle * Math.PI / 180;
+    const cosA = Math.cos(rad), sinA = Math.sin(rad);
+
+    // Grid floor
+    ctx.strokeStyle = 'rgba(6,182,212,0.12)'; ctx.lineWidth = 1;
+    for (let i = -4; i <= 4; i++) {
+      const x1 = w/2 + (i * 30 + Math.floor(cosA * 20)) % (w * 0.9) - w * 0.45;
+      ctx.beginPath(); ctx.moveTo(x1, h * 0.68); ctx.lineTo(x1 + sinA * 20, h * 0.95); ctx.stroke();
+    }
+    for (let j = 0; j < 4; j++) {
+      const y = h * 0.68 + j * (h * 0.27 / 4);
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+
+    const cx = w / 2, cy = h * 0.44;
+
+    // NeRF failure: floaters (random fog blobs in space)
+    if (failure) {
+      for (let i = 0; i < 12; i++) {
+        const fx = cx + Math.sin(i * 1.3 + rad) * (40 + i * 8);
+        const fy = cy + Math.cos(i * 0.9 + rad) * 30 - i * 5;
+        const grad = ctx.createRadialGradient(fx, fy, 0, fx, fy, 15 + i * 2);
+        grad.addColorStop(0, 'rgba(100,150,200,0.3)');
+        grad.addColorStop(1, 'rgba(100,150,200,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(fx, fy, 15 + i * 2, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    // Head shape — rotate face features with view angle
+    const headW = 55 + Math.abs(sinA) * 10;
+    const headH = 65;
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.beginPath(); ctx.ellipse(cx + 5, cy + 5, headW, headH, 0, 0, Math.PI * 2); ctx.fill();
+    // Face skin — view-dependent color shift if failure
+    let skinR = 195, skinG = 155, skinB = 125;
+    if (failure) {
+      const viewShift = Math.abs(sinA) * 40;
+      skinR += viewShift * 0.3; skinG -= viewShift * 0.5; skinB += viewShift;
+    }
+    // Blur faces at low quality
+    if (quality < 0.5 && !failure) {
+      ctx.filter = `blur(${(1 - quality) * 3}px)`;
+    }
+    ctx.fillStyle = `rgb(${Math.floor(skinR)},${Math.floor(skinG)},${Math.floor(skinB)})`;
+    ctx.beginPath(); ctx.ellipse(cx, cy, headW, headH, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.filter = 'none';
+
+    // Hair
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.ellipse(cx, cy - headH * 0.35, headW * 0.92, headH * 0.58, 0, Math.PI, 0); ctx.fill();
+
+    // Features rotate with angle
+    const featureShift = sinA * headW * 0.4;
+    if (Math.abs(cosA) > 0.2) {
+      // Visible face
+      const eyeY = cy - 8;
+      const leftX = cx - 16 + featureShift;
+      const rightX = cx + 16 + featureShift;
+      // Eyes
+      if (leftX > cx - headW && leftX < cx + headW) {
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.ellipse(leftX, eyeY, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2a4a8a';
+        ctx.beginPath(); ctx.arc(leftX, eyeY, 4, 0, Math.PI * 2); ctx.fill();
+      }
+      if (rightX > cx - headW && rightX < cx + headW) {
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.ellipse(rightX, eyeY, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2a4a8a';
+        ctx.beginPath(); ctx.arc(rightX, eyeY, 4, 0, Math.PI * 2); ctx.fill();
+      }
+      // Nose
+      ctx.strokeStyle = 'rgba(140,100,75,0.7)'; ctx.lineWidth = 1.5;
+      const nx = cx + featureShift * 0.5;
+      ctx.beginPath(); ctx.moveTo(nx, cy+4); ctx.lineTo(nx-4+featureShift*0.2, cy+14); ctx.lineTo(nx+4+featureShift*0.2, cy+14); ctx.stroke();
+      // Mouth
+      ctx.beginPath(); ctx.arc(nx, cy + 24, 9, 0, Math.PI); ctx.stroke();
+    }
+
+    // Ear (visible from side)
+    if (sinA > 0.4) {
+      ctx.fillStyle = `rgb(${Math.floor(skinR-10)},${Math.floor(skinG-10)},${Math.floor(skinB-10)})`;
+      ctx.beginPath(); ctx.ellipse(cx + headW - 5, cy, 8, 14, 0, 0, Math.PI * 2); ctx.fill();
+      if (failure) {
+        // Warped ear artifact
+        ctx.fillStyle = 'rgba(180,100,80,0.5)';
+        ctx.beginPath(); ctx.ellipse(cx + headW + 2, cy - 8, 12, 8, 0.5, 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (sinA < -0.4) {
+      ctx.fillStyle = `rgb(${Math.floor(skinR-10)},${Math.floor(skinG-10)},${Math.floor(skinB-10)})`;
+      ctx.beginPath(); ctx.ellipse(cx - headW + 5, cy, 8, 14, 0, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Neck
+    ctx.fillStyle = `rgb(${Math.floor(skinR-20)},${Math.floor(skinG-20)},${Math.floor(skinB-20)})`;
+    ctx.fillRect(cx - 12 + featureShift * 0.2, cy + headH - 8, 24, 22);
+
+    // View quality indicator
+    const qualColor = quality > 0.7 ? '#22c55e' : quality > 0.4 ? '#f59e0b' : '#ef4444';
+    ctx.fillStyle = qualColor;
+    ctx.font = '10px monospace';
+    ctx.fillText(`VIEW QUAL: ${(quality*100).toFixed(0)}%${failure ? ' [FAILURE]' : ''}`, 8, h - 8);
+
+    // Uncertainty haze at low quality
+    if (quality < 0.6) {
+      const haze = ctx.createRadialGradient(cx, cy, 20, cx, cy, headW * 1.5);
+      haze.addColorStop(0, 'rgba(6,182,212,0)');
+      haze.addColorStop(1, `rgba(6,182,212,${(0.6 - quality) * 0.3})`);
+      ctx.fillStyle = haze;
+      ctx.beginPath(); ctx.arc(cx, cy, headW * 1.5, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  // Draw camera ring
+  function drawCameraRing(a) {
+    rctx.clearRect(0, 0, RW, RH);
+    rctx.fillStyle = '#050508'; rctx.fillRect(0, 0, RW, RH);
+    const cx = RW / 2, cy = RH / 2, r = 65;
+    // Ring
+    rctx.strokeStyle = 'rgba(6,182,212,0.2)'; rctx.lineWidth = 1;
+    rctx.beginPath(); rctx.arc(cx, cy, r, 0, Math.PI * 2); rctx.stroke();
+    // Subject
+    rctx.fillStyle = 'rgba(6,182,212,0.3)';
+    rctx.beginPath(); rctx.arc(cx, cy, 8, 0, Math.PI * 2); rctx.fill();
+    rctx.fillStyle = '#06b6d4'; rctx.font = '8px monospace';
+    rctx.textAlign = 'center'; rctx.fillText('OBJ', cx, cy + 3); rctx.textAlign = 'left';
+    // Draw 8 cameras
+    CAM_ANGLES.forEach((ca, i) => {
+      const cr = ca * Math.PI / 180;
+      const px = cx + Math.cos(cr) * r;
+      const py = cy + Math.sin(cr) * r;
+      rctx.fillStyle = '#06b6d4';
+      rctx.beginPath(); rctx.arc(px, py, 5, 0, Math.PI * 2); rctx.fill();
+      rctx.fillStyle = 'rgba(6,182,212,0.4)'; rctx.font = '7px monospace';
+      rctx.fillText(`C${i+1}`, px + 6, py + 3);
+      rctx.strokeStyle = 'rgba(6,182,212,0.15)'; rctx.lineWidth = 0.5;
+      rctx.beginPath(); rctx.moveTo(cx, cy); rctx.lineTo(px, py); rctx.stroke();
+    });
+    // Virtual camera position
+    const vr = a * Math.PI / 180;
+    const vx = cx + Math.cos(vr) * r;
+    const vy = cy + Math.sin(vr) * r;
+    const q = getViewQuality(a);
+    const col = q > 0.7 ? '#22c55e' : q > 0.4 ? '#f59e0b' : '#ef4444';
+    rctx.fillStyle = col;
+    rctx.beginPath(); rctx.arc(vx, vy, 7, 0, Math.PI * 2); rctx.fill();
+    rctx.strokeStyle = col; rctx.lineWidth = 1;
+    rctx.beginPath(); rctx.moveTo(cx, cy); rctx.lineTo(vx, vy); rctx.stroke();
+    rctx.fillStyle = col; rctx.font = '8px monospace';
+    rctx.fillText('👁 VIEW', vx + 8, vy + 3);
+  }
+
+  function nerf_loop() {
+    rafId = requestAnimationFrame(nerf_loop);
+    if (autoRotate) {
+      angle = (angle + 0.5 * autoDir + 360) % 360;
+      angleSlider.value = angle;
+      angleVal.textContent = Math.round(angle) + '°';
+      lagAngle.setTarget(angle);
+    }
+    const a = lagAngle.update();
+    const q = getViewQuality(a);
+    drawNeRFObject(ctx, W, H, a, q, failureMode);
+    drawCameraRing(a);
+  }
+  nerf_loop();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SYSTEM: EthicsDecisionSystem
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  const consequences = {
+    e1: {
+      A: "Best practice: Disclosure enables audiences to engage critically. Used in respected documentaries. Risk: 'synthetic' label may undermine the documentary's authority regardless of accuracy.",
+      B: "High risk: Audiences cannot evaluate authenticity. Even if the underlying audio is real, the fabricated video context is misleading. Legal exposure in many jurisdictions.",
+      C: "Conservative and defensible: The original audio speaks for itself. Less visually compelling, but no risk of fabricating a visual context that didn't exist.",
+      D: "Maximum caution: Some stories are better told without potentially misleading reconstructions. The cost is reduced dramatic impact."
+    },
+    e2: {
+      A: "Many grief counselors support memorial reconstructions for private use. The key risk: what happens after the memorial? Once created, synthetic personas are difficult to contain.",
+      B: "Ethically rigorous position: posthumous AI likeness raises questions about identity that the person could never consent to. Increasingly supported by digital estate law.",
+      C: "Middle ground: private use limits misuse risk, but even in private settings, the line between processing grief and denial can blur.",
+      D: "Photo slideshows, video memorials using real footage, voice recordings — all preserve authenticity without creating a synthetic persona the person never approved."
+    },
+    e3: {
+      A: "The actor consented and is compensated — but union agreements exist to protect actors who may feel pressured to consent. Individual consent without collective bargaining sets a precedent that weakens labor protections.",
+      B: "Protects labor standards. The 2023 SAG-AFTRA strike was substantially about AI likeness clauses. Waiting costs time but builds a sustainable framework.",
+      C: "Pragmatic: negotiate usage terms (scope, duration, residuals) that both parties accept. Creates enforceable protections for the actor's likeness.",
+      D: "Avoids the problem but doesn't solve it. The AI de-aging technology will still be used — just on someone whose situation might be less protected."
+    },
+    e4: {
+      A: "Satire of public figures has strong legal protection in many democracies. However, AI satire is a new legal category — protections are less settled than traditional satire.",
+      B: "In the US and EU, AI-generated political content near elections faces specific regulations. The timing and jurisdiction matter enormously here.",
+      C: "Voice parody has a longer legal history. Avoiding facial likeness entirely reduces deepfake-specific legal risk while preserving satirical intent.",
+      D: "Most responsible approach for distribution at scale. Media law is jurisdiction-specific and evolving rapidly around synthetic media of public figures."
+    }
+  };
+
+  const ethicsAnswered = {e1: false, e2: false, e3: false, e4: false};
+
+  window.ethicsChoose = function(btn, cardId, option) {
+    const card = btn.closest('.ethics-card');
+    card.querySelectorAll('.ethics-btn').forEach(b => b.classList.remove('chosen'));
+    btn.classList.add('chosen');
+    const consEl = document.getElementById(`${cardId}-consequence`);
+    consEl.textContent = consequences[cardId][option];
+    consEl.classList.add('show');
+    ethicsAnswered[cardId] = true;
+    if (Object.values(ethicsAnswered).every(Boolean)) {
+      document.getElementById('ethics-final').classList.add('show');
+    }
+  };
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// PHOSPHOR GLOW PULSE — subtle ambient animation on accent elements
+// ═══════════════════════════════════════════════════════════════════════
+(function() {
+  let glowT = 0;
+  function glowPulse() {
+    glowT += 0.018;
+    const intensity = 0.7 + Math.sin(glowT) * 0.3;
+    const glow = `0 0 ${Math.floor(12 * intensity)}px rgba(6,182,212,${(0.5 * intensity).toFixed(2)})`;
+    document.querySelectorAll('.glow-text').forEach(el => {
+      el.style.textShadow = glow;
+    });
+    requestAnimationFrame(glowPulse);
+  }
+  glowPulse();
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// INIT — ensure all reveals trigger on load for above-fold content
+// ═══════════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      el.classList.add('visible');
+    }
+  });
+});
+
+</script>
+</body>
+</html>

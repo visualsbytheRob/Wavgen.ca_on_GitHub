@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring analog recording">
+    <meta property="og:title" content="Analog Recording World — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring analog recording">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/analog_recording_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN :: ANALOG RECORDING</title>
+<style>
+:root{
+  --black:#080402;--surface:#100806;--surface2:#180C08;
+  --border:#2A1408;--text:#E8D4B8;--dim:#7A5A3A;
+  --brown:#8B4513;--amber:#F0A020;--amber2:#FFB830;
+  --tape:#C87030;--warm:#E8C080;--console:#5A3A20;
+  --font:'Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:var(--font);overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(8,4,2,0.95);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:48px;}
+.nav-logo{color:var(--amber);font-size:0.85rem;letter-spacing:4px;font-weight:bold;}
+.nav-links{display:flex;gap:1.2rem;list-style:none;}
+.nav-links a{color:var(--dim);font-size:0.65rem;text-decoration:none;letter-spacing:1px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--amber);}
+section{padding:5rem 2rem 4rem;max-width:1100px;margin:0 auto;}
+.section-label{font-size:0.62rem;letter-spacing:4px;color:var(--amber);text-transform:uppercase;margin-bottom:0.4rem;opacity:0.8;}
+.section-title{font-size:1.9rem;color:var(--text);margin-bottom:0.4rem;letter-spacing:1px;}
+.section-sub{color:var(--dim);font-size:0.82rem;margin-bottom:2rem;line-height:1.6;}
+canvas{display:block;}
+.hidden{opacity:0;transform:translateY(40px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.visible{opacity:1;transform:translateY(0);}
+.stagger-1{transition-delay:0.1s;}.stagger-2{transition-delay:0.2s;}
+#hero{padding:4rem 0 0;max-width:100%;}
+#hero-canvas{width:100%;height:440px;display:block;border-bottom:1px solid var(--border);}
+.hero-wrap{position:relative;}
+.hero-overlay{position:absolute;top:80px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;z-index:2;}
+.hero-title{font-size:2.6rem;letter-spacing:8px;color:var(--amber);text-shadow:0 0 40px rgba(240,160,32,0.6);font-weight:bold;}
+.hero-sub{font-size:0.72rem;letter-spacing:3px;color:var(--dim);margin-top:0.5rem;}
+.canvas-box{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.ctrl-row{display:flex;gap:0.75rem;padding:0.75rem;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+.ctrl-group{display:flex;align-items:center;gap:0.5rem;}
+.ctrl-group label{font-size:0.6rem;color:var(--dim);letter-spacing:1px;white-space:nowrap;}
+input[type=range]{accent-color:var(--amber);width:90px;}
+.ctrl-val{font-size:0.62rem;color:var(--warm);min-width:40px;}
+.tape-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);font-family:var(--font);font-size:0.65rem;padding:0.25rem 0.7rem;cursor:pointer;border-radius:2px;letter-spacing:1px;transition:all 0.15s;}
+.tape-btn:hover,.tape-btn.active{border-color:var(--amber);color:var(--amber);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+/* VU METER */
+.vu-panel{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:0.75rem;text-align:center;width:60px;flex-shrink:0;}
+.vu-label{font-size:0.55rem;color:var(--dim);letter-spacing:1px;margin-bottom:0.4rem;}
+.vu-meter{height:160px;width:20px;margin:0 auto;background:rgba(240,160,32,0.06);border:1px solid var(--border);position:relative;border-radius:1px;}
+.vu-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,#F0A020,#FFB830 70%,#FF6020 90%,#FF2020);border-radius:1px;transition:height 0.04s;}
+.vu-needle{position:absolute;bottom:0;left:50%;width:2px;height:100%;transform-origin:bottom center;background:rgba(240,160,32,0.7);}
+/* CONSOLE */
+.console-strip{display:flex;flex-direction:column;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:0.5rem;gap:0.4rem;min-width:60px;}
+.console-strips{display:flex;gap:4px;padding:0.75rem;}
+.strip-name{font-size:0.55rem;color:var(--amber);letter-spacing:0.5px;text-align:center;}
+.strip-eq{display:flex;flex-direction:column;gap:2px;width:100%;}
+.eq-knob{height:3px;background:rgba(240,160,32,0.15);border-radius:2px;position:relative;cursor:pointer;}
+.eq-fill{height:100%;border-radius:2px;background:var(--amber);}
+/* ARTISTS */
+.artists-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.2rem 1rem;text-align:center;transition:border-color 0.25s,transform 0.25s;}
+.artist-card:hover{border-color:var(--amber);transform:translateY(-3px);}
+.artist-avatar{margin:0 auto 0.75rem;}
+.artist-name{font-size:0.75rem;color:var(--text);letter-spacing:1px;margin-bottom:0.25rem;}
+.artist-role{font-size:0.6rem;color:var(--dim);}
+.gloss-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+.gloss-item{border-left:2px solid rgba(240,160,32,0.3);padding-left:0.75rem;}
+.gloss-term{font-size:0.72rem;color:var(--warm);letter-spacing:1px;margin-bottom:0.2rem;}
+.gloss-def{font-size:0.68rem;color:var(--dim);line-height:1.55;}
+</style>
+</head>
+<body class="domain-music">
+<nav>
+  <div class="nav-logo">WAVGEN</div>
+  <ul class="nav-links">
+    <li><a href="#hero">TAPE</a></li>
+    <li><a href="#s2">MACHINE</a></li>
+    <li><a href="#s3">CONSOLE</a></li>
+    <li><a href="#s4">SATURATION</a></li>
+    <li><a href="#s5">SIGNAL CHAIN</a></li>
+    <li><a href="#s6">HARMONICS</a></li>
+    <li><a href="#s7">ARTISTS</a></li>
+    <li><a href="#s8">GLOSSARY</a></li>
+  </ul>
+</nav>
+
+<div id="hero" class="hero-wrap">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">ANALOG RECORDING</div>
+    <div class="hero-sub">MEMORY AND TEXTURE ENGINE OF RECORDED SOUND</div>
+  </div>
+</div>
+
+<!-- S2: TAPE MACHINE -->
+<section id="s2" class="hidden">
+  <div class="section-label">02 · MAGNETIC MEMORY</div>
+  <div class="section-title">Tape Machine Explorer</div>
+  <div class="section-sub">Two-inch 24-track tape at 30 ips — the professional standard. As the oxide-coated tape passes over three heads (erase, record, playback), magnetic particles align to the audio signal's waveform. Speed governs high-frequency response; width governs dynamic range.</div>
+  <div class="canvas-box">
+    <canvas id="tape-canvas" height="340" style="width:100%;height:340px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>TAPE SPEED</label><input type="range" id="sl-speed" min="0" max="2" value="1" step="1"><span class="ctrl-val" id="v-speed">15 ips</span></div>
+      <div class="ctrl-group"><label>BIAS</label><input type="range" id="sl-bias" min="-6" max="6" value="0" step="0.1"><span class="ctrl-val" id="v-bias">±0 dB</span></div>
+      <div class="ctrl-group"><label>INPUT LEVEL</label><input type="range" id="sl-input" min="-20" max="10" value="0" step="0.5"><span class="ctrl-val" id="v-input">0 dB</span></div>
+      <div class="ctrl-group"><label>WOW/FLUTTER</label><input type="range" id="sl-wf2" min="0" max="1" value="0.2" step="0.01"><span class="ctrl-val" id="v-wf2">20%</span></div>
+      <button class="tape-btn active" id="btn-play">▶ PLAY</button>
+      <button class="tape-btn" id="btn-stop">■ STOP</button>
+      <button class="tape-btn" id="btn-record">● REC</button>
+    </div>
+  </div>
+</section>
+
+<!-- S3: CONSOLE ROUTING -->
+<section id="s3" class="hidden stagger-1">
+  <div class="section-label">03 · ANALOG CONSOLE</div>
+  <div class="section-title">Console Signal Routing</div>
+  <div class="section-sub">SSL 4000, Neve 8078, API 1604 — each console has a distinct sonic DNA rooted in its transformer topology, capacitor choices, and summing bus architecture. Signal enters a mic preamp, routes through EQ and dynamics, collects on group buses, and sums to stereo.</div>
+  <div class="canvas-box">
+    <canvas id="console-canvas" height="320" style="width:100%;height:320px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>CONSOLE</label><input type="range" id="sl-console" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-console">SSL</span></div>
+      <div class="ctrl-group"><label>GAIN</label><input type="range" id="sl-gain" min="-20" max="20" value="0" step="0.5"><span class="ctrl-val" id="v-gain">0 dB</span></div>
+      <div class="ctrl-group"><label>BUS SATURATION</label><input type="range" id="sl-bus-sat" min="0" max="1" value="0.3" step="0.01"><span class="ctrl-val" id="v-bus-sat">30%</span></div>
+      <div class="ctrl-group"><label>ROUTING</label><input type="range" id="sl-route" min="0" max="2" value="0" step="1"><span class="ctrl-val" id="v-route">TO TAPE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: SATURATION -->
+<section id="s4" class="hidden stagger-2">
+  <div class="section-label">04 · HARMONIC GENERATION</div>
+  <div class="section-title">Saturation Modulation Systems</div>
+  <div class="section-sub">Analog saturation is not merely clipping — it is the nonlinear transfer characteristic of transformer cores, tape oxide, and triode amplifiers generating even and odd harmonics as the input exceeds the linear operating range. The result: apparent loudness, perceived warmth, natural compression.</div>
+  <div class="two-col">
+    <div class="canvas-box">
+      <canvas id="sat-transfer-canvas" height="280" style="width:100%;height:280px;"></canvas>
+    </div>
+    <div class="canvas-box">
+      <canvas id="sat-spectrum-canvas" height="280" style="width:100%;height:280px;"></canvas>
+    </div>
+  </div>
+  <div class="ctrl-row" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;margin-top:0;">
+    <div class="ctrl-group"><label>DRIVE</label><input type="range" id="sl-sat-drive" min="0" max="1" value="0.3" step="0.01"><span class="ctrl-val" id="v-sat-drive">30%</span></div>
+    <div class="ctrl-group"><label>CHARACTER</label><input type="range" id="sl-sat-char" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-sat-char">Tape</span></div>
+    <div class="ctrl-group"><label>ODD/EVEN</label><input type="range" id="sl-odd-even" min="0" max="1" value="0.3" step="0.01"><span class="ctrl-val" id="v-odd-even">30% ODD</span></div>
+    <div class="ctrl-group"><label>KNEE</label><input type="range" id="sl-knee" min="0.1" max="2" value="0.7" step="0.05"><span class="ctrl-val" id="v-knee">0.70</span></div>
+  </div>
+</section>
+
+<!-- S5: ANALOG CHAIN -->
+<section id="s5" class="hidden stagger-1">
+  <div class="section-label">05 · SIGNAL ARCHITECTURE</div>
+  <div class="section-title">Analog Chain Simulation</div>
+  <div class="section-sub">From microphone capsule to tape oxide: microphone → transformer → preamp → EQ → compressor → console bus → tape. Each stage colours the signal with its own harmonic signature. Understanding chain architecture is the foundation of intentional analog tone shaping.</div>
+  <div class="canvas-box">
+    <canvas id="chain-canvas" height="360" style="width:100%;height:360px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>MIC TYPE</label><input type="range" id="sl-mic" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-mic">Condenser</span></div>
+      <div class="ctrl-group"><label>PREAMP</label><input type="range" id="sl-pre" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-pre">Neve 1073</span></div>
+      <div class="ctrl-group"><label>COMPRESSOR</label><input type="range" id="sl-comp" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-comp">LA-2A</span></div>
+      <div class="ctrl-group"><label>TAPE FORMULA</label><input type="range" id="sl-formula" min="0" max="3" value="0" step="1"><span class="ctrl-val" id="v-formula">ATR-102</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S6: HARMONIC DISTORTION -->
+<section id="s6" class="hidden stagger-2">
+  <div class="section-label">06 · NONLINEAR BEHAVIOR</div>
+  <div class="section-title">Harmonic Distortion Systems</div>
+  <div class="section-sub">Analog warmth is an audible bias toward even-order harmonics — the 2nd, 4th, 6th partials above the fundamental. Triode vacuum tubes and Class-A transformer circuits generate predominantly even harmonics. Hard clipping generates odd harmonics. The ratio determines the character.</div>
+  <div class="canvas-box">
+    <canvas id="harm-canvas" height="340" style="width:100%;height:340px;"></canvas>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><label>INPUT LEVEL</label><input type="range" id="sl-harm-input" min="-20" max="20" value="0" step="0.5"><span class="ctrl-val" id="v-harm-input">0 dBu</span></div>
+      <div class="ctrl-group"><label>2ND HARMONIC</label><input type="range" id="sl-h2" min="0" max="1" value="0.5" step="0.01"><span class="ctrl-val" id="v-h2">50%</span></div>
+      <div class="ctrl-group"><label>3RD HARMONIC</label><input type="range" id="sl-h3" min="0" max="1" value="0.2" step="0.01"><span class="ctrl-val" id="v-h3">20%</span></div>
+      <div class="ctrl-group"><label>IMD</label><input type="range" id="sl-imd" min="0" max="1" value="0.1" step="0.01"><span class="ctrl-val" id="v-imd">10%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S7: ARTISTS -->
+<section id="s7" class="hidden">
+  <div class="section-label">07 · STUDIO ARCHITECTS</div>
+  <div class="section-title">Analog Recording Masters</div>
+  <div class="artists-grid">
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.7"/>
+        <rect x="20" y="20" width="16" height="16" rx="1" fill="rgba(240,160,32,0.15)" stroke="#F0A020" stroke-width="1"/>
+        <circle cx="28" cy="28" r="3" fill="#F0A020" opacity="0.8"/>
+      </svg>
+      <div class="artist-name">Rupert Neve</div>
+      <div class="artist-role">Console Design · Neve Electronics</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <polygon points="28,6 50,42 6,42" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.7"/>
+        <polygon points="28,16 40,36 16,36" fill="rgba(240,160,32,0.1)" stroke="#8B4513" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Geoff Emerick</div>
+      <div class="artist-role">Abbey Road · Beatles Engineer</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <rect x="8" y="8" width="40" height="40" rx="4" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.6"/>
+        <line x1="8" y1="28" x2="48" y2="28" stroke="#8B4513" stroke-width="1" opacity="0.5"/>
+        <rect x="18" y="18" width="20" height="20" rx="2" fill="rgba(240,160,32,0.1)" stroke="#F0A020" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Bruce Swedien</div>
+      <div class="artist-role">Thriller · MJ · Analog Mastery</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <ellipse cx="28" cy="28" rx="22" ry="12" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.6"/>
+        <line x1="6" y1="28" x2="50" y2="28" stroke="#8B4513" stroke-width="1" opacity="0.5"/>
+        <circle cx="28" cy="28" r="5" fill="rgba(240,160,32,0.2)" stroke="#F0A020" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Tom Dowd</div>
+      <div class="artist-role">Atlantic Records · Multitrack Pioneer</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <polygon points="28,8 48,48 8,48" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.5"/>
+        <line x1="18" y1="38" x2="38" y2="38" stroke="#8B4513" stroke-width="1" opacity="0.4"/>
+        <circle cx="28" cy="22" r="4" fill="rgba(240,160,32,0.2)" stroke="#F0A020" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Eddie Kramer</div>
+      <div class="artist-role">Hendrix · Zeppelin · Olympic Studios</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <line x1="8" y1="28" x2="48" y2="28" stroke="#F0A020" stroke-width="1.5" opacity="0.6"/>
+        <line x1="28" y1="8" x2="28" y2="48" stroke="#8B4513" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="28" cy="28" r="6" fill="rgba(240,160,32,0.15)" stroke="#F0A020" stroke-width="1"/>
+      </svg>
+      <div class="artist-name">Phil Ramone</div>
+      <div class="artist-role">A&R Recording · Sinatra · Streisand</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <rect x="10" y="10" width="36" height="36" rx="3" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.6"/>
+        <rect x="18" y="18" width="20" height="20" rx="2" fill="rgba(240,160,32,0.1)" stroke="#F0A020" stroke-width="1"/>
+        <circle cx="28" cy="28" r="4" fill="#F0A020" opacity="0.3"/>
+      </svg>
+      <div class="artist-name">Bob Ludwig</div>
+      <div class="artist-role">Gateway Mastering · Analog Chain</div>
+    </div>
+    <div class="artist-card">
+      <svg class="artist-avatar" width="56" height="56" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="20" fill="none" stroke="#F0A020" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="28" cy="28" r="12" fill="none" stroke="#8B4513" stroke-width="1" opacity="0.4"/>
+        <circle cx="28" cy="28" r="5" fill="rgba(240,160,32,0.2)" stroke="#F0A020" stroke-width="1"/>
+        <line x1="14" y1="14" x2="42" y2="42" stroke="#8B4513" stroke-width="1" opacity="0.25"/>
+      </svg>
+      <div class="artist-name">Al Schmitt</div>
+      <div class="artist-role">Capitol Studios · Analog Warmth</div>
+    </div>
+  </div>
+</section>
+
+<!-- S8: GLOSSARY -->
+<section id="s8" class="hidden">
+  <div class="section-label">08 · REFERENCE</div>
+  <div class="section-title">Analog Lexicon</div>
+  <div class="gloss-grid">
+    <div class="gloss-item"><div class="gloss-term">Magnetic Recording</div><div class="gloss-def">Storing audio as patterns of magnetic flux on oxide-coated tape. An electromagnetic write head aligns magnetic particles; a read head converts patterns back to electrical signal. The fundamental mechanism of all tape recording.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Tape Saturation</div><div class="gloss-def">At high recording levels, tape oxide accepts less additional flux, producing even-order harmonic distortion. Intentional saturation adds warmth, compression, and perceived loudness — the primary sonic characteristic of tape recording.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Wow and Flutter</div><div class="gloss-def">Speed variations in tape transport. Wow = slow periodic pitch variation (less than 6 Hz); Flutter = faster variation (6–100 Hz). Both contribute to the organic feel of tape at low levels. Defect at high levels.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Bias</div><div class="gloss-def">High-frequency AC signal (40–150 kHz) added to the audio signal during recording. Bias improves linearity and reduces distortion. Different tape formulations require different bias levels — improper bias alters tone and distortion character.</div></div>
+    <div class="gloss-item"><div class="gloss-term">IPS (Inches Per Second)</div><div class="gloss-def">Tape speed: higher IPS means better high-frequency response, more tape consumption, lower relative noise floor. Professional multitrack standards: 15 ips (warm, slightly lower HF) and 30 ips (extended HF, lower noise).</div></div>
+    <div class="gloss-item"><div class="gloss-term">Console / Desk</div><div class="gloss-def">The mixing console through which signals are routed. Each classic large-format console (SSL 4000, Neve 8078, API 1604) has distinct sonic character from preamp, EQ circuitry, transformer types, and summing bus topology.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Preamp</div><div class="gloss-def">Amplifies a microphone signal to line level. The preamp dominates the recording's sonic character. Neve 1073 (transformer warmth, harmonics), API 512 (punchy, fast), SSL G (clean, modern) — each colours differently.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Print-Through</div><div class="gloss-def">Transfer of magnetic patterns from one tape layer to an adjacent layer on the reel. Creates ghost pre-echoes or post-echoes. A characteristic artifact of tape storage; more pronounced at higher recording levels and thinner tape stock.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Oxide</div><div class="gloss-def">The magnetic coating on recording tape. Ferric oxide, chromium dioxide, and metal particle formulations each have different bias requirements, dynamic range, and sonic characteristics. High-output formulations (ATR, BASF 900, Quantegy GP9) allow higher recording levels.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Head Gap</div><div class="gloss-def">The tiny gap in a recording or playback head. The gap width determines frequency response — smaller gaps extend high-frequency response. Record heads have wider gaps than playback heads for better recording linearity.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Dolby / dbx Noise Reduction</div><div class="gloss-def">Compander systems encoding on record and decoding on playback. Dolby A, B, C, SR; dbx Type I, II. Reduce tape hiss at the expense of slight coloration. A recording made with NR must be decoded with the matching circuit.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Summing Bus</div><div class="gloss-def">The circuit in a console where all track signals combine into a stereo mix. Analog summing adds subtle harmonic saturation and natural compression — the "glue" that distinguishes console-mixed records from purely in-the-box mixes.</div></div>
+    <div class="gloss-item"><div class="gloss-term">VU Meter</div><div class="gloss-def">Volume Unit meter — ballistic meter responding to average signal level. Standard metering in tape recording. 0 VU = +4 dBu in professional systems. The VU needle's characteristic sluggishness (300ms integration) tracks musical dynamics naturally.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Transformer</div><div class="gloss-def">Magnetic coupling device transferring signal between impedances. Transformers add even-order harmonics, gentle high-frequency rolloff, and low-mid warmth. The transformer is the primary source of Neve's and API's distinctive sonic character.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Even-Order Harmonics</div><div class="gloss-def">Harmonic partials at 2nd, 4th, 6th multiples of the fundamental. Perceived as warmth, richness, musical — in octave relationship to the fundamental. The dominant distortion type in Class-A amplifiers, triode vacuum tubes, and tape saturation.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Odd-Order Harmonics</div><div class="gloss-def">Harmonic partials at 3rd, 5th, 7th multiples. Perceived as grit, aggression, harshness — not in octave relationship to the fundamental. Dominant in Class-B amplifiers, solid-state clipping, and driven transistor circuits.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Noise Floor</div><div class="gloss-def">The inherent noise level of a recording system — tape hiss, circuit noise, electromagnetic interference. 2-inch tape at 30 ips measures approximately -72 dBFS. Noise reduction systems can improve this by 10-20 dB.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Intermodulation Distortion (IMD)</div><div class="gloss-def">Nonlinear distortion generating sum and difference frequencies when two or more signals pass through a saturating circuit. Unlike harmonic distortion, IMD products are generally non-musical — an indicator of excessive drive levels.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Overs and Headroom</div><div class="gloss-def">Analog recording has soft clipping headroom above 0 VU — signals can exceed nominal level before gross distortion. Typically 10-15 dB of usable headroom. Digital systems clip hard at 0 dBFS — a fundamental difference in dynamic character.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Flux Density</div><div class="gloss-def">The intensity of magnetic flux per unit area on tape, expressed in nanowebers per metre (nWb/m). Higher flux = hotter recording level relative to tape saturation. Modern high-output tapes support higher flux densities before saturation.</div></div>
+    <div class="gloss-item"><div class="gloss-term">NAB / IEC EQ</div><div class="gloss-def">Standardised equalisation curves applied during tape recording and playback. NAB (American) and IEC (European) differ in low-frequency rolloff. Equipment must use matching EQ — using the wrong standard alters bass reproduction.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Tape Compression</div><div class="gloss-def">Natural soft-knee compression behaviour as tape approaches saturation — input dynamics are gently compressed before saturation onset. Contributes to the glued, cohesive feel of tape recordings at moderate to high recording levels.</div></div>
+  </div>
+</section>
+
+<script>
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand=(lo=0,hi=1)=>lo+Math.random()*(hi-lo);
+function noise21(x,y){const ix=Math.floor(x),iy=Math.floor(y);const fx=x-ix,fy=y-iy;const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);const h=(a,b)=>{let n=(a*1619+b*31337)^(a*31337);n=(n>>8)^n;return(n&0xffff)/65535;};return lerp(lerp(h(ix,iy),h(ix+1,iy),ux),lerp(h(ix,iy+1),h(ix+1,iy+1),ux),uy);}
+function fbm(x,y,oct=4){let v=0,a=0.5,f=1;for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}return v;}
+
+class LagFilter{constructor(init,tau){this.value=init;this.tau=tau;}update(target,dt){const k=1-Math.exp(-dt/this.tau);this.value+=k*(target-this.value);return this.value;}}
+const lagHMX=new LagFilter(0.5,0.9);
+const lagHMY=new LagFilter(0.5,0.9);
+const lagHGrain=new LagFilter(0,0.1);
+const lagSpeed=new LagFilter(15,0.5);
+const lagBias=new LagFilter(0,0.4);
+const lagInput=new LagFilter(0,0.4);
+const lagWF=new LagFilter(0.2,0.4);
+const lagSatDrive=new LagFilter(0.3,0.3);
+const lagOddEven=new LagFilter(0.3,0.3);
+const lagKnee=new LagFilter(0.7,0.4);
+const lagH2=new LagFilter(0.5,0.3);
+const lagH3=new LagFilter(0.2,0.3);
+const lagIMD=new LagFilter(0.1,0.3);
+const lagBusSat=new LagFilter(0.3,0.3);
+const lagConsoleGain=new LagFilter(0,0.4);
+const lagHarmInput=new LagFilter(0,0.4);
+const lagTapeAnim=new LagFilter(0,0.15);
+
+let mouseX=0.5,mouseY=0.5;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX/window.innerWidth;mouseY=e.clientY/window.innerHeight;});
+
+// HERO WebGL
+const hc=document.getElementById('hero-canvas');
+hc.width=window.innerWidth;hc.height=440;
+window.addEventListener('resize',()=>{hc.width=window.innerWidth;hc.height=440;initHGL();});
+const HVS=`attribute vec2 pos;void main(){gl_Position=vec4(pos,0,1);}`;
+const HFS=`
+precision highp float;
+uniform vec2 u_res;uniform float u_time;uniform vec2 u_mouse;
+float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+17.5);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);a*=.5;p=p*2.1+vec2(1.7,9.2);}return v;}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 st=uv*2.-1.;st.x*=u_res.x/u_res.y;
+  float t=u_time;
+  // Tape motion: horizontal oxide particles
+  float tape=0.;
+  for(int i=0;i<6;i++){
+    float fi=float(i)/6.;
+    float ty=-0.7+fi*0.28;
+    float phase=fract(st.x*0.2+t*(0.3+fi*0.1));
+    float particle=exp(-abs(st.y-ty)*30.)*exp(-abs(phase-0.5)*6.)*0.4;
+    tape+=particle;
+  }
+  // Oxide noise field
+  float ox=fbm(st*2.+t*0.04);
+  float grain=noise(st*80.+t*0.5)*0.08;
+  // Warm amber glow
+  vec3 tapeOxide=vec3(0.55,0.28,0.08);
+  vec3 warmAmber=vec3(0.94,0.63,0.13);
+  vec3 consoleBlack=vec3(0.03,0.02,0.01);
+  vec3 col=consoleBlack;
+  col+=tapeOxide*tape*0.8;
+  col+=mix(tapeOxide,warmAmber,ox)*ox*0.2;
+  col+=vec3(grain);
+  // VU glow from cursor
+  vec2 ms=u_mouse*2.-1.;ms.x*=u_res.x/u_res.y;
+  col+=warmAmber*exp(-length(st-ms)*5.)*0.3;
+  // Saturation warmth over field
+  col=col/(col+0.5)*1.5;// soft knee
+  float vig=1.-length(uv-0.5)*1.4;
+  col*=clamp(vig,0.,1.);
+  gl_FragColor=vec4(col,1.);
+}`;
+let hgl,hprog,huniforms={};
+function initHGL(){
+  hgl=hc.getContext('webgl');if(!hgl)return;
+  function mkS(t,src){const s=hgl.createShader(t);hgl.shaderSource(s,src);hgl.compileShader(s);return s;}
+  if(hprog)hgl.deleteProgram(hprog);
+  hprog=hgl.createProgram();
+  hgl.attachShader(hprog,mkS(hgl.VERTEX_SHADER,HVS));
+  hgl.attachShader(hprog,mkS(hgl.FRAGMENT_SHADER,HFS));
+  hgl.linkProgram(hprog);hgl.useProgram(hprog);
+  const buf=hgl.createBuffer();hgl.bindBuffer(hgl.ARRAY_BUFFER,buf);
+  hgl.bufferData(hgl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),hgl.STATIC_DRAW);
+  const pl=hgl.getAttribLocation(hprog,'pos');hgl.enableVertexAttribArray(pl);hgl.vertexAttribPointer(pl,2,hgl.FLOAT,false,0,0);
+  huniforms={res:hgl.getUniformLocation(hprog,'u_res'),time:hgl.getUniformLocation(hprog,'u_time'),mouse:hgl.getUniformLocation(hprog,'u_mouse')};
+}
+initHGL();
+
+// Tape Machine Canvas
+const tpC=document.getElementById('tape-canvas');
+const tpX=tpC.getContext('2d');
+function resTP(){tpC.width=tpC.offsetWidth;tpC.height=340;}resTP();
+window.addEventListener('resize',resTP);
+const IPS_VALS=[7.5,15,30];
+document.getElementById('sl-speed').addEventListener('input',function(){document.getElementById('v-speed').textContent=IPS_VALS[parseInt(this.value)]+' ips';});
+document.getElementById('sl-bias').addEventListener('input',function(){const v=parseFloat(this.value);document.getElementById('v-bias').textContent=(v>=0?'+':'')+v.toFixed(1)+' dB';});
+document.getElementById('sl-input').addEventListener('input',function(){const v=parseFloat(this.value);document.getElementById('v-input').textContent=(v>=0?'+':'')+v+' dB';});
+document.getElementById('sl-wf2').addEventListener('input',function(){document.getElementById('v-wf2').textContent=Math.round(this.value*100)+'%';});
+
+let tapeRunning=true;
+document.getElementById('btn-play').addEventListener('click',()=>{tapeRunning=true;});
+document.getElementById('btn-stop').addEventListener('click',()=>{tapeRunning=false;});
+
+let tapePos=0;
+
+function tapeTransfer(x,drive,bias,knee){
+  // Soft saturation curve with bias offset
+  const biasOff=bias*0.2;
+  const driven=(x+biasOff)*drive;
+  const k=knee;
+  // Hyperbolic tangent saturation
+  return Math.tanh(driven/k)*k;
+}
+
+function drawTape(t){
+  const W=tpC.width,H=tpC.height;
+  tpX.fillStyle='rgba(8,4,2,0.88)';tpX.fillRect(0,0,W,H);
+  const speed=IPS_VALS[parseInt(document.getElementById('sl-speed').value)];
+  const bias=parseFloat(document.getElementById('sl-bias').value);
+  const inputDb=parseFloat(document.getElementById('sl-input').value);
+  const inputGain=Math.pow(10,inputDb/20);
+  const wf=lagWF.value;
+
+  if(tapeRunning)tapePos+=0.005*speed/30;
+
+  // Left reel
+  const lrX=100,lrY=H/2-40;const lrR=60+tapePos*10%20;
+  tpX.strokeStyle='rgba(139,69,19,0.6)';tpX.lineWidth=2;
+  tpX.beginPath();tpX.arc(lrX,lrY,lrR,0,Math.PI*2);tpX.stroke();
+  for(let s=0;s<8;s++){const a=s*Math.PI/4+tapePos*speed*0.2;tpX.beginPath();tpX.moveTo(lrX,lrY);tpX.lineTo(lrX+lrR*Math.cos(a)*0.7,lrY+lrR*Math.sin(a)*0.7);tpX.stroke();}
+
+  // Right reel
+  const rrX=W-100,rrY=H/2-40;const rrR=50-tapePos*10%15;
+  tpX.strokeStyle='rgba(139,69,19,0.5)';tpX.lineWidth=2;
+  tpX.beginPath();tpX.arc(rrX,rrY,rrR,0,Math.PI*2);tpX.stroke();
+  for(let s=0;s<8;s++){const a=s*Math.PI/4-tapePos*speed*0.2;tpX.beginPath();tpX.moveTo(rrX,rrY);tpX.lineTo(rrX+rrR*Math.cos(a)*0.7,rrY+rrR*Math.sin(a)*0.7);tpX.stroke();}
+
+  // Tape path
+  const tapeY=H/2+20;
+  tpX.strokeStyle='rgba(200,112,48,0.7)';tpX.lineWidth=4;
+  tpX.beginPath();tpX.moveTo(lrX+lrR,tapeY);tpX.lineTo(rrX-rrR,tapeY);tpX.stroke();
+
+  // Heads
+  const heads=[{x:W*0.35,label:'ERASE',color:'#5A3A20'},{x:W*0.5,label:'RECORD',color:'#F0A020'},{x:W*0.65,label:'PLAY',color:'#8B4513'}];
+  heads.forEach(h=>{
+    tpX.fillStyle=h.color;
+    tpX.fillRect(h.x-10,tapeY-25,20,30);
+    tpX.fillStyle='#7A5A3A';tpX.font='8px Courier New';tpX.textAlign='center';
+    tpX.fillText(h.label,h.x,tapeY+22);
+  });
+
+  // Input waveform + saturation
+  const wavY=tapeY+70,wavH=50;
+  tpX.fillStyle='#5A3A20';tpX.font='9px Courier New';tpX.textAlign='left';
+  tpX.fillText('INPUT',8,wavY-8);
+  tpX.fillText('SATURATED',8,wavY-8+wavH+28);
+  tpX.strokeStyle='rgba(240,160,32,0.5)';tpX.lineWidth=1.5;tpX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const wfMod=1+wf*Math.sin(xf*20+t*4)*0.03;const sample=Math.sin(xf*30*wfMod+t*3)*0.7*inputGain;x===0?tpX.moveTo(x,wavY+sample*wavH):tpX.lineTo(x,wavY+sample*wavH);}
+  tpX.stroke();
+  tpX.strokeStyle='rgba(200,112,48,0.8)';tpX.lineWidth=1.5;tpX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const wfMod=1+wf*Math.sin(xf*20+t*4)*0.03;const sample=Math.sin(xf*30*wfMod+t*3)*0.7*inputGain;const saturated=tapeTransfer(sample,inputGain,bias*0.1,0.8);x===0?tpX.moveTo(x,wavY+wavH+28+saturated*wavH):tpX.lineTo(x,wavY+wavH+28+saturated*wavH);}
+  tpX.stroke();
+
+  // Status
+  tpX.fillStyle=tapeRunning?'#F0A020':'#5A3A20';
+  tpX.font='9px Courier New';tpX.textAlign='right';
+  tpX.fillText(tapeRunning?`▶ ${speed} IPS`:'■ STOPPED',W-8,18);
+}
+
+// CONSOLE Canvas
+const cnC=document.getElementById('console-canvas');
+const cnX=cnC.getContext('2d');
+function resCN(){cnC.width=cnC.offsetWidth;cnC.height=320;}resCN();
+window.addEventListener('resize',resCN);
+const CONSOLE_NAMES=['SSL 4000','Neve 8078','API 1604','Studer A800'];
+const ROUTE_NAMES=['TO TAPE','TO MIX','DIRECT OUT'];
+document.getElementById('sl-console').addEventListener('input',function(){document.getElementById('v-console').textContent=CONSOLE_NAMES[parseInt(this.value)];});
+document.getElementById('sl-gain').addEventListener('input',function(){const v=parseFloat(this.value);document.getElementById('v-gain').textContent=(v>=0?'+':'')+v+' dB';});
+document.getElementById('sl-bus-sat').addEventListener('input',function(){document.getElementById('v-bus-sat').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-route').addEventListener('input',function(){document.getElementById('v-route').textContent=ROUTE_NAMES[parseInt(this.value)];});
+let cnPackets=[];
+function spawnCNPacket(){cnPackets.push({stage:0,t:0,speed:rand(0.008,0.02)});}
+
+function drawConsole(t){
+  const W=cnC.width,H=cnC.height;
+  cnX.fillStyle='rgba(8,4,2,0.88)';cnX.fillRect(0,0,W,H);
+  const consoleIdx=parseInt(document.getElementById('sl-console').value);
+  const consoleName=CONSOLE_NAMES[consoleIdx];
+  const gain=lagConsoleGain.value;
+  const busSat=lagBusSat.value;
+  const stages=['MIC\nINPUT','TRANSFORM-\nER','PREAMP',`EQ\n${consoleName==='SSL 4000'?'4-BAND':'3-BAND'}`,'DYNA-\nMICS','CHANNEL\nFADER','GROUP\nBUS','SUMMING\nBUS','STEREO\nOUT'];
+  const COLS=['#C87030','#8B4513','#F0A020','#D4820A','#FFB830','#E8C080','#8B4513','#F0A020','#FFB830'];
+  const n=stages.length;
+  const PAD=30,stW=(W-PAD*2)/n;
+
+  // Draw stages
+  stages.forEach((stage,i)=>{
+    const sx=PAD+i*stW,sy=H*0.15,sh=H*0.55,sw=stW-6;
+    const saturation=busSat*(i/n);
+    cnX.fillStyle=`rgba(139,69,19,${0.1+saturation*0.2})`;
+    cnX.strokeStyle=COLS[i];cnX.lineWidth=1.2;
+    cnX.fillRect(sx,sy,sw,sh);cnX.strokeRect(sx,sy,sw,sh);
+    cnX.fillStyle=COLS[i];cnX.font='7px Courier New';cnX.textAlign='center';
+    const lines=stage.split('\n');
+    lines.forEach((l,li)=>cnX.fillText(l,sx+sw/2,sy+sh/2+(li-lines.length/2+0.5)*10));
+    // Saturation glow
+    if(saturation>0.1){
+      cnX.strokeStyle=`rgba(240,160,32,${saturation*0.5})`;cnX.lineWidth=1;
+      cnX.beginPath();cnX.arc(sx+sw/2,sy+sh/2,sw*0.4,0,Math.PI*2);cnX.stroke();
+    }
+    // Connection lines
+    if(i<n-1){
+      cnX.strokeStyle='rgba(240,160,32,0.2)';cnX.lineWidth=1.5;
+      cnX.beginPath();cnX.moveTo(sx+sw,sy+sh/2);cnX.lineTo(sx+stW,sy+sh/2);cnX.stroke();
+    }
+  });
+
+  // Signal packets
+  cnPackets=cnPackets.filter(p=>p.t<1);
+  cnPackets.forEach(p=>{
+    p.t+=p.speed;
+    const sx=PAD+p.t*(W-PAD*2);
+    const sy=H*0.15+H*0.55/2;
+    cnX.beginPath();cnX.arc(sx,sy,5,0,Math.PI*2);
+    cnX.fillStyle='#F0A020';cnX.shadowBlur=12;cnX.shadowColor='#F0A020';
+    cnX.fill();cnX.shadowBlur=0;
+  });
+
+  // Waveform comparison
+  const cmpY=H*0.82;
+  cnX.strokeStyle='rgba(240,160,32,0.4)';cnX.lineWidth=1;cnX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const sample=Math.sin(xf*30+t*3)*0.4;cnX.lineTo(x,cmpY+sample*(H*0.08));}
+  cnX.stroke();
+  cnX.strokeStyle='rgba(200,112,48,0.7)';cnX.lineWidth=1;cnX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const sample=Math.sin(xf*30+t*3)*0.4;const sat=tapeTransfer2(sample,1+busSat*2);cnX.lineTo(x,cmpY+sat*(H*0.1));}
+  cnX.stroke();
+  cnX.fillStyle='#5A3A20';cnX.font='8px Courier New';cnX.textAlign='left';
+  cnX.fillText('PRE-CONSOLE  →  POST-SUMMING (BUS SAT: '+(Math.round(busSat*100))+'%)',PAD,cmpY-10);
+}
+
+function tapeTransfer2(x,drive){return Math.tanh(x*drive)/drive;}
+
+// SATURATION Canvases
+const stC=document.getElementById('sat-transfer-canvas');
+const stX=stC.getContext('2d');
+const ssC=document.getElementById('sat-spectrum-canvas');
+const ssX=ssC.getContext('2d');
+function resSAT(){stC.width=stC.offsetWidth;stC.height=280;ssC.width=ssC.offsetWidth;ssC.height=280;}resSAT();
+window.addEventListener('resize',resSAT);
+const SAT_NAMES=['Tape','Transformer','Tube','Transistor'];
+document.getElementById('sl-sat-drive').addEventListener('input',function(){document.getElementById('v-sat-drive').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-sat-char').addEventListener('input',function(){document.getElementById('v-sat-char').textContent=SAT_NAMES[parseInt(this.value)];});
+document.getElementById('sl-odd-even').addEventListener('input',function(){document.getElementById('v-odd-even').textContent=Math.round(this.value*100)+'% ODD';});
+document.getElementById('sl-knee').addEventListener('input',function(){document.getElementById('v-knee').textContent=parseFloat(this.value).toFixed(2);});
+
+function satCurve(x,drive,oddEven,knee){
+  const satChar=parseInt(document.getElementById('sl-sat-char').value);
+  switch(satChar){
+    case 0:return Math.tanh(x*(1+drive*3)/knee)*knee*(1-oddEven*0.2);// tape: mostly even
+    case 1:{const g=1+drive*4;return x*g/(1+Math.abs(x*g))*(1+oddEven*0.1*Math.sin(x*8));}// transformer
+    case 2:return Math.tanh(x*(1+drive*2)/knee)*knee*(1+oddEven*0.1*Math.sin(x*6));// tube
+    case 3:{const g=1+drive*5;const h=x*g;return Math.max(-1,Math.min(1,h*(1-Math.pow(Math.abs(h),2)*0.3)));}// transistor: hard
+  }
+  return x;
+}
+
+function drawSaturation(t){
+  const W=stC.width,H=stC.height;
+  const drive=lagSatDrive.value;
+  const oddEven=lagOddEven.value;
+  const knee=lagKnee.value;
+
+  // Transfer function
+  stX.fillStyle='rgba(8,4,2,0.88)';stX.fillRect(0,0,W,H);
+  const PAD=30;
+  // Grid
+  stX.strokeStyle='rgba(240,160,32,0.08)';stX.lineWidth=1;
+  [0.25,0.5,0.75].forEach(f=>{
+    const y=PAD+(H-PAD*2)*f;const x=PAD+(W-PAD*2)*f;
+    stX.beginPath();stX.moveTo(PAD,y);stX.lineTo(W-PAD,y);stX.stroke();
+    stX.beginPath();stX.moveTo(x,PAD);stX.lineTo(x,H-PAD);stX.stroke();
+  });
+  stX.strokeStyle='rgba(240,160,32,0.2)';stX.lineWidth=1;
+  stX.beginPath();stX.moveTo(PAD,(H-PAD*2)/2+PAD);stX.lineTo(W-PAD,(H-PAD*2)/2+PAD);stX.stroke();
+  stX.beginPath();stX.moveTo((W-PAD*2)/2+PAD,PAD);stX.lineTo((W-PAD*2)/2+PAD,H-PAD);stX.stroke();
+  // Linear reference
+  stX.strokeStyle='rgba(240,160,32,0.2)';stX.lineWidth=1;stX.setLineDash([4,6]);
+  stX.beginPath();stX.moveTo(PAD,H-PAD);stX.lineTo(W-PAD,PAD);stX.stroke();stX.setLineDash([]);
+  // Saturated curve
+  stX.strokeStyle='rgba(200,112,48,0.9)';stX.lineWidth=2;stX.beginPath();
+  for(let px=0;px<W-PAD*2;px++){
+    const x=(px/(W-PAD*2))*2-1;
+    const y=satCurve(x,drive,oddEven,knee);
+    const cy=(H-PAD*2)/2+PAD-y*(H-PAD*2)/2;
+    const cx=PAD+px;
+    px===0?stX.moveTo(cx,cy):stX.lineTo(cx,cy);
+  }
+  stX.stroke();
+  stX.fillStyle='#7A5A3A';stX.font='9px Courier New';stX.textAlign='left';
+  stX.fillText('TRANSFER FUNCTION',PAD,H-8);
+
+  // Spectrum
+  const WS=ssC.width,HS=ssC.height;
+  ssX.fillStyle='rgba(8,4,2,0.88)';ssX.fillRect(0,0,WS,HS);
+  ssX.fillStyle='#7A5A3A';ssX.font='9px Courier New';ssX.textAlign='left';
+  ssX.fillText('HARMONIC SPECTRUM',PAD,HS-8);
+  // Fundamentals + harmonics
+  const harmonic_amps=[1.0];
+  for(let h=2;h<=12;h++){
+    const isEven=h%2===0;
+    const base=isEven?(drive*(1-oddEven)*0.8):( drive*oddEven*0.6);
+    harmonic_amps.push(base/Math.pow(h-1,1.5)*0.8);
+  }
+  const barW=(WS-PAD*2)/12;
+  harmonic_amps.forEach((amp,i)=>{
+    const bx=PAD+i*barW+barW*0.1;
+    const bh=amp*(HS-PAD*2-20);
+    const isEven=(i+1)%2===0;
+    const col=isEven?'#F0A020':'#8B4513';
+    ssX.fillStyle=col+'88';
+    ssX.strokeStyle=col;ssX.lineWidth=1;
+    ssX.fillRect(bx,HS-PAD-bh,barW*0.8,bh);
+    ssX.strokeRect(bx,HS-PAD-bh,barW*0.8,bh);
+    ssX.fillStyle='#7A5A3A';ssX.font='8px Courier New';ssX.textAlign='center';
+    ssX.fillText(`H${i+1}`,bx+barW*0.4,HS-PAD+12);
+  });
+}
+
+// CHAIN Canvas
+const chC=document.getElementById('chain-canvas');
+const chX=chC.getContext('2d');
+function resCH(){chC.width=chC.offsetWidth;chC.height=360;}resCH();
+window.addEventListener('resize',resCH);
+const MIC_NAMES=['Condenser','Dynamic','Ribbon','Tube Cond'];
+const PRE_NAMES=['Neve 1073','API 512','SSL G','UA 610'];
+const COMP_NAMES=['LA-2A','1176','SSL G-Bus','Fairchild'];
+const TAPE_NAMES=['ATR-102','Studer A80','Ampex 440','Otari MTR'];
+document.getElementById('sl-mic').addEventListener('input',function(){document.getElementById('v-mic').textContent=MIC_NAMES[parseInt(this.value)];});
+document.getElementById('sl-pre').addEventListener('input',function(){document.getElementById('v-pre').textContent=PRE_NAMES[parseInt(this.value)];});
+document.getElementById('sl-comp').addEventListener('input',function(){document.getElementById('v-comp').textContent=COMP_NAMES[parseInt(this.value)];});
+document.getElementById('sl-formula').addEventListener('input',function(){document.getElementById('v-formula').textContent=TAPE_NAMES[parseInt(this.value)];});
+let chainPackets=[];
+
+function drawChain(t){
+  const W=chC.width,H=chC.height;
+  chX.fillStyle='rgba(8,4,2,0.88)';chX.fillRect(0,0,W,H);
+  const micIdx=parseInt(document.getElementById('sl-mic').value);
+  const preIdx=parseInt(document.getElementById('sl-pre').value);
+  const compIdx=parseInt(document.getElementById('sl-comp').value);
+  const tapeIdx=parseInt(document.getElementById('sl-formula').value);
+  const items=[
+    {label:'MIC\n'+MIC_NAMES[micIdx],color:'#C87030',x:0.08},
+    {label:'XFR\nTRANSF',color:'#8B4513',x:0.22},
+    {label:'PRE\n'+PRE_NAMES[preIdx],color:'#F0A020',x:0.38},
+    {label:'EQ\n3-BAND',color:'#D4820A',x:0.54},
+    {label:'COMP\n'+COMP_NAMES[compIdx],color:'#FFB830',x:0.68},
+    {label:'TAPE\n'+TAPE_NAMES[tapeIdx],color:'#C87030',x:0.85},
+  ];
+  const n=items.length;
+  const W2=100,H2=50;
+  items.forEach((item,i)=>{
+    const x=item.x*W-W2/2,y=H*0.22;
+    chX.fillStyle='#100806';
+    chX.strokeStyle=item.color;chX.lineWidth=1.5;
+    chX.fillRect(x,y,W2,H2);chX.strokeRect(x,y,W2,H2);
+    chX.fillStyle=item.color;chX.font='8px Courier New';chX.textAlign='center';
+    item.label.split('\n').forEach((l,li)=>chX.fillText(l,x+W2/2,y+H2/2+(li-0.5)*11));
+    if(i<n-1){
+      const nx=items[i+1].x*W-W2/2;
+      chX.strokeStyle='rgba(240,160,32,0.3)';chX.lineWidth=1.5;
+      chX.beginPath();chX.moveTo(x+W2,y+H2/2);chX.lineTo(nx,y+H2/2);chX.stroke();
+    }
+  });
+
+  // Animated signal through chain
+  chainPackets=chainPackets.filter(p=>p.t<1);
+  chainPackets.forEach(p=>{
+    p.t+=0.008;
+    const px=items[0].x*W+p.t*(items[n-1].x*W-items[0].x*W);
+    const py=H*0.22+H2/2;
+    chX.beginPath();chX.arc(px,py,5,0,Math.PI*2);
+    const warmth=p.t;const r=Math.round(lerp(200,240,warmth));const g=Math.round(lerp(112,160,warmth*0.5));
+    chX.fillStyle=`rgb(${r},${g},48)`;chX.shadowBlur=10;chX.shadowColor='#F0A020';
+    chX.fill();chX.shadowBlur=0;
+  });
+
+  // Waveform evolution
+  const wBaseY=H*0.55;
+  items.forEach((item,i)=>{
+    const wx=item.x*W;
+    const drive=0.5+i*0.12;
+    chX.strokeStyle=`rgba(200,112,48,${0.4+i*0.08})`;chX.lineWidth=1.2;chX.beginPath();
+    const ww=W2;
+    for(let px=0;px<ww;px++){
+      const xf=px/ww;
+      const sample=Math.sin(xf*20+t*3)*0.4;
+      const processed=tapeTransfer2(sample,drive);
+      px===0?chX.moveTo(wx-W2/2+px,wBaseY+processed*H*0.12):chX.lineTo(wx-W2/2+px,wBaseY+processed*H*0.12);
+    }
+    chX.stroke();
+    chX.fillStyle=item.color;chX.font='7px Courier New';chX.textAlign='center';
+    chX.fillText('THD: '+(i*1.2+0.1).toFixed(1)+'%',wx,wBaseY+H*0.12+15);
+  });
+}
+
+// HARMONIC Canvas
+const hmC=document.getElementById('harm-canvas');
+const hmX=hmC.getContext('2d');
+function resHM(){hmC.width=hmC.offsetWidth;hmC.height=340;}resHM();
+window.addEventListener('resize',resHM);
+document.getElementById('sl-harm-input').addEventListener('input',function(){const v=parseFloat(this.value);document.getElementById('v-harm-input').textContent=(v>=0?'+':'')+v+' dBu';});
+document.getElementById('sl-h2').addEventListener('input',function(){document.getElementById('v-h2').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-h3').addEventListener('input',function(){document.getElementById('v-h3').textContent=Math.round(this.value*100)+'%';});
+document.getElementById('sl-imd').addEventListener('input',function(){document.getElementById('v-imd').textContent=Math.round(this.value*100)+'%';});
+
+function drawHarmonics(t){
+  const W=hmC.width,H=hmC.height;
+  hmX.fillStyle='rgba(8,4,2,0.88)';hmX.fillRect(0,0,W,H);
+  const h2=lagH2.value;
+  const h3=lagH3.value;
+  const imd=lagIMD.value;
+  const inputDb=parseFloat(document.getElementById('sl-harm-input').value);
+  const inputGain=Math.pow(10,inputDb/20);
+  const PAD=50;const plotW=W-PAD*2;const plotH=(H-40)/2;
+  const plotY1=20,plotY2=plotH+30;
+
+  // Waveform comparison (top)
+  hmX.fillStyle='#5A3A20';hmX.font='9px Courier New';hmX.textAlign='left';
+  hmX.fillText('WAVEFORM',PAD,plotY1-4);
+  hmX.strokeStyle='rgba(240,160,32,0.4)';hmX.lineWidth=1.5;hmX.beginPath();
+  for(let x=0;x<plotW;x++){const xf=x/plotW;const sample=Math.sin(xf*Math.PI*8)*inputGain*0.6;hmX.lineTo(PAD+x,plotY1+plotH/2-sample*plotH*0.4);}
+  hmX.stroke();
+  hmX.strokeStyle='rgba(200,112,48,0.8)';hmX.lineWidth=1.5;hmX.beginPath();
+  for(let x=0;x<plotW;x++){const xf=x/plotW;const fund=Math.sin(xf*Math.PI*8)*inputGain*0.6;const h2sig=h2*fund*fund*0.5;const h3sig=h3*Math.pow(fund,3)*0.25;const imdSig=imd*Math.sin(xf*Math.PI*5.3)*fund*0.3;hmX.lineTo(PAD+x,plotY1+plotH/2-(fund+h2sig+h3sig+imdSig)*plotH*0.38);}
+  hmX.stroke();
+
+  // Harmonic bar chart (bottom)
+  hmX.fillStyle='#5A3A20';hmX.font='9px Courier New';hmX.textAlign='left';
+  hmX.fillText('HARMONIC CONTENT',PAD,plotY2-4);
+  const nBars=12,barW=plotW/nBars;
+  for(let b=0;b<nBars;b++){
+    const isOdd=(b+1)%2!==0;
+    let amp;
+    if(b===0)amp=inputGain;
+    else if(b===1)amp=h2*inputGain*0.7;
+    else if(b===2)amp=h3*inputGain*0.5;
+    else amp=(isOdd?h3:h2)*inputGain/Math.pow(b+1,2)*0.4+imd*0.1/b;
+    amp=Math.min(1,amp);
+    const bh=amp*(plotH-10);
+    const bx=PAD+b*barW+barW*0.1;
+    const col=isOdd?'#8B4513':'#F0A020';
+    hmX.fillStyle=col+'55';hmX.strokeStyle=col;hmX.lineWidth=1;
+    hmX.fillRect(bx,plotY2+plotH-10-bh,barW*0.8,bh);
+    hmX.strokeRect(bx,plotY2+plotH-10-bh,barW*0.8,bh);
+    hmX.fillStyle='#5A3A20';hmX.font='7px Courier New';hmX.textAlign='center';
+    hmX.fillText(b===0?'F':`${b+1}H`,bx+barW*0.4,plotY2+plotH+8);
+  }
+
+  // DB scale
+  for(let db=-60;db<=0;db+=20){
+    const y=plotY2+plotH-10-Math.pow(10,db/20)*plotH;
+    hmX.strokeStyle='rgba(240,160,32,0.1)';hmX.lineWidth=1;
+    hmX.beginPath();hmX.moveTo(PAD,y);hmX.lineTo(W-PAD,y);hmX.stroke();
+    hmX.fillStyle='#5A3A20';hmX.font='7px Courier New';hmX.textAlign='right';
+    hmX.fillText(`${db}dB`,PAD-4,y+3);
+  }
+}
+
+// MAIN LOOP
+let lastT=0,cnPkT=0,chPkT=0;
+function frame(now){
+  const dt=Math.min((now-lastT)/1000,0.05);lastT=now;
+  const t=now/1000;
+  lagHMX.update(mouseX,dt);lagHMY.update(mouseY,dt);
+  lagBias.update(parseFloat(document.getElementById('sl-bias').value),dt);
+  lagInput.update(parseFloat(document.getElementById('sl-input').value),dt);
+  lagWF.update(parseFloat(document.getElementById('sl-wf2').value),dt);
+  lagSatDrive.update(parseFloat(document.getElementById('sl-sat-drive').value),dt);
+  lagOddEven.update(parseFloat(document.getElementById('sl-odd-even').value),dt);
+  lagKnee.update(parseFloat(document.getElementById('sl-knee').value),dt);
+  lagH2.update(parseFloat(document.getElementById('sl-h2').value),dt);
+  lagH3.update(parseFloat(document.getElementById('sl-h3').value),dt);
+  lagIMD.update(parseFloat(document.getElementById('sl-imd').value),dt);
+  lagBusSat.update(parseFloat(document.getElementById('sl-bus-sat').value),dt);
+  lagConsoleGain.update(parseFloat(document.getElementById('sl-gain').value),dt);
+  lagHarmInput.update(parseFloat(document.getElementById('sl-harm-input').value),dt);
+
+  if(hgl&&hprog){hgl.viewport(0,0,hc.width,hc.height);hgl.useProgram(hprog);hgl.uniform2f(huniforms.res,hc.width,hc.height);hgl.uniform1f(huniforms.time,t);hgl.uniform2f(huniforms.mouse,lagHMX.value,1-lagHMY.value);hgl.drawArrays(hgl.TRIANGLE_STRIP,0,4);}
+  drawTape(t);
+  cnPkT+=dt;if(cnPkT>0.15){spawnCNPacket();cnPkT=0;}
+  drawConsole(t);
+  drawSaturation(t);
+  chPkT+=dt;if(chPkT>0.2){chainPackets.push({t:0,speed:0.008});chPkT=0;}
+  drawChain(t);
+  drawHarmonics(t);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t=>{lastT=t;requestAnimationFrame(frame);});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring editing timeline">
+    <meta property="og:title" content="Editing Timeline World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring editing timeline">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/editing_timeline_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN — Editing Timeline World</title>
+<style>
+:root{
+  --black:#050508;--surface:#0d0d14;--border:#1e1e2e;
+  --text:#e2e8f0;--dim:#64748b;--accent:#f59e0b;
+  --indigo:#312e81;--indigo-light:#4338ca;
+  --green:#10b981;--red:#ef4444;--white-proj:rgba(255,255,255,.9);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Georgia',serif;overflow-x:hidden;line-height:1.7;min-width:320px}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(5,5,8,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.2rem;height:52px;gap:1rem;
+}
+.nav-brand{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.2em;
+  color:var(--accent);font-weight:bold;white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:.1rem;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  color:var(--dim);text-decoration:none;font-family:'Courier New',monospace;
+  font-size:.6rem;letter-spacing:.1em;padding:.35rem .65rem;border-radius:2px;
+  transition:all .2s;white-space:nowrap;border:1px solid transparent;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--accent);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.07)
+}
+section{padding:5rem 1.5rem;max-width:1200px;margin:0 auto;position:relative}
+.section-wrap{padding:0 1.5rem;max-width:1200px;margin:0 auto}
+.section-label{
+  font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.25em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:.8rem;display:block;
+}
+.section-title{font-size:clamp(1.5rem,4vw,2.6rem);font-weight:normal;margin-bottom:1rem;line-height:1.2}
+.section-desc{color:var(--dim);font-size:.92rem;margin-bottom:2.5rem;max-width:700px}
+.hidden{opacity:0;transform:translateY(40px);transition:all .7s ease}
+.visible{opacity:1;transform:none}
+.stagger-1{transition-delay:.1s}.stagger-2{transition-delay:.2s}
+.stagger-3{transition-delay:.3s}.stagger-4{transition-delay:.4s}.stagger-5{transition-delay:.5s}
+/* HERO */
+#timeline-section{padding-top:52px;padding-left:0;padding-right:0;max-width:100%;margin:0}
+.hero-canvas-wrap{position:relative;width:100%;height:440px;overflow:hidden;background:var(--black)}
+#heroCanvas{display:block;width:100%;height:440px}
+.hero-overlay{
+  position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:flex-start;padding:3rem 5rem;
+}
+.hero-title{
+  font-size:clamp(1.8rem,5vw,3.6rem);font-weight:bold;letter-spacing:.06em;
+  color:var(--accent);text-shadow:0 0 40px rgba(245,158,11,.7),0 0 80px rgba(245,158,11,.3);
+  font-family:'Courier New',monospace;line-height:1.1;margin-bottom:.5rem;
+}
+.hero-sub{font-size:clamp(.85rem,2vw,1.2rem);color:rgba(255,255,255,.65);font-style:italic;margin-bottom:2rem}
+.stats-row{display:flex;gap:1rem;flex-wrap:wrap}
+.stat-badge{
+  background:rgba(5,5,8,.7);border:1px solid rgba(245,158,11,.3);border-radius:3px;
+  padding:.4rem 1rem;font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.1em;
+}
+.stat-badge span{color:var(--accent);font-size:.95rem;display:block;font-weight:bold;margin-bottom:.1rem}
+/* CANVAS BOXES */
+.canvas-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;position:relative;
+}
+.canvas-box canvas{display:block;width:100%;height:100%}
+/* GRIDS */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.5rem}
+.card-title{font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.15em;color:var(--accent);margin-bottom:.6rem;display:block}
+.card p{font-size:.85rem;color:var(--dim);line-height:1.6}
+/* CONTROLS */
+.controls{display:flex;flex-wrap:wrap;gap:.8rem;margin:1rem 0;align-items:center}
+label{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--dim)}
+input[type=range]{
+  -webkit-appearance:none;height:3px;background:var(--border);border-radius:2px;
+  cursor:pointer;flex:1;min-width:80px;max-width:180px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);cursor:pointer;
+}
+button{
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);
+  color:var(--accent);font-family:'Courier New',monospace;font-size:.65rem;
+  letter-spacing:.1em;padding:.45rem 1rem;border-radius:2px;cursor:pointer;
+  transition:all .2s;
+}
+button:hover{background:rgba(245,158,11,.22);box-shadow:0 0 10px rgba(245,158,11,.3)}
+button.active-btn{background:rgba(245,158,11,.28);box-shadow:0 0 14px rgba(245,158,11,.4)}
+select{
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font-family:'Courier New',monospace;font-size:.65rem;padding:.4rem .7rem;border-radius:2px;cursor:pointer;
+}
+/* TABS */
+.tab-row{display:flex;gap:.4rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{background:transparent;border:1px solid var(--border);color:var(--dim);font-size:.62rem}
+.tab-btn.active-btn{border-color:rgba(245,158,11,.4);color:var(--accent);background:rgba(245,158,11,.08)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+/* VJ */
+.vj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:1.2rem}
+.clip-cell{
+  aspect-ratio:1;border:1px solid var(--border);border-radius:3px;cursor:pointer;
+  background:var(--surface);position:relative;overflow:hidden;transition:border-color .15s,transform .1s;
+}
+.clip-cell:hover{border-color:rgba(245,158,11,.5);transform:scale(1.04)}
+.clip-cell.firing{border-color:var(--accent);box-shadow:0 0 16px rgba(245,158,11,.6)}
+.clip-cell canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.clip-label{
+  position:absolute;bottom:0;left:0;right:0;background:rgba(5,5,8,.75);
+  font-family:'Courier New',monospace;font-size:.5rem;letter-spacing:.06em;
+  color:var(--dim);padding:.15rem .3rem;text-align:center;pointer-events:none;
+}
+/* LAYERS */
+.layer-strip{display:flex;gap:.8rem;align-items:center;margin:.4rem 0;padding:.5rem;
+  background:rgba(255,255,255,.02);border-radius:3px}
+.layer-name{font-family:'Courier New',monospace;font-size:.6rem;color:var(--dim);width:45px;flex-shrink:0}
+/* PROJECTION */
+.surface-btns{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+/* TRANSITION CARDS */
+.transition-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem}
+.transition-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.transition-card canvas{display:block;width:100%;height:150px;cursor:pointer}
+.transition-info{padding:.9rem}
+.transition-info h4{font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.1em;color:var(--accent);margin-bottom:.3rem}
+.transition-info p{font-size:.78rem;color:var(--dim)}
+/* HISTORY */
+.history-scroll{overflow-x:auto;padding:1rem 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.history-track{display:flex;align-items:center;min-width:max-content;padding:3rem 2rem}
+.history-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),rgba(245,158,11,.4),var(--border));min-width:40px}
+.history-node{display:flex;flex-direction:column;align-items:center;width:110px;flex-shrink:0;cursor:pointer}
+.history-dot{
+  width:12px;height:12px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px rgba(245,158,11,.5);margin-bottom:.5rem;transition:all .2s;
+}
+.history-node:hover .history-dot{transform:scale(1.6);box-shadow:0 0 18px rgba(245,158,11,.8)}
+.history-year{font-family:'Courier New',monospace;font-size:.62rem;color:var(--accent);margin-bottom:.25rem}
+.history-desc{font-size:.68rem;color:var(--dim);text-align:center;max-width:105px;line-height:1.4}
+/* ARTIST CARDS */
+.artist-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:1.1rem;display:flex;flex-direction:column;gap:.4rem;
+}
+.artist-name{font-size:.95rem;color:var(--text)}
+.artist-role{font-family:'Courier New',monospace;font-size:.62rem;color:var(--accent);letter-spacing:.08em}
+.artist-desc{font-size:.78rem;color:var(--dim);line-height:1.5}
+/* CHEAT TABLE */
+.cheat-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.8rem}
+.cheat-table th{
+  background:rgba(245,158,11,.09);color:var(--accent);
+  font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.08em;
+  padding:.65rem .9rem;text-align:left;border:1px solid var(--border);
+}
+.cheat-table td{padding:.55rem .9rem;border:1px solid var(--border);color:var(--dim)}
+.cheat-table tr:hover td{background:rgba(255,255,255,.025)}
+/* PALETTES */
+.palette-row{display:flex;gap:.3rem;margin:.5rem 0}
+.swatch{width:38px;height:38px;border-radius:3px;flex-shrink:0;border:1px solid rgba(255,255,255,.08)}
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;margin:1rem 0}
+.mood-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.1rem}
+.mood-card h4{font-size:.85rem;margin-bottom:.4rem;color:var(--text)}
+.mood-ref{font-family:'Courier New',monospace;font-size:.6rem;color:var(--dim);margin-top:.4rem}
+/* KULESHOV */
+.kuleshov-row{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;gap:.8rem;align-items:center;margin:1rem 0}
+.k-arrow{color:var(--accent);font-size:1.3rem;text-align:center;opacity:.7}
+#kuleshovMeaning{
+  font-family:'Courier New',monospace;font-size:.85rem;color:var(--accent);text-align:center;
+  margin:1rem 0;padding:.8rem;background:rgba(245,158,11,.07);
+  border:1px solid rgba(245,158,11,.25);border-radius:3px;
+  min-height:2.8rem;display:flex;align-items:center;justify-content:center;transition:all .4s;
+}
+/* CUT GRID */
+.cut-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.8rem;margin:1rem 0}
+.cut-btn{
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:.9rem;cursor:pointer;transition:all .2s;text-align:left;
+}
+.cut-btn:hover,.cut-btn.selected{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.07)}
+.cut-btn h4{font-family:'Courier New',monospace;font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.3rem}
+.cut-btn p{font-size:.72rem;color:var(--dim);line-height:1.4}
+/* MISC */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.info-val{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent)}
+.divider{height:1px;background:var(--border);margin:2rem 0}
+footer{
+  border-top:1px solid var(--border);padding:3rem 1.5rem;text-align:center;
+  font-family:'Courier New',monospace;font-size:.62rem;color:var(--dim);
+  letter-spacing:.15em;line-height:2.2;
+}
+.footer-brand{font-size:.85rem;color:var(--accent);letter-spacing:.3em;display:block;margin-bottom:.8rem}
+.footer-app{color:rgba(245,158,11,.5);font-size:.55rem}
+@media(max-width:640px){
+  .hero-overlay{padding:1.5rem 2rem}
+  .kuleshov-row{grid-template-columns:1fr 20px 1fr 20px 1fr}
+  .two-col{grid-template-columns:1fr}
+  .history-track{padding:2rem 1rem}
+  nav{padding:0 .8rem}
+}
+</style>
+</head>
+<body class="domain-video">
+
+<nav>
+  <span class="nav-brand">WAVGEN / VIDEO</span>
+  <div class="nav-links">
+    <a href="#timeline-section">Timeline</a>
+    <a href="#montage">Montage</a>
+    <a href="#editing">Editing</a>
+    <a href="#color">Color</a>
+    <a href="#vj">VJ</a>
+    <a href="#projection">Projection</a>
+    <a href="#transitions">Transitions</a>
+    <a href="#cheat-sheet">Cheat Sheet</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO -->
+<div id="timeline-section">
+  <div class="hero-canvas-wrap">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-overlay">
+      <div class="hero-title hidden stagger-1">EDITING TIMELINE WORLD</div>
+      <div class="hero-sub hidden stagger-2">Time is the canvas. The cut is the brush.</div>
+      <div class="stats-row hidden stagger-3">
+        <div class="stat-badge"><span id="stat-fps">24</span>FRAME RATE</div>
+        <div class="stat-badge"><span id="stat-cs">Rec.709</span>COLOR SPACE</div>
+        <div class="stat-badge"><span id="stat-cuts">0</span>CUT COUNT</div>
+        <div class="stat-badge"><span id="stat-dur">00:00</span>DURATION</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MONTAGE -->
+<section id="montage">
+  <span class="section-label hidden">Module 02</span>
+  <h2 class="section-title hidden stagger-1">Montage Theory Lab</h2>
+  <p class="section-desc hidden stagger-2">Soviet formalist theory meets interactive demonstration. Context creates meaning — the cut is an argument.</p>
+  <div class="tab-row hidden stagger-3">
+    <button class="tab-btn active-btn" onclick="switchTab('kuleshov')">Kuleshov Effect</button>
+    <button class="tab-btn" onclick="switchTab('eisenstein')">Collision Montage</button>
+    <button class="tab-btn" onclick="switchTab('rhythmic')">Rhythmic Editing</button>
+    <button class="tab-btn" onclick="switchTab('continuity')">Soviet vs. Classical</button>
+  </div>
+
+  <div id="tab-kuleshov" class="tab-panel active hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1.2rem">The same neutral face reads entirely differently depending on what precedes it. You are constructing the emotion — the editor only orchestrates the context.</p>
+    <div class="kuleshov-row">
+      <div class="canvas-box"><canvas id="kFaceA" width="300" height="200"></canvas><div style="text-align:center;font-family:'Courier New',monospace;font-size:.6rem;color:var(--dim);padding:.3rem">FACE (identical)</div></div>
+      <div class="k-arrow">→</div>
+      <div class="canvas-box"><canvas id="kObject" width="300" height="200"></canvas><div id="kObjectLabel" style="text-align:center;font-family:'Courier New',monospace;font-size:.6rem;color:var(--accent);padding:.3rem">FOOD</div></div>
+      <div class="k-arrow">→</div>
+      <div class="canvas-box"><canvas id="kFaceB" width="300" height="200"></canvas><div style="text-align:center;font-family:'Courier New',monospace;font-size:.6rem;color:var(--dim);padding:.3rem">FACE (identical)</div></div>
+    </div>
+    <div id="kuleshovMeaning">The face reads as: HUNGER / DESIRE</div>
+    <div class="controls">
+      <button onclick="setKuleshovObject(0)">Food</button>
+      <button onclick="setKuleshovObject(1)">Child</button>
+      <button onclick="setKuleshovObject(2)">Coffin</button>
+      <button onclick="setKuleshovObject(3)">Gun</button>
+      <button onclick="toggleKuleshovAuto()">Auto Cycle</button>
+    </div>
+    <div class="card" style="margin-top:1.5rem">
+      <span class="card-title">LEV KULESHOV — 1919–1922</span>
+      <p>Kuleshov's experiments proved that cinema meaning is not in the shot itself but in the juxtaposition. He intercut a neutral actor's face with bowls of soup, a woman in a coffin, and a child playing — audiences praised his nuanced "performance." The face was identical in every case. The montage created the emotion.</p>
+    </div>
+  </div>
+
+  <div id="tab-eisenstein" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1.2rem">Two opposing visual ideas collide to generate a third concept that exists in neither image alone. Eisenstein called this "intellectual montage" — the cut as thesis and antithesis producing synthesis.</p>
+    <div class="canvas-box" style="margin-bottom:1rem"><canvas id="eisensteinCanvas" width="900" height="240"></canvas></div>
+    <div class="controls">
+      <label>Collision Speed</label>
+      <input type="range" id="collisionSpeed" min="1" max="10" value="4" oninput="updateEisenstein()">
+      <label>Contrast</label>
+      <input type="range" id="collisionContrast" min="1" max="10" value="7" oninput="updateEisenstein()">
+      <label>Mode:</label>
+      <select id="eisMode" onchange="updateEisenstein()">
+        <option value="angular">Angular vs. Curved</option>
+        <option value="dark">Dark vs. Light</option>
+        <option value="organic">Organic vs. Geometric</option>
+      </select>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <span class="card-title">SERGEI EISENSTEIN — COLLISION THEORY</span>
+      <p>In Strike (1925) Eisenstein cut workers being massacred against cattle being slaughtered. Neither image contains "workers are cattle" — the juxtaposition generates the concept. This is intellectual montage at its most extreme: images as arguments, editing as rhetoric.</p>
+    </div>
+  </div>
+
+  <div id="tab-rhythmic" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1.2rem">Editorial rhythm is created by cut timing, not content. Slow cuts feel contemplative; rapid cuts feel urgent. The metronome is the editor's invisible collaborator.</p>
+    <div class="canvas-box" style="margin-bottom:1rem"><canvas id="rhythmCanvas" width="900" height="200"></canvas></div>
+    <div class="controls">
+      <label>BPM</label>
+      <input type="range" id="rhythmBPM" min="40" max="180" value="80" oninput="updateRhythm()">
+      <span class="info-val" id="rhythmBPMVal">80 BPM</span>
+      <button onclick="toggleRhythm()">▶ Start</button>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <span class="card-title">TEMPO AS NARRATIVE INFORMATION</span>
+      <p>Arthouse cinema averages 3–8 cuts per minute. Action cinema hits 30–60. Baby Driver was edited to specific songs before production began — every cut lands on a musical event. The rhythm of editing is an emotional argument operating below conscious awareness.</p>
+    </div>
+  </div>
+
+  <div id="tab-continuity" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1.2rem">Classical continuity editing makes cuts invisible — space and time feel continuous. Soviet formalism deliberately violates continuity to create psychological friction.</p>
+    <div class="grid-2">
+      <div>
+        <h4 style="font-family:'Courier New',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.8rem">JUMP CUT — SOVIET / NOUVELLE VAGUE</h4>
+        <div class="canvas-box"><canvas id="jumpCutCanvas" width="400" height="220"></canvas></div>
+        <p style="font-size:.78rem;color:var(--dim);margin-top:.6rem">Deliberate continuity violation. Time skips. Godard used jump cuts in Breathless (1960) as an aesthetic rejection of Hollywood smoothness — each cut acknowledges the constructed nature of cinema.</p>
+      </div>
+      <div>
+        <h4 style="font-family:'Courier New',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.8rem">MATCH CUT — CLASSICAL CONTINUITY</h4>
+        <div class="canvas-box"><canvas id="matchCutCanvas" width="400" height="220"></canvas></div>
+        <p style="font-size:.78rem;color:var(--dim);margin-top:.6rem">Action continues fluidly across the cut. Spatial orientation is maintained. The viewer is guided, not jarred. Lawrence of Arabia's match cuts are the gold standard — form serves story.</p>
+      </div>
+    </div>
+    <div class="controls" style="margin-top:1rem">
+      <button onclick="playContinuityDemo('jump')">Demo Jump Cut</button>
+      <button onclick="playContinuityDemo('match')">Demo Match Cut</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ EDITING LAB -->
+<section id="editing">
+  <span class="section-label hidden">Module 03</span>
+  <h2 class="section-title hidden stagger-1">Editing Lab</h2>
+  <p class="section-desc hidden stagger-2">Six cut types. The vocabulary of editorial craft — from invisible continuity to deliberate collision.</p>
+
+  <div class="cut-grid hidden stagger-3">
+    <div class="cut-btn" onclick="selectCut('hard')"><h4>HARD CUT</h4><p>Instant transition. No duration. The most powerful and most common cut. Invisible when perfect.</p></div>
+    <div class="cut-btn" onclick="selectCut('match')"><h4>MATCH CUT</h4><p>Visual rhyme bridges two shots. Kubrick: bone → spacecraft. Lean: match → sun. Meaning through geometry.</p></div>
+    <div class="cut-btn" onclick="selectCut('jump')"><h4>JUMP CUT</h4><p>Same subject, time removed. Godard made it an aesthetic. Fragments time, signals distraction or memory.</p></div>
+    <div class="cut-btn" onclick="selectCut('lcut')"><h4>L-CUT</h4><p>Audio continues after the visual cut. The world keeps sounding. Preserves sonic immersion across edits.</p></div>
+    <div class="cut-btn" onclick="selectCut('jcut')"><h4>J-CUT</h4><p>Audio arrives before the visual cut. Pulls the viewer toward the next scene before they see it. Anticipation.</p></div>
+    <div class="cut-btn" onclick="selectCut('smash')"><h4>SMASH CUT</h4><p>Extreme contrast between consecutive shots. Chaos → silence. Dark → blinding light. Shock as punctuation.</p></div>
+  </div>
+
+  <div class="two-col hidden stagger-4" style="margin-top:1.5rem">
+    <div>
+      <div class="canvas-box"><canvas id="cutDemoCanvas" width="500" height="280"></canvas></div>
+      <div class="controls" style="margin-top:.8rem">
+        <button onclick="triggerCutDemo()">▶ Trigger Cut</button>
+        <button onclick="toggleCutLoop()">⟳ Loop</button>
+      </div>
+    </div>
+    <div id="cutInfoPanel" class="card">
+      <span class="card-title" id="cutInfoTitle">SELECT A CUT TYPE</span>
+      <p id="cutInfoText" style="margin-bottom:.8rem">Click any cut type above to see an interactive demonstration and learn where it's used in cinema.</p>
+      <div id="cutFilmRef" style="font-family:'Courier New',monospace;font-size:.7rem;color:rgba(245,158,11,.6)"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 class="hidden stagger-1" style="font-size:1.2rem;font-weight:normal;margin-bottom:1rem">Pacing Calculator</h3>
+  <p class="section-desc hidden stagger-2" style="margin-bottom:1.5rem">Cuts per minute determines the felt tempo of a film. Enter runtime and target CPM to visualize the edit rhythm.</p>
+  <div class="controls hidden stagger-3">
+    <label>Runtime (min)</label>
+    <input type="range" id="pacingRuntime" min="1" max="30" value="10" oninput="updatePacing()">
+    <span class="info-val" id="pacingRuntimeVal">10 min</span>
+    <label>Cuts/min</label>
+    <input type="range" id="pacingCPM" min="1" max="60" value="12" oninput="updatePacing()">
+    <span class="info-val" id="pacingCPMVal">12 CPM</span>
+  </div>
+  <div class="canvas-box hidden stagger-4"><canvas id="pacingCanvas" width="900" height="100"></canvas></div>
+  <div class="grid-3 hidden stagger-5" style="margin-top:1.2rem">
+    <div class="card"><span class="card-title">DOCUMENTARY</span><p>3–6 CPM. Space for ideas to breathe. The edit respects the viewer's contemplative engagement with reality.</p></div>
+    <div class="card"><span class="card-title">DRAMA / THRILLER</span><p>8–20 CPM. Emotional escalation drives tempo. Climactic sequences can spike to 40+ CPM momentarily.</p></div>
+    <div class="card"><span class="card-title">ACTION / MUSIC VIDEO</span><p>30–60+ CPM. The cut IS the spectacle. Michael Bay averages 45 CPM; music videos can exceed 120 CPM.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ COLOR GRADING -->
+<section id="color">
+  <span class="section-label hidden">Module 04</span>
+  <h2 class="section-title hidden stagger-1">Color Grading Cinema</h2>
+  <p class="section-desc hidden stagger-2">Color is psychological information. Every grade is an emotional argument made frame by frame.</p>
+
+  <div class="tab-row hidden stagger-3">
+    <button class="tab-btn active-btn" onclick="switchColorTab('lut')">LUT Simulator</button>
+    <button class="tab-btn" onclick="switchColorTab('temp')">Color Temperature</button>
+    <button class="tab-btn" onclick="switchColorTab('palettes')">Emotional Palettes</button>
+    <button class="tab-btn" onclick="switchColorTab('exposure')">Exposure Triangle</button>
+  </div>
+
+  <div id="ctab-lut" class="tab-panel active hidden stagger-4">
+    <div class="two-col">
+      <div>
+        <div class="canvas-box"><canvas id="lutSceneCanvas" width="500" height="300"></canvas></div>
+        <div class="controls" style="margin-top:.8rem">
+          <label>Lift (Shadows)</label>
+          <input type="range" id="gradeLift" min="-50" max="50" value="0" oninput="updateGrade()">
+          <label>Gamma</label>
+          <input type="range" id="gradeGamma" min="-50" max="50" value="0" oninput="updateGrade()">
+          <label>Gain (Highlights)</label>
+          <input type="range" id="gradeGain" min="-50" max="50" value="0" oninput="updateGrade()">
+        </div>
+      </div>
+      <div>
+        <div style="margin-bottom:.8rem">
+          <span class="card-title">CINEMATIC LOOK PRESETS</span>
+          <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem">
+            <button onclick="applyPreset('neutral')" style="text-align:left">● Neutral / Corrected</button>
+            <button onclick="applyPreset('teal-orange')" style="text-align:left">● Teal & Orange (Blockbuster)</button>
+            <button onclick="applyPreset('day-for-night')" style="text-align:left">● Day for Night (Underexposed Blue)</button>
+            <button onclick="applyPreset('bleach-bypass')" style="text-align:left">● Bleach Bypass (Desaturated Silver)</button>
+            <button onclick="applyPreset('faded-americana')" style="text-align:left">● Faded Americana (Lifted Blacks)</button>
+            <button onclick="applyPreset('noir')" style="text-align:left">● Noir (High Contrast B&W)</button>
+          </div>
+        </div>
+        <div class="card" id="gradeInfoCard">
+          <span class="card-title" id="gradeInfoTitle">NEUTRAL</span>
+          <p id="gradeInfoText">Full tonal range preserved. Correct white balance. The baseline from which all creative grades depart.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ctab-temp" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1rem">Color temperature in Kelvin describes the hue of a light source — from candlelight amber to cool skylight blue. The camera must be told what "white" is.</p>
+    <canvas id="colorTempCanvas" width="900" height="70" style="width:100%;border-radius:3px;cursor:pointer;display:block;margin:1rem 0"></canvas>
+    <div class="controls">
+      <label>Kelvin</label>
+      <input type="range" id="kelvinSlider" min="1000" max="10000" value="5600" oninput="updateColorTemp()">
+      <span class="info-val" id="kelvinVal">5600K — Daylight</span>
+    </div>
+    <div class="canvas-box" style="margin-top:1rem"><canvas id="tempSceneCanvas" width="900" height="200"></canvas></div>
+    <div class="grid-3" style="margin-top:1.5rem">
+      <div class="card"><span class="card-title">1800–2200K</span><p>Candlelight / firelight. Deep amber. Film noir, intimacy, primitive warmth. Vilmos Zsigmond's McCabe & Mrs. Miller.</p></div>
+      <div class="card"><span class="card-title">3200K</span><p>Tungsten / incandescent. Studio standard. Warm but controlled. Classic Hollywood interior light.</p></div>
+      <div class="card"><span class="card-title">5600K</span><p>Daylight standard. Neutral white. Outdoor shooting balanced for sunlight. Broadcast television default.</p></div>
+    </div>
+  </div>
+
+  <div id="ctab-palettes" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1.2rem">Color is not decoration. Each palette creates a specific psychological environment — the viewer absorbs emotional information before a single line of dialogue.</p>
+    <div class="mood-grid">
+      <div class="mood-card">
+        <h4>Horror</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#1a2e1a"></div>
+          <div class="swatch" style="background:#2d5a2d"></div>
+          <div class="swatch" style="background:#0a0a0a"></div>
+          <div class="swatch" style="background:#8b0000"></div>
+          <div class="swatch" style="background:#3d0000"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Sickly green shadows, deep blacks, arterial red. Biological wrongness. The Shining, Midsommar.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: DREAD / WRONGNESS</div>
+      </div>
+      <div class="mood-card">
+        <h4>Romance</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#f59e0b"></div>
+          <div class="swatch" style="background:#f4a261"></div>
+          <div class="swatch" style="background:#e76f51"></div>
+          <div class="swatch" style="background:#ffd6a5"></div>
+          <div class="swatch" style="background:#ffb347"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Golden hour amber, soft corals, warm skin. In the Mood for Love, La La Land's finale.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: YEARNING / WARMTH</div>
+      </div>
+      <div class="mood-card">
+        <h4>Sci-Fi / Future</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#00b4d8"></div>
+          <div class="swatch" style="background:#0077b6"></div>
+          <div class="swatch" style="background:#03045e"></div>
+          <div class="swatch" style="background:#90e0ef"></div>
+          <div class="swatch" style="background:#caf0f8"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Cyan, deep space blue, cool white. Technological detachment. Blade Runner, Ex Machina, Her.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: ALIENATION / AWE</div>
+      </div>
+      <div class="mood-card">
+        <h4>Western / Epic</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#c07c3d"></div>
+          <div class="swatch" style="background:#8b4513"></div>
+          <div class="swatch" style="background:#d4a853"></div>
+          <div class="swatch" style="background:#87ceeb"></div>
+          <div class="swatch" style="background:#e8d5b0"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Burnt sienna, dusty ochre, high blue sky. Land as character. Sergio Leone, There Will Be Blood.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: MYTH / SCALE</div>
+      </div>
+      <div class="mood-card">
+        <h4>Thriller / Paranoia</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#2c3e50"></div>
+          <div class="swatch" style="background:#34495e"></div>
+          <div class="swatch" style="background:#95a5a6"></div>
+          <div class="swatch" style="background:#e8e8e8"></div>
+          <div class="swatch" style="background:#1a1a2e"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Steel blue, desaturated grey, cold white. Fincher's world: Se7en, Zodiac, The Girl with the Dragon Tattoo.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: UNEASE / SURVEILLANCE</div>
+      </div>
+      <div class="mood-card">
+        <h4>War / Documentary</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#4a7c59"></div>
+          <div class="swatch" style="background:#8b7355"></div>
+          <div class="swatch" style="background:#c4a882"></div>
+          <div class="swatch" style="background:#2f3a2f"></div>
+          <div class="swatch" style="background:#6b6b4b"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Military greens, earth tones, desaturated. Saving Private Ryan's Janusz Kamiński bleached approach.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: REALITY / WEIGHT</div>
+      </div>
+      <div class="mood-card">
+        <h4>Nostalgia / Memory</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#d4a853"></div>
+          <div class="swatch" style="background:#c4a882"></div>
+          <div class="swatch" style="background:#f5e6d0"></div>
+          <div class="swatch" style="background:#8b7355"></div>
+          <div class="swatch" style="background:#e8d5b0"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Lifted blacks, faded warm midtones, soft highlights. Super 8 aesthetic. Boyhood, The Tree of Life.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: LONGING / IMPERMANENCE</div>
+      </div>
+      <div class="mood-card">
+        <h4>Contemporary Drama</h4>
+        <div class="palette-row">
+          <div class="swatch" style="background:#2d6a4f"></div>
+          <div class="swatch" style="background:#f77f00"></div>
+          <div class="swatch" style="background:#d62828"></div>
+          <div class="swatch" style="background:#fca311"></div>
+          <div class="swatch" style="background:#003049"></div>
+        </div>
+        <p style="font-size:.78rem;color:var(--dim)">Teal & Orange — the dominant commercial grade. Maximizes skin tone pop against cool environments. Marvel, Michael Bay.</p>
+        <div class="mood-ref">PSYCHOLOGICAL: CONTRAST / ENERGY</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ctab-exposure" class="tab-panel hidden stagger-4">
+    <p style="font-size:.85rem;color:var(--dim);margin-bottom:1rem">ISO, aperture, and shutter speed are linked. Changing one requires compensation in the others. Understanding this triangle is the foundation of camera craft.</p>
+    <div class="two-col">
+      <div class="canvas-box"><canvas id="exposureCanvas" width="500" height="280"></canvas></div>
+      <div>
+        <div class="controls" style="flex-direction:column;align-items:flex-start;gap:1rem">
+          <div style="width:100%">
+            <label>ISO: <span class="info-val" id="isoVal">800</span></label>
+            <input type="range" id="isoSlider" min="100" max="6400" step="100" value="800" oninput="updateExposure()" style="width:100%;max-width:100%">
+          </div>
+          <div style="width:100%">
+            <label>Aperture f/<span class="info-val" id="apVal">2.8</span></label>
+            <input type="range" id="apertureSlider" min="1" max="16" step=".5" value="2.8" oninput="updateExposure()" style="width:100%;max-width:100%">
+          </div>
+          <div style="width:100%">
+            <label>Shutter 1/<span class="info-val" id="shutVal">50</span>s</label>
+            <input type="range" id="shutterSlider" min="10" max="4000" value="50" oninput="updateExposure()" style="width:100%;max-width:100%">
+          </div>
+        </div>
+        <div class="card" style="margin-top:1rem" id="exposureInfo">
+          <span class="card-title">EXPOSURE NOTES</span>
+          <p id="exposureText">Balanced exposure. ISO 800 gives clean image in lower light. f/2.8 provides shallow depth of field. 1/50s follows the 180° rule at 24fps.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ VJ PERFORMANCE -->
+<section id="vj">
+  <span class="section-label hidden">Module 05</span>
+  <h2 class="section-title hidden stagger-1">VJ Performance System</h2>
+  <p class="section-desc hidden stagger-2">Live visual performance — triggering clips, blending layers, syncing to beat. The VJ is the cinematographer of the club.</p>
+
+  <div class="two-col hidden stagger-3">
+    <div>
+      <div class="vj-grid" id="vjGrid">
+        <div class="clip-cell" onclick="triggerClip(0)"><canvas id="vjCell0"></canvas><div class="clip-label">PARTICLES</div></div>
+        <div class="clip-cell" onclick="triggerClip(1)"><canvas id="vjCell1"></canvas><div class="clip-label">TUNNEL</div></div>
+        <div class="clip-cell" onclick="triggerClip(2)"><canvas id="vjCell2"></canvas><div class="clip-label">GRID WARP</div></div>
+        <div class="clip-cell" onclick="triggerClip(3)"><canvas id="vjCell3"></canvas><div class="clip-label">NOISE FIELD</div></div>
+        <div class="clip-cell" onclick="triggerClip(4)"><canvas id="vjCell4"></canvas><div class="clip-label">STROBE</div></div>
+        <div class="clip-cell" onclick="triggerClip(5)"><canvas id="vjCell5"></canvas><div class="clip-label">RIPPLE</div></div>
+        <div class="clip-cell" onclick="triggerClip(6)"><canvas id="vjCell6"></canvas><div class="clip-label">WAVEFORM</div></div>
+        <div class="clip-cell" onclick="triggerClip(7)"><canvas id="vjCell7"></canvas><div class="clip-label">GEOMETRY</div></div>
+        <div class="clip-cell" onclick="triggerClip(8)"><canvas id="vjCell8"></canvas><div class="clip-label">FEEDBACK</div></div>
+        <div class="clip-cell" onclick="triggerClip(9)"><canvas id="vjCell9"></canvas><div class="clip-label">PLASMA</div></div>
+        <div class="clip-cell" onclick="triggerClip(10)"><canvas id="vjCell10"></canvas><div class="clip-label">LINES</div></div>
+        <div class="clip-cell" onclick="triggerClip(11)"><canvas id="vjCell11"></canvas><div class="clip-label">RINGS</div></div>
+        <div class="clip-cell" onclick="triggerClip(12)"><canvas id="vjCell12"></canvas><div class="clip-label">FLICKER</div></div>
+        <div class="clip-cell" onclick="triggerClip(13)"><canvas id="vjCell13"></canvas><div class="clip-label">VORTEX</div></div>
+        <div class="clip-cell" onclick="triggerClip(14)"><canvas id="vjCell14"></canvas><div class="clip-label">GLITCH</div></div>
+        <div class="clip-cell" onclick="triggerClip(15)"><canvas id="vjCell15"></canvas><div class="clip-label">PULSE</div></div>
+      </div>
+      <div class="controls">
+        <label>BPM</label>
+        <input type="range" id="vjBPM" min="60" max="180" value="120" oninput="updateVJBPM()">
+        <span class="info-val" id="vjBPMVal">120</span>
+        <button onclick="tapTempo()" id="tapBtn">TAP TEMPO</button>
+        <button onclick="clearVJ()">CLEAR</button>
+      </div>
+    </div>
+    <div>
+      <div class="canvas-box" style="margin-bottom:1rem"><canvas id="vjOutputCanvas" width="500" height="300"></canvas></div>
+      <div style="margin-bottom:.8rem">
+        <span class="card-title">LAYER BLEND SYSTEM</span>
+        <div class="layer-strip">
+          <span class="layer-name">BASE</span>
+          <input type="range" min="0" max="100" value="100" oninput="updateLayer(0,this.value)" style="flex:1;max-width:120px">
+          <select onchange="updateBlend(0,this.value)" style="flex:1">
+            <option value="source-over">Normal</option>
+            <option value="screen">Screen</option>
+            <option value="multiply">Multiply</option>
+            <option value="overlay">Overlay</option>
+            <option value="lighter">Add</option>
+          </select>
+        </div>
+        <div class="layer-strip">
+          <span class="layer-name">MID</span>
+          <input type="range" min="0" max="100" value="70" oninput="updateLayer(1,this.value)" style="flex:1;max-width:120px">
+          <select onchange="updateBlend(1,this.value)" style="flex:1">
+            <option value="source-over">Normal</option>
+            <option value="screen" selected>Screen</option>
+            <option value="multiply">Multiply</option>
+            <option value="overlay">Overlay</option>
+            <option value="lighter">Add</option>
+          </select>
+        </div>
+        <div class="layer-strip">
+          <span class="layer-name">FX</span>
+          <input type="range" min="0" max="100" value="40" oninput="updateLayer(2,this.value)" style="flex:1;max-width:120px">
+          <select onchange="updateBlend(2,this.value)" style="flex:1">
+            <option value="source-over">Normal</option>
+            <option value="screen">Screen</option>
+            <option value="multiply">Multiply</option>
+            <option value="overlay" selected>Overlay</option>
+            <option value="lighter">Add</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hidden stagger-5" style="margin-top:1.5rem">
+    <span class="card-title">VJ CULTURE — A BRIEF HISTORY</span>
+    <p>VJing emerged from New York's early 1980s club scene where visual artists began projecting films and abstract visuals to match DJ sets at The Loft and Paradise Garage. The form matured through rave culture and the techno explosion of the 1990s. Software like Resolume Arena (2002), VDMX, and Modul8 gave VJs professional toolsets. Today, artists like Ryoji Ikeda and teamLab operate at the intersection of live performance, installation art, and data visualization. AI-driven real-time synthesis is the current frontier — systems that generate visual content live from audio analysis.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ PROJECTION MAPPING -->
+<section id="projection">
+  <span class="section-label hidden">Module 06</span>
+  <h2 class="section-title hidden stagger-1">Projection Mapping</h2>
+  <p class="section-desc hidden stagger-2">The art of treating architecture as a screen. Content is warped to fit the surface — turning buildings, objects, and landscapes into living canvases.</p>
+
+  <div class="two-col hidden stagger-3">
+    <div>
+      <div class="surface-btns">
+        <button onclick="selectSurface('wall')" class="active-btn" id="surfWall">Flat Wall</button>
+        <button onclick="selectSurface('cube')" id="surfCube">Cube</button>
+        <button onclick="selectSurface('building')" id="surfBuilding">Building Facade</button>
+      </div>
+      <div class="canvas-box"><canvas id="projectionCanvas" width="500" height="320"></canvas></div>
+      <div class="controls" style="margin-top:.8rem">
+        <label>Keystone H</label>
+        <input type="range" id="keystoneH" min="-30" max="30" value="0" oninput="updateKeystone()">
+        <label>Keystone V</label>
+        <input type="range" id="keystoneV" min="-30" max="30" value="0" oninput="updateKeystone()">
+        <button onclick="addZone()">+ Add Zone</button>
+        <button onclick="clearZones()">Clear</button>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:1rem">
+        <span class="card-title">PROJECTION MATHEMATICS</span>
+        <div style="display:flex;flex-direction:column;gap:.8rem;margin-top:.5rem">
+          <div>
+            <label>Throw Ratio = Distance ÷ Image Width</label>
+            <div style="margin-top:.4rem">
+              <label>Distance (m)</label>
+              <input type="range" id="throwDist" min="1" max="20" value="8" oninput="calcThrow()" style="max-width:120px">
+              <span class="info-val" id="throwDistVal">8m</span>
+            </div>
+            <div style="margin-top:.3rem">
+              <label>Image Width (m)</label>
+              <input type="range" id="throwWidth" min="1" max="15" value="4" oninput="calcThrow()" style="max-width:120px">
+              <span class="info-val" id="throwWidthVal">4m</span>
+            </div>
+            <div style="margin-top:.5rem;padding:.5rem;background:rgba(245,158,11,.07);border-radius:3px">
+              <span class="info-val">Throw Ratio: <span id="throwRatio">2.0</span> : 1</span>
+            </div>
+          </div>
+          <div>
+            <label>Lumen Requirement (ambient light factor)</label>
+            <div style="margin-top:.4rem">
+              <label>Area (m²)</label>
+              <input type="range" id="lumArea" min="1" max="100" value="16" oninput="calcLumens()" style="max-width:120px">
+              <span class="info-val" id="lumAreaVal">16 m²</span>
+            </div>
+            <div style="margin-top:.3rem;padding:.5rem;background:rgba(245,158,11,.07);border-radius:3px">
+              <span class="info-val">Min Lumens: <span id="lumResult">8,000</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="artist-card">
+          <span class="artist-name">Refik Anadol</span>
+          <span class="artist-role">DATA SCULPTURE</span>
+          <span class="artist-desc">Machine hallucinations of architectural scale. Trains ML models on millions of images, then projects the latent space as flowing data-paintings onto buildings.</span>
+        </div>
+        <div class="artist-card">
+          <span class="artist-name">Moment Factory</span>
+          <span class="artist-role">IMMERSIVE EXPERIENCE</span>
+          <span class="artist-desc">Montreal studio behind Nine Inch Nails tours, Madonna shows, and permanent installations at O'Hare airport. Projection as narrative architecture.</span>
+        </div>
+        <div class="artist-card">
+          <span class="artist-name">1024 Architecture</span>
+          <span class="artist-role">AUDIO-REACTIVE MAPPING</span>
+          <span class="artist-desc">Paris-based collective. Structural projection that responds to live music in real time — geometry of the building becomes part of the performance.</span>
+        </div>
+        <div class="artist-card">
+          <span class="artist-name">Bot & Dolly</span>
+          <span class="artist-role">ROBOTIC PROJECTION</span>
+          <span class="artist-desc">Used robotic camera arms synchronized with projection in Gravity (2013). Demonstrated perfect registration between moving projection surface and camera.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ TRANSITIONS LAB -->
+<section id="transitions">
+  <span class="section-label hidden">Module 07</span>
+  <h2 class="section-title hidden stagger-1">Immersive Transitions Lab</h2>
+  <p class="section-desc hidden stagger-2">Click any canvas to trigger the transition. Each one is a different editorial argument about time, continuity, and meaning.</p>
+
+  <div class="transition-grid hidden stagger-3">
+    <div class="transition-card">
+      <canvas id="tDissolve" width="400" height="220" onclick="runTransition('dissolve',this)"></canvas>
+      <div class="transition-info">
+        <h4>DISSOLVE</h4>
+        <p>Outgoing frame fades as incoming fades in. Signals passage of time, memory, or soft change. Duration communicates emotional weight.</p>
+        <div class="controls" style="margin-top:.5rem">
+          <label>Duration</label>
+          <input type="range" min="5" max="60" value="25" oninput="setTransSpeed('dissolve',this.value)" style="max-width:100px">
+        </div>
+      </div>
+    </div>
+    <div class="transition-card">
+      <canvas id="tWipe" width="400" height="220" onclick="runTransition('wipe',this)"></canvas>
+      <div class="transition-info">
+        <h4>WIPE</h4>
+        <p>A geometric boundary sweeps across the frame. Classic Hollywood. Lucas used wipes in Star Wars to invoke serial film aesthetics.</p>
+        <div class="controls" style="margin-top:.5rem">
+          <label>Direction</label>
+          <select id="wipeDir" style="font-size:.6rem">
+            <option value="right">Left → Right</option>
+            <option value="down">Top → Bottom</option>
+            <option value="diagonal">Diagonal</option>
+            <option value="radial">Radial</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="transition-card">
+      <canvas id="tMatch" width="400" height="220" onclick="runTransition('match',this)"></canvas>
+      <div class="transition-info">
+        <h4>MATCH CUT</h4>
+        <p>Visual geometry bridges two shots. Shape in frame A rhymes with shape in frame B. Kubrick: bone → spacecraft. 4 million years in one frame.</p>
+      </div>
+    </div>
+    <div class="transition-card">
+      <canvas id="tWhip" width="400" height="220" onclick="runTransition('whip',this)"></canvas>
+      <div class="transition-info">
+        <h4>WHIP PAN</h4>
+        <p>Camera whips so fast the image motion-blurs to nothing, arriving in the next scene. Energy. Edgar Wright's signature punctuation mark.</p>
+        <div class="controls" style="margin-top:.5rem">
+          <label>Speed</label>
+          <input type="range" min="1" max="10" value="6" oninput="setTransSpeed('whip',this.value)" style="max-width:100px">
+        </div>
+      </div>
+    </div>
+    <div class="transition-card">
+      <canvas id="tSmash" width="400" height="220" onclick="runTransition('smash',this)"></canvas>
+      <div class="transition-info">
+        <h4>SMASH CUT</h4>
+        <p>Extreme contrast between consecutive shots. Chaos → silence. Terror → comedy. Used at scene endings for shock or comedic punctuation.</p>
+      </div>
+    </div>
+    <div class="transition-card">
+      <canvas id="tMorph" width="400" height="220" onclick="runTransition('morph',this)"></canvas>
+      <div class="transition-info">
+        <h4>MORPH DISSOLVE</h4>
+        <p>Shapes in the outgoing frame organically transform into shapes in the incoming frame. Content-aware transition. Reality dissolves into itself.</p>
+        <div class="controls" style="margin-top:.5rem">
+          <label>Complexity</label>
+          <input type="range" min="1" max="10" value="5" oninput="setTransSpeed('morph',this.value)" style="max-width:100px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hidden stagger-5" style="margin-top:1.5rem">
+    <span class="card-title">WALTER MURCH — THE RULE OF SIX</span>
+    <p>The ideal cut simultaneously satisfies six criteria: (1) Emotion — the feeling the moment is trying to produce. (2) Story — the narrative information being advanced. (3) Rhythm — the feel of the tempo and beat. (4) Eye-trace — the position of visual interest. (5) Two-dimensional plane — the balance of screen. (6) Three-dimensional space — maintenance of spatial orientation. Murch weights emotion at 51% — all other criteria can be sacrificed if the emotional continuity is preserved.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ CHEAT SHEET -->
+<section id="cheat-sheet">
+  <span class="section-label hidden">Module 08</span>
+  <h2 class="section-title hidden stagger-1">Cinematic Knowledge + Cheat Sheet</h2>
+  <p class="section-desc hidden stagger-2">The complete reference — history, software, artists, and technical specifications.</p>
+
+  <h3 class="hidden stagger-2" style="font-size:1.1rem;font-weight:normal;margin-bottom:.5rem;font-family:'Courier New',monospace;letter-spacing:.1em;color:var(--accent)">CINEMATIC HISTORY TIMELINE</h3>
+  <div class="history-scroll hidden stagger-3">
+    <div class="history-track" id="historyTrack">
+      <div class="history-node" onclick="showHistoryDetail(0)"><div class="history-dot"></div><div class="history-year">1895</div><div class="history-desc">Lumière Brothers — first public cinema screening, Paris</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(1)"><div class="history-dot"></div><div class="history-year">1925</div><div class="history-desc">Eisenstein's Battleship Potemkin — montage theory born</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(2)"><div class="history-dot"></div><div class="history-year">1927</div><div class="history-desc">The Jazz Singer — synchronized sound arrives</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(3)"><div class="history-dot"></div><div class="history-year">1941</div><div class="history-desc">Citizen Kane — deep focus & radical narrative structure</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(4)"><div class="history-dot"></div><div class="history-year">1960</div><div class="history-desc">Godard's Breathless — Nouvelle Vague jump cuts</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(5)"><div class="history-dot"></div><div class="history-year">1975</div><div class="history-desc">Jaws — New Hollywood. Murch wins first sound Oscar</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(6)"><div class="history-dot"></div><div class="history-year">1980</div><div class="history-desc">Raging Bull — Schoonmaker's variable-speed boxing edits</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(7)"><div class="history-dot"></div><div class="history-year">1995</div><div class="history-desc">Avid dominates — digital non-linear editing becomes standard</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(8)"><div class="history-dot"></div><div class="history-year">2000</div><div class="history-desc">DV revolution. Dogme 95. Consumer digital democratizes filmmaking</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(9)"><div class="history-dot"></div><div class="history-year">2014</div><div class="history-desc">DaVinci Resolve goes free — professional color grading for all</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(10)"><div class="history-dot"></div><div class="history-year">2020</div><div class="history-desc">AI upscaling. Neural networks enter post-production pipelines</div></div>
+      <div class="history-line"></div>
+      <div class="history-node" onclick="showHistoryDetail(11)"><div class="history-dot"></div><div class="history-year">2024</div><div class="history-desc">Sora, Runway Gen-3 — AI generates cinematic video sequences</div></div>
+    </div>
+  </div>
+  <div id="historyDetail" class="card hidden stagger-4" style="margin-top:.8rem;display:none">
+    <span class="card-title" id="hdTitle">SELECT A NODE</span>
+    <p id="hdText"></p>
+  </div>
+
+  <div class="divider hidden stagger-3"></div>
+
+  <h3 class="hidden stagger-2" style="font-size:1.1rem;font-weight:normal;margin-bottom:.5rem;font-family:'Courier New',monospace;letter-spacing:.1em;color:var(--accent)">SOFTWARE ECOSYSTEM MAP</h3>
+  <div class="canvas-box hidden stagger-3"><canvas id="softwareCanvas" width="1200" height="380"></canvas></div>
+
+  <div class="divider hidden stagger-3"></div>
+
+  <h3 class="hidden stagger-2" style="font-size:1.1rem;font-weight:normal;margin-bottom:1rem;font-family:'Courier New',monospace;letter-spacing:.1em;color:var(--accent)">MASTER CINEMATOGRAPHERS</h3>
+  <div class="grid-3 hidden stagger-3" style="margin-bottom:2rem">
+    <div class="artist-card">
+      <span class="artist-name">Roger Deakins</span>
+      <span class="artist-role">BRITISH · NATURALISTIC MASTERY</span>
+      <span class="artist-desc">Blade Runner 2049, Sicario, No Country for Old Men. Perfect practical light sourcing — every beam is justified. 14 Oscar nominations, 2 wins.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Emmanuel Lubezki</span>
+      <span class="artist-role">MEXICAN · NATURAL LIGHT</span>
+      <span class="artist-desc">Children of Men, Gravity, The Revenant. Three consecutive Oscar wins 2014–16. The master of the long, breathing, handheld take.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Gordon Willis</span>
+      <span class="artist-role">AMERICAN · THE PRINCE OF DARKNESS</span>
+      <span class="artist-desc">The Godfather trilogy. Deliberate underexposure; Brando in deep shadow. Broke every rule about adequate exposure. Redefined what was permissible.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Vittorio Storaro</span>
+      <span class="artist-role">ITALIAN · COLOR AS PHILOSOPHY</span>
+      <span class="artist-desc">Apocalypse Now, The Conformist, Reds. Color as psychological narrative. Studied color theory formally — the most intellectually rigorous colorist in cinema history.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Rodrigo Prieto</span>
+      <span class="artist-role">MEXICAN · EMOTIONAL REALISM</span>
+      <span class="artist-desc">Brokeback Mountain, The Wolf of Wall Street, Barbie. Adapts radically to director's vision. Can do gritty realism and hyper-saturated fantasy with equal conviction.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Rachel Morrison</span>
+      <span class="artist-role">AMERICAN · FIRST FEMALE OSCAR NOM</span>
+      <span class="artist-desc">Mudbound — first woman nominated for cinematography Oscar (2018). Black Panther. Brings documentary truthfulness to large-scale production.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Bradford Young</span>
+      <span class="artist-role">AMERICAN · AFROFUTURIST AESTHETICS</span>
+      <span class="artist-desc">Arrival, Selma, When They See Us. Deep shadow work and selective light sourcing. Studies Rembrandt and African American photographic history as primary references.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Vilmos Zsigmond</span>
+      <span class="artist-role">HUNGARIAN-AMERICAN · TEXTURE POET</span>
+      <span class="artist-desc">Deer Hunter, McCabe & Mrs. Miller, Close Encounters. Pre-fogged film stock to create period texture. Altman's visual collaborator for "natural" images that are profoundly constructed.</span>
+    </div>
+  </div>
+
+  <h3 class="hidden stagger-2" style="font-size:1.1rem;font-weight:normal;margin-bottom:1rem;font-family:'Courier New',monospace;letter-spacing:.1em;color:var(--accent)">VJ & VISUAL ARTISTS</h3>
+  <div class="grid-3 hidden stagger-3" style="margin-bottom:2rem">
+    <div class="artist-card">
+      <span class="artist-name">Ryoji Ikeda</span>
+      <span class="artist-role">JAPANESE · DATA / SOUND / LIGHT</span>
+      <span class="artist-desc">Pure data aesthetics. Converts datasets into overwhelming audio-visual information fields. test pattern, data.tron. The most rigorous intersection of music and visual art.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Refik Anadol</span>
+      <span class="artist-role">TURKISH-AMERICAN · ML HALLUCINATION</span>
+      <span class="artist-desc">Machine Hallucinations — trains neural networks on millions of images, renders the resulting latent space at architectural scale. MOMA's first AI artwork acquisition.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">LIA</span>
+      <span class="artist-role">AUSTRIAN · ALGORITHMIC PROCESS</span>
+      <span class="artist-desc">Pioneer of software-based visual art since 1995. Process-driven aesthetic where the algorithm is the author. One of the earliest artists to treat code as a creative medium.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">teamLab</span>
+      <span class="artist-role">JAPANESE · IMMERSIVE COLLECTIVE</span>
+      <span class="artist-desc">400-person collective creating borderless digital art environments. Teamlab Borderless in Tokyo dissolved the boundary between viewer and artwork. No frames, no screens — only light.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">NONOTAK</span>
+      <span class="artist-role">FRENCH · LIGHT + SOUND SCULPTURE</span>
+      <span class="artist-desc">Takami Nakamoto & Noémie Schipfer. Minimalist light installations responding to music. Shallow Pool, Late — precise spatial relationships between projection and sound.</span>
+    </div>
+    <div class="artist-card">
+      <span class="artist-name">Daito Manabe</span>
+      <span class="artist-role">JAPANESE · TECHNOLOGY AS PERFORMANCE</span>
+      <span class="artist-desc">Rhizomatiks. Drones, robots, and data as performers. Created the visual system for Perfume's live performances. Uses technology's limitations as aesthetic material.</span>
+    </div>
+  </div>
+
+  <div class="divider hidden stagger-3"></div>
+  <h3 class="hidden stagger-2" style="font-size:1.1rem;font-weight:normal;margin-bottom:1rem;font-family:'Courier New',monospace;letter-spacing:.1em;color:var(--accent)">TECHNICAL CHEAT SHEET</h3>
+
+  <div class="grid-2 hidden stagger-3">
+    <div>
+      <table class="cheat-table">
+        <tr><th colspan="2">FRAME RATES</th></tr>
+        <tr><td>24fps</td><td>Cinema standard. "Film look." Motion blur at 1/48s.</td></tr>
+        <tr><td>25fps</td><td>PAL standard (Europe). TV, broadcast, streaming.</td></tr>
+        <tr><td>30fps</td><td>NTSC standard (N. America). Sports, news, TV drama.</td></tr>
+        <tr><td>60fps</td><td>High frame rate. Sport, gaming, hyper-real content.</td></tr>
+        <tr><td>120fps</td><td>Slow motion capable. 120fps → 24fps = 5x slow motion.</td></tr>
+      </table>
+      <table class="cheat-table">
+        <tr><th colspan="2">ASPECT RATIOS</th></tr>
+        <tr><td>1.33:1 (4:3)</td><td>Academy / TV standard. Intimate. Wes Anderson uses for period sections.</td></tr>
+        <tr><td>1.78:1 (16:9)</td><td>HDTV standard. Universal streaming format. YouTube default.</td></tr>
+        <tr><td>1.85:1</td><td>Flat widescreen. Standard theatrical. Slightly wider than 16:9.</td></tr>
+        <tr><td>2.39:1</td><td>Anamorphic / scope. Epic scale. Deakins, Blade Runner 2049.</td></tr>
+        <tr><td>2.76:1</td><td>Ultra Panavision. Ben-Hur, The Hateful Eight. Extreme panoramic.</td></tr>
+      </table>
+    </div>
+    <div>
+      <table class="cheat-table">
+        <tr><th colspan="2">COLOR SPACES</th></tr>
+        <tr><td>sRGB</td><td>Web standard. Covers ~72% of visible color. Monitor default.</td></tr>
+        <tr><td>Rec.709</td><td>HD broadcast standard. Same gamut as sRGB. 8-bit.</td></tr>
+        <tr><td>DCI-P3</td><td>Cinema projector standard. ~26% wider than Rec.709.</td></tr>
+        <tr><td>Rec.2020</td><td>HDR / 4K standard. ~75% of visible color. Future-proof.</td></tr>
+        <tr><td>ACES</td><td>Academy Color Encoding System. Scene-linear interchange format.</td></tr>
+      </table>
+      <table class="cheat-table">
+        <tr><th colspan="2">CODECS</th></tr>
+        <tr><td>H.264</td><td>Web delivery. Excellent compression. 8-bit. Netflix, YouTube.</td></tr>
+        <tr><td>H.265 / HEVC</td><td>4K streaming. 2x efficiency over H.264. Apple ProRes alternative.</td></tr>
+        <tr><td>ProRes 422 HQ</td><td>Editorial master. Apple ecosystem. Large files, lossless quality.</td></tr>
+        <tr><td>DNxHD / DNxHR</td><td>Avid editorial format. Broadcast quality. Cross-platform.</td></tr>
+        <tr><td>BRAW</td><td>Blackmagic RAW. Camera original. Max dynamic range retained.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">WAVGEN — EDITING TIMELINE WORLD</span>
+  App 01 of the Video Universe<br>
+  The Waveform Generation — wavgen.ca<br>
+  <span class="footer-app">Built with Canvas2D · WebAudio API · Zero Dependencies · GitHub Pages Compatible</span>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// WAVGEN EDITING TIMELINE WORLD — JavaScript Engine
+// ══════════════════════════════════════════════════════════════════
+
+// ── UTILITIES ─────────────────────────────────────────────────────
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = 0; }
+  update(target, dt) {
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+  set(v) { this.value = v; }
+}
+
+function drawGrain(ctx, w, h, intensity = 0.04) {
+  const id = ctx.createImageData(w, h);
+  const d = id.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = (Math.random() - 0.5) * intensity * 255;
+    d[i] = d[i+1] = d[i+2] = 128 + n;
+    d[i+3] = Math.random() * 30;
+  }
+  ctx.putImageData(id, 0, 0);
+}
+
+function phosphorFade(ctx, w, h, alpha = 0.08) {
+  ctx.fillStyle = `rgba(5,5,8,${alpha})`;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return [r,g,b];
+}
+
+function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+
+function animateCounter(el, target, suffix = '', duration = 1200) {
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function kelvinToRGB(k) {
+  k /= 100;
+  let r, g, b;
+  if (k <= 66) { r = 255; g = clamp(99.47 * Math.log(k) - 161.12, 0, 255); }
+  else { r = clamp(329.70 * Math.pow(k - 60, -0.133), 0, 255); g = clamp(288.12 * Math.pow(k - 60, -0.0755), 0, 255); }
+  if (k >= 66) b = 255;
+  else if (k <= 19) b = 0;
+  else b = clamp(138.52 * Math.log(k - 10) - 305.04, 0, 255);
+  return [r, g, b];
+}
+
+// ── HERO CANVAS ───────────────────────────────────────────────────
+let heroRAF, heroOffset = 0, heroCtx, heroW, heroH;
+const heroClips = [];
+let heroCutCount = 0, heroDuration = 0;
+
+function initHero() {
+  const canvas = document.getElementById('heroCanvas');
+  heroW = canvas.offsetWidth; heroH = 440;
+  canvas.width = heroW; canvas.height = heroH;
+  heroCtx = canvas.getContext('2d');
+  generateClips();
+  animateHero(0);
+  animateCounter(document.getElementById('stat-cuts'), 247, '');
+  animateCounter(document.getElementById('stat-fps'), 24, 'fps');
+  setTimeout(() => {
+    let s = 0;
+    const el = document.getElementById('stat-dur');
+    const iv = setInterval(() => {
+      s++; const m = String(Math.floor(s/60)).padStart(2,'0'), sec = String(s%60).padStart(2,'0');
+      el.textContent = m + ':' + sec;
+    }, 80);
+    setTimeout(() => { clearInterval(iv); el.textContent = '01:47:32'; }, 3000);
+  }, 400);
+}
+
+function generateClips() {
+  const types = ['cut','dissolve','wipe','match','jump'];
+  const colors = ['#f59e0b','rgba(255,255,255,0.7)','#4338ca','#10b981','#ef4444'];
+  let x = 0;
+  while (x < heroW * 2 + 300) {
+    const w = 20 + Math.random() * 80;
+    const type = Math.floor(Math.random() * types.length);
+    heroClips.push({ x, w, type, color: colors[type], label: types[type] });
+    x += w + 2;
+  }
+}
+
+function drawSprockets(ctx, w, h, offset, trackH) {
+  const sprH = 14, sprW = 8, sprGap = 28;
+  ctx.fillStyle = 'rgba(245,158,11,0.25)';
+  for (let x = ((-offset * 0.5) % sprGap) - sprGap; x < w + sprGap; x += sprGap) {
+    // top row
+    ctx.beginPath();
+    ctx.roundRect(x, trackH - sprH - 2, sprW, sprH, 2);
+    ctx.fill();
+    // bottom row
+    ctx.beginPath();
+    ctx.roundRect(x, trackH + 80 + 2, sprW, sprH, 2);
+    ctx.fill();
+  }
+}
+
+function drawWaveformTrack(ctx, w, h, offset, y, trackH) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, y, w, trackH);
+  ctx.clip();
+  ctx.strokeStyle = '#312e81';
+  ctx.lineWidth = 1.5;
+  ctx.shadowBlur = 8; ctx.shadowColor = '#4338ca';
+  ctx.beginPath();
+  for (let x = 0; x < w; x++) {
+    const wx = x + offset * 0.3;
+    const amp = (Math.sin(wx * 0.08) * 0.5 + Math.sin(wx * 0.03) * 0.3 + Math.sin(wx * 0.15) * 0.2);
+    const yy = y + trackH/2 + amp * trackH * 0.4;
+    if (x === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+  }
+  ctx.stroke();
+  ctx.restore();
+  ctx.shadowBlur = 0;
+}
+
+function drawFilmTimeline(ctx, w, h, offset) {
+  const timelineY = h * 0.45;
+  const clipH = 80;
+  // Film strip background
+  ctx.fillStyle = 'rgba(13,13,20,0.9)';
+  ctx.fillRect(0, timelineY - 20, w, clipH + 40);
+  // Sprocket holes
+  drawSprockets(ctx, w, h, offset, timelineY);
+  // Clips
+  ctx.shadowBlur = 0;
+  heroClips.forEach(clip => {
+    const x = clip.x - offset;
+    if (x > w + 100 || x + clip.w < -100) return;
+    ctx.fillStyle = clip.color;
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(x, timelineY, clip.w - 1, clipH);
+    ctx.globalAlpha = 1;
+    // Label
+    if (clip.w > 30) {
+      ctx.fillStyle = 'rgba(5,5,8,0.8)';
+      ctx.font = '8px Courier New';
+      ctx.fillText(clip.label.toUpperCase(), x + 4, timelineY + 12);
+    }
+  });
+  // Playhead
+  const phX = w * 0.33;
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 2;
+  ctx.shadowBlur = 16; ctx.shadowColor = '#f59e0b';
+  ctx.beginPath();
+  ctx.moveTo(phX, timelineY - 25);
+  ctx.lineTo(phX, timelineY + clipH + 25);
+  ctx.stroke();
+  // Playhead triangle
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath();
+  ctx.moveTo(phX - 6, timelineY - 25);
+  ctx.lineTo(phX + 6, timelineY - 25);
+  ctx.lineTo(phX, timelineY - 12);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function animateHero(ts) {
+  heroOffset += 1.2;
+  if (heroOffset > heroClips[heroClips.length-1].x - heroW + 200) heroOffset = 0;
+  const ctx = heroCtx, w = heroW, h = heroH;
+  // Background
+  ctx.fillStyle = '#050508';
+  ctx.fillRect(0, 0, w, h);
+  // Subtle amber gradient overlay
+  const grad = ctx.createRadialGradient(w*0.5, h*0.4, 0, w*0.5, h*0.4, w*0.6);
+  grad.addColorStop(0, 'rgba(245,158,11,0.04)');
+  grad.addColorStop(1, 'rgba(5,5,8,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+  // Waveform tracks
+  drawWaveformTrack(ctx, w, h, heroOffset, h*0.15, 50);
+  drawWaveformTrack(ctx, w, h, heroOffset, h*0.78, 40);
+  // Film timeline
+  drawFilmTimeline(ctx, w, h, heroOffset);
+  // Scan line effect
+  for (let y = 0; y < h; y += 4) {
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillRect(0, y, w, 2);
+  }
+  // Film grain
+  if (Math.random() > 0.5) drawGrain(ctx, w, h, 0.03);
+  heroRAF = requestAnimationFrame(animateHero);
+}
+
+// ── TABS ──────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('[id^="tab-"]').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-row .tab-btn').forEach(b => b.classList.remove('active-btn'));
+  const panel = document.getElementById('tab-' + id);
+  if (panel) { panel.classList.add('active'); panel.classList.add('visible'); }
+  event.target.classList.add('active-btn');
+}
+
+function switchColorTab(id) {
+  document.querySelectorAll('[id^="ctab-"]').forEach(p => p.classList.remove('active'));
+  const section = document.getElementById('color');
+  section.querySelectorAll('.tab-row .tab-btn').forEach(b => b.classList.remove('active-btn'));
+  const panel = document.getElementById('ctab-' + id);
+  if (panel) { panel.classList.add('active'); panel.classList.add('visible'); }
+  event.target.classList.add('active-btn');
+}
+
+// ── KULESHOV ──────────────────────────────────────────────────────
+let kuleshovIdx = 0, kuleshovAutoInterval = null;
+const kuleshovObjects = [
+  { label: 'FOOD', meaning: 'The face reads as: HUNGER / DESIRE', draw: drawFood },
+  { label: 'CHILD', meaning: 'The face reads as: TENDERNESS / LOVE', draw: drawChild },
+  { label: 'COFFIN', meaning: 'The face reads as: GRIEF / SORROW', draw: drawCoffin },
+  { label: 'GUN', meaning: 'The face reads as: FEAR / THREAT', draw: drawGun }
+];
+
+function drawNeutralFace(ctx, w, h) {
+  ctx.fillStyle = '#0d0d14';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#c4a882';
+  ctx.beginPath(); ctx.ellipse(w/2, h*0.45, w*0.22, h*0.3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#a08060';
+  ctx.beginPath(); ctx.ellipse(w/2, h*0.35, w*0.15, h*0.08, 0, 0, Math.PI);ctx.fill();
+  ctx.fillStyle = '#6b4f3a';
+  ctx.beginPath(); ctx.arc(w*0.42, h*0.42, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(w*0.58, h*0.42, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(w*0.43, h*0.55); ctx.lineTo(w*0.57, h*0.55); ctx.strokeStyle='#6b4f3a'; ctx.lineWidth=2; ctx.stroke();
+}
+
+function drawFood(ctx, w, h) {
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#d4a853';
+  ctx.beginPath(); ctx.ellipse(w/2, h*0.55, w*0.3, h*0.2, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#c23b22';
+  ctx.beginPath(); ctx.arc(w*0.35, h*0.4, 12, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(w*0.55, h*0.38, 10, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(w*0.65, h*0.48, 8, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#2d5a2d';
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath(); ctx.arc(w*(0.3+i*0.1), h*0.3, 5, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+function drawChild(ctx, w, h) {
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#c4a882';
+  ctx.beginPath(); ctx.arc(w/2, h*0.4, h*0.18, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath(); ctx.arc(w/2, h*0.23, h*0.2, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = '#6b4f3a';
+  ctx.beginPath(); ctx.arc(w*0.44, h*0.38, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(w*0.56, h*0.38, 3, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#6b4f3a'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(w/2, h*0.45, 8, 0.1, Math.PI-0.1); ctx.stroke();
+  ctx.fillStyle = '#e8d5b0';
+  ctx.fillRect(w*0.3, h*0.62, w*0.4, h*0.28);
+}
+
+function drawCoffin(ctx, w, h) {
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#3a2010';
+  const cx = w/2, cy = h*0.5;
+  ctx.beginPath();
+  ctx.moveTo(cx-25, cy-50); ctx.lineTo(cx+25, cy-50);
+  ctx.lineTo(cx+30, cy-30); ctx.lineTo(cx+30, cy+50);
+  ctx.lineTo(cx-30, cy+50); ctx.lineTo(cx-30, cy-30); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#6b4020'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#f8f0e0';
+  ctx.beginPath(); ctx.arc(cx, cy-20, 12, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#e0d0c0';
+  ctx.fillRect(cx-15, cy, 30, 40);
+}
+
+function drawGun(ctx, w, h) {
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#3a3a3a';
+  ctx.fillRect(w*0.25, h*0.4, w*0.5, h*0.12);
+  ctx.fillRect(w*0.3, h*0.38, w*0.08, h*0.04);
+  ctx.fillRect(w*0.35, h*0.52, w*0.12, h*0.18);
+  ctx.fillStyle = '#2a2a2a';
+  ctx.fillRect(w*0.25, h*0.41, w*0.04, h*0.1);
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath(); ctx.arc(w*0.27, h*0.46, 4, 0, Math.PI*2); ctx.fill();
+}
+
+function drawCoffin(ctx, w, h) {
+  ctx.fillStyle = '#080808'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#2a1508';
+  const cx=w/2, cy=h*0.5, ww=45, hh=70;
+  ctx.beginPath();
+  ctx.moveTo(cx-ww*0.6, cy-hh/2); ctx.lineTo(cx+ww*0.6, cy-hh/2);
+  ctx.lineTo(cx+ww/2, cy-hh*0.2); ctx.lineTo(cx+ww/2, cy+hh/2);
+  ctx.lineTo(cx-ww/2, cy+hh/2); ctx.lineTo(cx-ww/2, cy-hh*0.2);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#5a3020'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = 'rgba(200,180,160,0.3)';
+  ctx.fillRect(cx-ww*0.3, cy-hh*0.3, ww*0.6, hh*0.6);
+}
+
+function setKuleshovObject(idx) {
+  kuleshovIdx = idx;
+  const obj = kuleshovObjects[idx];
+  const canvas = document.getElementById('kObject');
+  const ctx = canvas.getContext('2d');
+  obj.draw(ctx, canvas.width, canvas.height);
+  document.getElementById('kObjectLabel').textContent = obj.label;
+  const m = document.getElementById('kuleshovMeaning');
+  m.style.opacity = '0';
+  setTimeout(() => { m.textContent = obj.meaning; m.style.opacity = '1'; }, 200);
+}
+
+function toggleKuleshovAuto() {
+  if (kuleshovAutoInterval) { clearInterval(kuleshovAutoInterval); kuleshovAutoInterval = null; return; }
+  kuleshovAutoInterval = setInterval(() => { setKuleshovObject((kuleshovIdx+1) % 4); }, 1800);
+}
+
+function initKuleshov() {
+  const faceA = document.getElementById('kFaceA'), faceB = document.getElementById('kFaceB');
+  if (!faceA) return;
+  drawNeutralFace(faceA.getContext('2d'), faceA.width, faceA.height);
+  drawNeutralFace(faceB.getContext('2d'), faceB.width, faceB.height);
+  setKuleshovObject(0);
+}
+
+// ── EISENSTEIN COLLISION ──────────────────────────────────────────
+let eisRAF, eisT = 0, eisSpeed = 4, eisContrast = 7, eisMode = 'angular';
+
+function updateEisenstein() {
+  eisSpeed = parseInt(document.getElementById('collisionSpeed').value);
+  eisContrast = parseInt(document.getElementById('collisionContrast').value);
+  eisMode = document.getElementById('eisMode').value;
+}
+
+function drawEisensteinFrame(ts) {
+  const canvas = document.getElementById('eisensteinCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  eisT += eisSpeed * 0.015;
+  const blend = (Math.sin(eisT) + 1) / 2;
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, w, h);
+  const hw = w / 2;
+  // Left scene
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, hw-2, h); ctx.clip();
+  if (eisMode === 'angular') {
+    ctx.fillStyle = `rgba(245,158,11,${0.3 + eisContrast*0.06})`;
+    for (let i = 0; i < 8; i++) {
+      ctx.save(); ctx.translate(hw*0.4, h/2);
+      ctx.rotate(eisT*0.5 + i * Math.PI/4);
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(80,0); ctx.lineTo(40,60); ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+  } else if (eisMode === 'dark') {
+    const g = ctx.createRadialGradient(hw*0.4, h/2, 0, hw*0.4, h/2, 120);
+    g.addColorStop(0, `rgba(245,158,11,${eisContrast*0.1})`);
+    g.addColorStop(1, 'rgba(5,5,8,1)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, hw, h);
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = eisContrast*0.3;
+    ctx.shadowBlur = eisContrast*2; ctx.shadowColor = '#f59e0b';
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath(); ctx.arc(hw*0.4, h/2, 20+i*18, eisT, eisT+Math.PI); ctx.stroke();
+    }
+  } else {
+    ctx.strokeStyle = `rgba(245,158,11,${eisContrast*0.08})`;
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 12; i++) {
+      const ang = eisT*0.3 + i * Math.PI / 6;
+      ctx.beginPath();
+      ctx.arc(hw*0.4, h/2, 10 + i*12, ang, ang + Math.PI*1.5); ctx.stroke();
+    }
+  }
+  ctx.restore();
+  // Right scene
+  ctx.save(); ctx.beginPath(); ctx.rect(hw+2, 0, hw-2, h); ctx.clip();
+  if (eisMode === 'angular') {
+    ctx.strokeStyle = `rgba(100,120,220,${0.4 + eisContrast*0.05})`;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = eisContrast; ctx.shadowColor = '#4338ca';
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath();
+      ctx.arc(hw + hw*0.5, h/2, 15+i*22, -eisT*0.7, -eisT*0.7+Math.PI*1.8); ctx.stroke();
+    }
+  } else if (eisMode === 'dark') {
+    ctx.fillStyle = `rgba(220,220,255,${eisContrast*0.09})`;
+    ctx.fillRect(hw, 0, hw, h);
+    for (let i=0; i<4; i++) {
+      ctx.fillStyle = `rgba(255,255,255,${0.1+eisContrast*0.02})`;
+      ctx.fillRect(hw+i*hw*0.25, 0, hw*0.18, h);
+    }
+  } else {
+    ctx.fillStyle = `rgba(80,60,200,${eisContrast*0.05})`;
+    for (let i = 0; i < 20; i++) {
+      const x = hw + (Math.sin(eisT*0.4+i)*0.5+0.5)*hw;
+      const y = (Math.cos(eisT*0.3+i*1.3)*0.5+0.5)*h;
+      ctx.fillRect(x, y, 6+i, 6+i);
+    }
+  }
+  ctx.restore();
+  // Collision center flash
+  const flashA = Math.pow(Math.abs(Math.sin(eisT * eisSpeed * 0.3)), 8) * eisContrast * 0.15;
+  ctx.fillStyle = `rgba(245,158,11,${flashA})`;
+  ctx.fillRect(hw-20, 0, 40, h);
+  ctx.fillStyle = 'rgba(245,158,11,0.4)';
+  ctx.fillRect(hw-1, 0, 2, h);
+  // Labels
+  ctx.fillStyle = 'rgba(245,158,11,0.5)';
+  ctx.font = '9px Courier New';
+  ctx.fillText('THESIS', 12, 16);
+  ctx.fillText('ANTITHESIS', hw+12, 16);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.fillText('SYNTHESIS', hw, h-10);
+  ctx.textAlign = 'left';
+  eisRAF = requestAnimationFrame(drawEisensteinFrame);
+}
+
+// ── RHYTHMIC EDITING ─────────────────────────────────────────────
+let rhythmRAF, rhythmRunning = false, rhythmBPM = 80;
+let rhythmLastBeat = 0, rhythmFlash = 0, rhythmBeatCount = 0;
+
+function updateRhythm() {
+  rhythmBPM = parseInt(document.getElementById('rhythmBPM').value);
+  document.getElementById('rhythmBPMVal').textContent = rhythmBPM + ' BPM';
+}
+
+function toggleRhythm() {
+  rhythmRunning = !rhythmRunning;
+  const btn = event.target;
+  btn.textContent = rhythmRunning ? '⏹ Stop' : '▶ Start';
+  if (rhythmRunning) { rhythmLastBeat = performance.now(); drawRhythm(performance.now()); }
+}
+
+function drawRhythm(ts) {
+  const canvas = document.getElementById('rhythmCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const beatInterval = 60000 / rhythmBPM;
+  if (rhythmRunning && ts - rhythmLastBeat >= beatInterval) {
+    rhythmLastBeat = ts; rhythmFlash = 1; rhythmBeatCount++;
+  }
+  rhythmFlash *= 0.88;
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, w, h);
+  // Beat flash
+  if (rhythmFlash > 0.01) {
+    const flashGrad = ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);
+    flashGrad.addColorStop(0, `rgba(245,158,11,${rhythmFlash*0.6})`);
+    flashGrad.addColorStop(1, 'rgba(5,5,8,0)');
+    ctx.fillStyle = flashGrad; ctx.fillRect(0,0,w,h);
+  }
+  // Timeline with beat markers
+  const beatW = Math.max(30, w / ((rhythmBPM/60)*8));
+  const offset = (ts * rhythmBPM / 60000 * beatW) % beatW;
+  ctx.strokeStyle = 'rgba(245,158,11,0.15)'; ctx.lineWidth = 1;
+  for (let x = -offset; x < w; x += beatW) {
+    ctx.beginPath(); ctx.moveTo(x, 20); ctx.lineTo(x, h-20); ctx.stroke();
+    ctx.fillStyle = 'rgba(245,158,11,0.3)'; ctx.font = '8px Courier New';
+    ctx.fillText('CUT', x+3, 18);
+  }
+  // Playhead
+  ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+  ctx.shadowBlur = 12; ctx.shadowColor = '#f59e0b';
+  ctx.beginPath(); ctx.moveTo(w*0.1, 10); ctx.lineTo(w*0.1, h-10); ctx.stroke();
+  ctx.shadowBlur = 0;
+  // BPM label
+  ctx.fillStyle = rhythmRunning ? '#f59e0b' : 'rgba(245,158,11,0.4)';
+  ctx.font = 'bold 24px Courier New';
+  ctx.textAlign = 'right';
+  ctx.fillText(rhythmBPM + ' BPM', w-16, h*0.6);
+  ctx.font = '11px Courier New';
+  ctx.fillStyle = 'rgba(245,158,11,0.5)';
+  ctx.fillText('BEATS: ' + rhythmBeatCount, w-16, h*0.75);
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(245,158,11,0.4)';
+  ctx.font = '9px Courier New';
+  const genre = rhythmBPM < 40 ? 'MEDITATIVE' : rhythmBPM < 70 ? 'ARTHOUSE' : rhythmBPM < 120 ? 'DRAMA' : rhythmBPM < 160 ? 'THRILLER' : 'ACTION';
+  ctx.fillText('GENRE REGISTER: ' + genre, 16, h-12);
+  rhythmRAF = requestAnimationFrame(drawRhythm);
+}
+
+// ── CONTINUITY DEMOS ──────────────────────────────────────────────
+let jumpT = 0, matchT = 0, contRAF;
+
+function playContinuityDemo(type) {
+  if (type === 'jump') { jumpT = 0; }
+  else { matchT = 0; }
+  if (!contRAF) contRAF = requestAnimationFrame(animateContinuity);
+}
+
+function animateContinuity(ts) {
+  jumpT += 0.03; matchT += 0.025;
+  const jc = document.getElementById('jumpCutCanvas');
+  const mc = document.getElementById('matchCutCanvas');
+  if (jc) { const ctx=jc.getContext('2d'); drawJumpCutDemo(ctx, jc.width, jc.height, jumpT); }
+  if (mc) { const ctx=mc.getContext('2d'); drawMatchCutDemo(ctx, mc.width, mc.height, matchT); }
+  contRAF = requestAnimationFrame(animateContinuity);
+}
+
+function drawJumpCutDemo(ctx, w, h, t) {
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  const frame = Math.floor(t * 3) % 4;
+  const colors = ['#1a1a2e','#2d1b30','#1a2d1a','#2d2010'];
+  ctx.fillStyle = colors[frame]; ctx.fillRect(0,0,w,h);
+  // Figure offset per frame
+  const offsets = [0, 45, -20, 80];
+  const ox = w/2 + offsets[frame];
+  ctx.fillStyle = '#c4a882';
+  ctx.beginPath(); ctx.arc(ox, h*0.3, 25, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#8b6f5a';
+  ctx.fillRect(ox-18, h*0.45, 36, 60);
+  // JUMP CUT label
+  if (frame !== Math.floor((t-0.01)*3)%4) {
+    ctx.fillStyle = 'rgba(239,68,68,0.8)';
+    ctx.font = 'bold 11px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText('JUMP CUT', w/2, 18);
+    ctx.textAlign = 'left';
+  }
+  ctx.fillStyle = 'rgba(100,116,139,0.5)';
+  ctx.font = '9px Courier New';
+  ctx.fillText(`FRAME ${(frame%2)+1}`, 8, h-8);
+}
+
+function drawMatchCutDemo(ctx, w, h, t) {
+  const phase = (t % (Math.PI*2));
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  if (phase < Math.PI) {
+    // Scene A: circle
+    ctx.fillStyle = '#1a1030';
+    ctx.fillRect(0,0,w,h);
+    const r = 30 + Math.sin(phase)*5;
+    ctx.fillStyle = '#f59e0b';
+    ctx.shadowBlur = 20; ctx.shadowColor = '#f59e0b';
+    ctx.beginPath(); ctx.arc(w*0.4, h*0.5, r, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(245,158,11,0.5)'; ctx.font = '9px Courier New';
+    ctx.fillText('BONE — 4000 BC', 8, h-8);
+  } else {
+    // Scene B: match geometry → spacecraft
+    ctx.fillStyle = '#050510'; ctx.fillRect(0,0,w,h);
+    // Stars
+    for (let i=0; i<30; i++) {
+      const sx = ((i*137+50)%w), sy = ((i*83+30)%h);
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.fillRect(sx, sy, 1, 1);
+    }
+    const progress = (phase - Math.PI) / Math.PI;
+    ctx.fillStyle = `rgba(200,200,220,${0.6+progress*0.3})`;
+    ctx.fillRect(w*0.3, h*0.4, w*0.4, h*0.12);
+    ctx.fillRect(w*0.45, h*0.3, w*0.1, h*0.3);
+    ctx.fillStyle = 'rgba(245,158,11,0.5)'; ctx.font = '9px Courier New';
+    ctx.fillText('SPACECRAFT — 4001 AD', 8, h-8);
+  }
+  ctx.fillStyle = 'rgba(16,185,129,0.6)'; ctx.font = '9px Courier New';
+  ctx.textAlign = 'right'; ctx.fillText('MATCH CUT ✓', w-8, 16); ctx.textAlign = 'left';
+}
+
+// ── CUT DEMO ──────────────────────────────────────────────────────
+let selectedCut = 'hard', cutT = 0, cutLoop = false, cutRAF;
+const cutInfo = {
+  hard: { title:'HARD CUT', text:'The immediate transition — no duration, no intermediate state. Used correctly: invisible. Used wrongly: jarring. The foundation of classical editing.', ref:'Virtually every film. Perfected by Anne V. Coates in Lawrence of Arabia.' },
+  match: { title:'MATCH CUT', text:'Visual correspondence bridges two different shots. Geometry rhymes. The viewer synthesizes the meaning created by the comparison — neither image alone contains the idea.', ref:'Kubrick: bone→spacecraft (2001). Lean: match→sun (Lawrence of Arabia). Eisenstein: factory→cattle.' },
+  jump: { title:'JUMP CUT', text:'Same subject, different time. Deliberate violation of continuity. Godard used jump cuts as a political gesture — refusing Hollywood smoothness, acknowledging the constructedness of cinema.', ref:'Breathless (Godard, 1960). Made famous but not invented by Godard — he shortened shots by removing middles.' },
+  lcut: { title:'L-CUT (AUDIO OVERLAP)', text:'Audio from the current shot continues after the visual has cut to the next. The world keeps sounding. Sonic immersion is preserved across the visual transition.', ref:'Used constantly in professional editing. Walter Murch made L-cuts into a philosophical practice in Apocalypse Now.' },
+  jcut: { title:'J-CUT (AUDIO ADVANCE)', text:'Audio from the next shot arrives before the visual cut. The viewer is pulled forward aurally before the image catches up. Creates anticipation and momentum.', ref:'Standard in documentary and dialogue scenes. The sound "calls" the viewer toward the next image.' },
+  smash: { title:'SMASH CUT', text:'Maximum contrast between consecutive shots. Chaos → silence. Action → stillness. Terror → comedy. The violence of the edit IS the content. Used as shock punctuation or comedic beat.', ref:'Edgar Wright (Hot Fuzz, Shaun of the Dead). Darren Aronofsky (Requiem for a Dream end sequence).' }
+};
+
+function selectCut(type) {
+  selectedCut = type;
+  document.querySelectorAll('.cut-btn').forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const info = cutInfo[type];
+  document.getElementById('cutInfoTitle').textContent = info.title;
+  document.getElementById('cutInfoText').textContent = info.text;
+  document.getElementById('cutFilmRef').textContent = '↳ ' + info.ref;
+  cutT = 0;
+  if (!cutRAF) cutRAF = requestAnimationFrame(animateCutDemo);
+}
+
+function triggerCutDemo() { cutT = 0; if (!cutRAF) cutRAF = requestAnimationFrame(animateCutDemo); }
+function toggleCutLoop() { cutLoop = !cutLoop; event.target.textContent = cutLoop ? '⏹ Stop Loop' : '⟳ Loop'; }
+
+function animateCutDemo(ts) {
+  cutT += 0.025;
+  const canvas = document.getElementById('cutDemoCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  drawCutTypeDemo(ctx, w, h, selectedCut, cutT);
+  if (cutLoop || cutT < Math.PI*2) cutRAF = requestAnimationFrame(animateCutDemo);
+  else cutRAF = null;
+}
+
+function drawCutTypeDemo(ctx, w, h, type, t) {
+  const phase = (t % (Math.PI*2)) / (Math.PI*2);
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  if (type === 'hard') {
+    const scene = phase < 0.5 ? 0 : 1;
+    const cols = ['#1a1030','#103018'];
+    ctx.fillStyle = cols[scene]; ctx.fillRect(0,0,w,h);
+    if (scene===0) { ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.arc(w*0.4,h*0.5,40,0,Math.PI*2); ctx.fill(); }
+    else { ctx.fillStyle='#4338ca'; ctx.fillRect(w*0.3,h*0.3,w*0.4,h*0.4); }
+    if (phase > 0.48 && phase < 0.52) { ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillRect(0,0,w,h); }
+    ctx.fillStyle = 'rgba(245,158,11,0.5)'; ctx.font='10px Courier New';
+    ctx.fillText(scene===0?'SCENE A':'SCENE B', 12, h-12);
+  } else if (type === 'dissolve' || type === 'match') {
+    const alpha = Math.sin(phase * Math.PI);
+    ctx.fillStyle = '#1a1030'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(w*0.35,h*0.5,45,0,Math.PI*2); ctx.fill();
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#0d1a10'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = '#10b981'; ctx.fillRect(w*0.3,h*0.3,w*0.4,h*0.4);
+    ctx.restore();
+    ctx.fillStyle='rgba(245,158,11,0.4)'; ctx.font='10px Courier New';
+    ctx.fillText(type.toUpperCase(), 12, h-12);
+  } else if (type === 'jump') {
+    const frame = Math.floor(phase*6)%3;
+    const xPos = [w*0.35, w*0.6, w*0.25];
+    ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#c4a882';
+    ctx.beginPath(); ctx.arc(xPos[frame], h*0.4, 30, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='#8b6f5a'; ctx.fillRect(xPos[frame]-22, h*0.55, 44, 60);
+    ctx.fillStyle='rgba(239,68,68,0.7)'; ctx.font='bold 10px Courier New';
+    ctx.textAlign='center'; ctx.fillText('JUMP', w/2, 18); ctx.textAlign='left';
+  } else if (type === 'lcut') {
+    const scene = phase < 0.5 ? 0 : 1;
+    const audioAlpha = scene === 0 ? 1 : 0.5 + 0.5*Math.sin(t*8);
+    ctx.fillStyle = scene===0?'#1a1030':'#10183a'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='rgba(67,56,202,'+audioAlpha+')';
+    for(let x=0;x<w;x+=3) {
+      const y = h*0.8 + Math.sin(x*0.1+t*5)*20;
+      ctx.fillRect(x,y,2,4);
+    }
+    ctx.fillStyle='rgba(245,158,11,0.6)'; ctx.font='10px Courier New';
+    ctx.fillText(scene===0?'SCENE A (audio continues...)':'SCENE B (audio from A still playing)', 12, h-12);
+  } else if (type === 'jcut') {
+    const scene = phase < 0.5 ? 0 : 1;
+    const audioAlpha = phase > 0.35 ? 1 : 0;
+    ctx.fillStyle = scene===0?'#1a1020':'#0d1a10'; ctx.fillRect(0,0,w,h);
+    if (audioAlpha > 0) {
+      ctx.fillStyle=`rgba(16,185,129,${audioAlpha})`;
+      for(let x=0;x<w;x+=3) {
+        const y = h*0.2 + Math.sin(x*0.12+t*6)*15;
+        ctx.fillRect(x,y,2,3);
+      }
+    }
+    ctx.fillStyle='rgba(245,158,11,0.6)'; ctx.font='10px Courier New';
+    ctx.fillText(scene===0?'SCENE A (B audio arrives early)':'SCENE B (audio led the cut)', 12, h-12);
+  } else if (type === 'smash') {
+    if (phase < 0.45) {
+      ctx.fillStyle='#0d0d14'; ctx.fillRect(0,0,w,h);
+      ctx.fillStyle='rgba(239,68,68,0.8)';
+      for(let i=0;i<20;i++) {
+        ctx.fillRect(Math.random()*w, Math.random()*h, 5+Math.random()*30, 3+Math.random()*20);
+      }
+    } else if (phase < 0.55) {
+      ctx.fillStyle='white'; ctx.fillRect(0,0,w,h);
+    } else {
+      ctx.fillStyle='#050508'; ctx.fillRect(0,0,w,h);
+    }
+    ctx.fillStyle='rgba(245,158,11,0.7)'; ctx.font='bold 12px Courier New';
+    ctx.textAlign='center'; ctx.fillText(phase<0.45?'CHAOS':'SILENCE', w/2, h/2); ctx.textAlign='left';
+  }
+}
+
+// ── PACING CALCULATOR ────────────────────────────────────────────
+function updatePacing() {
+  const runtime = parseInt(document.getElementById('pacingRuntime').value);
+  const cpm = parseInt(document.getElementById('pacingCPM').value);
+  document.getElementById('pacingRuntimeVal').textContent = runtime + ' min';
+  document.getElementById('pacingCPMVal').textContent = cpm + ' CPM';
+  drawPacingTimeline(runtime, cpm);
+}
+
+function drawPacingTimeline(runtime, cpm) {
+  const canvas = document.getElementById('pacingCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  const totalCuts = runtime * cpm;
+  const spacing = w / totalCuts;
+  ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 1;
+  ctx.shadowBlur = spacing > 6 ? 4 : 0; ctx.shadowColor = '#f59e0b';
+  for (let i = 0; i < totalCuts && i < 1000; i++) {
+    const x = i * spacing;
+    ctx.globalAlpha = 0.7;
+    ctx.beginPath(); ctx.moveTo(x, 10); ctx.lineTo(x, h-10); ctx.stroke();
+  }
+  ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(245,158,11,0.5)'; ctx.font = '9px Courier New';
+  ctx.fillText(`${totalCuts} total cuts · ${spacing.toFixed(1)}px spacing`, 8, h-4);
+}
+
+// ── COLOR GRADING ────────────────────────────────────────────────
+let gradeState = { lift:0, gamma:0, gain:0, preset:'neutral' };
+const gradePresets = {
+  'neutral': { lift:0, gamma:0, gain:0, title:'NEUTRAL / CORRECTED', text:'Full tonal range preserved. Correct white balance. The baseline from which all creative grades depart.' },
+  'teal-orange': { lift:-10, gamma:5, gain:8, title:'TEAL & ORANGE', text:'Shadow pushed teal; skin tones shifted orange. Dominant commercial look since 2005. Maximizes skin pop against cool environments.' },
+  'day-for-night': { lift:-30, gamma:-15, gain:-5, title:'DAY FOR NIGHT', text:'Heavy underexposure with blue cast. Simulates night without shooting at night. Used extensively in classic Hollywood when night filming was impractical.' },
+  'bleach-bypass': { lift:5, gamma:-20, gain:-10, title:'BLEACH BYPASS', text:'Silver retention: desaturated, high contrast. Saving Private Ryan, Seven. The silver from the bleach bath is retained, removing color and boosting contrast.' },
+  'faded-americana': { lift:20, gamma:5, gain:-5, title:'FADED AMERICANA', text:'Lifted blacks (no true black), warm midtones, slightly rolled-off highlights. Super 8 nostalgia. Used in Boyhood, Ladybird — memory rendered in light.' },
+  'noir': { lift:-15, gamma:0, gain:10, title:'NOIR (B&W HIGH CONTRAST)', text:'High contrast monochrome. Shadows as architecture. Gordon Willis called "The Prince of Darkness" for his willingness to lose faces in shadow. The Godfather.' }
+};
+
+function applyPreset(name) {
+  const p = gradePresets[name]; if (!p) return;
+  gradeState = { lift:p.lift, gamma:p.gamma, gain:p.gain, preset:name };
+  document.getElementById('gradeLift').value = p.lift;
+  document.getElementById('gradeGamma').value = p.gamma;
+  document.getElementById('gradeGain').value = p.gain;
+  document.getElementById('gradeInfoTitle').textContent = p.title;
+  document.getElementById('gradeInfoText').textContent = p.text;
+  drawGradedScene();
+}
+
+function updateGrade() {
+  gradeState.lift = parseInt(document.getElementById('gradeLift').value);
+  gradeState.gamma = parseInt(document.getElementById('gradeGamma').value);
+  gradeState.gain = parseInt(document.getElementById('gradeGain').value);
+  drawGradedScene();
+}
+
+function drawGradedScene() {
+  const canvas = document.getElementById('lutSceneCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  const { lift, gamma, gain, preset } = gradeState;
+  // Draw base procedural scene
+  ctx.fillStyle = '#050814'; ctx.fillRect(0,0,w,h);
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0,0,0,h*0.55);
+  skyGrad.addColorStop(0,'#0a0f1a'); skyGrad.addColorStop(1,'#1a2a40');
+  ctx.fillStyle = skyGrad; ctx.fillRect(0,0,w,h*0.55);
+  // Ground
+  const groundGrad = ctx.createLinearGradient(0,h*0.55,0,h);
+  groundGrad.addColorStop(0,'#1a1008'); groundGrad.addColorStop(1,'#0a0803');
+  ctx.fillStyle = groundGrad; ctx.fillRect(0,h*0.55,w,h*0.45);
+  // Sun
+  ctx.shadowBlur = 30; ctx.shadowColor = '#f59e0b';
+  ctx.fillStyle = '#ffd700';
+  ctx.beginPath(); ctx.arc(w*0.7, h*0.3, 28, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+  // Buildings silhouette
+  ctx.fillStyle = '#080810';
+  const buildings = [[0.05,0.3,0.12,0.5],[0.18,0.2,0.1,0.6],[0.3,0.35,0.14,0.45],[0.55,0.25,0.08,0.55],[0.75,0.3,0.18,0.45],[0.92,0.15,0.1,0.65]];
+  buildings.forEach(([x,y,bw,bh]) => { ctx.fillRect(w*x,h*y,w*bw,h*bh); });
+  // Foreground figure
+  ctx.fillStyle = '#0d0d1a';
+  ctx.fillRect(w*0.42, h*0.5, 16, 40);
+  ctx.beginPath(); ctx.arc(w*0.425, h*0.48, 10, 0, Math.PI*2); ctx.fill();
+  // Apply color grade as overlay
+  if (preset === 'noir') {
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(0,0,w,h);
+    const imgData = ctx.getImageData(0,0,w,h);
+    const d = imgData.data;
+    for (let i=0; i<d.length; i+=4) {
+      const lum = 0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+      const adj = clamp(lum + gain*1.5, 0, 255);
+      d[i]=d[i+1]=d[i+2]=adj;
+    }
+    ctx.putImageData(imgData,0,0);
+  } else {
+    // Lift overlay
+    if (lift !== 0) {
+      ctx.fillStyle = `rgba(${lift>0?255:0},${lift>0?245:0},${lift>0?0:50},${Math.abs(lift)*0.006})`;
+      ctx.fillRect(0,0,w,h);
+    }
+    // Teal-orange
+    if (preset === 'teal-orange') {
+      ctx.fillStyle = 'rgba(0,100,120,0.18)'; ctx.fillRect(0,0,w,h*0.55);
+      ctx.fillStyle = 'rgba(255,140,0,0.12)'; ctx.fillRect(0,h*0.55,w,h*0.45);
+    }
+    // Day for night
+    if (preset === 'day-for-night') {
+      ctx.fillStyle = 'rgba(0,30,80,0.55)'; ctx.fillRect(0,0,w,h);
+    }
+    // Bleach bypass: desaturate + contrast
+    if (preset === 'bleach-bypass') {
+      ctx.fillStyle = 'rgba(128,128,128,0.35)'; ctx.fillRect(0,0,w,h);
+    }
+    // Faded americana: lifted blacks
+    if (preset === 'faded-americana') {
+      ctx.fillStyle = 'rgba(140,100,60,0.2)'; ctx.fillRect(0,0,w,h);
+      ctx.fillStyle = 'rgba(50,30,20,0.3)';
+      const img2 = ctx.createLinearGradient(0,h,0,h*0.6);
+      img2.addColorStop(0,'rgba(50,30,10,0.2)'); img2.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle = img2; ctx.fillRect(0,0,w,h);
+    }
+  }
+  // Grain overlay
+  drawGrain(ctx,w,h,0.025);
+}
+
+// ── COLOR TEMPERATURE ────────────────────────────────────────────
+function drawColorTempBar() {
+  const canvas = document.getElementById('colorTempCanvas'); if(!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  const grad = ctx.createLinearGradient(0,0,w,0);
+  const steps = [1000,2000,3200,4000,5600,7000,10000];
+  steps.forEach((k,i) => {
+    const [r,g,b] = kelvinToRGB(k);
+    grad.addColorStop(i/(steps.length-1), `rgb(${r},${g},${b})`);
+  });
+  ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+  // Labels
+  const labels = [{k:2000,label:'2000K\nCandle'},{k:3200,label:'3200K\nTungsten'},{k:5600,label:'5600K\nDaylight'},{k:7000,label:'7000K\nShade'}];
+  ctx.font = '9px Courier New'; ctx.textAlign = 'center';
+  labels.forEach(({k,label}) => {
+    const x = ((k-1000)/(9000))*w;
+    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+    ctx.fillText(label.split('\n')[0], x, 14);
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillText(label.split('\n')[1], x, 26);
+  });
+  ctx.textAlign = 'left';
+}
+
+function updateColorTemp() {
+  const k = parseInt(document.getElementById('kelvinSlider').value);
+  const labels = {1000:'Candlelight',2500:'Sunrise/Sunset',3200:'Tungsten Studio',4000:'Fluorescent',5600:'Daylight',7000:'Open Shade',10000:'Blue Sky'};
+  let label = 'Custom';
+  Object.entries(labels).forEach(([kk,ll]) => { if (Math.abs(k-parseInt(kk)) < 500) label = ll; });
+  document.getElementById('kelvinVal').textContent = k + 'K — ' + label;
+  // Update indicator
+  drawColorTempBar();
+  const canvas = document.getElementById('colorTempCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  const x = ((k-1000)/9000)*w;
+  ctx.fillStyle = 'white';
+  ctx.fillRect(x-1, 0, 2, h);
+  // Draw temp scene
+  drawTempScene(k);
+}
+
+function drawTempScene(k) {
+  const canvas = document.getElementById('tempSceneCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  const [r,g,b] = kelvinToRGB(k);
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  const light = ctx.createRadialGradient(w/2,h*0.2,0,w/2,h*0.2,w*0.5);
+  light.addColorStop(0,`rgba(${r},${g},${b},0.8)`);
+  light.addColorStop(0.5,`rgba(${Math.round(r*0.4)},${Math.round(g*0.4)},${Math.round(b*0.4)},0.4)`);
+  light.addColorStop(1,'rgba(5,5,8,0)');
+  ctx.fillStyle = light; ctx.fillRect(0,0,w,h);
+  // Simple room
+  ctx.fillStyle = `rgba(${Math.round(r*0.3)},${Math.round(g*0.25)},${Math.round(b*0.2)},0.6)`;
+  ctx.fillRect(w*0.1,h*0.4,w*0.8,h*0.55);
+  ctx.font='11px Courier New'; ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.textAlign='center';
+  ctx.fillText(`${k}K — Color Temperature`, w/2, h-12);
+  ctx.textAlign='left';
+  drawGrain(ctx,w,h,0.02);
+}
+
+// ── EXPOSURE TRIANGLE ────────────────────────────────────────────
+function updateExposure() {
+  const iso = parseInt(document.getElementById('isoSlider').value);
+  const ap = parseFloat(document.getElementById('apertureSlider').value);
+  const shut = parseInt(document.getElementById('shutterSlider').value);
+  document.getElementById('isoVal').textContent = iso;
+  document.getElementById('apVal').textContent = ap.toFixed(1);
+  document.getElementById('shutVal').textContent = shut;
+  drawExposureTriangle(iso, ap, shut);
+  const notes = [];
+  if (iso > 3200) notes.push('High ISO: expect digital noise/grain');
+  if (iso <= 400) notes.push('Low ISO: clean, detailed image');
+  if (ap < 2) notes.push('Wide aperture: very shallow depth of field');
+  if (ap > 11) notes.push('Narrow aperture: deep focus across frame');
+  if (shut < 1/(fps*2-5)) notes.push('Slow shutter: motion blur effect');
+  if (shut > 1000) notes.push('Fast shutter: crisp frozen motion');
+  const fps = 24;
+  const ideal = fps * 2;
+  if (shut === ideal || shut === ideal-1 || shut === ideal+1) notes.push('180° rule: shutter at 1/48s — ideal for 24fps cinema');
+  document.getElementById('exposureText').textContent = notes.length ? notes.join('. ') + '.' : 'Balanced exposure settings.';
+}
+
+function drawExposureTriangle(iso, ap, shut) {
+  const canvas = document.getElementById('exposureCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  const cx = w/2, cy = h/2 + 10;
+  const r = Math.min(w,h)*0.35;
+  // Triangle vertices
+  const verts = [
+    [cx, cy - r],
+    [cx + r*0.866, cy + r*0.5],
+    [cx - r*0.866, cy + r*0.5]
+  ];
+  ctx.strokeStyle = 'rgba(245,158,11,0.4)'; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(...verts[0]); ctx.lineTo(...verts[1]); ctx.lineTo(...verts[2]); ctx.closePath();
+  ctx.stroke();
+  // Filled based on values
+  const isoN = Math.log2(iso/100)/Math.log2(64);
+  const apN = 1 - (ap-1)/15;
+  const shutN = Math.log(shut/10)/Math.log(400);
+  const vals = [clamp(isoN,0,1),clamp(apN,0,1),clamp(shutN,0,1)];
+  const fillVerts = verts.map((v,i) => [cx + (v[0]-cx)*vals[i], cy + (v[1]-cy)*vals[i]]);
+  const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+  grad.addColorStop(0,'rgba(245,158,11,0.5)'); grad.addColorStop(1,'rgba(245,158,11,0.1)');
+  ctx.beginPath();
+  ctx.moveTo(...fillVerts[0]); ctx.lineTo(...fillVerts[1]); ctx.lineTo(...fillVerts[2]); ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+  ctx.shadowBlur = 10; ctx.shadowColor = '#f59e0b'; ctx.stroke(); ctx.shadowBlur = 0;
+  // Labels
+  ctx.fillStyle = '#f59e0b'; ctx.font = 'bold 11px Courier New'; ctx.textAlign = 'center';
+  ctx.fillText('ISO ' + iso, verts[0][0], verts[0][1] - 14);
+  ctx.textAlign = 'left';
+  ctx.fillText('f/' + ap.toFixed(1), verts[1][0] + 8, verts[1][1] + 5);
+  ctx.textAlign = 'right';
+  ctx.fillText('1/' + shut, verts[2][0] - 8, verts[2][1] + 5);
+  ctx.textAlign = 'left';
+  // Side effects labels
+  ctx.fillStyle = 'rgba(100,116,139,0.7)'; ctx.font = '9px Courier New';
+  ctx.fillText('NOISE ↑', verts[0][0]-60, verts[0][1]);
+  ctx.fillText('DEPTH ↑', verts[1][0]+10, verts[1][1]-16);
+  ctx.fillText('BLUR ↑', verts[2][0]-80, verts[2][1]-16);
+}
+
+// ── VJ SYSTEM ────────────────────────────────────────────────────
+const VJ_CELLS = 16;
+let vjCtxs = [], vjOutputCtx, vjOutputCanvas;
+let vjActiveClips = new Set(), vjBPM = 120, vjT = 0, vjRAF;
+let vjLayers = [{op:1,blend:'source-over'},{op:0.7,blend:'screen'},{op:0.4,blend:'overlay'}];
+let tapTimes = [], lastTapTime = 0;
+
+const clipNames = ['PARTICLES','TUNNEL','GRID WARP','NOISE FIELD','STROBE','RIPPLE','WAVEFORM','GEOMETRY','FEEDBACK','PLASMA','LINES','RINGS','FLICKER','VORTEX','GLITCH','PULSE'];
+const clipColors = ['#f59e0b','#4338ca','#10b981','#ef4444','#ffffff','#6366f1','#f472b6','#34d399','#f59e0b','#818cf8','#38bdf8','#fb923c','#a78bfa','#4ade80','#f43f5e','#facc15'];
+
+function initVJCells() {
+  vjOutputCanvas = document.getElementById('vjOutputCanvas');
+  if (vjOutputCanvas) vjOutputCtx = vjOutputCanvas.getContext('2d');
+  for (let i = 0; i < VJ_CELLS; i++) {
+    const c = document.getElementById('vjCell'+i);
+    if (c) {
+      c.width = 80; c.height = 80;
+      vjCtxs[i] = c.getContext('2d');
+    }
+  }
+  vjRAF = requestAnimationFrame(animateVJ);
+}
+
+function triggerClip(idx) {
+  if (vjActiveClips.has(idx)) vjActiveClips.delete(idx);
+  else vjActiveClips.add(idx);
+  const cell = document.getElementById('vjCell'+idx);
+  if (cell) cell.classList.toggle('firing', vjActiveClips.has(idx));
+}
+
+function clearVJ() { vjActiveClips.clear(); document.querySelectorAll('.clip-cell').forEach(c=>c.classList.remove('firing')); }
+
+function updateVJBPM() {
+  vjBPM = parseInt(document.getElementById('vjBPM').value);
+  document.getElementById('vjBPMVal').textContent = vjBPM;
+}
+
+function tapTempo() {
+  const now = performance.now();
+  tapTimes.push(now);
+  if (tapTimes.length > 8) tapTimes.shift();
+  if (tapTimes.length > 1) {
+    const diffs = tapTimes.slice(1).map((t,i)=>t-tapTimes[i]);
+    const avg = diffs.reduce((a,b)=>a+b,0)/diffs.length;
+    vjBPM = Math.round(60000/avg);
+    vjBPM = clamp(vjBPM,40,200);
+    document.getElementById('vjBPM').value = vjBPM;
+    document.getElementById('vjBPMVal').textContent = vjBPM;
+  }
+}
+
+function updateLayer(idx, val) { vjLayers[idx].op = val/100; }
+function updateBlend(idx, val) { vjLayers[idx].blend = val; }
+
+function drawClipVisual(ctx, w, h, clipIdx, t) {
+  const col = clipColors[clipIdx % clipColors.length];
+  const [r,g,b] = hexToRgb(col.startsWith('#')?col:'#f59e0b');
+  phosphorFade(ctx,w,h,0.15);
+  ctx.shadowBlur = 8; ctx.shadowColor = col;
+  switch(clipIdx % 8) {
+    case 0: // particles
+      for(let i=0;i<6;i++){
+        const px=w/2+Math.cos(t*0.7+i*1.1)*w*0.35*Math.sin(t*0.3+i);
+        const py=h/2+Math.sin(t*0.5+i*1.3)*h*0.35;
+        ctx.fillStyle=`rgba(${r},${g},${b},0.8)`;
+        ctx.beginPath();ctx.arc(px,py,2+Math.sin(t+i)*1.5,0,Math.PI*2);ctx.fill();
+      } break;
+    case 1: // tunnel
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.6)`;ctx.lineWidth=1;
+      for(let i=1;i<8;i++){const s=(i/8+t*0.1)%1;ctx.beginPath();ctx.rect(w*s*0.45,h*s*0.45,w*(1-s*0.9),h*(1-s*0.9));ctx.stroke();} break;
+    case 2: // grid
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.4)`;ctx.lineWidth=0.5;
+      for(let i=0;i<5;i++){for(let j=0;j<5;j++){const dx=Math.sin(t+i+j)*6,dy=Math.cos(t*1.3+j)*6;
+      ctx.strokeRect(i*w/4+dx,j*h/4+dy,w/4,h/4);}} break;
+    case 3: // noise
+      const nid=ctx.getImageData(0,0,w,h);const nd=nid.data;
+      for(let i=0;i<nd.length;i+=4){const v=(Math.sin(i*0.01+t)*0.5+0.5)*180;nd[i]=Math.round(v*r/255);nd[i+1]=Math.round(v*g/255);nd[i+2]=Math.round(v*b/255);nd[i+3]=120;}
+      ctx.putImageData(nid,0,0); break;
+    case 4: // strobe
+      const on=Math.sin(t*(vjBPM/10))>0;ctx.fillStyle=on?col:'#050508';ctx.fillRect(0,0,w,h); break;
+    case 5: // ripple
+      for(let i=0;i<6;i++){const rr=((t*30+i*20)%80);ctx.strokeStyle=`rgba(${r},${g},${b},${1-rr/80})`;ctx.lineWidth=1;ctx.beginPath();ctx.arc(w/2,h/2,rr,0,Math.PI*2);ctx.stroke();} break;
+    case 6: // waveform
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.8)`;ctx.lineWidth=1.5;ctx.beginPath();
+      for(let x=0;x<w;x++){const y=h/2+Math.sin(x*0.2+t*2)*h*0.3+Math.sin(x*0.05+t)*h*0.1;
+      if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke(); break;
+    case 7: // geometry
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.6)`;ctx.lineWidth=1;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(t*0.5);
+      for(let i=0;i<6;i++){ctx.rotate(Math.PI/3);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(25,0);ctx.stroke();}ctx.restore(); break;
+  }
+  ctx.shadowBlur = 0;
+}
+
+function animateVJ(ts) {
+  vjT = ts * 0.001;
+  for(let i=0;i<VJ_CELLS;i++){
+    const ctx=vjCtxs[i]; if(!ctx) continue;
+    const c=document.getElementById('vjCell'+i);
+    const w=c?c.width:80,h=c?c.height:80;
+    if(vjActiveClips.has(i)) drawClipVisual(ctx,w,h,i,vjT);
+    else { phosphorFade(ctx,w,h,0.05); ctx.fillStyle=`rgba(${hexToRgb(clipColors[i%16]).join(',')},0.12)`;ctx.fillRect(0,0,w,h); }
+  }
+  // VJ output composite
+  if(vjOutputCtx){
+    const w=vjOutputCanvas.width, h=vjOutputCanvas.height;
+    phosphorFade(vjOutputCtx,w,h,0.1);
+    if(vjActiveClips.size>0){
+      const active=[...vjActiveClips];
+      active.forEach((idx,li)=>{
+        const layer=vjLayers[Math.min(li,2)];
+        vjOutputCtx.save();
+        vjOutputCtx.globalAlpha=layer.op;
+        vjOutputCtx.globalCompositeOperation=layer.blend;
+        const col=clipColors[idx%clipColors.length];
+        const [r,g,b]=hexToRgb(col.startsWith('#')?col:'#f59e0b');
+        vjOutputCtx.shadowBlur=20;vjOutputCtx.shadowColor=col;
+        // Draw enlarged version of clip
+        drawClipVisualLarge(vjOutputCtx,w,h,idx,vjT);
+        vjOutputCtx.restore();
+      });
+    }
+    // BPM pulse indicator
+    const beat = Math.pow(Math.abs(Math.sin(vjT*Math.PI*vjBPM/60)),8);
+    vjOutputCtx.strokeStyle=`rgba(245,158,11,${beat*0.8})`;
+    vjOutputCtx.lineWidth=2;vjOutputCtx.strokeRect(2,2,w-4,h-4);
+  }
+  vjRAF = requestAnimationFrame(animateVJ);
+}
+
+function drawClipVisualLarge(ctx, w, h, idx, t) {
+  const col=clipColors[idx%clipColors.length];
+  const [r,g,b]=hexToRgb(col.startsWith('#')?col:'#f59e0b');
+  switch(idx%8) {
+    case 0:
+      for(let i=0;i<30;i++){const px=w/2+Math.cos(t*0.6+i*0.8)*w*0.4*(0.5+0.5*Math.sin(t*0.2+i*0.3));
+      const py=h/2+Math.sin(t*0.45+i*1.1)*h*0.4;
+      ctx.fillStyle=`rgba(${r},${g},${b},${0.3+Math.random()*0.5})`;
+      ctx.beginPath();ctx.arc(px,py,1.5+Math.random()*4,0,Math.PI*2);ctx.fill();} break;
+    case 1:
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.5)`;ctx.lineWidth=1.5;
+      for(let i=1;i<16;i++){const s=(i/16+t*0.08)%1;ctx.beginPath();ctx.rect(w*s*0.48,h*s*0.48,w*(1-s*0.96),h*(1-s*0.96));ctx.stroke();} break;
+    default:
+      ctx.fillStyle=`rgba(${r},${g},${b},0.15)`;ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle=`rgba(${r},${g},${b},0.5)`;ctx.lineWidth=1.5;
+      for(let i=0;i<8;i++){const ang=t*0.4+i*Math.PI/4;ctx.beginPath();
+      ctx.arc(w/2,h/2,40+i*15,ang,ang+0.8);ctx.stroke();}
+  }
+}
+
+// ── PROJECTION MAPPING ───────────────────────────────────────────
+let projSurface = 'wall', projZones = [], projCtx, projCanvas;
+let projKeystoneH = 0, projKeystoneV = 0;
+
+function selectSurface(type) {
+  projSurface = type;
+  ['wall','cube','building'].forEach(s => {
+    const btn = document.getElementById('surf'+s.charAt(0).toUpperCase()+s.slice(1));
+    if(btn) btn.classList.toggle('active-btn', s===type);
+  });
+  projZones = [];
+  drawProjectionSurface();
+}
+
+function updateKeystone() {
+  projKeystoneH = parseInt(document.getElementById('keystoneH').value);
+  projKeystoneV = parseInt(document.getElementById('keystoneV').value);
+  drawProjectionSurface();
+}
+
+function addZone() {
+  projZones.push({ x: 0.2+Math.random()*0.5, y: 0.2+Math.random()*0.4, w: 0.15+Math.random()*0.2, h: 0.1+Math.random()*0.15, type: Math.floor(Math.random()*4), color: clipColors[Math.floor(Math.random()*16)] });
+  drawProjectionSurface();
+}
+
+function clearZones() { projZones = []; drawProjectionSurface(); }
+
+function drawProjectionSurface() {
+  const canvas = document.getElementById('projectionCanvas'); if(!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#050508'; ctx.fillRect(0,0,w,h);
+  const kH = projKeystoneH, kV = projKeystoneV;
+  if (projSurface === 'wall') {
+    // Flat wall with keystone
+    const tl=[w*0.08+kH, h*0.08+kV], tr=[w*0.92-kH, h*0.08+kV];
+    const bl=[w*0.08-kH, h*0.92-kV], br=[w*0.92+kH, h*0.92-kV];
+    ctx.beginPath(); ctx.moveTo(...tl);ctx.lineTo(...tr);ctx.lineTo(...br);ctx.lineTo(...bl);ctx.closePath();
+    ctx.fillStyle='#1a1a2e'; ctx.fill();
+    ctx.strokeStyle='rgba(245,158,11,0.4)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+    // Grid lines
+    ctx.strokeStyle='rgba(245,158,11,0.1)'; ctx.lineWidth=0.5;
+    for(let i=1;i<8;i++){const x=tl[0]+(tr[0]-tl[0])*i/8;ctx.beginPath();ctx.moveTo(x+(bl[0]-tl[0])*0,tl[1]);ctx.lineTo(bl[0]+(br[0]-bl[0])*i/8,bl[1]);ctx.stroke();}
+    for(let i=1;i<6;i++){const t2=i/6;ctx.beginPath();ctx.moveTo(tl[0]+(bl[0]-tl[0])*t2,tl[1]+(bl[1]-tl[1])*t2);ctx.lineTo(tr[0]+(br[0]-tr[0])*t2,tr[1]+(br[1]-tr[1])*t2);ctx.stroke();}
+    // Zones
+    projZones.forEach(z=>{
+      const zx=tl[0]+(tr[0]-tl[0])*z.x, zy=tl[1]+(bl[1]-tl[1])*z.y;
+      const zw=(tr[0]-tl[0])*z.w, zh=(bl[1]-tl[1])*z.h;
+      const col = z.color;
+      const [r,g,b]=hexToRgb(col.startsWith('#')?col:'#f59e0b');
+      ctx.fillStyle=`rgba(${r},${g},${b},0.35)`;ctx.fillRect(zx,zy,zw,zh);
+      ctx.strokeStyle=col;ctx.lineWidth=1;ctx.strokeRect(zx,zy,zw,zh);
+    });
+  } else if (projSurface === 'cube') {
+    const cx=w/2+kH*0.5, cy=h/2+kV*0.3;
+    const s=100;
+    // Front face
+    ctx.beginPath();ctx.rect(cx-s,cy-s,s*2,s*2);ctx.fillStyle='#1a1a2e';ctx.fill();ctx.strokeStyle='rgba(245,158,11,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+    // Top face (parallelogram)
+    ctx.beginPath();ctx.moveTo(cx-s,cy-s);ctx.lineTo(cx-s+60,cy-s-40);ctx.lineTo(cx+s+60,cy-s-40);ctx.lineTo(cx+s,cy-s);ctx.closePath();
+    ctx.fillStyle='#13132a';ctx.fill();ctx.strokeStyle='rgba(245,158,11,0.5)';ctx.stroke();
+    // Right face
+    ctx.beginPath();ctx.moveTo(cx+s,cy-s);ctx.lineTo(cx+s+60,cy-s-40);ctx.lineTo(cx+s+60,cy+s-40);ctx.lineTo(cx+s,cy+s);ctx.closePath();
+    ctx.fillStyle='#0d0d1e';ctx.fill();ctx.strokeStyle='rgba(245,158,11,0.5)';ctx.stroke();
+    projZones.forEach(z=>{
+      const [r,g,b]=hexToRgb(z.color.startsWith('#')?z.color:'#f59e0b');
+      ctx.fillStyle=`rgba(${r},${g},${b},0.3)`;
+      ctx.fillRect(cx-s+z.x*s*2,cy-s+z.y*s*2,z.w*s*2,z.h*s*2);
+    });
+  } else { // building
+    ctx.fillStyle='#0a0a18'; ctx.fillRect(0,0,w,h);
+    // Building shape
+    const bx=w*0.15, bw=w*0.7;
+    const floors = [[0,0,1,0.25],[0.1,0.25,0.8,0.15],[0,0.4,1,0.2],[0.15,0.6,0.7,0.15],[0.05,0.75,0.9,0.25]];
+    floors.forEach(([fx,fy,fw,fh],fi)=>{
+      const rx=bx+fx*bw+kH*0.5, ry=h*0.05+fy*h*0.9+kV*0.3, rw=fw*bw, rh=fh*h*0.9;
+      ctx.fillStyle=`rgba(20,20,40,${0.7+fi*0.06})`;ctx.fillRect(rx,ry,rw,rh);
+      ctx.strokeStyle='rgba(245,158,11,0.3)';ctx.lineWidth=0.5;ctx.strokeRect(rx,ry,rw,rh);
+      // Windows
+      for(let wi=0;wi<Math.floor(fw*8);wi++){
+        ctx.fillStyle=`rgba(245,200,100,${Math.random()>0.3?0.4:0.05})`;
+        ctx.fillRect(rx+wi*(rw/(fw*8))+3,ry+8,rw/(fw*8)-6,rh-16);
+      }
+    });
+    projZones.forEach(z=>{
+      const [r,g,b]=hexToRgb(z.color.startsWith('#')?z.color:'#f59e0b');
+      ctx.fillStyle=`rgba(${r},${g},${b},0.4)`;
+      ctx.fillRect(bx+z.x*bw,h*0.05+z.y*h*0.9,z.w*bw,z.h*h*0.9);
+    });
+  }
+  // Projector beam
+  ctx.fillStyle='rgba(245,245,200,0.04)';
+  ctx.beginPath();ctx.moveTo(w*0.5,h*1.1);ctx.lineTo(w*0.25,h*0.05);ctx.lineTo(w*0.75,h*0.05);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(245,158,11,0.5)';ctx.font='10px Courier New';
+  ctx.textAlign='center';ctx.fillText('SURFACE: '+projSurface.toUpperCase()+' | KEYSTONE H:'+projKeystoneH+'° V:'+projKeystoneV+'°',w/2,h-10);
+  ctx.textAlign='left';
+}
+
+function calcThrow() {
+  const d=parseInt(document.getElementById('throwDist').value);
+  const iw=parseInt(document.getElementById('throwWidth').value);
+  document.getElementById('throwDistVal').textContent=d+'m';
+  document.getElementById('throwWidthVal').textContent=iw+'m';
+  document.getElementById('throwRatio').textContent=(d/iw).toFixed(2);
+}
+
+function calcLumens() {
+  const a=parseInt(document.getElementById('lumArea').value);
+  document.getElementById('lumAreaVal').textContent=a+' m²';
+  document.getElementById('lumResult').textContent=(a*500).toLocaleString();
+}
+
+// ── TRANSITIONS LAB ──────────────────────────────────────────────
+const transState = { dissolve:{speed:25,t:0,running:false}, wipe:{speed:20,t:0,running:false}, match:{speed:20,t:0,running:false}, whip:{speed:6,t:0,running:false}, smash:{speed:15,t:0,running:false}, morph:{speed:5,t:0,running:false} };
+let transRAF;
+
+function setTransSpeed(type, val) { transState[type].speed = parseInt(val); }
+
+function runTransition(type, canvas) {
+  const s = transState[type];
+  s.t = 0; s.running = true;
+  if (!transRAF) transRAF = requestAnimationFrame(animateTransitions);
+}
+
+function animateTransitions(ts) {
+  let anyRunning = false;
+  Object.entries(transState).forEach(([type, s]) => {
+    if (!s.running) return;
+    anyRunning = true;
+    s.t += s.speed * 0.01;
+    const canvas = document.getElementById('t'+capitalize(type)); if (!canvas) return;
+    const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+    const phase = Math.min(1, s.t / Math.PI);
+    switch(type) {
+      case 'dissolve': drawTDissolve(ctx,w,h,phase); break;
+      case 'wipe': drawTWipe(ctx,w,h,phase); break;
+      case 'match': drawTMatch(ctx,w,h,phase); break;
+      case 'whip': drawTWhip(ctx,w,h,phase); break;
+      case 'smash': drawTSmash(ctx,w,h,phase); break;
+      case 'morph': drawTMorph(ctx,w,h,phase); break;
+    }
+    if (s.t > Math.PI) { s.running = false; }
+  });
+  transRAF = anyRunning ? requestAnimationFrame(animateTransitions) : null;
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+function drawScene1(ctx,w,h,alpha=1) {
+  ctx.save(); ctx.globalAlpha=alpha;
+  ctx.fillStyle='#1a1030'; ctx.fillRect(0,0,w,h);
+  const g=ctx.createRadialGradient(w*0.35,h*0.4,0,w*0.35,h*0.4,80);
+  g.addColorStop(0,'#f59e0b');g.addColorStop(1,'rgba(245,158,11,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='#c4a882';ctx.beginPath();ctx.arc(w*0.35,h*0.4,20,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(245,158,11,0.4)';ctx.font='9px Courier New';ctx.fillText('SCENE A',6,h-8);
+  ctx.restore();
+}
+
+function drawScene2(ctx,w,h,alpha=1) {
+  ctx.save(); ctx.globalAlpha=alpha;
+  ctx.fillStyle='#0d1a10'; ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='#10b981';ctx.lineWidth=1.5;
+  for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(w*0.65,h*0.45,15+i*18,0,Math.PI*2);ctx.stroke();}
+  ctx.fillStyle='rgba(16,185,129,0.4)';ctx.font='9px Courier New';ctx.fillText('SCENE B',6,h-8);
+  ctx.restore();
+}
+
+function drawTDissolve(ctx,w,h,phase) {
+  const alpha = Math.sin(phase*Math.PI);
+  drawScene1(ctx,w,h,1-alpha); drawScene2(ctx,w,h,alpha);
+}
+
+function drawTWipe(ctx,w,h,phase) {
+  const dir = document.getElementById('wipeDir')?.value || 'right';
+  drawScene1(ctx,w,h);
+  ctx.save();
+  let clip;
+  if(dir==='right'){ctx.beginPath();ctx.rect(phase*w,0,w,h);ctx.clip();}
+  else if(dir==='down'){ctx.beginPath();ctx.rect(0,phase*h,w,h);ctx.clip();}
+  else if(dir==='diagonal'){ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(phase*w*2,0);ctx.lineTo(0,phase*h*2);ctx.closePath();ctx.clip();}
+  else{ctx.beginPath();ctx.arc(w/2,h/2,phase*Math.sqrt(w*w+h*h)*0.6,0,Math.PI*2);ctx.clip();}
+  drawScene2(ctx,w,h);
+  ctx.restore();
+  ctx.strokeStyle='rgba(245,158,11,0.5)';ctx.lineWidth=1.5;
+  if(dir==='right'){ctx.beginPath();ctx.moveTo(phase*w,0);ctx.lineTo(phase*w,h);ctx.stroke();}
+}
+
+function drawTMatch(ctx,w,h,phase) {
+  ctx.fillStyle='#050508';ctx.fillRect(0,0,w,h);
+  const r = 25 + Math.sin(phase*Math.PI)*5;
+  if(phase<0.5){
+    ctx.fillStyle='#1a1030';ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#f59e0b';ctx.shadowBlur=20;ctx.shadowColor='#f59e0b';
+    ctx.beginPath();ctx.arc(w*0.35,h*0.5,r,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;ctx.fillStyle='rgba(245,158,11,0.5)';ctx.font='9px Courier New';ctx.fillText('BONE — 4000 BC',6,h-8);
+  } else {
+    ctx.fillStyle='#050510';ctx.fillRect(0,0,w,h);
+    for(let i=0;i<40;i++){ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fillRect(Math.random()*w,Math.random()*h,1,1);}
+    ctx.fillStyle='rgba(200,200,220,0.7)';ctx.fillRect(w*0.3,h*0.45,w*0.4,h*0.1);ctx.fillRect(w*0.44,h*0.3,w*0.12,h*0.35);
+    ctx.fillStyle='rgba(16,185,129,0.5)';ctx.font='9px Courier New';ctx.fillText('SPACECRAFT — 4001 AD',6,h-8);
+  }
+}
+
+function drawTWhip(ctx,w,h,phase) {
+  const blur = Math.sin(phase*Math.PI);
+  if(phase<0.5){
+    drawScene1(ctx,w,h);
+    const stripes = Math.floor(blur*20);
+    ctx.fillStyle=`rgba(5,5,8,${blur*0.9})`;ctx.fillRect(0,0,w,h);
+    for(let i=0;i<stripes;i++){ctx.fillStyle=`rgba(245,158,11,${0.05})`;ctx.fillRect(i*(w/stripes),0,2,h);}
+  } else {
+    const recover = (phase-0.5)*2;
+    ctx.fillStyle=`rgba(5,5,8,${1-recover})`;ctx.fillRect(0,0,w,h);
+    drawScene2(ctx,w,h,recover);
+  }
+}
+
+function drawTSmash(ctx,w,h,phase) {
+  if(phase<0.45){
+    drawScene1(ctx,w,h);
+    const chaos = phase/0.45;
+    for(let i=0;i<Math.floor(chaos*20);i++){
+      ctx.fillStyle=`rgba(239,68,68,${0.3+Math.random()*0.4})`;
+      ctx.fillRect(Math.random()*w,Math.random()*h,3+Math.random()*25,2+Math.random()*15);
+    }
+  } else if(phase<0.55){
+    ctx.fillStyle='white';ctx.fillRect(0,0,w,h);
+  } else {
+    drawScene2(ctx,w,h);
+    ctx.fillStyle='rgba(5,5,8,0.4)';ctx.font='bold 14px Courier New';ctx.textAlign='center';ctx.fillText('SMASH!',w/2,h/2);ctx.textAlign='left';
+  }
+}
+
+function drawTMorph(ctx,w,h,phase) {
+  const ease=phase<0.5?2*phase*phase:(1-Math.pow(-2*phase+2,2)/2);
+  ctx.fillStyle='#0d0d14';ctx.fillRect(0,0,w,h);
+  // Morphing circles → rectangles
+  ctx.fillStyle=`rgba(245,158,11,${0.6-ease*0.3})`;
+  if(ease<0.5){
+    const radius=40*(1-ease*2);
+    ctx.beginPath();ctx.arc(w*0.35,h*0.45,40,0,Math.PI*2);ctx.fill();
+  } else {
+    ctx.fillRect(w*0.1,h*0.25,w*0.35*(ease-0.5)*2,h*0.4);
+  }
+  ctx.fillStyle=`rgba(16,185,129,${ease*0.6})`;
+  const size=40*ease;
+  ctx.fillRect(w*0.55,h*0.4-size/2,size*1.5,size);
+  ctx.fillStyle='rgba(245,158,11,0.4)';ctx.font='9px Courier New';ctx.fillText(`MORPH: ${Math.round(phase*100)}%`,6,h-8);
+}
+
+// ── HISTORY TIMELINE ─────────────────────────────────────────────
+const historyDetails = [
+  {title:'1895 — THE LUMIÈRE BROTHERS',text:'Louis and Auguste Lumière screen Arrival of a Train at La Ciotat and Workers Leaving the Lumière Factory in Paris. The first public cinema screening. Legend says audiences fled from the approaching train — probably apocryphal, but the myth captures something true about cinema\'s first encounters.'},
+  {title:'1925 — EISENSTEIN & MONTAGE THEORY',text:'Battleship Potemkin premieres in Moscow. The Odessa Steps sequence — 7 minutes of cutting — defines montage theory as a formal discipline. Eisenstein identifies five montage types: metric, rhythmic, tonal, overtonal, intellectual.'},
+  {title:'1927 — THE JAZZ SINGER',text:'Al Jolson says "Wait a minute, wait a minute. You ain\'t heard nothin\' yet." Synchronized sound arrives. The silent era ends. Editors suddenly have to cut sound as well as picture — the art form doubles in complexity overnight.'},
+  {title:'1941 — CITIZEN KANE',text:'Orson Welles and DP Gregg Toland introduce deep focus, low angles, ceilings in frame, and non-linear narrative structure. Editor Robert Wise (later director of West Side Story) assembles the flashback structure that defines modern narrative editing.'},
+  {title:'1960 — NOUVELLE VAGUE',text:'Godard\'s Breathless uses jump cuts as aesthetic principle. Agnès Varda, Truffaut, and Chabrol reject classical continuity. The French New Wave legitimizes experimental editing and makes the editor visible — the cut is acknowledged as construction, not illusion.'},
+  {title:'1975 — NEW HOLLYWOOD',text:'Jaws (Spielberg/Verna Fields, editor) launches blockbuster cinema. Walter Murch wins the first Oscar for Sound Design. Murch publishes "In the Blink of an Eye" — the most important book on editing ever written.'},
+  {title:'1980 — RAGING BULL',text:'Thelma Schoonmaker and Martin Scorsese create the boxing sequences — variable frame rates, slow motion, still photographs, and regular speed all mixed within a single fight. The editing system IS the psychology of the fighter.'},
+  {title:'1995 — DIGITAL NON-LINEAR',text:'Avid Media Composer dominates professional editing. Film print editing (the Moviola, the flatbed) becomes obsolete. Digital NLE allows infinite revision, complex layering, and real-time preview. The physical craft of editing film with scissors ends.'},
+  {title:'2000 — DV REVOLUTION',text:'The Dogme 95 collective — von Trier, Vinterberg — imposes handycam aesthetics. Consumer DV cameras democratize filmmaking. Indie cinema explodes. Digital distribution begins to challenge theatrical release.'},
+  {title:'2014 — DAVINCI RESOLVE',text:'Blackmagic Design releases DaVinci Resolve as a free download. Professional color grading and editing tools available to anyone with a computer. The distinction between "professional" and "amateur" post-production dissolves.'},
+  {title:'2020 — AI IN POST-PRODUCTION',text:'Neural networks enter the post-production pipeline. AI upscaling allows old footage to be remastered to 4K. Speech-to-text enables automatic subtitle generation. AI face replacement enables seamless deepfakes. The definition of "captured" footage becomes uncertain.'},
+  {title:'2024 — AI VIDEO GENERATION',text:'OpenAI\'s Sora generates cinematic video sequences from text prompts. Runway Gen-3, Kling, and others produce photorealistic short clips. The question of what "editing" means shifts: are we cutting between captured moments or choosing from generated possibilities?'}
+];
+
+function showHistoryDetail(idx) {
+  const d = historyDetails[idx];
+  const panel = document.getElementById('historyDetail');
+  document.getElementById('hdTitle').textContent = d.title;
+  document.getElementById('hdText').textContent = d.text;
+  panel.style.display = 'block';
+  panel.classList.add('visible');
+}
+
+// ── SOFTWARE ECOSYSTEM MAP ───────────────────────────────────────
+let softHover = -1, softRAF;
+const softNodes = [
+  {x:0.5,y:0.15,label:'DaVinci Resolve',color:'#f59e0b',desc:'Color + Edit + VFX'},
+  {x:0.15,y:0.35,label:'After Effects',color:'#4338ca',desc:'Motion Graphics'},
+  {x:0.85,y:0.35,label:'Premiere Pro',color:'#4338ca',desc:'Timeline Editing'},
+  {x:0.08,y:0.7,label:'Photoshop',color:'#818cf8',desc:'Stills / Textures'},
+  {x:0.3,y:0.65,label:'Final Cut Pro',color:'#10b981',desc:'Mac Editing'},
+  {x:0.5,y:0.75,label:'Resolume',color:'#ef4444',desc:'VJ Performance'},
+  {x:0.7,y:0.65,label:'TouchDesigner',color:'#f472b6',desc:'Real-time Systems'},
+  {x:0.92,y:0.7,label:'Nuke',color:'#38bdf8',desc:'VFX / Compositing'},
+  {x:0.5,y:0.45,label:'Media Encoder',color:'#fb923c',desc:'Export / Transcode'},
+  {x:0.25,y:0.2,label:'Audition',color:'#a78bfa',desc:'Audio Post'},
+  {x:0.75,y:0.2,label:'Pro Tools',color:'#a78bfa',desc:'Professional Audio'},
+  {x:0.5,y:0.92,label:'Runway / Sora',color:'#4ade80',desc:'AI Video Generation'}
+];
+const softEdges = [[0,1],[0,2],[0,4],[0,8],[1,3],[1,5],[1,6],[2,7],[2,8],[4,5],[6,7],[9,1],[10,2],[11,5],[11,6],[0,9],[0,10]];
+
+function animateSoftwareMap(ts) {
+  const canvas = document.getElementById('softwareCanvas'); if (!canvas) return;
+  const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height;
+  ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+  const t = ts * 0.001;
+  // Edges
+  softEdges.forEach(([a,b]) => {
+    const na=softNodes[a], nb=softNodes[b];
+    const pulse = 0.3 + 0.15*Math.sin(t*1.5+a*0.5);
+    ctx.strokeStyle=`rgba(245,158,11,${pulse})`;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(na.x*w,na.y*h);ctx.lineTo(nb.x*w,nb.y*h);ctx.stroke();
+  });
+  // Nodes
+  softNodes.forEach((n,i) => {
+    const px=n.x*w, py=n.y*h;
+    const isHover = i === softHover;
+    const pulse = 1 + 0.15*Math.sin(t*2+i*0.8);
+    const r = isHover ? 16 : 10;
+    const [rr,gg,bb]=hexToRgb(n.color.startsWith('#')?n.color:'#f59e0b');
+    ctx.shadowBlur = isHover ? 24 : 10; ctx.shadowColor = n.color;
+    ctx.fillStyle = n.color;
+    ctx.beginPath(); ctx.arc(px,py,r*pulse,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#0d0d14';
+    ctx.beginPath(); ctx.arc(px,py,r*pulse*0.55,0,Math.PI*2); ctx.fill();
+    // Labels
+    const labelY = py > h*0.6 ? py - r*pulse - 14 : py + r*pulse + 14;
+    ctx.fillStyle = isHover ? '#f59e0b' : 'rgba(226,232,240,0.7)';
+    ctx.font = isHover ? 'bold 11px Courier New' : '10px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText(n.label, px, labelY);
+    if (isHover) { ctx.fillStyle='rgba(245,158,11,0.5)'; ctx.font='9px Courier New'; ctx.fillText(n.desc, px, labelY+13); }
+  });
+  ctx.textAlign = 'left';
+  softRAF = requestAnimationFrame(animateSoftwareMap);
+}
+
+function initSoftwareMap() {
+  const canvas = document.getElementById('softwareCanvas'); if(!canvas) return;
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(canvas.width/r.width), my=(e.clientY-r.top)*(canvas.height/r.height);
+    softHover = softNodes.findIndex(n => Math.hypot(n.x*canvas.width-mx, n.y*canvas.height-my) < 20);
+  });
+  canvas.addEventListener('mouseleave', () => { softHover = -1; });
+  softRAF = requestAnimationFrame(animateSoftwareMap);
+}
+
+// ── INTERSECTION OBSERVER ────────────────────────────────────────
+function initIntersectionObserver() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.hidden').forEach(el => obs.observe(el));
+  // Nav active state
+  const sections = document.querySelectorAll('section[id], #timeline-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const id = e.target.id || 'timeline-section';
+        const active = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => navObs.observe(s));
+}
+
+// ── MAIN INIT ─────────────────────────────────────────────────────
+function init() {
+  initHero();
+  initKuleshov();
+  requestAnimationFrame(drawEisensteinFrame);
+  requestAnimationFrame(drawRhythm);
+  requestAnimationFrame(animateContinuity);
+  requestAnimationFrame(animateCutDemo);
+  drawPacingTimeline(10, 12);
+  drawGradedScene();
+  drawColorTempBar();
+  drawTempScene(5600);
+  updateExposure();
+  initVJCells();
+  drawProjectionSurface();
+  initSoftwareMap();
+  initIntersectionObserver();
+  // Init transition canvases with idle state
+  ['Dissolve','Wipe','Match','Whip','Smash','Morph'].forEach(n => {
+    const c = document.getElementById('t'+n); if (!c) return;
+    const ctx = c.getContext('2d'); const w = c.width, h = c.height;
+    ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'rgba(245,158,11,0.3)'; ctx.font = '11px Courier New';
+    ctx.textAlign = 'center'; ctx.fillText('▶ CLICK TO TRIGGER', w/2, h/2);
+    ctx.textAlign = 'left';
+  });
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>

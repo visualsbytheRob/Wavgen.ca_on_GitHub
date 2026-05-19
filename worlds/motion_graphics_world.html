@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive video world exploring motion graphics">
+    <meta property="og:title" content="Motion Graphics World — WAVGEN">
+    <meta property="og:description" content="Immersive video world exploring motion graphics">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#3B82F6">
+    <link rel="canonical" href="https://wavgen.ca/video/motion_graphics_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN — Motion Graphics World</title>
+<style>
+:root{
+  --black:#040200;--surface:#0e0800;--border:rgba(249,115,22,0.18);
+  --text:#f0e8e0;--dim:#806050;--accent:#f97316;
+  --accent2:#c0c0c8;--accent3:#fbbf24;--accent4:#1a0c00;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Georgia',serif;overflow-x:hidden;line-height:1.7;min-width:320px}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(4,2,0,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.2rem;height:52px;gap:1rem;
+}
+.nav-brand{font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.2em;
+  color:var(--accent);font-weight:bold;white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:.1rem;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  color:var(--dim);text-decoration:none;font-family:'Courier New',monospace;
+  font-size:.58rem;letter-spacing:.1em;padding:.35rem .6rem;border-radius:2px;
+  transition:all .2s;white-space:nowrap;border:1px solid transparent;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--accent);border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.07)
+}
+section{padding:5rem 1.5rem;max-width:1200px;margin:0 auto;position:relative}
+.section-label{
+  font-family:'Courier New',monospace;font-size:.6rem;letter-spacing:.25em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:.8rem;display:block;
+}
+.section-title{font-size:clamp(1.5rem,4vw,2.6rem);font-weight:normal;margin-bottom:1rem;line-height:1.2}
+.section-desc{color:var(--dim);font-size:.92rem;margin-bottom:2.5rem;max-width:700px}
+.hidden{opacity:0;transform:translateY(40px);transition:all .7s ease}
+.visible{opacity:1;transform:none}
+.stagger-1{transition-delay:.1s}.stagger-2{transition-delay:.2s}
+.stagger-3{transition-delay:.3s}.stagger-4{transition-delay:.4s}.stagger-5{transition-delay:.5s}
+#hero-section{padding-top:52px;padding-left:0;padding-right:0;max-width:100%;margin:0}
+.hero-canvas-wrap{position:relative;width:100%;height:440px;overflow:hidden;background:var(--black)}
+#heroCanvas{display:block;width:100%;height:440px}
+.hero-overlay{
+  position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:flex-start;padding:2.5rem 4rem;
+}
+.hero-sub{font-size:clamp(.8rem,2vw,1.05rem);color:rgba(240,232,224,.55);font-style:italic}
+.canvas-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:3px;
+  overflow:hidden;position:relative;
+}
+.canvas-box canvas{display:block;width:100%}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1.5rem;transition:border-color .3s,box-shadow .3s}
+.card:hover{border-color:var(--accent);box-shadow:0 0 18px rgba(249,115,22,.15)}
+.card-title{font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem;display:block}
+.card-sub{font-size:.78rem;color:var(--dim);margin-bottom:.5rem;font-style:italic}
+.ctrl-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.ctrl-row label{font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--dim)}
+.ctrl-row input[type=range]{-webkit-appearance:none;appearance:none;height:2px;background:rgba(249,115,22,.25);border-radius:1px;outline:none;cursor:pointer;min-width:80px}
+.ctrl-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+.ctrl-row input[type=text]{background:var(--accent4);border:1px solid var(--border);color:var(--text);padding:.3rem .6rem;font-family:'Courier New',monospace;font-size:.75rem;border-radius:2px;outline:none;min-width:200px}
+.ctrl-row input[type=text]:focus{border-color:var(--accent)}
+.ctrl-row select{background:var(--accent4);border:1px solid var(--border);color:var(--text);padding:.3rem .6rem;font-family:'Courier New',monospace;font-size:.68rem;border-radius:2px;outline:none;cursor:pointer}
+.btn{font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.4rem 1.1rem;border-radius:2px;cursor:pointer;transition:all .2s;border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn:hover{background:rgba(249,115,22,.12);box-shadow:0 0 10px rgba(249,115,22,.2)}
+.btn.active,.btn-solid{background:var(--accent);color:var(--black)}
+.btn-solid:hover{background:var(--accent3)}
+.preset-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem}
+.artist-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1.4rem;transition:border-color .3s,box-shadow .3s;cursor:default}
+.artist-card:hover{border-color:var(--accent);box-shadow:0 0 22px rgba(249,115,22,.18)}
+.artist-name{font-size:1.05rem;color:var(--accent3);margin-bottom:.2rem;font-weight:normal}
+.artist-era{font-family:'Courier New',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em;margin-bottom:.5rem}
+.artist-style{font-size:.8rem;color:var(--text);margin-bottom:.4rem;line-height:1.5}
+.artist-work{font-size:.75rem;color:var(--accent2);font-style:italic}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:0;border-top:1px solid var(--border);border-left:1px solid var(--border)}
+.gloss-item{border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:1rem 1.3rem}
+.gloss-term{font-family:'Courier New',monospace;font-size:.72rem;letter-spacing:.12em;color:var(--accent);margin-bottom:.3rem;display:block}
+.gloss-def{font-size:.8rem;color:var(--dim);line-height:1.5}
+.layer-row{display:flex;align-items:center;gap:.8rem;padding:.5rem;border:1px solid transparent;border-radius:2px;transition:border-color .2s;cursor:pointer;margin-bottom:.4rem}
+.layer-row.selected{border-color:var(--accent);background:rgba(249,115,22,.06)}
+.layer-label{font-family:'Courier New',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--accent);min-width:70px}
+.layer-row input[type=range]{flex:1}
+.scene-bar{height:3px;background:rgba(249,115,22,.15);border-radius:2px;overflow:hidden;margin-bottom:1rem}
+.scene-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .1s linear;width:0%}
+.motion-quote{border-left:2px solid var(--accent);padding:.8rem 1.5rem;font-style:italic;color:var(--dim);font-size:.88rem;margin:1.5rem 0}
+</style>
+</head>
+<body class="domain-video">
+
+<nav>
+  <span class="nav-brand">WAVGEN / MOTION</span>
+  <div class="nav-links">
+    <a href="#hero-section">Studio</a>
+    <a href="#typo-section">Typography</a>
+    <a href="#curve-section">Curves</a>
+    <a href="#easing-section">Easing</a>
+    <a href="#title-section">Titles</a>
+    <a href="#comp-section">Comp</a>
+    <a href="#av-section">AV Sync</a>
+    <a href="#artists-section">Artists</a>
+    <a href="#glossary-section">Glossary</a>
+  </div>
+</nav>
+
+<!-- SECTION 1 — HERO -->
+<div id="hero-section">
+  <div class="hero-canvas-wrap">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-overlay">
+      <div class="hero-sub">Inside a cinematic motion design studio.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== WAVGEN CORE =====
+class LagFilter {
+  constructor(initial,tau){this.value=initial||0;this.target=initial||0;this.tau=tau||0.15}
+  update(dt){var a=1-Math.exp(-dt/Math.max(this.tau,0.001));this.value+=(this.target-this.value)*a;return this.value}
+  set(t){this.target=t}
+  snap(v){this.value=this.target=v}
+}
+class VectorLag {
+  constructor(x,y,tau){this.x=new LagFilter(x,tau);this.y=new LagFilter(y,tau)}
+  set(x,y){this.x.set(x);this.y.set(y)}
+  snap(x,y){this.x.snap(x);this.y.snap(y)}
+  update(dt){this.x.update(dt);this.y.update(dt)}
+}
+class BPMEngine {
+  constructor(bpm){this.bpm=bpm||120;this._start=null;this._beat=0;this._rafId=null;this.running=false;this._subs=new Map()}
+  start(){this.running=true;this._start=performance.now();this._beat=0;this._tick()}
+  stop(){this.running=false;if(this._rafId)cancelAnimationFrame(this._rafId)}
+  setBPM(b){this.bpm=Math.max(40,Math.min(240,b));if(this.running){this.stop();this.start()}}
+  _tick(){
+    if(!this.running)return;
+    var now=performance.now(),el=now-this._start,mpb=60000/this.bpm,exp=Math.floor(el/mpb);
+    while(this._beat<=exp){this._fire(this._beat++);}
+    this._rafId=requestAnimationFrame(this._tick.bind(this));
+  }
+  _fire(n){
+    var ph=n%16,isQ=ph%4===0,isD=ph===0;
+    try{document.dispatchEvent(new CustomEvent('wavgen:beat',{detail:{beat:n,phase:ph,isQ:isQ,isD:isD,bpm:this.bpm}}))}catch(e){}
+    this._subs.forEach(function(fn){fn({beat:n,phase:ph,isQ:isQ,isD:isD})});
+  }
+  subscribe(id,fn){this._subs.set(id,fn)}
+}
+
+// ===== SECTION 1 — HERO KINETIC LETTERS =====
+(function(){
+  var canvas=document.getElementById('heroCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H,letters=[],phase='fly-in',phaseT=0;
+  var BPM=120;
+  var bpmEngine=new BPMEngine(BPM);
+  var FULL_TEXT='MOTION GRAPHICS WORLD';
+  var beatFlash=new LagFilter(0,0.06);
+  var lastT=0,elapsed=0;
+
+  document.addEventListener('wavgen:beat',function(e){
+    if(e.detail.isQ)beatFlash.set(1);
+  });
+
+  function resize(){
+    W=canvas.parentElement.offsetWidth||window.innerWidth;
+    H=440;
+    canvas.width=W;
+    canvas.height=H;
+    initLetters();
+  }
+
+  function initLetters(){
+    letters=[];
+    var fs=Math.min(Math.max(W*0.055,28),72);
+    ctx.font='bold '+fs+'px Courier New,monospace';
+    var chars=FULL_TEXT.split('');
+    var cx=W/2, cy=H/2+fs*0.35;
+    // measure total
+    var totalW=0;
+    var cwidths=[];
+    for(var i=0;i<chars.length;i++){
+      var cw=(chars[i]===' ')?(fs*0.4):(ctx.measureText(chars[i]).width+2);
+      cwidths.push(cw);
+      totalW+=cw;
+    }
+    var sx0=cx-totalW/2;
+    for(var i=0;i<chars.length;i++){
+      if(chars[i]===' '){sx0+=cwidths[i];continue;}
+      var tx=sx0, ty=cy;
+      var angle=Math.random()*Math.PI*2;
+      var dist=Math.max(W,H)*0.9;
+      var startX=W/2+Math.cos(angle)*dist;
+      var startY=H/2+Math.sin(angle)*dist;
+      letters.push({
+        ch:chars[i], tx:tx, ty:ty, fs:fs,
+        ex:tx+(Math.random()-0.5)*W*1.6,
+        ey:ty+(Math.random()-0.5)*H*2.2,
+        lag:new VectorLag(startX,startY,0.12),
+        alpha:new LagFilter(0,0.15),
+        rot:new LagFilter((Math.random()-0.5)*Math.PI*0.9,0.18),
+        trail:[]
+      });
+      sx0+=cwidths[i];
+    }
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05);
+    lastT=t; elapsed+=dt; phaseT+=dt;
+    beatFlash.update(dt);
+
+    var SETTLE=1.4,HOLD=1.8,EXPLODE=0.9,REFORM=1.3;
+    if(phase==='fly-in'){
+      for(var i=0;i<letters.length;i++){var l=letters[i];l.lag.set(l.tx,l.ty);l.alpha.set(1);l.rot.set(0);}
+      if(phaseT>SETTLE){phase='hold';phaseT=0;}
+    } else if(phase==='hold'){
+      if(phaseT>HOLD){phase='explode';phaseT=0;}
+    } else if(phase==='explode'){
+      for(var i=0;i<letters.length;i++){var l=letters[i];l.lag.set(l.ex,l.ey);l.alpha.set(0);l.rot.set((Math.random()-0.5)*Math.PI*2);}
+      if(phaseT>EXPLODE){phase='reform';phaseT=0;for(var i=0;i<letters.length;i++){var l=letters[i];l.lag.snap(l.ex,l.ey);}}
+    } else if(phase==='reform'){
+      for(var i=0;i<letters.length;i++){var l=letters[i];l.lag.set(l.tx,l.ty);l.alpha.set(1);l.rot.set(0);}
+      if(phaseT>REFORM){phase='hold';phaseT=0;}
+    }
+
+    for(var i=0;i<letters.length;i++){
+      var l=letters[i];
+      var px=l.lag.x.value, py=l.lag.y.value;
+      l.lag.update(dt); l.alpha.update(dt); l.rot.update(dt);
+      var spd=Math.hypot(l.lag.x.value-px,l.lag.y.value-py);
+      l.trail.unshift({x:px,y:py,a:Math.min(spd*0.09,0.4)});
+      if(l.trail.length>9)l.trail.pop();
+    }
+
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function draw(){
+    ctx.globalAlpha=0.08; ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    // Grid
+    ctx.save(); ctx.globalAlpha=0.04+beatFlash.value*0.05; ctx.strokeStyle='#f97316'; ctx.lineWidth=0.5;
+    for(var gx=0;gx<W;gx+=40){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for(var gy=0;gy<H;gy+=40){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+    ctx.restore();
+    // Beat ring
+    if(beatFlash.value>0.01){
+      ctx.save(); ctx.globalAlpha=beatFlash.value*0.2; ctx.strokeStyle='#f97316'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(W/2,H/2,Math.max(W,H)*beatFlash.value,0,Math.PI*2); ctx.stroke(); ctx.restore();
+    }
+    // Letters
+    for(var i=0;i<letters.length;i++){
+      var l=letters[i];
+      var lx=l.lag.x.value, ly=l.lag.y.value;
+      var fstr='bold '+l.fs+'px Courier New,monospace';
+      // Trail
+      for(var ti=l.trail.length-1;ti>=0;ti--){
+        var tr=l.trail[ti];
+        ctx.save(); ctx.globalAlpha=tr.a*(1-ti/l.trail.length)*l.alpha.value;
+        ctx.fillStyle='#f97316'; ctx.font=fstr;
+        ctx.translate(tr.x,tr.y); ctx.rotate(l.rot.value*(ti/l.trail.length));
+        ctx.fillText(l.ch,0,0); ctx.restore();
+      }
+      // Main
+      if(l.alpha.value>0.01){
+        ctx.save(); ctx.globalAlpha=l.alpha.value;
+        ctx.shadowBlur=14+beatFlash.value*22; ctx.shadowColor='#f97316';
+        ctx.fillStyle='#fbbf24'; ctx.font=fstr;
+        ctx.translate(lx,ly); ctx.rotate(l.rot.value);
+        ctx.fillText(l.ch,0,0); ctx.shadowBlur=0; ctx.restore();
+      }
+    }
+    // Footer label
+    ctx.save(); ctx.globalAlpha=0.45; ctx.fillStyle='#f97316';
+    ctx.font=(Math.max(10,Math.round(W*0.012)))+'px Courier New,monospace';
+    ctx.fillText('BPM '+BPM+' · MOTION DESIGN STUDIO · WAVGEN',W*0.04,H-16);
+    ctx.restore();
+    // Scanlines
+    ctx.save(); ctx.globalAlpha=0.04; ctx.fillStyle='rgba(0,0,0,1)';
+    for(var sy=0;sy<H;sy+=2){ctx.fillRect(0,sy,W,1);} ctx.restore();
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+  bpmEngine.start();
+  window.wavgenBPM=bpmEngine;
+  requestAnimationFrame(loop);
+})();
+</script>
+
+
+<!-- SECTION 2 — KINETIC TYPOGRAPHY ENGINE -->
+<section id="typo-section">
+  <span class="section-label hidden stagger-1">02 / Kinetic Typography</span>
+  <h2 class="section-title hidden stagger-2">Kinetic Typography Engine</h2>
+  <p class="section-desc hidden stagger-3">Type something and watch it come alive. Choose a motion preset, adjust timing, and explore how letterforms move.</p>
+  <div class="ctrl-row hidden stagger-3">
+    <input type="text" id="typoInput" value="MOTION IS TIME" maxlength="28">
+    <label>SIZE</label><input type="range" id="typoSize" min="20" max="90" value="52">
+    <label>SPEED</label><input type="range" id="typoSpeed" min="1" max="10" value="5">
+    <label>SPACING</label><input type="range" id="typoSpacing" min="0" max="20" value="4">
+  </div>
+  <div class="preset-btns hidden stagger-4">
+    <button class="btn active" onclick="setTypoPreset('cascade')">Cascade</button>
+    <button class="btn" onclick="setTypoPreset('shatter')">Shatter</button>
+    <button class="btn" onclick="setTypoPreset('blur')">Blur In</button>
+    <button class="btn" onclick="setTypoPreset('typewriter')">Typewriter</button>
+    <button class="btn" onclick="setTypoPreset('elastic')">Elastic</button>
+    <button class="btn" onclick="setTypoPreset('glitch')">Glitch</button>
+    <button class="btn btn-solid" onclick="triggerTypo()">TRIGGER</button>
+  </div>
+  <div class="canvas-box hidden stagger-4" style="width:100%;height:260px">
+    <canvas id="typoCanvas" height="260"></canvas>
+  </div>
+  <p class="motion-quote">"Typography is the heartbeat of motion."</p>
+</section>
+
+<!-- SECTION 3 — MOTION CURVE EDITOR -->
+<section id="curve-section">
+  <span class="section-label hidden stagger-1">03 / Motion Curves</span>
+  <h2 class="section-title hidden stagger-2">Motion Curve Editor</h2>
+  <p class="section-desc hidden stagger-3">Drag the Bezier handles to sculpt your easing curve. Watch the preview ball respond in real time.</p>
+  <div class="grid-2">
+    <div>
+      <div class="ctrl-row hidden stagger-3">
+        <label>PRESET</label>
+        <select id="curvePreset" onchange="applyCurvePreset(this.value)">
+          <option value="linear">Linear</option>
+          <option value="easeIn">Ease In</option>
+          <option value="easeOut">Ease Out</option>
+          <option value="easeInOut" selected>Ease In-Out</option>
+          <option value="overshoot">Overshoot</option>
+          <option value="anticipate">Anticipate</option>
+          <option value="bounce">Bounce</option>
+        </select>
+      </div>
+      <div class="canvas-box hidden stagger-4" style="height:300px">
+        <canvas id="curveCanvas" width="500" height="300"></canvas>
+      </div>
+      <p id="curveEq" style="font-family:'Courier New',monospace;font-size:.65rem;color:var(--accent);margin-top:.6rem;opacity:.7"></p>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:1.5rem">
+      <div>
+        <span class="card-title" style="display:block;margin-bottom:.6rem">PREVIEW</span>
+        <div class="canvas-box" style="height:80px">
+          <canvas id="ballCanvas" height="80"></canvas>
+        </div>
+      </div>
+      <div class="card hidden stagger-3">
+        <span class="card-title">ABOUT EASING CURVES</span>
+        <p style="font-size:.8rem;color:var(--dim);line-height:1.6">The curve maps time (X) to value (Y). Steep slope = fast motion. Flat slope = slow motion. The handles control the rate of change — this is the graph editor at the heart of After Effects.</p>
+      </div>
+      <p class="motion-quote" style="margin:0">"Every motion has a personality."</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== SECTION 2 — KINETIC TYPOGRAPHY =====
+(function(){
+  var canvas=document.getElementById('typoCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H,letters=[],preset='cascade',triggered=false,trigT=0;
+  var lastT=0;
+
+  function resize(){
+    W=canvas.parentElement.offsetWidth||800;
+    H=260;
+    canvas.width=W;
+    canvas.height=H;
+  }
+
+  window.setTypoPreset=function(p){
+    preset=p;
+    document.querySelectorAll('#typo-section .btn').forEach(function(b){b.classList.remove('active')});
+    event.target.classList.add('active');
+    triggerTypo();
+  };
+
+  window.triggerTypo=function(){
+    var text=document.getElementById('typoInput').value||'MOTION';
+    var fs=parseInt(document.getElementById('typoSize').value)||52;
+    var sp=parseInt(document.getElementById('typoSpacing').value)||4;
+    var speed=parseFloat(document.getElementById('typoSpeed').value)||5;
+    var tau=0.22-(speed-1)*0.018;
+    ctx.font='bold '+fs+'px Courier New,monospace';
+    letters=[];
+    var chars=text.split('');
+    var totalW=0;
+    for(var i=0;i<chars.length;i++){totalW+=ctx.measureText(chars[i]).width+sp;}
+    var sx=W/2-totalW/2, cy=H/2+fs*0.35;
+    for(var i=0;i<chars.length;i++){
+      var cw=ctx.measureText(chars[i]).width+sp;
+      var tx=sx, ty=cy;
+      var startX=tx, startY=ty-H;
+      var delay=i*0.08;
+      if(preset==='shatter'){startX=tx+(Math.random()-0.5)*W;startY=ty+(Math.random()-0.5)*H*2;}
+      else if(preset==='blur'){startX=tx-W*0.3;startY=ty;}
+      else if(preset==='typewriter'){startX=tx;startY=ty;delay=i*0.12;}
+      else if(preset==='elastic'){startX=tx;startY=ty-H*1.2;tau=0.08;}
+      else if(preset==='glitch'){startX=tx+(Math.random()-0.5)*60;startY=ty+(Math.random()-0.5)*60;}
+      letters.push({
+        ch:chars[i],tx:tx,ty:ty,fs:fs,
+        lag:new VectorLag(startX,startY,tau),
+        alpha:new LagFilter(preset==='typewriter'?0:0,0.2),
+        rot:new LagFilter(preset==='shatter'?(Math.random()-0.5)*Math.PI:0,0.15),
+        blur:new LagFilter(preset==='blur'?1:0,0.18),
+        glitch:new LagFilter(preset==='glitch'?1:0,0.12),
+        delay:delay, started:false, sp:sp
+      });
+      sx+=cw;
+    }
+    triggered=true; trigT=0;
+  };
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    if(triggered) trigT+=dt;
+    // Phosphor decay
+    ctx.globalAlpha=0.12; ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    for(var i=0;i<letters.length;i++){
+      var l=letters[i];
+      if(trigT>=l.delay&&!l.started){
+        l.started=true;
+        l.lag.set(l.tx,l.ty);
+        l.alpha.set(1); l.blur.set(0); l.glitch.set(0); l.rot.set(0);
+      }
+      if(!l.started&&preset!=='typewriter') continue;
+      if(preset==='typewriter'&&trigT>=l.delay) l.alpha.set(1);
+      l.lag.update(dt); l.alpha.update(dt); l.rot.update(dt); l.blur.update(dt); l.glitch.update(dt);
+      var lx=l.lag.x.value, ly=l.lag.y.value;
+      if(l.alpha.value<0.01) continue;
+      ctx.save();
+      if(l.blur.value>0.01){ctx.filter='blur('+(l.blur.value*12)+'px)';}
+      if(l.glitch.value>0.01){
+        ctx.globalAlpha=l.alpha.value*0.4; ctx.fillStyle='#ef4444';
+        ctx.font='bold '+l.fs+'px Courier New,monospace';
+        ctx.fillText(l.ch,lx+(Math.random()-0.5)*l.glitch.value*8,ly+(Math.random()-0.5)*l.glitch.value*4);
+        ctx.fillStyle='#60a5fa';
+        ctx.fillText(l.ch,lx-(Math.random()-0.5)*l.glitch.value*8,ly);
+      }
+      ctx.globalAlpha=l.alpha.value;
+      ctx.shadowBlur=8; ctx.shadowColor='#f97316';
+      ctx.fillStyle='#fbbf24';
+      ctx.font='bold '+l.fs+'px Courier New,monospace';
+      ctx.translate(lx,ly); ctx.rotate(l.rot.value);
+      ctx.fillText(l.ch,0,0);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+  triggerTypo();
+  requestAnimationFrame(loop);
+  document.getElementById('typoInput').addEventListener('input',function(){setTimeout(triggerTypo,300);});
+})();
+
+// ===== SECTION 3 — MOTION CURVE EDITOR =====
+(function(){
+  var canvas=document.getElementById('curveCanvas');
+  var ctx=canvas.getContext('2d');
+  var ball=document.getElementById('ballCanvas');
+  var bctx=ball.getContext('2d');
+  var W=500,H=300,BW,BH=80;
+  var pad=40;
+  // Bezier control points (normalized 0-1)
+  var CP=[{x:0.25,y:0.1},{x:0.25,y:1.0}]; // h1, h2
+  var dragging=-1, mouseX=0, mouseY=0;
+  var lastT=0, ballT=0, ballDir=1;
+  var ballX=new LagFilter(0,0.1);
+
+  var PRESETS={
+    linear:[[0.0,0.0],[1.0,1.0]],
+    easeIn:[[0.42,0.0],[1.0,1.0]],
+    easeOut:[[0.0,0.0],[0.58,1.0]],
+    easeInOut:[[0.25,0.1],[0.25,1.0]],
+    overshoot:[[0.34,1.56],[0.64,1.0]],
+    anticipate:[[-0.3,-0.2],[0.7,1.0]],
+    bounce:[[0.0,0.9],[0.7,1.0]]
+  };
+
+  window.applyCurvePreset=function(name){
+    var p=PRESETS[name];
+    if(p){CP[0]={x:p[0][0],y:p[0][1]};CP[1]={x:p[1][0],y:p[1][1]};}
+    updateEqLabel();
+  };
+
+  function updateEqLabel(){
+    var el=document.getElementById('curveEq');
+    if(el) el.textContent='cubic-bezier('+CP[0].x.toFixed(2)+', '+CP[0].y.toFixed(2)+', '+CP[1].x.toFixed(2)+', '+CP[1].y.toFixed(2)+')';
+  }
+
+  function normToCanvas(nx,ny){return {x:pad+nx*(W-pad*2), y:H-pad-ny*(H-pad*2)};}
+  function canvasToNorm(cx,cy){return {x:(cx-pad)/(W-pad*2), y:(H-pad-cy)/(H-pad*2)};}
+
+  function evalCubicBezier(t){
+    // Evaluate CSS cubic-bezier(x1,y1,x2,y2) at parameter t (0-1 time)
+    var x1=CP[0].x,y1=CP[0].y,x2=CP[1].x,y2=CP[1].y;
+    // Newton's method to find u such that Bx(u)=t
+    var u=t;
+    for(var i=0;i<8;i++){
+      var bx=3*u*(1-u)*(1-u)*x1+3*u*u*(1-u)*x2+u*u*u-t;
+      var bxd=3*(1-u)*(1-u)*x1+6*u*(1-u)*(x2-x1)+3*u*u*(1-2*x1+x2-1+1);
+      if(Math.abs(bxd)<1e-6)break;
+      u-=bx/Math.max(Math.abs(bxd),0.001)*Math.sign(bxd);
+      u=Math.max(0,Math.min(1,u));
+    }
+    return 3*u*(1-u)*(1-u)*y1+3*u*u*(1-u)*y2+u*u*u;
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Background
+    ctx.fillStyle='#0e0800'; ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle='rgba(249,115,22,0.08)'; ctx.lineWidth=0.5;
+    for(var gi=0;gi<=4;gi++){
+      var gx=normToCanvas(gi/4,0).x; ctx.beginPath();ctx.moveTo(gx,pad);ctx.lineTo(gx,H-pad);ctx.stroke();
+      var gy=normToCanvas(0,gi/4).y; ctx.beginPath();ctx.moveTo(pad,gy);ctx.lineTo(W-pad,gy);ctx.stroke();
+    }
+    // Diagonal reference
+    ctx.strokeStyle='rgba(249,115,22,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    var p0=normToCanvas(0,0),p1=normToCanvas(1,1);
+    ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.lineTo(p1.x,p1.y);ctx.stroke();
+    ctx.setLineDash([]);
+    // Draw curve
+    ctx.beginPath();
+    var start=normToCanvas(0,0);
+    ctx.moveTo(start.x,start.y);
+    ctx.strokeStyle='#f97316'; ctx.lineWidth=2;
+    ctx.shadowBlur=8; ctx.shadowColor='#f97316';
+    var h1=normToCanvas(CP[0].x,CP[0].y), h2=normToCanvas(CP[1].x,CP[1].y), end=normToCanvas(1,1);
+    ctx.bezierCurveTo(h1.x,h1.y,h2.x,h2.y,end.x,end.y);
+    ctx.stroke(); ctx.shadowBlur=0;
+    // Handle lines
+    ctx.strokeStyle='rgba(249,115,22,0.35)'; ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(h1.x,h1.y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(end.x,end.y);ctx.lineTo(h2.x,h2.y);ctx.stroke();
+    // Handles
+    var handles=[h1,h2];
+    for(var i=0;i<handles.length;i++){
+      ctx.beginPath();ctx.arc(handles[i].x,handles[i].y,7,0,Math.PI*2);
+      ctx.fillStyle=dragging===i?'#fbbf24':'#f97316'; ctx.fill();
+      ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.5; ctx.stroke();
+    }
+    // Endpoints
+    ctx.beginPath();ctx.arc(start.x,start.y,4,0,Math.PI*2);ctx.fillStyle='#c0c0c8';ctx.fill();
+    ctx.beginPath();ctx.arc(end.x,end.y,4,0,Math.PI*2);ctx.fillStyle='#c0c0c8';ctx.fill();
+    // Axes labels
+    ctx.fillStyle='rgba(128,96,80,0.6)'; ctx.font='10px Courier New,monospace';
+    ctx.fillText('TIME',W/2-16,H-8); ctx.fillText('VALUE',4,H/2);
+  }
+
+  function drawBall(t){
+    BW=ball.parentElement.offsetWidth||400;
+    ball.width=BW; ball.height=BH;
+    bctx.clearRect(0,0,BW,BH);
+    bctx.fillStyle='#0e0800'; bctx.fillRect(0,0,BW,BH);
+    // Track
+    bctx.strokeStyle='rgba(249,115,22,0.2)'; bctx.lineWidth=1;
+    bctx.beginPath();bctx.moveTo(20,BH/2);bctx.lineTo(BW-20,BH/2);bctx.stroke();
+    // Ball position
+    var val=evalCubicBezier(t);
+    var bx=20+val*(BW-40);
+    // Trail
+    for(var ti=0;ti<8;ti++){
+      var tv=evalCubicBezier(Math.max(0,t-ti*0.04));
+      var tx2=20+tv*(BW-40);
+      bctx.beginPath();bctx.arc(tx2,BH/2,6*(1-ti/8),0,Math.PI*2);
+      bctx.fillStyle='rgba(249,115,22,'+(0.3*(1-ti/8))+')'; bctx.fill();
+    }
+    bctx.beginPath();bctx.arc(bx,BH/2,8,0,Math.PI*2);
+    bctx.shadowBlur=12;bctx.shadowColor='#f97316';
+    bctx.fillStyle='#fbbf24'; bctx.fill(); bctx.shadowBlur=0;
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    ballT+=dt*0.5*ballDir;
+    if(ballT>=1){ballT=1;ballDir=-1;}
+    if(ballT<=0){ballT=0;ballDir=1;}
+    draw();
+    drawBall(ballT);
+    requestAnimationFrame(loop);
+  }
+
+  canvas.addEventListener('mousedown',function(e){
+    var rect=canvas.getBoundingClientRect();
+    var scaleX=W/rect.width, scaleY=H/rect.height;
+    var mx=(e.clientX-rect.left)*scaleX, my=(e.clientY-rect.top)*scaleY;
+    var h1=normToCanvas(CP[0].x,CP[0].y), h2=normToCanvas(CP[1].x,CP[1].y);
+    if(Math.hypot(mx-h1.x,my-h1.y)<14){dragging=0;}
+    else if(Math.hypot(mx-h2.x,my-h2.y)<14){dragging=1;}
+  });
+  canvas.addEventListener('mousemove',function(e){
+    if(dragging<0)return;
+    var rect=canvas.getBoundingClientRect();
+    var scaleX=W/rect.width, scaleY=H/rect.height;
+    var nx=(e.clientX-rect.left)*scaleX, ny=(e.clientY-rect.top)*scaleY;
+    var n=canvasToNorm(nx,ny);
+    CP[dragging]={x:Math.max(-0.5,Math.min(1.5,n.x)),y:Math.max(-0.5,Math.min(1.5,n.y))};
+    updateEqLabel();
+  });
+  canvas.addEventListener('mouseup',function(){dragging=-1;});
+  canvas.addEventListener('mouseleave',function(){dragging=-1;});
+
+  // Touch support
+  canvas.addEventListener('touchstart',function(e){
+    e.preventDefault();
+    var touch=e.touches[0];
+    var rect=canvas.getBoundingClientRect();
+    var scaleX=W/rect.width, scaleY=H/rect.height;
+    var mx=(touch.clientX-rect.left)*scaleX, my=(touch.clientY-rect.top)*scaleY;
+    var h1=normToCanvas(CP[0].x,CP[0].y), h2=normToCanvas(CP[1].x,CP[1].y);
+    if(Math.hypot(mx-h1.x,my-h1.y)<20){dragging=0;}
+    else if(Math.hypot(mx-h2.x,my-h2.y)<20){dragging=1;}
+  },{passive:false});
+  canvas.addEventListener('touchmove',function(e){
+    if(dragging<0)return; e.preventDefault();
+    var touch=e.touches[0];
+    var rect=canvas.getBoundingClientRect();
+    var scaleX=W/rect.width, scaleY=H/rect.height;
+    var nx=(touch.clientX-rect.left)*scaleX, ny=(touch.clientY-rect.top)*scaleY;
+    var n=canvasToNorm(nx,ny);
+    CP[dragging]={x:Math.max(-0.5,Math.min(1.5,n.x)),y:Math.max(-0.5,Math.min(1.5,n.y))};
+    updateEqLabel();
+  },{passive:false});
+  canvas.addEventListener('touchend',function(){dragging=-1;});
+
+  applyCurvePreset('easeInOut');
+  requestAnimationFrame(loop);
+})();
+</script>
+
+
+<!-- SECTION 4 — EASING VISUALIZER -->
+<section id="easing-section">
+  <span class="section-label hidden stagger-1">04 / Easing Functions</span>
+  <h2 class="section-title hidden stagger-2">Easing Visualizer</h2>
+  <p class="section-desc hidden stagger-3">Eight easing functions running simultaneously. Watch how each one feels different in motion. Hit Race to see them compete.</p>
+  <div class="ctrl-row hidden stagger-3">
+    <button class="btn btn-solid" onclick="startEasingRace()">RACE</button>
+    <button class="btn" onclick="resetEasingRace()">LOOP</button>
+    <label>SPEED</label><input type="range" id="easingSpeed" min="0.3" max="3" step="0.1" value="1">
+  </div>
+  <div class="canvas-box hidden stagger-4" style="width:100%;height:420px">
+    <canvas id="easingCanvas" height="420"></canvas>
+  </div>
+</section>
+
+<!-- SECTION 5 — TITLE SEQUENCE BUILDER -->
+<section id="title-section">
+  <span class="section-label hidden stagger-1">05 / Title Sequence</span>
+  <h2 class="section-title hidden stagger-2">Title Sequence Builder</h2>
+  <p class="section-desc hidden stagger-3">A 5-scene title sequence that plays end to end. Control timing, transitions, and style.</p>
+  <div class="ctrl-row hidden stagger-3">
+    <label>SCENE DURATION</label><input type="range" id="sceneDur" min="0.5" max="3" step="0.1" value="1.5">
+    <label>TRANSITION</label>
+    <select id="titleTrans">
+      <option value="cut">Cut</option>
+      <option value="dissolve" selected>Dissolve</option>
+      <option value="push">Push</option>
+      <option value="blur">Blur</option>
+    </select>
+    <label>FONT SIZE</label><input type="range" id="titleSize" min="18" max="72" value="42">
+    <button class="btn btn-solid" onclick="playTitleSeq()">PLAY</button>
+    <button class="btn" onclick="stopTitleSeq()">STOP</button>
+  </div>
+  <div class="scene-bar hidden stagger-3"><div class="scene-fill" id="sceneFill"></div></div>
+  <div class="canvas-box hidden stagger-4" style="width:100%;height:360px">
+    <canvas id="titleCanvas" height="360"></canvas>
+  </div>
+  <p class="motion-quote">"Build the feeling before you build the frame."</p>
+</section>
+
+<script>
+// ===== SECTION 4 — EASING VISUALIZER =====
+(function(){
+  var canvas=document.getElementById('easingCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H=420,lastT=0,raceMode=false,raceT=0,loopT=0;
+  var speed=1;
+
+  var EASINGS=[
+    {name:'Linear',   fn:function(t){return t;}, color:'#c0c0c8'},
+    {name:'Ease',     fn:function(t){return t<0.5?2*t*t:(4-2*t)*t-1;}, color:'#f97316'},
+    {name:'EaseIn',   fn:function(t){return t*t*t;}, color:'#fbbf24'},
+    {name:'EaseOut',  fn:function(t){var t2=t-1;return t2*t2*t2+1;}, color:'#fb923c'},
+    {name:'EaseInOut',fn:function(t){return t<0.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;}, color:'#fdba74'},
+    {name:'Bounce',   fn:function(t){
+      if(t<1/2.75)return 7.5625*t*t;
+      if(t<2/2.75){t-=1.5/2.75;return 7.5625*t*t+0.75;}
+      if(t<2.5/2.75){t-=2.25/2.75;return 7.5625*t*t+0.9375;}
+      t-=2.625/2.75; return 7.5625*t*t+0.984375;
+    }, color:'#34d399'},
+    {name:'Elastic',  fn:function(t){
+      if(t===0||t===1)return t;
+      return -Math.pow(2,10*t-10)*Math.sin((t*10-10.75)*(2*Math.PI/3));
+    }, color:'#60a5fa'},
+    {name:'Back',     fn:function(t){var c=1.70158;return t*t*((c+1)*t-c);}, color:'#c084fc'}
+  ];
+
+  var ROW_H,PAD_L=90,PAD_R=20,PAD_T=20,BOX_H=30;
+  var squares=EASINGS.map(function(e){return {x:new LagFilter(0,0.1),alpha:new LagFilter(1,0.08)};});
+
+  window.startEasingRace=function(){raceMode=true;raceT=0;loopT=0;for(var i=0;i<squares.length;i++){squares[i].x.snap(0);}};
+  window.resetEasingRace=function(){raceMode=false;raceT=0;loopT=0;for(var i=0;i<squares.length;i++){squares[i].x.snap(0);}};
+
+  function resize(){
+    W=canvas.parentElement.offsetWidth||900;
+    canvas.width=W;
+    canvas.height=H;
+    ROW_H=(H-PAD_T*2)/EASINGS.length;
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    speed=parseFloat(document.getElementById('easingSpeed').value)||1;
+
+    ctx.globalAlpha=0.18; ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    var trackW=W-PAD_L-PAD_R;
+
+    if(raceMode){
+      raceT+=dt*speed;
+      for(var i=0;i<EASINGS.length;i++){
+        var t01=Math.min(raceT,1);
+        var val=EASINGS[i].fn(t01);
+        squares[i].x.set(Math.max(0,Math.min(1,val)));
+        squares[i].x.update(dt);
+      }
+      if(raceT>=2){raceT=0;for(var i=0;i<squares.length;i++){squares[i].x.snap(0);}}
+    } else {
+      loopT+=dt*speed*0.5;
+      for(var i=0;i<EASINGS.length;i++){
+        var tl=(loopT%2);
+        var t01=tl<1?tl:2-tl;
+        var val=EASINGS[i].fn(Math.max(0,Math.min(1,t01)));
+        squares[i].x.set(Math.max(0,Math.min(1,val)));
+        squares[i].x.update(dt);
+      }
+    }
+
+    for(var i=0;i<EASINGS.length;i++){
+      var e=EASINGS[i];
+      var y=PAD_T+i*ROW_H+ROW_H/2;
+      // Track
+      ctx.strokeStyle='rgba(249,115,22,0.12)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(PAD_L,y); ctx.lineTo(W-PAD_R,y); ctx.stroke();
+      // End markers
+      ctx.strokeStyle='rgba(249,115,22,0.25)'; ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(PAD_L,y-BOX_H/2-2);ctx.lineTo(PAD_L,y+BOX_H/2+2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(W-PAD_R,y-BOX_H/2-2);ctx.lineTo(W-PAD_R,y+BOX_H/2+2);ctx.stroke();
+      // Label
+      ctx.fillStyle=e.color; ctx.font='11px Courier New,monospace';
+      ctx.fillText(e.name,4,y+4);
+      // Square
+      var sx=PAD_L+squares[i].x.value*trackW;
+      ctx.save();
+      ctx.shadowBlur=10; ctx.shadowColor=e.color;
+      ctx.fillStyle=e.color;
+      ctx.fillRect(sx-BOX_H/2,y-BOX_H/2,BOX_H,BOX_H);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+    // Header
+    ctx.fillStyle='rgba(249,115,22,0.4)'; ctx.font='10px Courier New,monospace';
+    ctx.fillText('START',PAD_L,H-6);
+    ctx.fillText('END',W-PAD_R-24,H-6);
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+  requestAnimationFrame(loop);
+})();
+
+// ===== SECTION 5 — TITLE SEQUENCE BUILDER =====
+(function(){
+  var canvas=document.getElementById('titleCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H=360,lastT=0;
+  var playing=false,seqT=0,curScene=0,alpha=new LagFilter(0,0.12);
+  var transAlpha=new LagFilter(1,0.1);
+  var fill=document.getElementById('sceneFill');
+
+  var SCENES=[
+    {id:0,label:'OPEN',draw:drawScene0},
+    {id:1,label:'WORD',draw:drawScene1},
+    {id:2,label:'TITLE + LINE',draw:drawScene2},
+    {id:3,label:'TAGLINE',draw:drawScene3},
+    {id:4,label:'LOGO',draw:drawScene4}
+  ];
+
+  var letters1=['M'],letters2=['M','O','T','I','O','N'],title='MOTION GRAPHICS',tagline='Where time becomes art.';
+  var letterLags=[];
+  var lineLag=new LagFilter(0,0.15);
+  var tagLag=new LagFilter(0,0.18);
+  var logoRot=new LagFilter(0,0.2);
+
+  window.playTitleSeq=function(){playing=true;seqT=0;curScene=0;alpha.snap(0);transAlpha.snap(0);initScene(0);};
+  window.stopTitleSeq=function(){playing=false;};
+
+  function initScene(s){
+    letterLags=[];
+    lineLag.snap(0); tagLag.snap(0); logoRot.snap(0);
+    if(s===0){alpha.snap(0);alpha.set(1);}
+    if(s===1){
+      for(var i=0;i<letters2.length;i++){
+        var l=new LagFilter(0,0.14+i*0.02);
+        l.snap(0); letterLags.push(l);
+        setTimeout((function(lag){return function(){lag.set(1);};})(l),i*120);
+      }
+    }
+    if(s===2){lineLag.snap(0);lineLag.set(1);}
+    if(s===3){tagLag.snap(0);tagLag.set(1);}
+    if(s===4){logoRot.set(1);}
+    transAlpha.snap(0); transAlpha.set(1);
+  }
+
+  function drawScene0(fs){
+    ctx.save();
+    ctx.globalAlpha=alpha.value;
+    ctx.fillStyle='#f97316';
+    ctx.font='bold '+fs*2+'px Courier New,monospace';
+    ctx.textAlign='center';
+    ctx.shadowBlur=30; ctx.shadowColor='#f97316';
+    ctx.fillText('M',W/2,H/2+fs*0.7);
+    ctx.shadowBlur=0; ctx.restore();
+  }
+  function drawScene1(fs){
+    ctx.save(); ctx.textAlign='center';
+    var cw=fs*0.65, totalW=letters2.length*cw;
+    var sx=W/2-totalW/2;
+    for(var i=0;i<letters2.length;i++){
+      var lag=letterLags[i];
+      if(!lag)continue;
+      var a=lag.value;
+      ctx.globalAlpha=a;
+      ctx.fillStyle='#fbbf24'; ctx.font='bold '+fs+'px Courier New,monospace';
+      ctx.shadowBlur=12; ctx.shadowColor='#f97316';
+      ctx.fillText(letters2[i],sx+i*cw+cw/2,H/2+fs*0.35);
+    }
+    ctx.shadowBlur=0; ctx.restore();
+  }
+  function drawScene2(fs){
+    ctx.save(); ctx.textAlign='center';
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#fbbf24'; ctx.font='bold '+fs+'px Courier New,monospace';
+    ctx.shadowBlur=14; ctx.shadowColor='#f97316';
+    ctx.fillText(title,W/2,H/2);
+    ctx.shadowBlur=0;
+    // Line sweep
+    var lineW=lineLag.value*(W*0.7);
+    ctx.fillStyle='#f97316'; ctx.globalAlpha=0.8;
+    ctx.fillRect(W/2-lineW/2,H/2+fs*0.5+8,lineW,2);
+    ctx.restore();
+  }
+  function drawScene3(fs){
+    ctx.save(); ctx.textAlign='center';
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#fbbf24'; ctx.font='bold '+fs+'px Courier New,monospace';
+    ctx.fillText(title,W/2,H/2-20);
+    ctx.fillStyle='#f97316'; ctx.globalAlpha=0.8;
+    ctx.fillRect(W/2-W*0.35,H/2+10,W*0.7,2);
+    ctx.globalAlpha=tagLag.value;
+    ctx.fillStyle='#c0c0c8'; ctx.font=(fs*0.4)+'px Georgia,serif'; ctx.fontStyle='italic';
+    ctx.fillText(tagline,W/2,H/2+50);
+    ctx.restore();
+  }
+  function drawScene4(fs){
+    ctx.save(); ctx.translate(W/2,H/2); ctx.rotate(logoRot.value*Math.PI*2);
+    ctx.beginPath();
+    for(var vi=0;vi<6;vi++){
+      var ang=vi*Math.PI*2/6-Math.PI/2;
+      var r=Math.min(W,H)*0.18;
+      if(vi===0)ctx.moveTo(Math.cos(ang)*r,Math.sin(ang)*r);
+      else ctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);
+    }
+    ctx.closePath();
+    ctx.strokeStyle='#f97316'; ctx.lineWidth=2;
+    ctx.shadowBlur=20; ctx.shadowColor='#f97316'; ctx.stroke(); ctx.shadowBlur=0;
+    // Inner
+    ctx.beginPath();
+    for(var vi=0;vi<3;vi++){
+      var ang=vi*Math.PI*2/3+Math.PI/6;
+      var r2=Math.min(W,H)*0.09;
+      if(vi===0)ctx.moveTo(Math.cos(ang)*r2,Math.sin(ang)*r2);
+      else ctx.lineTo(Math.cos(ang)*r2,Math.sin(ang)*r2);
+    }
+    ctx.closePath(); ctx.fillStyle='#fbbf24'; ctx.fill();
+    ctx.restore();
+  }
+
+  function resize(){
+    W=canvas.parentElement.offsetWidth||900; canvas.width=W; canvas.height=H;
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    var dur=parseFloat(document.getElementById('sceneDur').value)||1.5;
+    var fs=parseInt(document.getElementById('titleSize').value)||42;
+    var trans=document.getElementById('titleTrans').value;
+
+    if(playing){
+      seqT+=dt;
+      var totalDur=SCENES.length*dur;
+      var pct=seqT/totalDur;
+      if(fill)fill.style.width=(Math.min(pct,1)*100)+'%';
+      var newScene=Math.min(Math.floor(seqT/dur),SCENES.length-1);
+      if(newScene!==curScene){curScene=newScene;initScene(curScene);}
+      if(seqT>=totalDur){playing=false;}
+    }
+
+    // Phosphor
+    ctx.globalAlpha=0.1; ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    // Transition overlay
+    if(trans==='blur'||trans==='dissolve'){
+      ctx.globalAlpha=1-transAlpha.value;
+      ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    }
+
+    SCENES[curScene].draw.call(null,fs);
+
+    // Update lags
+    alpha.update(dt); transAlpha.update(dt); lineLag.update(dt); tagLag.update(dt); logoRot.update(dt);
+    for(var i=0;i<letterLags.length;i++)letterLags[i].update(dt);
+
+    // Scanlines
+    ctx.globalAlpha=0.04; ctx.fillStyle='rgba(0,0,0,1)';
+    for(var sy=0;sy<H;sy+=2){ctx.fillRect(0,sy,W,1);}
+    ctx.globalAlpha=1;
+
+    // Scene label
+    if(playing){
+      ctx.fillStyle='rgba(249,115,22,0.4)'; ctx.font='10px Courier New,monospace';
+      ctx.textAlign='left';
+      ctx.fillText('SCENE '+(curScene+1)+' / '+SCENES.length+' — '+SCENES[curScene].label,12,H-10);
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+  requestAnimationFrame(loop);
+  // Auto-play once
+  setTimeout(playTitleSeq,800);
+})();
+</script>
+
+
+<!-- SECTION 6 — COMPOSITING MOTION PLAYGROUND -->
+<section id="comp-section">
+  <span class="section-label hidden stagger-1">06 / Compositing</span>
+  <h2 class="section-title hidden stagger-2">Compositing Motion Playground</h2>
+  <p class="section-desc hidden stagger-3">Four live animated layers — each with opacity, blend mode, and position controls. Click a layer to select it.</p>
+  <div class="grid-2" style="gap:1rem;margin-bottom:1rem">
+    <div>
+      <div id="layerControls">
+        <div class="layer-row selected" data-layer="3" onclick="selectLayer(3)">
+          <span class="layer-label">L4 BG</span>
+          <label style="font-size:.6rem;color:var(--dim)">OPC</label>
+          <input type="range" id="op3" min="0" max="100" value="100">
+          <select id="bm3" onchange="updateLayer()"><option>normal</option><option>screen</option><option>multiply</option><option>overlay</option><option>add</option></select>
+          <button class="btn" onclick="toggleAnim(3)">ANIM</button>
+        </div>
+        <div class="layer-row" data-layer="2" onclick="selectLayer(2)">
+          <span class="layer-label">L3 PARTS</span>
+          <label style="font-size:.6rem;color:var(--dim)">OPC</label>
+          <input type="range" id="op2" min="0" max="100" value="80">
+          <select id="bm2" onchange="updateLayer()"><option>normal</option><option selected>screen</option><option>multiply</option><option>overlay</option><option>add</option></select>
+          <button class="btn" onclick="toggleAnim(2)">ANIM</button>
+        </div>
+        <div class="layer-row" data-layer="1" onclick="selectLayer(1)">
+          <span class="layer-label">L2 SHAPE</span>
+          <label style="font-size:.6rem;color:var(--dim)">OPC</label>
+          <input type="range" id="op1" min="0" max="100" value="90">
+          <select id="bm1" onchange="updateLayer()"><option>normal</option><option>screen</option><option>multiply</option><option selected>overlay</option><option>add</option></select>
+          <button class="btn" onclick="toggleAnim(1)">ANIM</button>
+        </div>
+        <div class="layer-row" data-layer="0" onclick="selectLayer(0)">
+          <span class="layer-label">L1 TEXT</span>
+          <label style="font-size:.6rem;color:var(--dim)">OPC</label>
+          <input type="range" id="op0" min="0" max="100" value="100">
+          <select id="bm0" onchange="updateLayer()"><option>normal</option><option>screen</option><option>multiply</option><option>overlay</option><option>add</option></select>
+          <button class="btn" onclick="toggleAnim(0)">ANIM</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:120px">
+        <label style="font-family:Courier New,monospace;font-size:.62rem;color:var(--dim);display:block;margin-bottom:.3rem">OFFSET X</label>
+        <input type="range" id="offX" min="-100" max="100" value="0" style="-webkit-appearance:none;appearance:none;height:2px;background:rgba(249,115,22,.25);border-radius:1px;outline:none;cursor:pointer;width:100%">
+      </div>
+      <div style="flex:1;min-width:120px">
+        <label style="font-family:Courier New,monospace;font-size:.62rem;color:var(--dim);display:block;margin-bottom:.3rem">OFFSET Y</label>
+        <input type="range" id="offY" min="-100" max="100" value="0" style="-webkit-appearance:none;appearance:none;height:2px;background:rgba(249,115,22,.25);border-radius:1px;outline:none;cursor:pointer;width:100%">
+      </div>
+    </div>
+  </div>
+  <div class="canvas-box hidden stagger-4" style="width:100%;height:380px">
+    <canvas id="compCanvas" height="380"></canvas>
+  </div>
+</section>
+
+<!-- SECTION 7 — AUDIOVISUAL MOTION SYNC -->
+<section id="av-section">
+  <span class="section-label hidden stagger-1">07 / AV Sync</span>
+  <h2 class="section-title hidden stagger-2">Audiovisual Motion Sync</h2>
+  <p class="section-desc hidden stagger-3">Four shapes react to simulated frequency bands — bass, low-mid, high-mid, treble. Each pulsing to its own rhythm.</p>
+  <div class="ctrl-row hidden stagger-3">
+    <label>BPM</label><input type="range" id="avBPM" min="60" max="180" value="120">
+    <span id="bpmDisplay" style="font-family:Courier New,monospace;font-size:.7rem;color:var(--accent)">120</span>
+    <label>INTENSITY</label><input type="range" id="avIntensity" min="0" max="100" value="70">
+    <label>STYLE</label>
+    <select id="avStyle">
+      <option value="subtle">Subtle</option>
+      <option value="medium" selected>Medium</option>
+      <option value="reactive">Reactive</option>
+      <option value="explosive">Explosive</option>
+    </select>
+  </div>
+  <div class="canvas-box hidden stagger-4" style="width:100%;height:380px">
+    <canvas id="avCanvas" height="380"></canvas>
+  </div>
+  <p class="motion-quote">"Music gives motion its meaning."</p>
+</section>
+
+<script>
+// ===== SECTION 6 — COMPOSITING =====
+(function(){
+  var canvas=document.getElementById('compCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H=380,lastT=0,elapsed=0;
+  var selLayer=3;
+  var anims=[false,true,true,true]; // layer anim on/off
+  var offsets=[
+    {x:new LagFilter(0,0.15),y:new LagFilter(0,0.15)},
+    {x:new LagFilter(0,0.15),y:new LagFilter(0,0.15)},
+    {x:new LagFilter(0,0.15),y:new LagFilter(0,0.15)},
+    {x:new LagFilter(0,0,15),y:new LagFilter(0,0.15)}
+  ];
+  var offXLag=new LagFilter(0,0.12), offYLag=new LagFilter(0,0.12);
+
+  window.selectLayer=function(n){
+    selLayer=n;
+    document.querySelectorAll('.layer-row').forEach(function(r){
+      r.classList.toggle('selected',parseInt(r.dataset.layer)===n);
+    });
+  };
+  window.toggleAnim=function(n){anims[n]=!anims[n];};
+  window.updateLayer=function(){};
+
+  // Particle pool for layer 2
+  var particles=Array.from({length:60},function(){return {
+    x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*0.0008,vy:(Math.random()-.5)*0.0008,r:Math.random()*2+1
+  };});
+
+  function resize(){W=canvas.parentElement.offsetWidth||900;canvas.width=W;canvas.height=H;}
+
+  function getOp(i){return (parseFloat(document.getElementById('op'+i).value)||100)/100;}
+  function getBM(i){
+    var v=document.getElementById('bm'+i).value;
+    if(v==='add')return 'lighter';
+    if(v==='normal')return 'source-over';
+    return v;
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t; elapsed+=dt;
+    offXLag.set(parseFloat(document.getElementById('offX').value)||0);
+    offYLag.set(parseFloat(document.getElementById('offY').value)||0);
+    offXLag.update(dt); offYLag.update(dt);
+    for(var i=0;i<offsets.length;i++){offsets[i].x.update(dt);offsets[i].y.update(dt);}
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H);
+
+    // Layer 4 (bg) — animated gradient
+    ctx.save();
+    ctx.globalCompositeOperation=getBM(3);
+    ctx.globalAlpha=getOp(3);
+    var cx=(selLayer===3?offXLag.value:0), cy2=(selLayer===3?offYLag.value:0);
+    if(anims[3]){
+      var gr=ctx.createRadialGradient(W/2+Math.sin(elapsed*0.3)*80+cx,H/2+Math.cos(elapsed*0.2)*50+cy2,10,W/2+cx,H/2+cy2,Math.max(W,H)*0.7);
+      gr.addColorStop(0,'rgba(249,115,22,0.18)');
+      gr.addColorStop(0.5,'rgba(26,12,0,0.8)');
+      gr.addColorStop(1,'rgba(4,2,0,1)');
+    } else {
+      var gr=ctx.createRadialGradient(W/2+cx,H/2+cy2,10,W/2+cx,H/2+cy2,Math.max(W,H)*0.7);
+      gr.addColorStop(0,'rgba(249,115,22,0.12)');
+      gr.addColorStop(1,'rgba(4,2,0,1)');
+    }
+    ctx.fillStyle=gr; ctx.fillRect(0,0,W,H);
+    if(selLayer===3){ctx.strokeStyle='rgba(249,115,22,0.5)';ctx.lineWidth=2;ctx.strokeRect(2,2,W-4,H-4);}
+    ctx.restore();
+
+    // Layer 3 (particles)
+    ctx.save();
+    ctx.globalCompositeOperation=getBM(2);
+    ctx.globalAlpha=getOp(2);
+    var pox=(selLayer===2?offXLag.value:0), poy=(selLayer===2?offYLag.value:0);
+    for(var i=0;i<particles.length;i++){
+      var p=particles[i];
+      if(anims[2]){p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>1)p.vx*=-1; if(p.y<0||p.y>1)p.vy*=-1;}
+      ctx.beginPath();
+      ctx.arc(p.x*W+pox,p.y*H+poy,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(251,191,36,0.55)'; ctx.fill();
+    }
+    if(selLayer===2){ctx.strokeStyle='rgba(249,115,22,0.5)';ctx.lineWidth=2;ctx.strokeRect(2,2,W-4,H-4);}
+    ctx.restore();
+
+    // Layer 2 (rotating polygon)
+    ctx.save();
+    ctx.globalCompositeOperation=getBM(1);
+    ctx.globalAlpha=getOp(1);
+    var sox=(selLayer===1?offXLag.value:0), soy=(selLayer===1?offYLag.value:0);
+    var sides=6, r3=Math.min(W,H)*0.22;
+    var rot=anims[1]?elapsed*0.4:0;
+    ctx.translate(W/2+sox,H/2+soy); ctx.rotate(rot);
+    ctx.beginPath();
+    for(var vi=0;vi<sides;vi++){
+      var ang=vi*Math.PI*2/sides-Math.PI/2;
+      if(vi===0)ctx.moveTo(Math.cos(ang)*r3,Math.sin(ang)*r3);
+      else ctx.lineTo(Math.cos(ang)*r3,Math.sin(ang)*r3);
+    }
+    ctx.closePath();
+    ctx.strokeStyle='#f97316'; ctx.lineWidth=2;
+    ctx.shadowBlur=18; ctx.shadowColor='#f97316'; ctx.stroke(); ctx.shadowBlur=0;
+    // Inner ring
+    ctx.beginPath(); ctx.arc(0,0,r3*0.45,0,Math.PI*2);
+    ctx.strokeStyle='rgba(251,191,36,0.6)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.restore();
+    if(selLayer===1){ctx.save();ctx.strokeStyle='rgba(249,115,22,0.5)';ctx.lineWidth=2;ctx.strokeRect(2,2,W-4,H-4);ctx.restore();}
+
+    // Layer 1 (text)
+    ctx.save();
+    ctx.globalCompositeOperation=getBM(0);
+    ctx.globalAlpha=getOp(0);
+    var tox=(selLayer===0?offXLag.value:0), toy=(selLayer===0?offYLag.value:0);
+    var tfs=Math.min(Math.max(W*0.06,22),56);
+    ctx.font='bold '+tfs+'px Courier New,monospace';
+    ctx.textAlign='center';
+    ctx.fillStyle='#fbbf24';
+    ctx.shadowBlur=20; ctx.shadowColor='#f97316';
+    if(anims[0]){
+      ctx.fillText('COMPOSITE',W/2+tox+Math.sin(elapsed*0.8)*8,H/2+toy+Math.cos(elapsed*0.5)*5);
+    } else {
+      ctx.fillText('COMPOSITE',W/2+tox,H/2+toy);
+    }
+    ctx.shadowBlur=0; ctx.restore();
+    if(selLayer===0){ctx.save();ctx.strokeStyle='rgba(249,115,22,0.5)';ctx.lineWidth=2;ctx.strokeRect(2,2,W-4,H-4);ctx.restore();}
+
+    // Scanlines
+    ctx.globalAlpha=0.04; ctx.fillStyle='rgba(0,0,0,1)';
+    for(var sy=0;sy<H;sy+=2){ctx.fillRect(0,sy,W,1);}
+    ctx.globalAlpha=1;
+
+    requestAnimationFrame(loop);
+  }
+
+  resize(); window.addEventListener('resize',resize);
+  requestAnimationFrame(loop);
+})();
+
+// ===== SECTION 7 — AV MOTION SYNC =====
+(function(){
+  var canvas=document.getElementById('avCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H=380,lastT=0,elapsed=0;
+
+  // Simulated frequency bands
+  var BANDS=[
+    {name:'BASS',  color:'#f97316',tau:0.08,freq:0.7,phase:0},
+    {name:'LOW-MID',color:'#fbbf24',tau:0.10,freq:1.3,phase:Math.PI*0.5},
+    {name:'HI-MID', color:'#fb923c',tau:0.07,freq:2.1,phase:Math.PI},
+    {name:'TREBLE', color:'#fdba74',tau:0.06,freq:3.8,phase:Math.PI*1.5}
+  ];
+  var bands=BANDS.map(function(b){return new LagFilter(0,b.tau);});
+
+  var SHAPES=['circle','square','triangle','hexagon'];
+  var shapeScales=BANDS.map(function(){return new LagFilter(1,0.1);});
+  var shapeRots=BANDS.map(function(){return new LagFilter(0,0.2);});
+  var shapeTx=BANDS.map(function(){return new LagFilter(0,0.15);});
+  var shapeTy=BANDS.map(function(){return new LagFilter(0,0.15);});
+
+  function resize(){W=canvas.parentElement.offsetWidth||900;canvas.width=W;canvas.height=H;}
+
+  function drawWave(bpmVal){
+    var wH=H*0.32, wY=H*0.18;
+    ctx.save();
+    ctx.strokeStyle='rgba(249,115,22,0.5)'; ctx.lineWidth=1.5;
+    ctx.beginPath();
+    for(var xi=0;xi<W;xi+=2){
+      var xn=xi/W;
+      var y=wY+Math.sin(xn*Math.PI*8+elapsed*bpmVal*0.05)*bands[0].value*wH*0.5
+            +Math.sin(xn*Math.PI*14+elapsed*bpmVal*0.08)*bands[1].value*wH*0.3
+            +Math.sin(xn*Math.PI*24+elapsed*bpmVal*0.14)*bands[2].value*wH*0.2
+            +Math.sin(xn*Math.PI*40+elapsed*bpmVal*0.22)*bands[3].value*wH*0.1;
+      if(xi===0)ctx.moveTo(xi,y); else ctx.lineTo(xi,y);
+    }
+    ctx.stroke();
+    // RMS envelope
+    var envH=bands[0].value*wH*0.4;
+    ctx.globalAlpha=0.12;
+    ctx.fillStyle='#f97316';
+    ctx.fillRect(0,wY-envH,W,envH*2);
+    ctx.globalAlpha=1;
+    ctx.restore();
+  }
+
+  function drawShape(i,cx,cy,maxR,bval,style){
+    var scale=shapeScales[i].value;
+    var rot=shapeRots[i].value;
+    var tx2=shapeTx[i].value;
+    var ty2=shapeTy[i].value;
+    var r=maxR*scale;
+    var col=BANDS[i].color;
+    ctx.save();
+    ctx.translate(cx+tx2,cy+ty2);
+    ctx.rotate(rot);
+    ctx.shadowBlur=bval*30+4;
+    ctx.shadowColor=col;
+    ctx.strokeStyle=col; ctx.lineWidth=2;
+    ctx.fillStyle=col.replace(')',',0.15)').replace('rgb','rgba').replace('#','rgba(').replace(/,/g,',');
+    // simpler: just use globalAlpha
+    ctx.globalAlpha=0.15+bval*0.3;
+    ctx.beginPath();
+    if(SHAPES[i]==='circle'){
+      ctx.arc(0,0,r,0,Math.PI*2);
+    } else if(SHAPES[i]==='square'){
+      ctx.rect(-r,-r,r*2,r*2);
+    } else if(SHAPES[i]==='triangle'){
+      for(var vi=0;vi<3;vi++){var a=vi*Math.PI*2/3-Math.PI/2;vi===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}
+      ctx.closePath();
+    } else {
+      for(var vi=0;vi<6;vi++){var a=vi*Math.PI*2/6-Math.PI/2;vi===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}
+      ctx.closePath();
+    }
+    ctx.fill();
+    ctx.globalAlpha=0.7+bval*0.3;
+    ctx.stroke();
+    ctx.shadowBlur=0;
+    // Label
+    ctx.globalAlpha=0.5;
+    ctx.fillStyle=col;
+    ctx.font='10px Courier New,monospace';
+    ctx.textAlign='center';
+    ctx.fillText(BANDS[i].name,0,r+18);
+    ctx.restore();
+  }
+
+  function loop(t){
+    var dt=Math.min((t-lastT)*0.001,0.05); lastT=t; elapsed+=dt;
+    var bpmVal=parseFloat(document.getElementById('avBPM').value)||120;
+    var intensity=(parseFloat(document.getElementById('avIntensity').value)||70)/100;
+    var style=document.getElementById('avStyle').value;
+    document.getElementById('bpmDisplay').textContent=Math.round(bpmVal);
+    var styleScale={subtle:0.4,medium:0.7,reactive:1.0,explosive:1.5}[style]||0.7;
+    var amp=intensity*styleScale;
+
+    // Simulate band signals
+    var beat=elapsed*bpmVal/60;
+    for(var i=0;i<4;i++){
+      var b=BANDS[i];
+      var raw=(Math.sin(beat*b.freq*Math.PI+b.phase)*0.5+0.5);
+      raw=Math.pow(raw,1.5)*amp;
+      if(i===0)raw=Math.pow(Math.max(0,Math.sin(beat*Math.PI)),4)*amp*1.2;
+      bands[i].set(raw); bands[i].update(dt);
+    }
+
+    // Update shape transforms
+    for(var i=0;i<4;i++){
+      var bv=bands[i].value;
+      shapeScales[i].set(1+bv*amp*(i===0?0.5:0.3));
+      shapeScales[i].update(dt);
+      shapeRots[i].set(elapsed*(i+1)*0.15*amp);
+      shapeRots[i].update(dt);
+      if(i===3){shapeTx[i].set(Math.sin(elapsed*2.2)*bv*40*amp);shapeTx[i].update(dt);}
+      if(i===2){shapeTy[i].set(Math.sin(elapsed*1.8)*bv*30*amp);shapeTy[i].update(dt);}
+    }
+
+    // Draw
+    ctx.globalAlpha=0.1; ctx.fillStyle='#040200'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    drawWave(bpmVal);
+
+    // Divider
+    ctx.save(); ctx.strokeStyle='rgba(249,115,22,0.15)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,H*0.42); ctx.lineTo(W,H*0.42); ctx.stroke(); ctx.restore();
+
+    // Draw 4 shapes in bottom half
+    var shapeY=H*0.7, colW=W/4;
+    for(var i=0;i<4;i++){
+      var cx=colW*i+colW/2;
+      drawShape(i,cx,shapeY,colW*0.28,bands[i].value,style);
+    }
+
+    // Scanlines
+    ctx.globalAlpha=0.04; ctx.fillStyle='rgba(0,0,0,1)';
+    for(var sy=0;sy<H;sy+=2){ctx.fillRect(0,sy,W,1);} ctx.globalAlpha=1;
+    requestAnimationFrame(loop);
+  }
+
+  resize(); window.addEventListener('resize',resize);
+  requestAnimationFrame(loop);
+})();
+</script>
+
+
+<!-- SECTION 8 — ARTISTS -->
+<section id="artists-section">
+  <span class="section-label hidden stagger-1">08 / Notable Artists</span>
+  <h2 class="section-title hidden stagger-2">Motion Graphics Artists & Studios</h2>
+  <p class="section-desc hidden stagger-3">The designers and studios who defined the discipline — from Saul Bass's foundational title sequences to today's digital studios.</p>
+  <div class="artists-grid hidden stagger-4">
+    <div class="artist-card">
+      <div class="artist-name">Saul Bass</div>
+      <div class="artist-era">1920 – 1996 · Pioneer</div>
+      <div class="artist-style">The grandfather of motion graphics. Proved that opening credits could set an entire film's emotional tone through kinetic design. Every letterform had intention.</div>
+      <div class="artist-work">Psycho · Vertigo · Anatomy of a Murder · West Side Story</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Kyle Cooper</div>
+      <div class="artist-era">b. 1962 · Prologue Films</div>
+      <div class="artist-style">Established the "damaged" aesthetic of 1990s title design. Se7en's scratched film, reversed type, and cut-up collage defined a decade of gritty motion design.</div>
+      <div class="artist-work">Se7en · Spider-Man · The Walking Dead</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Imaginary Forces</div>
+      <div class="artist-era">est. 1996 · LA / NYC</div>
+      <div class="artist-style">Co-founded by Kyle Cooper. Pioneered the commercial title sequence renaissance. Complex narrative motion design with cinematic ambition.</div>
+      <div class="artist-work">Mad Men · True Detective S2 · Captain America</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Buck Design</div>
+      <div class="artist-era">est. 2004 · LA / NY / Sydney</div>
+      <div class="artist-style">The defining contemporary motion studio. Bold graphic sensibility, sophisticated brand storytelling, and technical mastery. The benchmark of professional motion output.</div>
+      <div class="artist-work">Google · Apple · Nike · MTV Brand</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">ManvsMachine</div>
+      <div class="artist-era">est. 2007 · London</div>
+      <div class="artist-style">Luxury brand motion and product visualization. Technically exceptional, aesthetically cool. Known for precise mechanical motion and immaculate finish quality.</div>
+      <div class="artist-work">Nike · Jaguar · Google hardware campaigns</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Gmunk</div>
+      <div class="artist-era">Bradley G. Munkowitz · SF</div>
+      <div class="artist-style">UI motion as cinema. Fantasy interfaces that became the visual language of an era. Dense information aesthetics and neon-lit atmosphere with real craft underneath.</div>
+      <div class="artist-work">Tron: Legacy · Oblivion · Ghost in the Shell</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Matt Pyke / Universal Everything</div>
+      <div class="artist-era">est. 2004 · Sheffield</div>
+      <div class="artist-style">Studio at the edge of motion, installation, and digital art. Generative aesthetics, evolutionary form, and works that blur commercial and gallery contexts.</div>
+      <div class="artist-work">Nike Flyknit · Audi · Installation commissions</div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-name">Ash Thorp</div>
+      <div class="artist-era">Contemporary · Multi-disciplinary</div>
+      <div class="artist-style">Concept artist, designer, and director. Complex layered compositions, dark atmospheric palettes, and motion design with genuine artistic depth beyond commercial work.</div>
+      <div class="artist-work">Ghost in the Shell · Total Recall · RAMA project</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 — GLOSSARY -->
+<section id="glossary-section">
+  <span class="section-label hidden stagger-1">09 / Glossary</span>
+  <h2 class="section-title hidden stagger-2">Motion Graphics Glossary</h2>
+  <p class="section-desc hidden stagger-3">The vocabulary of motion design — from the 12 principles to the graph editor. Twenty-two terms every practitioner should know.</p>
+  <div class="glossary-grid hidden stagger-4">
+    <div class="gloss-item">
+      <span class="gloss-term">ARC</span>
+      <div class="gloss-def">Natural motion follows curved trajectories, not straight lines. Objects that move in pure linear paths feel mechanical and lifeless. The arc is nature's default movement path.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">ANTICIPATION</span>
+      <div class="gloss-def">A preparatory motion in the opposite direction before the main action. Increases impact and readability. The wind-up before the throw — one of Disney's 12 principles.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">BEZIER CURVE</span>
+      <div class="gloss-def">A parametric curve defined by anchor points and control handles. The mathematical foundation of motion paths, easing curves, and vector shapes in every major motion tool.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">BLEND MODE</span>
+      <div class="gloss-def">How a layer combines with layers below it. Screen (brightens), Multiply (darkens), Overlay (contrast), Add (luminosity). Compositing's fundamental grammar of light interaction.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">COMPOSITING</span>
+      <div class="gloss-def">The process of layering multiple visual elements to create a unified image. From background plates to particle effects — compositing is the assembly phase of motion design.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">EASING (SLOW IN/OUT)</span>
+      <div class="gloss-def">The acceleration and deceleration of motion over time. Ease in = accelerates from rest. Ease out = decelerates to rest. Ease in-out = both. Linear motion always looks mechanical.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">EXPRESSIONS</span>
+      <div class="gloss-def">JavaScript-based code in After Effects that procedurally controls property values. wiggle(), loopOut(), thisComp.layer() — expressions unlock fully generative animation behavior.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">FOLLOW-THROUGH</span>
+      <div class="gloss-def">Parts of an object continue moving after the main body has stopped. A character's hair keeps swinging after they halt. Communicates weight, physics, and organic system behavior.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">FRAME RATE</span>
+      <div class="gloss-def">Frames per second (fps). 24fps = cinematic. 30fps = broadcast. 60fps = gaming/UI. Higher rates feel smoother but less "filmic." Motion blur compensates at lower frame rates.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">INTERPOLATION</span>
+      <div class="gloss-def">The calculation of in-between values between keyframes. Linear interpolation = constant rate. Bezier interpolation = custom velocity curve. Hold interpolation = no change between keys.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">KEYFRAME</span>
+      <div class="gloss-def">A marker at a specific time that defines a property's value. The software interpolates between keyframes to generate motion. The fundamental unit of timeline-based animation.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">KINETIC TYPOGRAPHY</span>
+      <div class="gloss-def">Text that moves — letterforms animated to amplify meaning, emotion, or rhythm. The motion becomes inseparable from the message. From Saul Bass to contemporary title design.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">LAYER</span>
+      <div class="gloss-def">A single element in a composition — footage, shape, text, solid, camera, light, or null. Layers stack in the timeline and composite in the viewport. The atom of compositing.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">MOTION BLUR</span>
+      <div class="gloss-def">The blurring of fast-moving objects across frames, simulating camera shutter exposure time. Essential for natural-feeling motion — without it, fast movement appears strobed and harsh.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">NULL OBJECT</span>
+      <div class="gloss-def">An invisible layer used as a parent control. Animate the null, and all children follow. Used for camera rigs, grouped layer control, and expression targets in complex compositions.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">OVERSHOOT</span>
+      <div class="gloss-def">Motion that goes past its target before settling back. Communicates energy and elasticity. The classic "bounce settle" that makes UI motion feel alive rather than mechanical.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">PRECOMP</span>
+      <div class="gloss-def">Pre-composition: collapsing multiple layers into a single composition layer. Organizes complexity, enables effects on groups, and is essential architecture for any complex motion piece.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">SECONDARY MOTION</span>
+      <div class="gloss-def">Additional motion generated by the primary action — a tail following its body, fabric rippling after a gesture. Adds depth and believability to every element in the frame.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">SPACING</span>
+      <div class="gloss-def">The distance between consecutive animation frames. Close spacing = slow motion. Wide spacing = fast motion. Spacing IS the velocity — adjusting it is how animators control perceived speed.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">SQUASH AND STRETCH</span>
+      <div class="gloss-def">Deforming an object at the extremes of its motion to communicate weight and elasticity. The most powerful of Disney's 12 principles — it makes everything feel physically real.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">STAGING</span>
+      <div class="gloss-def">Presenting an idea clearly so it is unmistakable. In motion, staging means silhouette, timing, and composition all work together to direct attention to exactly one thing at a time.</div>
+    </div>
+    <div class="gloss-item">
+      <span class="gloss-term">TIMING</span>
+      <div class="gloss-def">How long an action takes to complete. Slow timing = weight, drama, importance. Fast timing = lightness, comedy, energy. Timing is the single most expressive variable in animation.</div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+// ===== INTERSECTION OBSERVER — section reveal =====
+(function(){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        e.target.classList.remove('hidden');
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.hidden').forEach(function(el){io.observe(el);});
+})();
+
+// ===== NAV ACTIVE LINK =====
+(function(){
+  var sections=document.querySelectorAll('section,[id]');
+  var links=document.querySelectorAll('.nav-links a');
+  function update(){
+    var scrollY=window.scrollY+80;
+    var current='';
+    sections.forEach(function(s){
+      if(s.offsetTop<=scrollY) current=s.id||'';
+    });
+    links.forEach(function(a){
+      var href=a.getAttribute('href').replace('#','');
+      a.classList.toggle('active',href===current);
+    });
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+</script>
+
+</body>
+</html>

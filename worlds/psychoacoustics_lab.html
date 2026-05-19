@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring psychoacoustics">
+    <meta property="og:title" content="Psychoacoustics Lab — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring psychoacoustics">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/psychoacoustics_lab.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN Music World 09 — Psychoacoustics Lab</title>
+<style>
+:root {
+  --black:#05050a; --surface:#0d0d14; --border:#1e1e2e;
+  --text:#e2e8f0; --dim:#64748b; --accent:#0ea5e9;
+  --amber:#f59e0b; --violet:#8b5cf6; --green:#10b981;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Courier New',monospace;overflow-x:hidden;}
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,10,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:2px;padding:6px 12px;}
+#nav a{color:var(--dim);text-decoration:none;font-size:10px;letter-spacing:.08em;padding:4px 8px;border-radius:3px;transition:color .2s,background .2s;white-space:nowrap;}
+#nav a:hover,#nav a.active{color:var(--accent);background:rgba(14,165,233,.12);}
+/* HERO */
+#hero{position:relative;width:100%;height:100vh;display:flex;align-items:flex-end;justify-content:center;}
+#hero-canvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;}
+.hero-overlay{position:relative;z-index:2;text-align:center;padding-bottom:80px;pointer-events:none;}
+.hero-overlay h1{font-size:clamp(24px,5vw,64px);letter-spacing:.15em;color:var(--accent);text-shadow:0 0 40px #0ea5e9aa;}
+.hero-overlay p{color:var(--dim);letter-spacing:.12em;font-size:clamp(10px,1.5vw,14px);margin-top:8px;}
+.hero-ctrl{pointer-events:all;margin-top:20px;}
+.hero-ctrl label{color:var(--dim);font-size:11px;display:block;margin-bottom:4px;}
+/* MAIN CONTENT */
+#content{position:relative;z-index:10;margin-top:100vh;}
+section{background:var(--surface);border-top:1px solid var(--border);padding:60px 24px;max-width:1100px;margin:0 auto;}
+section h2{color:var(--accent);font-size:clamp(14px,2.5vw,22px);letter-spacing:.12em;margin-bottom:6px;}
+section .sec-sub{color:var(--dim);font-size:11px;letter-spacing:.08em;margin-bottom:28px;}
+canvas{display:block;background:var(--black);border:1px solid var(--border);border-radius:4px;}
+/* CONTROLS */
+.ctrl-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0;}
+.ctrl-row label{color:var(--dim);font-size:11px;min-width:120px;}
+input[type=range]{-webkit-appearance:none;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);}
+.btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:6px 16px;border-radius:3px;font-family:'Courier New',monospace;font-size:11px;cursor:pointer;letter-spacing:.08em;transition:background .2s;}
+.btn:hover{background:rgba(14,165,233,.15);}
+.btn.active{background:rgba(14,165,233,.25);}
+.btn.amber{border-color:var(--amber);color:var(--amber);}
+.btn.amber:hover{background:rgba(245,158,11,.15);}
+.btn.violet{border-color:var(--violet);color:var(--violet);}
+.btn.green{border-color:var(--green);color:var(--green);}
+/* EDUCATION CARD */
+.edu-card{background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.2);border-radius:4px;padding:14px 18px;margin-top:20px;font-size:12px;line-height:1.7;color:var(--dim);}
+.edu-card strong{color:var(--accent);}
+/* ARTISTS */
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:20px;}
+.artist-card{background:rgba(14,165,233,.05);border:1px solid var(--border);border-radius:4px;padding:16px;}
+.artist-card h3{color:var(--accent);font-size:13px;letter-spacing:.08em;}
+.artist-card .practice{color:var(--dim);font-size:10px;margin:6px 0;}
+.artist-card .work{color:var(--text);font-size:11px;}
+.artist-card .concept{color:var(--dim);font-size:10px;font-style:italic;margin-top:6px;line-height:1.5;}
+/* GLOSSARY */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:20px;}
+.gloss-item{background:rgba(14,165,233,.04);border:1px solid var(--border);border-radius:3px;padding:10px 12px;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s;}
+.gloss-item.visible{opacity:1;transform:none;}
+.gloss-item dt{color:var(--accent);font-size:11px;letter-spacing:.06em;}
+.gloss-item dd{color:var(--dim);font-size:10px;margin-top:4px;line-height:1.5;}
+/* hidden + visible for intersection */
+.hidden{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s;}
+.hidden.visible{opacity:1;transform:none;}
+/* VALUE DISPLAY */
+.val{color:var(--accent);font-size:12px;min-width:48px;display:inline-block;}
+/* TOGGLE */
+.toggle-row{display:flex;gap:8px;margin:8px 0;}
+/* two canvas side by side */
+.canvas-pair{display:flex;gap:12px;flex-wrap:wrap;}
+.canvas-pair canvas{flex:1;min-width:200px;}
+</style>
+</head>
+<body class="domain-music">
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero">Hero</a>
+  <a href="#sec-equal-loudness">Equal Loudness</a>
+  <a href="#sec-masking">Masking</a>
+  <a href="#sec-critical">Critical Bands</a>
+  <a href="#sec-haas">Haas Effect</a>
+  <a href="#sec-binaural">Binaural Beats</a>
+  <a href="#sec-loudness-war">Loudness War</a>
+  <a href="#sec-cocktail">Cocktail Party</a>
+  <a href="#sec-earmap">Ear Map</a>
+  <a href="#sec-oae">Otoacoustic</a>
+  <a href="#sec-artists">Artists</a>
+  <a href="#sec-glossary">Glossary</a>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay">
+    <h1>PSYCHOACOUSTICS LAB</h1>
+    <p>THE SCIENCE OF HEARING ITSELF · WAVGEN MUSIC WORLD 09</p>
+    <div class="hero-ctrl">
+      <label>FREQUENCY PROBE <span id="hero-freq-val" class="val">1000 Hz</span></label>
+      <input type="range" id="hero-freq" min="0" max="1" step="0.001" value="0.5" style="width:280px;">
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 2 — EQUAL LOUDNESS LANDSCAPE
+══════════════════════════════════════════════════ -->
+<section id="sec-equal-loudness" class="hidden">
+  <h2>02 · EQUAL-LOUDNESS LANDSCAPE</h2>
+  <p class="sec-sub">ISO 226 CONTOURS — THE TOPOGRAPHY OF PERCEPTION</p>
+  <canvas id="el-canvas" width="1000" height="340" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>LISTENING LEVEL</label>
+    <input type="range" id="el-spl" min="40" max="100" value="70" style="width:220px;">
+    <span id="el-spl-val" class="val">70 dB</span>
+  </div>
+  <div class="ctrl-row">
+    <label>TONE A (AMBER)</label>
+    <input type="range" id="el-freqA" min="0" max="1" step="0.001" value="0.2" style="width:200px;">
+    <span id="el-freqA-val" class="val">100 Hz</span>
+    &nbsp;
+    <label>TONE B (CYAN)</label>
+    <input type="range" id="el-freqB" min="0" max="1" step="0.001" value="0.5" style="width:200px;">
+    <span id="el-freqB-val" class="val">1000 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn amber" id="el-playA">▶ PLAY A</button>
+    <button class="btn" id="el-playB">▶ PLAY B</button>
+    <button class="btn green" id="el-playBoth">▶ PLAY BOTH</button>
+    <button class="btn" id="el-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>EQUAL LOUDNESS</strong> — At low SPL, bass sounds weaker proportionally. The curves bow upward at the frequency extremes, meaning more physical energy is needed to achieve equal perceived loudness. Loudness controls on hi-fi systems compensate for this by boosting bass and treble at low listening levels.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 3 — MASKING SHADOW
+══════════════════════════════════════════════════ -->
+<section id="sec-masking" class="hidden">
+  <h2>03 · THE MASKING SHADOW</h2>
+  <p class="sec-sub">SIMULTANEOUS &amp; TEMPORAL MASKING — HOW LOUD SOUNDS ERASE QUIET ONES</p>
+  <canvas id="mask-canvas" width="1000" height="300" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>MASKER FREQUENCY</label>
+    <input type="range" id="mask-freq" min="0" max="1" step="0.001" value="0.4" style="width:200px;">
+    <span id="mask-freq-val" class="val">1000 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <label>MASKER LEVEL</label>
+    <input type="range" id="mask-level" min="20" max="100" value="70" style="width:200px;">
+    <span id="mask-level-val" class="val">70 dB</span>
+    &nbsp;
+    <label>TARGET FREQUENCY</label>
+    <input type="range" id="mask-target" min="0" max="1" step="0.001" value="0.5" style="width:200px;">
+    <span id="mask-target-val" class="val">2000 Hz</span>
+  </div>
+  <div class="toggle-row">
+    <button class="btn active" id="mask-simul">SIMULTANEOUS</button>
+    <button class="btn" id="mask-temporal">TEMPORAL</button>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn amber" id="mask-playM">▶ MASKER</button>
+    <button class="btn" id="mask-playT">▶ TARGET</button>
+    <button class="btn green" id="mask-playBoth">▶ BOTH</button>
+    <button class="btn" id="mask-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>PERCEPTUAL MASKING</strong> — Perceptual audio codecs (MP3, AAC) exploit masking to discard sounds hidden in the masking shadow. The masking curve is asymmetric: a loud tone masks more on the high-frequency side than the low. Temporal masking persists ~200ms after the masker stops.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 4 — CRITICAL BAND SIEVE
+══════════════════════════════════════════════════ -->
+<section id="sec-critical" class="hidden">
+  <h2>04 · THE CRITICAL BAND SIEVE</h2>
+  <p class="sec-sub">24 BARK-SCALE BANDS — THE AUDITORY FILTER BANK</p>
+  <canvas id="bark-canvas" width="1000" height="260" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>PRESET DEMO</label>
+    <button class="btn amber" id="bark-sameband">SAME BAND (400+500Hz)</button>
+    <button class="btn" id="bark-diffband">DIFF BANDS (1k+2kHz)</button>
+    <button class="btn violet" id="bark-border">BORDERLINE (3k+3.1kHz)</button>
+  </div>
+  <div class="ctrl-row">
+    <label>FREQ A</label>
+    <input type="range" id="bark-fA" min="20" max="15000" value="400" style="width:180px;">
+    <span id="bark-fA-val" class="val">400 Hz</span>
+    &nbsp;
+    <label>FREQ B</label>
+    <input type="range" id="bark-fB" min="20" max="15000" value="500" style="width:180px;">
+    <span id="bark-fB-val" class="val">500 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn green" id="bark-play">▶ PLAY PAIR</button>
+    <button class="btn" id="bark-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>CRITICAL BANDS</strong> — The auditory system has ~24 critical bands (Bark scale). Sounds within one band compete for neural resources, causing roughness, beating, and masking. Sounds in different bands are processed independently and perceived as distinct tones.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 5 — HAAS EFFECT TIMELINE
+══════════════════════════════════════════════════ -->
+<section id="sec-haas" class="hidden">
+  <h2>05 · THE HAAS EFFECT TIMELINE</h2>
+  <p class="sec-sub">PRECEDENCE EFFECT — HOW TIMING DOMINATES LEVEL IN LOCALIZATION</p>
+  <canvas id="haas-canvas" width="1000" height="280" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>DELAY (SPEAKER B)</label>
+    <input type="range" id="haas-delay" min="0" max="50" value="10" style="width:220px;">
+    <span id="haas-delay-val" class="val">10 ms</span>
+  </div>
+  <div class="ctrl-row">
+    <label>B LEVEL OFFSET</label>
+    <input type="range" id="haas-level" min="0" max="10" value="0" style="width:180px;">
+    <span id="haas-level-val" class="val">+0 dB</span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn green" id="haas-play">▶ PLAY (USE HEADPHONES)</button>
+    <button class="btn" id="haas-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>HAAS / PRECEDENCE EFFECT</strong> — The brain fuses the first-arriving sound with its echo if the delay is under ~35ms, localizing toward the earlier speaker. Concert PA systems delay side-fill speakers to align perception with the stage. Above 35ms, the delayed sound becomes a distinct echo.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 6 — BINAURAL BEAT MACHINE
+══════════════════════════════════════════════════ -->
+<section id="sec-binaural" class="hidden">
+  <h2>06 · BINAURAL BEAT MACHINE</h2>
+  <p class="sec-sub">INTERAURAL FREQUENCY DIFFERENCE — USE HEADPHONES</p>
+  <div class="canvas-pair">
+    <div style="flex:1;min-width:200px;">
+      <p style="color:var(--dim);font-size:10px;margin-bottom:4px;">LEFT EAR — CARRIER</p>
+      <canvas id="bin-left" width="460" height="140" style="width:100%;"></canvas>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <p style="color:var(--dim);font-size:10px;margin-bottom:4px;">RIGHT EAR — CARRIER + BEAT</p>
+      <canvas id="bin-right" width="460" height="140" style="width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="position:relative;margin:16px 0 0;">
+    <p style="color:var(--dim);font-size:10px;margin-bottom:6px;">BRAINWAVE ZONES (beat frequency Hz)</p>
+    <div id="bwzone-display" style="height:28px;border-radius:3px;overflow:hidden;display:flex;font-size:9px;letter-spacing:.06em;border:1px solid var(--border);">
+      <div style="background:#1a2540;flex:0.7;display:flex;align-items:center;justify-content:center;color:#3b82f6;">δ DELTA 0.5–4</div>
+      <div style="background:#1e1530;flex:0.8;display:flex;align-items:center;justify-content:center;color:var(--violet);">θ THETA 4–8</div>
+      <div style="background:#0a1f25;flex:0.8;display:flex;align-items:center;justify-content:center;color:var(--accent);">α ALPHA 8–12</div>
+      <div style="background:#0a2015;flex:3.6;display:flex;align-items:center;justify-content:center;color:var(--green);">β BETA 12–30</div>
+      <div style="background:#251a08;flex:2;display:flex;align-items:center;justify-content:center;color:var(--amber);">γ GAMMA 30–40</div>
+    </div>
+  </div>
+  <div class="ctrl-row" style="margin-top:14px;">
+    <label>CARRIER FREQUENCY</label>
+    <input type="range" id="bin-carrier" min="100" max="400" value="220" style="width:200px;">
+    <span id="bin-carrier-val" class="val">220 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <label>BEAT FREQUENCY</label>
+    <input type="range" id="bin-beat" min="1" max="40" value="10" style="width:200px;">
+    <span id="bin-beat-val" class="val">10 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn green" id="bin-play">▶ PLAY BINAURAL</button>
+    <button class="btn" id="bin-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>SCIENCE:</strong> Binaural beats create a real perceptual pitch corresponding to the frequency difference between ears — a genuine auditory illusion processed in the superior olivary complex.<br><br>
+    <strong>PSEUDOSCIENCE:</strong> Claims that specific frequencies reliably entrain brainwaves to produce measurable cognitive effects (focus, sleep, creativity) lack strong peer-reviewed evidence. Effects observed in small studies may reflect expectation and relaxation rather than neural entrainment.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 7 — LOUDNESS WAR ARCHAEOLOGY
+══════════════════════════════════════════════════ -->
+<section id="sec-loudness-war" class="hidden">
+  <h2>07 · LOUDNESS WAR ARCHAEOLOGY</h2>
+  <p class="sec-sub">1980–2024 — THE COMPRESSION OF MUSIC</p>
+  <canvas id="lw-canvas" width="1000" height="320" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>SELECT ERA</label>
+    <button class="btn active" id="lw-e1980" data-era="0">1980</button>
+    <button class="btn" id="lw-e1990" data-era="1">1990</button>
+    <button class="btn" id="lw-e1998" data-era="2">1998</button>
+    <button class="btn" id="lw-e2005" data-era="3">2005</button>
+    <button class="btn" id="lw-e2008" data-era="4">2008 ⚠</button>
+    <button class="btn" id="lw-e2016" data-era="5">2016+</button>
+  </div>
+  <div id="lw-stats" style="display:flex;gap:24px;margin:10px 0;font-size:12px;">
+    <div>LUFS: <span id="lw-lufs" class="val">-20</span></div>
+    <div>DR: <span id="lw-dr" class="val">14</span></div>
+    <div>DYNAMIC RANGE: <span id="lw-desc" style="color:var(--dim);font-size:11px;">FULL DYNAMIC RANGE</span></div>
+  </div>
+  <div class="edu-card">
+    <strong>LOUDNESS WAR</strong> — Streaming platforms normalize all tracks to −14 LUFS, meaning loud masters play back quieter than dynamic ones. DR values dropped from ~14 in the 1980s to ~5 at the peak (Death Magnetic, 2008). Since 2016, streaming normalization has reversed the incentive to over-compress.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 8 — COCKTAIL PARTY PROBLEM
+══════════════════════════════════════════════════ -->
+<section id="sec-cocktail" class="hidden">
+  <h2>08 · THE COCKTAIL PARTY PROBLEM</h2>
+  <p class="sec-sub">AUDITORY STREAM SEGREGATION — SELECTIVE ATTENTION IN NOISE</p>
+  <canvas id="cp-canvas" width="700" height="400" style="width:100%;max-width:700px;cursor:crosshair;"></canvas>
+  <div class="ctrl-row">
+    <label>REVERB AMOUNT</label>
+    <input type="range" id="cp-reverb" min="0" max="1" step="0.01" value="0.2" style="width:200px;">
+    <span id="cp-reverb-val" class="val">LOW</span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn green" id="cp-play">▶ PLAY ALL SOURCES</button>
+    <button class="btn" id="cp-stop">■ STOP</button>
+    <span style="color:var(--dim);font-size:10px;margin-left:8px;">DRAG SPOTLIGHT OVER SOURCES</span>
+  </div>
+  <div class="edu-card">
+    <strong>COCKTAIL PARTY EFFECT</strong> — The brain performs selective attention automatically, locking onto one audio stream among many. No algorithm perfectly replicates this capability — it remains an open research problem in computational auditory scene analysis (CASA). The phenomenon relies on spatial, spectral, and temporal cues simultaneously.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 9 — EAR FREQUENCY MAP
+══════════════════════════════════════════════════ -->
+<section id="sec-earmap" class="hidden">
+  <h2>09 · EAR FREQUENCY MAP</h2>
+  <p class="sec-sub">TONOTOPIC ORGANIZATION — THE COCHLEA AS A FREQUENCY RULER</p>
+  <canvas id="em-canvas" width="1000" height="200" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>FREQUENCY PROBE</label>
+    <input type="range" id="em-freq" min="0" max="1" step="0.001" value="0.4" style="width:260px;">
+    <span id="em-freq-val" class="val">1000 Hz</span>
+    <button class="btn" id="em-play-tone">▶ PLAY TONE</button>
+    <button class="btn" id="em-stop-tone">■ STOP</button>
+  </div>
+  <div class="ctrl-row">
+    <label>INSTRUMENT OVERLAY</label>
+    <button class="btn" id="em-piano">PIANO</button>
+    <button class="btn amber" id="em-voice">VOICE</button>
+    <button class="btn" id="em-kick">KICK DRUM</button>
+    <button class="btn violet" id="em-cymbal">CYMBAL</button>
+    <button class="btn green" id="em-bass">BASS GTR</button>
+    <button class="btn" id="em-clear">CLEAR</button>
+  </div>
+  <div class="edu-card">
+    <strong>TONOTOPIC ORGANIZATION</strong> — The cochlea physically maps frequencies along its length. Hair cells at the apex respond to bass; those at the base respond to treble. This spatial frequency mapping is preserved throughout the auditory pathway up to the primary auditory cortex (A1). Overlapping instrument harmonics compete for the same hair cells.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 10 — OTOACOUSTIC EMISSION SIMULATOR
+══════════════════════════════════════════════════ -->
+<section id="sec-oae" class="hidden">
+  <h2>10 · OTOACOUSTIC EMISSION SIMULATOR</h2>
+  <p class="sec-sub">COMBINATION TONES — WHEN THE EAR GENERATES ITS OWN FREQUENCIES</p>
+  <canvas id="oae-canvas" width="1000" height="260" style="width:100%;max-width:1000px;"></canvas>
+  <div class="ctrl-row">
+    <label>F1 (AMBER)</label>
+    <input type="range" id="oae-f1" min="100" max="2000" value="500" style="width:200px;">
+    <span id="oae-f1-val" class="val">500 Hz</span>
+  </div>
+  <div class="ctrl-row">
+    <label>F2 (CYAN)</label>
+    <input type="range" id="oae-f2" min="100" max="2000" value="600" style="width:200px;">
+    <span id="oae-f2-val" class="val">600 Hz</span>
+  </div>
+  <div id="oae-derived" style="font-size:11px;color:var(--dim);margin:6px 0;line-height:1.8;">
+    <span>2f1−f2: <span id="oae-cdiff" class="val">400 Hz</span></span> &nbsp;
+    <span>f1+f2: <span id="oae-sum" class="val">1100 Hz</span></span>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn" id="oae-preset">PRESET: 500+600Hz</button>
+    <button class="btn green" id="oae-play">▶ PLAY F1+F2</button>
+    <button class="btn" id="oae-stop">■ STOP</button>
+  </div>
+  <div class="edu-card">
+    <strong>MARYANNE AMACHER</strong> — Amacher's "Third Ear Music" deliberately induced otoacoustic emissions at high SPL — the ear itself became part of the composition, generating difference tones not present in the loudspeakers. The cochlea's active nonlinearity produces combination tones (2f1−f2) audible to the listener but measurable with a microphone in the ear canal.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 11 — ARTISTS
+══════════════════════════════════════════════════ -->
+<section id="sec-artists" class="hidden">
+  <h2>11 · ARTISTS OF PSYCHOACOUSTIC PRACTICE</h2>
+  <p class="sec-sub">COMPOSERS &amp; SOUND ARTISTS WHO MADE THE EAR THE MEDIUM</p>
+  <div class="artists-grid">
+    <div class="artist-card">
+      <h3>ALVIN LUCIER</h3>
+      <p class="practice">Room acoustics, standing waves, brainwave sonification</p>
+      <p class="work"><em>I Am Sitting in a Room</em> (1969)</p>
+      <p class="concept">Recorded speech re-recorded until the room's resonant frequencies obliterate the original words, leaving pure acoustic signature.</p>
+    </div>
+    <div class="artist-card">
+      <h3>MARYANNE AMACHER</h3>
+      <p class="practice">Otoacoustic emissions, architectural sound, extreme SPL</p>
+      <p class="work"><em>City-Links</em> (1967–1980)</p>
+      <p class="concept">Used the ear's own nonlinear distortion as a compositional instrument — the listener's cochlea generated tones not in the loudspeaker signal.</p>
+    </div>
+    <div class="artist-card">
+      <h3>RYOJI IKEDA</h3>
+      <p class="practice">Sinusoidal precision, data sonification, threshold perception</p>
+      <p class="work"><em>test pattern</em> (2008–)</p>
+      <p class="concept">Works at the perceptual limits of frequency and time, making audible the boundary between signal and noise at the edge of hearing.</p>
+    </div>
+    <div class="artist-card">
+      <h3>LA MONTE YOUNG</h3>
+      <p class="practice">Just intonation, drone, sustained frequency ratios</p>
+      <p class="work"><em>The Well-Tuned Piano</em> (1964–)</p>
+      <p class="concept">Extended duration exposes the beating patterns of just intervals — psychoacoustic phenomena become structural elements of the composition.</p>
+    </div>
+    <div class="artist-card">
+      <h3>ÉLIANE RADIGUE</h3>
+      <p class="practice">Analog synthesis, feedback, slow spectral evolution</p>
+      <p class="work"><em>Trilogie de la Mort</em> (1988–1993)</p>
+      <p class="concept">Works emerge from the psychoacoustics of near-unison frequencies — difference tones, beating, and sum tones heard as autonomous phenomena.</p>
+    </div>
+    <div class="artist-card">
+      <h3>FRANCISCO LÓPEZ</h3>
+      <p class="practice">Environmental recordings, blindfolded listening, absolute sound</p>
+      <p class="work"><em>La Selva</em> (1997)</p>
+      <p class="concept">Strips visual context to isolate pure auditory experience — the listener's perceptual system becomes the sole interpretive apparatus.</p>
+    </div>
+    <div class="artist-card">
+      <h3>PAULINE OLIVEROS</h3>
+      <p class="practice">Deep listening, somatic attention, improvisation</p>
+      <p class="work"><em>Deep Listening</em> (1989)</p>
+      <p class="concept">Theorized listening as a distinct cognitive practice from hearing — conscious direction of attention changes what the auditory system extracts from sound.</p>
+    </div>
+    <div class="artist-card">
+      <h3>WALTER MURCH</h3>
+      <p class="practice">Film sound design, psychoacoustic mixing, editorial rhythm</p>
+      <p class="work"><em>Apocalypse Now</em> (1979)</p>
+      <p class="concept">Developed the theory that film cuts feel natural when synchronized with eye blinks and inner speech — perception as an active, predictive process.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 12 — GLOSSARY
+══════════════════════════════════════════════════ -->
+<section id="sec-glossary" class="hidden">
+  <h2>12 · GLOSSARY</h2>
+  <p class="sec-sub">24 TERMS — THE LANGUAGE OF PSYCHOACOUSTICS</p>
+  <dl class="gloss-grid">
+    <div class="gloss-item hidden"><dt>EQUAL LOUDNESS</dt><dd>Contours showing the SPL required at each frequency to match the perceived loudness of a 1kHz reference tone.</dd></div>
+    <div class="gloss-item hidden"><dt>PHON</dt><dd>Unit of loudness level. A tone of N phons sounds as loud as a 1kHz sine wave at N dB SPL.</dd></div>
+    <div class="gloss-item hidden"><dt>MASKING THRESHOLD</dt><dd>The SPL below which a target sound is rendered inaudible by a louder masker tone or noise.</dd></div>
+    <div class="gloss-item hidden"><dt>CRITICAL BAND</dt><dd>A frequency band within which two tones interact perceptually — causing beating, roughness, and mutual masking.</dd></div>
+    <div class="gloss-item hidden"><dt>BARK SCALE</dt><dd>A psychoacoustic frequency scale with 24 bands corresponding to the critical bands of the human auditory system.</dd></div>
+    <div class="gloss-item hidden"><dt>HRTF</dt><dd>Head-Related Transfer Function — the frequency-dependent filtering applied by the head, ears, and torso to localize sound in 3D space.</dd></div>
+    <div class="gloss-item hidden"><dt>HAAS EFFECT</dt><dd>The perceptual fusion of a direct sound and its early reflection (under ~35ms delay) into a single perceived event localized toward the first arrival.</dd></div>
+    <div class="gloss-item hidden"><dt>PRECEDENCE EFFECT</dt><dd>The dominance of the first-arriving sound in determining perceived location when two identical sounds arrive within a short time window.</dd></div>
+    <div class="gloss-item hidden"><dt>BINAURAL BEAT</dt><dd>A perceived low-frequency oscillation when slightly different frequencies are presented separately to each ear — processed in the brainstem.</dd></div>
+    <div class="gloss-item hidden"><dt>OTOACOUSTIC EMISSION</dt><dd>Sound generated by the cochlea's active outer hair cells, measurable in the ear canal — evidence that the ear is not purely passive.</dd></div>
+    <div class="gloss-item hidden"><dt>AUDITORY STREAM SEGREGATION</dt><dd>The perceptual grouping of acoustic elements into separate "streams" — the basis of following one voice in a noisy room.</dd></div>
+    <div class="gloss-item hidden"><dt>TONOTOPIC ORGANIZATION</dt><dd>The spatial mapping of frequency along the cochlea and auditory cortex — bass at the apex, treble at the base.</dd></div>
+    <div class="gloss-item hidden"><dt>PSYCHOACOUSTICS</dt><dd>The scientific study of the perception of sound — how the auditory system interprets, distorts, and enriches physical acoustic signals.</dd></div>
+    <div class="gloss-item hidden"><dt>PERCEPTUAL CODING</dt><dd>Audio compression that exploits masking, critical bands, and threshold of hearing to discard inaudible data.</dd></div>
+    <div class="gloss-item hidden"><dt>LUFS</dt><dd>Loudness Units relative to Full Scale — the broadcast and streaming standard for integrated loudness measurement (ITU-R BS.1770).</dd></div>
+    <div class="gloss-item hidden"><dt>TRUE PEAK</dt><dd>The maximum intersample peak level of an audio signal, required to prevent clipping in D/A conversion.</dd></div>
+    <div class="gloss-item hidden"><dt>DYNAMIC RANGE</dt><dd>The ratio between the loudest and quietest parts of an audio signal, measured in dB. Higher DR = more expressiveness.</dd></div>
+    <div class="gloss-item hidden"><dt>LOUDNESS WAR</dt><dd>The competitive escalation of master loudness (1990s–2010s) achieved through heavy limiting, reducing dynamic range.</dd></div>
+    <div class="gloss-item hidden"><dt>TEMPORAL MASKING</dt><dd>The masking of a quiet sound by a louder sound that precedes (forward masking) or follows (backward masking) it in time.</dd></div>
+    <div class="gloss-item hidden"><dt>SIMULTANEOUS MASKING</dt><dd>The masking of a target tone by a masker that occurs at the same time, spreading upward in frequency from the masker.</dd></div>
+    <div class="gloss-item hidden"><dt>INTERAURAL LEVEL DIFF</dt><dd>The difference in sound pressure level between the two ears — a cue for horizontal sound localization, dominant at high frequencies.</dd></div>
+    <div class="gloss-item hidden"><dt>INTERAURAL TIME DIFF</dt><dd>The difference in arrival time between the two ears — the primary localization cue at low frequencies (below ~1.5kHz).</dd></div>
+    <div class="gloss-item hidden"><dt>COCKTAIL PARTY EFFECT</dt><dd>The ability to focus selective auditory attention on one sound source while filtering out others in a complex acoustic environment.</dd></div>
+    <div class="gloss-item hidden"><dt>ABSOLUTE THRESHOLD</dt><dd>The minimum SPL required to detect a pure tone in a quiet environment, varying with frequency (lowest near 3–4kHz).</dd></div>
+  </dl>
+</section>
+
+</div><!-- #content -->
+
+<script>
+// ══════════════════════════════════════════════════
+// UTILITY
+// ══════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+
+// ISO 226 approximate 60-phon data points: [freq, SPL]
+const ISO_60 = [
+  [20,109],[31.5,100],[63,83],[125,70],[250,57],[500,48],
+  [1000,40],[2000,34],[4000,29],[8000,37],[12500,49],[16000,65],[20000,83]
+];
+// Approximate ISO 226 for multiple phons
+// Data: [freq, SPL] for each phon level
+const ISO_DATA = {
+  20:  [[20,130],[63,90],[125,74],[250,65],[500,60],[1000,40],[2000,32],[4000,25],[8000,32],[12500,47],[16000,65],[20000,83]],
+  40:  [[20,119],[63,77],[125,63],[250,54],[500,48],[1000,40],[2000,33],[4000,26],[8000,33],[12500,47],[16000,63],[20000,80]],
+  60:  [[20,109],[63,66],[125,52],[250,44],[500,40],[1000,40],[2000,34],[4000,34],[8000,40],[12500,49],[16000,65],[20000,83]],
+  80:  [[20,100],[63,57],[125,44],[250,37],[500,34],[1000,40],[2000,35],[4000,36],[8000,44],[12500,52],[16000,68],[20000,86]],
+  100: [[20,92],[63,50],[125,38],[250,32],[500,30],[1000,40],[2000,38],[4000,40],[8000,50],[12500,58],[16000,73],[20000,90]],
+  thresh:[[20,78],[63,38],[125,22],[250,11],[500,4],[1000,0],[2000,-3],[4000,-6],[8000,1],[12500,13],[16000,28],[20000,49]]
+};
+
+const FMIN = 20, FMAX = 20000;
+const freqToLog = f => (Math.log10(f/FMIN))/(Math.log10(FMAX/FMIN));
+const logToFreq = t => FMIN * Math.pow(FMAX/FMIN, t);
+const fmtFreq = f => f<1000?Math.round(f)+'Hz':Math.round(f/100)/10+'kHz';
+
+function interpISO(data, freq) {
+  for(let i=1;i<data.length;i++){
+    if(freq <= data[i][0]){
+      const t=(freq-data[i-1][0])/(data[i][0]-data[i-1][0]);
+      return data[i-1][1]*(1-t)+data[i][1]*t;
+    }
+  }
+  return data[data.length-1][1];
+}
+
+// ══════════════════════════════════════════════════
+// AUDIO CONTEXT
+// ══════════════════════════════════════════════════
+let AC = null;
+function getAC(){
+  if(!AC){ AC = new (window.AudioContext||window.webkitAudioContext)(); }
+  if(AC.state==='suspended') AC.resume();
+  return AC;
+}
+
+const activeNodes = [];
+function stopAll(){
+  activeNodes.forEach(n=>{try{n.stop();}catch(e){}});
+  activeNodes.length=0;
+}
+
+function playTone(freq, gain=0.3, pan=0, startDelay=0, duration=null){
+  const ac = getAC();
+  const osc = ac.createOscillator();
+  const g = ac.createGain();
+  const p = ac.createStereoPanner ? ac.createStereoPanner() : null;
+  osc.type='sine';
+  osc.frequency.value=freq;
+  g.gain.value=0;
+  const t = ac.currentTime+startDelay;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(gain, t+0.01);
+  osc.connect(g);
+  if(p){g.connect(p);p.connect(ac.destination);p.pan.value=clamp(pan,-1,1);}
+  else{g.connect(ac.destination);}
+  osc.start(t);
+  if(duration!=null){
+    g.gain.setValueAtTime(gain, t+duration-0.02);
+    g.gain.linearRampToValueAtTime(0, t+duration);
+    osc.stop(t+duration+0.05);
+  }
+  activeNodes.push(osc);
+  return {osc,g,p};
+}
+
+// Loudness compensation: equal loudness correction relative to 1kHz
+function loudnessGain(freq, targetSPL){
+  const spl1k = targetSPL;
+  const splF = interpISO(ISO_DATA[60], freq);
+  const diff60 = splF - 40; // 60-phon SPL at freq vs 40dB baseline
+  // Simple approximation: gain scaled so the 1kHz reference is 1.0
+  const splAtFreq = interpISO(ISO_DATA[60], freq);
+  const spl1kRef = interpISO(ISO_DATA[60], 1000);
+  const dB = spl1kRef - splAtFreq;
+  return Math.pow(10, dB/20)*0.25;
+}
+
+// ══════════════════════════════════════════════════
+// HERO CANVAS
+// ══════════════════════════════════════════════════
+(function(){
+  const cv = $('hero-canvas');
+  const ctx = cv.getContext('2d');
+  let W,H, probe=0.5;
+
+  function resize(){
+    W=cv.width=window.innerWidth;
+    H=cv.height=window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  const freqSlider = $('hero-freq');
+  const freqVal = $('hero-freq-val');
+  freqSlider.addEventListener('input',()=>{probe=+freqSlider.value;});
+
+  const LABELS_F = [20,100,200,500,1000,2000,5000,10000,20000];
+  const LABELS_S = [0,20,40,60,80,100,120];
+
+  function freqToX(f){
+    return 60 + (W-80)*freqToLog(f);
+  }
+  function splToY(s){
+    return H - 60 - (H-90)*(s/120);
+  }
+
+  function drawContour(data, color, lw, shadow){
+    ctx.beginPath();
+    data.forEach(([f,s],i)=>{
+      const x=freqToX(f), y=splToY(s);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle=color;
+    ctx.lineWidth=lw;
+    if(shadow){ctx.shadowColor=color;ctx.shadowBlur=14;}
+    else{ctx.shadowBlur=0;}
+    ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+
+  let phase=0;
+  function draw(){
+    ctx.fillStyle='rgba(5,5,10,0.15)';
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.lineWidth=0.4;
+    LABELS_F.forEach(f=>{
+      const x=freqToX(f);
+      ctx.strokeStyle='rgba(30,30,46,0.8)';
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='10px Courier New';ctx.textAlign='center';
+      ctx.fillText(fmtFreq(f),x,H-8);
+    });
+    LABELS_S.forEach(s=>{
+      const y=splToY(s);
+      ctx.strokeStyle='rgba(30,30,46,0.8)';
+      ctx.beginPath();ctx.moveTo(50,y);ctx.lineTo(W,y);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.textAlign='right';
+      ctx.fillText(s+'dB',48,y+4);
+    });
+
+    // Absolute threshold
+    drawContour(ISO_DATA.thresh,'#1e3a5f',1.5,false);
+
+    // Shade below threshold
+    ctx.beginPath();
+    ISO_DATA.thresh.forEach(([f,s],i)=>{
+      const x=freqToX(f),y=splToY(s);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.lineTo(freqToX(20000),H);
+    ctx.lineTo(freqToX(20),H);
+    ctx.closePath();
+    ctx.fillStyle='rgba(5,5,10,0.4)';
+    ctx.fill();
+
+    // 60-phon contour
+    drawContour(ISO_DATA[60],'#0ea5e9',2.5,true);
+
+    // Probe marker
+    const pf = logToFreq(probe);
+    const ps = interpISO(ISO_DATA[60], pf);
+    const px = freqToX(pf), py = splToY(ps);
+    freqVal.textContent = fmtFreq(pf);
+
+    const vx = freqToX(pf);
+    ctx.strokeStyle='rgba(14,165,233,0.3)';
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(vx,0);ctx.lineTo(vx,H);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Glow dot on curve
+    phase+=0.04;
+    const r=6+Math.sin(phase)*2;
+    ctx.shadowColor='#0ea5e9';ctx.shadowBlur=18;
+    ctx.beginPath();ctx.arc(px,py,r,0,Math.PI*2);
+    ctx.fillStyle='#0ea5e9';ctx.fill();
+    ctx.shadowBlur=0;
+
+    // Labels
+    ctx.fillStyle='rgba(14,165,233,0.9)';
+    ctx.font='bold 11px Courier New';ctx.textAlign='left';
+    ctx.fillText(`${fmtFreq(pf)} → ${Math.round(ps)} dB SPL (60 phon)`,px+12,py-8);
+
+    // Axis labels
+    ctx.fillStyle='#334155';ctx.font='10px Courier New';
+    ctx.textAlign='center';ctx.fillText('FREQUENCY',W/2,H-2);
+    ctx.save();ctx.translate(14,H/2);ctx.rotate(-Math.PI/2);
+    ctx.fillText('SPL (dB)',0,0);ctx.restore();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<script>
+// ══════════════════════════════════════════════════
+// EQUAL LOUDNESS LANDSCAPE
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('el-canvas'), ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  const PAD={l:55,r:20,t:20,b:40};
+  const IW=W-PAD.l-PAD.r, IH=H-PAD.t-PAD.b;
+
+  const PHONS=[20,40,60,80,100];
+  const COLORS=['#0e3a5f','#0d5a8a','#0ea5e9','#38bdf8','#7dd3fc'];
+  let splCursor=70, freqA=logToFreq(0.2), freqB=logToFreq(0.5);
+  let elNodes=[];
+
+  function fx(f){ return PAD.l+IW*freqToLog(f); }
+  function sy(s){ return PAD.t+IH*(1-s/120); }
+
+  function drawEl(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Grid lines
+    [20,100,200,500,1000,2000,5000,10000,20000].forEach(f=>{
+      const x=fx(f);
+      ctx.strokeStyle='rgba(30,30,46,0.6)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.fillText(fmtFreq(f),x,H-PAD.b+14);
+    });
+    [0,20,40,60,80,100,120].forEach(s=>{
+      const y=sy(s);
+      ctx.strokeStyle='rgba(30,30,46,0.6)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='right';
+      ctx.fillText(s,PAD.l-6,y+3);
+    });
+
+    // Threshold
+    ctx.beginPath();
+    ISO_DATA.thresh.forEach(([f,s],i)=>{ const x=fx(f),y=sy(s); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+    ctx.strokeStyle='#1e3a5f';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+
+    // Phon contours
+    PHONS.forEach((ph,idx)=>{
+      const data=ISO_DATA[ph];
+      ctx.beginPath();
+      data.forEach(([f,s],i)=>{ const x=fx(f),y=sy(s); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+      ctx.strokeStyle=COLORS[idx];ctx.lineWidth=idx===2?2.5:1.5;
+      ctx.shadowColor=COLORS[idx];ctx.shadowBlur=idx===2?10:0;
+      ctx.stroke();ctx.shadowBlur=0;
+      // Label
+      const lx=fx(3000), ls=interpISO(data,3000);
+      ctx.fillStyle=COLORS[idx];ctx.font='9px Courier New';ctx.textAlign='left';
+      ctx.fillText(ph+' phon',lx+4,sy(ls));
+    });
+
+    // SPL cursor
+    const cy=sy(splCursor);
+    ctx.strokeStyle='rgba(14,165,233,0.5)';ctx.lineWidth=1;ctx.setLineDash([6,3]);
+    ctx.beginPath();ctx.moveTo(PAD.l,cy);ctx.lineTo(W-PAD.r,cy);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#0ea5e9';ctx.font='10px Courier New';ctx.textAlign='right';
+    ctx.fillText('▶ '+splCursor+' dB',W-PAD.r-2,cy-3);
+
+    // Markers A and B
+    function drawMarker(f,color,label){
+      const x=fx(f);
+      // find nearest phon at this frequency (relative to splCursor)
+      const sAtF_60 = interpISO(ISO_DATA[60],f);
+      const sAtF_40 = interpISO(ISO_DATA[40],f);
+      const splOnContour = sAtF_60; // we draw on 60-phon contour for reference
+      ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke();ctx.setLineDash([]);
+      ctx.beginPath();ctx.arc(x,sy(splOnContour),7,0,Math.PI*2);
+      ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=12;ctx.fill();ctx.shadowBlur=0;
+      ctx.fillStyle='#05050a';ctx.font='bold 9px Courier New';ctx.textAlign='center';
+      ctx.fillText(label,x,sy(splOnContour)+3);
+    }
+    drawMarker(freqA,'#f59e0b','A');
+    drawMarker(freqB,'#0ea5e9','B');
+
+    // Axis labels
+    ctx.fillStyle='#334155';ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('FREQUENCY',W/2,H-2);
+    ctx.save();ctx.translate(12,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('SPL (dB)',0,0);ctx.restore();
+  }
+
+  function update(){
+    splCursor=+$('el-spl').value;
+    $('el-spl-val').textContent=splCursor+' dB';
+    freqA=logToFreq(+$('el-freqA').value);
+    freqB=logToFreq(+$('el-freqB').value);
+    $('el-freqA-val').textContent=fmtFreq(freqA);
+    $('el-freqB-val').textContent=fmtFreq(freqB);
+    drawEl();
+  }
+  ['el-spl','el-freqA','el-freqB'].forEach(id=>$(id).addEventListener('input',update));
+
+  function stopEl(){ elNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});elNodes=[]; }
+
+  function playEl(freqs){
+    stopEl();
+    freqs.forEach(f=>{
+      const g=loudnessGain(f,60);
+      elNodes.push(playTone(f,g));
+    });
+  }
+
+  $('el-playA').addEventListener('click',()=>playEl([freqA]));
+  $('el-playB').addEventListener('click',()=>playEl([freqB]));
+  $('el-playBoth').addEventListener('click',()=>playEl([freqA,freqB]));
+  $('el-stop').addEventListener('click',stopEl);
+
+  drawEl();
+})();
+
+// ══════════════════════════════════════════════════
+// MASKING SHADOW
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('mask-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  const PAD={l:55,r:20,t:20,b:40};
+  const IW=W-PAD.l-PAD.r,IH=H-PAD.t-PAD.b;
+  let maskerT=0.4,maskerLevel=70,targetT=0.5,mode='simul';
+  let maskPhase=0,temporalAnim=0,temporalActive=false;
+  let maskNodes=[];
+
+  function fx(t){ return PAD.l+IW*t; }
+  function amp(a){ return PAD.t+IH*(1-a/100); }
+
+  function getMaskingCurve(mT, mLev){
+    // Returns array of [t, maskedLevel] across frequency axis
+    const pts=[];
+    const mLogF = mT;
+    for(let i=0;i<=200;i++){
+      const t=i/200;
+      const dist=t-mLogF; // log-freq distance
+      let spread;
+      if(dist<0) spread = Math.exp(-Math.abs(dist)*8)*mLev*0.9; // steep low side
+      else spread = Math.exp(-dist*3)*mLev*0.9; // gradual high side
+      const baseNoise=5;
+      pts.push([t, Math.max(baseNoise, spread)]);
+    }
+    return pts;
+  }
+
+  function drawMask(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    [20,100,200,500,1000,2000,5000,10000,20000].forEach(f=>{
+      const t=freqToLog(f),x=fx(t);
+      ctx.strokeStyle='rgba(30,30,46,0.6)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.fillText(fmtFreq(f),x,H-PAD.b+14);
+    });
+    [0,20,40,60,80,100].forEach(s=>{
+      const y=amp(s);
+      ctx.strokeStyle='rgba(30,30,46,0.6)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='right';
+      ctx.fillText(s,PAD.l-6,y+3);
+    });
+
+    // Masking curve fill
+    const curve=getMaskingCurve(maskerT,maskerLevel);
+    const alpha = mode==='temporal'?(temporalActive?0.7*temporalAnim:0):0.7;
+
+    ctx.beginPath();
+    ctx.moveTo(fx(0),amp(0));
+    curve.forEach(([t,a])=>ctx.lineTo(fx(t),amp(a)));
+    ctx.lineTo(fx(1),amp(0));
+    ctx.closePath();
+    ctx.fillStyle=`rgba(14,165,233,${alpha*0.2})`;
+    ctx.fill();
+
+    // Masking curve line
+    ctx.beginPath();
+    curve.forEach(([t,a],i)=>{ const x=fx(t),y=amp(a); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+    ctx.strokeStyle=`rgba(14,165,233,${mode==='temporal'?alpha:0.8})`;
+    ctx.lineWidth=2;ctx.shadowColor='#0ea5e9';ctx.shadowBlur=10;ctx.stroke();ctx.shadowBlur=0;
+
+    // Masker bar
+    const mx=fx(maskerT);
+    ctx.fillStyle='rgba(14,165,233,0.9)';
+    ctx.shadowColor='#0ea5e9';ctx.shadowBlur=14;
+    ctx.fillRect(mx-3, amp(maskerLevel), 6, H-PAD.b-amp(maskerLevel));
+    ctx.shadowBlur=0;
+    ctx.fillStyle='#0ea5e9';ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('MASKER '+fmtFreq(logToFreq(maskerT)),mx,amp(maskerLevel)-6);
+
+    // Target tone marker
+    const tx=fx(targetT);
+    const maskLevAtTarget=getMaskingCurve(maskerT,maskerLevel).find(([t])=>Math.abs(t-targetT)<0.006)?.[1]??0;
+    const isMasked=maskLevAtTarget>10 && Math.abs(targetT-maskerT)<0.3;
+    const talpha=isMasked?0.25:1;
+    ctx.beginPath();ctx.arc(tx,amp(40),8,0,Math.PI*2);
+    ctx.fillStyle=`rgba(245,158,11,${talpha})`;ctx.shadowColor='#f59e0b';ctx.shadowBlur=isMasked?0:10;
+    ctx.fill();ctx.shadowBlur=0;
+    ctx.fillStyle=`rgba(245,158,11,${talpha})`;ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('TARGET'+' '+fmtFreq(logToFreq(targetT)),tx,amp(40)-12);
+    if(isMasked){
+      ctx.fillStyle='rgba(239,68,68,0.8)';ctx.font='9px Courier New';
+      ctx.fillText('MASKED',tx,amp(40)+18);
+    }
+
+    ctx.fillStyle='#334155';ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('FREQUENCY',W/2,H-2);
+    ctx.save();ctx.translate(12,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('AMPLITUDE',0,0);ctx.restore();
+  }
+
+  function animTemporal(){
+    if(!temporalActive) return;
+    temporalAnim = Math.max(0, temporalAnim-0.015);
+    drawMask();
+    if(temporalAnim>0) requestAnimationFrame(animTemporal);
+    else { temporalActive=false; drawMask(); }
+  }
+
+  function update(){
+    maskerT=+$('mask-freq').value;
+    maskerLevel=+$('mask-level').value;
+    targetT=+$('mask-target').value;
+    $('mask-freq-val').textContent=fmtFreq(logToFreq(maskerT));
+    $('mask-level-val').textContent=maskerLevel+' dB';
+    $('mask-target-val').textContent=fmtFreq(logToFreq(targetT));
+    drawMask();
+  }
+  ['mask-freq','mask-level','mask-target'].forEach(id=>$(id).addEventListener('input',update));
+
+  $('mask-simul').addEventListener('click',()=>{
+    mode='simul';$('mask-simul').classList.add('active');$('mask-temporal').classList.remove('active'); drawMask();
+  });
+  $('mask-temporal').addEventListener('click',()=>{
+    mode='temporal';$('mask-temporal').classList.add('active');$('mask-simul').classList.remove('active'); drawMask();
+  });
+
+  function stopMask(){ maskNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});maskNodes=[]; }
+  $('mask-playM').addEventListener('click',()=>{
+    stopMask();
+    maskNodes.push(playTone(logToFreq(maskerT),0.3));
+    if(mode==='temporal'){temporalActive=true;temporalAnim=1;setTimeout(()=>{stopMask();requestAnimationFrame(animTemporal);},500);}
+  });
+  $('mask-playT').addEventListener('click',()=>{ stopMask(); maskNodes.push(playTone(logToFreq(targetT),0.2)); });
+  $('mask-playBoth').addEventListener('click',()=>{
+    stopMask();
+    maskNodes.push(playTone(logToFreq(maskerT),0.3));
+    maskNodes.push(playTone(logToFreq(targetT),0.15));
+  });
+  $('mask-stop').addEventListener('click',stopMask);
+
+  drawMask();
+})();
+</script>
+
+<script>
+// ══════════════════════════════════════════════════
+// CRITICAL BAND SIEVE
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('bark-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  // 24 Bark bands [low, high] Hz
+  const BARK=[
+    [20,100],[100,200],[200,300],[300,400],[400,510],[510,630],[630,770],[770,920],
+    [920,1080],[1080,1270],[1270,1480],[1480,1720],[1720,2000],[2000,2320],[2320,2700],
+    [2700,3150],[3150,3700],[3700,4400],[4400,5300],[5300,6400],[6400,7700],[7700,9500],
+    [9500,12000],[12000,15500]
+  ];
+
+  let fA=400,fB=500,ringPhase=0,animating=false;
+  let barkNodes=[];
+
+  function barkOfFreq(f){ return BARK.findIndex(([lo,hi])=>f>=lo&&f<hi); }
+  function barkX(idx){ return 20+(W-40)*(idx/24); }
+  const bW=(W-40)/24;
+
+  function drawBark(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    const bA=barkOfFreq(fA), bB=barkOfFreq(fB);
+    const sameband=bA===bB;
+
+    // Draw bands
+    BARK.forEach(([lo,hi],i)=>{
+      const x=barkX(i);
+      const isA=(i===bA),isB=(i===bB);
+      const isActive=isA||isB;
+      ctx.fillStyle=isActive?(sameband?'rgba(14,165,233,0.18)':'rgba(30,30,46,0.8)'):'rgba(13,13,20,0.9)';
+      ctx.fillRect(x,40,bW-2,H-80);
+      ctx.strokeStyle=isActive?(sameband?'#0ea5e9':'rgba(14,165,233,0.4)'):'rgba(30,30,46,0.6)';
+      ctx.lineWidth=isActive?1.5:0.5;
+      ctx.strokeRect(x,40,bW-2,H-80);
+
+      // Bark number
+      ctx.fillStyle='#334155';ctx.font='8px Courier New';ctx.textAlign='center';
+      ctx.fillText(i+1,x+bW/2,H-30);
+      // Freq label every 4
+      if(i%4===0||i===0){
+        ctx.fillStyle='#334155';ctx.font='8px Courier New';
+        ctx.fillText(fmtFreq(lo),x,H-18);
+      }
+    });
+
+    // Interference rings if same band
+    if(sameband&&animating){
+      const cx=barkX(bA)+bW/2, cy=H/2;
+      for(let r=0;r<4;r++){
+        const rad=((ringPhase+r*18)%80)+5;
+        const alpha=1-rad/80;
+        ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(14,165,233,${alpha*0.8})`;
+        ctx.lineWidth=2;ctx.stroke();
+      }
+    }
+
+    // Marker A
+    if(bA>=0){
+      const ax=barkX(bA)+bW/2, ay=H/2-20;
+      ctx.beginPath();ctx.arc(ax,ay,10,0,Math.PI*2);
+      ctx.fillStyle='#f59e0b';ctx.shadowColor='#f59e0b';ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+      ctx.fillStyle='#05050a';ctx.font='bold 9px Courier New';ctx.textAlign='center';
+      ctx.fillText('A',ax,ay+3);
+      ctx.fillStyle='#f59e0b';ctx.font='9px Courier New';
+      ctx.fillText(fmtFreq(fA),ax,ay-16);
+    }
+    // Marker B
+    if(bB>=0){
+      const bx=barkX(bB)+bW/2, by=H/2+20;
+      ctx.beginPath();ctx.arc(bx,by,10,0,Math.PI*2);
+      ctx.fillStyle='#0ea5e9';ctx.shadowColor='#0ea5e9';ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+      ctx.fillStyle='#05050a';ctx.font='bold 9px Courier New';ctx.textAlign='center';
+      ctx.fillText('B',bx,by+3);
+      ctx.fillStyle='#0ea5e9';ctx.font='9px Courier New';
+      ctx.fillText(fmtFreq(fB),bx,by+20);
+    }
+
+    // Status
+    ctx.fillStyle=sameband?'#0ea5e9':'#10b981';ctx.font='bold 11px Courier New';ctx.textAlign='center';
+    ctx.fillText(sameband?'⚠ SAME CRITICAL BAND — INTERFERENCE':'✓ DIFFERENT BANDS — INDEPENDENT PROCESSING',W/2,22);
+  }
+
+  function animRings(){
+    if(!animating) return;
+    ringPhase=(ringPhase+2)%80;
+    drawBark();
+    requestAnimationFrame(animRings);
+  }
+
+  function update(){
+    fA=+$('bark-fA').value; fB=+$('bark-fB').value;
+    $('bark-fA-val').textContent=fmtFreq(fA);
+    $('bark-fB-val').textContent=fmtFreq(fB);
+    drawBark();
+  }
+  ['bark-fA','bark-fB'].forEach(id=>$(id).addEventListener('input',update));
+
+  $('bark-sameband').addEventListener('click',()=>{$('bark-fA').value=400;$('bark-fB').value=500;update();});
+  $('bark-diffband').addEventListener('click',()=>{$('bark-fA').value=1000;$('bark-fB').value=2000;update();});
+  $('bark-border').addEventListener('click',()=>{$('bark-fA').value=3000;$('bark-fB').value=3100;update();});
+
+  function stopBark(){ barkNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});barkNodes=[];animating=false;drawBark(); }
+  $('bark-play').addEventListener('click',()=>{
+    stopBark();
+    barkNodes.push(playTone(fA,0.2));
+    barkNodes.push(playTone(fB,0.2));
+    animating=true; animRings();
+  });
+  $('bark-stop').addEventListener('click',stopBark);
+
+  drawBark();
+})();
+
+// ══════════════════════════════════════════════════
+// HAAS EFFECT TIMELINE
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('haas-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  let delay=10, levelOffset=0;
+  let haasNodes=[], wavePhase=0, waveAnim=false;
+  let waveA=0,waveB=0;
+
+  const SPA={x:120,y:H/2-40}; // Speaker A left
+  const SPB={x:W-120,y:H/2-40}; // Speaker B right
+  const LST={x:W/2,y:H-60}; // Listener
+
+  function drawHaas(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Grid lines
+    ctx.strokeStyle='rgba(30,30,46,0.3)';ctx.lineWidth=0.5;
+    for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+
+    // Draw lines from speakers to listener
+    ctx.strokeStyle='rgba(30,30,46,0.4)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(SPA.x,SPA.y);ctx.lineTo(LST.x,LST.y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(SPB.x,SPB.y);ctx.lineTo(LST.x,LST.y);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Speaker icons A
+    ctx.fillStyle='#0ea5e9';ctx.shadowColor='#0ea5e9';ctx.shadowBlur=12;
+    ctx.fillRect(SPA.x-14,SPA.y-20,28,40);ctx.shadowBlur=0;
+    ctx.fillStyle='#05050a';ctx.font='bold 11px Courier New';ctx.textAlign='center';
+    ctx.fillText('A',SPA.x,SPA.y+4);
+    ctx.fillStyle='#0ea5e9';ctx.font='9px Courier New';ctx.fillText('t=0',SPA.x,SPA.y+30);
+
+    // Speaker B
+    ctx.fillStyle='#f59e0b';ctx.shadowColor='#f59e0b';ctx.shadowBlur=12;
+    ctx.fillRect(SPB.x-14,SPB.y-20,28,40);ctx.shadowBlur=0;
+    ctx.fillStyle='#05050a';ctx.font='bold 11px Courier New';ctx.textAlign='center';
+    ctx.fillText('B',SPB.x,SPB.y+4);
+    ctx.fillStyle='#f59e0b';ctx.font='9px Courier New';ctx.fillText('t+'+delay+'ms',SPB.x,SPB.y+30);
+
+    // Wave animations from A
+    if(waveAnim){
+      for(let r=0;r<5;r++){
+        const rad=((wavePhase+r*30)%160)+10;
+        const alpha=1-rad/160;
+        if(alpha<=0) continue;
+        ctx.beginPath();ctx.arc(SPA.x,SPA.y,rad,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(14,165,233,${alpha*0.6})`;ctx.lineWidth=1.5;ctx.stroke();
+      }
+      // Wave B (delayed)
+      const delayFrames=delay*1.5;
+      const wBrad=((wavePhase-delayFrames+160)%160);
+      if(wBrad>0){
+        for(let r=0;r<5;r++){
+          const rad=(wBrad+r*30)%160+5;
+          const alpha=1-rad/160;
+          if(alpha<=0) continue;
+          ctx.beginPath();ctx.arc(SPB.x,SPB.y,rad,0,Math.PI*2);
+          ctx.strokeStyle=`rgba(245,158,11,${alpha*0.6})`;ctx.lineWidth=1.5;ctx.stroke();
+        }
+      }
+    }
+
+    // Listener icon
+    ctx.beginPath();ctx.arc(LST.x,LST.y,14,0,Math.PI*2);
+    ctx.fillStyle='#1e1e2e';ctx.fill();
+    ctx.strokeStyle='#0ea5e9';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#0ea5e9';ctx.font='bold 12px Courier New';ctx.textAlign='center';
+    ctx.fillText('👂',LST.x,LST.y+4);
+
+    // Phantom image indicator
+    const phantomT = delay<=35 ? (delay/35)*0.5 : 1.0; // 0=center, 0.5=A side, 1=B side (echo)
+    const px=LST.x - (phantomT-0.0)*160;
+    const pLabel=delay===0?'CENTER':delay<=35?`TOWARD A (${delay}ms)`:'ECHO — TWO EVENTS';
+    ctx.beginPath();ctx.arc(px,LST.y-35,9,0,Math.PI*2);
+    ctx.fillStyle=delay>35?'#ef4444':'#0ea5e9';
+    ctx.shadowColor=delay>35?'#ef4444':'#0ea5e9';ctx.shadowBlur=16;
+    ctx.fill();ctx.shadowBlur=0;
+    ctx.fillStyle=delay>35?'#ef4444':'#0ea5e9';ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('◆ '+pLabel,px,LST.y-50);
+
+    // Timeline bar
+    const TL_Y=H-24,TL_W=W-80;
+    ctx.fillStyle='rgba(30,30,46,0.6)';ctx.fillRect(40,TL_Y-8,TL_W,16);
+    ctx.fillStyle='rgba(14,165,233,0.3)';ctx.fillRect(40,TL_Y-8,(TL_W/50)*35,16);
+    ctx.strokeStyle='rgba(239,68,68,0.5)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(40+(TL_W/50)*35,TL_Y-12);ctx.lineTo(40+(TL_W/50)*35,TL_Y+12);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+    ctx.fillText('0ms',40,TL_Y+18);ctx.fillText('35ms — ECHO THRESHOLD',40+(TL_W/50)*35,TL_Y+18);ctx.fillText('50ms',40+TL_W,TL_Y+18);
+    // Delay marker
+    const dm=40+(TL_W/50)*delay;
+    ctx.fillStyle='#f59e0b';ctx.shadowColor='#f59e0b';ctx.shadowBlur=8;
+    ctx.fillRect(dm-2,TL_Y-10,4,20);ctx.shadowBlur=0;
+  }
+
+  function animWave(){
+    if(!waveAnim) return;
+    wavePhase=(wavePhase+2)%160;
+    drawHaas();
+    requestAnimationFrame(animWave);
+  }
+
+  function update(){
+    delay=+$('haas-delay').value;
+    levelOffset=+$('haas-level').value;
+    $('haas-delay-val').textContent=delay+' ms';
+    $('haas-level-val').textContent='+'+levelOffset+' dB';
+    drawHaas();
+  }
+  ['haas-delay','haas-level'].forEach(id=>$(id).addEventListener('input',update));
+
+  function stopHaas(){ haasNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});haasNodes=[];waveAnim=false;drawHaas(); }
+  $('haas-play').addEventListener('click',()=>{
+    stopHaas();
+    const ac=getAC();
+    // Left channel = Speaker A
+    const nA=playTone(440,0.3,-1);
+    haasNodes.push(nA);
+    // Right channel = Speaker B (delayed)
+    const gB=Math.pow(10,levelOffset/20)*0.3;
+    const nB=playTone(440,gB,1,delay/1000);
+    haasNodes.push(nB);
+    waveAnim=true; animWave();
+  });
+  $('haas-stop').addEventListener('click',stopHaas);
+
+  drawHaas();
+})();
+</script>
+
+<script>
+// ══════════════════════════════════════════════════
+// BINAURAL BEAT MACHINE
+// ══════════════════════════════════════════════════
+(function(){
+  const cvL=$('bin-left'),cvR=$('bin-right');
+  const ctxL=cvL.getContext('2d'),ctxR=cvR.getContext('2d');
+  let carrier=220,beat=10,binNodes=[],binPhase=0,binAnim=false;
+
+  function drawOsc(ctx,cv,freq,phase,color){
+    const W=cv.width,H=cv.height;
+    ctx.fillStyle='rgba(5,5,10,0.25)';ctx.fillRect(0,0,W,H);
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const t=(x/W)*4; // 4 cycles visible
+      const y=H/2+Math.sin(2*Math.PI*t+phase)*(H/2-16);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.shadowColor=color;ctx.shadowBlur=10;ctx.stroke();ctx.shadowBlur=0;
+    // Freq label
+    ctx.fillStyle=color;ctx.font='10px Courier New';ctx.textAlign='left';ctx.fillText(fmtFreq(freq),8,H-8);
+  }
+
+  function animBin(){
+    if(!binAnim) return;
+    binPhase+=0.08;
+    drawOsc(ctxL,cvL,carrier,binPhase,'#0ea5e9');
+    drawOsc(ctxR,cvR,carrier+beat,binPhase*(1+beat/carrier),'#38bdf8');
+    requestAnimationFrame(animBin);
+  }
+
+  function update(){
+    carrier=+$('bin-carrier').value; beat=+$('bin-beat').value;
+    $('bin-carrier-val').textContent=carrier+' Hz';
+    $('bin-beat-val').textContent=beat+' Hz';
+    if(!binAnim){ drawOsc(ctxL,cvL,carrier,0,'#0ea5e9'); drawOsc(ctxR,cvR,carrier+beat,0,'#38bdf8'); }
+  }
+  ['bin-carrier','bin-beat'].forEach(id=>$(id).addEventListener('input',update));
+
+  function stopBin(){
+    binNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});binNodes=[];
+    binAnim=false;
+  }
+  $('bin-play').addEventListener('click',()=>{
+    stopBin();
+    binNodes.push(playTone(carrier,0.25,-1));
+    binNodes.push(playTone(carrier+beat,0.25,1));
+    binAnim=true; animBin();
+  });
+  $('bin-stop').addEventListener('click',stopBin);
+
+  update();
+})();
+
+// ══════════════════════════════════════════════════
+// LOUDNESS WAR ARCHAEOLOGY
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('lw-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  const ERAS=[
+    {year:'1980',lufs:-20,dr:14,desc:'FULL DYNAMIC RANGE',compress:0.05},
+    {year:'1990',lufs:-16,dr:10,desc:'MODERATE COMPRESSION',compress:0.25},
+    {year:'1998',lufs:-12,dr:8,desc:'NOTICEABLE LIMITING',compress:0.5},
+    {year:'2005',lufs:-9,dr:6,desc:'HEAVY BRICK WALL LIMITING',compress:0.75},
+    {year:'2008',lufs:-6,dr:3,desc:'DEATH MAGNETIC — PEAK OF WAR ⚠',compress:0.95},
+    {year:'2016+',lufs:-14,dr:10,desc:'STREAMING NORMALIZATION RECOVERY',compress:0.3}
+  ];
+  let selEra=0;
+
+  const TL_Y=50,TL_H=H-120,WV_TOP=80,WV_H=H-160;
+  const eraX=i=>(W-80)*(i/(ERAS.length-1))+40;
+
+  function drawWaveform(x,w,compress,color){
+    const samples=80;
+    const points=[];
+    let py=WV_TOP+WV_H/2;
+    for(let i=0;i<=samples;i++){
+      const t=i/samples;
+      // Generate pseudo-dynamic waveform
+      const raw=Math.sin(t*Math.PI*22+Math.sin(t*5)*3)*0.9+
+                (Math.random()-0.5)*0.15;
+      const limited=Math.max(-1,Math.min(1,raw*(1+compress*4)));
+      const compressed=Math.sign(limited)*Math.pow(Math.abs(limited),1-compress*0.8);
+      points.push(compressed);
+    }
+    // Top wave
+    ctx.beginPath();
+    points.forEach((v,i)=>{
+      const px=x+w*(i/samples),py=WV_TOP+WV_H/2-v*(WV_H/2-4);
+      i?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    });
+    ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.shadowColor=color;ctx.shadowBlur=8;ctx.stroke();ctx.shadowBlur=0;
+    // Fill
+    ctx.beginPath();
+    points.forEach((v,i)=>{
+      const px=x+w*(i/samples);
+      const pyT=WV_TOP+WV_H/2-v*(WV_H/2-4);
+      const pyB=WV_TOP+WV_H/2+v*(WV_H/2-4);
+      if(i===0){ctx.moveTo(px,pyT);}else{ctx.lineTo(px,pyT);}
+    });
+    for(let i=samples;i>=0;i--){
+      const px=x+w*(i/samples);
+      const v=points[i];
+      const pyB=WV_TOP+WV_H/2+v*(WV_H/2-4);
+      ctx.lineTo(px,pyB);
+    }
+    ctx.closePath();
+    ctx.fillStyle=`rgba(14,165,233,0.06)`;ctx.fill();
+  }
+
+  function drawLW(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Timeline axis
+    ctx.strokeStyle='rgba(30,30,46,0.8)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(40,WV_TOP+WV_H/2);ctx.lineTo(W-40,WV_TOP+WV_H/2);ctx.stroke();
+
+    // LUFS scale on right
+    [-6,-9,-12,-14,-16,-20].forEach(l=>{
+      const y=WV_TOP+WV_H/2 + (l/-20)*(WV_H/2-4);
+      ctx.strokeStyle='rgba(30,30,46,0.4)';ctx.lineWidth=0.5;ctx.setLineDash([2,4]);
+      ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(W-40,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#1e3a4f';ctx.font='8px Courier New';ctx.textAlign='right';
+      ctx.fillText(l+' LUFS',36,y+3);
+    });
+
+    // Draw each era waveform
+    const eW=(W-100)/ERAS.length-4;
+    ERAS.forEach((era,i)=>{
+      const ex=44+i*((W-100)/ERAS.length);
+      const isSelected=i===selEra;
+      const col=isSelected?'#0ea5e9':'#1e3a5f';
+      drawWaveform(ex,eW,era.compress,col);
+
+      // Era label
+      ctx.fillStyle=isSelected?'#0ea5e9':'#334155';
+      ctx.font=(isSelected?'bold ':'')+`10px Courier New`;ctx.textAlign='center';
+      ctx.fillText(era.year,ex+eW/2,H-20);
+      ctx.font='9px Courier New';
+      ctx.fillStyle=isSelected?'#0ea5e9':'#1e3a5f';
+      ctx.fillText(era.lufs+' LUFS',ex+eW/2,H-8);
+
+      // Selected indicator
+      if(isSelected){
+        ctx.strokeStyle='#0ea5e9';ctx.lineWidth=1.5;
+        ctx.strokeRect(ex-2,WV_TOP-4,eW+4,WV_H+8);
+      }
+    });
+
+    // Stats
+    const e=ERAS[selEra];
+    $('lw-lufs').textContent=e.lufs;
+    $('lw-dr').textContent=e.dr;
+    $('lw-desc').textContent=e.desc;
+  }
+
+  document.querySelectorAll('[data-era]').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      selEra=+this.dataset.era;
+      document.querySelectorAll('[data-era]').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      drawLW();
+    });
+  });
+
+  drawLW();
+})();
+
+// ══════════════════════════════════════════════════
+// COCKTAIL PARTY PROBLEM
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('cp-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  let cpNodes=[],spotX=W/2,spotY=H/2,isDragging=false,reverbAmt=0.2;
+
+  const SOURCES=[
+    {x:160,y:120,freq:261,color:'#f59e0b',label:'VOICE A',type:'sawtooth'},
+    {x:540,y:100,freq:523,color:'#0ea5e9',label:'VOICE B',type:'sine'},
+    {x:120,y:300,freq:196,color:'#10b981',label:'INSTRUMENT',type:'triangle'},
+    {x:580,y:310,freq:392,color:'#8b5cf6',label:'AMBIENT',type:'sine'},
+    {x:350,y:220,freq:311,color:'#f43f5e',label:'OVERLAP',type:'sawtooth'},
+  ];
+
+  let sourceGains=[];
+
+  function drawCP(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Room outline
+    ctx.strokeStyle='var(--border)';ctx.lineWidth=1;
+    ctx.strokeRect(20,20,W-40,H-40);
+
+    // Room grid (subtle)
+    ctx.strokeStyle='rgba(30,30,46,0.3)';ctx.lineWidth=0.4;
+    for(let x=20;x<W-20;x+=60){ctx.beginPath();ctx.moveTo(x,20);ctx.lineTo(x,H-20);ctx.stroke();}
+    for(let y=20;y<H-20;y+=60){ctx.beginPath();ctx.moveTo(20,y);ctx.lineTo(W-20,y);ctx.stroke();}
+
+    // Spotlight
+    const grad=ctx.createRadialGradient(spotX,spotY,0,spotX,spotY,90);
+    grad.addColorStop(0,'rgba(14,165,233,0.12)');
+    grad.addColorStop(1,'rgba(14,165,233,0)');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    ctx.beginPath();ctx.arc(spotX,spotY,90,0,Math.PI*2);
+    ctx.strokeStyle='rgba(14,165,233,0.4)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(14,165,233,0.08)';ctx.fill();
+
+    // Sources
+    SOURCES.forEach((s,i)=>{
+      const dist=Math.hypot(spotX-s.x,spotY-s.y);
+      const focus=Math.max(0,1-dist/100);
+      const r=12+focus*6;
+      ctx.beginPath();ctx.arc(s.x,s.y,r,0,Math.PI*2);
+      ctx.fillStyle=s.color;
+      ctx.shadowColor=s.color;ctx.shadowBlur=8+focus*16;
+      ctx.globalAlpha=0.4+focus*0.6;
+      ctx.fill();ctx.globalAlpha=1;ctx.shadowBlur=0;
+      ctx.fillStyle=s.color;ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.fillText(s.label,s.x,s.y-r-4);
+      ctx.fillStyle='rgba(14,165,233,0.3)';ctx.font='8px Courier New';
+      ctx.fillText(fmtFreq(s.freq),s.x,s.y+r+10);
+      // Update gain
+      if(sourceGains[i]) sourceGains[i].gain.setTargetAtTime(0.05+focus*0.3,getAC().currentTime,0.1);
+    });
+
+    // Spotlight label
+    ctx.fillStyle='rgba(14,165,233,0.6)';ctx.font='9px Courier New';ctx.textAlign='center';
+    ctx.fillText('◎ ATTENTION SPOTLIGHT',spotX,spotY+105);
+
+    // Reverb indicator
+    ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='left';
+    ctx.fillText('REVERB: '+(reverbAmt*100).toFixed(0)+'%',28,H-28);
+    ctx.fillText('DRAG SPOTLIGHT TO FOCUS ON A SOURCE',28,H-12);
+  }
+
+  cv.addEventListener('mousedown',e=>{isDragging=true;});
+  cv.addEventListener('mousemove',e=>{
+    if(!isDragging) return;
+    const r=cv.getBoundingClientRect();
+    spotX=(e.clientX-r.left)*(W/r.width);
+    spotY=(e.clientY-r.top)*(H/r.height);
+    drawCP();
+  });
+  cv.addEventListener('mouseup',()=>isDragging=false);
+  cv.addEventListener('touchstart',e=>{isDragging=true;e.preventDefault();},{passive:false});
+  cv.addEventListener('touchmove',e=>{
+    if(!isDragging) return;
+    e.preventDefault();
+    const r=cv.getBoundingClientRect();
+    spotX=(e.touches[0].clientX-r.left)*(W/r.width);
+    spotY=(e.touches[0].clientY-r.top)*(H/r.height);
+    drawCP();
+  },{passive:false});
+  cv.addEventListener('touchend',()=>isDragging=false);
+
+  $('cp-reverb').addEventListener('input',()=>{
+    reverbAmt=+$('cp-reverb').value;
+    const labels=['LOW','MEDIUM','HIGH','VERY HIGH'];
+    $('cp-reverb-val').textContent=reverbAmt<0.25?'LOW':reverbAmt<0.5?'MEDIUM':reverbAmt<0.75?'HIGH':'VERY HIGH';
+    drawCP();
+  });
+
+  function stopCP(){ cpNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});cpNodes=[];sourceGains=[]; }
+  $('cp-play').addEventListener('click',()=>{
+    stopCP();
+    const ac=getAC();
+    SOURCES.forEach((s,i)=>{
+      const g=ac.createGain(); g.gain.value=0.05;
+      const osc=ac.createOscillator();
+      osc.type=s.type; osc.frequency.value=s.freq;
+      osc.connect(g);g.connect(ac.destination);
+      osc.start();
+      cpNodes.push({osc,g:g});
+      sourceGains[i]=g;
+    });
+    (function animCP(){requestAnimationFrame(animCP);drawCP();})();
+  });
+  $('cp-stop').addEventListener('click',stopCP);
+
+  drawCP();
+})();
+</script>
+
+<script>
+// ══════════════════════════════════════════════════
+// EAR FREQUENCY MAP — TONOTOPIC ORGANIZATION
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('em-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  let probeT=0.4,probeActive=false,probeNode=null;
+  let overlays=[];
+  let emPhase=0;
+
+  const INSTRUMENTS={
+    piano:{label:'PIANO',freqs:[262,524,785,1047,1310,1572,2093],color:'#0ea5e9'},
+    voice:{label:'VOICE',freqs:[500,1500,2500,3500],color:'#f59e0b'},
+    kick:{label:'KICK',freqs:[60,120,180,240,300],color:'#8b5cf6'},
+    cymbal:{label:'CYMBAL',freqs:[8000,10000,12000,14000,16000],color:'#10b981'},
+    bass:{label:'BASS GTR',freqs:[80,160,240,320,400],color:'#f43f5e'}
+  };
+
+  function freqToCochlear(f){ return freqToLog(clamp(f,20,20000)); }
+  function cochlearX(f){ return 40+(W-80)*freqToCochlear(f); }
+
+  function drawEM(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Cochlear ruler background
+    const grad=ctx.createLinearGradient(40,0,W-40,0);
+    grad.addColorStop(0,'#0a1520');
+    grad.addColorStop(0.5,'#05101a');
+    grad.addColorStop(1,'#05080f');
+    ctx.fillStyle=grad;ctx.fillRect(40,H/2-28,W-80,56);ctx.strokeStyle='var(--border)';ctx.lineWidth=1;
+    ctx.strokeRect(40,H/2-28,W-80,56);
+
+    // Frequency labels
+    [20,100,500,1000,2000,5000,10000,20000].forEach(f=>{
+      const x=cochlearX(f);
+      ctx.strokeStyle='rgba(30,30,46,0.6)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(x,H/2-28);ctx.lineTo(x,H/2+28);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.fillText(fmtFreq(f),x,H/2+42);
+    });
+
+    // Cochlear position labels
+    ctx.fillStyle='#1e3a5f';ctx.font='10px Courier New';ctx.textAlign='left';
+    ctx.fillText('APEX (BASS)',44,H/2-32);
+    ctx.textAlign='right';ctx.fillText('BASE (TREBLE)',W-44,H/2-32);
+
+    // Overlay instrument glows
+    overlays.forEach(({key})=>{
+      const inst=INSTRUMENTS[key];
+      inst.freqs.forEach(f=>{
+        const x=cochlearX(f);
+        const grd=ctx.createRadialGradient(x,H/2,0,x,H/2,22);
+        grd.addColorStop(0,inst.color+'cc');
+        grd.addColorStop(1,inst.color+'00');
+        ctx.fillStyle=grd;ctx.fillRect(x-22,H/2-22,44,44);
+      });
+    });
+
+    // Probe glow
+    if(probeActive){
+      const px=cochlearX(logToFreq(probeT));
+      emPhase+=0.06;
+      const r=20+Math.sin(emPhase)*4;
+      const grd=ctx.createRadialGradient(px,H/2,0,px,H/2,r);
+      grd.addColorStop(0,'rgba(14,165,233,0.8)');
+      grd.addColorStop(1,'rgba(14,165,233,0)');
+      ctx.fillStyle=grd;ctx.fillRect(px-r,H/2-r,r*2,r*2);
+      ctx.beginPath();ctx.arc(px,H/2,6,0,Math.PI*2);
+      ctx.fillStyle='#0ea5e9';ctx.shadowColor='#0ea5e9';ctx.shadowBlur=18;ctx.fill();ctx.shadowBlur=0;
+    }
+
+    // Axis label
+    ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+    ctx.fillText('COCHLEAR POSITION — TONOTOPIC MAP',W/2,H-4);
+
+    // Overlay legend
+    overlays.forEach(({key},i)=>{
+      const inst=INSTRUMENTS[key];
+      ctx.fillStyle=inst.color;ctx.font='9px Courier New';ctx.textAlign='left';
+      ctx.fillText('■ '+inst.label,44+i*120,16);
+    });
+  }
+
+  function animEM(){
+    drawEM();
+    if(probeActive) requestAnimationFrame(animEM);
+  }
+
+  function update(){
+    probeT=+$('em-freq').value;
+    $('em-freq-val').textContent=fmtFreq(logToFreq(probeT));
+    drawEM();
+  }
+  $('em-freq').addEventListener('input',update);
+
+  function stopProbe(){
+    if(probeNode){try{probeNode.osc.stop();}catch(e){}}probeNode=null;
+    probeActive=false;drawEM();
+  }
+  $('em-play-tone').addEventListener('click',()=>{
+    stopProbe();
+    probeNode=playTone(logToFreq(probeT),0.25);
+    probeActive=true;animEM();
+  });
+  $('em-stop-tone').addEventListener('click',stopProbe);
+
+  Object.keys(INSTRUMENTS).forEach(key=>{
+    $('em-'+key).addEventListener('click',function(){
+      const idx=overlays.findIndex(o=>o.key===key);
+      if(idx>=0){ overlays.splice(idx,1);this.classList.remove('active'); }
+      else { overlays.push({key});this.classList.add('active'); }
+      drawEM();
+    });
+  });
+  $('em-clear').addEventListener('click',()=>{
+    overlays=[];
+    document.querySelectorAll('#sec-earmap .btn').forEach(b=>b.classList.remove('active'));
+    drawEM();
+  });
+
+  drawEM();
+})();
+
+// ══════════════════════════════════════════════════
+// OTOACOUSTIC EMISSION SIMULATOR
+// ══════════════════════════════════════════════════
+(function(){
+  const cv=$('oae-canvas'),ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  let f1=500,f2=600,oaeNodes=[],oaePhase=0;
+
+  const PAD={l:55,r:20,t:20,b:40};
+  const IW=W-PAD.l-PAD.r, IH=H-PAD.t-PAD.b;
+
+  function fx(f){ return PAD.l+IW*freqToLog(clamp(f,20,20000)); }
+  function drawOAE(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
+
+    // Grid
+    [20,100,200,500,1000,2000,5000,10000,20000].forEach(f=>{
+      const x=fx(f);
+      ctx.strokeStyle='rgba(30,30,46,0.5)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke();
+      ctx.fillStyle='#334155';ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.fillText(fmtFreq(f),x,H-PAD.b+14);
+    });
+
+    const cdiff=clamp(2*f1-f2,20,20000);
+    const sum=clamp(f1+f2,20,20000);
+    const cdiffAudible=cdiff>=20&&cdiff<=20000;
+
+    function drawTone(freq,color,label,h,alpha,isGhost){
+      const x=fx(freq);
+      const barH=IH*h;
+      ctx.globalAlpha=alpha;
+      ctx.fillStyle=color;
+      ctx.shadowColor=color;ctx.shadowBlur=isGhost?6:14;
+      ctx.fillRect(x-3,PAD.t+IH-barH,6,barH);
+      ctx.shadowBlur=0;
+      ctx.globalAlpha=1;
+      ctx.fillStyle=color;ctx.font='9px Courier New';ctx.textAlign='center';
+      ctx.globalAlpha=alpha;
+      ctx.fillText(label,x,PAD.t+IH-barH-6);
+      ctx.fillText(Math.round(freq)+'Hz',x,PAD.t+IH-barH-16);
+      ctx.globalAlpha=1;
+    }
+
+    drawTone(f1,'#f59e0b','F1',0.8,1,false);
+    drawTone(f2,'#0ea5e9','F2',0.8,1,false);
+    drawTone(cdiff,'#8b5cf6','2F1−F2',0.5,cdiffAudible?0.9:0.3,true);
+    drawTone(sum,'#10b981','F1+F2',0.25,0.35,true);
+
+    // OAE annotation
+    if(cdiffAudible){
+      const x=fx(cdiff);
+      oaePhase+=0.05;
+      ctx.beginPath();ctx.arc(x,PAD.t+IH*0.42,8+Math.sin(oaePhase)*2,0,Math.PI*2);
+      ctx.strokeStyle='rgba(139,92,246,0.8)';ctx.lineWidth=1.5;ctx.stroke();
+    }
+
+    ctx.fillStyle='#334155';ctx.font='10px Courier New';ctx.textAlign='center';
+    ctx.fillText('FREQUENCY (LOG SCALE)',W/2,H-2);
+  }
+
+  function update(){
+    f1=+$('oae-f1').value;
+    f2=Math.max(f1+10,+$('oae-f2').value);
+    $('oae-f1').max=f2-10;
+    $('oae-f1-val').textContent=f1+' Hz';
+    $('oae-f2-val').textContent=f2+' Hz';
+    const cd=2*f1-f2, sm=f1+f2;
+    $('oae-cdiff').textContent=cd>0?cd+' Hz':'(sub-audible '+cd+'Hz)';
+    $('oae-sum').textContent=sm+' Hz';
+    drawOAE();
+  }
+  ['oae-f1','oae-f2'].forEach(id=>$(id).addEventListener('input',update));
+
+  $('oae-preset').addEventListener('click',()=>{
+    $('oae-f1').value=500;$('oae-f2').value=600;update();
+  });
+
+  function stopOAE(){ oaeNodes.forEach(n=>{try{n.osc.stop();}catch(e){}});oaeNodes=[]; }
+  $('oae-play').addEventListener('click',()=>{
+    stopOAE();
+    oaeNodes.push(playTone(f1,0.25));
+    oaeNodes.push(playTone(f2,0.25));
+    const cdiff=2*f1-f2;
+    if(cdiff>20) oaeNodes.push(playTone(cdiff,0.025)); // model emission at 10%
+    (function anim(){requestAnimationFrame(anim);drawOAE();})();
+  });
+  $('oae-stop').addEventListener('click',stopOAE);
+
+  update();
+})();
+
+// ══════════════════════════════════════════════════
+// INTERSECTION OBSERVER — scroll animations
+// ══════════════════════════════════════════════════
+(function(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:0.1});
+  document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+
+  // Nav active highlight
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('#nav a');
+  const navObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
+        const link=document.querySelector(`#nav a[href="#${e.target.id}"]`);
+        if(link) link.classList.add('active');
+      }
+    });
+  },{threshold:0.5});
+  sections.forEach(s=>navObs.observe(s));
+
+  // Stagger glossary items
+  const glossObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const items=e.target.querySelectorAll('.gloss-item.hidden');
+        items.forEach((item,i)=>{
+          setTimeout(()=>item.classList.add('visible'),i*60);
+        });
+      }
+    });
+  },{threshold:0.05});
+  const glossSec=document.getElementById('sec-glossary');
+  if(glossSec) glossObs.observe(glossSec);
+})();
+
+// ══════════════════════════════════════════════════
+// GLOBAL AUDIO CONTEXT RESUME ON INTERACTION
+// ══════════════════════════════════════════════════
+document.addEventListener('click', ()=>{ if(AC&&AC.state==='suspended') AC.resume(); }, {once:false});
+
+// ══════════════════════════════════════════════════
+// KEYBOARD SHORTCUTS (spacebar = stop all)
+// ══════════════════════════════════════════════════
+document.addEventListener('keydown', e=>{
+  if(e.code==='Space'&&e.target.tagName!=='INPUT'){
+    e.preventDefault();
+    stopAll();
+  }
+});
+</script>
+
+<!-- ══════════════════════════════════════════════════
+     ADDITIONAL STYLES — scoped to new sections
+══════════════════════════════════════════════════ -->
+<style>
+/* Hero probe info box */
+#hero-info{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  z-index:5;background:rgba(5,5,10,0.7);border:1px solid rgba(14,165,233,0.25);
+  border-radius:4px;padding:8px 20px;font-size:10px;color:var(--dim);
+  letter-spacing:.08em;pointer-events:none;
+}
+/* Frequency readout badges */
+.freq-badge{
+  display:inline-block;background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);
+  border-radius:3px;padding:2px 8px;font-size:10px;color:var(--accent);margin:2px;
+}
+/* Section number badge */
+.sec-num{
+  display:inline-block;background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.15);
+  border-radius:2px;padding:1px 6px;font-size:9px;color:var(--dim);margin-right:8px;
+}
+/* Stat chips */
+.stat-chip{
+  background:rgba(14,165,233,0.06);border:1px solid rgba(14,165,233,0.15);
+  border-radius:3px;padding:6px 12px;font-size:11px;color:var(--dim);display:inline-block;
+}
+.stat-chip span{color:var(--accent);font-size:14px;display:block;}
+/* Phon scale bar */
+#phon-scale{
+  height:14px;border-radius:2px;overflow:hidden;display:flex;margin:8px 0;
+  border:1px solid var(--border);
+}
+.phon-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.04em;}
+/* Science/pseudoscience toggle in binaural */
+.sp-toggle{display:flex;gap:0;margin:10px 0;border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+.sp-toggle button{flex:1;background:transparent;border:none;color:var(--dim);font-family:'Courier New',monospace;font-size:10px;
+  padding:8px;cursor:pointer;transition:background .2s,color .2s;letter-spacing:.06em;}
+.sp-toggle button.active-sci{background:rgba(16,185,129,0.15);color:#10b981;}
+.sp-toggle button.active-pseudo{background:rgba(239,68,68,0.1);color:#ef4444;}
+/* Footer */
+#footer{background:var(--black);border-top:1px solid var(--border);padding:40px 24px;text-align:center;
+  color:var(--dim);font-size:10px;letter-spacing:.1em;line-height:2;}
+#footer a{color:var(--accent);text-decoration:none;}
+#footer .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;
+  max-width:800px;margin:0 auto 30px;text-align:left;}
+#footer h4{color:var(--accent);font-size:10px;letter-spacing:.12em;margin-bottom:8px;}
+#footer p{color:var(--dim);font-size:9px;line-height:1.8;}
+</style>
+
+<!-- HERO INFO BAR -->
+<div id="hero-info">SPACEBAR = STOP ALL AUDIO &nbsp;·&nbsp; SCROLL TO EXPLORE &nbsp;·&nbsp; USE HEADPHONES FOR BINAURAL SECTIONS</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-grid">
+    <div>
+      <h4>WAVGEN MUSIC WORLD 09</h4>
+      <p>Psychoacoustics Lab<br>The Science of Hearing Itself<br>WebAudio API · Canvas2D · Vanilla JS</p>
+    </div>
+    <div>
+      <h4>KEY REFERENCES</h4>
+      <p>ISO 226:2003 — Equal-loudness contours<br>ITU-R BS.1770 — Loudness measurement<br>Zwicker & Fastl — Psychoacoustics<br>Moore — Introduction to Psychology of Hearing</p>
+    </div>
+    <div>
+      <h4>PSYCHOACOUSTIC PHENOMENA</h4>
+      <p>Equal loudness · Critical bands<br>Masking · Haas effect · Binaural beats<br>Tonotopic mapping · Otoacoustic emissions<br>Auditory stream segregation</p>
+    </div>
+    <div>
+      <h4>TECHNICAL NOTES</h4>
+      <p>All audio via WebAudio OscillatorNode<br>ISO 226 data: approximate values<br>Bark scale: 24 critical bands<br>Loudness: equal-loudness compensation</p>
+    </div>
+  </div>
+  <p>WAVGEN MUSIC WORLD · SERIES 09 · PSYCHOACOUSTICS LAB · ALL AUDIO GENERATED IN-BROWSER</p>
+  <p style="margin-top:8px;font-size:9px;">No samples, no files, no network requests after load. Pure synthesis.</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════
+// HERO CANVAS — additional detail layer
+// supplementary probe tone player
+// ══════════════════════════════════════════════════
+(function(){
+  let heroTone=null;
+  const freqSlider=$('hero-freq');
+  let lastProbeFreq=1000;
+
+  freqSlider.addEventListener('dblclick',()=>{
+    // Double-click probe slider to audition the frequency
+    const f=logToFreq(+freqSlider.value);
+    if(heroTone){try{heroTone.osc.stop();}catch(e){}}
+    heroTone=playTone(f,0.15,0,0,1.2);
+    lastProbeFreq=f;
+  });
+  freqSlider.addEventListener('touchstart',()=>{
+    const f=logToFreq(+freqSlider.value);
+    if(heroTone){try{heroTone.osc.stop();}catch(e){}}
+    heroTone=playTone(f,0.15,0,0,0.8);
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// BARK SCALE — frequency-to-Bark conversion display
+// ══════════════════════════════════════════════════
+function freqToBark(f){
+  // Traunmüller formula
+  return (26.81*f/(1960+f))-0.53;
+}
+
+// ══════════════════════════════════════════════════
+// EQUAL LOUDNESS — phon scale visualization bar
+// ══════════════════════════════════════════════════
+(function(){
+  const container=document.querySelector('#sec-equal-loudness');
+  if(!container) return;
+  const bar=document.createElement('div');
+  bar.id='phon-scale';
+  const phons=[
+    {label:'20',bg:'rgba(14,100,180,0.2)',color:'#1e5f8a'},
+    {label:'40',bg:'rgba(14,120,200,0.3)',color:'#1d7aaa'},
+    {label:'60',bg:'rgba(14,165,233,0.35)',color:'#0ea5e9'},
+    {label:'80',bg:'rgba(56,189,248,0.35)',color:'#38bdf8'},
+    {label:'100',bg:'rgba(125,211,252,0.35)',color:'#7dd3fc'},
+  ];
+  phons.forEach(p=>{
+    const seg=document.createElement('div');
+    seg.className='phon-seg';
+    seg.style.background=p.bg;
+    seg.style.color=p.color;
+    seg.textContent=p.label+' phon';
+    bar.appendChild(seg);
+  });
+  // Insert before the edu card
+  const edu=container.querySelector('.edu-card');
+  if(edu) container.insertBefore(bar, edu);
+})();
+
+// ══════════════════════════════════════════════════
+// BINAURAL — science/pseudoscience toggle
+// ══════════════════════════════════════════════════
+(function(){
+  const sec=document.getElementById('sec-binaural');
+  if(!sec) return;
+
+  const toggleDiv=document.createElement('div');
+  toggleDiv.className='sp-toggle';
+  toggleDiv.innerHTML=`
+    <button id="sp-sci" class="active-sci">✓ THE SCIENCE</button>
+    <button id="sp-pseudo">⚠ THE PSEUDOSCIENCE</button>`;
+  sec.querySelector('.edu-card').before(toggleDiv);
+
+  const sciCard=sec.querySelector('.edu-card');
+  const sciText=sciCard.innerHTML;
+  const pseudoText=`<strong style="color:#ef4444">PSEUDOSCIENCE CLAIMS:</strong> Various practitioners claim specific binaural beat frequencies reliably induce measurable states: delta beats for deep sleep, theta for meditation, alpha for focus, beta for energy. <strong style="color:#ef4444">WHAT EVIDENCE SHOWS:</strong> Meta-analyses find small or inconsistent effects. Most studies are underpowered, use subjective self-report, and lack adequate blinding. The "entrainment" hypothesis (that the brain's electrical activity synchronizes to the beat frequency) remains unproven at the population level. Effects observed may reflect relaxation, expectation, or the masking of environmental noise rather than genuine neural entrainment.`;
+
+  $('sp-sci').addEventListener('click',()=>{
+    $('sp-sci').className='active-sci';
+    $('sp-pseudo').className='';
+    sciCard.innerHTML=sciText;
+  });
+  $('sp-pseudo').addEventListener('click',()=>{
+    $('sp-pseudo').className='active-pseudo';
+    $('sp-sci').className='';
+    sciCard.innerHTML=pseudoText;
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// MASKING — temporal animation loop fix
+// (draw continuously while temporal mode is active)
+// ══════════════════════════════════════════════════
+// (handled inline in the masking section above)
+
+// ══════════════════════════════════════════════════
+// HAAS — continuous wave animation when playing
+// ══════════════════════════════════════════════════
+// (handled inline in haas section above)
+
+// ══════════════════════════════════════════════════
+// STATS DISPLAY — hero section info chips
+// ══════════════════════════════════════════════════
+(function(){
+  const heroOverlay=document.querySelector('.hero-overlay');
+  if(!heroOverlay) return;
+  const chips=document.createElement('div');
+  chips.style.cssText='margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;';
+  [
+    {label:'RANGE',val:'20Hz – 20kHz'},
+    {label:'DYNAMIC',val:'0 – 120 dB SPL'},
+    {label:'BANDS',val:'24 BARK CRITICAL'},
+    {label:'STANDARD',val:'ISO 226:2003'},
+  ].forEach(c=>{
+    const chip=document.createElement('div');
+    chip.className='stat-chip';
+    chip.innerHTML=`<span>${c.val}</span>${c.label}`;
+    chip.style.cssText='text-align:center;font-size:9px;';
+    chips.appendChild(chip);
+  });
+  heroOverlay.appendChild(chips);
+})();
+
+// ══════════════════════════════════════════════════
+// COCKTAIL PARTY — spotlight animation loop control
+// ══════════════════════════════════════════════════
+// The cocktail party animation is triggered by play button
+// and runs continuously via requestAnimationFrame above.
+// Additional: keyboard arrow key spotlight control
+(function(){
+  let cpActive=false;
+  const cv=document.getElementById('cp-canvas');
+  if(!cv) return;
+
+  // Track whether cocktail party is playing
+  document.getElementById('cp-play').addEventListener('click',()=>{ cpActive=true; });
+  document.getElementById('cp-stop').addEventListener('click',()=>{ cpActive=false; });
+})();
+
+// ══════════════════════════════════════════════════
+// EAR MAP — show tonotopic frequency during probe
+// ══════════════════════════════════════════════════
+(function(){
+  const emFreq=$('em-freq');
+  if(!emFreq) return;
+  // Show Bark number for current probe frequency
+  emFreq.addEventListener('input',()=>{
+    const f=logToFreq(+emFreq.value);
+    const bark=freqToBark(f);
+    $('em-freq-val').textContent=`${fmtFreq(f)} (Bark ${bark.toFixed(1)})`;
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// LOUDNESS WAR — animate waveform on era change
+// ══════════════════════════════════════════════════
+// era selection is handled via data-era buttons above.
+// Add LUFS cursor line redraw pulse
+(function(){
+  const lwCanvas=$('lw-canvas');
+  if(!lwCanvas) return;
+  document.querySelectorAll('[data-era]').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      lwCanvas.style.boxShadow='0 0 20px rgba(14,165,233,0.3)';
+      setTimeout(()=>{ lwCanvas.style.boxShadow=''; },400);
+    });
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// OAE — continuous redraw animation when playing
+// ══════════════════════════════════════════════════
+// The oae play handler above starts an infinite anim loop.
+// Track reference to allow stopping:
+let oaeAnimRunning=false;
+const oaePlayBtn=$('oae-play');
+const oaeStopBtn=$('oae-stop');
+if(oaePlayBtn) oaePlayBtn.addEventListener('click',()=>{ oaeAnimRunning=true; });
+if(oaeStopBtn) oaeStopBtn.addEventListener('click',()=>{ oaeAnimRunning=false; });
+
+// ══════════════════════════════════════════════════
+// GLOBAL STOP BUTTON visibility hint
+// ══════════════════════════════════════════════════
+(function(){
+  const hint=document.createElement('div');
+  hint.style.cssText='position:fixed;bottom:6px;right:12px;z-index:200;font-size:9px;color:rgba(100,116,139,0.5);letter-spacing:.06em;pointer-events:none;';
+  hint.textContent='[SPACE] STOP ALL';
+  document.body.appendChild(hint);
+})();
+
+// ══════════════════════════════════════════════════
+// PHON INTERPOLATION UTILITY — used by equal-loudness
+// Returns SPL needed at given frequency to match reference phon level
+// ══════════════════════════════════════════════════
+function phonToSPL(phon, freq){
+  // Linear interpolation between ISO data sets
+  const levels=[20,40,60,80,100];
+  const keys=['20','40','60','80','100'];
+  for(let i=0;i<levels.length-1;i++){
+    if(phon<=levels[i+1]){
+      const t=(phon-levels[i])/(levels[i+1]-levels[i]);
+      const s0=interpISO(ISO_DATA[levels[i]],freq);
+      const s1=interpISO(ISO_DATA[levels[i+1]],freq);
+      return s0*(1-t)+s1*t;
+    }
+  }
+  return interpISO(ISO_DATA[100],freq);
+}
+
+// ══════════════════════════════════════════════════
+// MASKING — critical ratio display
+// Update masking frequency label with Bark number
+// ══════════════════════════════════════════════════
+(function(){
+  const mf=$('mask-freq');
+  if(!mf) return;
+  mf.addEventListener('input',()=>{
+    const f=logToFreq(+mf.value);
+    const bark=freqToBark(f);
+    $('mask-freq-val').textContent=`${fmtFreq(f)} (Bark ${bark.toFixed(1)})`;
+  });
+  const mt=$('mask-target');
+  if(!mt) return;
+  mt.addEventListener('input',()=>{
+    const f=logToFreq(+mt.value);
+    $('mask-target-val').textContent=fmtFreq(f);
+  });
+})();
+
+// ══════════════════════════════════════════════════
+// EQUAL LOUDNESS — live phon label on markers
+// ══════════════════════════════════════════════════
+(function(){
+  // Already handled in update() inside the EL closure.
+  // This adds a readout panel below the canvas.
+  const sec=document.getElementById('sec-equal-loudness');
+  if(!sec) return;
+  const panel=document.createElement('div');
+  panel.style.cssText='font-size:10px;color:var(--dim);margin:6px 0;display:flex;gap:20px;';
+  panel.innerHTML=`
+    <span>TONE A: <span id="el-phon-a" style="color:#f59e0b;">—</span></span>
+    <span>TONE B: <span id="el-phon-b" style="color:#0ea5e9;">—</span></span>
+    <span>DIFFERENCE: <span id="el-phon-diff" style="color:#334155;">—</span></span>`;
+  const canvas=sec.querySelector('canvas');
+  canvas.after(panel);
+
+  function updatePhonPanel(){
+    const fA=logToFreq(+document.getElementById('el-freqA').value);
+    const fB=logToFreq(+document.getElementById('el-freqB').value);
+    // At 60-phon contour SPL levels
+    const splA=interpISO(ISO_DATA[60],fA);
+    const splB=interpISO(ISO_DATA[60],fB);
+    const elPhonA=document.getElementById('el-phon-a');
+    const elPhonB=document.getElementById('el-phon-b');
+    const elPhonDiff=document.getElementById('el-phon-diff');
+    if(elPhonA) elPhonA.textContent=`${fmtFreq(fA)} @ ${splA.toFixed(0)} dB SPL`;
+    if(elPhonB) elPhonB.textContent=`${fmtFreq(fB)} @ ${splB.toFixed(0)} dB SPL`;
+    if(elPhonDiff){
+      const diff=Math.abs(splA-splB);
+      elPhonDiff.textContent=diff.toFixed(0)+' dB SPL difference at 60 phon';
+      elPhonDiff.style.color=diff>5?'#f59e0b':'#10b981';
+    }
+  }
+  ['el-freqA','el-freqB'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('input',updatePhonPanel);
+  });
+  updatePhonPanel();
+})();
+</script>
+</body>
+</html>

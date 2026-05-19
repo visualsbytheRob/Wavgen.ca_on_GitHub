@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive music world exploring composition music">
+    <meta property="og:title" content="Composition Music World — WAVGEN">
+    <meta property="og:description" content="Immersive music world exploring composition music">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#1DB954">
+    <link rel="canonical" href="https://wavgen.ca/music/composition_music_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMPOSITION — Emotional Architecture of Music</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4AF37;
+  --navy:#0A1628;
+  --black:#020408;
+  --gold2:#F0C040;
+  --gold3:#A08020;
+  --navy2:#142240;
+  --navy3:#1E3060;
+  --text:#E8D88A;
+  --dim:#8A7830;
+}
+body{background:var(--black);color:var(--text);font-family:'Courier New',monospace;overflow-x:hidden}
+canvas{display:block}
+#hero-canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+.hero{position:relative;height:100vh;overflow:hidden;background:var(--black)}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.hero-title{font-size:clamp(2.5rem,7vw,5.5rem);font-weight:900;letter-spacing:.18em;color:var(--gold);text-shadow:0 0 60px rgba(212,175,55,.6);line-height:1}
+.hero-sub{font-size:clamp(.75rem,1.8vw,1.1rem);letter-spacing:.35em;color:var(--gold3);margin-top:1.2rem;text-transform:uppercase}
+.hero-pulse{width:3px;height:60px;background:linear-gradient(180deg,transparent,var(--gold),transparent);margin-top:2.5rem;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+section{padding:5rem 2rem;max-width:1200px;margin:0 auto}
+.section-full{max-width:100%;padding:5rem 0}
+.section-full>*{max-width:1200px;margin-left:auto;margin-right:auto;padding:0 2rem}
+h2{font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:.2em;color:var(--gold);margin-bottom:.6rem;text-transform:uppercase}
+.sec-sub{font-size:.8rem;letter-spacing:.25em;color:var(--dim);margin-bottom:2.5rem;text-transform:uppercase}
+.panel{background:rgba(10,22,40,.7);border:1px solid rgba(212,175,55,.15);border-radius:4px;padding:1.5rem;margin-bottom:1.5rem}
+.slider-row{display:flex;align-items:center;gap:1rem;margin:.6rem 0}
+.slider-row label{font-size:.75rem;letter-spacing:.1em;color:var(--dim);min-width:120px;text-transform:uppercase}
+.slider-row input[type=range]{flex:1;accent-color:var(--gold);height:3px}
+.slider-row span{font-size:.75rem;color:var(--gold);min-width:42px;text-align:right}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
+.canvas-wrap{position:relative;border:1px solid rgba(212,175,55,.12);border-radius:4px;overflow:hidden;background:rgba(2,4,8,.8)}
+.canvas-label{font-size:.65rem;letter-spacing:.2em;color:var(--dim);text-align:center;padding:.4rem 0;text-transform:uppercase}
+/* Artist cards */
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem;margin-top:2rem}
+.artist-card{background:rgba(10,22,40,.8);border:1px solid rgba(212,175,55,.2);border-radius:6px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:.8rem;transition:border-color .3s,transform .3s}
+.artist-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.artist-avatar svg{width:80px;height:80px}
+.artist-name{font-size:.85rem;letter-spacing:.15em;color:var(--gold);text-align:center;text-transform:uppercase}
+.artist-role{font-size:.7rem;letter-spacing:.1em;color:var(--dim);text-align:center}
+/* Glossary */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:2rem}
+.g-term{background:rgba(10,22,40,.6);border-left:3px solid var(--gold3);padding:.9rem 1.1rem}
+.g-term h4{font-size:.8rem;letter-spacing:.15em;color:var(--gold);margin-bottom:.3rem;text-transform:uppercase}
+.g-term p{font-size:.72rem;line-height:1.6;color:#9A8848}
+/* Hidden/visible for scroll reveal */
+.hidden{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+.visible{opacity:1;transform:translateY(0)}
+/* Section divider */
+.divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 3rem}
+/* Btn */
+.btn{background:rgba(212,175,55,.15);border:1px solid var(--gold3);color:var(--gold);font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.15em;padding:.4rem 1rem;cursor:pointer;text-transform:uppercase;border-radius:2px;transition:background .2s}
+.btn:hover{background:rgba(212,175,55,.3)}
+.btn.active{background:rgba(212,175,55,.35);border-color:var(--gold)}
+/* Tension arc display */
+#tension-display{font-size:1.4rem;letter-spacing:.1em;color:var(--gold);text-align:center;margin:.5rem 0}
+/* Structure path */
+.struct-path{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.struct-node{background:rgba(212,175,55,.1);border:1px solid var(--gold3);padding:.3rem .7rem;font-size:.7rem;letter-spacing:.1em;color:var(--text);border-radius:2px}
+.struct-arrow{color:var(--dim);font-size:.8rem}
+.jump-nav{position:sticky;top:0;z-index:100;display:flex;gap:.5rem;padding:.75rem 2rem;background:rgba(2,4,8,.9);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);overflow-x:auto;scrollbar-width:none}
+.jump-nav::-webkit-scrollbar{display:none}
+.jump-link{flex-shrink:0;padding:.4rem 1rem;border-radius:20px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);text-decoration:none;font-size:.7rem;letter-spacing:.1em;font-family:monospace;transition:all .2s;background:transparent}
+.jump-link:hover,.jump-link.active{color:#D4AF37;border-color:#D4AF37;background:rgba(212,175,55,.08)}
+</style>
+</head>
+<body class="domain-music">
+<nav class="jump-nav" id="jump-nav">
+  <a href="#hero" class="jump-link active">HERO</a>
+  <a href="#sec-arr" class="jump-link">ARRANGEMENT</a>
+  <a href="#sec-tension" class="jump-link">TENSION</a>
+  <a href="#sec-struct" class="jump-link">STRUCTURE</a>
+  <a href="#sec-emo" class="jump-link">EMOTION</a>
+  <a href="#sec-theme" class="jump-link">THEMES</a>
+  <a href="#sec-harm" class="jump-link">HARMONY</a>
+  <a href="#sec-artists" class="jump-link">ARTISTS</a>
+  <a href="#sec-glossary" class="jump-link">GLOSSARY</a>
+  <a href="../Music/" class="jump-link" style="margin-left:auto">← MUSIC</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">COMPOSITION</div>
+    <div class="hero-sub">Emotional Architecture of Musical Structure</div>
+    <div class="hero-pulse"></div>
+  </div>
+</div>
+
+<!-- ARRANGEMENT EXPLORER -->
+<section class="section-full hidden" id="sec-arr">
+  <div>
+    <h2>Arrangement Explorer</h2>
+    <div class="sec-sub">Song structure · Section architecture · Instrument layering</div>
+    <div class="divider"></div>
+    <div class="panel">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="section-btns"></div>
+      <div class="canvas-wrap"><canvas id="arr-canvas" width="1140" height="220"></canvas></div>
+      <div class="canvas-label">Song Timeline — Click Section to Inspect</div>
+      <div style="margin-top:1rem" id="section-detail"></div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="slider-row"><label>Zoom</label><input type="range" id="arrZoom" min="50" max="200" value="100"><span id="arrZoomV">100%</span></div>
+        <div class="slider-row"><label>Instrument Layers</label><input type="range" id="arrLayers" min="1" max="8" value="6" step="1"><span id="arrLayersV">6</span></div>
+        <div class="slider-row"><label>Energy Curve</label><input type="range" id="arrEnergy" min="0" max="100" value="70"><span id="arrEnergyV">70</span></div>
+      </div>
+      <div class="panel">
+        <div style="font-size:.7rem;letter-spacing:.1em;color:var(--dim);margin-bottom:.8rem">SECTION LEGEND</div>
+        <div id="arr-legend" style="display:flex;flex-wrap:wrap;gap:.5rem"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TENSION / RELEASE -->
+<section class="hidden" id="sec-tension">
+  <h2>Tension / Release System</h2>
+  <div class="sec-sub">Emotional arc · Dramatic pacing · Resolution geometry</div>
+  <div class="divider"></div>
+  <div class="panel">
+    <div class="canvas-wrap"><canvas id="tension-canvas" width="1140" height="260"></canvas></div>
+    <div class="canvas-label">Tension Arc — Drag Sliders to Shape Emotional Journey</div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="slider-row"><label>Peak Position</label><input type="range" id="peakPos" min="20" max="80" value="65"><span id="peakPosV">65%</span></div>
+      <div class="slider-row"><label>Peak Intensity</label><input type="range" id="peakIntensity" min="30" max="100" value="85"><span id="peakIntensityV">85</span></div>
+      <div class="slider-row"><label>Release Depth</label><input type="range" id="releaseDepth" min="10" max="90" value="40"><span id="releaseDepthV">40</span></div>
+      <div class="slider-row"><label>Tension Slope</label><input type="range" id="tensionSlope" min="10" max="100" value="55"><span id="tensionSlopeV">55</span></div>
+    </div>
+    <div class="panel">
+      <div style="font-size:.7rem;letter-spacing:.1em;color:var(--dim);margin-bottom:1rem">TENSION COMPONENTS</div>
+      <canvas id="tension-comp" width="480" height="140"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- COMPOSITIONAL STRUCTURE MAP -->
+<section class="hidden" id="sec-struct">
+  <h2>Compositional Structure Map</h2>
+  <div class="sec-sub">Hierarchical form · Phrase architecture · Motif embedding</div>
+  <div class="divider"></div>
+  <div class="struct-path" id="struct-path">
+    <div class="struct-node">WORK</div>
+    <div class="struct-arrow">→</div>
+    <div class="struct-node">MOVEMENT</div>
+    <div class="struct-arrow">→</div>
+    <div class="struct-node">SECTION</div>
+    <div class="struct-arrow">→</div>
+    <div class="struct-node">PHRASE</div>
+    <div class="struct-arrow">→</div>
+    <div class="struct-node">MOTIF</div>
+    <div class="struct-arrow">→</div>
+    <div class="struct-node">NOTE</div>
+  </div>
+  <div class="panel">
+    <div class="canvas-wrap"><canvas id="struct-canvas" width="1140" height="360"></canvas></div>
+    <div class="canvas-label">Structural Tree — Particle Flow Reveals Compositional Depth</div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="slider-row"><label>Depth Levels</label><input type="range" id="structDepth" min="2" max="6" value="5" step="1"><span id="structDepthV">5</span></div>
+      <div class="slider-row"><label>Branch Density</label><input type="range" id="structDensity" min="10" max="100" value="55"><span id="structDensityV">55</span></div>
+    </div>
+    <div class="panel">
+      <div class="slider-row"><label>Particle Speed</label><input type="range" id="structSpeed" min="10" max="100" value="50"><span id="structSpeedV">50</span></div>
+      <div class="slider-row"><label>Glow Intensity</label><input type="range" id="structGlow" min="0" max="100" value="70"><span id="structGlowV">70</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EMOTIONAL PACING VISUALIZER -->
+<section class="hidden" id="sec-emo">
+  <h2>Emotional Pacing Visualizer</h2>
+  <div class="sec-sub">Energy curves · Emotional density · Temporal dynamics</div>
+  <div class="divider"></div>
+  <div class="panel">
+    <div class="canvas-wrap"><canvas id="emo-canvas" width="1140" height="280"></canvas></div>
+    <div class="canvas-label">Multi-Dimension Emotional Landscape</div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="slider-row"><label>Energy</label><input type="range" id="emoEnergy" min="0" max="100" value="70"><span id="emoEnergyV">70</span></div>
+      <div class="slider-row"><label>Brightness</label><input type="range" id="emoBright" min="0" max="100" value="60"><span id="emoBrightV">60</span></div>
+      <div class="slider-row"><label>Tension</label><input type="range" id="emoTens" min="0" max="100" value="50"><span id="emoTensV">50</span></div>
+    </div>
+    <div class="panel">
+      <div class="slider-row"><label>Density</label><input type="range" id="emoDensity" min="0" max="100" value="55"><span id="emoDensityV">55</span></div>
+      <div class="slider-row"><label>Playhead</label><input type="range" id="emoPlay" min="0" max="100" value="35"><span id="emoPlayV">35%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- THEMATIC RELATIONSHIP SYSTEM -->
+<section class="section-full hidden" id="sec-theme">
+  <div>
+    <h2>Thematic Relationship System</h2>
+    <div class="sec-sub">Motif network · Transformations · Developmental logic</div>
+    <div class="divider"></div>
+    <div class="panel">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="transform-btns"></div>
+      <div class="canvas-wrap"><canvas id="theme-canvas" width="1140" height="360"></canvas></div>
+      <div class="canvas-label">Motif Constellation — Click Transform Type to Highlight</div>
+    </div>
+  </div>
+</section>
+
+<!-- HARMONIC FLOW EXPLORER -->
+<section class="hidden" id="sec-harm">
+  <h2>Harmonic Flow Explorer</h2>
+  <div class="sec-sub">Chord progressions · Voice leading · Harmonic tension</div>
+  <div class="divider"></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="canvas-wrap"><canvas id="harm-canvas" width="540" height="300"></canvas></div>
+      <div class="canvas-label">Chord Circle — Voice Leading Arcs</div>
+    </div>
+    <div class="panel">
+      <div class="canvas-wrap"><canvas id="voice-canvas" width="540" height="300"></canvas></div>
+      <div class="canvas-label">Voice Leading — Individual Parts</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:1.5rem">
+    <div class="slider-row"><label>Harmonic Rhythm</label><input type="range" id="harmRhythm" min="1" max="16" value="4" step="1"><span id="harmRhythmV">4</span></div>
+    <div class="slider-row"><label>Dissonance Level</label><input type="range" id="harmDissonance" min="0" max="100" value="30"><span id="harmDissonanceV">30</span></div>
+    <div class="slider-row"><label>Voice Spread</label><input type="range" id="voiceSpread" min="10" max="100" value="55"><span id="voiceSpreadV">55</span></div>
+  </div>
+</section>
+
+<!-- ARTIST CARDS -->
+<section class="hidden" id="sec-artists">
+  <h2>Compositional Masters</h2>
+  <div class="sec-sub">Architects of musical form · Masters of structure</div>
+  <div class="divider"></div>
+  <div class="artists-grid" id="artists-grid"></div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="hidden" id="sec-glossary">
+  <h2>Composition Glossary</h2>
+  <div class="sec-sub">Terms · Concepts · Structural vocabulary</div>
+  <div class="divider"></div>
+  <div class="glossary-grid" id="glossary-grid"></div>
+</section>
+
+<script>
+/* ─── CORE UTILITIES ─── */
+class LagFilter {
+  constructor(init,tau){this.value=init;this.tau=tau}
+  update(target,dt){
+    const k=1-Math.exp(-dt/this.tau);
+    this.value+=k*(target-this.value);
+    return this.value;
+  }
+}
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand=(lo=0,hi=1)=>lo+Math.random()*(hi-lo);
+function noise21(x,y){
+  const ix=Math.floor(x),iy=Math.floor(y);
+  const fx=x-ix,fy=y-iy;
+  const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);
+  const h=(a,b)=>{let v=Math.sin(a*127.1+b*311.7)*43758.5453123;return v-Math.floor(v)};
+  return lerp(lerp(h(ix,iy),h(ix+1,iy),ux),lerp(h(ix,iy+1),h(ix+1,iy+1),ux),uy);
+}
+function fbm(x,y,oct=4){
+  let v=0,a=.5,f=1,mx=0;
+  for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);mx+=a;a*=.5;f*=2.1;}
+  return v/mx;
+}
+
+/* ─── LAG FILTERS ─── */
+let mouseX=.5,mouseY=.5;
+const lagHMX=new LagFilter(.5,.12);
+const lagHMY=new LagFilter(.5,.12);
+const lagHPulse=new LagFilter(0,.4);
+const lagArrZoom=new LagFilter(100,.25);
+const lagArrEnergy=new LagFilter(70,.3);
+const lagTension=new LagFilter(85,.35);
+const lagRelease=new LagFilter(40,.35);
+const lagPeakPos=new LagFilter(65,.3);
+const lagStructDepth=new LagFilter(5,.3);
+const lagStructAnim=new LagFilter(0,.5);
+const lagEmotEnergy=new LagFilter(70,.3);
+const lagEmotBright=new LagFilter(60,.3);
+const lagMotifAnim=new LagFilter(0,.8);
+const lagHarmTension=new LagFilter(30,.3);
+const lagChordFlow=new LagFilter(0,.2);
+const lagVoiceAnim=new LagFilter(55,.3);
+const lagHarmRhythm=new LagFilter(4,.25);
+
+document.addEventListener('mousemove',e=>{
+  mouseX=e.clientX/window.innerWidth;
+  mouseY=e.clientY/window.innerHeight;
+});
+
+/* ─── SECTION COLORS / DATA ─── */
+const SECTIONS=[
+  {name:'INTRO',start:0,end:.08,color:'#4466AA',instruments:['Piano','Strings'],desc:'Establishes key center and atmosphere. Introduces primary thematic material.'},
+  {name:'VERSE 1',start:.08,end:.22,color:'#2266CC',instruments:['Piano','Guitar','Bass','Drums'],desc:'First presentation of melodic themes. Low energy density, narrative focus.'},
+  {name:'PRE-CHORUS',start:.22,end:.30,color:'#5588DD',instruments:['All'],desc:'Tension builder. Rising harmonic progression toward dominant preparation.'},
+  {name:'CHORUS',start:.30,end:.46,color:'#D4AF37',instruments:['Full Ensemble'],desc:'Climactic release. Peak energy, hook statement, full harmonic resolution.'},
+  {name:'VERSE 2',start:.46,end:.58,color:'#2266CC',instruments:['Piano','Guitar','Bass'],desc:'Varied repeat. New lyrical/melodic content over established groove.'},
+  {name:'BRIDGE',start:.58,end:.72,color:'#AA44AA',instruments:['Strings','Keys'],desc:'Contrasting section. New key area or modal shift, subverts expectations.'},
+  {name:'FINAL CHORUS',start:.72,end:.90,color:'#F0C040',instruments:['Full +'],desc:'Ultimate climax. Maximum density, heightened harmonic and dynamic intensity.'},
+  {name:'OUTRO',start:.90,end:1,color:'#334466',instruments:['Piano','Pad'],desc:'Resolution and decay. Gradual reduction to silence or fade.'},
+];
+let selectedSection=3;
+
+/* ─── WEBGL HERO ─── */
+(()=>{
+  const canvas=document.getElementById('hero-canvas');
+  const gl=canvas.getContext('webgl');
+  if(!gl)return;
+  const resize=()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight};
+  resize();window.addEventListener('resize',resize);
+
+  const VS=`attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}`;
+  const FS=`
+precision highp float;
+uniform vec2 u_res,u_mouse;
+uniform float u_time,u_pulse;
+#define PI 3.14159265
+
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5);}
+float noise(vec2 p){vec2 i=floor(p),f=p-i;f=f*f*(3.-2.*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.1+.7;a*=.5;}return v;}
+
+// Bezier tension curve
+float tensionCurve(float x,float peak,float slope){
+  float t=x/peak;
+  float rise=smoothstep(0.,1.,pow(t,1./slope));
+  float fall=1.-smoothstep(peak,1.,pow((x-peak)/(1.-peak+.001),slope*.5));
+  return x<peak?rise:fall;
+}
+
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 mn=u_mouse;
+  float t=u_time;
+
+  // Orchestral staff lines
+  float staff=0.;
+  for(int s=0;s<5;s++){
+    float ly=.35+float(s)*.06;
+    float dist=abs(uv.y-ly);
+    staff+=.025/(dist+.005)*(.3+fbm(vec2(uv.x*4.,t*.1+float(s)))*.3);
+  }
+
+  // Tension arc across top
+  float px=tensionCurve(uv.x,.65,.8);
+  float tensY=.8-px*.35;
+  float tensLine=exp(-pow((uv.y-tensY)*20.,2.))*(.6+u_pulse*.4);
+
+  // Thematic motif waves
+  float motifs=0.;
+  for(int m=0;m<6;m++){
+    float freq=1.5+float(m)*.7;
+    float phase=float(m)*PI*.37+t*(0.3+float(m)*.08);
+    float amp=.04+float(m)*.015;
+    float baseY=.5+float(m)*.07-.21;
+    float wx=sin(uv.x*freq*PI*2.+phase)*amp;
+    float wdist=abs(uv.y-baseY-wx);
+    float decay=exp(-float(m)*.2);
+    motifs+=.018/(wdist+.003)*decay;
+  }
+
+  // Field glow
+  vec2 cp=uv-mn;
+  float glow=exp(-dot(cp,cp)*8.)*(.3+u_pulse*.5);
+  float field=fbm(uv*3.+t*.04)*fbm(uv*2.-t*.03);
+
+  // Gold color from tension arc, navy from field
+  vec3 goldCol=vec3(.831,.686,.215);
+  vec3 navyCol=vec3(.04,.09,.16);
+  vec3 staffCol=vec3(.12,.25,.55)*staff;
+  vec3 tensCol=goldCol*tensLine*1.4;
+  vec3 motifCol=mix(goldCol,vec3(.3,.55,.85),uv.x)*motifs;
+  vec3 fieldCol=navyCol*field*2.;
+  vec3 cursorCol=goldCol*glow;
+
+  vec3 col=staffCol+tensCol+motifCol+fieldCol+cursorCol;
+  col=col/(col+.5)*1.3;
+  col=mix(vec3(.01,.02,.04),col,smoothstep(0.,.05,min(min(uv.x,1.-uv.x),min(uv.y,1.-uv.y))));
+  gl_FragColor=vec4(col,1);
+}`;
+
+  function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+  gl.linkProgram(prog);gl.useProgram(prog);
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const aP=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(aP);gl.vertexAttribPointer(aP,2,gl.FLOAT,false,0,0);
+  const uRes=gl.getUniformLocation(prog,'u_res');
+  const uMouse=gl.getUniformLocation(prog,'u_mouse');
+  const uTime=gl.getUniformLocation(prog,'u_time');
+  const uPulse=gl.getUniformLocation(prog,'u_pulse');
+  let t0=performance.now();
+  function frame(){
+    const t=(performance.now()-t0)/1000;
+    const dt=Math.min(.05,t/1000);
+    lagHMX.update(mouseX,dt||.016);
+    lagHMY.update(mouseY,dt||.016);
+    lagHPulse.update(.5+.5*Math.sin(t*2.1),.016);
+    gl.viewport(0,0,canvas.width,canvas.height);
+    gl.uniform2f(uRes,canvas.width,canvas.height);
+    gl.uniform2f(uMouse,lagHMX.value,1-lagHMY.value);
+    gl.uniform1f(uTime,t);
+    gl.uniform1f(uPulse,lagHPulse.value);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ─── ARRANGEMENT CANVAS ─── */
+const arrCanvas=document.getElementById('arr-canvas');
+const arrCtx=arrCanvas.getContext('2d');
+const INST_COLORS=['#4488CC','#D4AF37','#44CC88','#CC4488','#88CC44','#CC8844','#4488AA','#AA44CC'];
+
+function buildSectionBtns(){
+  const cont=document.getElementById('section-btns');
+  const legend=document.getElementById('arr-legend');
+  SECTIONS.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='btn'+(i===selectedSection?' active':'');
+    b.textContent=s.name;
+    b.style.borderColor=s.color;
+    b.onclick=()=>{
+      selectedSection=i;
+      document.querySelectorAll('#section-btns .btn').forEach((bb,j)=>bb.classList.toggle('active',j===i));
+      updateSectionDetail();
+    };
+    cont.appendChild(b);
+    const dot=document.createElement('div');
+    dot.style.cssText=`width:10px;height:10px;background:${s.color};border-radius:50%;display:inline-block;margin-right:.3rem`;
+    const label=document.createElement('span');
+    label.style.cssText='font-size:.65rem;letter-spacing:.1em;color:#8A7830;margin-right:.8rem';
+    label.textContent=s.name;
+    const wrap=document.createElement('div');
+    wrap.style.display='flex';wrap.style.alignItems='center';
+    wrap.appendChild(dot);wrap.appendChild(label);
+    legend.appendChild(wrap);
+  });
+  updateSectionDetail();
+}
+function updateSectionDetail(){
+  const s=SECTIONS[selectedSection];
+  const d=document.getElementById('section-detail');
+  d.innerHTML=`<div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap">
+    <div><span style="font-size:.65rem;letter-spacing:.15em;color:var(--dim)">SECTION</span><br>
+    <span style="font-size:1rem;color:${s.color};letter-spacing:.1em">${s.name}</span></div>
+    <div><span style="font-size:.65rem;letter-spacing:.15em;color:var(--dim)">INSTRUMENTS</span><br>
+    <span style="font-size:.8rem;color:var(--text)">${s.instruments.join(', ')}</span></div>
+    <div style="flex:1;min-width:200px"><span style="font-size:.65rem;letter-spacing:.15em;color:var(--dim)">FUNCTION</span><br>
+    <span style="font-size:.75rem;color:var(--text);line-height:1.5">${s.desc}</span></div>
+  </div>`;
+}
+buildSectionBtns();
+
+function drawArr(t){
+  const w=arrCanvas.width,h=arrCanvas.height;
+  arrCtx.clearRect(0,0,w,h);
+  arrCtx.fillStyle='rgba(2,4,8,.95)';
+  arrCtx.fillRect(0,0,w,h);
+
+  const layerCount=Math.round(document.getElementById('arrLayers')?.value||6);
+  const energy=(document.getElementById('arrEnergy')?.value||70)/100;
+
+  // Draw sections
+  SECTIONS.forEach((s,si)=>{
+    const x=s.start*w;
+    const sw=(s.end-s.start)*w;
+    // Background tint
+    arrCtx.fillStyle=s.color+'18';
+    arrCtx.fillRect(x,0,sw,h*.7);
+    // Top bar
+    arrCtx.fillStyle=s.color;
+    arrCtx.fillRect(x,0,sw,3);
+    // Label
+    arrCtx.fillStyle=si===selectedSection?s.color:'#334466';
+    arrCtx.font='bold 9px Courier New';
+    arrCtx.letterSpacing='2px';
+    arrCtx.fillText(s.name,x+4,16);
+    // Instrument lanes
+    for(let li=0;li<layerCount&&li<s.instruments.length;li++){
+      const ly=28+li*(h*.7-28)/layerCount;
+      const lh=(h*.7-28)/layerCount-2;
+      arrCtx.fillStyle=INST_COLORS[li]+'22';
+      arrCtx.fillRect(x+1,ly,sw-2,lh);
+      // Waveform in lane
+      arrCtx.beginPath();
+      arrCtx.strokeStyle=INST_COLORS[li]+'88';
+      arrCtx.lineWidth=1.2;
+      for(let px=0;px<sw;px+=2){
+        const fx=px/sw;
+        const nv=noise21((x+px)*.01,li*3.7+t*.3)*energy;
+        const ny=ly+lh/2+nv*lh*.4;
+        px===0?arrCtx.moveTo(x+px,ny):arrCtx.lineTo(x+px,ny);
+      }
+      arrCtx.stroke();
+    }
+    // Section divider
+    arrCtx.strokeStyle='rgba(212,175,55,.15)';
+    arrCtx.lineWidth=1;
+    arrCtx.beginPath();arrCtx.moveTo(x,0);arrCtx.lineTo(x,h*.7);arrCtx.stroke();
+    // Highlight selected
+    if(si===selectedSection){
+      arrCtx.strokeStyle=s.color+'88';
+      arrCtx.lineWidth=2;
+      arrCtx.strokeRect(x,0,sw,h*.7);
+    }
+  });
+
+  // Energy curve
+  arrCtx.beginPath();
+  arrCtx.strokeStyle='rgba(212,175,55,.7)';
+  arrCtx.lineWidth=2;
+  const ey0=h*.7+10;
+  const eh=h*.25;
+  for(let px=0;px<=w;px+=3){
+    const fx=px/w;
+    const eBase=SECTIONS.reduce((acc,s)=>{
+      if(fx>=s.start&&fx<s.end){
+        const midE=['CHORUS','FINAL CHORUS'].includes(s.name)?1:.4;
+        return midE;
+      }
+      return acc;
+    },0);
+    const ev=eBase*energy+noise21(fx*8,t*.2)*.1;
+    const ey=ey0+eh-(ev*eh);
+    px===0?arrCtx.moveTo(px,ey):arrCtx.lineTo(px,ey);
+  }
+  arrCtx.stroke();
+  arrCtx.fillStyle='rgba(212,175,55,.2)';
+  arrCtx.lineTo(w,ey0+eh);arrCtx.lineTo(0,ey0+eh);arrCtx.closePath();arrCtx.fill();
+
+  // Energy label
+  arrCtx.fillStyle='#8A7830';
+  arrCtx.font='8px Courier New';
+  arrCtx.fillText('ENERGY',4,ey0+12);
+}
+
+/* ─── TENSION/RELEASE CANVAS ─── */
+const tensCanvas=document.getElementById('tension-canvas');
+const tensCtx=tensCanvas.getContext('2d');
+const tensComp=document.getElementById('tension-comp');
+const tensCompCtx=tensComp.getContext('2d');
+
+function drawTension(t){
+  const w=tensCanvas.width,h=tensCanvas.height;
+  tensCtx.clearRect(0,0,w,h);
+  tensCtx.fillStyle='rgba(2,4,8,.95)';
+  tensCtx.fillRect(0,0,w,h);
+
+  const peak=lagPeakPos.value/100;
+  const intensity=lagTension.value/100;
+  const release=lagRelease.value/100;
+  const slope=parseFloat(document.getElementById('tensionSlope')?.value||55)/100;
+
+  // Grid
+  tensCtx.strokeStyle='rgba(212,175,55,.06)';
+  tensCtx.lineWidth=1;
+  for(let i=0;i<=10;i++){
+    const x=i/10*w;
+    tensCtx.beginPath();tensCtx.moveTo(x,0);tensCtx.lineTo(x,h);tensCtx.stroke();
+  }
+  for(let i=0;i<=4;i++){
+    const y=i/4*h;
+    tensCtx.beginPath();tensCtx.moveTo(0,y);tensCtx.lineTo(w,y);tensCtx.stroke();
+  }
+
+  // Build tension curve
+  const pts=[];
+  for(let px=0;px<=w;px+=2){
+    const x=px/w;
+    let tv;
+    if(x<peak){
+      tv=Math.pow(x/peak,1/slope)*intensity;
+    } else {
+      const fallX=(x-peak)/(1-peak);
+      tv=intensity*(1-Math.pow(fallX,slope*1.5))*(1-release)+release*(1-fallX);
+    }
+    tv=Math.max(0,tv);
+    pts.push({x:px,y:h-tv*h*.85-10});
+  }
+
+  // Fill under curve
+  const grad=tensCtx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0,'rgba(212,175,55,.4)');
+  grad.addColorStop(.5,'rgba(20,34,64,.3)');
+  grad.addColorStop(1,'rgba(2,4,8,0)');
+  tensCtx.beginPath();
+  tensCtx.moveTo(0,h);
+  pts.forEach(p=>tensCtx.lineTo(p.x,p.y));
+  tensCtx.lineTo(w,h);
+  tensCtx.closePath();
+  tensCtx.fillStyle=grad;
+  tensCtx.fill();
+
+  // Curve line
+  tensCtx.beginPath();
+  tensCtx.strokeStyle='rgba(212,175,55,.9)';
+  tensCtx.lineWidth=2.5;
+  pts.forEach((p,i)=>i===0?tensCtx.moveTo(p.x,p.y):tensCtx.lineTo(p.x,p.y));
+  tensCtx.stroke();
+
+  // Peak marker
+  const peakY=h-intensity*h*.85-10;
+  tensCtx.beginPath();
+  tensCtx.arc(peak*w,peakY,6,0,Math.PI*2);
+  tensCtx.fillStyle='#F0C040';
+  tensCtx.fill();
+  tensCtx.fillStyle='#D4AF37';
+  tensCtx.font='10px Courier New';
+  tensCtx.fillText('CLIMAX',peak*w+8,peakY+4);
+
+  // Emotional phase labels
+  const phases=[['EXPOSITION','Rising action builds.'],['DEVELOPMENT','Complexity increases.'],['CLIMAX','Maximum intensity.'],['RESOLUTION','Tension dissolves.']];
+  phases.forEach((ph,i)=>{
+    const px=(i/phases.length+(1/phases.length/2))*w;
+    tensCtx.fillStyle='rgba(212,175,55,.4)';
+    tensCtx.font='8px Courier New';
+    tensCtx.letterSpacing='2px';
+    tensCtx.fillText(ph[0],px-20,h-8);
+  });
+
+  // Animated cursor position along curve
+  const cpx=(t*.12%1)*w;
+  const ci=Math.min(pts.length-1,Math.floor(cpx/2));
+  if(pts[ci]){
+    tensCtx.beginPath();
+    tensCtx.arc(pts[ci].x,pts[ci].y,5,0,Math.PI*2);
+    tensCtx.strokeStyle='rgba(240,192,64,.8)';
+    tensCtx.lineWidth=2;
+    tensCtx.stroke();
+    tensCtx.fillStyle='rgba(240,192,64,.3)';
+    tensCtx.fill();
+  }
+
+  // Components canvas
+  const cw=tensComp.width,ch=tensComp.height;
+  tensCompCtx.clearRect(0,0,cw,ch);
+  tensCompCtx.fillStyle='rgba(2,4,8,.95)';
+  tensCompCtx.fillRect(0,0,cw,ch);
+  const components=[
+    {name:'HARMONIC',color:'#4488FF',fn:(x)=>Math.pow(Math.sin(x*Math.PI),2)*intensity},
+    {name:'RHYTHMIC',color:'#D4AF37',fn:(x)=>x<peak?x/peak*intensity*.8:intensity*.8*(1-(x-peak)/(1-peak))},
+    {name:'MELODIC',color:'#44CC88',fn:(x)=>fbm(x*3,1.2)*intensity},
+    {name:'DYNAMIC',color:'#CC4488',fn:(x)=>Math.pow(x<peak?x/peak:(1-(x-peak)/(1-peak)),2)*intensity*.9},
+  ];
+  components.forEach((comp,ci2)=>{
+    tensCompCtx.beginPath();
+    tensCompCtx.strokeStyle=comp.color+'AA';
+    tensCompCtx.lineWidth=1.5;
+    for(let px=0;px<=cw;px+=3){
+      const x=px/cw;
+      const v=comp.fn(x);
+      const y=ch-v*ch*.8-8;
+      px===0?tensCompCtx.moveTo(px,y):tensCompCtx.lineTo(px,y);
+    }
+    tensCompCtx.stroke();
+    tensCompCtx.fillStyle=comp.color;
+    tensCompCtx.font='7px Courier New';
+    tensCompCtx.fillText(comp.name,4,15+ci2*16);
+  });
+}
+
+/* ─── COMPOSITIONAL STRUCTURE MAP ─── */
+const structCanvas=document.getElementById('struct-canvas');
+const structCtx=structCanvas.getContext('2d');
+let structParticles=[];
+function initStructParticles(){
+  structParticles=[];
+  for(let i=0;i<80;i++){
+    structParticles.push({x:rand(0,1),y:rand(0,1),vx:rand(-.5,.5),vy:rand(-.5,.5),life:rand(0,1),maxLife:rand(.5,2),level:Math.floor(rand(0,6))});
+  }
+}
+initStructParticles();
+
+function drawStruct(t){
+  const w=structCanvas.width,h=structCanvas.height;
+  structCtx.clearRect(0,0,w,h);
+  structCtx.fillStyle='rgba(2,4,8,.95)';
+  structCtx.fillRect(0,0,w,h);
+
+  const depth=Math.round(lagStructDepth.value);
+  const glow=parseFloat(document.getElementById('structGlow')?.value||70)/100;
+  const spd=parseFloat(document.getElementById('structSpeed')?.value||50)/100;
+
+  const LEVEL_NAMES=['WORK','MOVEMENT','SECTION','PHRASE','MOTIF','NOTE'];
+  const LEVEL_COLORS=['#D4AF37','#A08020','#4488CC','#44CC88','#CC4488','#8888FF'];
+  const LEVEL_COUNTS=[1,2,4,8,16,32];
+
+  const levelH=h/(depth+.5);
+
+  for(let lv=0;lv<depth;lv++){
+    const ly=lv*levelH+levelH*.4;
+    const count=Math.min(LEVEL_COUNTS[lv],32);
+    const nodeR=Math.max(4,14-lv*2);
+    for(let ni=0;ni<count;ni++){
+      const nx=(ni+.5)/count*w;
+      // Node
+      structCtx.beginPath();
+      structCtx.arc(nx,ly,nodeR,0,Math.PI*2);
+      const gr=structCtx.createRadialGradient(nx,ly,0,nx,ly,nodeR);
+      gr.addColorStop(0,LEVEL_COLORS[lv]);
+      gr.addColorStop(1,LEVEL_COLORS[lv]+'00');
+      structCtx.fillStyle=gr;
+      structCtx.fill();
+      // Glow ring
+      if(glow>.3){
+        structCtx.beginPath();
+        structCtx.arc(nx,ly,nodeR+4+Math.sin(t*2+ni*.7)*2,0,Math.PI*2);
+        structCtx.strokeStyle=LEVEL_COLORS[lv]+(Math.floor(glow*80).toString(16).padStart(2,'0'));
+        structCtx.lineWidth=1;
+        structCtx.stroke();
+      }
+      // Connect to parent level
+      if(lv>0){
+        const parentCount=Math.min(LEVEL_COUNTS[lv-1],32);
+        const pi2=Math.floor(ni/(count/parentCount));
+        const px=(pi2+.5)/parentCount*w;
+        const py=(lv-1)*levelH+levelH*.4;
+        structCtx.beginPath();
+        structCtx.moveTo(nx,ly-nodeR);
+        structCtx.lineTo(px,py+Math.max(4,14-(lv-1)*2));
+        structCtx.strokeStyle=LEVEL_COLORS[lv]+'44';
+        structCtx.lineWidth=.8;
+        structCtx.stroke();
+      }
+      // Level label (first column)
+      if(ni===0){
+        structCtx.fillStyle=LEVEL_COLORS[lv];
+        structCtx.font='9px Courier New';
+        structCtx.letterSpacing='2px';
+        structCtx.fillText(LEVEL_NAMES[lv],4,ly+4);
+      }
+    }
+  }
+
+  // Animated particles flowing down tree
+  const dt=.016;
+  structParticles.forEach(p=>{
+    p.life+=dt*spd*(1+p.level*.3);
+    if(p.life>p.maxLife){p.life=0;p.x=rand(0,1);p.y=0;p.level=0;}
+    const currentLv=Math.min(depth-1,Math.floor(p.y*depth));
+    const lvc=LEVEL_COLORS[currentLv];
+    const px2=p.x*w;
+    const py2=p.life/p.maxLife*h;
+    const alpha=Math.sin(p.life/p.maxLife*Math.PI);
+    structCtx.beginPath();
+    structCtx.arc(px2,py2,2,0,Math.PI*2);
+    structCtx.fillStyle=lvc+(Math.floor(alpha*180).toString(16).padStart(2,'0'));
+    structCtx.fill();
+    p.y=p.life/p.maxLife;
+  });
+}
+
+/* ─── EMOTIONAL PACING VISUALIZER ─── */
+const emoCanvas=document.getElementById('emo-canvas');
+const emoCtx=emoCanvas.getContext('2d');
+
+function drawEmo(t){
+  const w=emoCanvas.width,h=emoCanvas.height;
+  emoCtx.clearRect(0,0,w,h);
+  emoCtx.fillStyle='rgba(2,4,8,.95)';
+  emoCtx.fillRect(0,0,w,h);
+
+  const energy=lagEmotEnergy.value/100;
+  const bright=lagEmotBright.value/100;
+  const tens2=(document.getElementById('emoTens')?.value||50)/100;
+  const density=(document.getElementById('emoDensity')?.value||55)/100;
+  const playhead=(document.getElementById('emoPlay')?.value||35)/100;
+
+  const dimensions=[
+    {name:'ENERGY',color:'#D4AF37',val:energy,fn:(x)=>{
+      const base=Math.sin(x*Math.PI)*energy;
+      return base+noise21(x*5,t*.1)*.15;
+    }},
+    {name:'BRIGHTNESS',color:'#88CCFF',val:bright,fn:(x)=>{
+      return bright*.8+.1*Math.sin(x*Math.PI*3+t*.2)*bright;
+    }},
+    {name:'TENSION',color:'#CC4488',val:tens2,fn:(x)=>{
+      const peak=.65;
+      return x<peak?Math.pow(x/peak,1.5)*tens2:(1-(x-peak)/(1-peak))*tens2;
+    }},
+    {name:'DENSITY',color:'#44CC88',val:density,fn:(x)=>{
+      return (density*.6+noise21(x*4,t*.15)*.4*density);
+    }},
+  ];
+
+  const ph=h/(dimensions.length+1);
+
+  dimensions.forEach((dim,di)=>{
+    const y0=di*ph+ph*.3;
+    const yh=ph*.55;
+
+    // Background lane
+    emoCtx.fillStyle='rgba(10,22,40,.4)';
+    emoCtx.fillRect(60,y0,w-70,yh);
+
+    // Curve
+    emoCtx.beginPath();
+    for(let px=0;px<=w-70;px+=3){
+      const x=px/(w-70);
+      const v=dim.fn(x);
+      const y=y0+yh-v*yh*.9;
+      px===0?emoCtx.moveTo(60+px,y):emoCtx.lineTo(60+px,y);
+    }
+    emoCtx.strokeStyle=dim.color+'CC';
+    emoCtx.lineWidth=2;
+    emoCtx.stroke();
+
+    // Fill
+    emoCtx.lineTo(w-10,y0+yh);
+    emoCtx.lineTo(60,y0+yh);
+    emoCtx.closePath();
+    emoCtx.fillStyle=dim.color+'22';
+    emoCtx.fill();
+
+    // Label
+    emoCtx.fillStyle=dim.color;
+    emoCtx.font='9px Courier New';
+    emoCtx.letterSpacing='1px';
+    emoCtx.fillText(dim.name,2,y0+yh/2+4);
+
+    // Current value dot at playhead
+    const phx=60+playhead*(w-70);
+    const pv=dim.fn(playhead);
+    const pvy=y0+yh-pv*yh*.9;
+    emoCtx.beginPath();
+    emoCtx.arc(phx,pvy,4,0,Math.PI*2);
+    emoCtx.fillStyle=dim.color;
+    emoCtx.fill();
+  });
+
+  // Playhead line
+  const phx=60+playhead*(w-70);
+  emoCtx.beginPath();
+  emoCtx.moveTo(phx,0);emoCtx.lineTo(phx,h);
+  emoCtx.strokeStyle='rgba(212,175,55,.5)';
+  emoCtx.lineWidth=1.5;
+  emoCtx.setLineDash([4,4]);
+  emoCtx.stroke();
+  emoCtx.setLineDash([]);
+  emoCtx.fillStyle='#D4AF37';
+  emoCtx.font='8px Courier New';
+  emoCtx.fillText(Math.round(playhead*100)+'%',phx+4,14);
+
+  // Timeline sections at bottom
+  const bary=h-18;
+  SECTIONS.forEach(s=>{
+    const x1=60+s.start*(w-70);
+    const x2=60+s.end*(w-70);
+    emoCtx.fillStyle=s.color+'44';
+    emoCtx.fillRect(x1,bary,x2-x1,14);
+    emoCtx.strokeStyle=s.color+'88';
+    emoCtx.lineWidth=.5;
+    emoCtx.strokeRect(x1,bary,x2-x1,14);
+    if(x2-x1>40){
+      emoCtx.fillStyle=s.color;
+      emoCtx.font='7px Courier New';
+      emoCtx.fillText(s.name.slice(0,5),x1+3,bary+10);
+    }
+  });
+}
+
+/* ─── THEMATIC RELATIONSHIP SYSTEM ─── */
+const themeCanvas=document.getElementById('theme-canvas');
+const themeCtx=themeCanvas.getContext('2d');
+const TRANSFORMS=['ORIGINAL','INVERSION','RETROGRADE','AUGMENTATION','DIMINUTION','FRAGMENTATION','COMBINATION'];
+const TRANSFORM_COLORS=['#D4AF37','#4488CC','#44CC88','#CC8844','#CC4488','#8888FF','#FF8844'];
+let activeTransform=0;
+
+const MOTIFS=[
+  {id:0,name:'MAIN THEME',x:.5,y:.25,size:18,transform:'ORIGINAL'},
+  {id:1,name:'INVERTED',x:.2,y:.55,size:14,transform:'INVERSION'},
+  {id:2,name:'RETRO',x:.75,y:.5,size:14,transform:'RETROGRADE'},
+  {id:3,name:'AUG',x:.35,y:.75,size:12,transform:'AUGMENTATION'},
+  {id:4,name:'DIM',x:.6,y:.78,size:10,transform:'DIMINUTION'},
+  {id:5,name:'FRAG A',x:.12,y:.35,size:9,transform:'FRAGMENTATION'},
+  {id:6,name:'FRAG B',x:.85,y:.25,size:9,transform:'FRAGMENTATION'},
+  {id:7,name:'COMBO',x:.5,y:.7,size:11,transform:'COMBINATION'},
+];
+const MOTIF_LINKS=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,7],[2,7],[3,4],[5,6]];
+
+function buildTransformBtns(){
+  const cont=document.getElementById('transform-btns');
+  TRANSFORMS.forEach((tr,i)=>{
+    const b=document.createElement('button');
+    b.className='btn'+(i===activeTransform?' active':'');
+    b.textContent=tr;
+    b.style.borderColor=TRANSFORM_COLORS[i];
+    b.onclick=()=>{
+      activeTransform=i;
+      document.querySelectorAll('#transform-btns .btn').forEach((bb,j)=>bb.classList.toggle('active',j===i));
+    };
+    cont.appendChild(b);
+  });
+}
+buildTransformBtns();
+
+function drawTheme(t){
+  const w=themeCanvas.width,h=themeCanvas.height;
+  themeCtx.clearRect(0,0,w,h);
+  themeCtx.fillStyle='rgba(2,4,8,.95)';
+  themeCtx.fillRect(0,0,w,h);
+
+  // Background field
+  for(let gy=0;gy<h;gy+=40){
+    for(let gx=0;gx<w;gx+=40){
+      const nv=fbm(gx*.005,gy*.005+t*.02);
+      if(nv>.55){
+        themeCtx.fillStyle='rgba(212,175,55,.03)';
+        themeCtx.fillRect(gx,gy,40,40);
+      }
+    }
+  }
+
+  // Draw links
+  MOTIF_LINKS.forEach(([a,b])=>{
+    const ma=MOTIFS[a],mb=MOTIFS[b];
+    const ax=ma.x*w,ay=ma.y*h,bx=mb.x*w,by=mb.y*h;
+    const tIdx=TRANSFORMS.indexOf(mb.transform);
+    const isActive=tIdx===activeTransform||ma.transform===TRANSFORMS[activeTransform];
+    const alpha=isActive?.6:.12;
+    const col=TRANSFORM_COLORS[tIdx];
+    // Bezier link
+    const cx=(ax+bx)/2;
+    const cy=(ay+by)/2-40;
+    themeCtx.beginPath();
+    themeCtx.moveTo(ax,ay);
+    themeCtx.quadraticCurveTo(cx,cy,bx,by);
+    themeCtx.strokeStyle=col+(Math.floor(alpha*255).toString(16).padStart(2,'0'));
+    themeCtx.lineWidth=isActive?2:1;
+    themeCtx.stroke();
+
+    // Animated packet on link
+    if(isActive){
+      const tp=((t*.25)%1);
+      const bpx=ax+tp*(bx-ax);
+      const bpy=ay+tp*(by-ay);
+      themeCtx.beginPath();
+      themeCtx.arc(bpx,bpy,3,0,Math.PI*2);
+      themeCtx.fillStyle=col;
+      themeCtx.fill();
+    }
+  });
+
+  // Draw nodes
+  MOTIFS.forEach((m,i)=>{
+    const mx=m.x*w,my=m.y*h;
+    const tIdx=TRANSFORMS.indexOf(m.transform);
+    const col=TRANSFORM_COLORS[tIdx];
+    const isActive=m.transform===TRANSFORMS[activeTransform];
+    const pulse=Math.sin(t*2+i*.8);
+    const r=m.size+(isActive?3+pulse*2:0);
+
+    // Glow
+    if(isActive){
+      const gr=themeCtx.createRadialGradient(mx,my,0,mx,my,r*3);
+      gr.addColorStop(0,col+'55');
+      gr.addColorStop(1,col+'00');
+      themeCtx.beginPath();
+      themeCtx.arc(mx,my,r*3,0,Math.PI*2);
+      themeCtx.fillStyle=gr;
+      themeCtx.fill();
+    }
+
+    // Node shape — different per transform
+    themeCtx.fillStyle=col+(isActive?'DD':'66');
+    themeCtx.strokeStyle=col;
+    themeCtx.lineWidth=isActive?2:1;
+    if(tIdx===0){
+      // Circle — original
+      themeCtx.beginPath();themeCtx.arc(mx,my,r,0,Math.PI*2);themeCtx.fill();themeCtx.stroke();
+    } else if(tIdx===1){
+      // Diamond — inversion
+      themeCtx.beginPath();themeCtx.moveTo(mx,my-r);themeCtx.lineTo(mx+r,my);themeCtx.lineTo(mx,my+r);themeCtx.lineTo(mx-r,my);themeCtx.closePath();themeCtx.fill();themeCtx.stroke();
+    } else if(tIdx===2){
+      // Reversed triangle
+      themeCtx.beginPath();themeCtx.moveTo(mx,my+r);themeCtx.lineTo(mx+r,my-r*.6);themeCtx.lineTo(mx-r,my-r*.6);themeCtx.closePath();themeCtx.fill();themeCtx.stroke();
+    } else {
+      // Hexagon
+      themeCtx.beginPath();
+      for(let si=0;si<6;si++){const a=si/6*Math.PI*2-Math.PI/6;themeCtx.lineTo(mx+Math.cos(a)*r,my+Math.sin(a)*r);}
+      themeCtx.closePath();themeCtx.fill();themeCtx.stroke();
+    }
+
+    // Label
+    themeCtx.fillStyle=isActive?col:'#8A7830';
+    themeCtx.font=`${isActive?10:8}px Courier New`;
+    themeCtx.textAlign='center';
+    themeCtx.fillText(m.name,mx,my-r-4);
+    themeCtx.textAlign='left';
+
+    // Motif waveform mini
+    themeCtx.beginPath();
+    for(let px=0;px<40;px+=2){
+      const x=px/40;
+      let wave;
+      if(tIdx===0)wave=Math.sin(x*Math.PI*4+t);
+      else if(tIdx===1)wave=-Math.sin(x*Math.PI*4+t);
+      else if(tIdx===2)wave=Math.sin((1-x)*Math.PI*4+t);
+      else if(tIdx===3)wave=Math.sin(x*Math.PI*2+t);
+      else wave=Math.sin(x*Math.PI*8+t)*.5;
+      const wy=my+r+4+wave*5;
+      px===0?themeCtx.moveTo(mx-20+px,wy):themeCtx.lineTo(mx-20+px,wy);
+    }
+    themeCtx.strokeStyle=col+(isActive?'AA':'44');
+    themeCtx.lineWidth=1;
+    themeCtx.stroke();
+  });
+}
+
+/* ─── HARMONIC FLOW EXPLORER ─── */
+const harmCanvas=document.getElementById('harm-canvas');
+const harmCtx=harmCanvas.getContext('2d');
+const voiceCanvas=document.getElementById('voice-canvas');
+const voiceCtx=voiceCanvas.getContext('2d');
+
+const CHORDS=[
+  {name:'I',degree:0,color:'#D4AF37',tension:0.1},
+  {name:'ii',degree:2,color:'#4488CC',tension:0.4},
+  {name:'iii',degree:4,color:'#44CC88',tension:0.35},
+  {name:'IV',degree:5,color:'#88CC44',tension:0.25},
+  {name:'V',degree:7,color:'#CC4488',tension:0.85},
+  {name:'vi',degree:9,color:'#8888FF',tension:0.55},
+  {name:'vii°',degree:11,color:'#FF8844',tension:0.95},
+];
+const PROGRESSIONS=[
+  [0,3,4,0],[0,5,4,0],[0,1,4,0],[0,5,1,4],[0,3,1,4,0],[5,6,4,0],[0,3,5,4],
+];
+let harmFrame=0;
+
+function drawHarm(t){
+  const w=harmCanvas.width,h=harmCanvas.height;
+  harmCtx.clearRect(0,0,w,h);
+  harmCtx.fillStyle='rgba(2,4,8,.95)';
+  harmCtx.fillRect(0,0,w,h);
+
+  const dissonance=lagHarmTension.value/100;
+  const prog=PROGRESSIONS[Math.floor(t*.3)%PROGRESSIONS.length];
+  const beatF=(t*2)%1;
+  const currentChord=prog[Math.floor(t*2)%prog.length];
+
+  const cx=w/2,cy=h/2;
+  const R=Math.min(w,h)*.36;
+
+  // Circle of fifths feel
+  CHORDS.forEach((ch,i)=>{
+    const angle=(i/CHORDS.length)*Math.PI*2-Math.PI/2;
+    const nx=cx+Math.cos(angle)*R;
+    const ny=cy+Math.sin(angle)*R;
+    const isActive=i===currentChord;
+    const prev=CHORDS.find((_,ii)=>ii===prog[(Math.floor(t*2)-1+prog.length)%prog.length]);
+    const prevI=CHORDS.indexOf(prev);
+
+    // Connection arc
+    if(isActive&&prevI>=0&&prevI!==currentChord){
+      const prevAngle=(prevI/CHORDS.length)*Math.PI*2-Math.PI/2;
+      const pnx=cx+Math.cos(prevAngle)*R;
+      const pny=cy+Math.sin(prevAngle)*R;
+      harmCtx.beginPath();
+      harmCtx.moveTo(pnx,pny);
+      const arcCx=cx+(Math.cos(prevAngle)+Math.cos(angle))/2*R*.5;
+      const arcCy=cy+(Math.sin(prevAngle)+Math.sin(angle))/2*R*.5;
+      harmCtx.quadraticCurveTo(arcCx,arcCy,nx,ny);
+      harmCtx.strokeStyle='rgba(212,175,55,.5)';
+      harmCtx.lineWidth=1.5;
+      harmCtx.stroke();
+
+      // Packet along arc
+      const pkt=beatF;
+      const bpx=pnx+(arcCx-pnx)*2*pkt-arcCx*pkt*pkt;
+      const bpy=pny+(arcCy-pny)*2*pkt-arcCy*pkt*pkt;
+      harmCtx.beginPath();
+      harmCtx.arc(bpx,bpy,4,0,Math.PI*2);
+      harmCtx.fillStyle='#D4AF37';
+      harmCtx.fill();
+    }
+
+    const r2=isActive?18+Math.sin(t*6)*2:14;
+    // Glow
+    if(isActive){
+      const gr=harmCtx.createRadialGradient(nx,ny,0,nx,ny,r2*3);
+      gr.addColorStop(0,ch.color+'88');
+      gr.addColorStop(1,ch.color+'00');
+      harmCtx.beginPath();harmCtx.arc(nx,ny,r2*3,0,Math.PI*2);
+      harmCtx.fillStyle=gr;harmCtx.fill();
+    }
+    harmCtx.beginPath();harmCtx.arc(nx,ny,r2,0,Math.PI*2);
+    harmCtx.fillStyle=isActive?ch.color:ch.color+'44';
+    harmCtx.fill();
+    harmCtx.fillStyle=isActive?'#000':'#888';
+    harmCtx.font=`bold ${isActive?11:9}px Courier New`;
+    harmCtx.textAlign='center';
+    harmCtx.fillText(ch.name,nx,ny+4);
+    harmCtx.textAlign='left';
+
+    // Tension indicator
+    if(dissonance>.3){
+      harmCtx.beginPath();
+      harmCtx.arc(nx,ny,r2+8,0,ch.tension*dissonance*Math.PI*2);
+      harmCtx.strokeStyle=ch.color+'66';
+      harmCtx.lineWidth=2;
+      harmCtx.stroke();
+    }
+  });
+
+  // Center label
+  harmCtx.fillStyle='rgba(212,175,55,.3)';
+  harmCtx.font='11px Courier New';
+  harmCtx.textAlign='center';
+  harmCtx.fillText('C MAJOR',cx,cy-8);
+  harmCtx.font='9px Courier New';
+  harmCtx.fillText(CHORDS[currentChord]?.name||'',cx,cy+12);
+  harmCtx.textAlign='left';
+
+  // Voice leading canvas
+  const vw=voiceCanvas.width,vh=voiceCanvas.height;
+  voiceCtx.clearRect(0,0,vw,vh);
+  voiceCtx.fillStyle='rgba(2,4,8,.95)';
+  voiceCtx.fillRect(0,0,vw,vh);
+
+  const spread=(document.getElementById('voiceSpread')?.value||55)/100;
+  const voices=[
+    {name:'SOPRANO',color:'#D4AF37',register:.2},
+    {name:'ALTO',color:'#88CCFF',register:.4},
+    {name:'TENOR',color:'#44CC88',register:.6},
+    {name:'BASS',color:'#CC4488',register:.8},
+  ];
+
+  const harmRhythm=Math.round(lagHarmRhythm.value);
+  const numChords=8;
+  const chordW=vw/numChords;
+
+  for(let ci2=0;ci2<numChords;ci2++){
+    const beat=ci2/harmRhythm;
+    const chIdx=prog[Math.floor(beat)%prog.length];
+    const ch=CHORDS[chIdx];
+    // Bar background
+    if(ci2%2===0)voiceCtx.fillStyle='rgba(20,34,64,.3)';
+    else voiceCtx.fillStyle='rgba(10,22,40,.3)';
+    voiceCtx.fillRect(ci2*chordW,0,chordW,vh*.85);
+    // Chord label
+    voiceCtx.fillStyle=ch?.color||'#888';
+    voiceCtx.font='9px Courier New';
+    voiceCtx.textAlign='center';
+    voiceCtx.fillText(ch?.name||'',ci2*chordW+chordW/2,vh*.9);
+    voiceCtx.textAlign='left';
+  }
+
+  // Staff lines
+  for(let li=0;li<5;li++){
+    const ly=.2*vh+li*.1*vh;
+    voiceCtx.beginPath();voiceCtx.moveTo(0,ly);voiceCtx.lineTo(vw,ly);
+    voiceCtx.strokeStyle='rgba(212,175,55,.1)';voiceCtx.lineWidth=1;voiceCtx.stroke();
+  }
+
+  // Voice paths
+  voices.forEach((v,vi)=>{
+    voiceCtx.beginPath();
+    for(let ci2=0;ci2<=numChords;ci2++){
+      const beat=ci2/harmRhythm;
+      const chIdx=prog[Math.floor(beat)%prog.length];
+      const ch=CHORDS[chIdx];
+      const baseY=v.register*vh*.8+.05*vh;
+      const spreadY=spread*.15*vh;
+      const ny=baseY+noise21(ci2*.3,vi*1.7)*spreadY-spreadY*.5;
+      const nx=ci2*chordW+chordW/2;
+      ci2===0?voiceCtx.moveTo(nx,ny):voiceCtx.lineTo(nx,ny);
+      // Note dots
+      if(ci2<numChords){
+        voiceCtx.save();
+        voiceCtx.fillStyle=v.color;
+        voiceCtx.beginPath();
+        voiceCtx.arc(nx,ny,4,0,Math.PI*2);
+        voiceCtx.fill();
+        voiceCtx.restore();
+      }
+    }
+    voiceCtx.strokeStyle=v.color+'88';
+    voiceCtx.lineWidth=1.5;
+    voiceCtx.stroke();
+    // Label
+    voiceCtx.fillStyle=v.color;
+    voiceCtx.font='8px Courier New';
+    voiceCtx.fillText(v.name,2,v.register*vh*.8+.05*vh+4);
+  });
+}
+
+/* ─── ARTIST CARDS ─── */
+const ARTISTS=[
+  {name:'J.S. BACH',role:'Contrapuntal Architecture',color:'#D4AF37',shape:'hexagon'},
+  {name:'BEETHOVEN',role:'Formal Innovation',color:'#4488CC',shape:'pentagon'},
+  {name:'MAHLER',role:'Symphonic Cosmos',color:'#CC4488',shape:'circle'},
+  {name:'STRAVINSKY',role:'Rhythmic Structure',color:'#44CC88',shape:'triangle'},
+  {name:'SCHOENBERG',role:'Atonal Composition',color:'#8888FF',shape:'diamond'},
+  {name:'JOHN WILLIAMS',role:'Thematic Development',color:'#FF8844',shape:'star'},
+  {name:'HANS ZIMMER',role:'Cinematic Tension',color:'#88CCFF',shape:'hexagon'},
+  {name:'MORRICONE',role:'Emotional Economy',color:'#FFCC44',shape:'circle'},
+];
+
+function makeAvatar(shape,color){
+  const S=80;
+  const shapes={
+    circle:`<circle cx="40" cy="40" r="28" fill="${color}22" stroke="${color}" stroke-width="2"/>
+      <circle cx="40" cy="40" r="16" fill="${color}44"/>`,
+    hexagon:(()=>{
+      const pts=Array.from({length:6},(_,i)=>{const a=i/6*Math.PI*2-Math.PI/6;return `${40+28*Math.cos(a)},${40+28*Math.sin(a)}`;}).join(' ');
+      return `<polygon points="${pts}" fill="${color}22" stroke="${color}" stroke-width="2"/>
+        <circle cx="40" cy="40" r="12" fill="${color}55"/>`;
+    })(),
+    pentagon:(()=>{
+      const pts=Array.from({length:5},(_,i)=>{const a=i/5*Math.PI*2-Math.PI/2;return `${40+28*Math.cos(a)},${40+28*Math.sin(a)}`;}).join(' ');
+      return `<polygon points="${pts}" fill="${color}22" stroke="${color}" stroke-width="2"/>`;
+    })(),
+    triangle:`<polygon points="40,12 68,68 12,68" fill="${color}22" stroke="${color}" stroke-width="2"/>`,
+    diamond:`<polygon points="40,12 68,40 40,68 12,40" fill="${color}22" stroke="${color}" stroke-width="2"/>`,
+    star:(()=>{
+      const pts=Array.from({length:10},(_,i)=>{const a=i/10*Math.PI*2-Math.PI/2;const r=i%2===0?28:14;return `${40+r*Math.cos(a)},${40+r*Math.sin(a)}`;}).join(' ');
+      return `<polygon points="${pts}" fill="${color}22" stroke="${color}" stroke-width="2"/>`;
+    })(),
+  };
+  return `<svg viewBox="0 0 ${S} ${S}" xmlns="http://www.w3.org/2000/svg">${shapes[shape]||shapes.circle}</svg>`;
+}
+
+const grid=document.getElementById('artists-grid');
+ARTISTS.forEach(a=>{
+  const card=document.createElement('div');
+  card.className='artist-card';
+  card.innerHTML=`<div class="artist-avatar">${makeAvatar(a.shape,a.color)}</div>
+    <div class="artist-name">${a.name}</div>
+    <div class="artist-role">${a.role}</div>`;
+  grid.appendChild(card);
+});
+
+/* ─── GLOSSARY ─── */
+const GLOSSARY=[
+  {term:'Sonata Form',def:'Three-part structure: Exposition, Development, Recapitulation. The DNA of classical composition.'},
+  {term:'Motif',def:'A short musical idea — melodic, rhythmic, or harmonic — that recurs and transforms throughout a work.'},
+  {term:'Leitmotif',def:'A recurring musical theme associated with a character, place, or idea. Foundational to Wagner and film scoring.'},
+  {term:'Development Section',def:'Middle part of sonata form where themes are fragmented, transposed, and harmonically destabilized.'},
+  {term:'Recapitulation',def:'Return of expositional material in the home key. Provides formal resolution and closure.'},
+  {term:'Coda',def:'Concluding passage that brings a piece to a definitive end, often reinforcing the tonic.'},
+  {term:'Bridge',def:'Contrasting section connecting verse and chorus, or two major sections, often modulating to a new key.'},
+  {term:'Through-Composed',def:'Form with no internal repetition — each section presents new material. Contrast to strophic form.'},
+  {term:'Rondo Form',def:'ABACADA… pattern alternating main theme with contrasting episodes. Common in final movements.'},
+  {term:'Theme & Variations',def:'Repeated statement of a melody with progressive alterations of harmony, rhythm, texture, and mode.'},
+  {term:'Ostinato',def:'Persistently repeated melodic, rhythmic, or harmonic pattern. Creates hypnotic continuity.'},
+  {term:'Counterpoint',def:'Technique of combining multiple independent melodic lines in harmonic relationship.'},
+  {term:'Voice Leading',def:'The movement of individual parts through a harmonic progression. Smooth voice leading minimizes dissonance.'},
+  {term:'Harmonic Rhythm',def:'The rate at which chords change. Fast harmonic rhythm increases tension; slow creates stability.'},
+  {term:'Tension',def:'Musical instability created through dissonance, dynamic build, rhythmic density, or harmonic distance from tonic.'},
+  {term:'Release',def:'Resolution of tension through consonance, cadence, dynamic reduction, or return to tonic harmony.'},
+  {term:'Cadence',def:'Harmonic formula signaling phrase or section closure. Authentic (V→I), half (→V), plagal (IV→I), deceptive (V→vi).'},
+  {term:'Augmentation',def:'Transformation that doubles or multiplies the rhythmic values of a motif, slowing it down.'},
+  {term:'Diminution',def:'Transformation that halves rhythmic values of a motif. Creates acceleration and urgency.'},
+  {term:'Retrograde',def:'Playing a motif or theme backwards in time. Creates mirror symmetry.'},
+  {term:'Inversion',def:'Flipping a melody upside-down, maintaining interval sizes but reversing direction.'},
+  {term:'Phrase',def:'A complete musical thought, analogous to a sentence. Typically 2-8 bars, ending with a cadence.'},
+];
+
+const gGrid=document.getElementById('glossary-grid');
+GLOSSARY.forEach(g=>{
+  const el=document.createElement('div');
+  el.className='g-term';
+  el.innerHTML=`<h4>${g.term}</h4><p>${g.def}</p>`;
+  gGrid.appendChild(el);
+});
+
+/* ─── SLIDER BINDINGS ─── */
+function bind(id,lagFilter,display,suffix=''){
+  const el=document.getElementById(id);
+  const dv=document.getElementById(display);
+  if(!el)return;
+  el.addEventListener('input',()=>{
+    lagFilter.update(parseFloat(el.value),.01);
+    if(dv)dv.textContent=el.value+suffix;
+  });
+}
+bind('peakPos',lagPeakPos,'peakPosV','%');
+bind('peakIntensity',lagTension,'peakIntensityV','');
+bind('releaseDepth',lagRelease,'releaseDepthV','');
+bind('tensionSlope',new LagFilter(55,.3),'tensionSlopeV','');
+bind('structDepth',lagStructDepth,'structDepthV','');
+bind('structSpeed',new LagFilter(50,.3),'structSpeedV','');
+bind('structGlow',new LagFilter(70,.3),'structGlowV','');
+bind('structDensity',new LagFilter(55,.3),'structDensityV','');
+bind('emoEnergy',lagEmotEnergy,'emoEnergyV','');
+bind('emoBright',lagEmotBright,'emoBrightV','');
+bind('emoTens',new LagFilter(50,.3),'emoTensV','');
+bind('emoDensity',new LagFilter(55,.3),'emoDensityV','');
+bind('emoPlay',new LagFilter(35,.3),'emoPlayV','%');
+bind('arrZoom',lagArrZoom,'arrZoomV','%');
+bind('arrLayers',new LagFilter(6,.3),'arrLayersV','');
+bind('arrEnergy',lagArrEnergy,'arrEnergyV','');
+bind('harmRhythm',lagHarmRhythm,'harmRhythmV','');
+bind('harmDissonance',lagHarmTension,'harmDissonanceV','');
+bind('voiceSpread',lagVoiceAnim,'voiceSpreadV','');
+
+/* ─── INTERSECTION OBSERVER ─── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.10});
+document.querySelectorAll('.hidden').forEach(el=>io.observe(el));
+
+/* ─── CANVAS RESIZE ─── */
+window.addEventListener('resize',()=>{
+  [arrCanvas,tensCanvas,structCanvas,emoCanvas,themeCanvas,harmCanvas,voiceCanvas].forEach(c=>{
+    if(!c)return;
+    const w=c.parentElement?.offsetWidth||1140;
+    c.width=Math.min(w-4,1140);
+  });
+});
+
+// Jump nav active state
+(function() {
+  const links = document.querySelectorAll('.jump-link');
+  const sections = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io2 = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+  sections.forEach(s => io2.observe(s));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive art world exploring graphic design">
+    <meta property="og:title" content="Graphic Design World — WAVGEN">
+    <meta property="og:description" content="Immersive art world exploring graphic design">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="canonical" href="https://wavgen.ca/art/graphic_design_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphic Design World — Swiss International Typographic Style</title>
+<style>
+:root {
+  --white: #FFFFFF;
+  --red: #E63229;
+  --black: #1A1A1A;
+  --surface: #F5F5F5;
+  --gray: #888888;
+  --lgray: #CCCCCC;
+  --border: #E0E0E0;
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--white); color: var(--black); overflow-x: hidden; line-height: 1.5; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--black); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 2rem; height: 52px;
+}
+.nav-logo { color: var(--white); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+.nav-logo span { color: var(--red); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--red); }
+
+/* HERO */
+#hero { padding: 0; height: 430px; margin-top: 52px; overflow: hidden; background: var(--white); position: relative; cursor: crosshair; }
+#heroCanvas { width: 100%; height: 100%; display: block; }
+.hero-overlay { position: absolute; bottom: 2.5rem; left: 2.5rem; pointer-events: none; }
+.hero-title { font-size: clamp(1.8rem, 4vw, 3.2rem); font-weight: 900; color: var(--black); letter-spacing: -0.03em; line-height: 1; }
+.hero-title span { color: var(--red); }
+.hero-sub { font-size: 0.72rem; color: var(--gray); letter-spacing: 0.16em; text-transform: uppercase; margin-top: 0.5rem; }
+
+/* SECTIONS */
+section { padding: 5rem 2rem; }
+section:nth-child(even) { background: var(--surface); }
+.section-label { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 0.5rem; }
+.section-title { font-size: clamp(1.7rem, 3.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem; }
+.section-intro { font-size: 0.92rem; color: var(--gray); max-width: 580px; margin-bottom: 2.5rem; line-height: 1.75; }
+
+/* CANVAS */
+canvas { display: block; }
+.canvas-wrap { background: var(--white); border: 1px solid var(--border); }
+
+/* CONTROLS */
+.controls { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-end; }
+.ctrl-group { display: flex; flex-direction: column; gap: 0.3rem; }
+.ctrl-label { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); }
+input[type=range] { width: 115px; accent-color: var(--red); cursor: pointer; }
+button {
+  background: var(--black); color: var(--white); border: none;
+  padding: 0.45rem 1.1rem; font-size: 0.62rem; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.2s; font-family: var(--font);
+}
+button:hover, button.active { background: var(--red); }
+select {
+  background: var(--white); color: var(--black); border: 1.5px solid var(--black);
+  padding: 0.35rem 0.8rem; font-size: 0.7rem; font-weight: 600;
+  cursor: pointer; font-family: var(--font); appearance: none;
+}
+
+/* CARDS */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.card { background: var(--white); border: 1px solid var(--border); padding: 1.5rem; transition: transform 0.3s, box-shadow 0.3s; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+.card-avatar { width: 76px; height: 76px; margin-bottom: 1rem; }
+.card-name { font-size: 1rem; font-weight: 800; margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+.card-meta { font-size: 0.62rem; color: var(--red); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.card-desc { font-size: 0.77rem; color: var(--gray); line-height: 1.65; margin-bottom: 0.65rem; }
+.card-works { font-size: 0.72rem; font-style: italic; color: var(--black); }
+
+/* GLOSSARY */
+.gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem; }
+.gloss-item { padding: 1rem 1.2rem; border-left: 3px solid var(--red); background: var(--white); }
+.gloss-term { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.3rem; }
+.gloss-def { font-size: 0.77rem; color: var(--gray); line-height: 1.65; }
+
+/* GESTALT */
+.gestalt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.gestalt-item { text-align: center; cursor: pointer; }
+.gestalt-item canvas { border: 1.5px solid var(--border); transition: border-color 0.2s; }
+.gestalt-item:hover canvas { border-color: var(--red); }
+.gestalt-label { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.5rem; color: var(--gray); }
+
+/* TABS */
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+/* POSTER */
+.poster-layout { display: grid; grid-template-columns: 1fr 410px; gap: 2.5rem; align-items: start; }
+
+/* TIMELINE */
+.timeline-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; margin-bottom: 1.5rem; }
+
+/* COMM PANELS */
+.comm-panels > div { display: none; }
+.comm-panels > div.active { display: block; }
+
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+
+/* HIDDEN/VISIBLE */
+.hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 820px) {
+  .poster-layout, .two-col { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body class="domain-art">
+
+<nav>
+  <a class="nav-logo" href="#hero">Graphic<span>Design</span>World</a>
+  <ul class="nav-links">
+    <li><a href="#grid">Grid</a></li>
+    <li><a href="#hierarchy">Type</a></li>
+    <li><a href="#gestalt">Gestalt</a></li>
+    <li><a href="#poster">Poster</a></li>
+    <li><a href="#communication">Comm</a></li>
+    <li><a href="#movements">Movements</a></li>
+    <li><a href="#artists">Designers</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay">
+    <div class="hero-title">Graphic <span>Design</span></div>
+    <div class="hero-sub">The architecture of visual language</div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SHARED LagFilter CLASS
+// =====================================================
+class LagFilter {
+  constructor(tau, init) {
+    this.tau = tau;
+    this.v = (init !== undefined) ? init : 0;
+  }
+  update(target, dt) {
+    this.v += (1 - Math.exp(-dt / this.tau)) * (target - this.v);
+    return this.v;
+  }
+}
+
+// =====================================================
+// SECTION 1: HERO CANVAS — Swiss International Grid
+// =====================================================
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, lastT = 0, animT = 0;
+  let targetMX = 0, targetMY = 0;
+
+  // LagFilters #1–6
+  const lfMX     = new LagFilter(0.45, 0);       // #1 mouse X
+  const lfMY     = new LagFilter(0.45, 0);       // #2 mouse Y
+  const lfShift  = new LagFilter(0.85, 0);       // #3 grid column shift
+  const lfBlock1 = new LagFilter(0.55, -340);    // #4 red block slides in from left
+  const lfBlock2 = new LagFilter(0.65, -180);    // #5 red block slides in from top
+  const lfTypeIn = new LagFilter(0.6, 0);        // #6 type fade-in
+
+  function resize() {
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    canvas.width = W;
+    canvas.height = H;
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    targetMX = (e.clientX - r.left) / W - 0.5;
+    targetMY = (e.clientY - r.top) / H - 0.5;
+  });
+  canvas.addEventListener('mouseleave', () => { targetMX = 0; targetMY = 0; });
+
+  function draw(ts) {
+    const dt = Math.min((ts - lastT) / 1000, 0.05);
+    lastT = ts;
+    animT += dt;
+
+    const mx  = lfMX.update(targetMX, dt);
+    const sh  = lfShift.update(mx * 32, dt);
+    const b1  = lfBlock1.update(0, dt);
+    const b2  = lfBlock2.update(0, dt);
+    const tp  = Math.min(lfTypeIn.update(1, dt), 1);
+
+    // White base
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+
+    // Phosphor persistence layer (light)
+    ctx.fillStyle = 'rgba(252,252,252,0.06)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Golden ratio grid columns
+    const c1 = W * 0.382 + sh;
+    const c2 = W * 0.618 + sh * 0.4;
+    const r1 = H * 0.333;
+    const r2 = H * 0.618;
+
+    ctx.strokeStyle = '#ECECEC';
+    ctx.lineWidth = 1;
+    [c1, c2, W * 0.236 + sh * 0.2, W * 0.764].forEach(x => {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    });
+    [r1, r2, H * 0.166, H * 0.833].forEach(y => {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    });
+
+    // Baseline grid micro-dots
+    const bUnit = Math.round(H / 16);
+    ctx.fillStyle = 'rgba(210,210,210,0.6)';
+    for (let gy = bUnit; gy < H - 4; gy += bUnit) {
+      for (let gx = 20; gx < c1 - 20; gx += 54) {
+        ctx.fillRect(gx + sh * 0.12, gy, 2, 1);
+      }
+    }
+
+    // Red block 1 — slides in from left
+    ctx.fillStyle = '#E63229';
+    ctx.fillRect(b1 + c1 + 4, H * 0.09, c2 - c1 - 8, H * 0.082);
+
+    // Red block 2 — slides in from above
+    ctx.fillRect(W * 0.765, b2 + H * 0.60, W * 0.215, H * 0.062);
+
+    // Small red accent strip
+    const pulse = Math.sin(animT * 0.75) * 0.5 + 0.5;
+    ctx.fillStyle = `rgba(230,50,41,${0.05 + pulse * 0.05})`;
+    ctx.fillRect(0, 0, 5, H);
+
+    // Black rules
+    ctx.fillStyle = '#1A1A1A';
+    ctx.fillRect(22, r1 - 1, c1 - 44, 2);
+    ctx.fillRect(c2 + 10, r1, 2, r2 - r1);
+
+    // Typography
+    ctx.globalAlpha = tp;
+    const bSz = Math.floor(H * 0.175);
+
+    ctx.fillStyle = '#1A1A1A';
+    ctx.font = `900 ${bSz}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText('GRID', 22 + sh * 0.22, H * 0.075);
+
+    ctx.fillStyle = '#E63229';
+    ctx.font = `900 ${Math.floor(bSz * 0.7)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.fillText('TYPE', c1 + 12, r1 + 16);
+
+    ctx.fillStyle = '#1A1A1A';
+    ctx.font = `300 ${Math.floor(bSz * 0.6)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.fillText('FORM', 22, r2 + 8);
+
+    // Year + label
+    ctx.fillStyle = '#BBBBBB';
+    ctx.font = `500 ${Math.floor(H * 0.024)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.fillText('SWISS INTERNATIONAL TYPOGRAPHIC STYLE  —  GOLDEN RATIO  —  BAUHAUS MODERNISM', 22, H - 16);
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(ts => { lastT = ts; requestAnimationFrame(draw); });
+})();
+</script>
+
+<!-- SECTION 2: GRID SYSTEMS -->
+<section id="grid" class="hidden">
+  <div class="section-label">Section 02</div>
+  <div class="section-title">Grid Systems</div>
+  <div class="section-intro">The invisible scaffolding of great design. Explore manuscript, column, modular, and baseline grids — the foundations of Swiss International Style editorial layouts.</div>
+  <div class="controls">
+    <div class="ctrl-group">
+      <span class="ctrl-label">Grid Type</span>
+      <div class="tabs" id="gridTabs">
+        <button class="active" data-grid="manuscript">Manuscript</button>
+        <button data-grid="column">Column</button>
+        <button data-grid="modular">Modular</button>
+        <button data-grid="baseline">Baseline</button>
+      </div>
+    </div>
+    <div class="ctrl-group" id="marginCtrl">
+      <span class="ctrl-label">Margin <span id="marginVal">18</span>%</span>
+      <input type="range" id="marginSlider" min="5" max="35" value="18">
+    </div>
+    <div class="ctrl-group" id="gutterCtrl">
+      <span class="ctrl-label">Columns <span id="colVal">4</span></span>
+      <input type="range" id="colSlider" min="2" max="12" value="4">
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Options</span>
+      <div style="display:flex;gap:0.5rem;">
+        <button id="gridOverlayBtn">Grid On</button>
+        <button id="contentBtn">Place Content</button>
+        <button id="gutenbergBtn">Gutenberg</button>
+      </div>
+    </div>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="gridCanvas" width="900" height="520" style="width:100%;max-width:900px;"></canvas>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 2: GRID SYSTEMS CANVAS
+// =====================================================
+(function() {
+  const canvas = document.getElementById('gridCanvas');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width, H = canvas.height;
+
+  let gridType = 'manuscript';
+  let showOverlay = true;
+  let showContent = false;
+  let showGutenberg = false;
+  let lastT = 0;
+
+  // LagFilters #7–8
+  const lfMargin = new LagFilter(0.35, 18); // #7 margin
+  const lfCols   = new LagFilter(0.35, 4);  // #8 columns
+
+  let targetMargin = 18, targetCols = 4;
+
+  document.querySelectorAll('#gridTabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#gridTabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      gridType = btn.dataset.grid;
+    });
+  });
+
+  document.getElementById('marginSlider').addEventListener('input', e => {
+    targetMargin = +e.target.value;
+    document.getElementById('marginVal').textContent = e.target.value;
+  });
+  document.getElementById('colSlider').addEventListener('input', e => {
+    targetCols = +e.target.value;
+    document.getElementById('colVal').textContent = e.target.value;
+  });
+  document.getElementById('gridOverlayBtn').addEventListener('click', function() {
+    showOverlay = !showOverlay;
+    this.textContent = showOverlay ? 'Grid On' : 'Grid Off';
+    this.classList.toggle('active', showOverlay);
+  });
+  document.getElementById('contentBtn').addEventListener('click', function() {
+    showContent = !showContent;
+    this.classList.toggle('active', showContent);
+  });
+  document.getElementById('gutenbergBtn').addEventListener('click', function() {
+    showGutenberg = !showGutenberg;
+    this.classList.toggle('active', showGutenberg);
+  });
+
+  function resizeGrid() {
+    const wrap = canvas.parentElement;
+    const dpr = window.devicePixelRatio || 1;
+    W = Math.min(wrap.offsetWidth, 900);
+    H = Math.round(W * 520 / 900);
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  }
+
+  function drawManuscript(margin) {
+    const mx = W * margin / 100;
+    const my = H * (margin * 0.75) / 100;
+    // Page margins
+    if (showOverlay) {
+      ctx.strokeStyle = 'rgba(230,50,41,0.3)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(mx, my, W - mx*2, H - my*2);
+      ctx.setLineDash([]);
+    }
+    if (showContent) {
+      // Headline block
+      ctx.fillStyle = '#1A1A1A';
+      ctx.fillRect(mx, my, W - mx*2, Math.floor(H * 0.06));
+      // Body text blocks
+      for (let i = 0; i < 6; i++) {
+        ctx.fillStyle = i === 0 ? '#333' : `rgba(100,100,100,${0.3 + i * 0.08})`;
+        ctx.fillRect(mx, my + H * 0.09 + i * H * 0.09, W - mx*2, H * 0.065);
+      }
+      // Image block
+      ctx.fillStyle = '#E0E0E0';
+      ctx.fillRect(mx + (W - mx*2)*0.55, my + H*0.09, (W-mx*2)*0.45, H*0.35);
+    }
+    // Margin labels
+    ctx.fillStyle = '#BBBBBB';
+    ctx.font = `500 ${Math.floor(H*0.028)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`Top: ${Math.round(my)}px`, 8, my/2);
+    ctx.fillText(`Left: ${Math.round(mx)}px`, 8, H/2);
+  }
+
+  function drawColumn(margin, cols) {
+    const mx = W * margin / 100;
+    const my = H * 0.1;
+    const contentW = W - mx * 2;
+    const gutter = contentW * 0.04;
+    const colW = (contentW - gutter * (cols - 1)) / cols;
+
+    if (showOverlay) {
+      ctx.strokeStyle = 'rgba(230,50,41,0.25)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      for (let c = 0; c < cols; c++) {
+        const cx = mx + c * (colW + gutter);
+        ctx.strokeRect(cx, my, colW, H - my * 2);
+      }
+      ctx.setLineDash([]);
+    }
+
+    if (showContent) {
+      const blockH = H * 0.07;
+      for (let c = 0; c < Math.min(cols, 6); c++) {
+        const cx = mx + c * (colW + gutter);
+        ctx.fillStyle = '#1A1A1A';
+        ctx.fillRect(cx, my + 4, colW, blockH * 0.5);
+        for (let row = 1; row < 5; row++) {
+          const w = colW * (0.6 + Math.random() * 0.4);
+          ctx.fillStyle = `rgba(150,150,150,${0.25 + row * 0.05})`;
+          ctx.fillRect(cx, my + blockH * 0.6 + row * (blockH * 0.85), w, blockH * 0.6);
+        }
+      }
+    }
+    // Column count label
+    ctx.fillStyle = '#BBBBBB';
+    ctx.font = `700 ${Math.floor(H*0.026)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText(`${Math.round(cols)}-Column Grid — Gutter: ${Math.round(gutter)}px`, mx, 8);
+  }
+
+  function drawModular(margin, cols) {
+    const mx = W * margin / 100;
+    const my = H * 0.1;
+    const contentW = W - mx * 2;
+    const rows = Math.round(cols * 0.75);
+    const gutterX = contentW * 0.035;
+    const gutterY = (H - my*2) * 0.04;
+    const modW = (contentW - gutterX*(cols-1)) / cols;
+    const modH = (H - my*2 - gutterY*(rows-1)) / rows;
+
+    if (showOverlay) {
+      ctx.strokeStyle = 'rgba(230,50,41,0.2)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 3]);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const bx = mx + c*(modW+gutterX);
+          const by = my + r*(modH+gutterY);
+          ctx.strokeRect(bx, by, modW, modH);
+        }
+      }
+      ctx.setLineDash([]);
+    }
+    if (showContent) {
+      // Fill some modules
+      const fills = [[0,0,2,1],[0,1,1,2],[2,0,1,1],[1,2,3,1]];
+      fills.forEach(([c,r,cspan,rspan]) => {
+        if (c+cspan <= cols && r+rspan <= rows) {
+          const bx = mx + c*(modW+gutterX);
+          const by = my + r*(modH+gutterY);
+          const bw = modW*cspan + gutterX*(cspan-1);
+          const bh = modH*rspan + gutterY*(rspan-1);
+          ctx.fillStyle = r===0 ? '#1A1A1A' : (r===1 ? '#E63229' : '#E0E0E0');
+          ctx.fillRect(bx, by, bw, bh);
+        }
+      });
+    }
+    ctx.fillStyle = '#BBBBBB';
+    ctx.font = `700 ${Math.floor(H*0.026)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText(`${Math.round(cols)}×${rows} Modular Grid`, mx, 8);
+  }
+
+  function drawBaseline(margin) {
+    const mx = W * margin / 100;
+    const lineH = Math.max(14, Math.floor(H / 22));
+    if (showOverlay) {
+      ctx.strokeStyle = 'rgba(230,50,41,0.18)';
+      ctx.lineWidth = 1;
+      for (let y = lineH; y < H; y += lineH) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+    }
+    if (showContent) {
+      const sizes = [lineH*2.8, lineH*1.8, lineH*1.3, lineH, lineH*0.85];
+      const labels = ['Display', 'Headline', 'Subhead', 'Body', 'Caption'];
+      let y = lineH * 2;
+      sizes.forEach((sz, i) => {
+        const snappedY = Math.round(y / lineH) * lineH;
+        ctx.fillStyle = i===0 ? '#1A1A1A' : i===1 ? '#E63229' : '#555';
+        ctx.font = `${i<2?'900':'400'} ${sz}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(labels[i], mx, snappedY);
+        y = snappedY + sz * 1.3 + lineH;
+      });
+    }
+    ctx.fillStyle = '#BBBBBB';
+    ctx.font = `700 ${Math.floor(H*0.026)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText(`Baseline Grid — ${lineH}px unit`, mx, 8);
+  }
+
+  function drawGutenberg() {
+    ctx.save();
+    ctx.globalAlpha = 0.08;
+    // Primary zone (top-left)
+    ctx.fillStyle = '#E63229';
+    ctx.fillRect(0, 0, W*0.5, H*0.5);
+    // Terminal zone (bottom-right)
+    ctx.fillStyle = '#1A1A1A';
+    ctx.fillRect(W*0.5, H*0.5, W*0.5, H*0.5);
+    ctx.restore();
+    ctx.fillStyle = 'rgba(230,50,41,0.55)';
+    ctx.font = `700 ${Math.floor(H*0.03)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText('Primary Zone', 8, 8);
+    ctx.fillStyle = 'rgba(26,26,26,0.55)';
+    ctx.fillText('Terminal Zone', W*0.5+8, H*0.5+8);
+  }
+
+  function frame(ts) {
+    const dt = Math.min((ts - lastT)/1000, 0.05);
+    lastT = ts;
+    const margin = lfMargin.update(targetMargin, dt);
+    const cols   = lfCols.update(targetCols, dt);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+
+    if (gridType === 'manuscript') drawManuscript(margin);
+    else if (gridType === 'column')   drawColumn(margin, cols);
+    else if (gridType === 'modular')  drawModular(margin, cols);
+    else if (gridType === 'baseline') drawBaseline(margin);
+
+    if (showGutenberg) drawGutenberg();
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', resizeGrid);
+  resizeGrid();
+  requestAnimationFrame(ts => { lastT = ts; requestAnimationFrame(frame); });
+})();
+</script>
+
+<!-- SECTION 3: TYPOGRAPHIC HIERARCHY -->
+<section id="hierarchy" class="hidden">
+  <div class="section-label">Section 03</div>
+  <div class="section-title">Typographic Hierarchy</div>
+  <div class="section-intro">Six levels of type scale from Display to Caption. Adjust scale ratio, weight contrast, color, and leading rhythm. Watch the editorial layout recompose in real time.</div>
+  <div class="controls">
+    <div class="ctrl-group">
+      <span class="ctrl-label">Scale Ratio</span>
+      <select id="scaleRatioSel">
+        <option value="1.618">Golden (1.618)</option>
+        <option value="1.333">Perfect Fourth (1.333)</option>
+        <option value="1.25" selected>Major Third (1.25)</option>
+        <option value="1.2">Minor Third (1.2)</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Base Size <span id="baseSzVal">16</span>px</span>
+      <input type="range" id="baseSzSlider" min="10" max="22" value="16">
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Leading <span id="leadVal">1.45</span></span>
+      <input type="range" id="leadSlider" min="100" max="200" value="145">
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">Preset</span>
+      <div class="tabs" id="hierPresets">
+        <button class="active" data-preset="helvetica">Helvetica</button>
+        <button data-preset="bauhaus">Bauhaus</button>
+        <button data-preset="modernist">Modernist</button>
+        <button data-preset="contemporary">Contemporary</button>
+      </div>
+    </div>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="hierCanvas" width="900" height="540" style="width:100%;max-width:900px;"></canvas>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 3: TYPOGRAPHIC HIERARCHY
+// =====================================================
+(function() {
+  const canvas = document.getElementById('hierCanvas');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width, H = canvas.height, lastT = 0;
+
+  // LagFilters #9–11
+  const lfScale   = new LagFilter(0.4, 1.25);  // #9 scale ratio
+  const lfLead    = new LagFilter(0.4, 1.45);  // #10 leading
+  const lfBase    = new LagFilter(0.4, 16);    // #11 base size
+
+  let targetScale = 1.25, targetLead = 1.45, targetBase = 16;
+
+  const presets = {
+    helvetica:    { weight: ['900','700','600','400','400','300'], color: ['#1A1A1A','#1A1A1A','#E63229','#333','#555','#888'] },
+    bauhaus:      { weight: ['900','900','700','400','400','300'], color: ['#E63229','#1A1A1A','#1A1A1A','#1A1A1A','#555','#888'] },
+    modernist:    { weight: ['300','900','400','400','300','300'], color: ['#1A1A1A','#E63229','#1A1A1A','#555','#555','#999'] },
+    contemporary: { weight: ['900','400','700','400','400','300'], color: ['#1A1A1A','#888','#E63229','#333','#555','#999'] }
+  };
+  let preset = presets.helvetica;
+
+  document.getElementById('scaleRatioSel').addEventListener('change', e => { targetScale = +e.target.value; });
+  document.getElementById('baseSzSlider').addEventListener('input', e => {
+    targetBase = +e.target.value;
+    document.getElementById('baseSzVal').textContent = e.target.value;
+  });
+  document.getElementById('leadSlider').addEventListener('input', e => {
+    targetLead = e.target.value / 100;
+    document.getElementById('leadVal').textContent = targetLead.toFixed(2);
+  });
+  document.querySelectorAll('#hierPresets button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#hierPresets button').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      preset = presets[this.dataset.preset];
+    });
+  });
+
+  function resizeHier() {
+    const wrap = canvas.parentElement;
+    W = Math.min(wrap.offsetWidth, 900);
+    H = Math.round(W * 540 / 900);
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  }
+
+  const levels = ['Display', 'Headline', 'Subheading', 'Body Text', 'Caption', 'Label'];
+  const samples = [
+    'Swiss Design',
+    'The Architecture of Visual Language',
+    'Grid systems organize information spatially',
+    'Typography is the craft of endowing human language with a durable visual form.',
+    'Emil Ruder • Josef Müller-Brockmann • Armin Hofmann',
+    'HELVETICA NEUE — 1957 — MAX MIEDINGER'
+  ];
+
+  function frame(ts) {
+    const dt = Math.min((ts - lastT)/1000, 0.05);
+    lastT = ts;
+    const ratio  = lfScale.update(targetScale, dt);
+    const lead   = lfLead.update(targetLead, dt);
+    const baseSz = lfBase.update(targetBase, dt);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+
+    // Right panel: editorial layout
+    const panelW = W * 0.42;
+    const panelX = W * 0.57;
+    ctx.fillStyle = '#F5F5F5';
+    ctx.fillRect(panelX - 10, 0, panelW + 10, H);
+
+    // Scale levels on left
+    let sizes = [];
+    for (let i = 5; i >= 0; i--) sizes.push(baseSz * Math.pow(ratio, i));
+
+    const pad = W * 0.04;
+    let y = H * 0.06;
+
+    levels.forEach((lv, i) => {
+      const sz = sizes[5-i];
+      const weight = preset.weight[i];
+      const color  = preset.color[i];
+      const lineH  = sz * lead;
+
+      // Level indicator
+      ctx.fillStyle = '#CCCCCC';
+      ctx.font = `700 ${Math.floor(H*0.022)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+      ctx.textBaseline = 'top';
+      ctx.fillText(`${lv} — ${sz.toFixed(1)}px`, pad, y);
+
+      y += Math.floor(H * 0.028);
+
+      // Type sample
+      ctx.fillStyle = color;
+      ctx.font = `${weight} ${Math.floor(sz)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+      ctx.textBaseline = 'top';
+      const sample = samples[i];
+      // Wrap long text
+      if (sz < 18) {
+        const words = sample.split(' ');
+        let line = '', ly = y;
+        words.forEach(word => {
+          const test = line + word + ' ';
+          if (ctx.measureText(test).width > panelX - pad*2 && line) {
+            ctx.fillText(line.trim(), pad, ly);
+            ly += lineH;
+            line = word + ' ';
+          } else { line = test; }
+        });
+        ctx.fillText(line.trim(), pad, ly);
+        y = ly + lineH * 1.6;
+      } else {
+        ctx.fillText(sample, pad, y);
+        y += lineH * 1.5;
+      }
+    });
+
+    // Editorial layout preview (right panel)
+    const ep = panelX + 10;
+    const ew = panelW - 20;
+    let ey = H * 0.06;
+
+    // Red rule
+    ctx.fillStyle = '#E63229';
+    ctx.fillRect(ep, ey, ew, 3);
+    ey += 12;
+
+    // Article title
+    const titleSz = Math.floor(sizes[5-1] * 0.75);
+    ctx.fillStyle = preset.color[0];
+    ctx.font = `${preset.weight[0]} ${titleSz}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'top';
+    ctx.fillText('Design', ep, ey);
+    ey += titleSz * lead * 1.1;
+    ctx.fillStyle = preset.color[1];
+    ctx.font = `${preset.weight[1]} ${Math.floor(titleSz*0.85)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.fillText('Systems', ep, ey);
+    ey += titleSz * lead * 1.4;
+
+    // Subhead
+    ctx.fillStyle = preset.color[2];
+    ctx.font = `${preset.weight[2]} ${Math.floor(sizes[5-2]*0.8)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    ctx.fillText('Grid & Typography', ep, ey);
+    ey += sizes[5-2] * lead * 1.5;
+
+    // Body
+    ctx.fillStyle = '#555';
+    ctx.font = `400 ${Math.floor(baseSz * 0.82)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    const bodyLines = ['The Swiss International Style', 'prioritizes function and', 'clarity above decoration.', 'Helvetica, grid systems,', 'and objectivity define it.'];
+    bodyLines.forEach(line => {
+      if (ey < H - 30) { ctx.fillText(line, ep, ey); ey += baseSz * lead; }
+    });
+
+    // Caption
+    ey += baseSz * 0.5;
+    ctx.fillStyle = '#AAAAAA';
+    ctx.font = `300 ${Math.floor(baseSz * 0.72)}px 'Helvetica Neue', Helvetica, Arial, sans-serif`;
+    if (ey < H - 20) ctx.fillText('Figure 1 — Typographic scale system', ep, ey);
+
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', resizeHier);
+  resizeHier();
+  requestAnimationFrame(ts => { lastT = ts; requestAnimationFrame(frame); });
+})();
+</script>
+
+<!-- SECTION 4: GESTALT PRINCIPLES -->
+<section id="gestalt" class="hidden">
+  <div class="section-label">Section 04</div>
+  <div class="section-title">Gestalt Principles</div>
+  <div class="section-intro">The psychology of visual perception. Seven fundamental laws that explain how the eye groups elements into meaningful wholes — the foundation of every design decision you make.</div>
+  <div class="gestalt-grid" id="gestaltGrid">
+    <div class="gestalt-item" data-g="proximity">
+      <canvas id="gProximity" width="200" height="200"></canvas>
+      <div class="gestalt-label">Proximity</div>
+    </div>
+    <div class="gestalt-item" data-g="similarity">
+      <canvas id="gSimilarity" width="200" height="200"></canvas>
+      <div class="gestalt-label">Similarity</div>
+    </div>
+    <div class="gestalt-item" data-g="closure">
+      <canvas id="gClosure" width="200" height="200"></canvas>
+      <div class="gestalt-label">Closure</div>
+    </div>
+    <div class="gestalt-item" data-g="continuity">
+      <canvas id="gContinuity" width="200" height="200"></canvas>
+      <div class="gestalt-label">Continuity</div>
+    </div>
+    <div class="gestalt-item" data-g="figground">
+      <canvas id="gFigGround" width="200" height="200"></canvas>
+      <div class="gestalt-label">Figure / Ground</div>
+    </div>
+    <div class="gestalt-item" data-g="fate">
+      <canvas id="gFate" width="200" height="200"></canvas>
+      <div class="gestalt-label">Common Fate</div>
+    </div>
+    <div class="gestalt-item" data-g="pragnanz">
+      <canvas id="gPragnanz" width="200" height="200"></canvas>
+      <div class="gestalt-label">Prägnanz</div>
+    </div>
+  </div>
+  <div id="gestaltInfo" style="margin-top:2rem;padding:1.5rem;border-left:4px solid #E63229;background:#F5F5F5;display:none;">
+    <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#E63229;margin-bottom:0.5rem;" id="gInfoTitle"></div>
+    <div style="font-size:0.88rem;color:#555;line-height:1.7;" id="gInfoText"></div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 4: GESTALT PRINCIPLES
+// =====================================================
+(function() {
+  let gAnimT = 0, gLastT = 0;
+
+  // LagFilters #12–14
+  const lfProxDist  = new LagFilter(0.5, 1);    // #12 proximity distance
+  const lfSimMorph  = new LagFilter(0.6, 0);    // #13 similarity morph
+  const lfFateMoveX = new LagFilter(0.4, 0);    // #14 common fate X offset
+
+  const gestaltInfo = {
+    proximity:   { title:'Proximity', text:'Elements placed close together are perceived as a group. Distance communicates relationship. Swiss designers exploit proximity to organize complex editorial information without explicit borders or lines.' },
+    similarity:  { title:'Similarity', text:'Elements sharing visual attributes — shape, color, size — are grouped perceptually. Similarity creates visual categories instantly, allowing designers to encode multiple data dimensions simultaneously.' },
+    closure:     { title:'Closure', text:'The mind fills in missing contours to complete familiar shapes. Designers use closure to create elegant marks from incomplete forms, trusting the viewer\'s perception to complete the communication.' },
+    continuity:  { title:'Continuity', text:'The eye prefers to follow smooth, continuous paths over abrupt direction changes. This principle underlies the invisible flow lines in grid-based layouts that guide reader movement.' },
+    figground:   { title:'Figure / Ground', text:'Every composition creates a figure (positive) and ground (negative). The classic reversal — vase or faces? — shows that ground is never neutral. White space is always an active design element.' },
+    fate:        { title:'Common Fate', text:'Elements moving in the same direction are perceived as a unit. Animation reveals grouping that static design cannot. Common fate is the temporal dimension of visual organization.' },
+    pragnanz:    { title:'Prägnanz (Law of Good Form)', text:'The mind resolves ambiguous figures into the simplest, most stable interpretation. Complexity collapses to order. This is why geometric reductionism in Bauhaus and Swiss design communicates so powerfully.' }
+  };
+
+  document.querySelectorAll('.gestalt-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const g = item.dataset.g;
+      const info = document.getElementById('gestaltInfo');
+      document.getElementById('gInfoTitle').textContent = gestaltInfo[g].title;
+      document.getElementById('gInfoText').textContent = gestaltInfo[g].text;
+      info.style.display = 'block';
+    });
+  });
+
+  // PROXIMITY
+  const proxC = document.getElementById('gProximity');
+  const proxCtx = proxC.getContext('2d');
+  function drawProximity(t) {
+    const W=200,H=200;
+    proxCtx.fillStyle='#FFFFFF'; proxCtx.fillRect(0,0,W,H);
+    const spread = lfProxDist.update(Math.sin(t * 0.6) * 0.5 + 0.5, 0.016);
+    const gap1 = 14 + spread * 10;
+    const gap2 = 38 + spread * 10;
+    const dots = [];
+    // Left cluster (close)
+    for (let r=0;r<3;r++) for (let c=0;c<3;c++) dots.push([28+c*gap1, 50+r*gap1, '#1A1A1A']);
+    // Right cluster (far)
+    for (let r=0;r<3;r++) for (let c=0;c<3;c++) dots.push([118+c*gap2*0.7, 50+r*gap2*0.7, '#E63229']);
+    dots.forEach(([x,y,color]) => {
+      proxCtx.beginPath(); proxCtx.arc(x,y,6,0,Math.PI*2);
+      proxCtx.fillStyle=color; proxCtx.fill();
+    });
+    proxCtx.fillStyle='#BBBBBB';
+    proxCtx.font='500 10px Helvetica,Arial,sans-serif';
+    proxCtx.textBaseline='top';
+    proxCtx.fillText('Close = Group',8,H-18);
+  }
+
+  // SIMILARITY
+  const simC = document.getElementById('gSimilarity');
+  const simCtx = simC.getContext('2d');
+  function drawSimilarity(t) {
+    const W=200,H=200;
+    simCtx.fillStyle='#FFFFFF'; simCtx.fillRect(0,0,W,H);
+    const morph = lfSimMorph.update(Math.sin(t*0.4)*0.5+0.5, 0.016);
+    for (let r=0;r<4;r++) {
+      for (let c=0;c<4;c++) {
+        const x=26+c*48, y=26+r*46;
+        const isAlt = (c===1||c===3);
+        const col = isAlt ? '#E63229' : '#1A1A1A';
+        simCtx.fillStyle=col;
+        if (morph < 0.5) {
+          simCtx.beginPath(); simCtx.arc(x,y,9,0,Math.PI*2); simCtx.fill();
+        } else {
+          const s=isAlt?10:8;
+          simCtx.fillRect(x-s/2,y-s/2,s,s);
+        }
+      }
+    }
+    simCtx.fillStyle='#BBBBBB';
+    simCtx.font='500 10px Helvetica,Arial,sans-serif';
+    simCtx.textBaseline='top';
+    simCtx.fillText('Same = Grouped',8,H-18);
+  }
+
+  // CLOSURE
+  const closC = document.getElementById('gClosure');
+  const closCtx = closC.getContext('2d');
+  function drawClosure(t) {
+    const W=200,H=200;
+    closCtx.fillStyle='#FFFFFF'; closCtx.fillRect(0,0,W,H);
+    const gap = 18 + Math.sin(t*0.5)*10;
+    closCtx.strokeStyle='#1A1A1A'; closCtx.lineWidth=3;
+    closCtx.setLineDash([38-gap, gap]);
+    closCtx.beginPath(); closCtx.arc(70,95,55,0,Math.PI*2); closCtx.stroke();
+    closCtx.setLineDash([]);
+    // Triangle from dots
+    const pts=[[140,45],[185,125],[95,125]];
+    pts.forEach(([x,y]) => {
+      closCtx.beginPath(); closCtx.arc(x,y,8,0,Math.PI*2);
+      closCtx.fillStyle='#E63229'; closCtx.fill();
+    });
+    closCtx.fillStyle='#BBBBBB';
+    closCtx.font='500 10px Helvetica,Arial,sans-serif';
+    closCtx.textBaseline='top';
+    closCtx.fillText('Mind completes',8,H-18);
+  }
+
+  // CONTINUITY
+  const contC = document.getElementById('gContinuity');
+  const contCtx = contC.getContext('2d');
+  function drawContinuity(t) {
+    const W=200,H=200;
+    contCtx.fillStyle='#FFFFFF'; contCtx.fillRect(0,0,W,H);
+    const off = Math.sin(t*0.7)*6;
+    // Straight line
+    contCtx.strokeStyle='#1A1A1A'; contCtx.lineWidth=2.5;
+    contCtx.beginPath(); contCtx.moveTo(15,80+off); contCtx.lineTo(185,80-off); contCtx.stroke();
+    // Crossing curve
+    contCtx.strokeStyle='#E63229'; contCtx.lineWidth=2.5;
+    contCtx.beginPath(); contCtx.moveTo(15,130); contCtx.bezierCurveTo(70,40,130,160,185,70); contCtx.stroke();
+    // Dots at intersection
+    contCtx.fillStyle='#FFFFFF'; contCtx.strokeStyle='#555'; contCtx.lineWidth=1.5;
+    [[100,80]].forEach(([x,y]) => {
+      contCtx.beginPath(); contCtx.arc(x,y,5,0,Math.PI*2); contCtx.fill(); contCtx.stroke();
+    });
+    contCtx.fillStyle='#BBBBBB';
+    contCtx.font='500 10px Helvetica,Arial,sans-serif';
+    contCtx.textBaseline='top';
+    contCtx.fillText('Eye follows flow',8,H-18);
+  }
+
+  // FIGURE/GROUND
+  const fgC = document.getElementById('gFigGround');
+  const fgCtx = fgC.getContext('2d');
+  let fgFlip = false;
+  fgC.addEventListener('click', () => { fgFlip = !fgFlip; });
+  function drawFigGround(t) {
+    const W=200,H=200;
+    const bg = fgFlip ? '#1A1A1A' : '#FFFFFF';
+    const fg = fgFlip ? '#FFFFFF' : '#1A1A1A';
+    fgCtx.fillStyle=bg; fgCtx.fillRect(0,0,W,H);
+    // Vase shape
+    fgCtx.fillStyle=fg;
+    fgCtx.beginPath();
+    fgCtx.moveTo(100,20);
+    fgCtx.bezierCurveTo(140,20,160,50,155,80);
+    fgCtx.bezierCurveTo(175,95,175,105,155,120);
+    fgCtx.bezierCurveTo(160,150,140,180,100,180);
+    fgCtx.bezierCurveTo(60,180,40,150,45,120);
+    fgCtx.bezierCurveTo(25,105,25,95,45,80);
+    fgCtx.bezierCurveTo(40,50,60,20,100,20);
+    fgCtx.fill();
+    // Faces (negative space)
+    fgCtx.fillStyle=bg;
+    fgCtx.beginPath(); fgCtx.arc(100,40,12,0,Math.PI*2); fgCtx.fill();
+    // Labels
+    fgCtx.fillStyle='rgba(150,150,150,0.8)';
+    fgCtx.font='500 9px Helvetica,Arial,sans-serif';
+    fgCtx.textBaseline='top';
+    fgCtx.fillText('Click to flip',60,H-16);
+  }
+
+  // COMMON FATE
+  const fateC = document.getElementById('gFate');
+  const fateCtx = fateC.getContext('2d');
+  function drawCommonFate(t) {
+    const W=200,H=200;
+    fateCtx.fillStyle='#FFFFFF'; fateCtx.fillRect(0,0,W,H);
+    const groupOff = lfFateMoveX.update(Math.sin(t*0.8)*20, 0.016);
+    for (let i=0;i<5;i++) {
+      const x=30+i*36;
+      // Group A (move together = grouped)
+      fateCtx.fillStyle='#1A1A1A';
+      fateCtx.beginPath(); fateCtx.arc(x+groupOff,65,8,0,Math.PI*2); fateCtx.fill();
+      // Group B (independent)
+      const indOff = Math.sin(t*0.8 + i*1.5)*18;
+      fateCtx.fillStyle='#E63229';
+      fateCtx.beginPath(); fateCtx.arc(x+indOff,135,8,0,Math.PI*2); fateCtx.fill();
+    }
+    fateCtx.fillStyle='#BBBBBB';
+    fateCtx.font='500 10px Helvetica,Arial,sans-serif';
+    fateCtx.textBaseline='top';
+    fateCtx.fillText('Black=group  Red=chaos',8,H-18);
+  }
+
+  // PRAGNANZ
+  const pragC = document.getElementById('gPragnanz');
+  const pragCtx = pragC.getContext('2d');
+  function drawPragnanz(t) {
+    const W=200,H=200;
+    pragCtx.fillStyle='#FFFFFF'; pragCtx.fillRect(0,0,W,H);
+    const simplify = (Math.sin(t*0.4)*0.5+0.5);
+    // Complex shape → circle
+    pragCtx.strokeStyle='#1A1A1A'; pragCtx.lineWidth=2;
+    pragCtx.beginPath();
+    if (simplify < 0.5) {
+      // Complex polygon
+      for (let a=0;a<12;a++) {
+        const ang=(a/12)*Math.PI*2;
+        const r=36+Math.sin(a*2.3)*12;
+        const px=65+Math.cos(ang)*r, py=100+Math.sin(ang)*r;
+        a===0 ? pragCtx.moveTo(px,py) : pragCtx.lineTo(px,py);
+      }
+      pragCtx.closePath(); pragCtx.stroke();
+    } else {
+      pragCtx.arc(65,100,38,0,Math.PI*2); pragCtx.stroke();
+    }
+    // Red = simple circle always
+    pragCtx.strokeStyle='#E63229'; pragCtx.lineWidth=2.5;
+    pragCtx.beginPath(); pragCtx.arc(145,100,38,0,Math.PI*2); pragCtx.stroke();
+    // Arrow
+    pragCtx.strokeStyle='#CCCCCC'; pragCtx.lineWidth=1.5;
+    pragCtx.beginPath(); pragCtx.moveTo(112,100); pragCtx.lineTo(100,100); pragCtx.stroke();
+    pragCtx.fillStyle='#BBBBBB';
+    pragCtx.font='500 10px Helvetica,Arial,sans-serif';
+    pragCtx.textBaseline='top';
+    pragCtx.fillText('Complex → Simple',8,H-18);
+  }
+
+  function gestaltFrame(ts) {
+    const dt = Math.min((ts - gLastT)/1000, 0.05);
+    gLastT = ts; gAnimT += dt;
+    lfProxDist.update(Math.sin(gAnimT*0.6)*0.5+0.5, dt);
+    lfSimMorph.update(Math.sin(gAnimT*0.4)*0.5+0.5, dt);
+    lfFateMoveX.update(Math.sin(gAnimT*0.8)*20, dt);
+    drawProximity(gAnimT);
+    drawSimilarity(gAnimT);
+    drawClosure(gAnimT);
+    drawContinuity(gAnimT);
+    drawFigGround(gAnimT);
+    drawCommonFate(gAnimT);
+    drawPragnanz(gAnimT);
+    requestAnimationFrame(gestaltFrame);
+  }
+  requestAnimationFrame(ts => { gLastT = ts; requestAnimationFrame(gestaltFrame); });
+})();
+</script>
+
+<!-- SECTION 5: POSTER DESIGN SYSTEM -->
+<section id="poster" class="hidden">
+  <div class="section-label">Section 05</div>
+  <div class="section-title">Poster Design System</div>
+  <div class="section-intro">Compose posters within a rule-based design system. Inspired by Müller-Brockmann, Armin Hofmann, and Emil Ruder — design as systematic problem-solving, not decoration.</div>
+  <div class="poster-layout">
+    <div>
+      <div class="controls" style="flex-direction:column;align-items:flex-start;">
+        <div class="ctrl-group">
+          <span class="ctrl-label">Layout Type</span>
+          <select id="posterLayout">
+            <option value="swiss">Swiss Diagonal</option>
+            <option value="centered">Centered Axis</option>
+            <option value="grid">Grid-Locked</option>
+            <option value="tension">Diagonal Tension</option>
+          </select>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Color System</span>
+          <select id="posterColor">
+            <option value="rbw">Red / Black / White</option>
+            <option value="duotone">Duotone Blue</option>
+            <option value="mono">Monochrome</option>
+          </select>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Headline Size <span id="posterHSzVal">72</span>px</span>
+          <input type="range" id="posterHSz" min="36" max="110" value="72">
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Image Shape</span>
+          <select id="posterShape">
+            <option value="rect">Rectangle Block</option>
+            <option value="circle">Circle</option>
+            <option value="diagonal">Diagonal Halftone</option>
+            <option value="stripe">Stripe Pattern</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:0.6rem;margin-top:0.5rem;">
+          <button id="posterRandomize">Randomize</button>
+          <button id="posterExport">Export PNG</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="canvas-wrap" style="display:inline-block;">
+        <canvas id="posterCanvas" width="400" height="566" style="width:100%;max-width:400px;"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 5: POSTER DESIGN SYSTEM
+// =====================================================
+(function() {
+  const canvas = document.getElementById('posterCanvas');
+  const ctx = canvas.getContext('2d');
+  const W=400, H=566;
+  let lastT=0;
+
+  // LagFilters #15–17
+  const lfPHSz    = new LagFilter(0.4, 72);   // #15 headline size
+  const lfPLayoutX = new LagFilter(0.55, 0);  // #16 layout X offset
+  const lfPLayoutY = new LagFilter(0.55, 0);  // #17 layout Y offset
+
+  let cfg = { layout:'swiss', color:'rbw', hSz:72, shape:'rect',
+    layoutTargetX:0, layoutTargetY:0 };
+
+  const palettes = {
+    rbw:     { bg:'#FFFFFF', primary:'#E63229', secondary:'#1A1A1A', text:'#1A1A1A', accent:'#E63229' },
+    duotone: { bg:'#FFFFFF', primary:'#003D9E', secondary:'#00AEEF', text:'#003D9E', accent:'#00AEEF' },
+    mono:    { bg:'#F0F0F0', primary:'#1A1A1A', secondary:'#555555', text:'#1A1A1A', accent:'#888888' }
+  };
+
+  document.getElementById('posterLayout').addEventListener('change', e => { cfg.layout=e.target.value; });
+  document.getElementById('posterColor').addEventListener('change', e => { cfg.color=e.target.value; });
+  document.getElementById('posterShape').addEventListener('change', e => { cfg.shape=e.target.value; });
+  document.getElementById('posterHSz').addEventListener('input', e => {
+    cfg.hSz=+e.target.value;
+    document.getElementById('posterHSzVal').textContent=e.target.value;
+  });
+  document.getElementById('posterRandomize').addEventListener('click', () => {
+    const layouts=['swiss','centered','grid','tension'];
+    const colors=['rbw','duotone','mono'];
+    const shapes=['rect','circle','diagonal','stripe'];
+    cfg.layout=layouts[Math.floor(Math.random()*layouts.length)];
+    cfg.color=colors[Math.floor(Math.random()*colors.length)];
+    cfg.shape=shapes[Math.floor(Math.random()*shapes.length)];
+    cfg.hSz=36+Math.floor(Math.random()*74);
+    cfg.layoutTargetX=(Math.random()-0.5)*60;
+    cfg.layoutTargetY=(Math.random()-0.5)*40;
+    document.getElementById('posterLayout').value=cfg.layout;
+    document.getElementById('posterColor').value=cfg.color;
+    document.getElementById('posterShape').value=cfg.shape;
+    document.getElementById('posterHSz').value=cfg.hSz;
+    document.getElementById('posterHSzVal').textContent=cfg.hSz;
+  });
+  document.getElementById('posterExport').addEventListener('click', () => {
+    const url=canvas.toDataURL('image/png');
+    const a=document.createElement('a'); a.href=url; a.download='poster.png'; a.click();
+  });
+
+  function drawShape(pal, shape, x, y, w, h) {
+    ctx.fillStyle = pal.primary;
+    if (shape==='rect') {
+      ctx.fillRect(x,y,w,h);
+    } else if (shape==='circle') {
+      ctx.beginPath(); ctx.arc(x+w/2,y+h/2,Math.min(w,h)*0.48,0,Math.PI*2); ctx.fill();
+    } else if (shape==='diagonal') {
+      ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
+      for (let d=0;d<w+h;d+=10) {
+        ctx.strokeStyle=d%20===0?pal.primary:pal.secondary;
+        ctx.lineWidth=4; ctx.globalAlpha=0.6;
+        ctx.beginPath(); ctx.moveTo(x+d,y); ctx.lineTo(x,y+d); ctx.stroke();
+      }
+      ctx.restore(); ctx.globalAlpha=1;
+    } else if (shape==='stripe') {
+      ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
+      for (let sx=x;sx<x+w;sx+=16) {
+        ctx.fillStyle=sx%32===0?pal.primary:pal.secondary;
+        ctx.fillRect(sx,y,8,h);
+      }
+      ctx.restore();
+    }
+  }
+
+  function drawPoster(ts) {
+    const dt = Math.min((ts-lastT)/1000, 0.05);
+    lastT = ts;
+    const hSz = lfPHSz.update(cfg.hSz, dt);
+    const lx  = lfPLayoutX.update(cfg.layoutTargetX, dt);
+    const ly  = lfPLayoutY.update(cfg.layoutTargetY, dt);
+    const pal = palettes[cfg.color];
+
+    ctx.fillStyle = pal.bg;
+    ctx.fillRect(0,0,W,H);
+
+    if (cfg.layout==='swiss') {
+      // Swiss: strong diagonal rule, top-right image block
+      drawShape(pal, cfg.shape, W*0.38+lx, 20+ly, W*0.58, H*0.42);
+      ctx.fillStyle=pal.secondary;
+      ctx.fillRect(0, H*0.46+ly, W, 3);
+      ctx.fillStyle=pal.text;
+      ctx.font=`900 ${Math.floor(hSz)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.textBaseline='top';
+      ctx.fillText('DESIGN', 20+lx, H*0.5+ly);
+      ctx.fillStyle=pal.accent;
+      ctx.font=`900 ${Math.floor(hSz*0.7)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('SYSTEMS', 20+lx, H*0.5+hSz*1.05+ly);
+      ctx.fillStyle=pal.secondary;
+      ctx.font=`400 ${Math.floor(H*0.028)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('Internationale Typographische Gestaltung', 20, H*0.82);
+      ctx.fillText('Zürich — Basel — Ulm — 1958', 20, H*0.82+H*0.035);
+      ctx.fillRect(20,H*0.88,W-40,1);
+      ctx.font=`700 ${Math.floor(H*0.022)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('MÜLLER-BROCKMANN ASSOCIATES', 20, H*0.9+H*0.02);
+    } else if (cfg.layout==='centered') {
+      drawShape(pal, cfg.shape, W*0.15+lx, H*0.08+ly, W*0.7, H*0.35);
+      ctx.textAlign='center';
+      ctx.fillStyle=pal.primary;
+      ctx.fillRect(W/2-W*0.35,H*0.47,W*0.7,4);
+      ctx.fillStyle=pal.text;
+      ctx.font=`900 ${Math.floor(hSz)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.textBaseline='top';
+      ctx.fillText('FORM', W/2+lx, H*0.52+ly);
+      ctx.fillStyle=pal.accent;
+      ctx.font=`300 ${Math.floor(hSz*0.55)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('FOLLOWS FUNCTION', W/2+lx, H*0.52+hSz*1.1+ly);
+      ctx.fillStyle='#999';
+      ctx.font=`400 ${Math.floor(H*0.026)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('Bauhaus Dessau — 1923', W/2, H*0.84);
+      ctx.textAlign='left';
+    } else if (cfg.layout==='grid') {
+      const gw=W/4, gh=H/5;
+      for(let r=0;r<5;r++) for(let c=0;c<4;c++) {
+        if((r+c)%3===0){ctx.fillStyle=pal.primary;ctx.fillRect(c*gw+1,r*gh+1,gw-2,gh-2);}
+        else if((r*c)%5===0){ctx.fillStyle=pal.secondary;ctx.fillRect(c*gw+1,r*gh+1,gw-2,gh-2);}
+      }
+      ctx.fillStyle=pal.bg;
+      ctx.font=`900 ${Math.floor(hSz*0.9)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.textBaseline='middle';
+      ctx.fillText('GRID', 20+lx, H*0.38+ly);
+      ctx.font=`900 ${Math.floor(hSz*0.6)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('MODULE', 20+lx, H*0.38+hSz+ly);
+    } else if (cfg.layout==='tension') {
+      ctx.save();
+      ctx.translate(W/2+lx, H/2+ly);
+      ctx.rotate(-0.18);
+      drawShape(pal, cfg.shape, -W*0.55, -H*0.28, W*0.85, H*0.38);
+      ctx.restore();
+      ctx.fillStyle=pal.text;
+      ctx.font=`900 ${Math.floor(hSz)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.textBaseline='top';
+      ctx.fillText('VISUAL', 15+lx, H*0.52+ly);
+      ctx.fillStyle=pal.accent;
+      ctx.fillText('TENSION', 15+lx, H*0.52+hSz*1.05+ly);
+      ctx.fillStyle='#999';
+      ctx.font=`300 ${Math.floor(H*0.028)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.fillText('International Graphic Design', 15, H*0.82);
+    }
+
+    // Border rule
+    ctx.strokeStyle=pal.secondary;
+    ctx.lineWidth=2;
+    ctx.strokeRect(8,8,W-16,H-16);
+
+    requestAnimationFrame(drawPoster);
+  }
+
+  requestAnimationFrame(ts => { lastT=ts; requestAnimationFrame(drawPoster); });
+})();
+</script>
+
+<!-- SECTION 6: VISUAL COMMUNICATION -->
+<section id="communication" class="hidden">
+  <div class="section-label">Section 06</div>
+  <div class="section-title">Visual Communication Systems</div>
+  <div class="section-intro">Design as a system for transmitting meaning. Three communication disciplines — wayfinding, information design, and brand identity — each governed by their own grammar.</div>
+  <div class="tabs" id="commTabs">
+    <button class="active" data-comm="wayfinding">Wayfinding</button>
+    <button data-comm="infodesign">Information Design</button>
+    <button data-comm="brand">Brand Identity</button>
+  </div>
+  <div class="comm-panels">
+    <!-- WAYFINDING -->
+    <div id="panelWayfinding" class="active">
+      <div class="two-col">
+        <div>
+          <div class="controls" style="flex-direction:column;align-items:flex-start;">
+            <div class="ctrl-group">
+              <span class="ctrl-label">Primary Color</span>
+              <select id="wfColor">
+                <option value="red">Red System</option>
+                <option value="blue">Blue System</option>
+                <option value="black">Black System</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Icon Style</span>
+              <select id="wfIcon">
+                <option value="geo">Geometric</option>
+                <option value="arrow">Arrow-based</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Sign Scale <span id="wfScaleVal">1.0</span>×</span>
+              <input type="range" id="wfScale" min="60" max="150" value="100">
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="canvas-wrap">
+            <canvas id="wfCanvas" width="520" height="380" style="width:100%;max-width:520px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- INFO DESIGN -->
+    <div id="panelInfodesign">
+      <div class="two-col">
+        <div>
+          <div class="controls" style="flex-direction:column;align-items:flex-start;">
+            <div class="ctrl-group">
+              <span class="ctrl-label">Chart Type</span>
+              <select id="idChartType">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="area">Area Chart</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Dataset</span>
+              <select id="idDataset">
+                <option value="bauhaus">Bauhaus Enrollment</option>
+                <option value="type">Typeface Usage</option>
+                <option value="ratio">Golden Ratio Series</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="canvas-wrap">
+            <canvas id="idCanvas" width="520" height="380" style="width:100%;max-width:520px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- BRAND -->
+    <div id="panelBrand">
+      <div class="two-col">
+        <div>
+          <div class="controls" style="flex-direction:column;align-items:flex-start;">
+            <div class="ctrl-group">
+              <span class="ctrl-label">Mark Style</span>
+              <select id="brandMark">
+                <option value="geo">Geometric</option>
+                <option value="letter">Monogram</option>
+                <option value="sym">Symmetrical</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Brand Color</span>
+              <select id="brandColor">
+                <option value="red">Signal Red</option>
+                <option value="blue">Bauhaus Blue</option>
+                <option value="gold">Golden</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Brand Name</span>
+              <input type="text" id="brandName" value="FORMA" style="padding:0.35rem 0.6rem;border:1.5px solid #1A1A1A;font-family:inherit;font-size:0.8rem;width:130px;">
+            </div>
+            <button id="brandGenerate" style="margin-top:0.5rem;">Generate Board</button>
+          </div>
+        </div>
+        <div>
+          <div class="canvas-wrap">
+            <canvas id="brandCanvas" width="520" height="380" style="width:100%;max-width:520px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 6: VISUAL COMMUNICATION
+// =====================================================
+(function() {
+  // Tab switching
+  document.querySelectorAll('#commTabs button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#commTabs button').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      document.querySelectorAll('.comm-panels > div').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel' + this.dataset.comm.charAt(0).toUpperCase() + this.dataset.comm.slice(1)).classList.add('active');
+    });
+  });
+
+  // --- WAYFINDING ---
+  const wfCanvas = document.getElementById('wfCanvas');
+  const wfCtx = wfCanvas.getContext('2d');
+  let wfW=520,wfH=380, wfLastT=0;
+  // LagFilter #18
+  const lfWfScale = new LagFilter(0.4, 1.0); // #18 sign scale
+  let wfTargetScale=1.0;
+  let wfColor='red', wfIcon='geo';
+
+  document.getElementById('wfColor').addEventListener('change',e=>wfColor=e.target.value);
+  document.getElementById('wfIcon').addEventListener('change',e=>wfIcon=e.target.value);
+  document.getElementById('wfScale').addEventListener('input',e=>{
+    wfTargetScale=e.target.value/100;
+    document.getElementById('wfScaleVal').textContent=(e.target.value/100).toFixed(1);
+  });
+
+  const wfPals = {red:{bg:'#E63229',fg:'#FFFFFF'},blue:{bg:'#003D9E',fg:'#FFFFFF'},black:{bg:'#1A1A1A',fg:'#FFFFFF'}};
+  const wfSigns = [
+    {x:30,y:40,label:'ENTRANCE',icon:'door',arrow:'→'},
+    {x:30,y:130,label:'EXIT',icon:'exit',arrow:'↗'},
+    {x:30,y:220,label:'GALLERY A',icon:'art',arrow:'→'},
+    {x:30,y:310,label:'GALLERY B',icon:'art',arrow:'↓'},
+    {x:280,y:40,label:'INFORMATION',icon:'info',arrow:''},
+    {x:280,y:130,label:'RESTROOMS',icon:'person',arrow:'↑'},
+    {x:280,y:220,label:'CAFÉ',icon:'cafe',arrow:'←'},
+    {x:280,y:310,label:'BOOKSHOP',icon:'book',arrow:'↘'},
+  ];
+
+  function drawWfIcon(ctx, type, x, y, size, fg) {
+    ctx.fillStyle=fg; ctx.strokeStyle=fg; ctx.lineWidth=2;
+    if (type==='door') {
+      ctx.strokeRect(x-size*0.3,y-size*0.45,size*0.6,size*0.9);
+      ctx.beginPath(); ctx.arc(x+size*0.12,y,size*0.08,0,Math.PI*2); ctx.fill();
+    } else if (type==='exit') {
+      ctx.beginPath(); ctx.moveTo(x-size*0.3,y+size*0.3); ctx.lineTo(x,y-size*0.3); ctx.lineTo(x+size*0.3,y+size*0.3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x,y-size*0.5); ctx.lineTo(x,y-size*0.25); ctx.stroke();
+    } else if (type==='art') {
+      ctx.strokeRect(x-size*0.35,y-size*0.3,size*0.7,size*0.6);
+      ctx.beginPath(); ctx.arc(x-size*0.1,y-size*0.08,size*0.12,0,Math.PI*2); ctx.stroke();
+    } else if (type==='info') {
+      ctx.beginPath(); ctx.arc(x,y,size*0.38,0,Math.PI*2); ctx.stroke();
+      ctx.font=`900 ${size*0.45}px Helvetica`; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('i',x,y+size*0.04);
+    } else if (type==='person') {
+      ctx.beginPath(); ctx.arc(x,y-size*0.22,size*0.18,0,Math.PI*2); ctx.fill();
+      ctx.fillRect(x-size*0.16,y-size*0.02,size*0.32,size*0.38);
+    } else if (type==='cafe') {
+      ctx.strokeRect(x-size*0.25,y-size*0.15,size*0.5,size*0.4);
+      ctx.beginPath(); ctx.moveTo(x-size*0.1,y-size*0.15); ctx.bezierCurveTo(x-size*0.1,y-size*0.4,x+size*0.1,y-size*0.4,x+size*0.1,y-size*0.15); ctx.stroke();
+    } else if (type==='book') {
+      ctx.strokeRect(x-size*0.35,y-size*0.32,size*0.7,size*0.64);
+      ctx.beginPath(); ctx.moveTo(x,y-size*0.32); ctx.lineTo(x,y+size*0.32); ctx.stroke();
+    }
+    ctx.textAlign='left';
+  }
+
+  function drawWayfinding(ts) {
+    const dt=Math.min((ts-wfLastT)/1000,0.05); wfLastT=ts;
+    const sc=lfWfScale.update(wfTargetScale,dt);
+    const pal=wfPals[wfColor];
+    wfCtx.fillStyle='#F5F5F5'; wfCtx.fillRect(0,0,wfW,wfH);
+    const signW=220*sc, signH=72*sc;
+    wfSigns.forEach(s => {
+      const sx=s.x, sy=s.y;
+      if (sx+signW>wfW || sy+signH>wfH) return;
+      wfCtx.fillStyle=pal.bg;
+      wfCtx.fillRect(sx,sy,signW,signH);
+      const iconSz=signH*0.42;
+      drawWfIcon(wfCtx,s.icon,sx+signH*0.5,sy+signH*0.5,iconSz,pal.fg);
+      wfCtx.fillStyle=pal.fg;
+      wfCtx.font=`700 ${Math.floor(signH*0.22)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      wfCtx.textBaseline='middle';
+      wfCtx.fillText(s.label, sx+signH*1.0, sy+signH*0.42);
+      if (s.arrow) {
+        wfCtx.font=`400 ${Math.floor(signH*0.38)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+        wfCtx.fillText(s.arrow, sx+signW-signH*0.45, sy+signH*0.52);
+      }
+    });
+    requestAnimationFrame(drawWayfinding);
+  }
+  requestAnimationFrame(ts=>{wfLastT=ts;requestAnimationFrame(drawWayfinding);});
+
+  // --- INFORMATION DESIGN ---
+  const idCanvas = document.getElementById('idCanvas');
+  const idCtx = idCanvas.getContext('2d');
+  let idChartType='bar', idDataset='bauhaus';
+
+  // LagFilter #19
+  const lfBarH = [0,1,2,3,4,5].map(() => new LagFilter(0.5, 0)); // #19 (6 instances)
+
+  document.getElementById('idChartType').addEventListener('change',e=>idChartType=e.target.value);
+  document.getElementById('idDataset').addEventListener('change',e=>idDataset=e.target.value);
+
+  const datasets = {
+    bauhaus: { label:'Bauhaus Enrollment 1919–1933', vals:[32,78,95,112,87,140,155,168,120,89,60,42,28], years:['19','20','21','22','23','24','25','26','27','28','29','32','33'] },
+    type:    { label:'Typeface Usage by Era (%)', vals:[45,30,60,80,95,72,55,40,88,100,65,42,78], years:['Cas','Old','Trans','Mod','Swiss','Int','Geom','Slab','Sans','Dig','Web','Var','Now'] },
+    ratio:   { label:'Golden Ratio Sequence', vals:[1,1,2,3,5,8,13,21,34,55,89,144,233], years:['n1','n2','n3','n4','n5','n6','n7','n8','n9','n10','n11','n12','n13'] }
+  };
+
+  let idLastT=0;
+  function drawInfoDesign(ts) {
+    const dt=Math.min((ts-idLastT)/1000,0.05); idLastT=ts;
+    const IW=520,IH=380;
+    idCtx.fillStyle='#FFFFFF'; idCtx.fillRect(0,0,IW,IH);
+    const ds=datasets[idDataset];
+    const maxV=Math.max(...ds.vals);
+    const pad={l:45,r:20,t:50,b:45};
+    const cW=IW-pad.l-pad.r, cH=IH-pad.t-pad.b;
+    const n=ds.vals.length;
+
+    // Title
+    idCtx.fillStyle='#1A1A1A';
+    idCtx.font=`700 ${Math.floor(IH*0.042)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    idCtx.textBaseline='top';
+    idCtx.fillText(ds.label, pad.l, 10);
+    idCtx.fillStyle='#E63229';
+    idCtx.fillRect(pad.l, 42, cW, 2);
+
+    // Axes
+    idCtx.strokeStyle='#CCCCCC'; idCtx.lineWidth=1;
+    idCtx.beginPath(); idCtx.moveTo(pad.l,pad.t); idCtx.lineTo(pad.l,pad.t+cH); idCtx.lineTo(pad.l+cW,pad.t+cH); idCtx.stroke();
+
+    // Y grid + labels
+    for (let g=0;g<=4;g++) {
+      const gy=pad.t+cH*(1-g/4);
+      idCtx.strokeStyle='#EEEEEE'; idCtx.lineWidth=1;
+      idCtx.beginPath(); idCtx.moveTo(pad.l,gy); idCtx.lineTo(pad.l+cW,gy); idCtx.stroke();
+      idCtx.fillStyle='#BBBBBB';
+      idCtx.font=`400 ${Math.floor(IH*0.03)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      idCtx.textAlign='right'; idCtx.textBaseline='middle';
+      idCtx.fillText(Math.round(maxV*g/4), pad.l-5, gy);
+    }
+    idCtx.textAlign='left';
+
+    const barW=cW/n*0.55, barGap=cW/n;
+
+    if (idChartType==='bar') {
+      ds.vals.forEach((v,i) => {
+        const target=cH*(v/maxV);
+        if (lfBarH[i%6]) lfBarH[i%6].update(target,dt);
+        const bh=lfBarH[i%6]?lfBarH[i%6].v:target;
+        const bx=pad.l+i*barGap+barGap*0.22;
+        const by=pad.t+cH-bh;
+        idCtx.fillStyle=i%3===0?'#E63229':'#1A1A1A';
+        idCtx.fillRect(bx,by,barW,bh);
+        idCtx.fillStyle='#AAAAAA';
+        idCtx.font=`400 ${Math.floor(IH*0.027)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+        idCtx.textAlign='center'; idCtx.textBaseline='top';
+        idCtx.fillText(ds.years[i],bx+barW/2,pad.t+cH+5);
+      });
+    } else if (idChartType==='line' || idChartType==='area') {
+      if (idChartType==='area') {
+        idCtx.beginPath();
+        idCtx.moveTo(pad.l+barGap*0.5, pad.t+cH);
+        ds.vals.forEach((v,i) => {
+          const px=pad.l+i*barGap+barGap*0.5;
+          const py=pad.t+cH*(1-v/maxV);
+          idCtx.lineTo(px,py);
+        });
+        idCtx.lineTo(pad.l+(n-1)*barGap+barGap*0.5,pad.t+cH);
+        idCtx.closePath();
+        idCtx.fillStyle='rgba(230,50,41,0.12)'; idCtx.fill();
+      }
+      idCtx.strokeStyle='#E63229'; idCtx.lineWidth=2.5;
+      idCtx.beginPath();
+      ds.vals.forEach((v,i) => {
+        const px=pad.l+i*barGap+barGap*0.5;
+        const py=pad.t+cH*(1-v/maxV);
+        i===0?idCtx.moveTo(px,py):idCtx.lineTo(px,py);
+      });
+      idCtx.stroke();
+      ds.vals.forEach((v,i) => {
+        const px=pad.l+i*barGap+barGap*0.5;
+        const py=pad.t+cH*(1-v/maxV);
+        idCtx.beginPath(); idCtx.arc(px,py,4,0,Math.PI*2);
+        idCtx.fillStyle='#E63229'; idCtx.fill();
+        idCtx.fillStyle='#AAAAAA';
+        idCtx.font=`400 ${Math.floor(IH*0.027)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+        idCtx.textAlign='center'; idCtx.textBaseline='top';
+        idCtx.fillText(ds.years[i],px,pad.t+cH+5);
+      });
+    }
+    idCtx.textAlign='left';
+    requestAnimationFrame(drawInfoDesign);
+  }
+  requestAnimationFrame(ts=>{idLastT=ts;requestAnimationFrame(drawInfoDesign);});
+
+  // --- BRAND IDENTITY ---
+  const brandCanvas = document.getElementById('brandCanvas');
+  const brandCtx = brandCanvas.getContext('2d');
+  let brandMark='geo', brandColorKey='red', brandNameVal='FORMA';
+
+  document.getElementById('brandMark').addEventListener('change',e=>brandMark=e.target.value);
+  document.getElementById('brandColor').addEventListener('change',e=>brandColorKey=e.target.value);
+  document.getElementById('brandName').addEventListener('input',e=>brandNameVal=e.target.value.toUpperCase());
+  document.getElementById('brandGenerate').addEventListener('click',drawBrandBoard);
+
+  const brandPals={red:'#E63229',blue:'#003D9E',gold:'#C9A94C'};
+
+  function drawMark(ctx,type,cx,cy,size,color) {
+    ctx.fillStyle=color;
+    if (type==='geo') {
+      ctx.beginPath(); ctx.moveTo(cx,cy-size*0.5); ctx.lineTo(cx+size*0.5,cy+size*0.35); ctx.lineTo(cx-size*0.5,cy+size*0.35); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.9)';
+      ctx.beginPath(); ctx.arc(cx,cy+size*0.05,size*0.22,0,Math.PI*2); ctx.fill();
+    } else if (type==='letter') {
+      ctx.beginPath(); ctx.arc(cx,cy,size*0.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#FFFFFF';
+      ctx.font=`900 ${size*0.55}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(brandNameVal.charAt(0),cx,cy+size*0.04);
+    } else if (type==='sym') {
+      const sq=size*0.42;
+      ctx.fillRect(cx-sq,cy-sq,sq,sq);
+      ctx.fillRect(cx+2,cy-sq,sq,sq);
+      ctx.fillRect(cx-sq,cy+2,sq,sq);
+      ctx.fillStyle='rgba(0,0,0,0.15)';
+      ctx.fillRect(cx+2,cy+2,sq,sq);
+    }
+    ctx.textAlign='left';
+  }
+
+  function drawBrandBoard() {
+    const BW=520,BH=380;
+    const color=brandPals[brandColorKey];
+    brandCtx.fillStyle='#FFFFFF'; brandCtx.fillRect(0,0,BW,BH);
+    // Color swatches
+    brandCtx.fillStyle=color; brandCtx.fillRect(20,20,80,80);
+    brandCtx.fillStyle='#1A1A1A'; brandCtx.fillRect(110,20,80,80);
+    brandCtx.fillStyle='#F0F0F0'; brandCtx.fillRect(200,20,80,80);
+    brandCtx.strokeStyle='#E0E0E0'; brandCtx.lineWidth=1; brandCtx.strokeRect(200,20,80,80);
+    // Swatch labels
+    brandCtx.fillStyle='#AAAAAA';
+    brandCtx.font=`400 9px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    brandCtx.textBaseline='top';
+    brandCtx.fillText('PRIMARY',20,106);
+    brandCtx.fillText('SECONDARY',110,106);
+    brandCtx.fillText('NEUTRAL',200,106);
+    // Logo mark
+    drawMark(brandCtx,brandMark,360,60,80,color);
+    // Brand name + type system
+    brandCtx.fillStyle='#1A1A1A';
+    brandCtx.font=`900 ${Math.floor(BH*0.08)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    brandCtx.textBaseline='top';
+    brandCtx.fillText(brandNameVal,20,140);
+    brandCtx.fillStyle=color;
+    brandCtx.fillRect(20,140+BH*0.1,BW-40,3);
+    brandCtx.fillStyle='#555';
+    brandCtx.font=`300 ${Math.floor(BH*0.04)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    brandCtx.fillText('Excellence in Form and Function',20,140+BH*0.1+12);
+    // Type specimens
+    brandCtx.fillStyle='#AAAAAA';
+    brandCtx.font=`700 ${Math.floor(BH*0.028)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    brandCtx.fillText('HELVETICA NEUE — PRIMARY TYPEFACE',20,260);
+    brandCtx.fillStyle='#1A1A1A';
+    const tSizes=[28,22,16,12];
+    let ty=285;
+    tSizes.forEach(sz => {
+      brandCtx.font=`400 ${sz}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      brandCtx.fillText('The quick brown fox', 20, ty);
+      ty+=sz*1.5;
+    });
+  }
+  drawBrandBoard();
+})();
+</script>
+
+<!-- SECTION 7: MODERNIST DESIGN MOVEMENTS -->
+<section id="movements" class="hidden">
+  <div class="section-label">Section 07</div>
+  <div class="section-title">Modernist Design Movements</div>
+  <div class="section-intro">Six eras that defined visual culture. Each movement a reaction to what came before — from Bauhaus functionalism to digital deconstruction. Click any era to enter its aesthetic world.</div>
+  <div class="timeline-grid">
+    <button class="active" data-era="bauhaus">Bauhaus<br><small style="font-weight:400;opacity:0.7">1919–1933</small></button>
+    <button data-era="swiss">Swiss Intl<br><small style="font-weight:400;opacity:0.7">1950s–</small></button>
+    <button data-era="pushpin">Push Pin<br><small style="font-weight:400;opacity:0.7">1950–60s</small></button>
+    <button data-era="psychedelic">Psychedelic<br><small style="font-weight:400;opacity:0.7">1960s</small></button>
+    <button data-era="punk">Punk / Wave<br><small style="font-weight:400;opacity:0.7">1970–80s</small></button>
+    <button data-era="digital">Digital<br><small style="font-weight:400;opacity:0.7">1990s+</small></button>
+  </div>
+  <div class="two-col">
+    <div>
+      <div id="eraInfo" style="padding:1.5rem;background:#F5F5F5;border-left:4px solid #E63229;">
+        <div id="eraTitle" style="font-size:1.1rem;font-weight:900;margin-bottom:0.5rem;"></div>
+        <div id="eraFigures" style="font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#E63229;margin-bottom:0.75rem;"></div>
+        <div id="eraPhilosophy" style="font-size:0.83rem;color:#555;line-height:1.7;"></div>
+      </div>
+    </div>
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="movementsCanvas" width="480" height="340" style="width:100%;max-width:480px;"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 7: MODERNIST DESIGN MOVEMENTS
+// =====================================================
+(function() {
+  const canvas = document.getElementById('movementsCanvas');
+  const ctx = canvas.getContext('2d');
+  const MW=480,MH=340;
+  let mLastT=0, mAnimT=0, currentEra='bauhaus';
+
+  // LagFilter #20
+  const lfEraTrans = new LagFilter(0.5, 0); // #20 era transition
+  let eraTarget=0;
+
+  const eras = {
+    bauhaus:     { title:'Bauhaus 1919–1933', figures:'Walter Gropius  ·  László Moholy-Nagy  ·  Herbert Bayer  ·  Marcel Breuer', philosophy:'Form follows function. The Bauhaus sought to reunite fine art and functional craft, training designers to create beautiful objects for industrial production. Primary colors, geometric forms, and the elimination of ornament defined its visual identity.' },
+    swiss:       { title:'Swiss International Style 1950s–', figures:'Josef Müller-Brockmann  ·  Armin Hofmann  ·  Emil Ruder  ·  Max Bill', philosophy:'Objectivity, clarity, and rational structure. The grid becomes the organizing principle. Helvetica and Univers replace decorative typefaces. Photography replaces illustration. Design communicates without personal expression.' },
+    pushpin:     { title:'Push Pin Studio 1950s–60s', figures:'Milton Glaser  ·  Seymour Chwast  ·  Edward Sorel', philosophy:'An eclectic rejection of Swiss rigidity. Historical references, illustration, humor, and decorative typography return. Art Nouveau, Victorian, and comic-book aesthetics combine with modernist wit to create a uniquely American graphic sensibility.' },
+    psychedelic: { title:'Psychedelic 1960s', figures:'Victor Moscoso  ·  Wes Wilson  ·  Rick Griffin  ·  Alton Kelley', philosophy:'Illegibility as liberation. Vibrating complementary colors, hand-lettered organic type, and swirling forms reject rationalism entirely. Posters for the Fillmore and Avalon Ballrooms create a new visual language of altered consciousness.' },
+    punk:        { title:'Punk / New Wave 1970s–80s', figures:'Jamie Reid  ·  Neville Brody  ·  Wolfgang Weingart  ·  April Greiman', philosophy:'Anti-design as design. The ransom-note aesthetic, deliberate misalignment, photocopier distortion, and rule-breaking typography express political rebellion. Weingart deconstructs Swiss rules from within; punk destroys them from outside.' },
+    digital:     { title:'Digital 1990s+', figures:'David Carson  ·  Ed Fella  ·  Rudy VanderLans  ·  Zuzana Licko', philosophy:'The screen as canvas. Bitmap fonts, layering, transparency, and digital collage become the tools of a new generation. Émigré magazine publishes experimental type design. Carson makes type illegible. The computer enables everything — and nothing is off limits.' }
+  };
+
+  document.querySelectorAll('.timeline-grid button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.timeline-grid button').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentEra = this.dataset.era;
+      const e = eras[currentEra];
+      document.getElementById('eraTitle').textContent = e.title;
+      document.getElementById('eraFigures').textContent = e.figures;
+      document.getElementById('eraPhilosophy').textContent = e.philosophy;
+    });
+  });
+
+  // Init first era
+  const first = eras.bauhaus;
+  document.getElementById('eraTitle').textContent = first.title;
+  document.getElementById('eraFigures').textContent = first.figures;
+  document.getElementById('eraPhilosophy').textContent = first.philosophy;
+
+  function drawBauhaus(t) {
+    ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,MW,MH);
+    const colors=['#E63229','#003D9E','#F5D800','#1A1A1A'];
+    const shapes=[
+      [60,70,80,80,'rect',0],[200,60,70,70,'circle',1],[320,80,70,90,'rect',2],
+      [90,190,60,60,'circle',3],[230,180,80,70,'rect',0],[360,160,55,80,'rect',1]
+    ];
+    shapes.forEach(([x,y,w,h,type,ci]) => {
+      ctx.fillStyle=colors[ci];
+      if (type==='rect') ctx.fillRect(x+Math.sin(t*0.4+ci)*4,y,w,h);
+      else { ctx.beginPath(); ctx.arc(x+w/2+Math.cos(t*0.5+ci)*4,y+h/2,w/2,0,Math.PI*2); ctx.fill(); }
+    });
+    ctx.fillStyle='#1A1A1A';
+    ctx.font=`900 ${Math.floor(MH*0.11)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.textBaseline='bottom';
+    ctx.fillText('BAUHAUS',16,MH-10);
+    ctx.fillStyle='#E63229';
+    ctx.font=`300 ${Math.floor(MH*0.048)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.fillText('1919 — DESSAU — FUNCTION + FORM',16,MH-10-MH*0.14);
+  }
+
+  function drawSwiss(t) {
+    ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,MW,MH);
+    const col1=MW*0.382, col2=MW*0.618;
+    ctx.strokeStyle='#ECECEC'; ctx.lineWidth=1;
+    [col1,col2].forEach(x=>{ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,MH);ctx.stroke();});
+    [MH*0.33,MH*0.66].forEach(y=>{ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(MW,y);ctx.stroke();});
+    ctx.fillStyle='#E63229';
+    ctx.fillRect(col1+4,MH*0.08,col2-col1-8,MH*0.1);
+    ctx.fillStyle='#1A1A1A';
+    ctx.font=`900 ${Math.floor(MH*0.18)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.textBaseline='top';
+    ctx.fillText('GRID',14,MH*0.12);
+    ctx.font=`300 ${Math.floor(MH*0.065)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.fillText('OBJECTIVE COMMUNICATION',14,MH*0.4);
+    ctx.fillStyle='#BBBBBB';
+    ctx.font=`500 ${Math.floor(MH*0.04)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.fillText('Helvetica — 1957 — Max Miedinger',14,MH-20);
+  }
+
+  function drawPushpin(t) {
+    ctx.fillStyle='#FFF8E1'; ctx.fillRect(0,0,MW,MH);
+    const wave=Math.sin(t*0.7);
+    ctx.strokeStyle='#E63229'; ctx.lineWidth=3;
+    for(let y=10;y<MH;y+=25){
+      ctx.beginPath();
+      for(let x=0;x<MW;x+=4){ctx.lineTo(x,y+Math.sin(x*0.04+t+y*0.05)*8);}
+      ctx.stroke();
+    }
+    ctx.fillStyle='#1A1A1A';
+    ctx.font=`900 italic ${Math.floor(MH*0.14)}px Georgia,serif`;
+    ctx.textBaseline='middle';
+    ctx.fillText('Push Pin',20,MH*0.4+wave*6);
+    ctx.fillStyle='#E63229';
+    ctx.font=`italic ${Math.floor(MH*0.07)}px Georgia,serif`;
+    ctx.fillText('Studio NYC — 1954',20,MH*0.62+wave*4);
+  }
+
+  function drawPsychedelic(t) {
+    const grad=ctx.createRadialGradient(MW/2,MH/2,20,MW/2,MH/2,MW*0.7);
+    grad.addColorStop(0,'#FF6600'); grad.addColorStop(0.4,'#CC00CC'); grad.addColorStop(0.8,'#0033FF'); grad.addColorStop(1,'#00AA55');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,MW,MH);
+    ctx.save(); ctx.translate(MW/2,MH/2);
+    for(let r=0;r<8;r++){
+      ctx.rotate(Math.PI*2/8+t*0.1);
+      ctx.strokeStyle=`hsl(${r*45+t*30},100%,70%)`; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.arc(0,0,40+r*22,0,Math.PI*1.4); ctx.stroke();
+    }
+    ctx.restore();
+    ctx.fillStyle='#FFFF00';
+    ctx.font=`900 ${Math.floor(MH*0.11)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.textBaseline='top';
+    ctx.fillText('FILLMORE',14,12);
+    ctx.font=`900 ${Math.floor(MH*0.065)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.fillText('WEST — 1967',14,MH*0.2);
+  }
+
+  function drawPunk(t) {
+    ctx.fillStyle='#F0F0F0'; ctx.fillRect(0,0,MW,MH);
+    ctx.fillStyle='#1A1A1A';
+    for(let i=0;i<20;i++){
+      const rx=Math.sin(i*127.4)*MW*0.45+MW/2, ry=Math.sin(i*93.7)*MH*0.4+MH/2;
+      const sz=10+Math.sin(i*44.1)*8;
+      ctx.font=`${i%2===0?'900':'300'} ${sz}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+      const words=['SYSTEM','FAIL','GRID','KILL','TYPE','RAGE','PUNK','NO','CUT','PASTE'];
+      ctx.save(); ctx.translate(rx,ry); ctx.rotate((i-10)*0.3);
+      ctx.fillStyle=i%4===0?'#E63229':'#1A1A1A';
+      ctx.fillText(words[i%words.length],0,0);
+      ctx.restore();
+    }
+    ctx.strokeStyle='#E63229'; ctx.lineWidth=4;
+    ctx.beginPath(); ctx.moveTo(0,MH*0.5+Math.sin(t)*10); ctx.lineTo(MW,MH*0.5+Math.cos(t)*10); ctx.stroke();
+  }
+
+  function drawDigital(t) {
+    ctx.fillStyle='#000000'; ctx.fillRect(0,0,MW,MH);
+    // Pixel grid
+    ctx.fillStyle='rgba(0,255,100,0.07)';
+    for(let y=0;y<MH;y+=4) ctx.fillRect(0,y,MW,2);
+    const layers=[
+      {x:20,y:30,w:180,h:120,col:'rgba(230,50,41,0.6)'},
+      {x:80,y:60,w:200,h:100,col:'rgba(0,100,255,0.5)'},
+      {x:140,y:20,w:160,h:140,col:'rgba(255,200,0,0.4)'},
+    ];
+    layers.forEach(l=>{
+      ctx.fillStyle=l.col;
+      ctx.fillRect(l.x+Math.sin(t*0.4+layers.indexOf(l))*8,l.y,l.w,l.h);
+    });
+    ctx.fillStyle='#FFFFFF';
+    ctx.font=`900 ${Math.floor(MH*0.13)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.textBaseline='bottom';
+    ctx.fillText('ÉMIGRÉ',14,MH-10);
+    ctx.fillStyle='rgba(0,255,100,0.8)';
+    ctx.font=`300 ${Math.floor(MH*0.045)}px 'Helvetica Neue',Helvetica,Arial,sans-serif`;
+    ctx.fillText('DIGITAL TYPE — SCREEN FIRST — 1984',14,MH-10-MH*0.16);
+  }
+
+  const eraDrawers={bauhaus:drawBauhaus,swiss:drawSwiss,pushpin:drawPushpin,psychedelic:drawPsychedelic,punk:drawPunk,digital:drawDigital};
+
+  function movFrame(ts) {
+    const dt=Math.min((ts-mLastT)/1000,0.05); mLastT=ts; mAnimT+=dt;
+    lfEraTrans.update(mAnimT*0.3,dt);
+    if (eraDrawers[currentEra]) eraDrawers[currentEra](mAnimT);
+    requestAnimationFrame(movFrame);
+  }
+  requestAnimationFrame(ts=>{mLastT=ts;requestAnimationFrame(movFrame);});
+})();
+</script>
+
+<!-- SECTION 8: DESIGNERS -->
+<section id="artists" class="hidden">
+  <div class="section-label">Section 08</div>
+  <div class="section-title">Masters of the Discipline</div>
+  <div class="section-intro">Eight designers who shaped how we see and organize the world. Their work — grids, identities, posters, typefaces — became the visual grammar of modernity.</div>
+  <div class="card-grid" id="designerCards"></div>
+</section>
+
+<script>
+// =====================================================
+// SECTION 8: DESIGNER CARDS WITH SVG AVATARS
+// =====================================================
+(function() {
+  const designers = [
+    {
+      name: 'Josef Müller-Brockmann',
+      era: '1914–1996 · Swiss', meta: 'Grid Systems · Poster Design',
+      desc: 'The defining voice of Swiss International Style. His poster series for the Zurich Tonhalle Orchestra — pure geometry, no ornament — demonstrated that abstract form could carry emotional weight.',
+      works: 'Beethoven Poster (1955), Grid Systems in Graphic Design (1961), Musica Viva Series',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#F5F5F5"/>
+        <rect x="8" y="8" width="${w-16}" height="${h-16}" fill="#E63229"/>
+        <rect x="20" y="20" width="${w/2-25}" height="${h-40}" fill="#1A1A1A"/>
+        <rect x="${w/2+5}" y="${h/2}" width="${w/2-25}" height="${h/2-20}" fill="#FFFFFF"/>`,
+      color: '#E63229'
+    },
+    {
+      name: 'Armin Hofmann',
+      era: '1920–2020 · Swiss', meta: 'Basel School · Visual Form',
+      desc: 'Taught at Basel for five decades. His approach — reduction, contrast, tension — produced some of the most visually powerful posters of the twentieth century. Graphic Form (1965) remains a masterwork.',
+      works: 'Giselle Poster (1959), Basel Stadt-Casino, Graphic Design Manual (1965)',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#1A1A1A"/>
+        <circle cx="${w/2}" cy="${h/2}" r="${w*0.38}" fill="none" stroke="#E63229" stroke-width="12"/>
+        <line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="#FFFFFF" stroke-width="3"/>`,
+      color: '#1A1A1A'
+    },
+    {
+      name: 'Paul Rand',
+      era: '1914–1996 · American', meta: 'Brand Identity · Corporate Design',
+      desc: 'Elevated American commercial art to the level of fine art. His IBM, ABC, and UPS logos proved that a mark could be timeless. The Eye-Bee-M rebus poster is among the most celebrated in design history.',
+      works: 'IBM Logo System, ABC Logotype, NeXT Identity, Thoughts on Design (1947)',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#003D9E"/>
+        <rect x="12" y="12" width="${w-24}" height="${(h-24)/3}" fill="#FFFFFF"/>
+        <rect x="12" y="${12+(h-24)/3+4}" width="${w-24}" height="${(h-24)/3}" fill="#FFFFFF" opacity="0.7"/>
+        <rect x="12" y="${12+(h-24)*2/3+8}" width="${w-24}" height="${(h-24)/3}" fill="#FFFFFF" opacity="0.4"/>`,
+      color: '#003D9E'
+    },
+    {
+      name: 'Saul Bass',
+      era: '1920–1996 · American', meta: 'Film Titles · Corporate Identity',
+      desc: 'Transformed the film title sequence into an art form. His work for Hitchcock, Preminger, and Scorsese — bold geometry, symbolic reduction — told the story before the story began.',
+      works: 'Vertigo Titles (1958), Anatomy of a Murder, AT&T Logo, United Airlines Identity',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#1A1A1A"/>
+        <polygon points="${w/2},10 ${w-10},${h-10} 10,${h-10}" fill="#E63229"/>
+        <circle cx="${w/2}" cy="${h*0.55}" r="${w*0.18}" fill="#FFFFFF"/>`,
+      color: '#E63229'
+    },
+    {
+      name: 'Massimo Vignelli',
+      era: '1931–2014 · Italian', meta: 'Systems Design · Typography',
+      desc: 'Champion of order and discipline. The New York City Subway map (1972) — mathematically precise, functionally controversial — crystallized his belief that design is a system, not a style.',
+      works: 'NYC Subway Map (1972), American Airlines Identity, Knoll Graphics, Vignelli Canon',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3"/>
+        <line x1="${w*0.2}" y1="${h*0.3}" x2="${w*0.8}" y2="${h*0.3}" stroke="#E63229" stroke-width="5"/>
+        <line x1="${w*0.2}" y1="${h*0.5}" x2="${w*0.8}" y2="${h*0.5}" stroke="#1A1A1A" stroke-width="5"/>
+        <line x1="${w*0.2}" y1="${h*0.7}" x2="${w*0.8}" y2="${h*0.7}" stroke="#1A1A1A" stroke-width="3"/>`,
+      color: '#1A1A1A'
+    },
+    {
+      name: 'Neville Brody',
+      era: 'b. 1957 · British', meta: 'The Face · Experimental Type',
+      desc: 'Art director of The Face magazine 1981–1986, Brody turned the page into a laboratory. Custom typefaces, fragmented grids, and rules treated as aesthetic objects rather than structure defined a generation.',
+      works: 'The Face Magazine, Arena Magazine, FF Blur Typeface, FUSE Publication',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#F0F0F0"/>
+        <rect x="5" y="${h*0.15}" width="${w*0.6}" height="${h*0.25}" fill="#1A1A1A" transform="rotate(-8,${w/2},${h/2})"/>
+        <rect x="${w*0.3}" y="${h*0.5}" width="${w*0.65}" height="${h*0.22}" fill="#E63229" transform="rotate(5,${w/2},${h/2})"/>`,
+      color: '#1A1A1A'
+    },
+    {
+      name: 'Paula Scher',
+      era: 'b. 1948 · American', meta: 'Pentagram · Public Theater',
+      desc: 'Partner at Pentagram since 1991. Her identity for The Public Theater — hand-lettered, typographically dense, loud — broke every Swiss rule and proved that rules exist to be transformed, not followed.',
+      works: 'Public Theater Identity, Citibank Rebrand, NY Transit Museum, Maps series',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#FFE066"/>
+        <text x="5" y="${h*0.45}" font-size="${w*0.28}" font-weight="900" font-family="Helvetica,Arial,sans-serif" fill="#E63229">P</text>
+        <text x="${w*0.35}" y="${h*0.72}" font-size="${w*0.22}" font-weight="900" font-family="Helvetica,Arial,sans-serif" fill="#1A1A1A">S</text>
+        <rect x="0" y="${h*0.8}" width="${w}" height="4" fill="#E63229"/>`,
+      color: '#E6B800'
+    },
+    {
+      name: 'David Carson',
+      era: 'b. 1954 · American', meta: 'Ray Gun · Deconstruction',
+      desc: 'Art director of Ray Gun magazine 1992–1995. Set an entire interview in Zapf Dingbats because he found it boring. Proved that legibility is only one of many valid design values. The End of Print changed everything.',
+      works: 'Ray Gun Magazine, Beach Culture, The End of Print (1995), Pepsi Campaign',
+      avatar: (w,h) => `<rect width="${w}" height="${h}" fill="#1A1A1A"/>
+        ${Array.from({length:8},(_,i)=>`<rect x="${Math.random()*w*0.7}" y="${Math.random()*h*0.7}" width="${10+Math.random()*30}" height="${5+Math.random()*20}" fill="${['#E63229','#FFFFFF','#888888'][i%3]}" transform="rotate(${(Math.random()-0.5)*40},${w/2},${h/2})"/>`).join('')}`,
+      color: '#1A1A1A'
+    }
+  ];
+
+  const grid = document.getElementById('designerCards');
+  designers.forEach(d => {
+    const W=76,H=76;
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <svg class="card-avatar" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${d.avatar(W,H)}</svg>
+      <div class="card-name">${d.name}</div>
+      <div class="card-meta">${d.era} — ${d.meta}</div>
+      <div class="card-desc">${d.desc}</div>
+      <div class="card-works"><em>Key works:</em> ${d.works}</div>`;
+    grid.appendChild(card);
+  });
+})();
+</script>
+
+<!-- SECTION 9: GLOSSARY -->
+<section id="glossary" class="hidden">
+  <div class="section-label">Section 09</div>
+  <div class="section-title">Glossary of Visual Language</div>
+  <div class="section-intro">Twenty-two terms from the lexicon of graphic design. The shared vocabulary that allows designers to think precisely, communicate clearly, and build on centuries of accumulated craft knowledge.</div>
+  <div class="gloss-grid">
+    <div class="gloss-item"><div class="gloss-term">Baseline Grid</div><div class="gloss-def">The underlying rhythmic structure of horizontal lines spaced at the line-height unit. All type and imagery align to this invisible scaffold, creating vertical harmony across columns and spreads.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Bauhaus</div><div class="gloss-def">German art school (1919–1933) that fused fine art with industrial craft. Its curriculum — foundation course, workshop training, theoretical study — became the model for design education worldwide.</div></div>
+    <div class="gloss-item"><div class="gloss-term">CMYK</div><div class="gloss-def">Cyan, Magenta, Yellow, Key (Black). The subtractive color model used in print reproduction. Each color is expressed as a percentage of ink density. Swiss designers developed precise CMYK systems for consistent print results.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Counter</div><div class="gloss-def">The enclosed or partially enclosed space within a letterform — the interior of an 'O', the bowl of a 'P'. Counter size and shape are critical to legibility and the typographic texture of a typeface.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Font Family</div><div class="gloss-def">A complete set of related typefaces sharing a common design: weights (light to black), widths (condensed to extended), and styles (roman and italic). Helvetica Neue comprises over 50 fonts across its full family.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gestalt</div><div class="gloss-def">German: "shape" or "form". A school of psychology establishing that perception is holistic — the whole is different from the sum of its parts. Its seven principles (proximity, similarity, closure, etc.) underlie all design decisions.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Golden Ratio</div><div class="gloss-def">The proportion φ ≈ 1.618:1, where the ratio of the whole to the larger part equals the ratio of the larger to the smaller. Appears throughout classical architecture, art, and nature. Used in Swiss design to proportion columns, margins, and type scales.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gutter</div><div class="gloss-def">The space between columns in a multi-column grid. Gutter width determines how easily the eye distinguishes columns and flows across the page. Too narrow creates confusion; too wide breaks visual unity.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Hierarchy</div><div class="gloss-def">The organization of visual elements by importance, directing the reader's eye through the composition in a deliberate sequence. Achieved through size, weight, color, position, and spacing. Without hierarchy, all elements shout equally.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Justified</div><div class="gloss-def">Text alignment where both left and right edges are flush, achieved by adjusting word and letter spacing. Common in Swiss book typography. Requires careful hyphenation to avoid "rivers" — diagonal paths of white space through the text block.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Kerning</div><div class="gloss-def">The adjustment of space between specific letter pairs to create optically consistent spacing. Distinct from tracking (uniform letter-spacing). "AV", "WA", and "To" are classic kerning pairs requiring manual correction.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Leading</div><div class="gloss-def">The vertical distance between baselines, measured in points. Named for the lead strips used to separate lines of movable type. Tight leading (100–110%) creates texture; open leading (150–160%) improves readability for small text.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Logo</div><div class="gloss-def">A graphic mark, emblem, or symbol representing an organization. Can be purely typographic (wordmark), symbolic (pictorial mark), or combined. Effective logos are distinctive in one color and legible at all scales.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Margin</div><div class="gloss-def">The unprinted area surrounding the text block on a page. Classical margin proportions (inside:top:outside:bottom = 1:1:1.5:2) create visual weight at the bottom, stabilizing the page and providing space for notes and thumbs.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Modular Grid</div><div class="gloss-def">A grid composed of both columns and rows, creating a matrix of modules. Used extensively in Swiss editorial design. Modules can be combined in multiples to create varied layouts within a consistent system. Müller-Brockmann's defining contribution.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Orphan</div><div class="gloss-def">A single word or short line stranded at the end of a paragraph, visually isolated from its surrounding text. Considered a typographic error in professional composition, corrected by adjusting spacing, rewording, or forcing line breaks.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Ragged</div><div class="gloss-def">Text set with a consistent left margin and uneven (natural) right edge. Also called "flush left, ragged right." Avoids the word-spacing variations of justified setting. The preferred alignment for running text in many contemporary style systems.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Rule of Thirds</div><div class="gloss-def">A compositional guideline dividing the frame into nine equal parts. Points of intersection are considered optimal for placing visual interest. A simplification of the golden section principle for practical compositional decisions.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Serif</div><div class="gloss-def">The small finishing stroke at the end of a letterform's main strokes, originating in Roman inscription technique. Serifs improve legibility at small sizes in print by guiding the eye along the line. Sans-serif faces (Helvetica, Univers) were central to Swiss modernism's rejection of tradition.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Swiss International Style</div><div class="gloss-def">A graphic design movement emerging from Zurich and Basel in the 1950s. Characterized by mathematical grids, sans-serif typography, flush-left text, photography over illustration, and objective communication. Also called International Typographic Style.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Tracking</div><div class="gloss-def">Uniform spacing adjustment applied across a range of text — distinct from kerning, which adjusts specific pairs. Loose tracking (positive values) aids legibility at small sizes and creates an airy texture; tight tracking (negative) creates visual density in headlines.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Widow</div><div class="gloss-def">A short line — typically a single word — that begins a new column or page, separated from the rest of its paragraph. Distinguished from orphans by position. Both represent typographic lapses that break reading rhythm and signal inattention to craft.</div></div>
+  </div>
+</section>
+
+<script>
+// =====================================================
+// INTERSECTIONOBSERVER — SCROLL REVEAL
+// =====================================================
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        entry.target.classList.remove('hidden');
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('section.hidden').forEach(section => {
+    observer.observe(section);
+  });
+})();
+</script>
+
+</body>
+</html>
