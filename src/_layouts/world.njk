@@ -1,38 +1,34 @@
 ---
 layout: base.njk
 ---
+
 {#
-world.njk
-Layout for WAVGEN interactive world pages integrated under the site's sticky header.
+  world.njk — WAVGEN immersive world layout
 
-- Extends base.njk so all worlds get the site nav, footer, GSAP, and global scripts.
-- Wraps world content in .wavgen-world to provide a CSS scoping root.
-- Injects a sticky breadcrumb bar (Row 2) below the site header.
-- Repositions the world's own nav to act as a section jump nav (Row 3).
-- Suppresses any world-injected top-level nav logo/brand that would duplicate site navigation.
-- Keeps fixed-position particle/bg canvases visually below the site header.
+  Sticky nav stack (OUTSIDE .wavgen-world to avoid overflow clipping):
+    Row 1: Site header — in base.njk (sticky top-0 z-30, 64px)
+    Row 2: Breadcrumb — sticky top-64px z-25, 36px
+    Row 3: Section jump nav — sticky top-100px z-20, 44px (JS-populated from world's own nav)
 
-Three-row sticky stack:
-  Row 1 — Site header        64px  sticky top:0   z-30  (navigation.njk, base.njk)
-  Row 2 — Breadcrumb         36px  sticky top:64  z-25  (.wg-breadcrumb, injected here)
-  Row 3 — World jump nav     ~60px sticky top:100 z-20  (world's own <nav>, repositioned)
-
-scroll-margin-top on [id] anchors: 160px  (64 + 36 + 60)
+  Total nav height: 144px
+  scroll-margin-top on section anchors: 160px (144 + 16px breathing room)
 #}
 
-{# ── Row 2: Breadcrumb — sticky below the 64px site header ──────────────── #}
-<nav class="wg-breadcrumb" aria-label="breadcrumb">
+{# ── Row 2: Breadcrumb (outside wavgen-world) ─────────────────────────── #}
+<nav class="wg-breadcrumb" aria-label="Breadcrumb">
   <a href="/">Home</a>
   <span aria-hidden="true">›</span>
   {% if domain %}
   <a href="/{{ domain }}/">{{ domain | capitalize }}</a>
   <span aria-hidden="true">›</span>
   {% endif %}
-  <span>{{ title | replace(" — Visual Learning World", "") }}</span>
+  <span class="wg-breadcrumb-current">{{ title | replace(" — Visual Learning World", "") | replace(" — Interactive Visual Learning Guide", "") | replace(" — Visual Learning Guide", "") }}</span>
 </nav>
 
-{# World content is scoped under .wavgen-world so CSS overrides below beat the world's own
-   inline <style> selectors (0,1,1 specificity beats bare element selectors 0,0,1). #}
+{# ── Row 3: Section jump nav (outside wavgen-world, populated by JS) ──── #}
+<nav class="wg-section-nav" id="wg-section-nav" aria-label="Page sections"></nav>
+
+{# ── World content ────────────────────────────────────────────────────── #}
 <div class="wavgen-world" data-domain="{{ domain }}" data-standalone="false">
   {{ content | safe }}
 </div>
@@ -44,124 +40,182 @@ scroll-margin-top on [id] anchors: 160px  (64 + 36 + 60)
 {% endif %}
 
 <style>
-  /* ══════════════════════════════════════════════════════
-     ROW 2 — BREADCRUMB (sticky below 64px site header)
-  ══════════════════════════════════════════════════════ */
-  .wg-breadcrumb {
-    position: sticky;
-    top: 64px;
-    z-index: 25;
-    background: #2c0077;           /* wavgen-dark-purple — matches site header */
-    padding: 0 1.5rem;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .wg-breadcrumb a {
-    color: #fbbf24;                /* wavgen-yellow */
-    text-decoration: none;
-    transition: color 0.2s;
-    flex-shrink: 0;
-  }
-  .wg-breadcrumb a:hover { color: #fde68a; }
-  .wg-breadcrumb span[aria-hidden] {
-    color: rgba(255, 255, 255, 0.35);
-    flex-shrink: 0;
-  }
-  .wg-breadcrumb > span:last-child {
-    color: rgba(255, 255, 255, 0.75);
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+/* ── Breadcrumb row ──────────────────────────────────────────────────── */
+.wg-breadcrumb {
+  position: sticky;
+  top: 64px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 2rem;
+  height: 36px;
+  background: #2c0077;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.wg-breadcrumb a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.wg-breadcrumb a:hover { color: #FEDD00; }
+.wg-breadcrumb span[aria-hidden] { color: rgba(255,255,255,0.3); }
+.wg-breadcrumb-current { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
 
-  /* ══════════════════════════════════════════════════════
-     SUPPRESS old-style .wg-nav class (exact match only)
-     NOTE: do NOT use [class*="wg-nav"] — that would also
-     match .wg-jump-nav and hide the jump nav.
-  ══════════════════════════════════════════════════════ */
-  .wavgen-world .wg-nav { display: none !important; }
+/* ── Section jump nav row ────────────────────────────────────────────── */
+.wg-section-nav {
+  position: sticky;
+  top: 100px; /* 64px header + 36px breadcrumb */
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  padding: 0 1rem;
+  height: 44px;
+  background: #2c0077;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.wg-section-nav::-webkit-scrollbar { display: none; }
+.wg-section-nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.wg-section-nav a:hover { color: rgba(255, 255, 255, 0.9); }
+.wg-section-nav a.wg-active {
+  color: #FEDD00;
+  border-bottom-color: #FEDD00;
+}
 
-  /* ══════════════════════════════════════════════════════
-     ROW 3 — WORLD JUMP NAV (sticky below header + breadcrumb)
-     Overrides position:fixed or position:sticky top:0 set
-     by each world's own <style> block.
-  ══════════════════════════════════════════════════════ */
-  .wavgen-world nav {
-    position: sticky !important;
-    top: 100px !important;         /* 64px header + 36px breadcrumb */
-    z-index: 20 !important;        /* below site header z-30, above content */
-    left: auto !important;         /* undo fixed-element left:0 */
-    right: auto !important;        /* undo fixed-element right:0 */
-    overflow-x: auto !important;
-    scrollbar-width: none;
-  }
-  .wavgen-world nav::-webkit-scrollbar { display: none; }
+/* ── World content container ─────────────────────────────────────────── */
+.wavgen-world {
+  overflow: visible !important; /* don't clip sticky descendants */
+}
 
-  /* Hide world nav logo/brand — redundant with site header + breadcrumb ─── */
-  .wavgen-world nav .nav-logo,
-  .wavgen-world nav .nav-brand,
-  .wavgen-world nav .nav-brand-group { display: none !important; }
+/* ── Hide world's own internal top nav ───────────────────────────────── */
+/* Target the nav that appears at the very top of world content */
+.wavgen-world > nav:first-of-type,
+.wavgen-world > div > nav:first-of-type,
+.wavgen-world .world-header nav,
+.wavgen-world header nav {
+  display: none !important;
+}
 
-  /* Ensure inner containers don't wrap and scroll horizontally ────────────── */
-  .wavgen-world nav .nav-inner,
-  .wavgen-world nav .nav-links {
-    flex-wrap: nowrap !important;
-    white-space: nowrap !important;
-    overflow-x: auto !important;
-    scrollbar-width: none;
-  }
-  .wavgen-world nav .nav-inner::-webkit-scrollbar,
-  .wavgen-world nav .nav-links::-webkit-scrollbar { display: none; }
+/* ── Scroll offset: sections land below all three sticky rows ─────────── */
+.wavgen-world [id] {
+  scroll-margin-top: 160px;
+}
 
-  /* ul.nav-links (ml, quantum use <ul>) ────────────────────────────────────── */
-  .wavgen-world nav ul.nav-links {
-    list-style: none;
-    flex-wrap: nowrap !important;
-    white-space: nowrap !important;
-  }
+/* ── Fix world hero canvas height to not cover sticky rows ───────────── */
+.wavgen-world canvas[style*="height: 100vh"],
+.wavgen-world .hero-canvas {
+  height: calc(100vh - 144px) !important;
+  top: 144px !important;
+}
 
-  /* ── Remove padding-top that worlds added to compensate for fixed nav ───── */
-  /* Only ml uses .world-main with padding-top; reset it now nav is in flow. */
-  .wavgen-world .world-main { padding-top: 0 !important; }
-
-  /* ══════════════════════════════════════════════════════
-     SECTION ANCHOR SCROLL OFFSET
-     Keeps section headings visible below the full nav stack
-     when a jump-nav link is clicked.
-     160px = 64px header + 36px breadcrumb + 60px jump nav
-  ══════════════════════════════════════════════════════ */
-  .wavgen-world [id] {
-    scroll-margin-top: 160px;
-  }
-
-  /* ══════════════════════════════════════════════════════
-     PREVENT OVERFLOW CLIPPING FROM BREAKING STICKY
-  ══════════════════════════════════════════════════════ */
-  .wavgen-world {
-    overflow: visible !important;
-  }
-
-  /* ══════════════════════════════════════════════════════
-     CANVAS CONSTRAINTS
-  ══════════════════════════════════════════════════════ */
-
-  /* Hero canvases: clip so they don't underrun the site header */
-  .wavgen-world canvas[id*="hero"],
-  .wavgen-world canvas[id*="Hero"],
-  .wavgen-world .hero-canvas {
-    max-height: calc(100vh - 64px);
-  }
-
-  /* Fixed particle/background canvases: push down below header */
-  .wavgen-world #particle-canvas,
-  .wavgen-world #bg-canvas,
-  .wavgen-world canvas.bg-canvas {
-    top: 64px !important;
-    height: calc(100vh - 64px) !important;
-  }
+/* ── Fixed particle/background canvases: push down below full nav stack ── */
+.wavgen-world #particle-canvas,
+.wavgen-world #bg-canvas,
+.wavgen-world canvas.bg-canvas {
+  top: 144px !important;
+  height: calc(100vh - 144px) !important;
+}
 </style>
+
+<script>
+(function () {
+  'use strict';
+
+  function initWorldNav() {
+    var sectionNav = document.getElementById('wg-section-nav');
+    var world = document.querySelector('.wavgen-world');
+    if (!sectionNav || !world) return;
+
+    // Find the world's own internal nav links (href="#something")
+    var internalNav = world.querySelector('nav');
+    var navLinks = internalNav
+      ? Array.from(internalNav.querySelectorAll('a[href^="#"]'))
+      : [];
+
+    // Fallback: scrape section/div[id] headings if no internal nav found
+    if (navLinks.length === 0) {
+      var sections = Array.from(world.querySelectorAll('section[id], div[id]')).filter(function (el) {
+        return el.id && el.parentElement === world || el.parentElement.parentElement === world;
+      });
+      navLinks = sections.map(function (el) {
+        var a = document.createElement('a');
+        a.href = '#' + el.id;
+        a.textContent = el.id.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+        return a;
+      });
+    }
+
+    if (navLinks.length === 0) {
+      sectionNav.style.display = 'none';
+      return;
+    }
+
+    // Clone links into external sticky nav
+    var frag = document.createDocumentFragment();
+    navLinks.forEach(function (link) {
+      var a = document.createElement('a');
+      a.href = link.getAttribute('href') || link.href;
+      a.textContent = link.textContent.trim();
+      frag.appendChild(a);
+    });
+    sectionNav.appendChild(frag);
+
+    // Hide the internal nav now that we've copied its links
+    if (internalNav) internalNav.style.display = 'none';
+
+    // Active section tracking via IntersectionObserver
+    var navItems = Array.from(sectionNav.querySelectorAll('a'));
+    var targets = navItems.map(function (a) {
+      return document.getElementById(a.getAttribute('href').replace('#', ''));
+    }).filter(Boolean);
+
+    if (!targets.length || !window.IntersectionObserver) return;
+
+    var activeId = null;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          navItems.forEach(function (a) {
+            a.classList.toggle('wg-active', a.getAttribute('href') === '#' + activeId);
+          });
+          // Scroll active link into view within the nav
+          var activeLink = sectionNav.querySelector('.wg-active');
+          if (activeLink) activeLink.scrollIntoView({ block: 'nearest', inline: 'center' });
+        }
+      });
+    }, { rootMargin: '-144px 0px -50% 0px', threshold: 0 });
+
+    targets.forEach(function (t) { io.observe(t); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWorldNav);
+  } else {
+    initWorldNav();
+  }
+})();
+</script>
