@@ -48,7 +48,16 @@ module.exports = {
         { title: 'DaVinci Resolve', url: '/video/davinci-resolve/',   description: 'Professional grading and editing workflows' },
         { title: 'VFX Compositing', url: '/video/vfx-compositing/',   description: 'Compositing, keying, and visual effects' },
         { title: 'Motion Graphics', url: '/video/motion-graphics/',   description: 'Kinetic type, animation, and motion design' },
-        { title: 'AI Video',        url: '/video/ai-video/',          description: 'AI-assisted video generation and editing' }
+        { title: 'AI Video',        url: '/video/ai-video/',          description: 'AI-assisted video generation and editing' },
+        // AV worlds (merged from former AV section)
+        { title: 'Audiovisual Ecosystems',    url: '/video/audiovisual-ecosystems/',    description: 'Integrated AV signal flows and system design' },
+        { title: 'TouchDesigner Signal Flow', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' },
+        { title: 'Live Performance',          url: '/video/live-performance/',          description: 'Realtime AV performance and VJ systems' },
+        { title: 'Spatial Audio',             url: '/video/spatial-audio/',             description: 'Ambisonics, binaural, and 3D sound' },
+        { title: 'Interactive Installations', url: '/video/interactive-installations/', description: 'Sensor-driven and participatory AV systems' },
+        { title: 'Realtime Graphics',         url: '/video/realtime-graphics/',         description: 'GPU shaders and generative visual rendering' },
+        { title: 'Projection Mapping',        url: '/video/projection-mapping-av/',     description: 'Architectural projection and surface mapping' },
+        { title: 'Generative Universe',       url: '/video/generative-universe/',       description: 'Cosmic-scale procedural and emergent systems' }
       ]
     },
     {
@@ -97,20 +106,5 @@ module.exports = {
         { title: 'Immersive Galleries', url: '/art/immersive-galleries/', description: 'Virtual and spatial art environments' }
       ]
     },
-    {
-      title: 'AV',
-      url: '/av/',
-      icon: 'av',
-      children: [
-        { title: 'Audiovisual Ecosystems',    url: '/av/audiovisual-ecosystems/',    description: 'Integrated AV signal flows and system design' },
-        { title: 'TouchDesigner Signal Flow', url: '/av/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' },
-        { title: 'Live Performance',          url: '/av/live-performance/',          description: 'Realtime AV performance and VJ systems' },
-        { title: 'Spatial Audio',             url: '/av/spatial-audio/',             description: 'Ambisonics, binaural, and 3D sound' },
-        { title: 'Interactive Installations', url: '/av/interactive-installations/', description: 'Sensor-driven and participatory AV systems' },
-        { title: 'Realtime Graphics',         url: '/av/realtime-graphics/',         description: 'GPU shaders and generative visual rendering' },
-        { title: 'Projection Mapping',        url: '/av/projection-mapping-av/',     description: 'Architectural projection and surface mapping' },
-        { title: 'Generative Universe',       url: '/av/generative-universe/',       description: 'Cosmic-scale procedural and emergent systems' }
-      ]
-    }
   ]
 };
