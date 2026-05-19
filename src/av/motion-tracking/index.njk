@@ -1,0 +1,1279 @@
+---
+layout: world.njk
+title: "Motion Tracking — WAVGEN AV Universe"
+description: "Immersive av world exploring motion tracking"
+domain: av
+permalink: /av/motion-tracking/
+---
+
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1 — HERO: MOCAP SKELETON WITH MOTION TRAILS
+     ══════════════════════════════════════════════════════════ -->
+<div id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-hud">
+<div class="hud-line">FRAME <span id="hud-frame">0000</span></div>
+<div class="hud-line">JOINTS <span id="hud-joints">23</span></div>
+<div class="hud-line">LATENCY <span id="hud-latency">8ms</span></div>
+<div class="hud-line">MODE <span id="hud-mode">OPTICAL</span></div>
+</div>
+<div class="hero-overlay">
+<div class="hero-label">AV Universe · Realtime Movement Intelligence</div>
+<div class="hero-title">Motion<br/>Tracking</div>
+<div class="hero-sub">Where the body becomes data — skeletal structures flowing through space, every joint a coordinate, every gesture a signal.</div>
+</div>
+</div>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 2 — MOCAP SYSTEMS
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="mocap">
+<div class="sec-label">Section 02 · Capture Technology</div>
+<h2>Motion Capture Systems</h2>
+<p class="prose">Motion capture spans optical marker-based systems, inertial measurement units, markerless video-based capture, and electromagnetic field tracking. Each trades accuracy, occlusion handling, cost, and portability differently.</p>
+<div class="canvas-panel">
+<div class="panel-title">Comparative System Visualization — Click System to Inspect</div>
+<canvas height="280" id="mocap-canvas" style="cursor:pointer;" width="1000"></canvas>
+</div>
+<div class="system-cards" id="system-cards">
+<div class="sys-card active" data-sys="0">
+<div class="sys-title">Optical Passive</div>
+<div class="sys-detail">Retroreflective markers tracked by infrared cameras. Sub-millimeter accuracy in controlled studio environments.</div>
+<div class="sys-bar" style="width:95%"></div>
+<div class="sys-metric">Accuracy: 0.1mm · Markers: 50+ · Cameras: 8–24</div>
+</div>
+<div class="sys-card" data-sys="1">
+<div class="sys-title">Inertial (IMU)</div>
+<div class="sys-detail">Accelerometers and gyroscopes per body segment. Portable, no camera rig — but accumulates drift over time.</div>
+<div class="sys-bar" style="width:72%"></div>
+<div class="sys-metric">Accuracy: 1–3° · Sensors: 17 · Drift: ~1°/min</div>
+</div>
+<div class="sys-card" data-sys="2">
+<div class="sys-title">Markerless Video</div>
+<div class="sys-detail">ML-based pose estimation from RGB cameras. No setup, natural performance — constrained by occlusion and depth ambiguity.</div>
+<div class="sys-bar" style="width:58%"></div>
+<div class="sys-metric">Accuracy: 5–20mm · Cameras: 1–6 · RT: yes</div>
+</div>
+<div class="sys-card" data-sys="3">
+<div class="sys-title">RGB-D / Depth</div>
+<div class="sys-detail">Structured light or time-of-flight depth sensors combined with RGB provide 3D joint estimation without markers.</div>
+<div class="sys-bar" style="width:68%"></div>
+<div class="sys-metric">Accuracy: 3–10mm · Range: 0.5–8m · FPS: 30–90</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 3 — INVERSE KINEMATICS (IK)
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="ik">
+<div class="sec-label">Section 03 · Joint Solving</div>
+<h2>Inverse Kinematics</h2>
+<p class="prose">IK solvers compute joint angles required to place an end-effector (hand, foot) at a target position. FABRIK (Forward And Backward Reaching IK) iteratively adjusts joint chains toward targets while maintaining bone lengths. Move cursor to drag the end-effector.</p>
+<div id="ik-layout">
+<div class="canvas-panel" style="margin-bottom:0;">
+<div class="panel-title">FABRIK IK Solver — Move Cursor to Control End-Effector</div>
+<canvas height="380" id="ik-canvas" style="cursor:crosshair;" width="640"></canvas>
+</div>
+<div>
+<div class="panel-title" style="margin-bottom:0.8rem;">Chain Parameters</div>
+<div class="ik-info" id="ik-info">
+<strong>Algorithm:</strong> FABRIK<br/><br/>
+<strong>Iterations:</strong> <span id="ik-iters">10</span><br/>
+<strong>Convergence:</strong> <span id="ik-conv">0.001</span><br/>
+<strong>Joint Count:</strong> 7<br/><br/>
+<strong>Bone 1:</strong> <span id="ik-b1">—</span>°<br/>
+<strong>Bone 2:</strong> <span id="ik-b2">—</span>°<br/>
+<strong>Bone 3:</strong> <span id="ik-b3">—</span>°<br/>
+<strong>Bone 4:</strong> <span id="ik-b4">—</span>°<br/>
+<strong>Bone 5:</strong> <span id="ik-b5">—</span>°<br/>
+<strong>Bone 6:</strong> <span id="ik-b6">—</span>°<br/><br/>
+<strong>Reach:</strong> <span id="ik-reach">—</span>px<br/>
+<strong>Error:</strong> <span id="ik-error">—</span>px
+      </div>
+<div class="slider-row" style="margin-top:1rem;">
+<label>Iterations</label>
+<input id="sl-iters" max="50" min="1" type="range" value="10"/>
+<span class="val" id="vl-iters">10</span>
+</div>
+<div class="slider-row">
+<label>Stiffness</label>
+<input id="sl-stiff" max="100" min="0" type="range" value="0"/>
+<span class="val" id="vl-stiff">0.0</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 4 — VELOCITY & ACCELERATION ANALYSIS
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="velocity">
+<div class="sec-label">Section 04 · Biomechanics</div>
+<h2>Velocity &amp; Acceleration Analysis</h2>
+<p class="prose">Biomechanical analysis of joint trajectories reveals velocity profiles, acceleration peaks, and energy transfer patterns. Real-time differentiation of position data yields per-joint velocity; a second derivative yields acceleration, highlighting impact events and movement initiation.</p>
+<div class="slider-row">
+<label>Playback Speed</label>
+<input id="sl-playspeed" max="200" min="10" type="range" value="100"/>
+<span class="val" id="vl-playspeed">1.0x</span>
+</div>
+<div class="slider-row">
+<label>Smoothing Window</label>
+<input id="sl-smooth" max="30" min="1" type="range" value="8"/>
+<span class="val" id="vl-smooth">8</span>
+</div>
+<div id="vel-layout">
+<div class="canvas-panel" style="margin-bottom:0;">
+<div class="panel-title">Velocity Profile — Wrist Joint</div>
+<canvas height="200" id="vel-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel" style="margin-bottom:0;">
+<div class="panel-title">Acceleration — Impact Events</div>
+<canvas height="200" id="accel-canvas" width="480"></canvas>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 5 — GESTURE RECOGNITION
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="gesture">
+<div class="sec-label">Section 05 · Recognition</div>
+<h2>Gesture Recognition</h2>
+<p class="prose">Gesture classifiers map sequences of joint positions to discrete gesture labels using DTW (Dynamic Time Warping), HMMs, or sequence-to-label neural networks. Real-time systems maintain a sliding window of recent poses and emit class probabilities continuously.</p>
+<div class="slider-row">
+<label>Window Length</label>
+<input id="sl-window" max="100" min="10" type="range" value="40"/>
+<span class="val" id="vl-window">40</span>
+</div>
+<div class="canvas-panel">
+<div class="panel-title">Real-Time Classification — Move Cursor over Canvas</div>
+<canvas height="280" id="gesture-canvas" style="cursor:crosshair;" width="1000"></canvas>
+</div>
+<div class="gesture-list" id="gesture-list"></div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 6 — BVH / DATA FORMATS
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="bvh">
+<div class="sec-label">Section 06 · Data Interchange</div>
+<h2>BVH &amp; Mocap Formats</h2>
+<p class="prose">BVH (Biovision Hierarchy) encodes skeleton hierarchy and keyframe channel data in a plain-text format readable by most DCC tools. C3D stores marker cloud and analog data in binary. FBX wraps skeleton, animation, and mesh in a proprietary Autodesk container widely supported across pipelines.</p>
+<div class="bvh-controls">
+<button class="bvh-btn" id="bvh-play">▶ PLAY</button>
+<button class="bvh-btn" id="bvh-pause">‖ PAUSE</button>
+<button class="bvh-btn" id="bvh-reset">↺ RESET</button>
+<span style="font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;">FRAME: <span id="bvh-fc" style="color:var(--accent);">000</span> / 240</span>
+<span style="font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;">FORMAT: <span style="color:var(--skel);">BVH</span></span>
+</div>
+<div class="bvh-timeline" id="bvh-timeline">
+<canvas height="32" id="bvh-timeline-canvas" width="1000"></canvas>
+<div class="bvh-playhead" id="bvh-playhead" style="left:0%"></div>
+</div>
+<div class="canvas-panel" style="margin-top:1rem;">
+<div class="panel-title">BVH Skeleton Playback — 23 Joints · 240 Frames</div>
+<canvas height="320" id="bvh-canvas" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 7 — SPARSE OPTICAL FLOW TRACKING
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="sparse">
+<div class="sec-label">Section 07 · Feature Tracking</div>
+<h2>Sparse Feature Tracking</h2>
+<p class="prose">Lucas-Kanade sparse optical flow tracks a set of detected interest points (Harris corners, Shi-Tomasi) frame-to-frame using local gradient descent. The resulting per-point velocity vectors reveal rigid body motion, camera shake, and scene dynamics.</p>
+<div class="slider-row">
+<label>Point Count</label>
+<input id="sl-sparse" max="100" min="10" type="range" value="40"/>
+<span class="val" id="vl-sparse">40</span>
+</div>
+<div class="slider-row">
+<label>Trail Length</label>
+<input id="sl-trail" max="100" min="5" type="range" value="30"/>
+<span class="val" id="vl-trail">30</span>
+</div>
+<div class="canvas-panel">
+<div class="panel-title">Lucas-Kanade Tracker — Move Cursor to Drive Motion</div>
+<canvas height="280" id="sparse-canvas" style="cursor:none;" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 8 — ARTISTS / PRACTITIONERS
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="artists">
+<div class="sec-label">Section 08 · Practitioners</div>
+<h2>Artists &amp; Researchers</h2>
+<p class="prose">Motion tracking intersects dance, sports science, film VFX, and interactive art — enabling practitioners to make movement computational, expressive, and analytical.</p>
+<div class="artists-grid" id="artists-grid"></div>
+</section>
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+     ══════════════════════════════════════════════════════════ -->
+<section class="hidden" id="glossary">
+<div class="sec-label">Section 09 · Reference</div>
+<h2>Glossary</h2>
+<p class="prose">Core terminology spanning motion capture systems, skeletal animation, biomechanical analysis, and real-time tracking pipelines.</p>
+<div class="gloss-grid" id="gloss-grid"></div>
+</section>
+<footer>WAVGEN AV Universe · <span>Motion Tracking</span> · Realtime Movement Intelligence · 2024</footer>
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════
+   LAGFILTER
+   ═══════════════════════════════════════════════════════════ */
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// ── LagFilter instances (17 total) ──────────────────────────
+const lagHeroMX    = new LagFilter(0.5, 0.3);
+const lagHeroMY    = new LagFilter(0.5, 0.3);
+const lagHeroRot   = new LagFilter(0, 0.8);
+const lagTrailDec  = new LagFilter(0.04, 0.4);
+const lagBoneSpd   = new LagFilter(1.0, 0.5);
+const lagIKX       = new LagFilter(320, 0.12);
+const lagIKY       = new LagFilter(200, 0.12);
+const lagIKReach   = new LagFilter(0, 0.3);
+const lagVelX      = new LagFilter(0, 0.2);
+const lagVelY      = new LagFilter(0, 0.2);
+const lagAccel     = new LagFilter(0, 0.15);
+const lagGestConf  = new LagFilter(0, 0.25);
+const lagCapture   = new LagFilter(0, 0.5);
+const lagBVHSpd    = new LagFilter(1.0, 0.4);
+const lagSparseSpd = new LagFilter(1.0, 0.3);
+const lagTrailLen  = new LagFilter(30, 0.3);
+const lagMocapN    = new LagFilter(0, 0.6);
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+function lerp(a, b, t) { return a + (b - a) * t; }
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function rand(lo, hi) { return lo + Math.random() * (hi - lo); }
+function noise21(x, y) { const n = Math.sin(x*127.1 + y*311.7)*43758.5453; return n - Math.floor(n); }
+function fbm(x, y, oct=4) {
+  let v=0, a=0.5, f=1;
+  for(let i=0;i<oct;i++){v+=a*(noise21(x*f,y*f)*2-1);a*=0.5;f*=2.1;}
+  return v;
+}
+function normalize(vx, vy) { const l = Math.sqrt(vx*vx+vy*vy)||1; return [vx/l, vy/l]; }
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 1 — HERO: MOCAP SKELETON WITH TRAILS
+   ═══════════════════════════════════════════════════════════ */
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.parentElement.clientWidth;
+    H = canvas.parentElement.clientHeight;
+    canvas.width = W; canvas.height = H;
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  let mx = 0.5, my = 0.5;
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    mx = (e.clientX - r.left) / r.width;
+    my = (e.clientY - r.top) / r.height;
+  });
+
+  // BVH-style skeleton: 23 joints, hierarchy
+  const JOINTS = [
+    // spine/torso
+    { name:'Root',    parent:-1, off:[0,0] },
+    { name:'Pelvis',  parent:0,  off:[0,-0.06] },
+    { name:'Spine1',  parent:1,  off:[0,-0.08] },
+    { name:'Spine2',  parent:2,  off:[0,-0.07] },
+    { name:'Neck',    parent:3,  off:[0,-0.06] },
+    { name:'Head',    parent:4,  off:[0,-0.06] },
+    // left arm
+    { name:'LShoulder',parent:3, off:[-0.09,-0.01] },
+    { name:'LElbow',   parent:6, off:[-0.08,0.04] },
+    { name:'LWrist',   parent:7, off:[-0.07,0.06] },
+    // right arm
+    { name:'RShoulder',parent:3, off:[0.09,-0.01] },
+    { name:'RElbow',   parent:9, off:[0.08,0.04] },
+    { name:'RWrist',   parent:10,off:[0.07,0.06] },
+    // left leg
+    { name:'LHip',     parent:1, off:[-0.07,0.01] },
+    { name:'LKnee',    parent:12,off:[-0.02,0.10] },
+    { name:'LAnkle',   parent:13,off:[0.01,0.10] },
+    { name:'LToe',     parent:14,off:[0.02,0.04] },
+    // right leg
+    { name:'RHip',     parent:1, off:[0.07,0.01] },
+    { name:'RKnee',    parent:16,off:[0.02,0.10] },
+    { name:'RAnkle',   parent:17,off:[-0.01,0.10] },
+    { name:'RToe',     parent:18,off:[-0.02,0.04] },
+    // hands
+    { name:'LFinger',  parent:8, off:[-0.03,0.04] },
+    { name:'RFinger',  parent:11,off:[0.03,0.04] },
+    // head tip
+    { name:'HeadTop',  parent:5, off:[0,-0.04] }
+  ];
+
+  // trail history per joint
+  const trails = JOINTS.map(() => []);
+  const MAX_TRAIL = 40;
+  let frame = 0;
+  let lastT = performance.now();
+  let lastFps = performance.now(); let fpsC = 0; let displayFps = 60;
+
+  function computeJointPos(t) {
+    // root animation: walk cycle
+    const walkCycle = t * 1.5;
+    const rx = 0.5 + (mx - 0.5) * 0.3;
+    const ry = 0.42;
+
+    // joint positions in normalized space
+    const pos = new Array(JOINTS.length).fill(null).map(() => ({ x: 0, y: 0 }));
+    pos[0] = { x: rx, y: ry };
+
+    // walk cycle joint offsets
+    const spineSwing = Math.sin(walkCycle) * 0.01;
+    const armSwingL  = Math.sin(walkCycle) * 0.05;
+    const armSwingR  = Math.sin(walkCycle + Math.PI) * 0.05;
+    const legSwingL  = Math.sin(walkCycle) * 0.04;
+    const legSwingR  = Math.sin(walkCycle + Math.PI) * 0.04;
+    const kneeL      = Math.max(0, Math.sin(walkCycle + 0.5)) * 0.035;
+    const kneeR      = Math.max(0, Math.sin(walkCycle + Math.PI + 0.5)) * 0.035;
+
+    const anim = {
+      1: [0, 0],
+      2: [spineSwing, 0],
+      3: [spineSwing * 1.5, 0],
+      4: [0, 0],
+      5: [0, 0],
+      6: [armSwingL * 0.5, 0],
+      7: [armSwingL, armSwingL * 0.3],
+      8: [armSwingL * 1.2, armSwingL * 0.5],
+      9: [armSwingR * 0.5, 0],
+      10:[armSwingR, armSwingR * 0.3],
+      11:[armSwingR * 1.2, armSwingR * 0.5],
+      12:[legSwingL * 0.3, 0],
+      13:[legSwingL, kneeL],
+      14:[legSwingL * 0.5, -kneeL * 0.5],
+      15:[legSwingL * 0.3, 0],
+      16:[legSwingR * 0.3, 0],
+      17:[legSwingR, kneeR],
+      18:[legSwingR * 0.5, -kneeR * 0.5],
+      19:[legSwingR * 0.3, 0],
+      20:[armSwingL * 1.3, armSwingL * 0.6],
+      21:[armSwingR * 1.3, armSwingR * 0.6],
+      22:[0, 0]
+    };
+
+    JOINTS.forEach((j, i) => {
+      if (j.parent < 0) return;
+      const p = pos[j.parent];
+      const extra = anim[i] || [0, 0];
+      pos[i] = {
+        x: p.x + j.off[0] + extra[0],
+        y: p.y + j.off[1] + extra[1]
+      };
+    });
+    return pos;
+  }
+
+  const BONES = JOINTS.map((j, i) => j.parent >= 0 ? [j.parent, i] : null).filter(Boolean);
+
+  function drawHero(ts) {
+    const dt = clamp((ts - lastT) / 1000, 0, 0.05); lastT = ts;
+    frame++; fpsC++;
+    if (ts - lastFps > 500) {
+      displayFps = Math.round(fpsC / ((ts - lastFps) / 1000));
+      fpsC = 0; lastFps = ts;
+    }
+
+    // phosphor
+    ctx.fillStyle = 'rgba(2,4,8,0.06)';
+    ctx.fillRect(0, 0, W, H);
+
+    // grid
+    ctx.strokeStyle = 'rgba(32,64,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let gx = 0; gx < W; gx += 50) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+    for (let gy = 0; gy < H; gy += 50) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
+
+    const t = ts / 1000;
+    const jpos = computeJointPos(t);
+
+    // scale to canvas
+    const scale = Math.min(W, H) * 1.1;
+    const cx = W * 0.5, cy = H * 0.45;
+    const spos = jpos.map(p => ({
+      x: cx + (p.x - 0.5) * scale,
+      y: cy + (p.y - 0.5) * scale * 0.8
+    }));
+
+    // update trails
+    spos.forEach((p, i) => {
+      trails[i].push({ ...p });
+      if (trails[i].length > MAX_TRAIL) trails[i].shift();
+    });
+
+    // draw trails
+    trails.forEach((trail, ji) => {
+      for (let ti = 1; ti < trail.length; ti++) {
+        const alpha = (ti / trail.length) * 0.4;
+        ctx.strokeStyle = `rgba(32,64,255,${alpha})`;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(trail[ti-1].x, trail[ti-1].y);
+        ctx.lineTo(trail[ti].x, trail[ti].y);
+        ctx.stroke();
+      }
+    });
+
+    // draw bones
+    BONES.forEach(([a, b]) => {
+      ctx.strokeStyle = 'rgba(232,240,255,0.7)';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(spos[a].x, spos[a].y);
+      ctx.lineTo(spos[b].x, spos[b].y);
+      ctx.stroke();
+    });
+
+    // draw joints
+    spos.forEach((p, i) => {
+      const isEnd = [5,8,11,15,19,20,21,22].includes(i);
+      const r = isEnd ? 3 : 4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = i === 0 ? '#2040FF' : (isEnd ? '#40A0FF' : '#E8F0FF');
+      ctx.shadowColor = '#2040FF'; ctx.shadowBlur = 6;
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+
+    // heading marker (velocity arrow on wrist)
+    const wrist = spos[8];
+    const prevWrist = trails[8].length > 5 ? trails[8][trails[8].length - 5] : wrist;
+    const vx = (wrist.x - prevWrist.x) * 3;
+    const vy = (wrist.y - prevWrist.y) * 3;
+    ctx.strokeStyle = 'rgba(64,160,255,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(wrist.x, wrist.y); ctx.lineTo(wrist.x + vx, wrist.y + vy); ctx.stroke();
+
+    document.getElementById('hud-frame').textContent = String(frame).padStart(4,'0');
+    document.getElementById('hud-latency').textContent = (6 + Math.random()*4).toFixed(0) + 'ms';
+    document.getElementById('hud-fps').textContent = displayFps;
+
+    requestAnimationFrame(drawHero);
+  }
+  requestAnimationFrame(drawHero);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 2 — MOCAP SYSTEMS CANVAS
+   ═══════════════════════════════════════════════════════════ */
+(function initMocap() {
+  const canvas = document.getElementById('mocap-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const systems = [
+    { name:'Optical Passive', accuracy:0.95, latency:0.08, markers:50, color:'#2040FF', x:0.15 },
+    { name:'Inertial IMU',    accuracy:0.72, latency:0.06, markers:17, color:'#40A0FF', x:0.38 },
+    { name:'Markerless',      accuracy:0.58, latency:0.04, markers:0,  color:'#00E5D4', x:0.62 },
+    { name:'RGB-D Depth',     accuracy:0.68, latency:0.05, markers:0,  color:'#FF8040', x:0.85 }
+  ];
+
+  let activeSystem = 0;
+  let lastM = performance.now();
+
+  document.querySelectorAll('.sys-card').forEach((card, i) => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.sys-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      activeSystem = i;
+    });
+  });
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const rx = (e.clientX - r.left) / canvas.clientWidth;
+    systems.forEach((s, i) => {
+      if (Math.abs(rx - s.x) < 0.1) {
+        activeSystem = i;
+        document.querySelectorAll('.sys-card').forEach((c, j) => {
+          c.classList.toggle('active', j === i);
+        });
+      }
+    });
+  });
+
+  function animMocap(ts) {
+    const dt = clamp((ts - lastM) / 1000, 0, 0.05); lastM = ts;
+    const t = ts / 1000;
+
+    ctx.fillStyle = '#06080E';
+    ctx.fillRect(0, 0, W, H);
+
+    // axes
+    ctx.strokeStyle = 'rgba(232,240,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(60, 20); ctx.lineTo(60, H-40); ctx.lineTo(W-20, H-40); ctx.stroke();
+
+    // axis labels
+    ctx.fillStyle = 'rgba(74,88,120,0.8)';
+    ctx.font = '10px Courier New';
+    ctx.fillText('ACCURACY', 62, 15);
+    ctx.fillText('0%', 30, H-40);
+    ctx.fillText('100%', 30, 25);
+
+    // horizontal guide lines
+    [0.25, 0.5, 0.75].forEach(v => {
+      const y = (H - 40) - v * (H - 60);
+      ctx.strokeStyle = 'rgba(74,88,120,0.2)';
+      ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(W - 20, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(74,88,120,0.5)';
+      ctx.fillText(Math.round(v * 100) + '%', 30, y + 4);
+    });
+
+    systems.forEach((s, i) => {
+      const bx = s.x * W;
+      const bw = 60;
+      const targetH = s.accuracy * (H - 60);
+      const curH = lerp(targetH, targetH * (0.9 + 0.1 * Math.sin(t * 0.5 + i)), 0);
+      const by = (H - 40) - targetH;
+      const isActive = i === activeSystem;
+
+      // animated noise
+      const noiseH = targetH + Math.sin(t * 1.2 + i) * 8;
+      const noiseY = (H - 40) - noiseH;
+
+      // bar gradient
+      const grad = ctx.createLinearGradient(0, noiseY, 0, H - 40);
+      grad.addColorStop(0, s.color);
+      grad.addColorStop(1, s.color + '22');
+      ctx.fillStyle = grad;
+      ctx.fillRect(bx - bw/2, noiseY, bw, H - 40 - noiseY);
+
+      // glow if active
+      if (isActive) {
+        ctx.shadowColor = s.color; ctx.shadowBlur = 15;
+        ctx.strokeStyle = s.color; ctx.lineWidth = 2;
+        ctx.strokeRect(bx - bw/2, noiseY, bw, H - 40 - noiseY);
+        ctx.shadowBlur = 0;
+      }
+
+      // label
+      ctx.fillStyle = isActive ? '#E8F0FF' : 'rgba(74,88,120,0.8)';
+      ctx.font = isActive ? 'bold 10px Courier New' : '10px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(s.name, bx, H - 26);
+      ctx.fillText((s.accuracy * 100).toFixed(0) + '%', bx, noiseY - 6);
+      ctx.textAlign = 'left';
+
+      // latency indicator
+      const latX = bx - bw/2;
+      const latW = s.latency * 500;
+      ctx.fillStyle = s.color + '55';
+      ctx.fillRect(latX, H - 20, latW, 6);
+    });
+
+    requestAnimationFrame(animMocap);
+  }
+  requestAnimationFrame(animMocap);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 3 — INVERSE KINEMATICS (FABRIK)
+   ═══════════════════════════════════════════════════════════ */
+(function initIK() {
+  const canvas = document.getElementById('ik-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const N_JOINTS = 7;
+  const BONE_LEN = 45;
+  const ROOT = { x: W * 0.5, y: H * 0.15 };
+
+  let targetX = W * 0.5, targetY = H * 0.75;
+  let itersTarget = 10, stiffTarget = 0;
+  let mx = W * 0.5, my = H * 0.75;
+
+  document.getElementById('sl-iters').addEventListener('input', e => {
+    itersTarget = parseInt(e.target.value);
+    document.getElementById('vl-iters').textContent = itersTarget;
+  });
+  document.getElementById('sl-stiff').addEventListener('input', e => {
+    stiffTarget = e.target.value / 100;
+    document.getElementById('vl-stiff').textContent = stiffTarget.toFixed(2);
+  });
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mx = (e.clientX - r.left) / canvas.clientWidth * W;
+    my = (e.clientY - r.top) / canvas.clientHeight * H;
+  });
+
+  // joint positions
+  let joints = Array.from({ length: N_JOINTS }, (_, i) => ({
+    x: ROOT.x, y: ROOT.y + i * BONE_LEN
+  }));
+
+  function fabrik(joints, target, iters) {
+    const n = joints.length;
+    const root = { ...joints[0] };
+    for (let it = 0; it < iters; it++) {
+      // forward pass
+      joints[n-1] = { ...target };
+      for (let i = n-2; i >= 0; i--) {
+        const dx = joints[i].x - joints[i+1].x;
+        const dy = joints[i].y - joints[i+1].y;
+        const l = Math.sqrt(dx*dx + dy*dy) || 1;
+        joints[i] = { x: joints[i+1].x + dx/l*BONE_LEN, y: joints[i+1].y + dy/l*BONE_LEN };
+      }
+      // backward pass
+      joints[0] = { ...root };
+      for (let i = 1; i < n; i++) {
+        const dx = joints[i].x - joints[i-1].x;
+        const dy = joints[i].y - joints[i-1].y;
+        const l = Math.sqrt(dx*dx + dy*dy) || 1;
+        joints[i] = { x: joints[i-1].x + dx/l*BONE_LEN, y: joints[i-1].y + dy/l*BONE_LEN };
+      }
+    }
+    return joints;
+  }
+
+  let lastIK = performance.now();
+  function animIK(ts) {
+    const dt = clamp((ts - lastIK) / 1000, 0, 0.05); lastIK = ts;
+    targetX = lagIKX.update(mx, dt);
+    targetY = lagIKY.update(my, dt);
+
+    joints = fabrik([...joints.map(j => ({...j}))], { x: targetX, y: targetY }, itersTarget);
+
+    ctx.fillStyle = 'rgba(2,4,8,0.25)';
+    ctx.fillRect(0, 0, W, H);
+
+    // grid
+    ctx.strokeStyle = 'rgba(32,64,255,0.05)';
+    ctx.lineWidth = 1;
+    for (let gx = 0; gx < W; gx += 40) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+    for (let gy = 0; gy < H; gy += 40) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
+
+    // reach arc
+    const maxReach = N_JOINTS * BONE_LEN;
+    ctx.strokeStyle = 'rgba(32,64,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.arc(ROOT.x, ROOT.y, maxReach, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // bones
+    for (let i = 0; i < joints.length - 1; i++) {
+      const t2 = i / (joints.length - 2);
+      const r = Math.round(lerp(32, 64, t2));
+      const g = Math.round(lerp(64, 160, t2));
+      ctx.strokeStyle = `rgba(${r},${g},255,0.9)`;
+      ctx.lineWidth = 3 - t2;
+      ctx.beginPath();
+      ctx.moveTo(joints[i].x, joints[i].y);
+      ctx.lineTo(joints[i+1].x, joints[i+1].y);
+      ctx.stroke();
+    }
+
+    // joints
+    joints.forEach((j, i) => {
+      ctx.beginPath();
+      ctx.arc(j.x, j.y, i === 0 ? 7 : 4, 0, Math.PI * 2);
+      ctx.fillStyle = i === 0 ? '#2040FF' : '#E8F0FF';
+      ctx.shadowColor = '#2040FF'; ctx.shadowBlur = 8;
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+
+    // target
+    ctx.beginPath();
+    ctx.arc(targetX, targetY, 8, 0, Math.PI * 2);
+    ctx.strokeStyle = '#40A0FF'; ctx.lineWidth = 2;
+    ctx.stroke();
+    const endJ = joints[joints.length-1];
+    const err = Math.sqrt((endJ.x-targetX)**2 + (endJ.y-targetY)**2);
+
+    // update info
+    const angles = joints.slice(1).map((j, i) => {
+      const prev = joints[i];
+      return ((Math.atan2(j.y - prev.y, j.x - prev.x) * 180 / Math.PI + 360) % 360).toFixed(1);
+    });
+    for (let i = 0; i < 6; i++) {
+      const el = document.getElementById(`ik-b${i+1}`);
+      if (el) el.textContent = angles[i] + '°';
+    }
+    const reach = Math.sqrt((ROOT.x-targetX)**2 + (ROOT.y-targetY)**2);
+    lagIKReach.update(reach, dt);
+    document.getElementById('ik-reach').textContent = lagIKReach.value.toFixed(1);
+    document.getElementById('ik-error').textContent = err.toFixed(2);
+
+    requestAnimationFrame(animIK);
+  }
+  requestAnimationFrame(animIK);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 4 — VELOCITY & ACCELERATION
+   ═══════════════════════════════════════════════════════════ */
+(function initVelocity() {
+  const velC  = document.getElementById('vel-canvas');
+  const accC  = document.getElementById('accel-canvas');
+  const vCtx  = velC.getContext('2d');
+  const aCtx  = accC.getContext('2d');
+  const W = velC.width, H = velC.height;
+
+  let speedTarget = 1.0;
+  document.getElementById('sl-playspeed').addEventListener('input', e => {
+    speedTarget = e.target.value / 100 * 2;
+    document.getElementById('vl-playspeed').textContent = speedTarget.toFixed(2) + 'x';
+  });
+  document.getElementById('sl-smooth').addEventListener('input', e => {
+    document.getElementById('vl-smooth').textContent = e.target.value;
+  });
+
+  const VEL_HISTORY  = new Float32Array(W).fill(0);
+  const ACCEL_HISTORY = new Float32Array(W).fill(0);
+  let lastV = performance.now(), prevVel = 0;
+
+  function animVelocity(ts) {
+    const dt = clamp((ts - lastV) / 1000, 0, 0.05); lastV = ts;
+    const t = ts / 1000 * speedTarget;
+    lagBoneSpd.update(speedTarget, dt);
+
+    // simulated wrist velocity (walk cycle)
+    const vel = Math.abs(Math.sin(t * 3.0) * 120 + Math.cos(t * 5.1) * 40 + Math.sin(t * 7.3) * 20);
+    const acc = (vel - prevVel) / dt;
+    prevVel = vel;
+
+    const sv = lagVelX.update(vel, dt);
+    const sa = lagAccel.update(acc, dt);
+
+    // shift history
+    VEL_HISTORY.copyWithin(0, 1);
+    VEL_HISTORY[W-1] = sv / 200;
+    ACCEL_HISTORY.copyWithin(0, 1);
+    ACCEL_HISTORY[W-1] = clamp(sa / 3000 + 0.5, 0, 1);
+
+    function drawGraph(ctx, data, color, label) {
+      ctx.fillStyle = 'rgba(2,4,8,0.3)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(232,240,255,0.08)';
+      ctx.lineWidth = 1;
+      [0.25, 0.5, 0.75].forEach(y => {
+        ctx.beginPath(); ctx.moveTo(0, y*H); ctx.lineTo(W, y*H); ctx.stroke();
+      });
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      data.forEach((v, x) => {
+        const py = H - clamp(v, 0, 1) * (H - 16) - 8;
+        x === 0 ? ctx.moveTo(x, py) : ctx.lineTo(x, py);
+      });
+      ctx.stroke();
+
+      // fill under
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, color + '55'); grad.addColorStop(1, color + '00');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      data.forEach((v, x) => {
+        const py = H - clamp(v, 0, 1) * (H - 16) - 8;
+        x === 0 ? ctx.moveTo(x, py) : ctx.lineTo(x, py);
+      });
+      ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = color;
+      ctx.font = '10px Courier New';
+      ctx.fillText(label, 8, 16);
+    }
+
+    drawGraph(vCtx, VEL_HISTORY, '#2040FF', 'VELOCITY (mm/s)');
+    drawGraph(aCtx, ACCEL_HISTORY, '#FF8040', 'ACCELERATION (mm/s²)');
+
+    // peak markers on accel
+    const curVal = ACCEL_HISTORY[W-1];
+    if (curVal > 0.75) {
+      aCtx.strokeStyle = 'rgba(255,128,64,0.6)';
+      aCtx.lineWidth = 1;
+      aCtx.setLineDash([3, 4]);
+      const py = H - curVal * (H-16) - 8;
+      aCtx.beginPath(); aCtx.moveTo(W-2, py); aCtx.lineTo(W-30, py); aCtx.stroke();
+      aCtx.setLineDash([]);
+      aCtx.fillStyle = '#FF8040';
+      aCtx.font = '9px Courier New';
+      aCtx.fillText('PEAK', W-46, py - 3);
+    }
+
+    requestAnimationFrame(animVelocity);
+  }
+  requestAnimationFrame(animVelocity);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 5 — GESTURE RECOGNITION
+   ═══════════════════════════════════════════════════════════ */
+(function initGesture() {
+  const canvas = document.getElementById('gesture-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const GESTURES = [
+    { name: 'Wave',       key: 'wave',   base: 0.12 },
+    { name: 'Reach',      key: 'reach',  base: 0.08 },
+    { name: 'Walk',       key: 'walk',   base: 0.72 },
+    { name: 'Jump',       key: 'jump',   base: 0.04 },
+    { name: 'Crouch',     key: 'crouch', base: 0.06 },
+    { name: 'Turn',       key: 'turn',   base: 0.10 },
+    { name: 'Point',      key: 'point',  base: 0.08 },
+    { name: 'Rest',       key: 'rest',   base: 0.15 }
+  ];
+
+  const confFilters = GESTURES.map(g => new LagFilter(g.base, 0.3));
+  const confEls = [];
+
+  const list = document.getElementById('gesture-list');
+  GESTURES.forEach((g, i) => {
+    const div = document.createElement('div');
+    div.className = 'gesture-chip';
+    div.innerHTML = `
+      <div class="gest-name">${g.name}</div>
+      <div class="gest-conf-bar"><div class="gest-conf-fill" id="gcf-${i}" style="width:${g.base*100}%"></div></div>
+      <div class="gest-pct" id="gcp-${i}">${(g.base*100).toFixed(0)}%</div>
+    `;
+    list.appendChild(div);
+    confEls.push({ fill: document.getElementById(`gcf-${i}`), pct: document.getElementById(`gcp-${i}`), chip: div });
+  });
+
+  let mx = W / 2, my = H / 2;
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mx = (e.clientX - r.left) / canvas.clientWidth * W;
+    my = (e.clientY - r.top) / canvas.clientHeight * H;
+  });
+
+  let lastG = performance.now();
+  // skeleton positions for gesture canvas
+  const skelPts = Array.from({length:8},(_,i)=>({x:W*0.5, y:H*0.2+i*30}));
+  const skelTrails = skelPts.map(()=>[]);
+
+  function animGesture(ts) {
+    const dt = clamp((ts - lastG) / 1000, 0, 0.05); lastG = ts;
+    const t = ts / 1000;
+
+    ctx.fillStyle = 'rgba(2,4,8,0.15)';
+    ctx.fillRect(0, 0, W, H);
+
+    // update gesture probabilities based on cursor position
+    const normX = mx / W, normY = my / H;
+    const walkConf  = 0.6 + normY * 0.3;
+    const waveConf  = normX * 0.8;
+    const reachConf = (1 - normY) * 0.6;
+    const jumpConf  = (1 - normY) * normX * 0.5;
+
+    const targets = [waveConf, reachConf, walkConf, jumpConf, 0.04, 0.06, normX * 0.3, (1-normX)*0.2];
+    // normalize
+    const sum = targets.reduce((a,b)=>a+b,0) || 1;
+    const normed = targets.map(v => v / sum);
+
+    normed.forEach((t2, i) => {
+      const conf = confFilters[i].update(t2, dt);
+      const pct = (conf * 100).toFixed(0);
+      confEls[i].fill.style.width = (conf * 100) + '%';
+      confEls[i].pct.textContent = pct + '%';
+      confEls[i].chip.classList.toggle('gest-active', conf > 0.25);
+    });
+
+    // draw skeleton-like figure in canvas
+    const bodyX = mx;
+    const bodyY = H * 0.4;
+    const sway = Math.sin(t * 1.5) * 20;
+
+    // simple 8-joint body for visualization
+    const kps = [
+      {x: bodyX, y: bodyY - 80},       // head
+      {x: bodyX, y: bodyY - 60},       // neck
+      {x: bodyX - 30, y: bodyY - 40},  // L shoulder
+      {x: bodyX + 30, y: bodyY - 40},  // R shoulder
+      {x: bodyX - 45 + sway, y: bodyY},// L elbow
+      {x: bodyX + 45 - sway, y: bodyY},// R elbow
+      {x: bodyX - 30, y: bodyY + 40},  // L hip
+      {x: bodyX + 30, y: bodyY + 40},  // R hip
+    ];
+
+    const bns = [[0,1],[1,2],[1,3],[2,4],[3,5],[2,6],[3,7],[6,7]];
+    bns.forEach(([a,b])=>{
+      ctx.strokeStyle = 'rgba(232,240,255,0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(kps[a].x,kps[a].y); ctx.lineTo(kps[b].x,kps[b].y); ctx.stroke();
+    });
+    kps.forEach(k => {
+      ctx.beginPath(); ctx.arc(k.x,k.y,3,0,Math.PI*2);
+      ctx.fillStyle='#E8F0FF'; ctx.fill();
+    });
+
+    // classification label
+    const topGest = normed.indexOf(Math.max(...normed));
+    ctx.fillStyle = '#2040FF';
+    ctx.font = 'bold 13px Courier New';
+    ctx.fillText('→ ' + GESTURES[topGest].name.toUpperCase(), 12, 24);
+    ctx.fillStyle = 'rgba(74,88,120,0.8)';
+    ctx.font = '10px Courier New';
+    ctx.fillText(`Conf: ${(normed[topGest]*100).toFixed(0)}%`, 12, 40);
+
+    requestAnimationFrame(animGesture);
+  }
+  requestAnimationFrame(animGesture);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 6 — BVH PLAYBACK
+   ═══════════════════════════════════════════════════════════ */
+(function initBVH() {
+  const canvas = document.getElementById('bvh-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const tlC = document.getElementById('bvh-timeline-canvas');
+  const tlCtx = tlC.getContext('2d');
+  const tlW = tlC.width;
+
+  let playing = true, bvhFrame = 0;
+  const TOTAL_FRAMES = 240;
+
+  document.getElementById('bvh-play').addEventListener('click', () => { playing = true; });
+  document.getElementById('bvh-pause').addEventListener('click', () => { playing = false; });
+  document.getElementById('bvh-reset').addEventListener('click', () => { bvhFrame = 0; playing = true; });
+
+  document.getElementById('bvh-timeline').addEventListener('click', e => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const rx = (e.clientX - r.left) / r.width;
+    bvhFrame = Math.round(rx * TOTAL_FRAMES);
+  });
+
+  // draw timeline channels
+  const CHANNELS = ['Root.Xpos','Root.Yrot','Spine.Yrota','LArm.Xrot','RArm.Xrot','LLeg.Xrot'];
+  const chanColors = ['#2040FF','#40A0FF','#00E5D4','#FF8040','#FF8040','#00FF88'];
+
+  function drawTimeline() {
+    tlCtx.fillStyle = '#06080E';
+    tlCtx.fillRect(0, 0, tlW, 32);
+    CHANNELS.forEach((ch, i) => {
+      const y = 4 + i * 4;
+      const pts = Array.from({length:tlW}, (_,x) => {
+        const f = x / tlW * TOTAL_FRAMES;
+        return 0.5 + 0.4 * Math.sin(f * 0.15 + i * 1.1) * Math.cos(f * 0.08 + i);
+      });
+      tlCtx.strokeStyle = chanColors[i]; tlCtx.lineWidth = 0.7;
+      tlCtx.beginPath();
+      pts.forEach((v,x) => { const py = y + v*3; x===0?tlCtx.moveTo(x,py):tlCtx.lineTo(x,py); });
+      tlCtx.stroke();
+    });
+  }
+  drawTimeline();
+
+  // 23-joint BVH skeleton positions
+  function getBVHPos(frame) {
+    const f = frame / TOTAL_FRAMES * Math.PI * 2;
+    const cx = W * 0.5, cy = H * 0.5 - 20;
+    const sc = Math.min(W, H) * 0.55;
+    const walkT = f * 2;
+
+    const joints = {
+      root:   {x:cx, y:cy+sc*0.1},
+      spine1: {x:cx+Math.sin(f*0.5)*sc*0.01, y:cy+sc*0.02},
+      spine2: {x:cx+Math.sin(f*0.5)*sc*0.015, y:cy-sc*0.06},
+      chest:  {x:cx+Math.sin(f*0.5)*sc*0.02, y:cy-sc*0.12},
+      neck:   {x:cx, y:cy-sc*0.17},
+      head:   {x:cx, y:cy-sc*0.22},
+      lshldr: {x:cx-sc*0.12+Math.sin(walkT)*sc*0.01, y:cy-sc*0.11},
+      lelbow: {x:cx-sc*0.22+Math.sin(walkT+0.5)*sc*0.04, y:cy-sc*0.04+Math.sin(walkT)*sc*0.03},
+      lwrist: {x:cx-sc*0.26+Math.sin(walkT)*sc*0.07, y:cy+sc*0.03+Math.sin(walkT)*sc*0.05},
+      rshldr: {x:cx+sc*0.12+Math.sin(walkT+Math.PI)*sc*0.01, y:cy-sc*0.11},
+      relbow: {x:cx+sc*0.22+Math.sin(walkT+Math.PI+0.5)*sc*0.04, y:cy-sc*0.04+Math.sin(walkT+Math.PI)*sc*0.03},
+      rwrist: {x:cx+sc*0.26+Math.sin(walkT+Math.PI)*sc*0.07, y:cy+sc*0.03+Math.sin(walkT+Math.PI)*sc*0.05},
+      lhip:   {x:cx-sc*0.07, y:cy+sc*0.13},
+      lknee:  {x:cx-sc*0.07+Math.sin(walkT)*sc*0.04, y:cy+sc*0.26+Math.max(0,Math.sin(walkT+0.3))*sc*0.04},
+      lankle: {x:cx-sc*0.05+Math.sin(walkT)*sc*0.05, y:cy+sc*0.38-Math.max(0,Math.sin(walkT+0.3))*sc*0.03},
+      ltoe:   {x:cx-sc*0.02+Math.sin(walkT)*sc*0.06, y:cy+sc*0.41},
+      rhip:   {x:cx+sc*0.07, y:cy+sc*0.13},
+      rknee:  {x:cx+sc*0.07+Math.sin(walkT+Math.PI)*sc*0.04, y:cy+sc*0.26+Math.max(0,Math.sin(walkT+Math.PI+0.3))*sc*0.04},
+      rankle: {x:cx+sc*0.05+Math.sin(walkT+Math.PI)*sc*0.05, y:cy+sc*0.38-Math.max(0,Math.sin(walkT+Math.PI+0.3))*sc*0.03},
+      rtoe:   {x:cx+sc*0.08+Math.sin(walkT+Math.PI)*sc*0.06, y:cy+sc*0.41}
+    };
+    return joints;
+  }
+
+  const BVHBONES = [
+    ['root','spine1'],['spine1','spine2'],['spine2','chest'],['chest','neck'],['neck','head'],
+    ['chest','lshldr'],['lshldr','lelbow'],['lelbow','lwrist'],
+    ['chest','rshldr'],['rshldr','relbow'],['relbow','rwrist'],
+    ['root','lhip'],['lhip','lknee'],['lknee','lankle'],['lankle','ltoe'],
+    ['root','rhip'],['rhip','rknee'],['rknee','rankle'],['rankle','rtoe']
+  ];
+
+  let lastB = performance.now();
+  const trailHistory = {};
+
+  function animBVH(ts) {
+    const dt = clamp((ts - lastB) / 1000, 0, 0.05); lastB = ts;
+    if (playing) bvhFrame = (bvhFrame + dt * 30) % TOTAL_FRAMES;
+
+    lagBVHSpd.update(playing ? 1 : 0, dt);
+
+    // update playhead
+    document.getElementById('bvh-playhead').style.left = (bvhFrame / TOTAL_FRAMES * 100) + '%';
+    document.getElementById('bvh-fc').textContent = String(Math.floor(bvhFrame)).padStart(3, '0');
+
+    ctx.fillStyle = 'rgba(2,4,8,0.2)';
+    ctx.fillRect(0, 0, W, H);
+
+    // grid
+    ctx.strokeStyle = 'rgba(32,64,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let gx=0;gx<W;gx+=60){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for (let gy=0;gy<H;gy+=60){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+
+    const pos = getBVHPos(bvhFrame);
+
+    // update trails
+    Object.keys(pos).forEach(k => {
+      if (!trailHistory[k]) trailHistory[k] = [];
+      trailHistory[k].push({...pos[k]});
+      if (trailHistory[k].length > 25) trailHistory[k].shift();
+    });
+
+    // draw trails
+    Object.keys(trailHistory).forEach(k => {
+      const trail = trailHistory[k];
+      for (let i = 1; i < trail.length; i++) {
+        ctx.strokeStyle = `rgba(32,64,255,${i/trail.length*0.3})`;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(trail[i-1].x,trail[i-1].y); ctx.lineTo(trail[i].x,trail[i].y); ctx.stroke();
+      }
+    });
+
+    // bones
+    BVHBONES.forEach(([a,b]) => {
+      if (pos[a] && pos[b]) {
+        ctx.strokeStyle = 'rgba(232,240,255,0.8)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(pos[a].x,pos[a].y); ctx.lineTo(pos[b].x,pos[b].y); ctx.stroke();
+      }
+    });
+
+    // joints
+    Object.values(pos).forEach(j => {
+      ctx.beginPath(); ctx.arc(j.x,j.y,3,0,Math.PI*2);
+      ctx.fillStyle='#E8F0FF'; ctx.shadowColor='#2040FF'; ctx.shadowBlur=5;
+      ctx.fill(); ctx.shadowBlur=0;
+    });
+
+    // frame counter overlay
+    ctx.fillStyle = 'rgba(32,64,255,0.7)';
+    ctx.font = '11px Courier New';
+    ctx.fillText(`FRAME ${Math.floor(bvhFrame).toString().padStart(3,'0')} / ${TOTAL_FRAMES}  FPS: 30  JOINTS: 23`, 12, 20);
+
+    requestAnimationFrame(animBVH);
+  }
+  requestAnimationFrame(animBVH);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 7 — SPARSE OPTICAL FLOW
+   ═══════════════════════════════════════════════════════════ */
+(function initSparse() {
+  const canvas = document.getElementById('sparse-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  let ptTarget = 40, trailTarget = 30;
+  let mx = W/2, my = H/2;
+
+  document.getElementById('sl-sparse').addEventListener('input', e => {
+    ptTarget = Math.round(10 + e.target.value / 100 * 290);
+    document.getElementById('vl-sparse').textContent = ptTarget;
+  });
+  document.getElementById('sl-trail').addEventListener('input', e => {
+    trailTarget = Math.round(5 + e.target.value / 100 * 95);
+    document.getElementById('vl-trail').textContent = trailTarget;
+  });
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mx = (e.clientX - r.left) / canvas.clientWidth * W;
+    my = (e.clientY - r.top) / canvas.clientHeight * H;
+  });
+
+  // feature points with trail histories
+  let pts = Array.from({length:100}, () => ({
+    x: rand(20, W-20), y: rand(20, H-20),
+    vx: rand(-0.5,0.5), vy: rand(-0.5,0.5),
+    trail: [], life: rand(60,200), age: 0
+  }));
+
+  let lastSp = performance.now();
+  function animSparse(ts) {
+    const dt = clamp((ts - lastSp) / 1000, 0, 0.05); lastSp = ts;
+    const t = ts / 1000;
+    const tLen = lagTrailLen.update(trailTarget, dt);
+    lagSparseSpd.update(1.0, dt);
+
+    ctx.fillStyle = 'rgba(2,4,8,0.12)';
+    ctx.fillRect(0, 0, W, H);
+
+    // update points
+    const active = pts.slice(0, ptTarget);
+    active.forEach(p => {
+      p.age++;
+      if (p.age > p.life) {
+        p.x = rand(20, W-20); p.y = rand(20, H-20);
+        p.vx = rand(-0.5,0.5); p.vy = rand(-0.5,0.5);
+        p.trail = []; p.age = 0; p.life = rand(60,200);
+        return;
+      }
+
+      // LK-like: pulled toward cursor motion
+      const dx = (mx - p.x) / W, dy = (my - p.y) / H;
+      const dist = Math.sqrt(dx*dx+dy*dy)+0.001;
+      const fbmX = (noise21(p.x*0.01+t*0.1, p.y*0.01)*2-1);
+      const fbmY = (noise21(p.x*0.01+2.3, p.y*0.01+t*0.08)*2-1);
+      p.vx += (dx/dist*0.8 + fbmX*0.3) * dt * 40;
+      p.vy += (dy/dist*0.8 + fbmY*0.3) * dt * 40;
+      p.vx *= 0.92; p.vy *= 0.92;
+      p.trail.push({x:p.x, y:p.y});
+      if (p.trail.length > tLen) p.trail.shift();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      p.x = clamp(p.x, 0, W); p.y = clamp(p.y, 0, H);
+    });
+
+    // draw trails
+    active.forEach(p => {
+      const speed = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+      for (let i = 1; i < p.trail.length; i++) {
+        const alpha = (i/p.trail.length) * clamp(speed*2,0,1) * 0.8;
+        ctx.strokeStyle = `rgba(32,64,255,${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.trail[i-1].x, p.trail[i-1].y);
+        ctx.lineTo(p.trail[i].x, p.trail[i].y);
+        ctx.stroke();
+      }
+      // feature point
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.5, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(232,240,255,${clamp(1-p.age/p.life,0,1)*0.9})`;
+      ctx.fill();
+      // velocity arrow
+      if (speed > 0.5) {
+        ctx.strokeStyle = 'rgba(64,160,255,0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+p.vx*4,p.y+p.vy*4); ctx.stroke();
+      }
+    });
+
+    // cursor indicator
+    ctx.beginPath(); ctx.arc(mx,my,10,0,Math.PI*2);
+    ctx.strokeStyle='rgba(32,64,255,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx-15,my); ctx.lineTo(mx+15,my); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx,my-15); ctx.lineTo(mx,my+15); ctx.stroke();
+
+    // feature count
+    ctx.fillStyle='rgba(32,64,255,0.7)'; ctx.font='11px Courier New';
+    ctx.fillText(`FEATURES: ${ptTarget}  TRAIL: ${Math.round(tLen)}f`, 12, 20);
+
+    requestAnimationFrame(animSparse);
+  }
+  requestAnimationFrame(animSparse);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 8 — ARTISTS
+   ═══════════════════════════════════════════════════════════ */
+(function initArtists() {
+  const artists = [
+    { name:'Andy Serkis', title:'Performance Capture Actor', bio:'Pioneered expressive marker-based performance capture in feature films, demonstrating that subtle emotional nuance could survive the mocap pipeline in Gollum and Caesar.', shape:'circle', color:'#2040FF' },
+    { name:'Chris Bregler', title:'Computer Scientist', bio:'Co-founder of House of Moves and mocap researcher at NYU/Meta AI whose work on video-based motion reconstruction bridged academic CV and entertainment production.', shape:'hex', color:'#40A0FF' },
+    { name:'Memo Akten', title:'Artist & Researcher', bio:'Created body-tracking installations using skeletal data and optical flow to generate responsive audiovisual environments that mirror and distort the performer\'s movement.', shape:'triangle', color:'#00E5D4' },
+    { name:'William Forsythe', title:'Choreographer', bio:'The choreographer whose Synchronous Objects project made motion data the primary material — decomposing dance into spatial, temporal, and relational data structures.', shape:'diamond', color:'#FF8040' },
+    { name:'Norman I. Badler', title:'Researcher', bio:'Pioneer of human figure animation and biomechanical simulation at UPenn. Developed JACK, the first physics-based human motion simulation system used in ergonomics.', shape:'square', color:'#00FF88' },
+    { name:'Jessica Hodgins', title:'Robotics Researcher', bio:'Carnegie Mellon computer scientist who created the CMU Motion Capture Database — millions of frames of annotated human motion freely available to researchers worldwide.', shape:'hex', color:'#FF00CC' },
+    { name:'Vicon / Optical Systems', title:'Technology Platform', bio:'Founded 1984, Vicon\'s optical marker systems became the industry standard for VFX and biomechanics research, enabling sub-millimeter capture at speeds exceeding 2000fps.', shape:'circle', color:'#FFCC00' },
+    { name:'Anabuki Lab / AIST', title:'Research Group', bio:'Japanese research groups pioneering markerless full-body pose estimation and integration of IMU + video fusion for high-accuracy, portable real-time motion capture.', shape:'triangle', color:'#CC00FF' }
+  ];
+
+  const grid = document.getElementById('artists-grid');
+  const svgNS = 'http://www.w3.org/2000/svg';
+  artists.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'artist-card';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class','artist-avatar'); svg.setAttribute('viewBox','0 0 52 52');
+    const shapes = {
+      circle: ()=>{ const c=document.createElementNS(svgNS,'circle'); c.setAttribute('cx','26');c.setAttribute('cy','26');c.setAttribute('r','22');c.setAttribute('fill','none');c.setAttribute('stroke',a.color);c.setAttribute('stroke-width','2');const c2=document.createElementNS(svgNS,'circle');c2.setAttribute('cx','26');c2.setAttribute('cy','26');c2.setAttribute('r','11');c2.setAttribute('fill',a.color);c2.setAttribute('opacity','0.3');svg.appendChild(c);svg.appendChild(c2); },
+      hex:()=>{ const pts=Array.from({length:6},(_,i)=>{const ang=i*Math.PI/3-Math.PI/6;return`${26+22*Math.cos(ang)},${26+22*Math.sin(ang)}`;}).join(' ');const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points',pts);p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p); },
+      triangle:()=>{ const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points','26,4 48,46 4,46');p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p); },
+      diamond:()=>{ const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points','26,2 50,26 26,50 2,26');p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p); },
+      square:()=>{ const r=document.createElementNS(svgNS,'rect');r.setAttribute('x','4');r.setAttribute('y','4');r.setAttribute('width','44');r.setAttribute('height','44');r.setAttribute('fill','none');r.setAttribute('stroke',a.color);r.setAttribute('stroke-width','2');svg.appendChild(r); }
+    };
+    (shapes[a.shape]||shapes.circle)();
+    card.innerHTML = `<div class="artist-avatar-ph"></div><div class="artist-name">${a.name}</div><div class="artist-title">${a.title}</div><div class="artist-bio">${a.bio}</div>`;
+    card.querySelector('.artist-avatar-ph').replaceWith(svg);
+    grid.appendChild(card);
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION 9 — GLOSSARY
+   ═══════════════════════════════════════════════════════════ */
+(function initGlossary() {
+  const terms = [
+    { term:'Forward Kinematics', def:'Computing the position of end-effectors by propagating joint angle values from root to leaves through the kinematic chain.' },
+    { term:'Inverse Kinematics', def:'Determining joint angles required to place an end-effector at a specified position, solved iteratively (FABRIK, CCD) or analytically.' },
+    { term:'FABRIK', def:'Forward And Backward Reaching IK — an efficient iterative solver alternating between forward and backward passes to converge on a joint configuration satisfying the end-effector target.' },
+    { term:'BVH Format', def:'Biovision Hierarchy file format encoding skeleton hierarchy and per-frame channel data (position, rotation) in plain text, widely supported in DCC software.' },
+    { term:'Motion Retargeting', def:'Adapting a motion capture recording from one skeleton proportions and structure to a different target skeleton while preserving the original motion intent.' },
+    { term:'Optical Flow', def:'Per-pixel apparent motion field between video frames, computed using brightness constancy and spatial smoothness. Sparse variants track detected interest points only.' },
+    { term:'IMU Sensor Fusion', def:'Combining accelerometer, gyroscope, and magnetometer data via Kalman or complementary filters to estimate orientation with reduced drift.' },
+    { term:'Marker Occlusion', def:'Loss of marker visibility due to body self-occlusion or proximity to other markers, requiring gap-filling via interpolation or biomechanical models.' },
+    { term:'Root Motion', def:'The global trajectory of the skeleton root joint, typically the pelvis, representing world-space displacement and requiring separate handling from joint-space data.' },
+    { term:'Skeletal Hierarchy', def:'Tree structure defining parent-child relationships between joints, allowing transforms to propagate from root to leaves through matrix concatenation.' },
+    { term:'Dynamic Time Warping', def:'Algorithm for computing similarity between temporal sequences allowing elastic alignment — used for comparing motion segments of different durations.' },
+    { term:'Pose Graph', def:'Graph-based representation of skeletal configurations over time, enabling motion retrieval, interpolation, and blending between similar poses in a database.' },
+    { term:'Keyframe Animation', def:'Interpolating between discrete keyframe poses using splines (Bezier, Catmull-Rom) to produce smooth continuous motion without data at every frame.' },
+    { term:'Motion Blending', def:'Combining multiple animation clips or poses using weighted linear interpolation, enabling smooth transitions and procedural layering of animations.' },
+    { term:'Ground Truth Labeling', def:'Manual annotation of joint positions or gesture labels used to train and evaluate pose estimation models and motion recognition classifiers.' },
+    { term:'Temporal Filtering', def:'Smoothing joint trajectories over time using low-pass filters, Savitzky-Golay smoothing, or exponential moving averages to reduce sensor noise.' },
+    { term:'Feature Point Detection', def:'Locating stable, repeatable image regions (Harris corners, Shi-Tomasi, FAST) that can be reliably tracked across frames for optical flow computation.' },
+    { term:'C3D Format', def:'Binary file format for storing 3D trajectory data, force plate measurements, and EMG signals from motion capture and biomechanics labs.' },
+    { term:'Depth Sensing', def:'Per-pixel distance measurement using structured light, time-of-flight, or stereo reconstruction enabling 3D joint position estimation without markers.' },
+    { term:'Biomechanical Model', def:'Physics-based representation of the human body as rigid segments connected by joints, enabling constraint-based gap-filling and realistic motion synthesis.' },
+    { term:'Latency Compensation', def:'Predictive algorithms that extrapolate joint positions forward in time to counteract sensor-to-display delay in real-time tracking applications.' },
+    { term:'Marker Set', def:'The specific configuration of reflective markers placed on a subject for optical motion capture, standardized (Plug-in Gait, Full Body) for lab-to-lab reproducibility.' }
+  ];
+
+  const grid = document.getElementById('gloss-grid');
+  terms.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'gloss-item';
+    d.innerHTML = `<div class="gloss-term">${t.term}</div><div class="gloss-def">${t.def}</div>`;
+    grid.appendChild(d);
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   INTERSECTION OBSERVER
+   ═══════════════════════════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+</script>

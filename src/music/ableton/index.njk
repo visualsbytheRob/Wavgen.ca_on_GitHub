@@ -1,0 +1,851 @@
+---
+layout: world.njk
+title: "WAVGEN :: ABLETON LIVE"
+description: "Immersive music world exploring ableton"
+domain: music
+permalink: /music/ableton/
+---
+
+
+<nav>
+<div class="nav-logo">WAVGEN</div>
+<ul class="nav-links">
+<li><a href="#hero">SESSION</a></li>
+<li><a href="#s2">CLIPS</a></li>
+<li><a href="#s3">ARRANGE</a></li>
+<li><a href="#s4">M4L</a></li>
+<li><a href="#s5">LINK</a></li>
+<li><a href="#s6">ROUTING</a></li>
+<li><a href="#s7">ARTISTS</a></li>
+<li><a href="#s8">GLOSSARY</a></li>
+</ul>
+</nav>
+<!-- HERO -->
+<div class="hero-wrap" id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">ABLETON LIVE</div>
+<div class="hero-sub">REALTIME PERFORMANCE SEQUENCER</div>
+</div>
+</div>
+<!-- S2: CLIP LAUNCH MATRIX -->
+<section class="hidden" id="s2">
+<div class="section-label">02 · SESSION VIEW</div>
+<div class="section-title">Clip Launch Matrix</div>
+<div class="section-sub">Eight tracks, eight scenes. Click clips to arm/launch, scenes to fire rows. Follow actions cascade through each track independently, creating evolving generative structure from fixed material.</div>
+<div class="matrix-wrap">
+<div class="matrix-controls">
+<button class="mat-btn active" id="btn-play">▶ PLAY</button>
+<button class="mat-btn" id="btn-stop">■ STOP</button>
+<button class="mat-btn" id="btn-record">● REC</button>
+<span style="font-size:0.6rem;color:var(--dim);letter-spacing:2px;">QUANTIZE:</span>
+<button class="mat-btn active" id="btn-q1">1 BAR</button>
+<button class="mat-btn" id="btn-q2">1/2</button>
+<button class="mat-btn" id="btn-q3">FREE</button>
+<span class="tempo-display" id="tempo-display">♩ 128.0 BPM</span>
+</div>
+<div class="clip-grid" id="clip-grid"></div>
+<div class="scene-launch-row" id="scene-row"></div>
+</div>
+</section>
+<!-- S3: ARRANGEMENT -->
+<section class="hidden stagger-1" id="s3">
+<div class="section-label">03 · ARRANGEMENT VIEW</div>
+<div class="section-title">Timeline Explorer</div>
+<div class="section-sub">The horizontal dimension of time. Automation lanes, clip envelopes, and MIDI editor coexist in one scrollable canvas. Session recordings commit here — ephemeral performance crystallises into fixed structure.</div>
+<div class="arr-wrap">
+<canvas id="arr-canvas"></canvas>
+<div class="arr-controls">
+<div class="arr-slider-group">
+<label>ZOOM</label>
+<input id="sl-zoom" max="8" min="1" step="0.1" type="range" value="3"/>
+<span class="arr-val" id="v-zoom">3×</span>
+</div>
+<div class="arr-slider-group">
+<label>TRACKS</label>
+<input id="sl-tracks" max="16" min="4" step="1" type="range" value="8"/>
+<span class="arr-val" id="v-tracks">8</span>
+</div>
+<div class="arr-slider-group">
+<label>PLAYHEAD</label>
+<input id="sl-ph" max="1" min="0" step="0.001" type="range" value="0.15"/>
+<span class="arr-val" id="v-ph">bar 5</span>
+</div>
+<div class="arr-slider-group">
+<label>LOOP</label>
+<input id="sl-loop" max="32" min="1" step="1" type="range" value="8"/>
+<span class="arr-val" id="v-loop">8 bars</span>
+</div>
+</div>
+</div>
+</section>
+<!-- S4: MAX FOR LIVE -->
+<section class="hidden stagger-2" id="s4">
+<div class="section-label">04 · MAX FOR LIVE</div>
+<div class="section-title">Patch Relationships</div>
+<div class="section-sub">Max for Live extends Live's architecture into a visual dataflow programming environment. Objects connect inlet-to-outlet — audio and control signals flow rightward and downward through a graph of interlinked objects.</div>
+<div class="m4l-controls">
+<button class="patch-btn active" id="m4l-synth">SYNTH PATCH</button>
+<button class="patch-btn" id="m4l-fx">EFFECT CHAIN</button>
+<button class="patch-btn" id="m4l-midi">MIDI PROCESSOR</button>
+<button class="patch-btn" id="m4l-gen">GENERATIVE</button>
+<span style="font-size:0.6rem;color:var(--dim);margin-left:auto;">CLICK TO ANIMATE SIGNAL</span>
+</div>
+<canvas id="m4l-canvas"></canvas>
+</section>
+<!-- S5: ABLETON LINK -->
+<section class="hidden stagger-1" id="s5">
+<div class="section-label">05 · ABLETON LINK</div>
+<div class="section-title">Realtime Synchronization</div>
+<div class="section-sub">Link is a zero-latency peer-to-peer tempo and phase synchronisation protocol. Any enabled device on the same network joins the Link session — no master/slave, all peers negotiate consensus tempo in realtime.</div>
+<canvas id="link-canvas"></canvas>
+<div class="link-peers" id="link-peers">
+<div class="link-peer"><div class="link-dot"></div><span>Ableton Live 12</span></div>
+<div class="link-peer"><div class="link-dot"></div><span>Ableton Push 3</span></div>
+<div class="link-peer"><div class="link-dot"></div><span>TouchDesigner</span></div>
+<div class="link-peer"><div class="link-dot"></div><span>Resolume Arena</span></div>
+<div class="link-peer offline"><div class="link-dot"></div><span>iOS GarageBand</span></div>
+<div class="link-peer"><div class="link-dot"></div><span>Reason 13</span></div>
+</div>
+</section>
+<!-- S6: PERFORMANCE ROUTING -->
+<section class="hidden stagger-2" id="s6">
+<div class="section-label">06 · SIGNAL ROUTING</div>
+<div class="section-title">Performance Routing Systems</div>
+<div class="section-sub">Signal leaves instruments through pre-FX → device chain → post-FX → channel strip → send buses → return tracks → master. Every junction is a creative decision point. Understanding the signal graph is prerequisite to intentional sound design.</div>
+<canvas id="routing-canvas"></canvas>
+</section>
+<!-- S7: ARTISTS -->
+<section class="hidden" id="s7">
+<div class="section-label">07 · PRACTITIONERS</div>
+<div class="section-title">Live Performance Artists</div>
+<div class="artists-grid">
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.7" r="22" stroke="#5BE03C" stroke-width="1.5"></circle>
+<rect fill="rgba(91,224,60,0.15)" height="16" rx="2" stroke="#5BE03C" stroke-width="1" width="16" x="20" y="20"></rect>
+<circle cx="28" cy="28" fill="#5BE03C" opacity="0.9" r="3"></circle>
+</svg>
+<div class="artist-name">Richie Hawtin</div>
+<div class="artist-role">Plastikman · Techno Architecture</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.7" points="28,6 50,42 6,42" stroke="#5BE03C" stroke-width="1.5"></polygon>
+<polygon fill="rgba(91,224,60,0.1)" points="28,16 40,36 16,36" stroke="#5BE03C" stroke-width="1"></polygon>
+</svg>
+<div class="artist-name">Robert Henke</div>
+<div class="artist-role">Monolake · Ableton Co-founder</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="none" height="40" opacity="0.6" rx="4" stroke="#5BE03C" stroke-width="1.5" width="40" x="8" y="8"></rect>
+<rect fill="none" height="24" opacity="0.4" rx="2" stroke="#5BE03C" stroke-width="1" width="24" x="16" y="16"></rect>
+<rect fill="rgba(91,224,60,0.3)" height="8" stroke="#5BE03C" stroke-width="1" width="8" x="24" y="24"></rect>
+</svg>
+<div class="artist-name">Flying Lotus</div>
+<div class="artist-role">LA Beat Scene · Session Maestro</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<ellipse cx="28" cy="28" fill="none" opacity="0.6" rx="22" ry="14" stroke="#5BE03C" stroke-width="1.5"></ellipse>
+<ellipse cx="28" cy="28" fill="none" opacity="0.4" rx="10" ry="22" stroke="#5BE03C" stroke-width="1"></ellipse>
+<circle cx="28" cy="28" fill="rgba(91,224,60,0.3)" r="4"></circle>
+</svg>
+<div class="artist-name">Holly Herndon</div>
+<div class="artist-role">AI Music · Live Performance Systems</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<line opacity="0.6" stroke="#5BE03C" stroke-width="1.5" x1="8" x2="48" y1="28" y2="28"></line>
+<line opacity="0.6" stroke="#5BE03C" stroke-width="1.5" x1="28" x2="28" y1="8" y2="48"></line>
+<circle cx="28" cy="28" fill="none" r="8" stroke="#5BE03C" stroke-width="1"></circle>
+<circle cx="28" cy="28" fill="#5BE03C" opacity="0.8" r="3"></circle>
+</svg>
+<div class="artist-name">Squarepusher</div>
+<div class="artist-role">Tom Jenkinson · Hyper-Precision Live</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.5" points="28,8 48,48 8,48" stroke="#5BE03C" stroke-width="1.5"></polygon>
+<line opacity="0.4" stroke="#5BE03C" stroke-width="1" x1="18" x2="38" y1="38" y2="38"></line>
+<circle cx="28" cy="24" fill="rgba(91,224,60,0.25)" r="4" stroke="#5BE03C" stroke-width="1"></circle>
+</svg>
+<div class="artist-name">Actress</div>
+<div class="artist-role">Darren Cunningham · Deconstructed Club</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="none" height="12" opacity="0.6" rx="2" stroke="#5BE03C" stroke-width="1.5" width="36" x="10" y="22"></rect>
+<rect fill="none" height="10" opacity="0.4" rx="1" stroke="#5BE03C" stroke-width="1" width="20" x="18" y="14"></rect>
+<rect fill="rgba(91,224,60,0.15)" height="8" rx="1" stroke="#5BE03C" stroke-width="1" width="12" x="22" y="34"></rect>
+</svg>
+<div class="artist-name">Moderat</div>
+<div class="artist-role">Apparat + Modeselektor · Live Hybrid</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.5" r="20" stroke="#5BE03C" stroke-width="1.5"></circle>
+<circle cx="28" cy="28" fill="none" opacity="0.35" r="12" stroke="#5BE03C" stroke-width="1"></circle>
+<circle cx="28" cy="28" fill="rgba(91,224,60,0.2)" r="5" stroke="#5BE03C" stroke-width="1"></circle>
+<line opacity="0.4" stroke="#5BE03C" stroke-width="1" x1="8" x2="16" y1="28" y2="28"></line>
+<line opacity="0.4" stroke="#5BE03C" stroke-width="1" x1="40" x2="48" y1="28" y2="28"></line>
+</svg>
+<div class="artist-name">Aphex Twin</div>
+<div class="artist-role">Richard D. James · Studio as Instrument</div>
+</div>
+</div>
+</section>
+<!-- S8: GLOSSARY -->
+<section class="hidden" id="s8">
+<div class="section-label">08 · REFERENCE</div>
+<div class="section-title">Ableton Lexicon</div>
+<div class="gloss-grid">
+<div class="gloss-item"><div class="gloss-term">Session View</div><div class="gloss-def">Non-linear clip launcher. Tracks run vertically, scenes horizontally. Clips trigger independently or by scene. Ideal for improvised performance where structure emerges from material.</div></div>
+<div class="gloss-item"><div class="gloss-term">Arrangement View</div><div class="gloss-def">Traditional horizontal timeline. Fixed structure, recorded automation, stems and MIDI laid out left-to-right. Session recordings commit here — the two views communicate through record-arm workflow.</div></div>
+<div class="gloss-item"><div class="gloss-term">Clip</div><div class="gloss-def">The fundamental unit — a self-contained audio sample or MIDI pattern with its own loop, warp, pitch, and envelope settings. Lives inside a clip slot in Session View or as a block in Arrangement.</div></div>
+<div class="gloss-item"><div class="gloss-term">Follow Actions</div><div class="gloss-def">Rules executed when a clip ends: play next, play random, play linked, stop, or trigger specific clips. Enables generative structures and self-evolving sets without live intervention.</div></div>
+<div class="gloss-item"><div class="gloss-term">Warp</div><div class="gloss-def">Time-stretching that makes audio follow project tempo without pitch change. Warp Markers allow granular tempo mapping of audio with complex original timing — recordings, vinyl, field recordings.</div></div>
+<div class="gloss-item"><div class="gloss-term">Max for Live</div><div class="gloss-def">Deep integration of Cycling '74's Max/MSP inside Live. Build custom instruments, effects, MIDI processors, and generative tools as M4L devices that behave like native Live devices.</div></div>
+<div class="gloss-item"><div class="gloss-term">Rack</div><div class="gloss-def">Container chain: Instrument Rack, Effect Rack, or Drum Rack. Macro controls map single knobs to multiple parameters across all devices in the chain — essential for expressive live performance.</div></div>
+<div class="gloss-item"><div class="gloss-term">Ableton Link</div><div class="gloss-def">Zero-latency peer-to-peer tempo and phase sync protocol. Any enabled device on the same LAN joins automatically. No master/slave — all peers negotiate consensus in realtime.</div></div>
+<div class="gloss-item"><div class="gloss-term">Return Track</div><div class="gloss-def">Auxiliary bus receiving signal from any track's Send knobs. Shared effects (reverb, delay) live on Return tracks — all instruments send to them at different levels, creating cohesive spatial glue.</div></div>
+<div class="gloss-item"><div class="gloss-term">Push</div><div class="gloss-def">Ableton's dedicated controller — velocity-sensitive pad grid plus encoders. Designed for hands-on performance, step sequencing, and melodic playing entirely without touching the computer screen.</div></div>
+<div class="gloss-item"><div class="gloss-term">Operator</div><div class="gloss-def">Live's FM synthesizer — four-operator FM engine with individual LFO, filter, and modulation matrix. Capable of bells, plucks, harsh basses, metallic textures, and complex FM timbres.</div></div>
+<div class="gloss-item"><div class="gloss-term">Wavetable</div><div class="gloss-def">Live's wavetable synthesizer. Two oscillators morph through wavetables with modulation matrix and polished filter section. Introduced in Live 10 — now essential for modern electronic sound design.</div></div>
+<div class="gloss-item"><div class="gloss-term">Scene</div><div class="gloss-def">A horizontal row of clips across all tracks. Launching a Scene triggers all clips simultaneously — primary way to cue sections in live performance. Scenes can have tempo and time signature settings.</div></div>
+<div class="gloss-item"><div class="gloss-term">Capture MIDI</div><div class="gloss-def">Retroactive MIDI recording — Live listens silently and can capture what you played before pressing record. Never lose a spontaneous musical idea again even if you forgot to arm recording first.</div></div>
+<div class="gloss-item"><div class="gloss-term">Crossfader</div><div class="gloss-def">DJ-style A/B fader. Tracks assigned to A or B crossfade between them. Used for live blend transitions, DJ-style cuts, and set structure — assignable to any hardware controller.</div></div>
+<div class="gloss-item"><div class="gloss-term">Groove Pool</div><div class="gloss-def">Quantise-feel system. Groove templates extracted from loops or built-in presets apply micro-timing and velocity swing to any clip — imparting the feel of a specific drummer or loop to MIDI.</div></div>
+<div class="gloss-item"><div class="gloss-term">Envelope Follower</div><div class="gloss-def">M4L and native devices that analyse signal amplitude over time and output a control signal — fundamental tool for sidechain-style modulation, amplitude-reactive processing, and ducking effects.</div></div>
+<div class="gloss-item"><div class="gloss-term">MIDI Polyphonic Expression</div><div class="gloss-def">MPE assigns MIDI channels per-note for independent pitch bend, pressure, and slide control. Live 11 supports MPE — enables expressive playing on Roli Seaboard, Linnstrument, and similar instruments.</div></div>
+<div class="gloss-item"><div class="gloss-term">Comping</div><div class="gloss-def">Live 11 take-lane system. Multiple recorded takes stack vertically; the best sections are selected and combined into a composite performance. Professional vocal and instrument editing workflow.</div></div>
+<div class="gloss-item"><div class="gloss-term">Looper</div><div class="gloss-def">Live's real-time loop recording device. Records, overdubs, and plays back live audio loops in sync with the project tempo. Foundation of live ambient and electronic performance.</div></div>
+<div class="gloss-item"><div class="gloss-term">Set</div><div class="gloss-def">A complete Ableton project file (.als) containing all tracks, clips, devices, and routing configuration. Sets are self-contained performance environments — including all Session and Arrangement content.</div></div>
+<div class="gloss-item"><div class="gloss-term">Beat Repeat</div><div class="gloss-def">Glitch effect that captures an interval of incoming audio and repeats it rhythmically. Controls: Interval, Offset, Grid, Variation, Chance. Creates stutters, fills, and rhythmic disintegration effects.</div></div>
+</div>
+</section>
+<script>
+// ─── UTILITIES ───────────────────────────────────────────────────────────
+const lerp = (a,b,t) => a+(b-a)*t;
+const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
+const rand = (lo=0,hi=1) => lo+Math.random()*(hi-lo);
+function noise21(x,y){
+  const ix=Math.floor(x),iy=Math.floor(y);
+  const fx=x-ix,fy=y-iy;
+  const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);
+  const h=(a,b)=>{let n=(a*1619+b*31337)^(a*31337);n=(n>>8)^n;return(n&0xffff)/65535;};
+  return lerp(lerp(h(ix,iy),h(ix+1,iy),ux),lerp(h(ix,iy+1),h(ix+1,iy+1),ux),uy);
+}
+function fbm(x,y,oct=4){let v=0,a=0.5,f=1;for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}return v;}
+
+// ─── LAG FILTERS (17) ────────────────────────────────────────────────────
+class LagFilter{constructor(init,tau){this.value=init;this.tau=tau;}update(target,dt){const k=1-Math.exp(-dt/this.tau);this.value+=k*(target-this.value);return this.value;}}
+const lagHMX    = new LagFilter(0.5,0.9);
+const lagHMY    = new LagFilter(0.5,0.9);
+const lagHBeat  = new LagFilter(0,  0.08);
+const lagBPM    = new LagFilter(128,1.5);
+const lagZoom   = new LagFilter(3,  0.5);
+const lagTracks = new LagFilter(8,  0.4);
+const lagPH     = new LagFilter(0.15,0.3);
+const lagM4LSig = new LagFilter(0,  0.15);
+const lagM4LSpd = new LagFilter(1,  0.5);
+const lagLinkBeat= new LagFilter(0, 0.1);
+const lagLinkTap = new LagFilter(0, 0.05);
+const lagRtgMX  = new LagFilter(0.5,0.8);
+const lagRtgMY  = new LagFilter(0.5,0.8);
+const lagClipA  = new LagFilter(0,  0.12);
+const lagLoopW  = new LagFilter(8,  0.4);
+const lagArrScroll=new LagFilter(0, 0.3);
+const lagSendAmt= new LagFilter(0.4,0.3);
+
+let mouseX=0.5,mouseY=0.5;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX/window.innerWidth;mouseY=e.clientY/window.innerHeight;});
+
+// ─── HERO WebGL ───────────────────────────────────────────────────────────
+const heroCanvas=document.getElementById('hero-canvas');
+heroCanvas.width=window.innerWidth; heroCanvas.height=440;
+window.addEventListener('resize',()=>{heroCanvas.width=window.innerWidth;initGL();});
+
+const VS=`attribute vec2 pos;void main(){gl_Position=vec4(pos,0,1);}`;
+const FS=`
+precision highp float;
+uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse; uniform float u_beat;
+float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+17.5);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*noise(p);a*=.5;p=p*2.1+vec2(1.7,9.2);}return v;}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 st=uv*2.-1.;st.x*=u_res.x/u_res.y;
+  float t=u_time;
+  // Session grid feel — vertical track columns
+  float gridX=step(0.97,fract(uv.x*8.+0.02));
+  float gridY=step(0.95,fract(uv.y*8.));
+  float grid=(gridX+gridY)*0.05;
+  // Waveforms per track
+  float waves=0.;
+  for(int i=0;i<8;i++){
+    float fi=float(i)/8.;
+    float cx=fi+0.0625;
+    float cy=0.15+fbm(vec2(fi*3.+t*0.3,t*0.2))*0.7;
+    float amp=0.08+0.04*sin(t*2.+fi*7.3);
+    float wave=sin(uv.x*30.+fi*2.+t*(1.+fi*0.5))*amp;
+    waves+=exp(-abs(uv.y-cy-wave)*60.)*0.4;
+  }
+  // Beat flash
+  float beat=u_beat*0.3;
+  // Green clip glow field
+  vec2 q=vec2(fbm(st+t*0.05),fbm(st+vec2(1.7,9.2)+t*0.04));
+  float f=fbm(st+1.8*q);
+  vec3 col=vec3(0.02,0.04,0.02);
+  col+=vec3(0.1,0.6,0.1)*waves;
+  col+=vec3(0.0,0.2,0.0)*f*0.3;
+  col+=vec3(0.1,0.5,0.1)*grid;
+  col+=vec3(0.15,0.8,0.15)*beat;
+  // Mouse glow
+  vec2 ms=u_mouse*2.-1.;ms.x*=u_res.x/u_res.y;
+  col+=vec3(0.05,0.35,0.05)*exp(-length(st-ms)*3.)*0.6;
+  float vig=1.-length(uv-0.5)*1.5;
+  col*=clamp(vig,0.,1.);
+  gl_FragColor=vec4(col,1.);
+}`;
+
+let gl,prog,uniforms={};
+function initGL(){
+  gl=heroCanvas.getContext('webgl');
+  if(!gl)return;
+  function mkS(t,src){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+  if(prog)gl.deleteProgram(prog);
+  prog=gl.createProgram();
+  gl.attachShader(prog,mkS(gl.VERTEX_SHADER,VS));
+  gl.attachShader(prog,mkS(gl.FRAGMENT_SHADER,FS));
+  gl.linkProgram(prog);gl.useProgram(prog);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const p=gl.getAttribLocation(prog,'pos');gl.enableVertexAttribArray(p);gl.vertexAttribPointer(p,2,gl.FLOAT,false,0,0);
+  uniforms={res:gl.getUniformLocation(prog,'u_res'),time:gl.getUniformLocation(prog,'u_time'),mouse:gl.getUniformLocation(prog,'u_mouse'),beat:gl.getUniformLocation(prog,'u_beat')};
+}
+initGL();
+
+// ─── CLIP MATRIX ─────────────────────────────────────────────────────────
+const TRACK_NAMES=['DRUMS','BASS','KEYS','LEAD','PAD','FX','VOC','SEND'];
+const TRACK_COLORS=['#5BE03C','#3CB8E0','#E0A020','#E05B5B','#9B5BE0','#5BE0C8','#E0C85B','#A0A0A0'];
+const CLIP_NAMES=[
+  ['Beat A','Kick 1','Lo Shuf','Hats','Perc B','—','—','Fills'],
+  ['Bass 1','Sub A','Walk','Acid 1','—','Slide','—','Bass 2'],
+  ['Pad C','Rhodes','Organ B','—','Chord 1','—','Atm 1','Keys 2'],
+  ['Melody 1','Lead 2','—','Riff A','—','Stab','Solo A','—'],
+  ['Pad 1','String A','—','Atm 2','—','Sweep','Drone','—'],
+  ['Riser 1','—','Crash 1','White 1','—','Rev A','FX 2','—'],
+  ['Verse A','—','Chorus 1','—','Bridge 1','—','Outro','—'],
+  ['Verb A','Delay 1','—','Tape A','—','Room B','—','Plate 1'],
+];
+
+const clipStates=[];
+const clipProgress=[];
+let isPlaying=false;
+let beatCount=0;
+let lastBeatTime=0;
+let bpm=128;
+
+function buildMatrix(){
+  const grid=document.getElementById('clip-grid');
+  grid.innerHTML='';
+  grid.style.gridTemplateColumns=`80px repeat(8,1fr)`;
+
+  for(let scene=0;scene<8;scene++){
+    const lbl=document.createElement('div');
+    lbl.className='track-label';
+    lbl.textContent=`SCENE ${scene+1}`;
+    grid.appendChild(lbl);
+    if(!clipStates[scene])clipStates[scene]=[];
+    if(!clipProgress[scene])clipProgress[scene]=[];
+    for(let track=0;track<8;track++){
+      const name=CLIP_NAMES[track][scene];
+      const isEmpty=(name==='—');
+      const cell=document.createElement('div');
+      cell.className='clip-cell'+(isEmpty?' empty':'');
+      if(!isEmpty){
+        cell.style.background=`${TRACK_COLORS[track]}22`;
+        cell.style.borderColor=`${TRACK_COLORS[track]}55`;
+        cell.style.color=TRACK_COLORS[track];
+        cell.textContent=name;
+        const bar=document.createElement('div');
+        bar.className='clip-bar';
+        bar.style.background=TRACK_COLORS[track];
+        cell.appendChild(bar);
+        clipStates[scene][track]=false;
+        clipProgress[scene][track]=0;
+        cell.addEventListener('click',()=>toggleClip(scene,track,cell,bar));
+      } else {
+        clipStates[scene][track]=false;
+        clipProgress[scene][track]=0;
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  // Scene buttons
+  const sceneRow=document.getElementById('scene-row');
+  sceneRow.innerHTML='';
+  const sl=document.createElement('div');
+  sl.className='scene-label';sl.textContent='LAUNCH';
+  sceneRow.appendChild(sl);
+  for(let track=0;track<8;track++){
+    const btn=document.createElement('button');
+    btn.className='scene-btn';
+    btn.textContent=`▶ T${track+1}`;
+    btn.style.borderColor=`${TRACK_COLORS[track]}60`;
+    btn.style.color=TRACK_COLORS[track];
+    sceneRow.appendChild(btn);
+  }
+}
+
+function toggleClip(scene,track,cell,bar){
+  clipStates[scene][track]=!clipStates[scene][track];
+  if(clipStates[scene][track]){
+    cell.classList.add('playing');
+    cell.style.background=`${TRACK_COLORS[track]}44`;
+    cell.style.borderColor=TRACK_COLORS[track];
+  } else {
+    cell.classList.remove('playing');
+    cell.style.background=`${TRACK_COLORS[track]}22`;
+    cell.style.borderColor=`${TRACK_COLORS[track]}55`;
+    clipProgress[scene][track]=0;
+    bar.style.width='0%';
+  }
+}
+
+buildMatrix();
+
+document.getElementById('btn-play').addEventListener('click',()=>{isPlaying=true;});
+document.getElementById('btn-stop').addEventListener('click',()=>{isPlaying=false;});
+
+// ─── ARRANGEMENT CANVAS ───────────────────────────────────────────────────
+const arrCanvas=document.getElementById('arr-canvas');
+const arrCtx=arrCanvas.getContext('2d');
+function resizeArr(){arrCanvas.width=arrCanvas.parentElement.offsetWidth;arrCanvas.height=320;}
+resizeArr();
+window.addEventListener('resize',resizeArr);
+
+document.getElementById('sl-zoom').addEventListener('input',function(){document.getElementById('v-zoom').textContent=parseFloat(this.value).toFixed(1)+'×';});
+document.getElementById('sl-tracks').addEventListener('input',function(){document.getElementById('v-tracks').textContent=this.value;});
+document.getElementById('sl-ph').addEventListener('input',function(){document.getElementById('v-ph').textContent='bar '+Math.round(parseFloat(this.value)*32);});
+document.getElementById('sl-loop').addEventListener('input',function(){document.getElementById('v-loop').textContent=this.value+' bars';});
+
+function drawArr(t){
+  const W=arrCanvas.width,H=arrCanvas.height;
+  arrCtx.fillStyle='rgba(6,8,6,0.85)';
+  arrCtx.fillRect(0,0,W,H);
+  const zoom=lagZoom.value;
+  const numTracks=Math.round(lagTracks.value);
+  const ph=lagPH.value;
+  const loopBars=lagLoopW.value;
+  const trackH=(H-30)/numTracks;
+  const HEADER=60;
+  const BAR_W=(W-HEADER)/(32/zoom);
+
+  // Time axis
+  arrCtx.fillStyle='#1A2A1A';
+  arrCtx.fillRect(0,0,W,30);
+  for(let b=0;b<=32;b++){
+    const x=HEADER+b*BAR_W;
+    arrCtx.strokeStyle=b%4===0?'rgba(91,224,60,0.25)':'rgba(91,224,60,0.08)';
+    arrCtx.lineWidth=1;
+    arrCtx.beginPath();arrCtx.moveTo(x,0);arrCtx.lineTo(x,H);arrCtx.stroke();
+    if(b%4===0){
+      arrCtx.fillStyle='#5A7A5A';
+      arrCtx.font='9px Courier New';
+      arrCtx.textAlign='center';
+      arrCtx.fillText(`${b+1}`,x,20);
+    }
+  }
+
+  // Loop region
+  const lx=HEADER;
+  const lw=loopBars*BAR_W;
+  arrCtx.fillStyle='rgba(91,224,60,0.05)';
+  arrCtx.fillRect(lx,0,lw,H);
+  arrCtx.strokeStyle='rgba(91,224,60,0.3)';
+  arrCtx.lineWidth=1;
+  arrCtx.strokeRect(lx,0,lw,H);
+
+  // Tracks
+  for(let tr=0;tr<numTracks;tr++){
+    const ty=30+tr*trackH;
+    const color=TRACK_COLORS[tr%TRACK_COLORS.length];
+    arrCtx.fillStyle='#0E110E';
+    arrCtx.fillRect(0,ty,W,trackH-2);
+    arrCtx.fillStyle='#131813';
+    arrCtx.fillRect(0,ty,HEADER-4,trackH-2);
+    arrCtx.fillStyle=color;
+    arrCtx.font='9px Courier New';
+    arrCtx.textAlign='left';
+    arrCtx.fillText(TRACK_NAMES[tr%TRACK_NAMES.length],4,ty+trackH/2+3);
+
+    // Clips in arrangement
+    const seed=tr*7+3;
+    let cx=HEADER;
+    for(let cl=0;cl<12;cl++){
+      const cw=BAR_W*(1+Math.floor(noise21(cl*0.3,seed*0.1)*3));
+      const gap=BAR_W*(0.2+noise21(cl*0.5,seed*0.2)*0.8);
+      if(cx+cw>W)break;
+      arrCtx.fillStyle=color+'33';
+      arrCtx.strokeStyle=color+'88';
+      arrCtx.lineWidth=1;
+      arrCtx.fillRect(cx,ty+2,cw-1,trackH-5);
+      arrCtx.strokeRect(cx,ty+2,cw-1,trackH-5);
+      // Waveform
+      arrCtx.strokeStyle=color+'BB';
+      arrCtx.lineWidth=1;
+      arrCtx.beginPath();
+      for(let px=0;px<cw-1;px++){
+        const wv=noise21(px*0.05+cl*3,tr*5+t*0.1)*2-1;
+        const wy=ty+trackH/2+wv*(trackH*0.35);
+        px===0?arrCtx.moveTo(cx+px,wy):arrCtx.lineTo(cx+px,wy);
+      }
+      arrCtx.stroke();
+      cx+=cw+gap;
+    }
+  }
+
+  // Playhead
+  const phx=HEADER+ph*(W-HEADER);
+  arrCtx.strokeStyle='rgba(91,224,60,0.9)';
+  arrCtx.lineWidth=2;
+  arrCtx.beginPath();arrCtx.moveTo(phx,0);arrCtx.lineTo(phx,H);arrCtx.stroke();
+  arrCtx.fillStyle='#5BE03C';
+  arrCtx.beginPath();arrCtx.moveTo(phx-6,0);arrCtx.lineTo(phx+6,0);arrCtx.lineTo(phx,10);arrCtx.fill();
+}
+
+// ─── M4L PATCH ───────────────────────────────────────────────────────────
+const m4lCanvas=document.getElementById('m4l-canvas');
+const m4lCtx=m4lCanvas.getContext('2d');
+function resizeM4L(){m4lCanvas.width=m4lCanvas.offsetWidth;m4lCanvas.height=380;}
+resizeM4L();
+window.addEventListener('resize',resizeM4L);
+
+const PATCHES={
+  'SYNTH PATCH':{
+    nodes:[
+      {id:'osc1',x:0.08,y:0.3,label:'cycle~',type:'audio',desc:'Sine osc'},
+      {id:'osc2',x:0.08,y:0.6,label:'phasor~',type:'audio',desc:'Saw osc'},
+      {id:'mix',x:0.28,y:0.45,label:'*~ 0.5',type:'audio',desc:'Mix'},
+      {id:'filt',x:0.48,y:0.45,label:'biquad~',type:'audio',desc:'Filter'},
+      {id:'env',x:0.48,y:0.2,label:'adsr~',type:'control',desc:'Envelope'},
+      {id:'mul',x:0.68,y:0.45,label:'*~',type:'audio',desc:'VCA'},
+      {id:'gain',x:0.85,y:0.45,label:'gain~',type:'audio',desc:'Output'},
+      {id:'dac',x:0.85,y:0.7,label:'dac~',type:'audio',desc:'DAC out'},
+      {id:'note',x:0.08,y:0.1,label:'notein',type:'midi',desc:'MIDI in'},
+      {id:'mtof',x:0.2,y:0.1,label:'mtof',type:'control',desc:'MIDI→Hz'},
+    ],
+    edges:[['note','mtof'],['mtof','osc1'],['mtof','osc2'],['osc1','mix'],['osc2','mix'],['mix','filt'],['env','mul'],['filt','mul'],['mul','gain'],['gain','dac']],
+  },
+  'EFFECT CHAIN':{
+    nodes:[
+      {id:'in',x:0.08,y:0.5,label:'plugin~',type:'audio',desc:'Live input'},
+      {id:'del',x:0.28,y:0.35,label:'tapin~',type:'audio',desc:'Tape delay'},
+      {id:'rev',x:0.28,y:0.65,label:'yafr2~',type:'audio',desc:'Reverb'},
+      {id:'fb',x:0.48,y:0.35,label:'tapout~',type:'audio',desc:'Tap delay'},
+      {id:'mix2',x:0.65,y:0.5,label:'*~ wet',type:'audio',desc:'Wet mix'},
+      {id:'dry',x:0.48,y:0.7,label:'*~ dry',type:'audio',desc:'Dry mix'},
+      {id:'sum',x:0.82,y:0.55,label:'+~',type:'audio',desc:'Summer'},
+      {id:'out',x:0.92,y:0.55,label:'plugout~',type:'audio',desc:'Live out'},
+    ],
+    edges:[['in','del'],['in','rev'],['in','dry'],['del','fb'],['fb','mix2'],['rev','mix2'],['mix2','sum'],['dry','sum'],['sum','out']],
+  },
+  'MIDI PROCESSOR':{
+    nodes:[
+      {id:'min',x:0.08,y:0.5,label:'notein',type:'midi',desc:'MIDI note'},
+      {id:'split',x:0.25,y:0.5,label:'unpack i i',type:'control',desc:'Split'},
+      {id:'arith',x:0.42,y:0.35,label:'+ 12',type:'control',desc:'Transpose'},
+      {id:'vel',x:0.42,y:0.65,label:'* 0.8',type:'control',desc:'Vel scale'},
+      {id:'pack',x:0.62,y:0.5,label:'pack i i',type:'control',desc:'Pack'},
+      {id:'mout',x:0.82,y:0.5,label:'noteout',type:'midi',desc:'MIDI out'},
+      {id:'cc',x:0.08,y:0.2,label:'ctlin',type:'midi',desc:'CC in'},
+      {id:'scale',x:0.35,y:0.18,label:'scale 0 127',type:'control',desc:'Map range'},
+    ],
+    edges:[['min','split'],['split','arith'],['split','vel'],['arith','pack'],['vel','pack'],['pack','mout'],['cc','scale']],
+  },
+  'GENERATIVE':{
+    nodes:[
+      {id:'metro',x:0.06,y:0.5,label:'metro 500',type:'control',desc:'Clock'},
+      {id:'rnd',x:0.22,y:0.35,label:'random 12',type:'control',desc:'Random'},
+      {id:'sc',x:0.22,y:0.65,label:'drunk 12',type:'control',desc:'Drunk walk'},
+      {id:'sel',x:0.42,y:0.5,label:'select 0 1',type:'control',desc:'Gate'},
+      {id:'store',x:0.58,y:0.5,label:'coll',type:'control',desc:'Note store'},
+      {id:'note',x:0.75,y:0.5,label:'noteout',type:'midi',desc:'MIDI out'},
+      {id:'prob',x:0.42,y:0.2,label:'prob 70',type:'control',desc:'Prob gate'},
+      {id:'env2',x:0.58,y:0.25,label:'line~',type:'audio',desc:'Envelope'},
+    ],
+    edges:[['metro','rnd'],['metro','sc'],['rnd','sel'],['sc','sel'],['sel','store'],['store','note'],['metro','prob'],['prob','env2']],
+  },
+};
+
+let currentPatch='SYNTH PATCH';
+let m4lPackets=[];
+
+document.querySelectorAll('.patch-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.patch-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPatch=btn.textContent.trim();
+    m4lPackets=[];
+  });
+});
+
+function spawnM4LPacket(){
+  const patch=PATCHES[currentPatch];
+  if(!patch)return;
+  const edgeIdx=Math.floor(rand(0,patch.edges.length));
+  m4lPackets.push({edge:edgeIdx,t:0,speed:rand(0.01,0.025)});
+}
+
+function drawM4L(t){
+  const W=m4lCanvas.width,H=m4lCanvas.height;
+  m4lCtx.fillStyle='rgba(6,8,6,0.85)';
+  m4lCtx.fillRect(0,0,W,H);
+  const patch=PATCHES[currentPatch];
+  if(!patch)return;
+  const nodePos={};
+  patch.nodes.forEach(n=>{nodePos[n.id]={x:n.x*W,y:n.y*H};});
+
+  // Edges
+  patch.edges.forEach(([from,to],idx)=>{
+    const a=nodePos[from],b=nodePos[to];
+    if(!a||!b)return;
+    m4lCtx.strokeStyle='rgba(91,224,60,0.2)';
+    m4lCtx.lineWidth=1.5;
+    m4lCtx.beginPath();m4lCtx.moveTo(a.x+40,a.y);m4lCtx.lineTo(b.x,b.y);m4lCtx.stroke();
+  });
+
+  // Packets
+  m4lPackets=m4lPackets.filter(p=>p.t<1);
+  m4lPackets.forEach(p=>{
+    p.t+=p.speed;
+    const [from,to]=patch.edges[p.edge]||[];
+    const a=nodePos[from],b=nodePos[to];
+    if(!a||!b)return;
+    const px=lerp(a.x+40,b.x,p.t);
+    const py=lerp(a.y,b.y,p.t);
+    m4lCtx.beginPath();m4lCtx.arc(px,py,4,0,Math.PI*2);
+    m4lCtx.fillStyle='#5BE03C';
+    m4lCtx.shadowBlur=10;m4lCtx.shadowColor='#5BE03C';
+    m4lCtx.fill();m4lCtx.shadowBlur=0;
+  });
+
+  // Nodes
+  const TYPE_COLORS={audio:'#5BE03C',control:'#E0A020',midi:'#5BE0C8'};
+  patch.nodes.forEach(n=>{
+    const {x,y}=nodePos[n.id];
+    const col=TYPE_COLORS[n.type]||'#5BE03C';
+    m4lCtx.fillStyle='#0E110E';
+    m4lCtx.strokeStyle=col;
+    m4lCtx.lineWidth=1.5;
+    const w=80,h=28;
+    m4lCtx.fillRect(x,y-h/2,w,h);
+    m4lCtx.strokeRect(x,y-h/2,w,h);
+    m4lCtx.fillStyle=col;
+    m4lCtx.font='10px Courier New';
+    m4lCtx.textAlign='center';
+    m4lCtx.fillText(n.label,x+w/2,y+4);
+    // Inlet/outlet dots
+    m4lCtx.fillStyle=col;
+    m4lCtx.beginPath();m4lCtx.arc(x,y,3,0,Math.PI*2);m4lCtx.fill();
+    m4lCtx.beginPath();m4lCtx.arc(x+w,y,3,0,Math.PI*2);m4lCtx.fill();
+  });
+}
+
+// ─── LINK SYNC ────────────────────────────────────────────────────────────
+const linkCanvas=document.getElementById('link-canvas');
+const linkCtx=linkCanvas.getContext('2d');
+function resizeLink(){linkCanvas.width=linkCanvas.offsetWidth;linkCanvas.height=280;}
+resizeLink();
+window.addEventListener('resize',resizeLink);
+
+function drawLink(t){
+  const W=linkCanvas.width,H=linkCanvas.height;
+  linkCtx.fillStyle='rgba(6,8,6,0.9)';
+  linkCtx.fillRect(0,0,W,H);
+  const bpm=lagBPM.value;
+  const phase=(t*(bpm/60))%1;
+  lagLinkBeat.update(phase<0.05?1:0,1/60);
+  // Phase circles for 6 peers
+  const peers=['Live 12','Push 3','TD','Resolume','iOS','Reason'];
+  const offsets=[0,0.002,0.001,-0.001,0.05,0.003];
+  const cx=W/2,cy=H/2;
+  const R=Math.min(W,H)*0.38;
+  peers.forEach((peer,i)=>{
+    const offline=i===4;
+    const angle=-Math.PI/2+((phase+offsets[i])%1)*Math.PI*2;
+    const px=cx+R*Math.cos(i*(Math.PI*2/6)-Math.PI/2);
+    const py=cy+R*Math.sin(i*(Math.PI*2/6)-Math.PI/2);
+    const dotX=px+30*Math.cos(angle);
+    const dotY=py+30*Math.sin(angle);
+    // Beat ring
+    linkCtx.strokeStyle=offline?'rgba(90,122,90,0.3)':'rgba(91,224,60,0.25)';
+    linkCtx.lineWidth=1;
+    linkCtx.beginPath();linkCtx.arc(px,py,30,0,Math.PI*2);linkCtx.stroke();
+    // Phase dot
+    linkCtx.fillStyle=offline?'#5A7A5A':'#5BE03C';
+    linkCtx.beginPath();linkCtx.arc(dotX,dotY,5,0,Math.PI*2);linkCtx.fill();
+    // Label
+    linkCtx.fillStyle=offline?'#5A7A5A':'#D8E8D0';
+    linkCtx.font='9px Courier New';
+    linkCtx.textAlign='center';
+    linkCtx.fillText(peer,px,py+48);
+  });
+  // Central BPM display
+  linkCtx.fillStyle='#5BE03C';
+  linkCtx.font='bold 28px Courier New';
+  linkCtx.textAlign='center';
+  linkCtx.fillText(bpm.toFixed(1),cx,cy+8);
+  linkCtx.fillStyle='#5A7A5A';
+  linkCtx.font='9px Courier New';
+  linkCtx.fillText('BPM · LINK',cx,cy+28);
+  // Beat pulse
+  const bf=lagLinkBeat.value;
+  linkCtx.strokeStyle=`rgba(91,224,60,${0.5*bf})`;
+  linkCtx.lineWidth=2*bf;
+  linkCtx.beginPath();linkCtx.arc(cx,cy,R*1.05,0,Math.PI*2);linkCtx.stroke();
+}
+
+// ─── ROUTING CANVAS ───────────────────────────────────────────────────────
+const rtgCanvas=document.getElementById('routing-canvas');
+const rtgCtx=rtgCanvas.getContext('2d');
+function resizeRtg(){rtgCanvas.width=rtgCanvas.offsetWidth;rtgCanvas.height=340;}
+resizeRtg();
+window.addEventListener('resize',resizeRtg);
+
+let rtgPackets=[];
+function spawnRtgPacket(){
+  rtgPackets.push({path:Math.floor(rand(0,4)),t:0,speed:rand(0.005,0.015)});
+}
+
+function drawRouting(t){
+  const W=rtgCanvas.width,H=rtgCanvas.height;
+  rtgCtx.fillStyle='rgba(6,8,6,0.88)';
+  rtgCtx.fillRect(0,0,W,H);
+  const nodes=[
+    {id:'inst',label:'INSTRUMENT',x:0.08,y:0.5,color:'#5BE03C'},
+    {id:'prefx',label:'PRE-FX',x:0.22,y:0.5,color:'#3CB8E0'},
+    {id:'chain',label:'DEVICE CHAIN',x:0.4,y:0.5,color:'#E0A020'},
+    {id:'postfx',label:'POST-FX',x:0.58,y:0.5,color:'#3CB8E0'},
+    {id:'strip',label:'CHANNEL STRIP',x:0.73,y:0.5,color:'#9B5BE0'},
+    {id:'send',label:'SEND BUS',x:0.73,y:0.2,color:'#E05B5B'},
+    {id:'ret',label:'RETURN TRACK',x:0.58,y:0.2,color:'#E05B5B'},
+    {id:'master',label:'MASTER',x:0.88,y:0.5,color:'#5BE03C'},
+  ];
+  const edges=[['inst','prefx'],['prefx','chain'],['chain','postfx'],['postfx','strip'],['strip','send'],['send','ret'],['strip','master']];
+  const pos={};
+  nodes.forEach(n=>{pos[n.id]={x:n.x*W,y:n.y*H};});
+
+  edges.forEach(([a,b])=>{
+    const pa=pos[a],pb=pos[b];
+    rtgCtx.strokeStyle='rgba(91,224,60,0.18)';
+    rtgCtx.lineWidth=2;
+    rtgCtx.setLineDash([4,6]);
+    rtgCtx.beginPath();rtgCtx.moveTo(pa.x+56,pa.y);rtgCtx.lineTo(pb.x,pb.y);rtgCtx.stroke();
+    rtgCtx.setLineDash([]);
+  });
+
+  rtgPackets=rtgPackets.filter(p=>p.t<1);
+  rtgPackets.forEach(p=>{
+    p.t+=p.speed;
+    const paths=[edges[0],edges[1],edges[2],edges[3]];
+    const e=edges[Math.min(p.path,edges.length-1)];
+    const pa=pos[e[0]],pb=pos[e[1]];
+    if(!pa||!pb)return;
+    const px=lerp(pa.x+56,pb.x,p.t);
+    const py=lerp(pa.y,pb.y,p.t);
+    rtgCtx.beginPath();rtgCtx.arc(px,py,4,0,Math.PI*2);
+    rtgCtx.fillStyle='#5BE03C';
+    rtgCtx.shadowBlur=8;rtgCtx.shadowColor='#5BE03C';
+    rtgCtx.fill();rtgCtx.shadowBlur=0;
+  });
+
+  nodes.forEach(n=>{
+    const {x,y}=pos[n.id];
+    const w=112,h=32;
+    rtgCtx.fillStyle='#0E110E';
+    rtgCtx.strokeStyle=n.color;
+    rtgCtx.lineWidth=1.5;
+    rtgCtx.fillRect(x-w/2,y-h/2,w,h);
+    rtgCtx.strokeRect(x-w/2,y-h/2,w,h);
+    rtgCtx.fillStyle=n.color;
+    rtgCtx.font='9px Courier New';
+    rtgCtx.textAlign='center';
+    rtgCtx.fillText(n.label,x,y+4);
+  });
+}
+
+// ─── MAIN LOOP ────────────────────────────────────────────────────────────
+let lastT=0,spawnT=0,pkT=0,rtgT=0;
+let beatT=0;
+
+function frame(now){
+  const dt=Math.min((now-lastT)/1000,0.05);lastT=now;
+  const t=now/1000;
+
+  lagHMX.update(mouseX,dt);lagHMY.update(mouseY,dt);
+  lagZoom.update(parseFloat(document.getElementById('sl-zoom').value),dt);
+  lagTracks.update(parseFloat(document.getElementById('sl-tracks').value),dt);
+  lagPH.update(parseFloat(document.getElementById('sl-ph').value),dt);
+  lagLoopW.update(parseFloat(document.getElementById('sl-loop').value),dt);
+
+  // Beat simulation
+  const beatInterval=60/bpm;
+  beatT+=dt;
+  let beat=0;
+  if(beatT>beatInterval){beatT%=beatInterval;beat=1;beatCount++;}
+  lagHBeat.update(beat,dt);
+
+  // Update clip progress
+  if(isPlaying){
+    for(let scene=0;scene<8;scene++){
+      for(let track=0;track<8;track++){
+        if(clipStates[scene]&&clipStates[scene][track]){
+          clipProgress[scene][track]=(clipProgress[scene][track]+(dt/(beatInterval*4)))%1;
+          const cell=document.querySelector(`#clip-grid .clip-cell:nth-child(${scene*9+track+2})`);
+          const bar=cell&&cell.querySelector('.clip-bar');
+          if(bar)bar.style.width=(clipProgress[scene][track]*100)+'%';
+        }
+      }
+    }
+  }
+
+  // Tempo display
+  document.getElementById('tempo-display').textContent=`♩ ${bpm.toFixed(1)} BPM`;
+
+  // Hero
+  if(gl&&prog){
+    gl.viewport(0,0,heroCanvas.width,heroCanvas.height);
+    gl.useProgram(prog);
+    gl.uniform2f(uniforms.res,heroCanvas.width,heroCanvas.height);
+    gl.uniform1f(uniforms.time,t);
+    gl.uniform2f(uniforms.mouse,lagHMX.value,1-lagHMY.value);
+    gl.uniform1f(uniforms.beat,lagHBeat.value);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }
+
+  drawArr(t);
+
+  // M4L
+  pkT+=dt;
+  if(pkT>0.08){spawnM4LPacket();pkT=0;}
+  drawM4L(t);
+
+  drawLink(t);
+
+  rtgT+=dt;
+  if(rtgT>0.15){spawnRtgPacket();rtgT=0;}
+  drawRouting(t);
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t=>{lastT=t;requestAnimationFrame(frame);});
+
+// ─── INTERSECTION OBSERVER ────────────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+</script>

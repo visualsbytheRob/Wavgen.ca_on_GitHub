@@ -1,0 +1,873 @@
+---
+layout: world.njk
+title: "Realtime Graphics World"
+description: "Immersive av world exploring realtime graphics"
+domain: av
+permalink: /av/realtime-graphics/
+---
+
+
+<nav>
+<span class="nav-title">▸ REALTIME GRAPHICS</span>
+<a href="#pipeline">Pipeline</a>
+<a href="#gpu">GPU Arch</a>
+<a href="#timing">Frame Timing</a>
+<a href="#lighting">Lighting</a>
+<a href="#engines">Engines</a>
+<a href="#procedural">Procedural</a>
+<a href="#practitioners">Practitioners</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- SECTION 1: HERO -->
+<div id="hero">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-text">
+<h1>REALTIME GRAPHICS</h1>
+<p>// 60fps at 4K — the GPU computes the visible world frame by frame</p>
+</div>
+</div>
+<div class="divider"></div>
+<!-- SECTION 2: RENDER PIPELINE -->
+<section class="hidden" id="pipeline">
+<h2>// Render Pipeline</h2>
+<p>The GPU render pipeline transforms 3D geometry into 2D pixels through a sequence of programmable and fixed-function stages. Every frame: vertices → triangles → fragments → pixels. The programmer controls the vertex shader and fragment shader; the hardware handles rasterization, depth test, and blending.</p>
+<div class="canvas-wrap">
+<canvas height="200" id="pipelineCanvas"></canvas>
+<div class="canvas-label">realtime render pipeline — animated data flow</div>
+</div>
+<div class="slider-row">
+<label>// pipeline_speed</label>
+<input id="pipeSpeedSlider" max="100" min="10" type="range" value="60"/>
+<span id="pipeSpeedVal">0.60</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Vertex Shader</h3><p>Transforms each vertex position from object space through world → view → clip space. Runs once per vertex on the GPU. Outputs gl_Position and varyings.</p></div>
+<div class="card"><h3>Rasterization</h3><p>Fixed-function hardware converts triangles into fragments (potential pixels). Interpolates vertex attributes (UVs, normals) across the triangle surface.</p></div>
+<div class="card"><h3>Fragment Shader</h3><p>Computes final pixel color. Texture sampling, lighting calculations, procedural effects. Runs once per fragment — the bottleneck for complex scenes.</p></div>
+<div class="card"><h3>Output Merge</h3><p>Depth test rejects occluded fragments. Alpha blending composites transparency. Stencil operations mask regions. Final pixel written to framebuffer.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 3: GPU ARCHITECTURE -->
+<section class="hidden" id="gpu">
+<h2>// GPU Architecture</h2>
+<p>Modern GPUs are massively parallel processors with thousands of shader cores executing the same program on different data (SIMD). NVIDIA Ampere/Ada, AMD RDNA3, and Apple M-series GPUs differ in microarchitecture but share the same shader execution model.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="gpuCanvas"></canvas>
+<div class="canvas-label">GPU compute unit visualization</div>
+</div>
+<div class="slider-row">
+<label>// compute_units</label>
+<input id="cuSlider" max="128" min="8" type="range" value="64"/>
+<span id="cuVal">64</span>
+</div>
+<div class="slider-row">
+<label>// occupancy</label>
+<input id="occSlider" max="100" min="10" type="range" value="75"/>
+<span id="occVal">75%</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Shader Cores (ALUs)</h3><p>Each SM (NVIDIA) or CU (AMD) contains 64–128 shader processors. RTX 4090: 16,384 CUDA cores across 128 SMs. Peak: 82.6 TFLOPS FP32.</p></div>
+<div class="card"><h3>VRAM &amp; Bandwidth</h3><p>GPU memory bandwidth is the primary bottleneck for texture-heavy scenes. RTX 4090: 1008 GB/s. Texture caches (L1/L2) reduce bandwidth pressure.</p></div>
+<div class="card"><h3>Warp / Wavefront</h3><p>32 threads (NVIDIA warp) or 64 threads (AMD wavefront) execute in lockstep. Divergent branching serializes execution — minimize branching in shaders.</p></div>
+<div class="card"><h3>Ray Tracing Cores</h3><p>Dedicated BVH traversal hardware (RTX). Handles triangle-ray intersection at hardware speed. Enables real-time reflections, shadows, and GI.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 4: FRAME TIMING -->
+<section class="hidden" id="timing">
+<h2>// Frame Timing</h2>
+<p>Real-time graphics demands consistent frame delivery. At 60fps, each frame has 16.67ms budget. CPU submits draw calls; GPU executes them in parallel. GPU timing tools (NVIDIA NSight, RenderDoc) reveal which passes consume the most time.</p>
+<div class="canvas-wrap">
+<canvas height="200" id="timingCanvas"></canvas>
+<div class="canvas-label">frame timeline — GPU pass breakdown</div>
+</div>
+<div class="slider-row">
+<label>// target_fps</label>
+<input id="fpsSlider" max="144" min="24" type="range" value="60"/>
+<span id="fpsVal">60 fps</span>
+</div>
+<div class="slider-row">
+<label>// scene_complexity</label>
+<input id="complexSlider" max="100" min="10" type="range" value="50"/>
+<span id="complexVal">50%</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>CPU Frame Time</h3><p>Game logic, animation, physics, draw call submission. CPU sends command buffer to GPU. Goal: ≤8ms for 60fps split between CPU and GPU.</p></div>
+<div class="card"><h3>GPU Frame Time</h3><p>Shadow map rendering, G-buffer pass, lighting pass, post-processing. GPU stalls occur when VRAM bandwidth or shader ALU are saturated.</p></div>
+<div class="card"><h3>V-Sync &amp; Tearing</h3><p>V-Sync locks frame presentation to display refresh, preventing tearing at cost of latency. NVIDIA G-Sync / AMD FreeSync enable variable refresh rate.</p></div>
+<div class="card"><h3>GPU-Driven Rendering</h3><p>Multi-Draw Indirect (MDI) lets GPU fetch draw calls from VRAM buffer, reducing CPU-GPU synchronization. Enables 10–100× draw call count increase.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 5: LIGHTING SIMULATION -->
+<section class="hidden" id="lighting">
+<h2>// Lighting Systems</h2>
+<p>Real-time lighting has evolved from per-vertex Gouraud shading to physically-based deferred rendering with ray-traced global illumination. Each technique trades accuracy for performance within the frame budget.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="lightingCanvas"></canvas>
+<div class="canvas-label">realtime lighting simulation — move cursor</div>
+</div>
+<div class="slider-row">
+<label>// light_count</label>
+<input id="lightCountSlider" max="32" min="1" type="range" value="8"/>
+<span id="lightCountVal">8</span>
+</div>
+<div class="slider-row">
+<label>// roughness</label>
+<input id="roughSlider" max="100" min="0" type="range" value="40"/>
+<span id="roughVal">0.40</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Deferred Shading</h3><p>Geometry pass writes material data to G-buffer (albedo, normal, roughness, depth). Lighting pass reads G-buffer — decouples light count from geometry complexity.</p></div>
+<div class="card"><h3>PBR / Cook-Torrance</h3><p>Physically-based BRDF. Microfacet model: GGX distribution, Smith geometry function, Fresnel-Schlick approximation. Energy-conserving, artistically predictable.</p></div>
+<div class="card"><h3>Lumen (UE5)</h3><p>Software and hardware ray-traced global illumination. Radiance cache for diffuse GI. Screen space for short-range reflections. Lumen proxy meshes for SDF tracing.</p></div>
+<div class="card"><h3>SSAO / GTAO</h3><p>Screen Space Ambient Occlusion darkens corners and crevices. Ground Truth AO (UE5) uses temporal accumulation for higher quality at similar cost.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 6: RENDER ENGINES -->
+<section class="hidden" id="engines">
+<h2>// Render Engines</h2>
+<p>Real-time render engines embed decades of rendering research into accessible pipelines. The gap between real-time and offline rendering has nearly closed — UE5 Nanite + Lumen at 60fps produces imagery indistinguishable from path-traced renders to most viewers.</p>
+<div class="canvas-wrap">
+<canvas height="220" id="enginesCanvas"></canvas>
+<div class="canvas-label">engine capability comparison</div>
+</div>
+<div class="card-grid">
+<div class="card" style="border-color:#0060FF"><h3 style="color:#4488FF">Unreal Engine 5</h3><p>Nanite virtualized geometry, Lumen GI, Chaos physics. Industry standard for virtual production, games, and architectural visualization.</p></div>
+<div class="card" style="border-color:#00E5FF"><h3 style="color:#00E5FF">Unity HDRP</h3><p>High Definition Render Pipeline. Deferred rendering, volumetric fog, TAA. Excellent multi-platform targeting. C# scripting with Burst compiler.</p></div>
+<div class="card" style="border-color:#00FF41"><h3 style="color:#00FF41">Godot 4</h3><p>Open source. Vulkan backend, Global Illumination via SDFGI and Voxel GI. GDScript + C# + C++. Lightweight, no licensing fees.</p></div>
+<div class="card" style="border-color:#FF6D00"><h3 style="color:#FF9240">TouchDesigner</h3><p>Real-time node-based. GLSL shaders, TOP/SOP pipelines, Vulkan backend (TD2023+). The live performance and installation standard.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 7: PROCEDURAL RENDERING -->
+<section class="hidden" id="procedural">
+<h2>// Procedural Rendering</h2>
+<p>Procedural techniques generate content algorithmically rather than storing it explicitly. Noise-based terrain, signed distance fields for geometry, procedural textures, and L-system vegetation reduce storage requirements while enabling infinite variation.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="proceduralCanvas"></canvas>
+<div class="canvas-label">procedural generation — realtime</div>
+</div>
+<div class="slider-row">
+<label>// noise_octaves</label>
+<input id="octaveSlider" max="8" min="1" type="range" value="4"/>
+<span id="octaveVal">4</span>
+</div>
+<div class="slider-row">
+<label>// frequency</label>
+<input id="freqSlider" max="100" min="5" type="range" value="30"/>
+<span id="freqVal">0.30</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>SDF Rendering</h3><p>Signed Distance Fields represent geometry as distance functions. Ray marching through SDF enables complex implicit surfaces with zero triangles. Used in Unreal Nanite, font rendering, and AO.</p></div>
+<div class="card"><h3>Compute Shaders</h3><p>General-purpose GPU computation. Particle systems, fluid simulation, physics, and procedural mesh generation all happen on GPU via compute passes.</p></div>
+<div class="card"><h3>Noise Functions</h3><p>Perlin, Simplex, Worley, FBM. Basis for terrain, clouds, organic textures. GPU-optimized implementations run millions of noise samples per frame.</p></div>
+<div class="card"><h3>Mesh Shaders</h3><p>DX12 Ultimate / Vulkan feature replacing vertex + geometry shaders. Amplification shader culls meshlets; mesh shader generates geometry. Powers Nanite.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 8: PRACTITIONERS -->
+<section class="hidden" id="practitioners">
+<h2>// Practitioners</h2>
+<p>These engineers, researchers, and artists define the field — advancing the science of real-time rendering while making it accessible to creative practitioners.</p>
+<div class="researcher-grid">
+<div class="researcher-card">
+<div class="researcher-avatar">🔬</div>
+<h3>John Carmack</h3>
+<div class="role">id Software / Meta</div>
+<p>BSP trees, portal rendering, lightmapping, MegaTexture. Invented much of what modern engines treat as given. Quake's renderer remains a study in ingenuity.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">🏗️</div>
+<h3>Tim Sweeney</h3>
+<div class="role">Epic Games / UE5</div>
+<p>Designed Unreal Engine's architecture. Pushed virtual production. Nanite and Lumen represent his vision of closing the gap with offline rendering.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">📐</div>
+<h3>Brian Karis</h3>
+<div class="role">Epic Games</div>
+<p>Authored UE4's PBR shading model (Real Shading in Unreal Engine 4, SIGGRAPH 2013). Lumen GI architecture. TAA temporal anti-aliasing systems.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">🌊</div>
+<h3>Inigo Quilez</h3>
+<div class="role">Meta / Shadertoy</div>
+<p>SDF ray marching, smooth minimum operators, procedural noise. Co-founded Shadertoy. His GLSL work defined creative coding aesthetics for a generation.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">⚡</div>
+<h3>Graham Sellers</h3>
+<div class="role">AMD / OpenGL</div>
+<p>OpenGL SuperBible author. GPU-driven rendering advocacy. Persistent buffers, bindless textures — modern OpenGL techniques for reducing CPU overhead.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">🎮</div>
+<h3>Naty Hoffman</h3>
+<div class="role">SIGGRAPH / Industry</div>
+<p>Physics-based rendering theory. Co-wrote "Physically Based Rendering" with Matt Pharr and Greg Humphreys. Consultant to major game studios.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">🔭</div>
+<h3>Alex Evans (Mmalex)</h3>
+<div class="role">Media Molecule / Sony</div>
+<p>SDF-based rendering in Dreams (PS4). Traced a path from GPU voxel research to a consumer game with fully sculpted real-time geometry. SIGGRAPH 2015.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar">🌐</div>
+<h3>Patrick Cozzi</h3>
+<div class="role">Cesium</div>
+<p>3D Tiles specification, glTF format. Real-time geospatial rendering at planetary scale. Making GPU-accelerated earth visualization accessible via WebGL/WebGPU.</p>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 9: GLOSSARY -->
+<section class="hidden" id="glossary">
+<h2>// Glossary</h2>
+<dl class="glossary-grid">
+<div class="glossary-item"><dt>Vertex Shader</dt><dd>Programmable GPU stage that transforms vertex positions from object space to clip space. Runs once per vertex. Outputs interpolated varyings to fragment stage.</dd></div>
+<div class="glossary-item"><dt>Fragment Shader</dt><dd>Computes per-pixel color. Also called pixel shader. The primary tool for visual effects, texturing, and lighting in real-time rendering.</dd></div>
+<div class="glossary-item"><dt>Rasterization</dt><dd>Conversion of vector geometry (triangles) to discrete pixels. Determines which screen pixels a triangle covers and interpolates vertex attributes.</dd></div>
+<div class="glossary-item"><dt>Deferred Shading</dt><dd>Multi-pass technique storing geometry data in a G-buffer then computing lighting in a full-screen pass. Allows many lights at low cost.</dd></div>
+<div class="glossary-item"><dt>PBR</dt><dd>Physically Based Rendering. Microfacet BRDF model that conserves energy and produces consistent results under all lighting conditions.</dd></div>
+<div class="glossary-item"><dt>G-Buffer</dt><dd>Geometry Buffer. Set of textures storing albedo, normal, roughness, metalness, and depth for deferred shading. Typically 4–6 render targets.</dd></div>
+<div class="glossary-item"><dt>Draw Call</dt><dd>CPU command to GPU to render a set of geometry. Minimizing draw calls reduces CPU overhead. GPU-driven rendering submits draws from GPU memory.</dd></div>
+<div class="glossary-item"><dt>TAA</dt><dd>Temporal Anti-Aliasing. Accumulates sub-pixel samples across multiple frames to achieve smooth edges. Industry standard. Causes ghosting on fast motion.</dd></div>
+<div class="glossary-item"><dt>Nanite</dt><dd>UE5 virtualized geometry system. Streams and renders as many triangles as there are pixels — no LOD transitions or polygon budgets for static meshes.</dd></div>
+<div class="glossary-item"><dt>Lumen</dt><dd>UE5 dynamic global illumination. Combines ray-traced surface cache, radiance cache, and screen-space reflections for real-time GI at 60fps.</dd></div>
+<div class="glossary-item"><dt>Compute Shader</dt><dd>GPU shader stage for general-purpose computation. No fixed-function pipeline. Used for physics, particles, post-processing, and procedural generation.</dd></div>
+<div class="glossary-item"><dt>SDF</dt><dd>Signed Distance Field. Stores the nearest surface distance per voxel. Used for font rendering, soft shadows, AO, and implicit surface ray marching.</dd></div>
+<div class="glossary-item"><dt>VRAM</dt><dd>Video RAM on the GPU. Stores textures, meshes, framebuffers, and shader data. Limited resource — typically 8–24GB. VRAM overflow causes stuttering.</dd></div>
+<div class="glossary-item"><dt>Warp</dt><dd>NVIDIA term for 32 threads executing in lockstep on a SM. AMD equivalent: wavefront (64 threads). Divergent code paths serialize warp execution.</dd></div>
+<div class="glossary-item"><dt>BVH</dt><dd>Bounding Volume Hierarchy. Tree structure for accelerating ray-geometry intersection. Required for ray tracing. Built on GPU for dynamic scenes.</dd></div>
+<div class="glossary-item"><dt>DLSS / FSR</dt><dd>NVIDIA DLSS and AMD FSR use AI/spatial upscaling to render at lower resolution and reconstruct higher-resolution output. 2× or 4× performance gain.</dd></div>
+<div class="glossary-item"><dt>Mesh Shader</dt><dd>Next-gen graphics API feature replacing vertex + geometry shaders. Amplification shader selects meshlets; mesh shader computes final geometry.</dd></div>
+<div class="glossary-item"><dt>Overdraw</dt><dd>Rendering the same pixel multiple times due to overlapping transparent geometry. Major performance issue. Sort back-to-front or use OIT techniques.</dd></div>
+<div class="glossary-item"><dt>Occlusion Culling</dt><dd>Skipping draw calls for geometry hidden behind other objects. Hardware occlusion queries, hierarchical Z-buffer, and HZB culling reduce wasted GPU work.</dd></div>
+<div class="glossary-item"><dt>WebGPU</dt><dd>Modern successor to WebGL. Direct access to Vulkan/Metal/D3D12 from browser. Enables compute shaders and GPU-driven rendering on the web.</dd></div>
+</dl>
+</section>
+<script>
+'use strict';
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+const lagHeroMX    = new LagFilter(0.5, 0.7);
+const lagHeroMY    = new LagFilter(0.5, 0.7);
+const lagPipeSpd   = new LagFilter(60,  0.4);
+const lagCU        = new LagFilter(64,  0.5);
+const lagOcc       = new LagFilter(75,  0.4);
+const lagFPS       = new LagFilter(60,  0.5);
+const lagComplex   = new LagFilter(50,  0.4);
+const lagLightN    = new LagFilter(8,   0.5);
+const lagRough     = new LagFilter(40,  0.4);
+const lagOctave    = new LagFilter(4,   0.5);
+const lagFreq      = new LagFilter(30,  0.4);
+const lagLightMX   = new LagFilter(0.5, 0.35);
+const lagLightMY   = new LagFilter(0.5, 0.35);
+const lagPipePart  = new LagFilter(0,   0.15);
+const lagGPUHeat   = new LagFilter(75,  0.3);
+const lagEngHov    = new LagFilter(0,   0.3);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+function bindSlider(id, outId, fn) {
+  const s = document.getElementById(id), o = document.getElementById(outId);
+  if (!s || !o) return;
+  const upd = () => { o.textContent = fn ? fn(+s.value) : s.value; };
+  s.addEventListener('input', upd); upd();
+}
+bindSlider('pipeSpeedSlider', 'pipeSpeedVal',  v => (v/100).toFixed(2));
+bindSlider('cuSlider',        'cuVal',         v => v);
+bindSlider('occSlider',       'occVal',        v => v + '%');
+bindSlider('fpsSlider',       'fpsVal',        v => v + ' fps');
+bindSlider('complexSlider',   'complexVal',    v => v + '%');
+bindSlider('lightCountSlider','lightCountVal', v => v);
+bindSlider('roughSlider',     'roughVal',      v => (v/100).toFixed(2));
+bindSlider('octaveSlider',    'octaveVal',     v => v);
+bindSlider('freqSlider',      'freqVal',       v => (v/100).toFixed(2));
+
+/* ═══ HERO — GPU Matrix / Shader rain ═══ */
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  let W, H, mouse = { x: 0.5, y: 0.5 }, startT = Date.now();
+  function resize() {
+    W = canvas.offsetWidth; H = canvas.offsetHeight;
+    canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = 1 - (e.clientY - r.top) / r.height;
+  });
+
+  const vs = `attribute vec2 a; void main(){ gl_Position=vec4(a,0,1); }`;
+  const fs = `
+    precision highp float;
+    uniform float u_t; uniform vec2 u_res, u_mouse;
+    float hash(vec2 p){ p=fract(p*vec2(234.3,435.3)); p+=dot(p,p+34.2); return fract(p.x*p.y); }
+    float n(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.-2.*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y); }
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res;
+      float t=u_t;
+      vec2 m=u_mouse;
+      // Scan line grid — GPU pipeline visualization
+      vec2 grid=fract(uv*vec2(80.,40.));
+      float cell=step(0.05,grid.x)*step(0.05,grid.y);
+      float scan=fract(uv.y*40.-t*3.);
+      float scanLine=1.-smoothstep(0.,0.1,scan);
+      // Node clusters
+      float nd=n(uv*8.+vec2(t*0.1,0.));
+      float nodes=step(0.75, nd)*cell;
+      // Color
+      float dist=length(uv-m);
+      float cursor=exp(-dist*4.)*0.4;
+      vec3 col=vec3(0.);
+      col+=vec3(0.,1.,0.25)*nodes*0.6;
+      col+=vec3(0.,1.,0.25)*scanLine*0.08*cell;
+      col+=vec3(0.,0.9,1.)*cursor;
+      col+=vec3(0.,0.4,0.1)*n(uv*3.+t*0.05)*0.3;
+      // Vignette
+      vec2 vig=uv*2.-1.; col*=1.-dot(vig,vig)*0.35;
+      gl_FragColor=vec4(col,1.);
+    }
+  `;
+  function sh(type, src) { const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const aLoc = gl.getAttribLocation(prog,'a');
+  gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+  const uT=gl.getUniformLocation(prog,'u_t'), uR=gl.getUniformLocation(prog,'u_res'), uM=gl.getUniformLocation(prog,'u_mouse');
+
+  let lastT = Date.now();
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const mx = lagHeroMX.update(mouse.x, dt);
+    const my = lagHeroMY.update(mouse.y, dt);
+    gl.uniform1f(uT, (now - startT)/1000);
+    gl.uniform2f(uR, canvas.width, canvas.height);
+    gl.uniform2f(uM, mx, my);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ PIPELINE CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('pipelineCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 200; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const stages = [
+    { label: 'CPU\nSubmit', color: '#00CC33', w: 0.12 },
+    { label: 'Vertex\nShader', color: '#00FF41', w: 0.12 },
+    { label: 'Raster-\nize', color: '#00CC33', w: 0.10 },
+    { label: 'Fragment\nShader', color: '#00FF41', w: 0.18 },
+    { label: 'Depth\nTest', color: '#00CC33', w: 0.08 },
+    { label: 'Output\nMerge', color: '#00FF41', w: 0.10 },
+    { label: 'Frame-\nbuffer', color: '#00E5FF', w: 0.12 },
+  ];
+
+  const pipeSpSl = document.getElementById('pipeSpeedSlider');
+  let lastT = Date.now(), particlePhase = 0;
+  const particles = Array.from({ length: 20 }, (_, i) => ({ t: i / 20, lag: new LagFilter(i/20, 0.15 + Math.random() * 0.1) }));
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const speed = lagPipeSpd.update(pipeSpSl ? +pipeSpSl.value : 60, dt) / 100;
+    particlePhase = (particlePhase + dt * speed * 0.5) % 1;
+
+    ctx.fillStyle = 'rgba(2,10,2,0.3)';
+    ctx.fillRect(0, 0, W, H);
+
+    const pad = 20;
+    let x = pad;
+    const stageRects = [];
+
+    stages.forEach((s, i) => {
+      const sw = (W - pad * 2) * s.w;
+      const sh = H * 0.5;
+      const sy = H * 0.25;
+      const alpha = 0.6 + Math.sin(Date.now() / 600 + i) * 0.2;
+      ctx.fillStyle = s.color + '22';
+      ctx.strokeStyle = s.color + Math.floor(alpha * 255).toString(16).padStart(2,'0');
+      ctx.lineWidth = 1;
+      ctx.fillRect(x, sy, sw - 4, sh);
+      ctx.strokeRect(x, sy, sw - 4, sh);
+      stageRects.push({ x, y: sy, w: sw - 4, h: sh });
+
+      // Label
+      ctx.fillStyle = s.color;
+      ctx.font = '8px monospace';
+      ctx.textAlign = 'center';
+      s.label.split('\n').forEach((line, li) => {
+        ctx.fillText(line, x + (sw - 4) / 2, sy + sh / 2 - 4 + li * 10);
+      });
+
+      // Arrow
+      if (i < stages.length - 1) {
+        ctx.strokeStyle = 'rgba(0,255,65,0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x + sw - 4, sy + sh / 2);
+        ctx.lineTo(x + sw, sy + sh / 2);
+        ctx.stroke();
+      }
+      x += sw;
+    });
+
+    // Animated particles flowing through pipeline
+    particles.forEach(p => {
+      p.t = (p.t + dt * speed * 0.3) % 1;
+      const pt = p.lag.update(p.t, dt);
+      const totalW = W - pad * 2;
+      const px = pad + pt * totalW;
+      const py = H / 2;
+
+      // Find which stage
+      let sx2 = pad;
+      let stageColor = '#00FF41';
+      stages.forEach(s => {
+        const sw = (W - pad * 2) * s.w;
+        if (px > sx2 && px < sx2 + sw) stageColor = s.color;
+        sx2 += sw;
+      });
+
+      ctx.fillStyle = stageColor + 'CC';
+      ctx.shadowBlur = 6; ctx.shadowColor = stageColor;
+      ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    ctx.textAlign = 'left';
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ GPU CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('gpuCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const cuSl  = document.getElementById('cuSlider');
+  const occSl = document.getElementById('occSlider');
+  let lastT = Date.now();
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const cu  = Math.round(lagCU.update(cuSl ? +cuSl.value : 64, dt));
+    const occ = lagOcc.update(occSl ? +occSl.value : 75, dt) / 100;
+    lagGPUHeat.update(occ * 100, dt);
+
+    ctx.fillStyle = 'rgba(2,10,2,0.2)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cols = Math.ceil(Math.sqrt(cu * W / H));
+    const rows = Math.ceil(cu / cols);
+    const cw = (W - 20) / cols;
+    const ch = (H - 30) / rows;
+    const t = now / 1000;
+
+    for (let i = 0; i < cu; i++) {
+      const col = i % cols, row = Math.floor(i / cols);
+      const x = 10 + col * cw, y = 10 + row * ch;
+      const active = Math.random() < occ;
+      const heat = active ? (0.5 + Math.sin(t * 3 + i * 0.4) * 0.5) : 0;
+      const hue = 90 + heat * 30; // green to yellow-green
+
+      ctx.fillStyle = active
+        ? `hsla(${hue}, 100%, ${30 + heat * 30}%, 0.8)`
+        : 'rgba(0,30,0,0.4)';
+      ctx.fillRect(x + 1, y + 1, cw - 3, ch - 3);
+
+      if (active && Math.random() < 0.1) {
+        ctx.strokeStyle = 'rgba(0,255,65,0.8)';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(x + 1, y + 1, cw - 3, ch - 3);
+      }
+    }
+
+    ctx.fillStyle = 'rgba(0,255,65,0.4)';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`CUs: ${cu}  occupancy: ${Math.round(occ*100)}%  active: ${Math.round(occ*cu)} cores`, 10, H - 8);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ TIMING CANVAS — Frame Timeline ═══ */
+(function() {
+  const canvas = document.getElementById('timingCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 200; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const fpsSl     = document.getElementById('fpsSlider');
+  const complexSl = document.getElementById('complexSlider');
+  let lastT = Date.now(), histBuf = [];
+
+  const passes = [
+    { name: 'Shadow', pct: 0.15, color: '#005500' },
+    { name: 'G-Buffer', pct: 0.20, color: '#007700' },
+    { name: 'SSAO', pct: 0.10, color: '#009900' },
+    { name: 'Lighting', pct: 0.25, color: '#00BB00' },
+    { name: 'Transparent', pct: 0.10, color: '#00CC33' },
+    { name: 'Post FX', pct: 0.12, color: '#00DD44' },
+    { name: 'TAA', pct: 0.08, color: '#00E5FF' },
+  ];
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const fps     = lagFPS.update(fpsSl ? +fpsSl.value : 60, dt);
+    const complex = lagComplex.update(complexSl ? +complexSl.value : 50, dt) / 100;
+
+    const budget = 1000 / fps; // ms
+    const actual = budget * (0.6 + complex * 0.6);
+
+    // History
+    histBuf.push(actual / budget);
+    if (histBuf.length > W / 2) histBuf.shift();
+
+    ctx.fillStyle = 'rgba(2,10,2,0.25)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Frame budget bar
+    const barY = 20, barH = 40;
+    const used = Math.min(1, actual / budget);
+    let bx = 20;
+    passes.forEach(p => {
+      const bw = (W - 40) * p.pct * complex * 1.5 * (1 / passes.reduce((s, q) => s + q.pct, 0));
+      const clampedW = Math.min(bw, (W - 40) * (1 - bx / (W - 20)));
+      ctx.fillStyle = p.color;
+      ctx.fillRect(bx, barY, Math.max(0, Math.min(clampedW, W - 20 - bx)), barH);
+      bx += clampedW;
+    });
+
+    // Budget limit line
+    const limitX = 20 + (W - 40) * (budget / (budget * 1.5));
+    ctx.strokeStyle = '#00FF41';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(limitX, barY - 5); ctx.lineTo(limitX, barY + barH + 5); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#00FF41';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(budget.toFixed(1) + 'ms', limitX, barY - 7);
+
+    // History graph
+    const histY = barY + barH + 20, histH = H - histY - 15;
+    ctx.strokeStyle = 'rgba(0,255,65,0.3)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(20, histY + histH / 2);
+    ctx.lineTo(W - 20, histY + histH / 2);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#00FF41';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    histBuf.forEach((v, i) => {
+      const hx = 20 + i * ((W - 40) / histBuf.length);
+      const hy = histY + histH - v * histH;
+      i === 0 ? ctx.moveTo(hx, hy) : ctx.lineTo(hx, hy);
+    });
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(0,200,50,0.4)';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`target: ${Math.round(fps)}fps  budget: ${budget.toFixed(1)}ms  actual: ${actual.toFixed(1)}ms  ${actual > budget ? '⚠ OVER BUDGET' : '✓ OK'}`, 20, H - 5);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ LIGHTING CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('lightingCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: 0.5, y: 0.4 };
+  function resize() { W = canvas.offsetWidth; H = 260; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = (e.clientY - r.top) / r.height;
+  });
+
+  const lightNSl = document.getElementById('lightCountSlider');
+  const roughSl  = document.getElementById('roughSlider');
+  let lastT = Date.now(), lightSeed = Array.from({ length: 32 }, (_, i) => ({ angle: i / 32 * Math.PI * 2, dist: 0.3 + Math.random() * 0.2, hue: Math.random() * 360, speed: (Math.random() - 0.5) * 0.5 }));
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const lightN = Math.round(lagLightN.update(lightNSl ? +lightNSl.value : 8, dt));
+    const rough  = lagRough.update(roughSl ? +roughSl.value : 40, dt) / 100;
+    const mx     = lagLightMX.update(mouse.x, dt);
+    const my     = lagLightMY.update(mouse.y, dt);
+
+    ctx.fillStyle = 'rgba(2,10,2,0.2)';
+    ctx.fillRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H * 0.55;
+    const sphereR = Math.min(W, H) * 0.22;
+
+    // Update light positions
+    lightSeed.forEach((l, i) => {
+      l.angle += l.speed * dt;
+    });
+
+    // Draw sphere (approximated)
+    const N = 40;
+    for (let yi = 0; yi < N; yi++) {
+      for (let xi = 0; xi < N; xi++) {
+        const u = xi / N * 2 - 1;
+        const v = yi / N * 2 - 1;
+        if (u * u + v * v > 1) continue;
+        const z = Math.sqrt(1 - u * u - v * v);
+        const nx = u, ny = v, nz = z;
+        const px = cx + u * sphereR;
+        const py = cy + v * sphereR;
+
+        // Accumulate lighting from all point lights
+        let diffuse = 0, specular = 0;
+        for (let li = 0; li < lightN; li++) {
+          const l = lightSeed[li];
+          const lx = cx + Math.cos(l.angle) * W * l.dist;
+          const ly = cy + Math.sin(l.angle) * H * l.dist * 0.5;
+          const lnx = (lx - px) / sphereR;
+          const lny = (ly - py) / sphereR;
+          const lnz = 1;
+          const len = Math.sqrt(lnx*lnx + lny*lny + lnz*lnz);
+          const dot = Math.max(0, (nx*lnx + ny*lny + nz*lnz) / len);
+          const dist2 = Math.hypot(lx - px, ly - py) / W;
+          const att = 1 / (1 + dist2 * dist2 * 10);
+          diffuse += dot * att / lightN;
+
+          // Specular (Blinn-Phong approximated)
+          const hx = lnx / len * 0.5 + mx - 0.5;
+          const hy = lny / len * 0.5 + (1 - my) - 0.5;
+          const hz = lnz / len * 0.5 + 0.5;
+          const hl = Math.sqrt(hx*hx + hy*hy + hz*hz);
+          const specDot = Math.max(0, (nx*hx + ny*hy + nz*hz) / hl);
+          const shininess = 2 + (1 - rough) * 128;
+          specular += Math.pow(specDot, shininess) * att * 0.5 / lightN;
+        }
+
+        const r = Math.floor(diffuse * 0 + specular * 200);
+        const g = Math.floor(diffuse * 255 + specular * 255);
+        const b = Math.floor(diffuse * 80 + specular * 255);
+        ctx.fillStyle = `rgba(${r},${g},${b},0.8)`;
+        ctx.fillRect(px, py, sphereR * 2 / N, sphereR * 2 / N);
+      }
+    }
+
+    // Draw light positions
+    for (let li = 0; li < lightN; li++) {
+      const l = lightSeed[li];
+      const lx = cx + Math.cos(l.angle) * W * l.dist;
+      const ly = cy + Math.sin(l.angle) * H * l.dist * 0.5;
+      ctx.fillStyle = `hsla(${l.hue}, 100%, 70%, 0.7)`;
+      ctx.shadowBlur = 8; ctx.shadowColor = `hsl(${l.hue}, 100%, 60%)`;
+      ctx.beginPath(); ctx.arc(lx, ly, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    ctx.fillStyle = 'rgba(0,200,50,0.4)';
+    ctx.font = '9px monospace';
+    ctx.fillText(`lights:${lightN}  roughness:${rough.toFixed(2)}  move cursor for specular`, 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ ENGINES CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('enginesCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 220; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const engines = [
+    { name: 'Unreal Engine 5', scores: [0.95, 0.9, 0.7, 0.8, 0.85], color: '#0060FF' },
+    { name: 'Unity HDRP',      scores: [0.8,  0.85, 0.85, 0.9, 0.7], color: '#00E5FF' },
+    { name: 'Godot 4',         scores: [0.65, 0.7, 0.95, 0.7, 0.55], color: '#00FF41' },
+    { name: 'TouchDesigner',   scores: [0.7, 0.95, 0.9, 0.6, 0.9], color: '#FF6D00' },
+  ];
+  const axes = ['Visuals', 'Perf', 'Open-src', 'Platform', 'Creative'];
+
+  let lastT = Date.now();
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+
+    ctx.fillStyle = '#020A02';
+    ctx.fillRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H / 2;
+    const r = Math.min(W, H) * 0.32;
+    const N = axes.length;
+
+    // Grid
+    [0.25, 0.5, 0.75, 1].forEach(lvl => {
+      ctx.strokeStyle = `rgba(0,255,65,${lvl * 0.1})`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      axes.forEach((_, i) => {
+        const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const px = cx + Math.cos(a) * r * lvl;
+        const py = cy + Math.sin(a) * r * lvl;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.closePath(); ctx.stroke();
+    });
+
+    // Axes
+    axes.forEach((ax, i) => {
+      const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+      ctx.strokeStyle = 'rgba(0,255,65,0.2)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r); ctx.stroke();
+      ctx.fillStyle = 'rgba(0,230,60,0.6)';
+      ctx.font = '8px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(ax, cx + Math.cos(a) * (r + 16), cy + Math.sin(a) * (r + 12) + 3);
+    });
+
+    // Engines
+    engines.forEach(eng => {
+      ctx.strokeStyle = eng.color + 'CC';
+      ctx.fillStyle = eng.color + '22';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      eng.scores.forEach((v, i) => {
+        const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const px = cx + Math.cos(a) * r * v;
+        const py = cy + Math.sin(a) * r * v;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    });
+
+    // Legend
+    engines.forEach((eng, i) => {
+      const lx = 8, ly = 12 + i * 14;
+      ctx.fillStyle = eng.color;
+      ctx.fillRect(lx, ly, 10, 8);
+      ctx.fillStyle = 'rgba(200,240,200,0.7)';
+      ctx.font = '8px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(eng.name, lx + 14, ly + 7);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ PROCEDURAL CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('proceduralCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 260; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const octSl  = document.getElementById('octaveSlider');
+  const freqSl = document.getElementById('freqSlider');
+  let lastT = Date.now(), phase = 0;
+
+  function hash(x, y) { return Math.abs(Math.sin(x * 127.1 + y * 311.7) * 43758.5) % 1; }
+  function noise(x, y) {
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const fx = x - ix, fy = y - iy;
+    const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+    return (hash(ix,iy)*(1-ux)+hash(ix+1,iy)*ux)*(1-uy)+(hash(ix,iy+1)*(1-ux)+hash(ix+1,iy+1)*ux)*uy;
+  }
+  function fbm(x, y, oct) {
+    let v = 0, a = 0.5, freq = 1;
+    for (let i = 0; i < oct; i++) {
+      v += a * noise(x * freq, y * freq);
+      freq *= 2; a *= 0.5;
+    }
+    return v;
+  }
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    phase += dt * 0.15;
+    const oct  = Math.round(lagOctave.update(octSl ? +octSl.value : 4, dt));
+    const freq = lagFreq.update(freqSl ? +freqSl.value : 30, dt) / 100;
+
+    const res = 3;
+    for (let y = 0; y < H; y += res) {
+      for (let x = 0; x < W; x += res) {
+        const u = x / W, v = y / H;
+        const n = fbm(u * freq * 10 + phase * 0.2, v * freq * 10 + phase * 0.1, oct);
+        const terrain = n - 0.5 > 0 ? n : 0;
+        const intensity = terrain * 2;
+        const g = Math.floor(Math.max(0, Math.min(255, intensity * 255)));
+        const b = Math.floor(Math.max(0, Math.min(255, n * 40 + 20)));
+        ctx.fillStyle = `rgb(0,${g},${b})`;
+        ctx.fillRect(x, y, res, res);
+      }
+    }
+
+    ctx.fillStyle = 'rgba(0,200,50,0.4)';
+    ctx.font = '9px monospace';
+    ctx.fillText(`fbm(octaves:${oct}, freq:${(freq*10).toFixed(1)}) — realtime terrain`, 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+</script>

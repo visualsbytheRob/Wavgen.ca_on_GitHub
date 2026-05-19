@@ -1,0 +1,1661 @@
+---
+layout: world.njk
+title: "WAVGEN Music World — Generative Music Systems"
+description: "Immersive music world exploring generative music"
+domain: music
+permalink: /music/generative-music-systems/
+---
+
+
+
+<!-- SECTION 1: HERO -->
+<section id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">GENERATIVE MUSIC<br/>SYSTEMS</div>
+<div class="hero-sub">A LIVING AUTONOMOUS MUSIC ORGANISM</div>
+<div class="hero-badges">
+<span class="badge">EMERGENT</span>
+<span class="badge">PROBABILISTIC</span>
+<span class="badge-gold badge">EUCLIDEAN</span>
+<span class="badge">MARKOV</span>
+<span class="badge-gold badge">72 BPM</span>
+<span class="badge">AMBIENT</span>
+</div>
+</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 2: GENERATIVE SEQUENCER -->
+<section class="hidden" id="sequencer">
+<div class="section-label">02 — PROBABILISTIC ENGINE</div>
+<div class="section-title">Generative Sequencer</div>
+<div class="section-desc">An 8-step sequencer where each step fires based on probability. Set pitch, probability, and velocity per step. Press Evolve to drift the system autonomously.</div>
+<div class="canvas-wrap">
+<canvas height="90" id="seq-canvas" style="width:100%;height:90px" width="900"></canvas>
+</div>
+<div id="seq-steps" style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin:12px 0"></div>
+<div class="ctrl-row">
+<label>BPM</label>
+<input id="seq-bpm" max="180" min="40" style="width:100px" type="range" value="90"/>
+<span class="lval" id="seq-bpm-val">90</span>
+<label>Density</label>
+<input id="seq-density" max="100" min="0" style="width:100px" type="range" value="70"/>
+<span class="lval" id="seq-density-val">70%</span>
+<button id="seq-play-btn">▶ PLAY</button>
+<button class="gold" id="seq-evolve-btn">✦ EVOLVE</button>
+<button id="seq-reset-btn">RESET</button>
+</div>
+<div class="edu-card">The probabilistic sequencer extends the classic 8-step pattern with stochastic firing: each step plays only if a random value falls below its probability threshold. This generates ever-varying rhythmic patterns from a fixed set of pitches — the core of generative melodic systems used by Brian Eno and contemporary modular synthesis.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 3: EUCLIDEAN RHYTHM -->
+<section class="hidden" id="euclidean">
+<div class="section-label">03 — MATHEMATICAL RHYTHM</div>
+<div class="section-title">Euclidean Rhythm Generator</div>
+<div class="section-desc">Four polyrhythmic tracks. The Euclidean algorithm distributes K hits as evenly as possible across N steps — generating the world's most universal rhythmic patterns.</div>
+<div class="canvas-wrap">
+<canvas height="340" id="euc-canvas" style="width:100%;height:340px" width="900"></canvas>
+</div>
+<div id="euc-controls" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px"></div>
+<div class="ctrl-row">
+<label>BPM</label>
+<input id="euc-bpm" max="180" min="40" style="width:100px" type="range" value="90"/>
+<span class="lval" id="euc-bpm-val">90</span>
+<button id="euc-play-btn">▶ PLAY</button>
+<button class="gold" id="euc-randomize-btn">✦ RANDOMIZE</button>
+</div>
+<div class="edu-card">"The Euclidean algorithm generates traditional musical rhythms" — Godfried Toussaint, 2004. E(3,8) = [x..x..x.] = the Cuban tresillo. E(5,8) = the Cuban cinquillo. E(4,12) = the West African standard bell. These are not approximations — they are mathematically exact reproductions of world rhythm traditions.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 4: PROBABILITY MATRIX -->
+<section class="hidden" id="matrix">
+<div class="section-label">04 — MARKOV COMPOSER</div>
+<div class="section-title">Probability Matrix Composer</div>
+<div class="section-desc">A 6×8 grid of pitch × time probabilities. Click cells to cycle 0→50→100%. Enable Markov mode for autonomous composition guided by transition weights.</div>
+<div class="canvas-wrap">
+<canvas height="220" id="matrix-canvas" style="width:100%;height:220px" width="900"></canvas>
+</div>
+<div class="ctrl-row">
+<label>Current Pitch:</label>
+<span class="lval" id="matrix-pitch-display" style="min-width:60px;font-size:13px">C3</span>
+<button id="matrix-play-btn">▶ PLAY</button>
+<button class="gold" id="matrix-markov-btn">⊗ MARKOV MODE</button>
+<label>Entropy</label>
+<input id="matrix-entropy" max="100" min="0" style="width:90px" type="range" value="20"/>
+<span class="lval" id="matrix-entropy-val">20%</span>
+<button id="matrix-clear-btn">CLEAR</button>
+<button class="gold" id="matrix-random-btn">✦ RANDOMIZE</button>
+</div>
+<div class="edu-card">A Markov chain treats each musical state as a node in a probability graph. The matrix cell values define transition weights: a high probability at row C, column 3 means the system is likely to play C at time-step 3. In Markov mode, the current pitch biases the next pitch selection — the system composes itself forward.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 5: AMBIENT EVOLUTION -->
+<section class="hidden" id="ambient">
+<div class="section-label">05 — BREATHING SYSTEM</div>
+<div class="section-title">Ambient Evolution Engine</div>
+<div class="section-desc">Five voices drift autonomously through pitch and timbre space. A system that breathes on its own — governed by LFO envelopes and slow harmonic attraction.</div>
+<div class="canvas-wrap">
+<canvas height="320" id="amb-canvas" style="width:100%;height:320px" width="900"></canvas>
+</div>
+<div class="ctrl-row">
+<label>Drift</label>
+<input id="amb-drift" max="100" min="1" style="width:90px" type="range" value="30"/>
+<span class="lval" id="amb-drift-val">30</span>
+<label>Density</label>
+<input id="amb-density" max="100" min="1" style="width:90px" type="range" value="60"/>
+<span class="lval" id="amb-density-val">60</span>
+<label>Consonance</label>
+<input id="amb-consonance" max="100" min="0" style="width:90px" type="range" value="50"/>
+<span class="lval" id="amb-consonance-val">50</span>
+<button class="gold active" id="amb-breathe-btn">♾ BREATHE</button>
+</div>
+<div class="edu-card">The ambient evolution engine models five independent voices as particles in a 2D field. Vertical position encodes pitch; size encodes volume; color temperature encodes timbre. Consonance pulls voices toward harmonic intervals (perfect fifths, octaves). Dissonance clusters them into dense chromatic clouds. The Breathe mode imposes a slow 8-bar LFO on all voice volumes simultaneously — the system inhales and exhales.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 6: NODE GRAPH -->
+<section class="hidden" id="nodegraph">
+<div class="section-label">06 — SIGNAL FLOW</div>
+<div class="section-title">Reactive Composition Graph</div>
+<div class="section-desc">Drag nodes. Click an output port then an input port to connect with a bezier wire. Data particles flow along connections at BPM tempo. Double-click a wire to remove it.</div>
+<div class="canvas-wrap" style="position:relative;overflow:visible">
+<canvas height="440" id="graph-canvas" style="width:100%;height:440px;cursor:crosshair" width="900"></canvas>
+</div>
+<div class="ctrl-row">
+<label>Add Node:</label>
+<select id="graph-node-select">
+<option value="Oscillator">Oscillator</option>
+<option value="Filter">Filter</option>
+<option value="Envelope">Envelope</option>
+<option value="LFO">LFO</option>
+<option value="Sequencer">Sequencer</option>
+<option value="Reverb">Reverb</option>
+<option value="Delay">Delay</option>
+<option value="Output">Output</option>
+</select>
+<button id="graph-add-btn">+ ADD</button>
+<button class="gold" id="graph-run-btn">▶ RUN</button>
+<button id="graph-clear-btn">CLEAR ALL</button>
+<span id="graph-status" style="font-size:11px;color:var(--dim);margin-left:8px"></span>
+</div>
+<div class="edu-card">The composition graph is a modular synthesis metaphor: each node is a signal processing unit, each wire is a control or audio connection. This is the paradigm of Max/MSP, Pure Data, and VCV Rack — instead of composing notes, you compose systems that generate notes. The graph is the score.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 7: HARMONY EXPLORER -->
+<section class="hidden" id="harmony">
+<div class="section-label">07 — EMERGENT HARMONY</div>
+<div class="section-title">Emergent Harmony Explorer</div>
+<div class="section-desc">A 12-note chromatic circle. Generative algorithms select chords based on harmonic series weighting, entropy, and modal constraints. Chords evolve with phosphor persistence.</div>
+<div class="canvas-wrap">
+<canvas height="340" id="harm-canvas" style="width:100%;max-width:500px;height:340px;margin:0 auto;display:block" width="500"></canvas>
+</div>
+<div class="chord-display" id="harm-chord-name">—</div>
+<div class="interval-list" id="harm-intervals"></div>
+<div class="ctrl-row">
+<label>Mode:</label>
+<select id="harm-mode">
+<option value="ionian">Ionian</option>
+<option value="dorian">Dorian</option>
+<option value="mixolydian">Mixolydian</option>
+<option value="wholetone">Whole Tone</option>
+<option value="chromatic">Chromatic</option>
+</select>
+<label>Entropy</label>
+<input id="harm-entropy" max="100" min="0" style="width:90px" type="range" value="25"/>
+<span class="lval" id="harm-entropy-val">25%</span>
+<button id="harm-gen-btn">✦ GENERATE</button>
+<button class="gold" id="harm-evolve-btn">⟳ EVOLVE</button>
+</div>
+<div class="edu-card">Harmonic series weighting biases chord generation toward intervals found low in the overtone series: octaves (2:1), fifths (3:2), fourths (4:3). Higher entropy introduces chromatic tones not predicted by the harmonic series. Evolve mode slowly drifts the chord selection through modal space, creating the slow harmonic movement characteristic of ambient generative music.</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 8: ARTISTS -->
+<section class="hidden" id="artists">
+<div class="section-label">08 — PRACTITIONERS</div>
+<div class="section-title">Generative Music Artists</div>
+<div class="section-desc">The composers, artists, and researchers who built the field of generative and algorithmic music.</div>
+<div class="four-col" id="artists-grid">
+<div class="card hidden stagger-1">
+<h3>Brian Eno</h3>
+<div class="card-era">1975 — Present</div>
+<div class="card-work">Music for Airports (1978), Reflection (2017)</div>
+<div class="card-approach">Invented ambient music; defined generative music as "ever-different and ever the same." Overlapping tape loops of differing lengths — the simplest possible generative system.</div>
+</div>
+<div class="card hidden stagger-2">
+<h3>Pauline Oliveros</h3>
+<div class="card-era">1960 — 2016</div>
+<div class="card-work">Deep Listening (1988), Sonic Meditations</div>
+<div class="card-approach">Developed Deep Listening as compositional method: sustained, expanded attention to the full acoustic environment as a generative score.</div>
+</div>
+<div class="card hidden stagger-3">
+<h3>Alvin Lucier</h3>
+<div class="card-era">1966 — 2021</div>
+<div class="card-work">I Am Sitting in a Room (1969)</div>
+<div class="card-approach">Used acoustic feedback as a generative system: repeated recording amplifies a room's resonant frequencies until the room itself becomes the instrument.</div>
+</div>
+<div class="card hidden stagger-4">
+<h3>Terry Riley</h3>
+<div class="card-era">1964 — Present</div>
+<div class="card-work">In C (1964), A Rainbow in Curved Air</div>
+<div class="card-approach">Pioneered phase music and loop-based systems. In C is a generative score: 53 cells, any number of performers, any duration — the system composes the performance.</div>
+</div>
+<div class="card hidden stagger-1">
+<h3>Steve Reich</h3>
+<div class="card-era">1965 — Present</div>
+<div class="card-work">It's Gonna Rain (1965), Music for 18 Musicians</div>
+<div class="card-approach">Phase music: two identical loops at slightly different speeds drift in and out of alignment. A purely mechanical generative process producing complex emergent rhythm.</div>
+</div>
+<div class="card hidden stagger-2">
+<h3>Aphex Twin</h3>
+<div class="card-era">1991 — Present</div>
+<div class="card-work">Selected Ambient Works Vol. II (1994)</div>
+<div class="card-approach">Applied algorithmic composition and custom software to electronic music. Claimed to use Csound and custom C programs for generative texture and rhythm generation.</div>
+</div>
+<div class="card hidden stagger-3">
+<h3>Max Mathews</h3>
+<div class="card-era">1957 — 2011</div>
+<div class="card-work">MUSIC (1957), Radio Baton</div>
+<div class="card-approach">Father of computer music. Created the first computer program to generate digital audio. MUSIC I–V established algorithmic synthesis as a compositional medium.</div>
+</div>
+<div class="card hidden stagger-4">
+<h3>Iannis Xenakis</h3>
+<div class="card-era">1955 — 2001</div>
+<div class="card-work">Metastasis (1955), Pithoprakta (1956)</div>
+<div class="card-approach">Stochastic composition pioneer. Used probability theory, Poisson distributions, and Markov chains to determine all musical parameters. "Formalized Music" (1971) is the foundational text.</div>
+</div>
+</div>
+</section>
+<div class="wavgen-divider"></div>
+<!-- SECTION 9: GLOSSARY -->
+<section class="hidden" id="glossary">
+<div class="section-label">09 — LEXICON</div>
+<div class="section-title">Generative Music Glossary</div>
+<div class="section-desc">22 essential terms spanning generative systems, algorithmic composition, and ambient music practice.</div>
+<div class="gloss-grid" id="glossary-grid"></div>
+</section>
+<div style="height:60px"></div>
+<script>
+/* ============================================================
+   WAVGEN CORE — LagFilter, BPMEngine, shared utilities
+   ============================================================ */
+class LagFilter {
+  constructor(initial=0, tau=0.15){
+    this.value=initial; this.target=initial; this.tau=tau;
+  }
+  update(dt){
+    const a=1-Math.exp(-dt/Math.max(this.tau,0.001));
+    this.value+=(this.target-this.value)*a;
+    return this.value;
+  }
+  set(t){this.target=t;}
+  snap(v){this.value=this.target=v;}
+}
+
+class BPMEngine {
+  constructor(bpm=72){
+    this.bpm=bpm; this._start=null; this._beat=0;
+    this.running=false; this._subs=new Map(); this._rafId=null;
+  }
+  start(){
+    this.running=true; this._start=performance.now(); this._beat=0; this._tick();
+  }
+  stop(){
+    this.running=false;
+    if(this._rafId) cancelAnimationFrame(this._rafId);
+  }
+  _tick(){
+    if(!this.running) return;
+    const now=performance.now();
+    const ms=60000/this.bpm;
+    const exp=Math.floor((now-this._start)/ms);
+    while(this._beat<=exp){
+      const ph=this._beat%16;
+      this._subs.forEach(fn=>fn({beat:this._beat,phase:ph,bpm:this.bpm}));
+      this._beat++;
+    }
+    this._rafId=requestAnimationFrame(()=>this._tick());
+  }
+  setBPM(b){
+    this.bpm=Math.max(30,Math.min(300,b));
+    if(this.running){this.stop();this.start();}
+  }
+  sub(id,fn){this._subs.set(id,fn);}
+  unsub(id){this._subs.delete(id);}
+}
+
+/* ============================================================
+   HERO — Living Organism Canvas
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById("hero-canvas");
+  const ctx=canvas.getContext("2d");
+  let W,H;
+
+  function resize(){
+    W=canvas.width=canvas.offsetWidth;
+    H=canvas.height=canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener("resize",resize);
+
+  /* Nodes */
+  const N=10;
+  const notes=["C","D","E","G","A","B"];
+  const nodeColors=['#00bcbc','#2dd4bf','#d4a017','#00bcbc','#2dd4bf',
+                    '#d4a017','#00bcbc','#2dd4bf','#d4a017','#00bcbc'];
+  const nodes=[];
+  for(let i=0;i<N;i++){
+    const angle=(i/N)*Math.PI*2;
+    const r=0.28;
+    nodes.push({
+      x:new LagFilter(0.5+Math.cos(angle)*r+( Math.random()-.5)*0.12,1.8+Math.random()*1.2),
+      y:new LagFilter(0.5+Math.sin(angle)*r*0.7+(Math.random()-.5)*0.12,1.8+Math.random()*1.2),
+      freq:0.18+Math.random()*0.25,
+      phase:Math.random()*Math.PI*2,
+      scaleLag:new LagFilter(1,0.2),
+      baseR:14+Math.random()*10,
+      color:nodeColors[i],
+      note:notes[i%notes.length],
+      tx:0.5+Math.cos(angle)*r,
+      ty:0.5+Math.sin(angle)*r*0.7,
+      driftX:( Math.random()-.5)*0.04,
+      driftY:( Math.random()-.5)*0.03,
+    });
+  }
+
+  /* Connections */
+  const connections=[];
+  for(let i=0;i<N;i++){
+    connections.push([i,(i+1)%N]);
+    if(i%3===0) connections.push([i,(i+4)%N]);
+    if(i%4===0) connections.push([i,(i+6)%N]);
+  }
+
+  /* Particles */
+  const PCOUNT=40;
+  const particles=[];
+  for(let i=0;i<PCOUNT;i++){
+    const ci=Math.floor(Math.random()*connections.length);
+    particles.push({ci, t:Math.random(), speed:0.003+Math.random()*0.005,
+      alpha:new LagFilter(0.7+Math.random()*0.3,0.3)});
+  }
+
+  const bpm=new BPMEngine(72);
+  let beatFlash=new LagFilter(0,0.08);
+  bpm.sub("hero",(b)=>{
+    beatFlash.set(1);
+    /* nudge node scales on beat */
+    const idx=b.beat%N;
+    nodes[idx].scaleLag.set(1.6);
+  });
+  bpm.start();
+
+  let prevT=0;
+  function draw(t){
+    requestAnimationFrame(draw);
+    const dt=Math.min((t-prevT)*0.001,0.05);
+    prevT=t;
+
+    /* phosphor decay */
+    ctx.globalAlpha=0.07;
+    ctx.fillStyle="#020608";
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+
+    beatFlash.update(dt);
+    const bf=beatFlash.value;
+    beatFlash.set(0);
+
+    /* drift node targets */
+    nodes.forEach((nd,i)=>{
+      const ang=(i/N)*Math.PI*2+t*0.00003;
+      const r=0.26+Math.sin(t*0.0004+i)*0.04;
+      nd.x.set(0.5+Math.cos(ang)*r+(Math.sin(t*0.00015+i*1.3))*0.08);
+      nd.y.set(0.5+Math.sin(ang)*r*0.65+(Math.cos(t*0.00018+i*0.9))*0.06);
+      nd.x.update(dt); nd.y.update(dt);
+      nd.scaleLag.update(dt); nd.scaleLag.set(1);
+    });
+
+    const cx=n=>n.x.value*W;
+    const cy=n=>n.y.value*H;
+
+    /* draw connections */
+    connections.forEach(([a,b2])=>{
+      const na=nodes[a], nb=nodes[b2];
+      const ax=cx(na), ay=cy(na), bx=cx(nb), by=cy(nb);
+      const cpx=(ax+bx)/2+(ay-by)*0.15;
+      const cpy=(ay+by)/2+(bx-ax)*0.15;
+      ctx.beginPath();
+      ctx.moveTo(ax,ay);
+      ctx.quadraticCurveTo(cpx,cpy,bx,by);
+      ctx.strokeStyle="rgba(0,188,188,0.12)";
+      ctx.lineWidth=0.8;
+      ctx.shadowBlur=0; ctx.stroke();
+    });
+
+    /* draw particles along connections */
+    particles.forEach(p=>{
+      p.t+=p.speed*(1+bf*2);
+      if(p.t>1){p.t=0; p.ci=Math.floor(Math.random()*connections.length);}
+      p.alpha.update(dt);
+      const [a,b2]=connections[p.ci];
+      const na=nodes[a],nb=nodes[b2];
+      const ax=cx(na),ay=cy(na),bx=cx(nb),by=cy(nb);
+      const cpx=(ax+bx)/2+(ay-by)*0.15;
+      const cpy=(ay+by)/2+(bx-ax)*0.15;
+      const pt2=p.t;
+      const mx=((1-pt2)*(1-pt2)*ax+2*(1-pt2)*pt2*cpx+pt2*pt2*bx);
+      const my=((1-pt2)*(1-pt2)*ay+2*(1-pt2)*pt2*cpy+pt2*pt2*by);
+      ctx.beginPath();
+      ctx.arc(mx,my,2,0,Math.PI*2);
+      ctx.fillStyle="rgba(0,188,188,"+p.alpha.value+")";
+      ctx.shadowBlur=8; ctx.shadowColor="#00bcbc";
+      ctx.fill(); ctx.shadowBlur=0;
+    });
+
+    /* draw nodes */
+    nodes.forEach((nd,i)=>{
+      const px=cx(nd), py=cy(nd);
+      const sc=nd.scaleLag.value;
+      const pulse=1+Math.sin(t*0.001*nd.freq*Math.PI*2+nd.phase)*0.12;
+      const r=nd.baseR*pulse*sc;
+
+      /* outer glow ring */
+      ctx.beginPath();
+      ctx.arc(px,py,r+4,0,Math.PI*2);
+      ctx.strokeStyle=nd.color+"40";
+      ctx.lineWidth=1.5;
+      ctx.shadowBlur=18; ctx.shadowColor=nd.color;
+      ctx.stroke(); ctx.shadowBlur=0;
+
+      /* fill */
+      const grad=ctx.createRadialGradient(px-r*0.3,py-r*0.3,1,px,py,r);
+      grad.addColorStop(0,nd.color+"cc");
+      grad.addColorStop(1,nd.color+"22");
+      ctx.beginPath();
+      ctx.arc(px,py,r,0,Math.PI*2);
+      ctx.fillStyle=grad;
+      ctx.shadowBlur=12+bf*20; ctx.shadowColor=nd.color;
+      ctx.fill(); ctx.shadowBlur=0;
+
+      /* note label */
+      ctx.fillStyle="rgba(2,6,8,0.9)";
+      ctx.font="bold "+(9+Math.round(r*0.3))+"px Courier New";
+      ctx.textAlign="center"; ctx.textBaseline="middle";
+      ctx.fillText(nd.note,px,py);
+      ctx.fillStyle="rgba(216,232,232,0.8)";
+      ctx.fillText(nd.note,px,py);
+    });
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+<script>
+/* ============================================================
+   SECTION 2 — GENERATIVE SEQUENCER
+   ============================================================ */
+(function(){
+  const PITCHES=['C4','D4','E4','F4','G4','A4','B4','C5'];
+  const PITCH_NAMES=['C','D','E','F','G','A','B','C5'];
+  const STEPS=8;
+
+  /* Build step UI */
+  const container=document.getElementById('seq-steps');
+  const steps=[];
+  for(let i=0;i<STEPS;i++){
+    const div=document.createElement('div');
+    div.className='seq-step';
+    div.innerHTML=`<span class="step-num">STEP ${i+1}</span>
+      <select class="seq-pitch">${PITCH_NAMES.map((n,j)=>`<option value="${j}" ${j===i%7?'selected':''}>${n}</option>`).join('')}</select>
+      <label style="font-size:9px;color:var(--dim)">PROB</label>
+      <input type="range" class="seq-prob" min="0" max="100" value="${60+Math.floor(Math.random()*40)}" style="width:56px">
+      <label style="font-size:9px;color:var(--dim)">VEL</label>
+      <input type="range" class="seq-vel" min="0" max="100" value="${50+Math.floor(Math.random()*50)}" style="width:56px">`;
+    container.appendChild(div);
+    steps.push({
+      el:div,
+      get pitch(){return parseInt(div.querySelector('.seq-pitch').value);},
+      get prob(){return parseInt(div.querySelector('.seq-prob').value);},
+      get vel(){return parseInt(div.querySelector('.seq-vel').value);},
+    });
+  }
+
+  /* Canvas */
+  const canvas=document.getElementById('seq-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=canvas.offsetWidth, H=90;
+  canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+  new ResizeObserver(()=>{
+    W=canvas.offsetWidth;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }).observe(canvas);
+
+  let currentStep=0, playing=false, evolving=false, barCount=0;
+  let bpmVal=90;
+  const stepGlow=Array.from({length:STEPS},()=>new LagFilter(0,0.12));
+  const playheadLag=new LagFilter(0,0.08);
+
+  /* BPM engine for sequencer */
+  const seqBPM=new BPMEngine(90);
+  seqBPM.sub('seq',(b)=>{
+    if(!playing) return;
+    const st=b.beat%STEPS;
+    currentStep=st;
+    const prob=steps[st].prob;
+    if(Math.random()*100<prob){
+      stepGlow[st].set(1);
+    }
+    /* Evolve every 4 bars (32 steps at 8 steps/bar) */
+    if(b.beat%32===0 && evolving){
+      steps.forEach(s=>{
+        const probSlider=s.el.querySelector('.seq-prob');
+        const cur=parseInt(probSlider.value);
+        probSlider.value=Math.max(0,Math.min(100,cur+(Math.random()*20-10)));
+      });
+    }
+    if(b.beat%STEPS===0) barCount++;
+  });
+
+  /* Controls */
+  const bpmSlider=document.getElementById('seq-bpm');
+  const bpmVal2=document.getElementById('seq-bpm-val');
+  const densSlider=document.getElementById('seq-density');
+  const densVal=document.getElementById('seq-density-val');
+  const playBtn=document.getElementById('seq-play-btn');
+  const evolveBtn=document.getElementById('seq-evolve-btn');
+  const resetBtn=document.getElementById('seq-reset-btn');
+
+  bpmSlider.addEventListener('input',()=>{
+    bpmVal=parseInt(bpmSlider.value);
+    bpmVal2.textContent=bpmVal;
+    seqBPM.setBPM(bpmVal);
+  });
+  densSlider.addEventListener('input',()=>{
+    const d=parseInt(densSlider.value);
+    densVal.textContent=d+'%';
+    steps.forEach(s=>{s.el.querySelector('.seq-prob').value=d;});
+  });
+  playBtn.addEventListener('click',()=>{
+    playing=!playing;
+    playBtn.textContent=playing?'⏹ STOP':'▶ PLAY';
+    playBtn.classList.toggle('active',playing);
+    if(playing) seqBPM.start(); else seqBPM.stop();
+  });
+  evolveBtn.addEventListener('click',()=>{
+    evolving=!evolving;
+    evolveBtn.classList.toggle('active',evolving);
+  });
+  resetBtn.addEventListener('click',()=>{
+    steps.forEach((s,i)=>{
+      s.el.querySelector('.seq-prob').value=70;
+      s.el.querySelector('.seq-vel').value=75;
+      s.el.querySelector('.seq-pitch').value=i%7;
+    });
+  });
+
+  let prevT=0;
+  function drawSeq(t){
+    requestAnimationFrame(drawSeq);
+    const dt=Math.min((t-prevT)*0.001,0.05); prevT=t;
+    ctx.clearRect(0,0,W,H);
+
+    const sw=W/STEPS;
+    playheadLag.set(currentStep); playheadLag.update(dt);
+
+    for(let i=0;i<STEPS;i++){
+      stepGlow[i].update(dt); stepGlow[i].set(0);
+      const prob=steps[i].prob/100;
+      const vel=steps[i].vel/100;
+      const gv=stepGlow[i].value;
+      const x=i*sw+2, w=sw-4;
+      /* prob bar background */
+      ctx.fillStyle='rgba(13,74,74,0.4)';
+      ctx.fillRect(x,H-4,w,4);
+      /* prob bar fill */
+      ctx.fillStyle=gv>0.05?`rgba(0,188,188,${0.4+gv*0.6})`:'rgba(0,120,120,0.5)';
+      ctx.fillRect(x,H-4,w*prob,4);
+      /* vel bar */
+      const velH=Math.round((H-20)*vel);
+      ctx.fillStyle=`rgba(0,188,188,${0.08+prob*0.15})`;
+      ctx.fillRect(x+4,H-8-velH,w-8,velH);
+      /* active glow */
+      if(gv>0.01){
+        ctx.shadowBlur=16; ctx.shadowColor='#00bcbc';
+        ctx.fillStyle=`rgba(0,188,188,${gv*0.85})`;
+        ctx.fillRect(x,2,w,H-10);
+        ctx.shadowBlur=0;
+      }
+      /* step label */
+      ctx.fillStyle=`rgba(96,112,112,${0.5+gv*0.5})`;
+      ctx.font='9px Courier New'; ctx.textAlign='center';
+      ctx.fillText(PITCH_NAMES[steps[i].pitch],x+w/2,14);
+    }
+    /* playhead line */
+    if(playing){
+      const px=playheadLag.value*sw+sw/2;
+      ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,H);
+      ctx.strokeStyle='rgba(0,188,188,0.6)';
+      ctx.lineWidth=1.5;
+      ctx.shadowBlur=8; ctx.shadowColor='#00bcbc';
+      ctx.stroke(); ctx.shadowBlur=0;
+    }
+  }
+  requestAnimationFrame(drawSeq);
+})();
+
+/* ============================================================
+   SECTION 3 — EUCLIDEAN RHYTHM GENERATOR
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById('euc-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.offsetWidth; H=canvas.offsetHeight||340;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize();
+  new ResizeObserver(resize).observe(canvas);
+
+  /* Euclidean algorithm */
+  function euclidean(n,k){
+    if(k===0) return Array(n).fill(0);
+    if(k>=n) return Array(n).fill(1);
+    const pattern=[];
+    let counts=Array(n).fill(0);
+    let remainders=Array(n).fill(0);
+    let divisor=n-k;
+    let level=k;
+    remainders[0]=k;
+    while(true){
+      for(let i=0;i<level;i++) counts[i]=Math.floor(divisor/level);
+      remainders[level]=divisor%level;
+      divisor=level;
+      level=remainders[level];
+      if(level<=1) break;
+    }
+    function build(l){
+      if(l===0) return [1];
+      if(counts[l]===1&&remainders[l]===0) return [0];
+      const r=[];
+      for(let i=0;i<counts[l];i++) r.push(...build(l+1));
+      if(remainders[l]>0) r.push(...build(l-1));
+      return r;
+    }
+    const raw=build(level);
+    /* rotate to start on beat */
+    while(raw.length<n) raw.push(0);
+    return raw.slice(0,n);
+  }
+
+  const TRACK_COLORS=['#00bcbc','#d4a017','#2dd4bf','#d4a017'];
+  const TRACK_COLORS_DIM=['rgba(0,188,188,0.15)','rgba(212,160,23,0.15)',
+                           'rgba(45,212,191,0.15)','rgba(212,160,23,0.15)'];
+  const tracks=[
+    {n:16,k:4,offset:0,label:'KICK'},
+    {n:12,k:5,offset:2,label:'SNARE'},
+    {n:8, k:3,offset:1,label:'HI-HAT'},
+    {n:24,k:7,offset:4,label:'PERC'},
+  ];
+  const playheads=tracks.map(()=>new LagFilter(0,0.06));
+  const hitFlash=tracks.map(()=>Array.from({length:32},()=>new LagFilter(0,0.09)));
+  let trackStep=tracks.map(()=>0);
+  let eucPlaying=false;
+  let eucBPM=90;
+
+  const eucBPMEngine=new BPMEngine(90);
+  eucBPMEngine.sub('euc',(b)=>{
+    if(!eucPlaying) return;
+    tracks.forEach((tr,ti)=>{
+      const pat=euclidean(tr.n,tr.k);
+      const rotPat=[...pat.slice(tr.offset),...pat.slice(0,tr.offset)];
+      const st=b.beat%tr.n;
+      trackStep[ti]=st;
+      if(rotPat[st]===1) hitFlash[ti][st].set(1);
+    });
+  });
+
+  /* Build per-track controls */
+  const ctrlContainer=document.getElementById('euc-controls');
+  tracks.forEach((tr,ti)=>{
+    const col=document.createElement('div');
+    col.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px';
+    col.innerHTML=`<div style="color:${TRACK_COLORS[ti]};font-size:11px;font-weight:900;letter-spacing:.1em;margin-bottom:8px">${tr.label}</div>
+      <label>N (Steps): <span id="euc-n-val-${ti}">${tr.n}</span></label>
+      <input type="range" id="euc-n-${ti}" min="4" max="24" value="${tr.n}" style="width:100%;margin:4px 0">
+      <label>K (Hits): <span id="euc-k-val-${ti}">${tr.k}</span></label>
+      <input type="range" id="euc-k-${ti}" min="0" max="${tr.n}" value="${tr.k}" style="width:100%;margin:4px 0">
+      <label>Offset: <span id="euc-off-val-${ti}">${tr.offset}</span></label>
+      <input type="range" id="euc-off-${ti}" min="0" max="${tr.n-1}" value="${tr.offset}" style="width:100%;margin:4px 0">`;
+    ctrlContainer.appendChild(col);
+    document.getElementById(`euc-n-${ti}`).addEventListener('input',e=>{
+      tracks[ti].n=parseInt(e.target.value);
+      document.getElementById(`euc-n-val-${ti}`).textContent=tracks[ti].n;
+      document.getElementById(`euc-k-${ti}`).max=tracks[ti].n;
+      document.getElementById(`euc-off-${ti}`).max=tracks[ti].n-1;
+    });
+    document.getElementById(`euc-k-${ti}`).addEventListener('input',e=>{
+      tracks[ti].k=parseInt(e.target.value);
+      document.getElementById(`euc-k-val-${ti}`).textContent=tracks[ti].k;
+    });
+    document.getElementById(`euc-off-${ti}`).addEventListener('input',e=>{
+      tracks[ti].offset=parseInt(e.target.value);
+      document.getElementById(`euc-off-val-${ti}`).textContent=tracks[ti].offset;
+    });
+  });
+
+  /* Controls */
+  document.getElementById('euc-bpm').addEventListener('input',function(){
+    eucBPM=parseInt(this.value);
+    document.getElementById('euc-bpm-val').textContent=eucBPM;
+    eucBPMEngine.setBPM(eucBPM);
+  });
+  document.getElementById('euc-play-btn').addEventListener('click',function(){
+    eucPlaying=!eucPlaying;
+    this.textContent=eucPlaying?'⏹ STOP':'▶ PLAY';
+    this.classList.toggle('active',eucPlaying);
+    if(eucPlaying) eucBPMEngine.start(); else eucBPMEngine.stop();
+  });
+  document.getElementById('euc-randomize-btn').addEventListener('click',()=>{
+    tracks.forEach((tr,ti)=>{
+      tr.n=8+Math.floor(Math.random()*17);
+      tr.k=1+Math.floor(Math.random()*(tr.n-1));
+      tr.offset=Math.floor(Math.random()*tr.n);
+      document.getElementById(`euc-n-${ti}`).value=tr.n;
+      document.getElementById(`euc-k-${ti}`).value=tr.k;
+      document.getElementById(`euc-off-${ti}`).value=tr.offset;
+      document.getElementById(`euc-n-val-${ti}`).textContent=tr.n;
+      document.getElementById(`euc-k-val-${ti}`).textContent=tr.k;
+      document.getElementById(`euc-off-val-${ti}`).textContent=tr.offset;
+    });
+  });
+
+  let prevT2=0;
+  function drawEuc(t){
+    requestAnimationFrame(drawEuc);
+    const dt=Math.min((t-prevT2)*0.001,0.05); prevT2=t;
+    /* phosphor */
+    ctx.globalAlpha=0.07; ctx.fillStyle='#020608'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    const cx=W/2, cy=H/2;
+    const radii=[60,100,130,155];
+    tracks.forEach((tr,ti)=>{
+      const r=radii[ti];
+      const pat=euclidean(tr.n,tr.k);
+      const rotPat=[...pat.slice(tr.offset),...pat.slice(0,tr.offset)];
+      playheads[ti].update(dt);
+      hitFlash[ti].forEach((hf,si)=>{hf.update(dt); hf.set(0);});
+
+      /* track ring */
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle=TRACK_COLORS_DIM[ti]; ctx.lineWidth=1; ctx.stroke();
+
+      /* dots */
+      for(let i=0;i<tr.n;i++){
+        const ang=-Math.PI/2+(i/tr.n)*Math.PI*2;
+        const dx=cx+Math.cos(ang)*r;
+        const dy=cy+Math.sin(ang)*r;
+        const isHit=rotPat[i]===1;
+        const fl=hitFlash[ti][i]?hitFlash[ti][i].value:0;
+        const dotR=isHit?(4+fl*4):(2.5);
+        ctx.beginPath(); ctx.arc(dx,dy,dotR,0,Math.PI*2);
+        if(isHit){
+          ctx.fillStyle=fl>0.05?TRACK_COLORS[ti]+`cc`:`rgba(0,120,120,0.7)`;
+          ctx.shadowBlur=fl>0.05?(10+fl*12):0;
+          ctx.shadowColor=TRACK_COLORS[ti];
+        } else {
+          ctx.fillStyle='rgba(96,112,112,0.35)';
+          ctx.shadowBlur=0;
+        }
+        ctx.fill(); ctx.shadowBlur=0;
+      }
+
+      /* playhead */
+      if(eucPlaying){
+        const st=trackStep[ti];
+        playheads[ti].set(st);
+        const ang=-Math.PI/2+(playheads[ti].value/tr.n)*Math.PI*2;
+        ctx.beginPath();
+        ctx.moveTo(cx+Math.cos(ang)*(r-14),cy+Math.sin(ang)*(r-14));
+        ctx.lineTo(cx+Math.cos(ang)*(r+14),cy+Math.sin(ang)*(r+14));
+        ctx.strokeStyle=TRACK_COLORS[ti];
+        ctx.lineWidth=2;
+        ctx.shadowBlur=8; ctx.shadowColor=TRACK_COLORS[ti];
+        ctx.stroke(); ctx.shadowBlur=0;
+      }
+
+      /* track label */
+      const lx=cx+Math.cos(-Math.PI/2)*r;
+      const ly=cy+Math.sin(-Math.PI/2)*r-18;
+      ctx.fillStyle=TRACK_COLORS[ti]; ctx.font='9px Courier New';
+      ctx.textAlign='center'; ctx.fillText(tr.label+' E('+tr.k+','+tr.n+')',lx,ly);
+    });
+
+    /* center label */
+    ctx.fillStyle='rgba(0,188,188,0.4)'; ctx.font='bold 11px Courier New'; ctx.textAlign='center';
+    ctx.fillText('EUCLIDEAN',cx,cy-8);
+    ctx.fillStyle='rgba(96,112,112,0.6)'; ctx.font='9px Courier New';
+    ctx.fillText('POLYRHYTHM',cx,cy+6);
+  }
+  requestAnimationFrame(drawEuc);
+})();
+</script>
+<script>
+/* ============================================================
+   SECTION 4 — PROBABILITY MATRIX COMPOSER
+   ============================================================ */
+(function(){
+  const PITCH_NAMES=['A3','G3','F3','E3','D3','C3'];
+  const COLS=8, ROWS=6;
+  const matrix=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+  /* default pattern */
+  [[0,75],[1,50],[3,100],[5,50],[2,75],[4,50],[6,100],[7,25]].forEach(([c,v])=>{
+    matrix[0][c]=v; matrix[2][c<4?c+1:c-1]=50; matrix[4][c]=25;
+  });
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    if(matrix[r][c]===0 && Math.random()<0.3) matrix[r][c]=Math.random()<0.5?50:100;
+  }
+
+  const canvas=document.getElementById('matrix-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.offsetWidth; H=canvas.offsetHeight||220;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  let currentCol=0, matPlaying=false, markovMode=false;
+  let currentRow=0;
+  const colFlash=Array.from({length:COLS},()=>new LagFilter(0,0.1));
+  const pitchDisplay=document.getElementById('matrix-pitch-display');
+
+  const matBPM=new BPMEngine(90);
+  matBPM.sub('matrix',(b)=>{
+    if(!matPlaying) return;
+    const col=b.beat%COLS;
+    currentCol=col;
+    colFlash[col].set(1);
+    /* choose row */
+    let row;
+    const entropy=parseInt(document.getElementById('matrix-entropy').value)/100;
+    if(markovMode){
+      const weights=matrix.map(r=>r[col]/100+Math.random()*entropy*0.5);
+      const total=weights.reduce((a,b2)=>a+b2,0);
+      let rnd=Math.random()*total; row=0;
+      for(let i=0;i<ROWS;i++){rnd-=weights[i]; if(rnd<=0){row=i;break;}}
+    } else {
+      const weights=matrix.map(r=>r[col]/100);
+      const total=weights.reduce((a,b2)=>a+b2,0);
+      if(total===0) return;
+      let rnd=Math.random()*total; row=0;
+      for(let i=0;i<ROWS;i++){rnd-=weights[i]; if(rnd<=0){row=i;break;}}
+    }
+    currentRow=row;
+    pitchDisplay.textContent=PITCH_NAMES[row];
+  });
+
+  /* Mouse click on canvas */
+  canvas.addEventListener('click',(e)=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)/rect.width*W;
+    const my=(e.clientY-rect.top)/rect.height*H;
+    const pad=40;
+    const cellW=(W-pad)/COLS, cellH=(H-20)/ROWS;
+    const col=Math.floor((mx-pad)/cellW);
+    const row=Math.floor((my-10)/cellH);
+    if(col>=0&&col<COLS&&row>=0&&row<ROWS){
+      const v=matrix[row][col];
+      matrix[row][col]=v===0?50:v===50?100:0;
+    }
+  });
+
+  /* Controls */
+  document.getElementById('matrix-play-btn').addEventListener('click',function(){
+    matPlaying=!matPlaying;
+    this.textContent=matPlaying?'⏹ STOP':'▶ PLAY';
+    this.classList.toggle('active',matPlaying);
+    if(matPlaying) matBPM.start(); else matBPM.stop();
+  });
+  document.getElementById('matrix-markov-btn').addEventListener('click',function(){
+    markovMode=!markovMode;
+    this.classList.toggle('active',markovMode);
+    this.textContent=markovMode?'⊗ MARKOV ON':'⊗ MARKOV MODE';
+  });
+  document.getElementById('matrix-entropy').addEventListener('input',function(){
+    document.getElementById('matrix-entropy-val').textContent=this.value+'%';
+  });
+  document.getElementById('matrix-clear-btn').addEventListener('click',()=>{
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) matrix[r][c]=0;
+  });
+  document.getElementById('matrix-random-btn').addEventListener('click',()=>{
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      const rnd=Math.random();
+      matrix[r][c]=rnd<0.4?0:rnd<0.7?50:100;
+    }
+  });
+
+  /* Entropy drift */
+  setInterval(()=>{
+    const ent=parseInt(document.getElementById('matrix-entropy').value)/100;
+    if(ent>0.3 && matPlaying){
+      const r=Math.floor(Math.random()*ROWS), c=Math.floor(Math.random()*COLS);
+      const delta=(Math.random()-0.5)*ent*30;
+      matrix[r][c]=Math.max(0,Math.min(100,matrix[r][c]+delta));
+    }
+  },500);
+
+  let prevT3=0;
+  function drawMatrix(t){
+    requestAnimationFrame(drawMatrix);
+    const dt=Math.min((t-prevT3)*0.001,0.05); prevT3=t;
+    ctx.clearRect(0,0,W,H);
+    colFlash.forEach(cf=>{cf.update(dt); cf.set(0);});
+
+    const pad=40, topPad=10;
+    const cellW=(W-pad)/COLS, cellH=(H-topPad*2)/ROWS;
+
+    for(let r=0;r<ROWS;r++){
+      /* pitch label */
+      ctx.fillStyle='rgba(96,112,112,0.8)'; ctx.font='10px Courier New';
+      ctx.textAlign='right';
+      ctx.fillText(PITCH_NAMES[r],pad-6,topPad+r*cellH+cellH/2+4);
+
+      for(let c=0;c<COLS;c++){
+        const x=pad+c*cellW+2, y=topPad+r*cellH+2;
+        const cw=cellW-4, ch=cellH-4;
+        const val=matrix[r][c]/100;
+        const fl=colFlash[c].value;
+        const isActive=(c===currentCol&&r===currentRow&&matPlaying);
+
+        /* cell bg */
+        const alpha=val*0.7+fl*0.1+(isActive?0.4:0);
+        ctx.fillStyle=isActive?`rgba(0,188,188,${Math.min(alpha,0.9)})`
+          :`rgba(0,${Math.round(188*val)},${Math.round(188*val)},${alpha})`;
+        if(isActive){ctx.shadowBlur=14;ctx.shadowColor='#00bcbc';}
+        ctx.fillRect(x,y,cw,ch);
+        ctx.shadowBlur=0;
+
+        /* value text */
+        if(val>0){
+          ctx.fillStyle=isActive?'rgba(2,6,8,0.9)':'rgba(0,188,188,0.7)';
+          ctx.font='9px Courier New'; ctx.textAlign='center';
+          ctx.fillText(Math.round(val*100)+'%',x+cw/2,y+ch/2+3);
+        }
+
+        /* border */
+        ctx.strokeStyle=fl>0.05?'rgba(0,188,188,0.5)':'rgba(0,188,188,0.1)';
+        ctx.lineWidth=0.5; ctx.strokeRect(x,y,cw,ch);
+      }
+    }
+    /* column headers */
+    for(let c=0;c<COLS;c++){
+      const fl=colFlash[c].value;
+      ctx.fillStyle=`rgba(0,188,188,${0.3+fl*0.7})`;
+      ctx.font='8px Courier New'; ctx.textAlign='center';
+      ctx.fillText('T'+(c+1),pad+c*cellW+cellW/2,topPad-2);
+    }
+  }
+  requestAnimationFrame(drawMatrix);
+})();
+
+/* ============================================================
+   SECTION 5 — AMBIENT EVOLUTION ENGINE
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById('amb-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.offsetWidth; H=canvas.offsetHeight||320;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  /* 5 voices */
+  const NOTE_FREQS=[261.6,293.7,329.6,349.2,392.0]; // C D E F G
+  const voices=Array.from({length:5},(_, i)=>({
+    x:new LagFilter(0.15+i*0.16+Math.random()*0.05,2+Math.random()*2),
+    y:new LagFilter(0.3+Math.random()*0.4,2+Math.random()*2),
+    size:new LagFilter(20+Math.random()*20,1.5),
+    warmth:new LagFilter(Math.random(),1.2),
+    targetX:0.15+i*0.16,
+    targetY:0.3+Math.random()*0.4,
+    pitchIdx:i,
+    driftPhase:Math.random()*Math.PI*2,
+    driftFreq:0.05+Math.random()*0.08,
+    breathPhase:i*(Math.PI*2/5),
+  }));
+
+  let breatheMode=true, elapsed=0;
+  const driftLag=new LagFilter(30,0.5);
+  const densLag=new LagFilter(60,0.5);
+  const consLag=new LagFilter(50,0.5);
+
+  document.getElementById('amb-drift').addEventListener('input',function(){
+    driftLag.set(parseInt(this.value));
+    document.getElementById('amb-drift-val').textContent=this.value;
+  });
+  document.getElementById('amb-density').addEventListener('input',function(){
+    densLag.set(parseInt(this.value));
+    document.getElementById('amb-density-val').textContent=this.value;
+  });
+  document.getElementById('amb-consonance').addEventListener('input',function(){
+    consLag.set(parseInt(this.value));
+    document.getElementById('amb-consonance-val').textContent=this.value;
+  });
+  document.getElementById('amb-breathe-btn').addEventListener('click',function(){
+    breatheMode=!breatheMode;
+    this.classList.toggle('active',breatheMode);
+    this.textContent=breatheMode?'♾ BREATHE ON':'♾ BREATHE';
+  });
+
+  let prevT4=0;
+  function drawAmb(t){
+    requestAnimationFrame(drawAmb);
+    const dt=Math.min((t-prevT4)*0.001,0.05); prevT4=t;
+    elapsed+=dt;
+    /* phosphor */
+    ctx.globalAlpha=0.05; ctx.fillStyle='#020608'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    driftLag.update(dt); densLag.update(dt); consLag.update(dt);
+    const drift=driftLag.value/100, dens=densLag.value/100, cons=consLag.value/100;
+    /* breathe LFO — 8-bar cycle at ambient tempo (10s) */
+    const breatheLFO=breatheMode?(Math.sin(elapsed*(Math.PI*2/10))*0.5+0.5):1;
+
+    voices.forEach((v,i)=>{
+      /* drift targets */
+      v.targetX=0.1+i*0.18+Math.sin(elapsed*v.driftFreq+v.driftPhase)*drift*0.3;
+      v.targetY=0.2+Math.cos(elapsed*v.driftFreq*0.7+v.driftPhase)*drift*0.25+0.3;
+
+      /* consonance pull: attract to harmonic positions */
+      const consonantY=0.5+(i-2)*0.12*cons;
+      v.targetY=v.targetY*(1-cons*0.4)+consonantY*(cons*0.4);
+
+      v.x.set(Math.max(0.05,Math.min(0.95,v.targetX)));
+      v.y.set(Math.max(0.05,Math.min(0.95,v.targetY)));
+      v.x.update(dt); v.y.update(dt);
+
+      /* size from density + breathe */
+      const baseSz=16+dens*40;
+      const breatheSz=breatheMode?baseSz*(0.4+breatheLFO*0.6+(Math.sin(elapsed*v.driftFreq*0.3+v.breathPhase)*0.15)):baseSz;
+      v.size.set(breatheSz); v.size.update(dt);
+      v.warmth.set(i/5*0.5+Math.sin(elapsed*0.2+i)*0.25+0.25); v.warmth.update(dt);
+
+      const px=v.x.value*W, py=v.y.value*H;
+      const sz=v.size.value;
+      const warm=v.warmth.value;
+
+      /* color: teal→gold based on warmth */
+      const r=Math.round(0+212*warm), g=Math.round(188-28*warm), b=Math.round(188-171*warm);
+      const alpha=0.12+(breatheMode?breatheLFO*0.25:0.2)+(dens*0.15);
+
+      /* glow ellipse */
+      const grad=ctx.createRadialGradient(px,py,sz*0.1,px,py,sz*2.5);
+      grad.addColorStop(0,`rgba(${r},${g},${b},${alpha*1.8})`);
+      grad.addColorStop(0.4,`rgba(${r},${g},${b},${alpha})`);
+      grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+      ctx.beginPath();
+      ctx.ellipse(px,py,sz*2.2,sz*1.4,v.driftPhase*0.3,0,Math.PI*2);
+      ctx.fillStyle=grad;
+      ctx.shadowBlur=sz*0.8; ctx.shadowColor=`rgb(${r},${g},${b})`;
+      ctx.fill(); ctx.shadowBlur=0;
+
+      /* core dot */
+      ctx.beginPath(); ctx.arc(px,py,sz*0.35,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${r},${g},${b},0.9)`;
+      ctx.shadowBlur=12; ctx.shadowColor=`rgb(${r},${g},${b})`;
+      ctx.fill(); ctx.shadowBlur=0;
+
+      /* pitch label */
+      ctx.fillStyle=`rgba(${r},${g},${b},0.7)`;
+      ctx.font='9px Courier New'; ctx.textAlign='center';
+      ctx.fillText(['C','D','E','F','G'][v.pitchIdx],px,py+sz*0.4+12);
+    });
+
+    /* breathe indicator */
+    if(breatheMode){
+      ctx.fillStyle=`rgba(0,188,188,${breatheLFO*0.4})`;
+      ctx.font='9px Courier New'; ctx.textAlign='right';
+      ctx.fillText('BREATH: '+Math.round(breatheLFO*100)+'%',W-12,H-10);
+    }
+  }
+  requestAnimationFrame(drawAmb);
+})();
+</script>
+<script>
+/* ============================================================
+   SECTION 6 — REACTIVE COMPOSITION NODE GRAPH
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById('graph-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.offsetWidth; H=canvas.offsetHeight||440;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize(); new ResizeObserver(resize).observe(canvas);
+
+  const NODE_W=110, NODE_H=70;
+  const NODE_COLORS={
+    Oscillator:'#00bcbc', Filter:'#2dd4bf', Envelope:'#d4a017',
+    LFO:'#00bcbc', Sequencer:'#d4a017', Reverb:'#2dd4bf',
+    Delay:'#00bcbc', Output:'#d4a017'
+  };
+  const NODE_ICONS={
+    Oscillator:'∿', Filter:'⊻', Envelope:'△', LFO:'≋',
+    Sequencer:'▣', Reverb:'⊙', Delay:'⋯', Output:'▶'
+  };
+
+  let nodes=[], wires=[], nodeId=0;
+  let dragging=null, dragOffX=0, dragOffY=0;
+  let connecting=null; // {nodeId, port:'out'}
+  let graphRunning=false;
+  let status=document.getElementById('graph-status');
+
+  /* Particles on wires */
+  const wireParticles=[];
+
+  const graphBPM=new BPMEngine(90);
+  graphBPM.sub('graph',()=>{
+    if(!graphRunning) return;
+    /* spawn particles on all wires */
+    wires.forEach((w,wi)=>{
+      if(Math.random()<0.6){
+        wireParticles.push({wi, t:0, speed:0.015+Math.random()*0.02,
+          alpha:new LagFilter(0.9,0.15)});
+      }
+    });
+    /* pulse source nodes */
+    nodes.forEach(n=>{
+      if(n.type==='Oscillator'||n.type==='Sequencer') n.pulse.set(1);
+    });
+  });
+
+  function addNode(type){
+    if(nodes.length>=12){status.textContent='Max 12 nodes'; return;}
+    const x=60+Math.random()*(Math.max(W-NODE_W-80,100));
+    const y=60+Math.random()*(Math.max(H-NODE_H-80,100));
+    nodes.push({id:nodeId++, type, x:new LagFilter(x,0.18),
+      y:new LagFilter(y,0.18), tx:x, ty:y, pulse:new LagFilter(0,0.12),
+      phase:Math.random()*Math.PI*2});
+    status.textContent='Added '+type;
+    setTimeout(()=>{status.textContent='';},1500);
+  }
+
+  /* Seed default graph */
+  const defaults=[
+    {type:'Oscillator',x:80,y:120},{type:'Filter',x:260,y:80},
+    {type:'Envelope',x:440,y:120},{type:'Reverb',x:620,y:80},
+    {type:'Output',x:800,y:200},{type:'LFO',x:260,y:260},
+    {type:'Delay',x:440,y:300}
+  ];
+  defaults.forEach(d=>{
+    const nd={id:nodeId++, type:d.type,
+      x:new LagFilter(d.x,0.18), y:new LagFilter(d.y,0.18),
+      tx:d.x, ty:d.y, pulse:new LagFilter(0,0.12), phase:Math.random()*Math.PI*2};
+    nodes.push(nd);
+  });
+  /* Default wires */
+  wires.push({from:0,to:1},{from:1,to:2},{from:2,to:3},{from:3,to:4},{from:5,to:1},{from:6,to:4});
+
+  /* Port positions */
+  function outPort(n){return{x:n.x.value+NODE_W,y:n.y.value+NODE_H/2};}
+  function inPort(n){return{x:n.x.value,y:n.y.value+NODE_H/2};}
+
+  /* Hit testing */
+  function hitNode(mx,my){
+    return nodes.find(n=>mx>=n.x.value&&mx<=n.x.value+NODE_W&&my>=n.y.value&&my<=n.y.value+NODE_H);
+  }
+  function hitOutPort(mx,my){
+    return nodes.find(n=>{
+      const p=outPort(n);
+      return Math.hypot(mx-p.x,my-p.y)<10;
+    });
+  }
+  function hitInPort(mx,my){
+    return nodes.find(n=>{
+      const p=inPort(n);
+      return Math.hypot(mx-p.x,my-p.y)<10;
+    });
+  }
+
+  function getScale(){return W/canvas.offsetWidth;}
+  function clientToCanvas(e){
+    const rect=canvas.getBoundingClientRect();
+    return{x:(e.clientX-rect.left)*(W/rect.width),
+           y:(e.clientY-rect.top)*(H/rect.height)};
+  }
+
+  canvas.addEventListener('mousedown',(e)=>{
+    const {x:mx,y:my}=clientToCanvas(e);
+    /* Check out port first */
+    const outN=hitOutPort(mx,my);
+    if(outN){connecting={nodeId:outN.id,mx,my}; return;}
+    /* Check node body */
+    const nd=hitNode(mx,my);
+    if(nd){dragging=nd; dragOffX=mx-nd.tx; dragOffY=my-nd.ty;}
+  });
+  canvas.addEventListener('mousemove',(e)=>{
+    const {x:mx,y:my}=clientToCanvas(e);
+    if(dragging){
+      dragging.tx=mx-dragOffX; dragging.ty=my-dragOffY;
+      dragging.x.set(dragging.tx); dragging.y.set(dragging.ty);
+    }
+    if(connecting){connecting.mx=mx; connecting.my=my;}
+  });
+  canvas.addEventListener('mouseup',(e)=>{
+    if(connecting){
+      const {x:mx,y:my}=clientToCanvas(e);
+      const inN=hitInPort(mx,my);
+      if(inN&&inN.id!==connecting.nodeId){
+        /* no duplicate wires */
+        const dup=wires.find(w=>w.from===connecting.nodeId&&w.to===inN.id);
+        if(!dup&&wires.length<20) wires.push({from:connecting.nodeId,to:inN.id});
+      }
+      connecting=null;
+    }
+    dragging=null;
+  });
+  /* Double-click to remove wire */
+  canvas.addEventListener('dblclick',(e)=>{
+    const {x:mx,y:my}=clientToCanvas(e);
+    for(let i=wires.length-1;i>=0;i--){
+      const w=wires[i];
+      const fn=nodes.find(n=>n.id===w.from);
+      const tn=nodes.find(n=>n.id===w.to);
+      if(!fn||!tn) continue;
+      const p1=outPort(fn), p2=inPort(tn);
+      /* Sample points along bezier */
+      for(let t=0;t<=1;t+=0.05){
+        const cpx=(p1.x+p2.x)/2; const cpy=(p1.y+p2.y)/2;
+        const bx=(1-t)*(1-t)*p1.x+2*(1-t)*t*cpx+t*t*p2.x;
+        const by=(1-t)*(1-t)*p1.y+2*(1-t)*t*cpy+t*t*p2.y;
+        if(Math.hypot(mx-bx,my-by)<12){wires.splice(i,1); break;}
+      }
+    }
+  });
+
+  /* Controls */
+  document.getElementById('graph-add-btn').addEventListener('click',()=>{
+    addNode(document.getElementById('graph-node-select').value);
+  });
+  document.getElementById('graph-run-btn').addEventListener('click',function(){
+    graphRunning=!graphRunning;
+    this.classList.toggle('active',graphRunning);
+    this.textContent=graphRunning?'⏹ STOP':'▶ RUN';
+    if(graphRunning) graphBPM.start(); else graphBPM.stop();
+  });
+  document.getElementById('graph-clear-btn').addEventListener('click',()=>{
+    nodes=[]; wires=[]; wireParticles.length=0; connecting=null; dragging=null;
+    status.textContent='Graph cleared';
+    setTimeout(()=>{status.textContent='';},1200);
+  });
+
+  /* Mini waveform previews */
+  function drawNodePreview(nd, px, py){
+    const t=performance.now()*0.001;
+    const pv=nd.pulse.value;
+    ctx.strokeStyle=NODE_COLORS[nd.type]+'99';
+    ctx.lineWidth=0.8;
+    ctx.beginPath();
+    const pw=40, ph=14, ox=px+(NODE_W-pw)/2, oy=py+42;
+    for(let i=0;i<pw;i++){
+      let v=0;
+      switch(nd.type){
+        case'Oscillator': v=Math.sin((i/pw)*Math.PI*4+t*3+nd.phase)*(0.5+pv*0.5); break;
+        case'Filter': v=Math.sin((i/pw)*Math.PI*2+t)*0.7*Math.exp(-i/pw*2); break;
+        case'LFO': v=Math.sin((i/pw)*Math.PI*2+t*0.5+nd.phase); break;
+        case'Envelope': v=(i<pw*0.1)?i/(pw*0.1):Math.exp(-(i-pw*0.1)/(pw*0.4)); break;
+        case'Sequencer': v=((i%(pw/4))<2)?1:0; break;
+        default: v=Math.sin((i/pw)*Math.PI*6+t*2)*0.4; break;
+      }
+      const sx=ox+i, sy=oy+ph/2-v*ph*0.45;
+      i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+    }
+    ctx.stroke();
+  }
+
+  let prevT5=0;
+  function drawGraph(t){
+    requestAnimationFrame(drawGraph);
+    const dt=Math.min((t-prevT5)*0.001,0.05); prevT5=t;
+    /* phosphor */
+    ctx.globalAlpha=0.08; ctx.fillStyle='#020608'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    nodes.forEach(n=>{n.x.update(dt); n.y.update(dt); n.pulse.update(dt); n.pulse.set(0);});
+
+    /* Draw wires */
+    wires.forEach((w,wi)=>{
+      const fn=nodes.find(n=>n.id===w.from);
+      const tn=nodes.find(n=>n.id===w.to);
+      if(!fn||!tn) return;
+      const p1=outPort(fn), p2=inPort(tn);
+      const cpx=(p1.x+p2.x)/2, cpy=(p1.y+p2.y)/2;
+      ctx.beginPath();
+      ctx.moveTo(p1.x,p1.y);
+      ctx.quadraticCurveTo(cpx,cpy,p2.x,p2.y);
+      ctx.strokeStyle='rgba(0,188,188,0.25)';
+      ctx.lineWidth=1.2;
+      ctx.shadowBlur=0; ctx.stroke();
+    });
+
+    /* Wire particles */
+    for(let i=wireParticles.length-1;i>=0;i--){
+      const p=wireParticles[i];
+      p.t+=p.speed;
+      if(p.t>1){wireParticles.splice(i,1); continue;}
+      const w=wires[p.wi];
+      if(!w){wireParticles.splice(i,1); continue;}
+      const fn=nodes.find(n=>n.id===w.from);
+      const tn=nodes.find(n=>n.id===w.to);
+      if(!fn||!tn){wireParticles.splice(i,1); continue;}
+      const p1=outPort(fn), p2=inPort(tn);
+      const cpx=(p1.x+p2.x)/2, cpy=(p1.y+p2.y)/2;
+      const pt=p.t;
+      const bx=(1-pt)*(1-pt)*p1.x+2*(1-pt)*pt*cpx+pt*pt*p2.x;
+      const by=(1-pt)*(1-pt)*p1.y+2*(1-pt)*pt*cpy+pt*pt*p2.y;
+      p.alpha.update(dt);
+      ctx.beginPath(); ctx.arc(bx,by,3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(45,212,191,${p.alpha.value*(1-pt)})`;
+      ctx.shadowBlur=8; ctx.shadowColor='#2dd4bf';
+      ctx.fill(); ctx.shadowBlur=0;
+    }
+
+    /* In-progress connection wire */
+    if(connecting){
+      const fn=nodes.find(n=>n.id===connecting.nodeId);
+      if(fn){
+        const p1=outPort(fn);
+        ctx.beginPath(); ctx.moveTo(p1.x,p1.y);
+        ctx.lineTo(connecting.mx,connecting.my);
+        ctx.strokeStyle='rgba(0,188,188,0.6)';
+        ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.stroke(); ctx.setLineDash([]);
+      }
+    }
+
+    /* Draw nodes */
+    nodes.forEach(nd=>{
+      const nx=nd.x.value, ny=nd.y.value;
+      const col=NODE_COLORS[nd.type];
+      const pv=nd.pulse.value;
+
+      /* Node body */
+      ctx.fillStyle='rgba(13,74,74,0.85)';
+      ctx.strokeStyle=col+(pv>0.1?'ff':'66');
+      ctx.lineWidth=1+(pv*1.5);
+      ctx.shadowBlur=pv>0.05?(8+pv*16):4;
+      ctx.shadowColor=col;
+      const rr=6;
+      ctx.beginPath();
+      ctx.roundRect(nx,ny,NODE_W,NODE_H,rr);
+      ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
+
+      /* Icon + type */
+      ctx.fillStyle=col; ctx.font='bold 18px Courier New'; ctx.textAlign='left';
+      ctx.fillText(NODE_ICONS[nd.type],nx+8,ny+22);
+      ctx.font='bold 9px Courier New';
+      ctx.fillText(nd.type.toUpperCase(),nx+30,ny+18);
+
+      /* Mini preview */
+      drawNodePreview(nd,nx,ny);
+
+      /* Out port */
+      const op=outPort(nd);
+      ctx.beginPath(); ctx.arc(op.x,op.y,5,0,Math.PI*2);
+      ctx.fillStyle=col; ctx.shadowBlur=6; ctx.shadowColor=col;
+      ctx.fill(); ctx.shadowBlur=0;
+
+      /* In port */
+      const ip=inPort(nd);
+      ctx.beginPath(); ctx.arc(ip.x,ip.y,5,0,Math.PI*2);
+      ctx.fillStyle='rgba(13,74,74,0.9)';
+      ctx.strokeStyle=col; ctx.lineWidth=1.5;
+      ctx.stroke(); ctx.fill();
+    });
+  }
+  requestAnimationFrame(drawGraph);
+})();
+</script>
+<script>
+/* ============================================================
+   SECTION 7 — EMERGENT HARMONY EXPLORER
+   ============================================================ */
+(function(){
+  const canvas=document.getElementById('harm-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=500,H=340;
+  canvas.width=500*devicePixelRatio; canvas.height=340*devicePixelRatio;
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+
+  const NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const CHORD_NAMES={
+    '0,4,7':'Major','0,3,7':'Minor','0,4,7,11':'Maj7','0,3,7,10':'Min7',
+    '0,4,7,10':'Dom7','0,2,7':'Sus2','0,5,7':'Sus4','0,3,6':'Dim',
+    '0,4,8':'Aug','0,2,4,7':'Add9','0,4,7,9':'Maj6','0,3,7,9':'Min6',
+    '0,2,4,6':'WT','0,1,3,5,7,9,11':'Chrom'
+  };
+
+  /* Modal scale definitions (semitone offsets) */
+  const MODES={
+    ionian:[0,2,4,5,7,9,11],
+    dorian:[0,2,3,5,7,9,10],
+    mixolydian:[0,2,4,5,7,9,10],
+    wholetone:[0,2,4,6,8,10],
+    chromatic:[0,1,2,3,4,5,6,7,8,9,10,11]
+  };
+
+  /* Harmonic series weights: closer harmonics = higher weight */
+  const HARMONIC_WEIGHTS=[1,0.5,0.33,0.25,0.2,0.17,0.14,0.12,0.11,0.1,0.09,0.08];
+
+  let root=0, selectedNotes=[0,4,7], evolveTimer=null;
+  const noteGlow=Array.from({length:12},()=>new LagFilter(0,0.2));
+  const connGlow=new LagFilter(0,0.15);
+
+  function getMode(){return document.getElementById('harm-mode').value;}
+  function getEntropy(){return parseInt(document.getElementById('harm-entropy').value)/100;}
+
+  function generateChord(){
+    const mode=getMode();
+    const entropy=getEntropy();
+    const scale=MODES[mode];
+    connGlow.set(1);
+
+    /* Build weighted candidates */
+    const weights=scale.map(s=>{
+      const hw=HARMONIC_WEIGHTS[s]||0.05;
+      const rand=Math.random()*entropy;
+      return{s, w:hw*(1-entropy*0.5)+rand};
+    });
+    /* Sort by weight desc */
+    weights.sort((a,b)=>b.w-a.w);
+    /* Pick 3-5 notes */
+    const count=3+Math.floor(Math.random()*(entropy>0.5?3:2));
+    const picked=[0]; // always include root
+    for(let i=0;i<weights.length&&picked.length<count;i++){
+      if(weights[i].s!==0) picked.push(weights[i].s);
+    }
+    /* Add chromatic notes if high entropy */
+    if(entropy>0.6&&Math.random()<entropy-0.4){
+      const chromatic=[1,3,6,8,10].filter(s=>!picked.includes(s));
+      if(chromatic.length) picked.push(chromatic[Math.floor(Math.random()*chromatic.length)]);
+    }
+    selectedNotes=picked.slice(0,Math.min(5,count));
+    selectedNotes.forEach(s=>noteGlow[s].set(1));
+
+    /* Chord name */
+    const key=selectedNotes.slice().sort((a,b)=>a-b).join(',');
+    const name=CHORD_NAMES[key]||analyzeChord(selectedNotes);
+    document.getElementById('harm-chord-name').textContent=
+      NOTES[root]+' '+name;
+    document.getElementById('harm-intervals').textContent=
+      selectedNotes.map(s=>s===0?'R':intervalName(s)).join(' — ');
+  }
+
+  function analyzeChord(notes){
+    const s=notes.slice().sort((a,b)=>a-b);
+    if(s.includes(7)&&s.includes(4)) return s.includes(10)?'Dom7':'Major';
+    if(s.includes(7)&&s.includes(3)) return 'Minor';
+    if(s.length>=5) return 'Extended';
+    return 'Cluster';
+  }
+
+  function intervalName(s){
+    return['R','m2','M2','m3','M3','P4','TT','P5','m6','M6','m7','M7'][s]||s+'st';
+  }
+
+  document.getElementById('harm-gen-btn').addEventListener('click',generateChord);
+  document.getElementById('harm-entropy').addEventListener('input',function(){
+    document.getElementById('harm-entropy-val').textContent=this.value+'%';
+  });
+  document.getElementById('harm-evolve-btn').addEventListener('click',function(){
+    if(evolveTimer){
+      clearInterval(evolveTimer); evolveTimer=null;
+      this.classList.remove('active'); this.textContent='⟳ EVOLVE';
+    } else {
+      evolveTimer=setInterval(generateChord,2400);
+      this.classList.add('active'); this.textContent='⟳ EVOLVING';
+      generateChord();
+    }
+  });
+
+  /* Init */
+  generateChord();
+
+  let prevT6=0;
+  function drawHarm(t){
+    requestAnimationFrame(drawHarm);
+    const dt=Math.min((t-prevT6)*0.001,0.05); prevT6=t;
+    /* phosphor */
+    ctx.globalAlpha=0.06; ctx.fillStyle='#020608'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    noteGlow.forEach(g=>{g.update(dt); g.set(0);});
+    connGlow.update(dt); connGlow.set(0);
+
+    const cx=W/2, cy=H/2+10, circR=110;
+
+    /* Outer ring */
+    ctx.beginPath(); ctx.arc(cx,cy,circR+14,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,188,188,0.08)'; ctx.lineWidth=28; ctx.stroke();
+
+    /* Connection arcs between selected notes */
+    const cg=connGlow.value;
+    for(let i=0;i<selectedNotes.length;i++){
+      for(let j=i+1;j<selectedNotes.length;j++){
+        const a1=-Math.PI/2+(selectedNotes[i]/12)*Math.PI*2;
+        const a2=-Math.PI/2+(selectedNotes[j]/12)*Math.PI*2;
+        const x1=cx+Math.cos(a1)*circR, y1=cy+Math.sin(a1)*circR;
+        const x2=cx+Math.cos(a2)*circR, y2=cy+Math.sin(a2)*circR;
+        ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+        ctx.strokeStyle=`rgba(0,188,188,${0.15+cg*0.35})`;
+        ctx.lineWidth=0.8+cg;
+        ctx.shadowBlur=cg>0.1?8:0; ctx.shadowColor='#00bcbc';
+        ctx.stroke(); ctx.shadowBlur=0;
+      }
+    }
+
+    /* 12 note dots */
+    for(let i=0;i<12;i++){
+      const ang=-Math.PI/2+(i/12)*Math.PI*2;
+      const dx=cx+Math.cos(ang)*circR, dy=cy+Math.sin(ang)*circR;
+      const gv=noteGlow[i].value;
+      const isSelected=selectedNotes.includes(i);
+      const isRoot=i===0;
+      const r=isRoot?10:isSelected?8:4;
+
+      ctx.beginPath(); ctx.arc(dx,dy,r+(gv*5),0,Math.PI*2);
+      if(isRoot){
+        ctx.fillStyle=`rgba(212,160,23,${0.7+gv*0.3})`;
+        ctx.shadowBlur=12+gv*16; ctx.shadowColor='#d4a017';
+      } else if(isSelected){
+        ctx.fillStyle=`rgba(0,188,188,${0.7+gv*0.3})`;
+        ctx.shadowBlur=10+gv*14; ctx.shadowColor='#00bcbc';
+      } else {
+        ctx.fillStyle='rgba(96,112,112,0.4)';
+        ctx.shadowBlur=0;
+      }
+      ctx.fill(); ctx.shadowBlur=0;
+
+      /* Note label */
+      const lx=cx+Math.cos(ang)*(circR+22);
+      const ly=cy+Math.sin(ang)*(circR+22);
+      ctx.fillStyle=isRoot?`rgba(212,160,23,${0.8+gv*0.2})`
+        :isSelected?`rgba(0,188,188,${0.8+gv*0.2})`:'rgba(96,112,112,0.5)';
+      ctx.font=(isSelected||isRoot)?'bold 10px Courier New':'9px Courier New';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(NOTES[i],lx,ly);
+    }
+
+    /* Center */
+    ctx.fillStyle='rgba(0,188,188,0.2)'; ctx.font='10px Courier New';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('CHROMATIC',cx,cy-8);
+    ctx.fillStyle='rgba(96,112,112,0.4)'; ctx.font='9px Courier New';
+    ctx.fillText('CIRCLE',cx,cy+8);
+  }
+  requestAnimationFrame(drawHarm);
+})();
+
+/* ============================================================
+   ARTIST CARDS — stagger animation via IntersectionObserver
+   ============================================================ */
+(function(){
+  /* Wire up IntersectionObserver for all .hidden elements */
+  const allHidden=document.querySelectorAll('.hidden');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+    });
+  },{threshold:0.1});
+  allHidden.forEach(el=>obs.observe(el));
+
+  /* Artist card children also need observer */
+  document.querySelectorAll('#artists-grid .card').forEach(c=>obs.observe(c));
+})();
+</script>
+<script>
+/* ============================================================
+   SECTION 9 — GLOSSARY
+   ============================================================ */
+(function(){
+  const terms=[
+    ['Generative Music','Music created by an autonomous system that produces ever-varying output without direct human performance input at each moment. Brian Eno: "ever-different and ever the same."'],
+    ['Algorithmic Composition','The use of formal procedures, rules, or computational systems to generate musical structures — pitch, rhythm, timbre, form — automatically or as compositional aid.'],
+    ['Euclidean Rhythm','A rhythmic algorithm distributing K hits as evenly as possible across N steps. Generates Cuban tresillo (E(3,8)), West African bell (E(4,12)), and dozens of world rhythms.'],
+    ['Markov Chain','A probabilistic model where the next state depends only on the current state. Used to generate melodies and chord progressions with controlled statistical character.'],
+    ['Cellular Automaton','A grid-based computational model (e.g. Conway\'s Game of Life) where cell states evolve by neighbor rules. Applied to generate rhythmic and melodic patterns.'],
+    ['Emergence','Complex musical patterns arising from the interaction of simple rules — without being explicitly composed. The system produces behavior its creator did not specify.'],
+    ['Probability','A value 0–1 describing the likelihood of a musical event occurring. Stochastic music uses probability distributions to determine pitch, rhythm, duration, and dynamics.'],
+    ['L-System','A recursive string rewriting system modeling plant growth, applied to music to create self-similar, fractal melodic structures through iterative production rules.'],
+    ['Stochastic','Involving random processes within defined probability distributions. Xenakis coined its musical application: outcomes determined by chance within compositional bounds.'],
+    ['Phase Music','A technique (Steve Reich) where two identical patterns drift out of phase as one repeats slightly faster. A mechanical generative process producing complex emergent rhythm.'],
+    ['Process Music','Music in which a clearly perceptible process is set in motion and allowed to run its course. The process — not the notes — is the composition. (Steve Reich, 1968)'],
+    ['Indeterminacy','John Cage\'s compositional approach: elements left unspecified, determined by chance or performer. Anticipates generative systems by removing decision from the composer.'],
+    ['MIDI','Musical Instrument Digital Interface. The protocol connecting digital instruments and computers. In generative contexts, MIDI is the output layer for algorithmic processes.'],
+    ['OSC','Open Sound Control. A network protocol for real-time communication between music software and hardware — the high-resolution successor to MIDI for generative systems.'],
+    ['Max/MSP','A visual dataflow programming environment for music and multimedia. The primary tool for generative audio systems since the 1990s. Used by Autechre, Aphex Twin, Arca.'],
+    ['SuperCollider','An open-source platform for audio synthesis and algorithmic composition. Turing-complete; can implement any computable generative system. Free, cross-platform.'],
+    ['Pure Data','Open-source visual programming language for audio, video, and graphics. The community-maintained sibling of Max/MSP. Used widely in academic and experimental music.'],
+    ['Autonomous System','A generative system that runs without real-time human decision-making. A Max patch left running overnight; a TidalCycles pattern evolving for hours — autonomous.'],
+    ['Feedback Loop','A system where output is routed back as input. Audio feedback networks generate complex evolving textures from simple initial conditions. Central to Eno\'s tape works.'],
+    ['Attractor','A set of states toward which a dynamical system tends to evolve. In generative music: harmonic attractors pull voices toward consonant intervals over time.'],
+    ['Bifurcation','A qualitative change in a system\'s behavior as a parameter crosses a threshold. In generative systems: a parameter change that switches the system into a new dynamic regime.'],
+    ['Self-Organization','The spontaneous emergence of global order from local interactions — without external direction. The goal of generative music: a system that organizes itself into music.'],
+  ];
+
+  /* Sort alphabetically */
+  terms.sort((a,b)=>a[0].localeCompare(b[0]));
+
+  const grid=document.getElementById('glossary-grid');
+  terms.forEach(([term,def],i)=>{
+    const div=document.createElement('div');
+    div.className='gloss-item stagger-'+(1+(i%5));
+    div.innerHTML=`<div class="gloss-term">${term}</div><div class="gloss-def">${def}</div>`;
+    grid.appendChild(div);
+  });
+
+  /* IntersectionObserver for glossary items */
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
+  },{threshold:0.05,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.gloss-item').forEach(el=>obs.observe(el));
+})();
+
+/* ============================================================
+   NAV ACTIVE STATE — scroll spy
+   ============================================================ */
+(function(){
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('nav a[href^="#"]');
+
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>{
+          a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id);
+        });
+      }
+    });
+  },{threshold:0.3,rootMargin:'-48px 0px -40% 0px'});
+  sections.forEach(s=>obs.observe(s));
+})();
+
+/* ============================================================
+   GLOBAL INTERSECTION OBSERVER — section reveal
+   ============================================================ */
+(function(){
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('section.hidden').forEach(el=>obs.observe(el));
+})();
+</script>

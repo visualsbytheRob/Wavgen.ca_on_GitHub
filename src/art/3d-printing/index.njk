@@ -1,0 +1,866 @@
+---
+layout: world.njk
+title: "3D Printing World"
+description: "Immersive art world exploring 3d printing"
+domain: art
+permalink: /art/3d-printing/
+---
+
+
+<nav>
+<span class="nav-title">⬡ 3D Printing</span>
+<a href="#topology">Topology</a>
+<a href="#slicing">Slicing</a>
+<a href="#technologies">Technologies</a>
+<a href="#materials">Materials</a>
+<a href="#postprocess">Post-Process</a>
+<a href="#design">DfAM</a>
+<a href="#artists">Artists</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- SECTION 1: HERO — WebGL Gyroid Wireframe -->
+<div id="hero">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-text">
+<h1>3D Printing</h1>
+<p>Additive manufacturing — layer by layer, complexity becomes free</p>
+</div>
+</div>
+<div class="divider"></div>
+<!-- SECTION 2: TOPOLOGY OPTIMIZATION -->
+<section class="hidden" id="topology">
+<h2>Topology Optimization</h2>
+<p>Topology optimization removes material from regions that carry no structural load, producing forms impossible with subtractive manufacturing. The algorithm distributes material only where stress flows, creating organic skeletal structures that are simultaneously lighter and stronger than solid equivalents.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="topoCanvas"></canvas>
+<div class="canvas-label">stress field → optimized topology</div>
+</div>
+<div class="slider-row">
+<label>Volume Fraction</label>
+<input id="volSlider" max="80" min="10" type="range" value="35"/>
+<span id="volVal">35%</span>
+</div>
+<div class="slider-row">
+<label>Load Case</label>
+<input id="loadSlider" max="3" min="0" step="1" type="range" value="1"/>
+<span id="loadVal">Bending</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>SIMP Method</h3><p>Solid Isotropic Material with Penalization. Iteratively redistributes material density. Standard algorithm in Altair OptiStruct, nTopology, and Fusion 360.</p></div>
+<div class="card"><h3>Lattice Infill</h3><p>Topology optimization at the micro-scale: gyroid, Schwartz P, octet truss, and Kelvin cell infill structures replace solid material with graded lattices.</p></div>
+<div class="card"><h3>Multi-Load Cases</h3><p>Real parts experience many loading conditions. Optimization over multiple simultaneous or alternating loads produces more robust structures.</p></div>
+<div class="card"><h3>FEA Validation</h3><p>Finite Element Analysis validates optimized designs before print. Stress concentration, deformation, and safety factor verified computationally.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 3: SLICING PROCESS -->
+<section class="hidden" id="slicing">
+<h2>The Slicing Process</h2>
+<p>Slicer software converts 3D geometry (STL, 3MF, OBJ) into layer-by-layer toolpath instructions (G-code). Every slicing parameter — layer height, infill pattern, support strategy, perimeter count — affects structural properties, surface quality, print time, and material use.</p>
+<div class="canvas-wrap">
+<canvas height="280" id="sliceCanvas"></canvas>
+<div class="canvas-label">interactive slicer — drag layer slider</div>
+</div>
+<div class="slider-row">
+<label>Current Layer</label>
+<input id="layerSlider" max="100" min="0" type="range" value="50"/>
+<span id="layerVal">50%</span>
+</div>
+<div class="slider-row">
+<label>Layer Height (mm)</label>
+<input id="layerHSlider" max="50" min="5" type="range" value="20"/>
+<span id="layerHVal">0.20mm</span>
+</div>
+<div class="slider-row">
+<label>Infill Density</label>
+<input id="infillSlider" max="100" min="5" type="range" value="20"/>
+<span id="infillVal">20%</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Layer Height</h3><p>0.1–0.3mm for FDM. Thinner = smoother surface, longer print. Layer height is the primary quality-speed trade-off lever in FDM printing.</p></div>
+<div class="card"><h3>Infill Patterns</h3><p>Grid, gyroid, honeycomb, triangles, cubic, lightning — each pattern has different isotropy, strength-per-gram, and print speed characteristics.</p></div>
+<div class="card"><h3>Support Structures</h3><p>Auto-generated supports for overhangs &gt;45°. Tree supports (Chitubox, Bambu, Cura) minimize contact area and material use.</p></div>
+<div class="card"><h3>Perimeters / Walls</h3><p>Outer perimeters determine surface quality and part strength. 2–4 perimeters typical; structural parts may use 6+ or 100% infill perimeters.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 4: PRINTING TECHNOLOGIES -->
+<section class="hidden" id="technologies">
+<h2>Printing Technologies</h2>
+<p>Additive manufacturing encompasses radically different physical processes. Each technology trades resolution, material range, build volume, surface quality, and cost differently. The right technology depends on the application, not just the available budget.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="techCanvas"></canvas>
+<div class="canvas-label">technology comparison — click to explore</div>
+</div>
+<div class="card-grid">
+<div class="card" style="border-color:#FF6D00"><h3 style="color:#FF9240">FDM</h3><p>Fused Deposition Modeling. Thermoplastic filament extruded through heated nozzle. Most accessible: Bambu Lab, Prusa, Creality. Layer height 0.1–0.3mm.</p></div>
+<div class="card" style="border-color:#9AA0A6"><h3 style="color:#C0C8CE">SLA / MSLA</h3><p>Stereolithography. UV-cured photopolymer resin. Sub-0.05mm detail, smooth surfaces. Formlabs, Elegoo, Anycubic. Brittle without post-cure.</p></div>
+<div class="card" style="border-color:#FF6D00"><h3 style="color:#FF9240">SLS</h3><p>Selective Laser Sintering. Nylon powder fused by laser. No support structures needed. Best for functional assemblies. Industrial: EOS, Fuse 1 (Formlabs).</p></div>
+<div class="card" style="border-color:#9AA0A6"><h3 style="color:#C0C8CE">DMLS / SLM</h3><p>Direct Metal Laser Sintering. Metal powder fused by high-power laser. Titanium, Inconel, stainless steel. Aerospace, medical, tooling applications.</p></div>
+<div class="card" style="border-color:#FF6D00"><h3 style="color:#FF9240">Binder Jetting</h3><p>Liquid binder deposited onto powder bed. High-speed multi-material. HP Multi Jet Fusion, ExOne. Used for sand casting molds and full-color parts.</p></div>
+<div class="card" style="border-color:#9AA0A6"><h3 style="color:#C0C8CE">Material Jetting</h3><p>Photopolymer droplets deposited and UV-cured. Stratasys PolyJet, 3D Systems ProJet. Multi-material, multi-color in one print. Dental, product design.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 5: MATERIAL SCIENCE -->
+<section class="hidden" id="materials">
+<h2>Material Science</h2>
+<p>Material choice determines everything: mechanical properties, thermal performance, chemical resistance, and biocompatibility. The range of printable materials has expanded from basic PLA to engineering thermoplastics, composites, ceramics, bio-inks, and multi-material gradient structures.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="materialCanvas"></canvas>
+<div class="canvas-label">material property radar</div>
+</div>
+<div class="slider-row">
+<label>Material</label>
+<input id="matSlider" max="5" min="0" step="1" type="range" value="0"/>
+<span id="matVal">PLA</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>PLA</h3><p>Polylactic acid. Biodegradable, easy to print, brittle. Ideal for prototypes, art, and non-structural parts. Biodegrades in industrial composters.</p></div>
+<div class="card"><h3>PETG</h3><p>Balance of strength, flexibility, and ease of printing. Chemical resistance. Food-safe variants. Preferred for functional prototypes and enclosures.</p></div>
+<div class="card"><h3>TPU / TPE</h3><p>Flexible thermoplastics. Shore hardness 60A–95A. Gaskets, grips, wearables, shock absorbers. Stretchable up to 600% elongation at break.</p></div>
+<div class="card"><h3>Carbon Fiber Composites</h3><p>Chopped CF in Nylon or PLA matrix: 2–5× stiffness of base polymer. Continuous CF (Markforged): aerospace-grade strength-to-weight ratio.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 6: POST-PROCESSING -->
+<section class="hidden" id="postprocess">
+<h2>Post-Processing</h2>
+<p>The print is rarely the final product. Post-processing transforms rough layer-line surfaces into finished parts: support removal, surface treatment, heat treatment, plating, painting, and functional finishing. For SLA and resin prints, UV post-cure is mandatory for full material properties.</p>
+<div class="canvas-wrap">
+<canvas height="220" id="postCanvas"></canvas>
+<div class="canvas-label">surface roughness → finishing stages</div>
+</div>
+<div class="slider-row">
+<label>Finishing Stage</label>
+<input id="finishSlider" max="100" min="0" type="range" value="0"/>
+<span id="finishVal">Raw Print</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Sanding &amp; Priming</h3><p>Wet sanding from 80–2000 grit removes layer lines. Polyurethane primer fills micro-texture. Achieves surface roughness of Ra 0.1–0.5μm.</p></div>
+<div class="card"><h3>Vapor Smoothing</h3><p>Acetone vapor (ABS) or Polymaker Polysher (ASA/PLA) reflow the surface thermally. Requires ventilation. Achieves injection-molded appearance in minutes.</p></div>
+<div class="card"><h3>Electroplating</h3><p>Conductive paint + electroplating deposits copper, nickel, or chrome on plastic substrates. Used for decorative metal finish and EMI shielding.</p></div>
+<div class="card"><h3>HIP (Hot Isostatic Press)</h3><p>Applied to metal SLS/DMLS parts. Eliminates internal voids via isostatic pressure at elevated temperature. Required for aerospace fatigue life compliance.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 7: DESIGN FOR ADDITIVE (DfAM) -->
+<section class="hidden" id="design">
+<h2>Design for Additive Manufacturing</h2>
+<p>DfAM inverts the design constraints of subtractive manufacturing. Complexity is nearly free — undercuts, internal channels, overhangs, and organic geometry impose no machining cost penalty. But new constraints emerge: anisotropy, support accessibility, and layer bonding must be designed for, not against.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="dfamCanvas"></canvas>
+<div class="canvas-label">DfAM feature explorer</div>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Internal Channels</h3><p>Conformal cooling channels in injection molds match the mold surface geometry — impossible with drilled channels, trivial with DMLS. Reduces cycle time 20–40%.</p></div>
+<div class="card"><h3>Overhang Rules</h3><p>FDM overhang limit: 45° from vertical without supports. SLA: 60–70°. SLS: no limit. Orient parts to minimize supports and maximize surface quality on critical faces.</p></div>
+<div class="card"><h3>Minimum Wall</h3><p>FDM: 0.8mm (2× nozzle diameter). SLA: 0.4mm. DMLS: 0.3mm. Thin walls risk warping, delamination, or print failure — check with slicer preview.</p></div>
+<div class="card"><h3>Part Consolidation</h3><p>Replace assemblies of 10+ machined parts with 1–2 printed parts. Reduces fasteners, alignment fixtures, and assembly labor. GE's LEAP fuel nozzle: 20 parts → 1.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 8: ARTISTS -->
+<section class="hidden" id="artists">
+<h2>Artists &amp; Designers</h2>
+<p>These practitioners demonstrate that additive manufacturing is not merely a fabrication method but a design philosophy — one that enables forms, structures, and systems previously impossible to realize.</p>
+<div class="researcher-grid">
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,109,0,0.15)">🦴</div>
+<h3>Neri Oxman</h3>
+<div class="role">MIT Media Lab</div>
+<p>Mediated Matter group. Multi-material printing mimicking biological gradient structures. Silk pavilion, melanin-graded glass, and cellular architecture.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(154,160,166,0.15)">🏛️</div>
+<h3>Michael Hansmeyer</h3>
+<div class="role">Computational Architecture</div>
+<p>Subdivided columns with millions of facets — 3D-printed in segments. Computational form-finding produces Gothic complexity from algorithmic process.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,109,0,0.15)">🪑</div>
+<h3>Joris Laarman</h3>
+<div class="role">Lab + Studio</div>
+<p>Bone Chair: topology-optimized seating grown algorithmically. MX3D bridge: robotic WAAM steel printing at architectural scale in Amsterdam.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(154,160,166,0.15)">👗</div>
+<h3>Iris van Herpen</h3>
+<div class="role">Fashion / SLS</div>
+<p>SLS nylon garments with interlocked chain-mail structures impossible with textile manufacturing. Pioneered wearable additive manufacturing at couture scale.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,109,0,0.15)">🏠</div>
+<h3>Branch Technology</h3>
+<div class="role">Architectural AM</div>
+<p>Free-form cellular composite printing. Large-format FDM robot extrudes carbon fiber reinforced structures used as architectural panels and pavilions.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(154,160,166,0.15)">🤖</div>
+<h3>Pia Gruber / Grossman</h3>
+<div class="role">Materialise / SLA Art</div>
+<p>High-resolution SLA for jewelry and art. Demonstrates how resin printing enables sub-millimeter filigree impossible with traditional casting or machining.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,109,0,0.15)">🌀</div>
+<h3>rAndom International</h3>
+<div class="role">Art Collective, London</div>
+<p>Rain Room, Swarm Study. Use 3D printing for custom sensor housings, fluid simulation molds, and structural components of large kinetic installations.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(154,160,166,0.15)">🌿</div>
+<h3>Nervous System</h3>
+<div class="role">Generative Design Studio</div>
+<p>Hyphae Lamp, Kinematics dress. Algorithmic design inspired by natural growth. SLS nylon jewelry and garments with 2000+ interlocked printed hinges.</p>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 9: GLOSSARY -->
+<section class="hidden" id="glossary">
+<h2>Glossary</h2>
+<p>Core vocabulary of additive manufacturing, material science, and design for AM.</p>
+<dl class="glossary-grid">
+<div class="glossary-item"><dt>FDM</dt><dd>Fused Deposition Modeling. Extrudes thermoplastic filament layer by layer. Most accessible AM process. Also called FFF (Fused Filament Fabrication).</dd></div>
+<div class="glossary-item"><dt>SLA</dt><dd>Stereolithography Apparatus. UV laser or masked LCD cures liquid photopolymer resin layer by layer. Highest detail among consumer processes.</dd></div>
+<div class="glossary-item"><dt>SLS</dt><dd>Selective Laser Sintering. CO₂ laser fuses powder (nylon, glass-filled, rubber). No support structures. Best functional part quality without post-process finishing.</dd></div>
+<div class="glossary-item"><dt>DMLS</dt><dd>Direct Metal Laser Sintering. High-power fiber laser melts metal powder. Titanium, Inconel, steel, aluminum. Used in aerospace and medical implants.</dd></div>
+<div class="glossary-item"><dt>G-Code</dt><dd>Machine instruction language for CNC and 3D printers. Specifies position (X,Y,Z), extrusion (E), temperature (M104/M109), fan speed, and movement type.</dd></div>
+<div class="glossary-item"><dt>Topology Optimization</dt><dd>Computational method removing material from low-stress regions while maintaining structural performance. Produces organic, biomorphic forms.</dd></div>
+<div class="glossary-item"><dt>Infill</dt><dd>Internal structure density and pattern. 0% = hollow shell; 100% = solid. Typical functional parts: 15–40%. Pattern affects anisotropy and strength direction.</dd></div>
+<div class="glossary-item"><dt>Gyroid</dt><dd>Triply periodic minimal surface (TPMS). Produces isotropic infill — equal strength in all directions. Also used as scaffold in tissue engineering.</dd></div>
+<div class="glossary-item"><dt>Support Material</dt><dd>Sacrificial printed structure that supports overhangs during printing. Removed mechanically or dissolved (PVA in water, HIPS in limonene).</dd></div>
+<div class="glossary-item"><dt>Warping</dt><dd>Differential thermal contraction causing print corners to lift from bed. Mitigated by heated enclosures, bed adhesion (PEI, glue, ABS slurry), and brim printing.</dd></div>
+<div class="glossary-item"><dt>Layer Adhesion</dt><dd>Bond strength between deposited layers. Determines Z-axis tensile strength. Typically 20–50% of XY strength in FDM. Improved by higher temperature and slower speed.</dd></div>
+<div class="glossary-item"><dt>Anisotropy</dt><dd>Direction-dependent mechanical properties. FDM parts are weakest in Z (layer separation). SLS parts approach isotropy. Design must account for print orientation.</dd></div>
+<div class="glossary-item"><dt>DfAM</dt><dd>Design for Additive Manufacturing. Design philosophy exploiting AM capabilities: internal channels, organic geometry, part consolidation, and gradient material.</dd></div>
+<div class="glossary-item"><dt>Post-Cure</dt><dd>UV exposure after SLA/MSLA printing that completes resin polymerization. Required for full mechanical properties and reduces tackiness and brittleness.</dd></div>
+<div class="glossary-item"><dt>Part Consolidation</dt><dd>Replacing multi-component assemblies with fewer printed parts. GE LEAP nozzle: 20 parts → 1. Eliminates fasteners, welds, and alignment fixtures.</dd></div>
+<div class="glossary-item"><dt>Voxel</dt><dd>3D pixel — the fundamental unit of some AM processes (Material Jetting). Enables gradient material, color, and property control at the voxel level.</dd></div>
+<div class="glossary-item"><dt>Build Volume</dt><dd>Maximum printable geometry envelope (X×Y×Z). Consumer FDM: 220–350mm. Large-format industrial: 500–1000mm. Pellet extrusion: meters scale.</dd></div>
+<div class="glossary-item"><dt>Overhang Angle</dt><dd>Angle from vertical that self-supporting geometry can achieve. FDM: ~45°. SLA: ~60°. Beyond limit, support structures required or print quality degrades.</dd></div>
+<div class="glossary-item"><dt>Nozzle Diameter</dt><dd>Determines minimum feature size and maximum extrusion rate. 0.4mm standard; 0.25mm fine detail; 0.8–1.0mm fast structural printing.</dd></div>
+<div class="glossary-item"><dt>Generative Design</dt><dd>AI/optimization-driven form-finding using performance constraints as inputs. Autodesk Fusion, nTopology. Explores thousands of valid topologies computationally.</dd></div>
+<div class="glossary-item"><dt>3MF</dt><dd>3D Manufacturing Format. Open XML-based format replacing STL. Preserves color, materials, metadata, and lattice data. Industry standard for modern slicers.</dd></div>
+<div class="glossary-item"><dt>WAAM</dt><dd>Wire Arc Additive Manufacturing. MIG/TIG welding robot deposits metal beads. Large-scale metal AM (meters). MX3D used it to print an Amsterdam canal bridge.</dd></div>
+</dl>
+</section>
+<script>
+'use strict';
+
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// 15+ LagFilter instances
+const lagHeroMX   = new LagFilter(0.5, 0.7);
+const lagHeroMY   = new LagFilter(0.5, 0.7);
+const lagHeroRotX = new LagFilter(0,   0.5);
+const lagHeroRotY = new LagFilter(0,   0.5);
+const lagVol      = new LagFilter(35,  0.5);
+const lagLoad     = new LagFilter(1,   0.5);
+const lagLayer    = new LagFilter(50,  0.4);
+const lagLayerH   = new LagFilter(20,  0.4);
+const lagInfill   = new LagFilter(20,  0.4);
+const lagMat      = new LagFilter(0,   0.5);
+const lagFinish   = new LagFilter(0,   0.4);
+const lagTopoAnim = new LagFilter(0,   0.3);
+const lagSliceZ   = new LagFilter(0.5, 0.35);
+const lagMatRadar = new LagFilter(0,   0.4);
+const lagPostSurf = new LagFilter(0,   0.35);
+const lagTechHov  = new LagFilter(0,   0.3);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+const loadNames = ['Compression', 'Bending', 'Torsion', 'Multi-Axial'];
+const matNames  = ['PLA', 'PETG', 'TPU', 'ABS', 'Nylon', 'CF Nylon'];
+const finishNames = v => v < 15 ? 'Raw Print' : v < 35 ? 'Support Removed' : v < 55 ? 'Sanded 80g' : v < 75 ? 'Sanded 400g' : v < 90 ? 'Primed' : 'Painted';
+
+function bindSlider(id, outId, fn) {
+  const s = document.getElementById(id), o = document.getElementById(outId);
+  if (!s || !o) return;
+  const upd = () => { o.textContent = fn ? fn(+s.value) : s.value; };
+  s.addEventListener('input', upd); upd();
+}
+bindSlider('volSlider',    'volVal',    v => v + '%');
+bindSlider('loadSlider',   'loadVal',   v => loadNames[+v]);
+bindSlider('layerSlider',  'layerVal',  v => v + '%');
+bindSlider('layerHSlider', 'layerHVal', v => (v/100).toFixed(2) + 'mm');
+bindSlider('infillSlider', 'infillVal', v => v + '%');
+bindSlider('matSlider',    'matVal',    v => matNames[+v]);
+bindSlider('finishSlider', 'finishVal', finishNames);
+
+/* ═══ HERO — Gyroid Wireframe ═══ */
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  let W, H, mouse = { x: 0.5, y: 0.5 }, startT = Date.now();
+  function resize() {
+    W = canvas.offsetWidth; H = canvas.offsetHeight;
+    canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = 1 - (e.clientY - r.top) / r.height;
+  });
+
+  const vs = `attribute vec2 a; void main(){ gl_Position=vec4(a,0,1); }`;
+  const fs = `
+    precision highp float;
+    uniform float u_t; uniform vec2 u_res, u_mouse;
+    void main(){
+      vec2 uv=(gl_FragCoord.xy/u_res)*2.-1.; uv.x*=u_res.x/u_res.y;
+      float t=u_t*0.25;
+      vec2 m=(u_mouse-0.5)*2.;
+      // 3D gyroid visualization in 2D cross-section
+      float scale=5.+m.x*2.;
+      vec3 p=vec3(uv*scale, t+m.y*2.);
+      // Gyroid: cos(x)sin(y) + cos(y)sin(z) + cos(z)sin(x) = 0
+      float g=cos(p.x)*sin(p.y)+cos(p.y)*sin(p.z)+cos(p.z)*sin(p.x);
+      // Isosurface thickness
+      float surface=1.-smoothstep(0.,0.3,abs(g));
+      // Layer lines (horizontal)
+      float layers=step(0.8, fract(p.y*2.));
+      // Color
+      vec3 col=vec3(0.);
+      col+=vec3(1.,0.43,0.)*surface*0.9;
+      col+=vec3(0.6,0.63,0.65)*layers*surface*0.5;
+      col+=vec3(0.6,0.63,0.65)*max(0.,-g*0.5)*0.3;
+      // Glow at surface
+      col+=vec3(1.,0.6,0.2)*pow(surface,2.)*0.8;
+      // Vignette
+      float v=length(uv); col*=1.-v*v*0.3;
+      gl_FragColor=vec4(col,1.);
+    }
+  `;
+  function sh(type, src) { const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const aLoc = gl.getAttribLocation(prog,'a');
+  gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+  const uT=gl.getUniformLocation(prog,'u_t'), uR=gl.getUniformLocation(prog,'u_res'), uM=gl.getUniformLocation(prog,'u_mouse');
+
+  let lastT2 = Date.now();
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT2)/1000, 0.1); lastT2 = now;
+    const mx = lagHeroMX.update(mouse.x, dt);
+    const my = lagHeroMY.update(mouse.y, dt);
+    gl.uniform1f(uT, (now - startT)/1000);
+    gl.uniform2f(uR, canvas.width, canvas.height);
+    gl.uniform2f(uM, mx, my);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ TOPO CANVAS — Stress Field Visualization ═══ */
+(function() {
+  const canvas = document.getElementById('topoCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 260; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const volSl  = document.getElementById('volSlider');
+  const loadSl = document.getElementById('loadSlider');
+  let lastT = Date.now(), phase = 0;
+
+  function stress(x, y, mode) {
+    const cx = 0.5, cy = 0.5;
+    switch(mode) {
+      case 0: return Math.abs(y - cy) * 2; // compression - vertical
+      case 1: return Math.pow(x, 1.5) * (1 - y) + (1 - x) * y * 0.5; // bending
+      case 2: return Math.abs(Math.sin((x - cx) * Math.PI) * Math.cos((y - cy) * Math.PI)); // torsion
+      default: return (stress(x,y,0)+stress(x,y,1)+stress(x,y,2))/3;
+    }
+  }
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    phase += dt;
+    const vol  = lagVol.update(volSl ? +volSl.value : 35, dt) / 100;
+    const mode = Math.round(lagLoad.update(loadSl ? +loadSl.value : 1, dt));
+    lagTopoAnim.update(vol, dt);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw stress field
+    const res = 40;
+    const cw = W / res, ch = H / res;
+    for (let yi = 0; yi < res; yi++) {
+      for (let xi = 0; xi < res; xi++) {
+        const s = stress(xi/res, yi/res, mode);
+        const threshold = 1 - vol;
+        const isMaterial = s > threshold;
+
+        if (isMaterial) {
+          const intensity = (s - threshold) / vol;
+          const r = Math.floor(255 * Math.min(1, intensity * 2));
+          const g = Math.floor(109 * intensity);
+          ctx.fillStyle = `rgb(${r},${g},0)`;
+          ctx.fillRect(xi * cw + 1, yi * ch + 1, cw - 1, ch - 1);
+        } else {
+          ctx.fillStyle = 'rgba(20,20,20,0.8)';
+          ctx.fillRect(xi * cw, yi * ch, cw, ch);
+        }
+      }
+    }
+
+    // Labels
+    ctx.fillStyle = 'rgba(154,160,166,0.5)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`volume: ${Math.round(vol*100)}%  load: ${loadNames[mode]}`, 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ SLICE CANVAS — Layer-by-Layer ═══ */
+(function() {
+  const canvas = document.getElementById('sliceCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 280; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const layerSl  = document.getElementById('layerSlider');
+  const layerHSl = document.getElementById('layerHSlider');
+  const infillSl = document.getElementById('infillSlider');
+  let lastT = Date.now();
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const layerT  = lagLayer.update(layerSl  ? +layerSl.value  : 50, dt) / 100;
+    const layerH  = lagLayerH.update(layerHSl ? +layerHSl.value : 20, dt);
+    const infill  = lagInfill.update(infillSl ? +infillSl.value : 20, dt) / 100;
+    lagSliceZ.update(layerT, dt);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw a simple vase-like cross-section
+    const cx = W / 2, baseY = H * 0.9, maxH = H * 0.75;
+    const totalLayers = Math.floor(maxH / (layerH / 10 * 2 + 1));
+    const currentLayer = Math.floor(layerT * totalLayers);
+
+    for (let l = 0; l <= currentLayer; l++) {
+      const t = l / totalLayers;
+      const y = baseY - l * (maxH / totalLayers);
+      // Vase profile
+      const halfW = (W * 0.15) * (0.5 + Math.sin(t * Math.PI) * 0.5 + 0.2);
+      const isCurrent = l === currentLayer;
+      const isInfill = l > 2 && l < currentLayer - 2;
+
+      if (isInfill) {
+        // Draw infill pattern
+        const spacing = Math.max(3, 20 * (1 - infill));
+        for (let xi = cx - halfW + 2; xi < cx + halfW - 2; xi += spacing) {
+          ctx.strokeStyle = 'rgba(255,109,0,0.4)';
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(xi, y);
+          ctx.lineTo(xi + spacing * 0.7, y - 1);
+          ctx.stroke();
+        }
+        // Perimeter
+        ctx.strokeStyle = 'rgba(255,109,0,0.6)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(cx - halfW, y); ctx.lineTo(cx + halfW, y);
+        ctx.stroke();
+      } else {
+        // Solid perimeter layers
+        const brightness = isCurrent ? 0.9 : 0.4 + t * 0.3;
+        ctx.strokeStyle = `rgba(255,${Math.floor(109*brightness)},0,${brightness})`;
+        ctx.lineWidth = isCurrent ? 2 : 1;
+        ctx.beginPath();
+        ctx.moveTo(cx - halfW, y); ctx.lineTo(cx + halfW, y);
+        ctx.stroke();
+      }
+    }
+
+    // Current layer highlight
+    const curY = baseY - currentLayer * (maxH / totalLayers);
+    const curHW = (W * 0.15) * (0.5 + Math.sin(layerT * Math.PI) * 0.5 + 0.2);
+    const grad = ctx.createLinearGradient(cx - curHW, 0, cx + curHW, 0);
+    grad.addColorStop(0, 'rgba(255,146,64,0)');
+    grad.addColorStop(0.5, 'rgba(255,146,64,0.8)');
+    grad.addColorStop(1, 'rgba(255,146,64,0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - curHW, curY); ctx.lineTo(cx + curHW, curY);
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(154,160,166,0.5)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`layer ${currentLayer}/${totalLayers}  h:${(layerH/100).toFixed(2)}mm  infill:${Math.round(infill*100)}%`, 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ TECH CANVAS — Technology Comparison ═══ */
+(function() {
+  const canvas = document.getElementById('techCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const techs = [
+    { name: 'FDM',  detail: 0.3, speed: 0.9, cost: 0.95, materials: 0.8, color: '#FF6D00' },
+    { name: 'SLA',  detail: 0.9, speed: 0.6, cost: 0.7,  materials: 0.4, color: '#9AA0A6' },
+    { name: 'SLS',  detail: 0.75,speed: 0.5, cost: 0.3,  materials: 0.5, color: '#FF9240' },
+    { name: 'DMLS', detail: 0.85,speed: 0.3, cost: 0.05, materials: 0.7, color: '#C0C8CE' },
+    { name: 'MJF',  detail: 0.8, speed: 0.8, cost: 0.2,  materials: 0.35,color: '#FF6D00' },
+  ];
+
+  let hoveredTech = -1, lastT = Date.now();
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width * W;
+    const barW = (W - 60) / techs.length;
+    hoveredTech = Math.floor((mx - 30) / barW);
+    if (hoveredTech < 0 || hoveredTech >= techs.length) hoveredTech = -1;
+  });
+
+  const axes = ['Detail', 'Speed', 'Cost Acc.', 'Materials'];
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    lagTechHov.update(hoveredTech >= 0 ? 1 : 0, dt);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    const barW = (W - 60) / techs.length;
+    const pad = 30;
+    const maxH = H * 0.6;
+
+    techs.forEach((t, i) => {
+      const x = pad + i * barW + barW * 0.1;
+      const bw = barW * 0.7;
+      const isHov = i === hoveredTech;
+      const score = (t.detail + t.speed + t.cost + t.materials) / 4;
+
+      // Background
+      ctx.fillStyle = 'rgba(20,20,20,0.5)';
+      ctx.fillRect(x, H * 0.15, bw, maxH);
+
+      // Score bar
+      const bh = score * maxH;
+      ctx.fillStyle = t.color + (isHov ? 'CC' : '88');
+      ctx.fillRect(x, H * 0.15 + maxH - bh, bw, bh);
+
+      // Label
+      ctx.fillStyle = isHov ? t.color : 'rgba(154,160,166,0.6)';
+      ctx.font = isHov ? 'bold 10px monospace' : '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(t.name, x + bw / 2, H * 0.15 + maxH + 14);
+
+      // Tooltip on hover
+      if (isHov) {
+        ctx.fillStyle = 'rgba(8,8,8,0.9)';
+        ctx.strokeStyle = t.color;
+        ctx.lineWidth = 1;
+        const ttX = Math.min(W - 130, x), ttY = H * 0.1;
+        ctx.beginPath(); ctx.roundRect(ttX, ttY, 120, 70, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = t.color;
+        ctx.font = '8px monospace';
+        ctx.textAlign = 'left';
+        ['Detail', 'Speed', 'Accessibility', 'Materials'].forEach((ax, j) => {
+          const vals = [t.detail, t.speed, t.cost, t.materials];
+          ctx.fillText(`${ax}: ${Math.round(vals[j]*100)}%`, ttX + 6, ttY + 16 + j * 14);
+        });
+      }
+    });
+
+    ctx.fillStyle = 'rgba(154,160,166,0.3)';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('overall score (detail + speed + accessibility + materials)', 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ MATERIAL CANVAS — Radar Chart ═══ */
+(function() {
+  const canvas = document.getElementById('materialCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const matSl = document.getElementById('matSlider');
+  const materials = [
+    { name: 'PLA',     props: [0.3, 0.9, 0.2, 0.5, 0.3, 0.4] },
+    { name: 'PETG',    props: [0.5, 0.7, 0.5, 0.7, 0.4, 0.5] },
+    { name: 'TPU',     props: [0.7, 0.5, 0.1, 0.3, 0.3, 0.3] },
+    { name: 'ABS',     props: [0.5, 0.7, 0.7, 0.7, 0.6, 0.4] },
+    { name: 'Nylon',   props: [0.4, 0.8, 0.8, 0.9, 0.6, 0.7] },
+    { name: 'CF Nylon',props: [0.6, 0.95, 0.9, 1.0, 0.8, 0.6] },
+  ];
+  const axes = ['Flexib.', 'Strength', 'Heat Res.', 'Impact', 'Chem Res.', 'Printability'];
+  let lastT = Date.now();
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const matIdx = Math.round(lagMat.update(matSl ? +matSl.value : 0, dt));
+    lagMatRadar.update(matIdx, dt);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    const cx = W / 2, cy = H / 2, r = Math.min(W, H) * 0.35;
+    const N = axes.length;
+    const mat = materials[matIdx];
+
+    // Grid
+    for (let level = 1; level <= 4; level++) {
+      const lr = r * level / 4;
+      ctx.strokeStyle = 'rgba(154,160,166,0.1)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      axes.forEach((_, i) => {
+        const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const px = cx + Math.cos(angle) * lr;
+        const py = cy + Math.sin(angle) * lr;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.closePath(); ctx.stroke();
+    }
+
+    // Axes
+    axes.forEach((ax, i) => {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      ctx.strokeStyle = 'rgba(154,160,166,0.3)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(192,200,206,0.6)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(ax, cx + Math.cos(angle) * (r + 18), cy + Math.sin(angle) * (r + 14) + 4);
+    });
+
+    // Material polygon
+    ctx.strokeStyle = '#FF6D00';
+    ctx.fillStyle = 'rgba(255,109,0,0.15)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    mat.props.forEach((v, i) => {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const px = cx + Math.cos(angle) * r * v;
+      const py = cy + Math.sin(angle) * r * v;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Label
+    ctx.fillStyle = '#FF9240';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(mat.name, cx, cy + r + 30);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ POST CANVAS — Surface Finishing ═══ */
+(function() {
+  const canvas = document.getElementById('postCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 220; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const finishSl = document.getElementById('finishSlider');
+  let lastT = Date.now();
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    const finish = lagFinish.update(finishSl ? +finishSl.value : 0, dt);
+    lagPostSurf.update(finish, dt);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw surface cross-section at various finish stages
+    const cx = W / 2, cy = H / 2;
+    const surfH = H * 0.5;
+
+    // Layer roughness decreasing with finish
+    const roughness = Math.max(0.02, 1 - finish / 100) * 15;
+    const N = 60;
+
+    // Top surface
+    ctx.beginPath();
+    ctx.moveTo(cx - W * 0.4, cy - surfH / 2);
+    for (let i = 0; i <= N; i++) {
+      const x = (cx - W * 0.4) + i * (W * 0.8) / N;
+      const noise = (Math.sin(i * 2.1) + Math.sin(i * 5.3 + 1)) * roughness;
+      const y = cy - surfH / 2 + noise;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(cx + W * 0.4, cy + surfH / 2);
+    ctx.lineTo(cx - W * 0.4, cy + surfH / 2);
+    ctx.closePath();
+
+    const brightness = 60 + finish * 0.35;
+    ctx.fillStyle = `hsl(220, 5%, ${brightness * 0.1}%)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${255 - finish * 1.5},${109 + finish * 0.9},0,0.8)`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Layer lines visible at low finish
+    if (finish < 50) {
+      const layerAlpha = Math.max(0, (50 - finish) / 50) * 0.5;
+      const numLayers = 8;
+      for (let l = 0; l < numLayers; l++) {
+        const ly = cy - surfH / 2 + l * surfH / numLayers;
+        ctx.strokeStyle = `rgba(255,109,0,${layerAlpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([3, 2]);
+        ctx.beginPath();
+        ctx.moveTo(cx - W * 0.4, ly); ctx.lineTo(cx + W * 0.4, ly);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    ctx.fillStyle = 'rgba(154,160,166,0.5)';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(finishNames(finish) + '  roughness: Ra ' + (roughness * 0.05).toFixed(2) + 'μm', 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ DfAM CANVAS — Feature Explorer ═══ */
+(function() {
+  const canvas = document.getElementById('dfamCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  let lastT = Date.now(), phase = 0;
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT)/1000, 0.1); lastT = now;
+    phase += dt * 0.5;
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
+
+    const features = [
+      { label: 'Conformal Channel', x: 0.15, y: 0.5, r: 30 },
+      { label: 'Overhang 45°',     x: 0.4,  y: 0.4, r: 25 },
+      { label: 'Lattice Infill',   x: 0.65, y: 0.5, r: 28 },
+      { label: 'Part Consolidation',x: 0.88, y: 0.4, r: 22 },
+    ];
+
+    features.forEach((f, i) => {
+      const fx = f.x * W, fy = f.y * H;
+      const pulse = 1 + Math.sin(phase * 1.5 + i) * 0.1;
+
+      // Feature circle
+      ctx.fillStyle = 'rgba(255,109,0,0.1)';
+      ctx.strokeStyle = 'rgba(255,109,0,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(fx, fy, f.r * pulse, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+
+      // Inner geometry hint
+      ctx.strokeStyle = 'rgba(255,146,64,0.4)';
+      ctx.lineWidth = 0.7;
+      if (i === 0) { // Conformal channel
+        for (let a = 0; a < Math.PI * 2; a += 0.4) {
+          ctx.beginPath();
+          ctx.arc(fx + Math.cos(a) * 10, fy + Math.sin(a) * 10, 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      } else if (i === 2) { // Lattice
+        for (let gx = -2; gx <= 2; gx++) {
+          for (let gy = -2; gy <= 2; gy++) {
+            ctx.beginPath();
+            ctx.moveTo(fx + gx * 8, fy - 15);
+            ctx.lineTo(fx + gx * 8, fy + 15);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(fx - 15, fy + gy * 8);
+            ctx.lineTo(fx + 15, fy + gy * 8);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Label
+      ctx.fillStyle = 'rgba(255,146,64,0.8)';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(f.label, fx, fy + f.r + 14);
+    });
+
+    // Connecting arrows
+    ctx.strokeStyle = 'rgba(154,160,166,0.15)';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 5]);
+    for (let i = 0; i < features.length - 1; i++) {
+      ctx.beginPath();
+      ctx.moveTo(features[i].x * W, features[i].y * H);
+      ctx.lineTo(features[i+1].x * W, features[i+1].y * H);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    ctx.textAlign = 'left';
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+</script>

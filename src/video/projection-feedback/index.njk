@@ -1,0 +1,1548 @@
+---
+layout: world.njk
+title: "Projection Feedback Dimension — Recursion as Medium"
+description: "Immersive video world exploring projection feedback dimension"
+domain: video
+permalink: /video/projection-feedback/
+---
+
+
+<nav id="nav">
+<div class="logo">▶ Proj.Feedback.Dim</div>
+<ul>
+<li><a href="#hero">Hero</a></li>
+<li><a href="#s2">Param Lab</a></li>
+<li><a href="#s3">CRT Arch</a></li>
+<li><a href="#s4">Signal</a></li>
+<li><a href="#s5">Glitch</a></li>
+<li><a href="#s6">Rec.Geo</a></li>
+<li><a href="#s7">A/V Rec</a></li>
+<li><a href="#s8">Gallery</a></li>
+<li><a href="#s9">Glossary</a></li>
+</ul>
+</nav>
+<!-- SECTION 1: HERO -->
+<section id="hero">
+<div class="section-label">App 11 of the Video Universe</div>
+<h1 id="hero-title">PROJECTION FEEDBACK DIMENSION</h1>
+<p id="hero-sub">The image that feeds on itself. The signal that loops into infinity.</p>
+<div class="crt-frame" id="hero-canvas-wrap">
+<canvas height="440" id="heroCanvas" width="800"></canvas>
+<div id="hero-scanlines"></div>
+<div id="hero-vignette"></div>
+</div>
+<div class="hero-badges">
+<div class="hero-badge">Feedback Rate <span id="bRate">60fps</span></div>
+<div class="hero-badge">Recursion Depth <span id="bDepth">∞</span></div>
+<div class="hero-badge">Decay <span id="bDecay">0.02</span></div>
+<div class="hero-badge">Entropy <span id="bEntropy">rising</span></div>
+</div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 2: FEEDBACK PARAMETER LAB -->
+<section id="s2">
+<div class="section-label">Interactive System</div>
+<div class="section-title">Feedback Parameter Lab</div>
+<p class="section-sub">Six parameters control the feedback loop engine. Adjust scale, rotation, decay, drift and hue shift to sculpt the infinite regression. Inject a SEED shape and watch it evolve through time.</p>
+<div class="two-col">
+<div>
+<div class="canvas-wrap crt-frame" style="width:100%">
+<canvas height="360" id="fbCanvas" style="width:100%;height:auto;display:block;" width="560"></canvas>
+</div>
+<div class="btn-row" style="margin-top:12px;">
+<button class="btn" id="fbSeedBtn">✷ Inject Seed</button>
+<button class="preset-btn" onclick="applyPreset('paik')">Nam June Paik</button>
+<button class="preset-btn" onclick="applyPreset('vortex')">Vortex</button>
+<button class="preset-btn" onclick="applyPreset('collapse')">Collapse</button>
+</div>
+</div>
+<div class="controls" id="fbControls">
+<div class="ctrl-row">
+<span class="ctrl-label">Scale</span>
+<input id="fbScale" max="1.010" min="0.990" step="0.001" type="range" value="1.003"/>
+<span class="ctrl-val" id="fbScaleVal">1.003</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Rotation</span>
+<input id="fbRot" max="0.050" min="-0.050" step="0.001" type="range" value="0.002"/>
+<span class="ctrl-val" id="fbRotVal">0.002</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Decay</span>
+<input id="fbDecay" max="0.15" min="0.01" step="0.01" type="range" value="0.03"/>
+<span class="ctrl-val" id="fbDecayVal">0.03</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">X Offset</span>
+<input id="fbOffX" max="5" min="-5" step="0.1" type="range" value="0"/>
+<span class="ctrl-val" id="fbOffXVal">0.0</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Y Offset</span>
+<input id="fbOffY" max="5" min="-5" step="0.1" type="range" value="0"/>
+<span class="ctrl-val" id="fbOffYVal">0.0</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Hue Shift</span>
+<input id="fbHue" max="2" min="0" step="0.05" type="range" value="0.5"/>
+<span class="ctrl-val" id="fbHueVal">0.5°</span>
+</div>
+<div class="ctrl-row" style="margin-top:4px;">
+<span class="ctrl-label" style="color:var(--accent2);">Scale &lt;1</span>
+<span style="font-size:10px;color:var(--dim);">= inward collapse  |  &gt;1 = expanding zoom</span>
+</div>
+</div>
+</div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 3: CRT ARCHAEOLOGY -->
+<section id="s3">
+<div class="section-label">Historical Simulation</div>
+<div class="section-title">CRT Archaeology</div>
+<p class="section-sub">Six cathode ray tube eras — each with its characteristic phosphor, distortion, noise and decay. The same animated content filtered through decades of hardware evolution. Click any monitor to expand.</p>
+<div class="crt-grid" id="crtGrid">
+<div class="crt-cell" data-era="0">
+<canvas class="crt-monitor" height="200" id="crt0" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">1950s Oscilloscope</div>
+</div>
+<div class="crt-cell" data-era="1">
+<canvas class="crt-monitor" height="200" id="crt1" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">1960s Studio Monitor</div>
+</div>
+<div class="crt-cell" data-era="2">
+<canvas class="crt-monitor" height="200" id="crt2" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">1970s Color TV</div>
+</div>
+<div class="crt-cell" data-era="3">
+<canvas class="crt-monitor" height="200" id="crt3" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">1980s Commodore</div>
+</div>
+<div class="crt-cell" data-era="4">
+<canvas class="crt-monitor" height="200" id="crt4" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">1990s Security Camera</div>
+</div>
+<div class="crt-cell" data-era="5">
+<canvas class="crt-monitor" height="200" id="crt5" style="width:100%;height:auto;display:block;" width="260"></canvas>
+<div class="crt-label">2000s Consumer CRT</div>
+</div>
+</div>
+<div id="crtExpanded" style="display:none;margin-bottom:20px;">
+<canvas height="560" id="crtBig" style="width:100%;height:auto;border:2px solid var(--accent);border-radius:8px;display:block;" width="840"></canvas>
+<button class="btn" onclick="closeCRTExpanded()" style="margin-top:10px;">× Close</button>
+</div>
+<div class="info-card">
+<strong>Phosphor Persistence:</strong> Different phosphors decay at different rates. P1 (green, oscilloscopes) had very long persistence — ghostly trails perfect for slow signal analysis. P4 (white, consumer TVs) decayed fast for crisp motion. P31 (green, computer monitors) balanced persistence for text legibility.
+  </div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 4: SIGNAL RECURSION ENGINE -->
+<section id="s4">
+<div class="section-label">Interactive System</div>
+<div class="section-title">Signal Recursion Engine</div>
+<p class="section-sub">A circular chain of 5 transformation nodes. Animated signal particles flow clockwise, each node reshaping the signal. The output loops back to the input — adjust feedback amount to explore stable, complex, and chaotic states.</p>
+<div class="two-col">
+<div>
+<div class="canvas-wrap" style="width:100%;background:var(--black);border:1px solid var(--border);border-radius:6px;">
+<canvas height="400" id="srCanvas" style="width:100%;height:auto;display:block;" width="560"></canvas>
+</div>
+</div>
+<div>
+<div class="controls">
+<div class="ctrl-row">
+<span class="ctrl-label">Amplify</span>
+<input id="srAmp" max="2.0" min="0.5" step="0.05" type="range" value="1.0"/>
+<span class="ctrl-val" id="srAmpVal">1.0x</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Node Rot.</span>
+<input id="srRot" max="0.08" min="0" step="0.002" type="range" value="0.02"/>
+<span class="ctrl-val" id="srRotVal">0.020</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Hue Shift</span>
+<input id="srHue" max="3" min="0" step="0.1" type="range" value="1.0"/>
+<span class="ctrl-val" id="srHueVal">1.0°</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Threshold</span>
+<input id="srThresh" max="1" min="0" step="0.05" type="range" value="0.3"/>
+<span class="ctrl-val" id="srThreshVal">0.30</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Feedback %</span>
+<input id="srFb" max="100" min="0" step="1" type="range" value="40"/>
+<span class="ctrl-val" id="srFbVal">40%</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Particle Speed</span>
+<input id="srSpeed" max="3.0" min="0.2" step="0.1" type="range" value="1.0"/>
+<span class="ctrl-val" id="srSpeedVal">1.0</span>
+</div>
+</div>
+</div>
+</div>
+<div class="info-card">
+<strong>Feedback and Chaos:</strong> At 0% feedback the signal is predictable and linear. Around 50% interesting complex patterns emerge — the system amplifies small differences without exploding. Near 100% the output feeds back so strongly that tiny perturbations cascade into full chaos. This is the <strong>butterfly effect</strong> in visual form — a microscopic change in input creates macroscopic divergence in output.
+  </div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 5: GLITCH ARCHAEOLOGY MUSEUM -->
+<section id="s5">
+<div class="section-label">Hardware Failure as Aesthetic</div>
+<div class="section-title">Glitch Archaeology Museum</div>
+<p class="section-sub">Eight hardware failure modes that became visual languages. Procedurally animated in real-time. Click any artifact to expand. Each glitch has a historical origin and a lineage of artists who claimed it.</p>
+<div class="glitch-grid" id="glitchGrid">
+<div class="glitch-cell" data-glitch="0">
+<canvas class="glitch-canvas" height="150" id="gc0" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Bit Crush</div>
+</div>
+<div class="glitch-cell" data-glitch="1">
+<canvas class="glitch-canvas" height="150" id="gc1" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Data Moshing</div>
+</div>
+<div class="glitch-cell" data-glitch="2">
+<canvas class="glitch-canvas" height="150" id="gc2" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">H-Hold Failure</div>
+</div>
+<div class="glitch-cell" data-glitch="3">
+<canvas class="glitch-canvas" height="150" id="gc3" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Chroma Crawl</div>
+</div>
+<div class="glitch-cell" data-glitch="4">
+<canvas class="glitch-canvas" height="150" id="gc4" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Capacitor Plague</div>
+</div>
+<div class="glitch-cell" data-glitch="5">
+<canvas class="glitch-canvas" height="150" id="gc5" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Tape Dropout</div>
+</div>
+<div class="glitch-cell" data-glitch="6">
+<canvas class="glitch-canvas" height="150" id="gc6" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">VHS Tracking</div>
+</div>
+<div class="glitch-cell" data-glitch="7">
+<canvas class="glitch-canvas" height="150" id="gc7" style="width:100%;height:auto;display:block;" width="200"></canvas>
+<div class="glitch-label">Signal Noise</div>
+</div>
+</div>
+<div id="glitchExpanded" style="display:none;margin-bottom:20px;">
+<canvas height="500" id="gcBig" style="width:100%;height:auto;border:2px solid var(--accent2);border-radius:8px;display:block;" width="800"></canvas>
+<div id="gcInfo" style="margin-top:10px;font-size:12px;color:var(--dim);line-height:1.6;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;"></div>
+<button class="btn" onclick="closeGlitchExpanded()" style="margin-top:10px;">× Close</button>
+</div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 6: RECURSIVE GEOMETRY EXPLORER -->
+<section id="s6">
+<div class="section-label">Fractal Systems</div>
+<div class="section-title">Recursive Geometry Explorer</div>
+<p class="section-sub">Four methods of generating infinite complexity from simple recursive rules. Each iteration multiplies structure. Rendered in violet phosphor on near-black canvas.</p>
+<div class="tab-row">
+<button class="tab-btn active" onclick="switchFractal('tree',this)">Recursive Tree</button>
+<button class="tab-btn" onclick="switchFractal('koch',this)">Koch Snowflake</button>
+<button class="tab-btn" onclick="switchFractal('sierpinski',this)">Sierpinski</button>
+<button class="tab-btn" onclick="switchFractal('fern',this)">Barnsley Fern</button>
+</div>
+<div class="two-col">
+<div>
+<div class="canvas-wrap crt-frame" style="width:100%">
+<canvas height="420" id="fracCanvas" style="width:100%;height:auto;display:block;" width="560"></canvas>
+</div>
+</div>
+<div>
+<div class="controls" id="fracControls">
+<div id="treeControls">
+<div class="ctrl-row">
+<span class="ctrl-label">Depth</span>
+<input id="treeDepth" max="12" min="1" step="1" type="range" value="7"/>
+<span class="ctrl-val" id="treeDepthVal">7</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Branch Angle</span>
+<input id="treeAngle" max="120" min="5" step="1" type="range" value="35"/>
+<span class="ctrl-val" id="treeAngleVal">35°</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Length Ratio</span>
+<input id="treeRatio" max="0.9" min="0.5" step="0.01" type="range" value="0.72"/>
+<span class="ctrl-val" id="treeRatioVal">0.72</span>
+</div>
+</div>
+<div id="kochControls" style="display:none;">
+<div class="ctrl-row">
+<span class="ctrl-label">Depth</span>
+<input id="kochDepth" max="6" min="0" step="1" type="range" value="4"/>
+<span class="ctrl-val" id="kochDepthVal">4</span>
+</div>
+</div>
+<div id="sierControls" style="display:none;">
+<div class="ctrl-row">
+<span class="ctrl-label">Depth</span>
+<input id="sierDepth" max="8" min="0" step="1" type="range" value="5"/>
+<span class="ctrl-val" id="sierDepthVal">5</span>
+</div>
+</div>
+<div id="fernControls" style="display:none;">
+<div class="ctrl-row">
+<span class="ctrl-label">Points</span>
+<input id="fernPoints" max="100000" min="5000" step="5000" type="range" value="50000"/>
+<span class="ctrl-val" id="fernPointsVal">50k</span>
+</div>
+</div>
+</div>
+<div class="btn-row">
+<button class="btn" id="fracEvolveBtn">▶ Evolve</button>
+<button class="btn" id="fracResetBtn">↺ Reset</button>
+</div>
+<div class="info-card" id="fracInfo" style="margin-top:16px;">
+<strong>Recursive Tree:</strong> Each branch spawns two sub-branches at a fixed angle and length ratio. As depth increases, the number of branches grows as 2<sup>n</sup>. The boundary between tree and air becomes infinitely complex.
+      </div>
+</div>
+</div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 7: AUDIOVISUAL RECURSION -->
+<section id="s7">
+<div class="section-label">Coupled Oscillation</div>
+<div class="section-title">Audiovisual Recursion</div>
+<p class="section-sub">A low-frequency oscillator drives visual feedback parameters. When resonance is enabled, the visual output modulates the oscillator frequency — creating a coupled system where sight and signal reinforce each other.</p>
+<div class="av-controls">
+<div class="av-group">
+<label>Frequency (Hz)</label>
+<input id="avFreq" max="4.0" min="0.1" step="0.05" type="range" value="0.5"/>
+<span id="avFreqVal" style="font-size:11px;color:var(--accent2);">0.50 Hz</span>
+</div>
+<div class="av-group">
+<label>Amplitude</label>
+<input id="avAmp" max="1.0" min="0.1" step="0.05" type="range" value="0.6"/>
+<span id="avAmpVal" style="font-size:11px;color:var(--accent2);">0.60</span>
+</div>
+<div class="av-group">
+<label>Wave Shape</label>
+<select id="avWave">
+<option value="sine">Sine</option>
+<option value="square">Square</option>
+<option value="sawtooth">Sawtooth</option>
+<option value="triangle">Triangle</option>
+</select>
+</div>
+<div class="av-group">
+<label>Resonance</label>
+<label class="resonance-toggle">
+<input id="avResonance" type="checkbox"/>
+<span id="avResLabel">Off — open loop</span>
+</label>
+</div>
+</div>
+<div class="canvas-wrap crt-frame" style="width:100%;margin-bottom:14px;">
+<canvas height="320" id="avCanvas" style="width:100%;height:auto;display:block;" width="840"></canvas>
+</div>
+<div class="btn-row" style="margin-bottom:16px;">
+<button class="preset-btn" onclick="setAVPreset('breathe')">Breathe</button>
+<button class="preset-btn" onclick="setAVPreset('strobe')">Strobe</button>
+<button class="preset-btn" onclick="setAVPreset('drift')">Drift</button>
+</div>
+<div class="info-card">
+<strong>Resonance &amp; Coupling:</strong> When the visual output feeds back into the oscillator frequency, the system becomes coupled. If the coupling strength is right, the two components lock into <strong>mutual reinforcement</strong> — a standing wave pattern where each cycle strengthens the next. This is resonance: the system amplifies itself at its natural frequency.
+  </div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 8: ARTIST GALLERY + HISTORY -->
+<section id="s8">
+<div class="section-label">Video Art History</div>
+<div class="section-title">Artist Gallery &amp; Timeline</div>
+<p class="section-sub">Feedback loops and recursion as artistic medium — from the first video synthesizers to GPU-accelerated generative systems. A lineage of artists who made the malfunction meaningful.</p>
+<div class="timeline-scroll">
+<div class="timeline">
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1963</div><div class="tl-text">Nam June Paik — first video art with Billy Klüver. Feedback experiments with TV sets.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1965</div><div class="tl-text">Sony Portapak released — portable video enables independent video art worldwide.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1969</div><div class="tl-text">Steina &amp; Woody Vasulka — video synthesis experiments, Anthology Film Archives, NYC.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1973</div><div class="tl-text">Paik-Abe Video Synthesizer — first dedicated hardware for video signal manipulation.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1976</div><div class="tl-text">Bill Viola — video as spiritual medium. Long-duration immersive installation work begins.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1983</div><div class="tl-text">IRCAM / Max — computer-based audio-visual integration precursors emerge in Paris.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1995</div><div class="tl-text">Generative art software emerges — Soddu, Edmonds, Sommerer. Algorithmic aesthetics.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2004</div><div class="tl-text">Processing by Casey Reas &amp; Ben Fry — open-source visual coding for artists.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2012</div><div class="tl-text">GPU feedback loops in browser via WebGL — Shadertoy launches, real-time recursion accessible.</div></div>
+<div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-text">AI-augmented feedback systems — neural networks as new recursion layer. Latent space loops.</div></div>
+</div>
+</div>
+<div class="artist-grid">
+<div class="artist-card">
+<h4>Nam June Paik</h4>
+<div class="medium">Video Installation, Performance</div>
+<p>TV Buddha (1974), Global Groove (1973), Magnet TV (1965). Paik saw television as the first truly democratic art medium. His feedback loops created images television was never designed to produce — the machine reflecting on itself.</p>
+</div>
+<div class="artist-card">
+<h4>Steina Vasulka</h4>
+<div class="medium">Video Synthesis, Machine Vision</div>
+<p>Machine Vision (1978), Violin Power (1970-78), Summer Salt (1982). Steina gave the camera agency — letting machines scan, rotate, and decide what to see. The feedback between performer and video signal became a dialogue.</p>
+</div>
+<div class="artist-card">
+<h4>Bill Viola</h4>
+<div class="medium">Video Installation</div>
+<p>The Passing (1991), Fire Woman (2005), Ocean Without a Shore (2007). Viola uses extreme slow motion and mirroring to stretch time into meditation. His feedback is temporal — the present moment looping through memory.</p>
+</div>
+<div class="artist-card">
+<h4>Ryoji Ikeda</h4>
+<div class="medium">Data, Sound, Light</div>
+<p>test pattern (2008), data.matrix (2006), superposition (2012). Ikeda converts raw data into overwhelming visual/sonic experience. His recursive data scans reveal the hidden pattern-language beneath all information.</p>
+</div>
+<div class="artist-card">
+<h4>Rosa Menkman</h4>
+<div class="medium">Glitch Art Theory</div>
+<p>The Glitch Moment/um (2011), A Vernacular of File Formats (2010), Beyond Resolution (2020). Menkman theorized glitch as a revelatory moment where a system's hidden assumptions become visible. The failure is the content.</p>
+</div>
+<div class="artist-card">
+<h4>Kim Asendorf</h4>
+<div class="medium">Pixel Sorting, Net Art</div>
+<p>Pixel sorting algorithm (2010), Mountain tour (2011). Asendorf's pixel sorting tears images along luminance gradients — pixels freed from their grid, reorganized by pure value. Structure imposed by one recursive rule.</p>
+</div>
+<div class="artist-card">
+<h4>Cory Arcangel</h4>
+<div class="medium">Hacked Videogame Art</div>
+<p>Super Mario Clouds (2002), I Shot Andy Warhol (2002), Beat the Champ (2015). Arcangel strips Nintendo cartridges to single looping elements — clouds, a rolling ball, one note. Maximum recursion by subtraction.</p>
+</div>
+<div class="artist-card">
+<h4>Memo Akten</h4>
+<div class="medium">Generative AI, Live Visuals</div>
+<p>Learning to See (2017), Works of Love (2020), Superradiance (2022). Akten uses neural networks as recursive mirrors — training models on images that feed back into new model training. The algorithm meditates on its own output.</p>
+</div>
+</div>
+</section>
+<hr class="divider"/>
+<!-- SECTION 9: GLOSSARY -->
+<section id="s9">
+<div class="section-label">Reference</div>
+<div class="section-title">Glossary</div>
+<p class="section-sub">22 terms from the vocabulary of feedback, recursion, and video synthesis.</p>
+<div class="glossary">
+<div class="gloss-item"><div class="gloss-term">Analog Synthesis</div><div class="gloss-def">Creating sound or video signals through continuous voltage manipulation, as opposed to discrete digital samples. Naturally prone to drift, noise, and feedback.</div></div>
+<div class="gloss-item"><div class="gloss-term">Artifact</div><div class="gloss-def">An unintended visual or auditory element introduced by hardware limitations, compression algorithms, or signal degradation. Often repurposed as aesthetic material.</div></div>
+<div class="gloss-item"><div class="gloss-term">Bit Depth</div><div class="gloss-def">The number of bits used to represent each pixel's color. 1-bit = black/white only; 8-bit = 256 values per channel. Lower bit depth produces harsh banding and posterization.</div></div>
+<div class="gloss-item"><div class="gloss-term">Chaos Theory</div><div class="gloss-def">The study of systems highly sensitive to initial conditions, where small changes produce wildly different outcomes. Feedback loops are chaotic systems; tiny perturbations cascade unpredictably.</div></div>
+<div class="gloss-item"><div class="gloss-term">CRT (Cathode Ray Tube)</div><div class="gloss-def">Display technology using electron beams to excite phosphor coatings on a glass screen. Each phosphor has a characteristic glow persistence, color, and decay rate. Dominant 1940s-2000s.</div></div>
+<div class="gloss-item"><div class="gloss-term">Data Moshing</div><div class="gloss-def">A technique exploiting video codec compression by removing I-frames (reference frames) so that motion vectors from one scene apply to another. Creates smearing, morphing glitch effects.</div></div>
+<div class="gloss-item"><div class="gloss-term">Decay Rate</div><div class="gloss-def">In phosphor displays, the speed at which a pixel returns to darkness after excitation. Low decay = long persistence (ghostly trails). High decay = sharp, clean motion.</div></div>
+<div class="gloss-item"><div class="gloss-term">Entropy</div><div class="gloss-def">A measure of disorder or randomness in a system. Closed feedback loops tend toward entropy — small errors accumulate until the signal degrades into noise. The second law of thermodynamics applies to video.</div></div>
+<div class="gloss-item"><div class="gloss-term">Feedback Loop</div><div class="gloss-def">A system where the output is routed back to the input, influencing its own future state. Can be negative (stabilizing) or positive (amplifying). The source of complexity in natural and technological systems.</div></div>
+<div class="gloss-item"><div class="gloss-term">Fractal</div><div class="gloss-def">A self-similar structure where the same pattern repeats at every scale. Generated by applying a simple rule recursively. The boundary of a fractal has infinite length in finite space.</div></div>
+<div class="gloss-item"><div class="gloss-term">Glitch Art</div><div class="gloss-def">An aesthetic practice that intentionally exploits or celebrates hardware and software errors. Glitch art argues that malfunction reveals the hidden logic of a system more clearly than correct operation.</div></div>
+<div class="gloss-item"><div class="gloss-term">IFS (Iterated Function System)</div><div class="gloss-def">A set of contraction mappings applied repeatedly to points in space. The Barnsley Fern uses 4 affine transformations applied probabilistically to generate a photorealistic fern from pure mathematics.</div></div>
+<div class="gloss-item"><div class="gloss-term">Interlacing</div><div class="gloss-def">A technique for transmitting video by alternating between odd and even horizontal lines. At low frame rates, interlace artifacts (combing) appear at edges of moving objects — a signature of analog broadcast television.</div></div>
+<div class="gloss-item"><div class="gloss-term">Noise Floor</div><div class="gloss-def">The level of background noise inherent in a signal chain. In analog video, the noise floor determines image quality. Artists like Steina Vasulka worked with the noise floor as compositional material.</div></div>
+<div class="gloss-item"><div class="gloss-term">Oscillator</div><div class="gloss-def">A circuit or algorithm that generates a periodic signal. In synthesis: the fundamental building block of both audio and video signal generation. At low frequencies, oscillators create visual rhythm.</div></div>
+<div class="gloss-item"><div class="gloss-term">Phosphor</div><div class="gloss-def">A chemical compound that emits light when struck by electrons. Different phosphors (P1, P4, P31, P39) emit different colors and have different persistence times. The glowing material of every CRT screen.</div></div>
+<div class="gloss-item"><div class="gloss-term">Pixel</div><div class="gloss-def">Picture Element — the smallest addressable unit of a digital image. Originally a technical constraint, pixel aesthetics (lo-fi, 8-bit) became a deliberate artistic choice in the 1990s and beyond.</div></div>
+<div class="gloss-item"><div class="gloss-term">Recursion</div><div class="gloss-def">A process defined in terms of itself. A function that calls itself, a shape that contains smaller copies of itself, a camera pointing at its own output. Self-reference is the engine of infinite complexity.</div></div>
+<div class="gloss-item"><div class="gloss-term">Signal</div><div class="gloss-def">A time-varying quantity that carries information. In video: the voltage variations encoding brightness and color. In feedback systems, the signal is simultaneously the message, the medium, and the noise.</div></div>
+<div class="gloss-item"><div class="gloss-term">Scanline</div><div class="gloss-def">A single horizontal line traced by an electron beam across a CRT screen. At 525 lines (NTSC) or 625 lines (PAL), the scanline structure defines the aesthetic of all analog television.</div></div>
+<div class="gloss-item"><div class="gloss-term">Video Synthesis</div><div class="gloss-def">The generation of video signals from electronic circuits rather than a camera. Paik, Vasulka, and others built custom synthesizers to create pure electronic imagery — video not of the world but of electricity itself.</div></div>
+<div class="gloss-item"><div class="gloss-term">VHS</div><div class="gloss-def">Video Home System — magnetic tape format dominant 1977-2005. Each copy generation introduced noise, tracking errors, and color degradation. Lo-fi VHS aesthetics index authenticity, nostalgia, and the beauty of impermanence.</div></div>
+</div>
+</section>
+<hr class="divider"/>
+<footer>
+<span>WAVGEN PROJECTION FEEDBACK DIMENSION</span> — App 11 of the Video Universe — The Waveform Generation — <span>wavgen.ca</span>
+</footer>
+<script>
+'use strict';
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: LagFilter — smooth all transitions
+// ──────────────────────────────────────────────────────────────────────
+class LagFilter {
+  constructor(val, factor=0.08) { this.v=val; this.f=factor; }
+  update(target) { this.v += (target - this.v)*this.f; return this.v; }
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// UTIL
+// ──────────────────────────────────────────────────────────────────────
+function rng(lo,hi){ return lo + Math.random()*(hi-lo); }
+function hsl(h,s,l,a=1){ return `hsla(${h},${s}%,${l}%,${a})`; }
+function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+// ──────────────────────────────────────────────────────────────────────
+// INTERSECTION OBSERVER — scroll reveal
+// ──────────────────────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section:not(#hero)');
+const revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('visible'); }
+  });
+},{threshold:0.08});
+sections.forEach(s=>revealObs.observe(s));
+
+// Nav active highlight
+const navLinks = document.querySelectorAll('#nav ul li a');
+const navObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id = e.target.id;
+      navLinks.forEach(a=>{
+        a.classList.toggle('active', a.getAttribute('href')==='#'+id);
+      });
+    }
+  });
+},{threshold:0.4});
+document.querySelectorAll('section').forEach(s=>navObs.observe(s));
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: FeedbackEngine (Hero — Infinite Mirror)
+// ──────────────────────────────────────────────────────────────────────
+(function initHero(){
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  let frame=0, entropy=0, seedHue=260;
+  // Off-screen buffer for feedback
+  const buf = document.createElement('canvas');
+  buf.width=W; buf.height=H;
+  const bctx = buf.getContext('2d');
+  // Seed initial spark
+  bctx.fillStyle='#050508'; bctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+
+  function drawSpark(c, x,y, hue, size) {
+    const g = c.createRadialGradient(x,y,0,x,y,size);
+    g.addColorStop(0,hsl(hue,100,90,1));
+    g.addColorStop(0.3,hsl(hue,90,60,0.8));
+    g.addColorStop(1,hsl(hue,80,40,0));
+    c.fillStyle=g; c.beginPath(); c.arc(x,y,size,0,Math.PI*2); c.fill();
+  }
+
+  function heroTick(){
+    frame++;
+    entropy = (Math.sin(frame*0.003)*0.5+0.5);
+    seedHue = (seedHue + 0.4) % 360;
+
+    // === Feedback: copy canvas -> buffer with scale+rotate+decay ===
+    // 1. Decay previous buffer
+    bctx.save();
+    bctx.globalAlpha = 0.02; // very slow fade = extreme persistence
+    bctx.fillStyle='#050508';
+    bctx.fillRect(0,0,W,H);
+    bctx.restore();
+
+    // 2. Draw previous hero canvas onto buffer, slightly scaled + rotated
+    bctx.save();
+    bctx.translate(W/2, H/2);
+    bctx.rotate(0.0025 + Math.sin(frame*0.007)*0.001);
+    bctx.scale(1.0028 + Math.sin(frame*0.011)*0.0003, 1.0028 + Math.sin(frame*0.011)*0.0003);
+    bctx.globalAlpha = 0.97;
+    bctx.drawImage(canvas, -W/2, -H/2);
+    bctx.restore();
+
+    // 3. Inject new spark at center periodically
+    if(frame % 12 === 0){
+      const hue = seedHue;
+      const spkSize = 6 + Math.sin(frame*0.05)*4;
+      drawSpark(bctx, W/2 + Math.sin(frame*0.03)*3, H/2 + Math.cos(frame*0.04)*3, hue, spkSize);
+    }
+    // 4. Occasional secondary sparks for visual interest
+    if(frame % 45 === 0){
+      const angle = (frame*0.13) % (Math.PI*2);
+      const r = 20 + Math.sin(frame*0.023)*10;
+      drawSpark(bctx, W/2+Math.cos(angle)*r, H/2+Math.sin(angle)*r, (seedHue+120)%360, 4);
+    }
+
+    // 5. Copy buffer to main canvas
+    ctx.globalAlpha=1;
+    ctx.drawImage(buf,0,0);
+
+    // Update badges
+    const depth = Math.floor(clamp(Math.log2(frame+1)*1.5, 1, 99));
+    document.getElementById('bDepth').textContent = depth;
+    document.getElementById('bEntropy').textContent = entropy.toFixed(3);
+
+    requestAnimationFrame(heroTick);
+  }
+  heroTick();
+})();
+
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: FeedbackEngine (Section 2 — Parameter Lab)
+// ──────────────────────────────────────────────────────────────────────
+(function initFeedbackLab(){
+  const canvas = document.getElementById('fbCanvas');
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const buf=document.createElement('canvas'); buf.width=W; buf.height=H;
+  const bctx=buf.getContext('2d');
+  bctx.fillStyle='#050508'; bctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+
+  // Parameters with LagFilters
+  const params = {
+    scale:  new LagFilter(1.003, 0.12),
+    rot:    new LagFilter(0.002, 0.12),
+    decay:  new LagFilter(0.03,  0.08),
+    offX:   new LagFilter(0,     0.12),
+    offY:   new LagFilter(0,     0.12),
+    hue:    new LagFilter(0.5,   0.1),
+  };
+  let hueAcc=260, seedType=0, frame=0;
+  const seedTypes=['spark','circle','square','triangle','cross'];
+
+  // Wire sliders
+  function wireSlider(id,valId,key,fmt){
+    const el=document.getElementById(id);
+    const vl=document.getElementById(valId);
+    el.addEventListener('input',()=>{
+      const v=parseFloat(el.value);
+      vl.textContent=fmt(v);
+    });
+  }
+  wireSlider('fbScale','fbScaleVal','scale',v=>v.toFixed(3));
+  wireSlider('fbRot','fbRotVal','rot',v=>v.toFixed(3));
+  wireSlider('fbDecay','fbDecayVal','decay',v=>v.toFixed(2));
+  wireSlider('fbOffX','fbOffXVal','offX',v=>v.toFixed(1));
+  wireSlider('fbOffY','fbOffYVal','offY',v=>v.toFixed(1));
+  wireSlider('fbHue','fbHueVal','hue',v=>v.toFixed(1)+'°');
+
+  function getParams(){
+    return {
+      scale: parseFloat(document.getElementById('fbScale').value),
+      rot:   parseFloat(document.getElementById('fbRot').value),
+      decay: parseFloat(document.getElementById('fbDecay').value),
+      offX:  parseFloat(document.getElementById('fbOffX').value),
+      offY:  parseFloat(document.getElementById('fbOffY').value),
+      hue:   parseFloat(document.getElementById('fbHue').value),
+    };
+  }
+
+  function injectSeed(){
+    const type=seedTypes[seedType++ % seedTypes.length];
+    const hue=hueAcc;
+    bctx.save();
+    bctx.translate(W/2, H/2);
+    if(type==='spark'){
+      const g=bctx.createRadialGradient(0,0,0,0,0,22);
+      g.addColorStop(0,hsl(hue,100,95,1));
+      g.addColorStop(0.4,hsl(hue,90,60,0.8));
+      g.addColorStop(1,hsl(hue,80,40,0));
+      bctx.fillStyle=g; bctx.beginPath(); bctx.arc(0,0,22,0,Math.PI*2); bctx.fill();
+    } else if(type==='circle'){
+      bctx.strokeStyle=hsl(hue,100,70,1); bctx.lineWidth=2;
+      bctx.beginPath(); bctx.arc(0,0,18,0,Math.PI*2); bctx.stroke();
+    } else if(type==='square'){
+      bctx.strokeStyle=hsl(hue,100,70,1); bctx.lineWidth=2;
+      bctx.strokeRect(-14,-14,28,28);
+    } else if(type==='triangle'){
+      bctx.strokeStyle=hsl(hue,100,70,1); bctx.lineWidth=2;
+      bctx.beginPath(); bctx.moveTo(0,-18); bctx.lineTo(16,12); bctx.lineTo(-16,12); bctx.closePath(); bctx.stroke();
+    } else if(type==='cross'){
+      bctx.strokeStyle=hsl(hue,100,70,1); bctx.lineWidth=2;
+      bctx.beginPath(); bctx.moveTo(-16,0); bctx.lineTo(16,0); bctx.moveTo(0,-16); bctx.lineTo(0,16); bctx.stroke();
+    }
+    bctx.restore();
+  }
+  document.getElementById('fbSeedBtn').addEventListener('click', injectSeed);
+  // Initial seed
+  injectSeed();
+
+  window.applyPreset = function(name){
+    const map={
+      paik:    {scale:'1.000',rot:'0.003',decay:'0.03',offX:'0.0',offY:'0.0',hue:'0.0'},
+      vortex:  {scale:'1.006',rot:'0.015',decay:'0.04',offX:'0.0',offY:'0.0',hue:'1.2'},
+      collapse:{scale:'0.994',rot:'-0.008',decay:'0.02',offX:'0.0',offY:'0.0',hue:'0.5'},
+    };
+    const p=map[name]; if(!p) return;
+    document.getElementById('fbScale').value=p.scale; document.getElementById('fbScaleVal').textContent=parseFloat(p.scale).toFixed(3);
+    document.getElementById('fbRot').value=p.rot;     document.getElementById('fbRotVal').textContent=parseFloat(p.rot).toFixed(3);
+    document.getElementById('fbDecay').value=p.decay; document.getElementById('fbDecayVal').textContent=parseFloat(p.decay).toFixed(2);
+    document.getElementById('fbOffX').value=p.offX;   document.getElementById('fbOffXVal').textContent=parseFloat(p.offX).toFixed(1);
+    document.getElementById('fbOffY').value=p.offY;   document.getElementById('fbOffYVal').textContent=parseFloat(p.offY).toFixed(1);
+    document.getElementById('fbHue').value=p.hue;     document.getElementById('fbHueVal').textContent=parseFloat(p.hue).toFixed(1)+'°';
+  };
+
+  function fbTick(){
+    frame++;
+    const p=getParams();
+    hueAcc=(hueAcc+p.hue)%360;
+
+    // Decay
+    bctx.save(); bctx.globalAlpha=p.decay; bctx.fillStyle='#050508'; bctx.fillRect(0,0,W,H); bctx.restore();
+    // Feedback transform
+    bctx.save();
+    bctx.translate(W/2+p.offX, H/2+p.offY);
+    bctx.rotate(p.rot);
+    bctx.scale(p.scale,p.scale);
+    bctx.globalAlpha=1-p.decay;
+    bctx.drawImage(canvas,-W/2,-H/2);
+    bctx.restore();
+    // Render
+    ctx.globalAlpha=1; ctx.drawImage(buf,0,0);
+    // scanline overlay
+    ctx.save(); ctx.globalAlpha=0.04;
+    for(let y=0;y<H;y+=4){
+      ctx.fillStyle='rgba(0,0,0,1)'; ctx.fillRect(0,y,W,1);
+    }
+    ctx.restore();
+    requestAnimationFrame(fbTick);
+  }
+  fbTick();
+})();
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: CRTRenderer (Section 3 — CRT Archaeology)
+// ──────────────────────────────────────────────────────────────────────
+(function initCRTArchaeology(){
+  const ERAS=[
+    {name:'1950s Oscilloscope', ph:'#00ff88', decay:0.01, noise:0.05, hueShift:0,   barrelK:0.12, flicker:false, scanW:1,  colorBleed:0},
+    {name:'1960s Studio',       ph:'#b0c8ff', decay:0.05, noise:0.04, hueShift:10,  barrelK:0.08, flicker:true,  scanW:1,  colorBleed:0},
+    {name:'1970s Color TV',     ph:'#ffcc66', decay:0.06, noise:0.06, hueShift:15,  barrelK:0.06, flicker:false, scanW:2,  colorBleed:5},
+    {name:'1980s Commodore',    ph:'#ffaa00', decay:0.04, noise:0.03, hueShift:0,   barrelK:0.04, flicker:false, scanW:2,  colorBleed:0},
+    {name:'1990s Security',     ph:'#99ff88', decay:0.08, noise:0.10, hueShift:0,   barrelK:0.14, flicker:true,  scanW:1,  colorBleed:0},
+    {name:'2000s Consumer',     ph:'#ffffff', decay:0.07, noise:0.05, hueShift:0,   barrelK:0.05, flicker:false, scanW:1,  colorBleed:3},
+  ];
+
+  const canvases=[], ctxs=[], bufs=[], bctxs=[];
+  for(let i=0;i<6;i++){
+    const c=document.getElementById('crt'+i);
+    canvases.push(c); ctxs.push(c.getContext('2d'));
+    const b=document.createElement('canvas'); b.width=260; b.height=200;
+    bufs.push(b); bctxs.push(b.getContext('2d'));
+    bctxs[i].fillStyle='#000'; bctxs[i].fillRect(0,0,260,200);
+  }
+
+  // Click to expand
+  document.querySelectorAll('.crt-cell').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      const era=parseInt(cell.dataset.era);
+      openCRTExpanded(era);
+    });
+  });
+
+  let expandedEra=-1, bigBuf=null, bigBctx=null;
+  const bigCanvas=document.getElementById('crtBig');
+  const bigCtx=bigCanvas.getContext('2d');
+
+  window.openCRTExpanded=function(era){
+    expandedEra=era;
+    document.getElementById('crtExpanded').style.display='block';
+    bigBuf=document.createElement('canvas'); bigBuf.width=840; bigBuf.height=560;
+    bigBctx=bigBuf.getContext('2d');
+    bigBctx.fillStyle='#000'; bigBctx.fillRect(0,0,840,560);
+  };
+  window.closeCRTExpanded=function(){
+    expandedEra=-1;
+    document.getElementById('crtExpanded').style.display='none';
+    bigBuf=null; bigBctx=null;
+  };
+
+  // Shared animated scene (slow geometric shapes)
+  let sceneT=0;
+  function drawScene(c, W,H, t){
+    c.clearRect(0,0,W,H);
+    c.strokeStyle='rgba(255,255,255,0.9)'; c.lineWidth=1.5;
+    // Rotating square
+    c.save(); c.translate(W*0.35, H*0.45);
+    c.rotate(t*0.5); const sz=H*0.15;
+    c.strokeRect(-sz,-sz,sz*2,sz*2);
+    c.restore();
+    // Pulsing circle
+    c.save(); c.translate(W*0.65, H*0.45);
+    const r=H*0.10+Math.sin(t*1.2)*H*0.04;
+    c.beginPath(); c.arc(0,0,r,0,Math.PI*2); c.stroke();
+    c.restore();
+    // Lissajous trace
+    c.beginPath(); c.strokeStyle='rgba(255,255,255,0.5)';
+    for(let i=0;i<200;i++){
+      const a=i/200*Math.PI*2;
+      const lx=W/2+Math.sin(a*3+t)*W*0.12;
+      const ly=H/2+Math.sin(a*2+t*0.7)*H*0.10;
+      i===0?c.moveTo(lx,ly):c.lineTo(lx,ly);
+    }
+    c.stroke();
+  }
+
+  function applyEraEffect(bctx,ctx,era,W,H,sceneT){
+    const e=ERAS[era];
+    // Decay
+    bctx.globalAlpha=e.decay;
+    bctx.fillStyle='#000000';
+    bctx.fillRect(0,0,W,H);
+    bctx.globalAlpha=1;
+
+    // Draw scene into temp
+    const tmp=document.createElement('canvas'); tmp.width=W; tmp.height=H;
+    const tc=tmp.getContext('2d');
+    drawScene(tc,W,H,sceneT);
+
+    // Color tint
+    bctx.save(); bctx.globalCompositeOperation='screen';
+    bctx.globalAlpha=0.7;
+    bctx.fillStyle=e.ph; bctx.fillRect(0,0,W,H);
+    bctx.restore();
+
+    // Draw scene
+    bctx.save(); bctx.globalAlpha=0.85;
+    bctx.drawImage(tmp,0,0); bctx.restore();
+
+    // Color bleed (RGB channel offset)
+    if(e.colorBleed>0){
+      const bleed=e.colorBleed;
+      bctx.save(); bctx.globalAlpha=0.25; bctx.globalCompositeOperation='screen';
+      bctx.drawImage(tmp,bleed,0); bctx.restore();
+      bctx.save(); bctx.globalAlpha=0.15; bctx.globalCompositeOperation='screen';
+      bctx.drawImage(tmp,-bleed,0); bctx.restore();
+    }
+
+    // Noise
+    if(e.noise>0){
+      const id=bctx.getImageData(0,0,W,H);
+      const d=id.data; const n=e.noise;
+      for(let i=0;i<d.length;i+=4){
+        const v=(Math.random()-0.5)*n*255;
+        d[i]+=v; d[i+1]+=v; d[i+2]+=v;
+      }
+      bctx.putImageData(id,0,0);
+    }
+
+    // Scanlines
+    ctx.drawImage(bctx.canvas,0,0);
+    ctx.save(); ctx.globalAlpha=0.18;
+    for(let y=0;y<H;y+=e.scanW*2+1){
+      ctx.fillStyle='#000'; ctx.fillRect(0,y,W,e.scanW);
+    }
+    // Vignette
+    const vg=ctx.createRadialGradient(W/2,H/2,H*0.2,W/2,H/2,H*0.7);
+    vg.addColorStop(0,'transparent'); vg.addColorStop(1,'rgba(0,0,0,0.7)');
+    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+    // Flicker
+    if(e.flicker && Math.random()<0.03){
+      ctx.fillStyle='rgba(255,255,255,0.04)'; ctx.fillRect(0,0,W,H);
+    }
+    ctx.restore();
+  }
+
+  function crtTick(){
+    sceneT+=0.016;
+    for(let i=0;i<6;i++){
+      applyEraEffect(bctxs[i],ctxs[i],i,260,200,sceneT);
+    }
+    if(expandedEra>=0 && bigBuf && bigBctx){
+      applyEraEffect(bigBctx,bigCtx,expandedEra,840,560,sceneT);
+    }
+    requestAnimationFrame(crtTick);
+  }
+  crtTick();
+})();
+
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: SignalRecursionEngine (Section 4)
+// ──────────────────────────────────────────────────────────────────────
+(function initSignalRecursion(){
+  const canvas=document.getElementById('srCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const CX=W/2, CY=H/2, RADIUS=130;
+  const NODE_COUNT=5;
+  const NODE_LABELS=['Amplify','Rotate','Color Shift','Blur','Threshold'];
+  const NODE_COLORS=['#7c3aed','#22d3ee','#f59e0b','#10b981','#ef4444'];
+
+  // Particles representing signal
+  const PART_COUNT=28;
+  const particles=[];
+  for(let i=0;i<PART_COUNT;i++){
+    particles.push({
+      angle: (i/PART_COUNT)*Math.PI*2,
+      speed: 0.008 + Math.random()*0.004,
+      hue: Math.floor(i/PART_COUNT*360),
+      size: 2+Math.random()*2,
+      brightness: 0.5+Math.random()*0.5,
+      active: true,
+    });
+  }
+
+  // Node positions on circle
+  function nodePos(i){
+    const a=(i/NODE_COUNT)*Math.PI*2 - Math.PI/2;
+    return {x: CX+Math.cos(a)*RADIUS, y: CY+Math.sin(a)*RADIUS, a};
+  }
+
+  let globalHue=260, frameCount=0;
+  const lagAmp=new LagFilter(1.0,0.1);
+  const lagRot=new LagFilter(0.02,0.1);
+  const lagHue=new LagFilter(1.0,0.1);
+  const lagFb=new LagFilter(40,0.08);
+  const lagSpeed=new LagFilter(1.0,0.1);
+
+  function getP(){
+    return {
+      amp:   parseFloat(document.getElementById('srAmp').value),
+      rot:   parseFloat(document.getElementById('srRot').value),
+      hue:   parseFloat(document.getElementById('srHue').value),
+      thresh:parseFloat(document.getElementById('srThresh').value),
+      fb:    parseFloat(document.getElementById('srFb').value)/100,
+      speed: parseFloat(document.getElementById('srSpeed').value),
+    };
+  }
+  ['srAmp','srRot','srHue','srThresh','srFb','srSpeed'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',()=>{
+      const val=parseFloat(document.getElementById(id).value);
+      const valId=id+'Val';
+      const el=document.getElementById(valId);
+      if(!el) return;
+      if(id==='srAmp') el.textContent=val.toFixed(1)+'x';
+      else if(id==='srRot') el.textContent=val.toFixed(3);
+      else if(id==='srHue') el.textContent=val.toFixed(1)+'°';
+      else if(id==='srThresh') el.textContent=val.toFixed(2);
+      else if(id==='srFb') el.textContent=val.toFixed(0)+'%';
+      else if(id==='srSpeed') el.textContent=val.toFixed(1);
+    });
+  });
+
+  // Off-screen for glow
+  const buf=document.createElement('canvas'); buf.width=W; buf.height=H;
+  const bctx=buf.getContext('2d');
+
+  function drawNode(c,i,active,hue){
+    const p=nodePos(i);
+    // Outer ring
+    c.save();
+    c.beginPath(); c.arc(p.x,p.y,22,0,Math.PI*2);
+    const grd=c.createRadialGradient(p.x,p.y,4,p.x,p.y,22);
+    grd.addColorStop(0,hsl(hue,80,60,0.9));
+    grd.addColorStop(1,hsl(hue,80,20,0.2));
+    c.fillStyle=grd; c.fill();
+    c.strokeStyle=NODE_COLORS[i]; c.lineWidth=1.5; c.stroke();
+    // Label
+    c.fillStyle='rgba(226,232,240,0.9)'; c.font='bold 9px Courier New';
+    c.textAlign='center'; c.textBaseline='middle';
+    c.fillText(NODE_LABELS[i], p.x, p.y);
+    c.restore();
+  }
+
+  function drawConnectors(c){
+    c.save(); c.strokeStyle='rgba(34,211,238,0.15)'; c.lineWidth=1;
+    for(let i=0;i<NODE_COUNT;i++){
+      const a=nodePos(i), b=nodePos((i+1)%NODE_COUNT);
+      c.beginPath(); c.moveTo(a.x,a.y); c.lineTo(b.x,b.y); c.stroke();
+    }
+    // Feedback arc (last -> first) highlighted
+    const last=nodePos(NODE_COUNT-1), first=nodePos(0);
+    c.strokeStyle='rgba(124,58,237,0.4)'; c.lineWidth=2; c.setLineDash([4,4]);
+    c.beginPath(); c.moveTo(last.x,last.y); c.lineTo(first.x,first.y); c.stroke();
+    c.setLineDash([]);
+    c.restore();
+  }
+
+  function srTick(){
+    frameCount++;
+    const p=getP();
+    const spdV=lagSpeed.update(p.speed);
+    const fbV=lagFb.update(p.fb*100)/100;
+    const hueV=lagHue.update(p.hue);
+
+    ctx.fillStyle='rgba(5,5,8,0.55)'; ctx.fillRect(0,0,W,H);
+
+    // Center feedback level indicator
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX,CY,35,0,Math.PI*2);
+    const fg=ctx.createRadialGradient(CX,CY,0,CX,CY,35);
+    fg.addColorStop(0,hsl(260+fbV*120,80,clamp(20+fbV*70,20,90),0.8));
+    fg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=fg; ctx.fill();
+    ctx.fillStyle='rgba(226,232,240,0.7)'; ctx.font='bold 9px Courier New';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('FB:'+(fbV*100).toFixed(0)+'%',CX,CY);
+    ctx.restore();
+
+    // Draw connectors
+    drawConnectors(ctx);
+
+    // Nodes with hue cycling
+    globalHue=(globalHue+hueV*0.5)%360;
+    for(let i=0;i<NODE_COUNT;i++){
+      drawNode(ctx,i,true,(globalHue+i*40)%360);
+    }
+
+    // Move particles
+    particles.forEach((pt,idx)=>{
+      // Determine which node segment
+      const segFrac=(pt.angle%(Math.PI*2))/(Math.PI*2);
+      const nodeIdx=Math.floor(segFrac*NODE_COUNT);
+
+      // Apply node transformation to particle properties
+      if(nodeIdx===0) pt.brightness=clamp(pt.brightness*p.amp,0.1,1.5); // amplify
+      else if(nodeIdx===2){ pt.hue=(pt.hue+hueV*2)%360; } // hue shift
+      else if(nodeIdx===4){ // threshold
+        if(pt.brightness<p.thresh) pt.brightness=0.05;
+        else pt.brightness=Math.min(pt.brightness*1.2,1.5);
+      }
+
+      // Advance
+      pt.angle=(pt.angle+spdV*pt.speed)%(Math.PI*2);
+
+      // Feedback — at full rotation, blend with fb factor
+      if(pt.angle<spdV*pt.speed){
+        if(Math.random()>fbV) pt.brightness=0.4; // reset without feedback
+        else pt.brightness=clamp(pt.brightness*(0.8+fbV*0.4),0.1,2.0);
+      }
+
+      // Draw particle
+      const a=pt.angle-Math.PI/2;
+      const x=CX+Math.cos(a)*RADIUS;
+      const y=CY+Math.sin(a)*RADIUS;
+      const brightness=clamp(pt.brightness,0,1.5);
+      const grd=ctx.createRadialGradient(x,y,0,x,y,pt.size*3);
+      grd.addColorStop(0,hsl(pt.hue,90,clamp(60+brightness*30,60,95),brightness));
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=grd;
+      ctx.beginPath(); ctx.arc(x,y,pt.size*2,0,Math.PI*2); ctx.fill();
+    });
+
+    // Scanline overlay
+    ctx.save(); ctx.globalAlpha=0.06;
+    for(let y=0;y<H;y+=4){ ctx.fillStyle='#000'; ctx.fillRect(0,y,W,1); }
+    ctx.restore();
+
+    requestAnimationFrame(srTick);
+  }
+  srTick();
+})();
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: GlitchArtifactLibrary (Section 5)
+// ──────────────────────────────────────────────────────────────────────
+(function initGlitchMuseum(){
+  const W=200,H=150;
+  const GLITCH_INFO=[
+    {src:'Early digital audio',artists:'Aphex Twin, Oval, Fennesz — 1990s laptop music scene'},
+    {src:'MPEG/H.264 codec I-frame removal',artists:'Takeshi Murata (Monster Movie 2005), Soda Jerk'},
+    {src:'TV horizontal oscillator failure',artists:'Nam June Paik (Magnet TV 1965), early video art'},
+    {src:'Composite video luma/chroma bleed',artists:'Hito Steyerl, Rosa Menkman'},
+    {src:'Failing electrolytic capacitors 2002-2005',artists:'Mass Defekt (capacitor plague era consumer electronics)'},
+    {src:'Magnetic tape particle dropout',artists:'Steina Vasulka, early VHS art collective'},
+    {src:'VHS tracking error (head/tape misalignment)',artists:'Ryan Trecartin, Cao Fei — VHS aesthetics'},
+    {src:'Analog RF noise over modulated signal',artists:'Antoni Muntadas, Nam June Paik'},
+  ];
+
+  const canvases=[], ctxs=[];
+  const expandedBig=document.getElementById('gcBig');
+  const bigCtx=expandedBig.getContext('2d');
+  let expandedGlitch=-1;
+
+  for(let i=0;i<8;i++){
+    const c=document.getElementById('gc'+i);
+    canvases.push(c); ctxs.push(c.getContext('2d'));
+    ctxs[i].fillStyle='#111'; ctxs[i].fillRect(0,0,W,H);
+  }
+
+  // Base animated scene for glitch processing
+  let sceneT=0, sceneOffs=[];
+  for(let i=0;i<8;i++) sceneOffs.push(rng(0,100));
+
+  function drawBaseScene(c, W,H, t){
+    c.fillStyle='#0a0a14'; c.fillRect(0,0,W,H);
+    // background gradient shapes
+    for(let i=0;i<3;i++){
+      const x=W*(0.2+i*0.3)+Math.sin(t*0.4+i)*W*0.1;
+      const y=H*0.5+Math.cos(t*0.3+i*1.2)*H*0.2;
+      const g=c.createRadialGradient(x,y,0,x,y,W*0.18);
+      g.addColorStop(0,hsl((t*20+i*120)%360,70,40,0.6));
+      g.addColorStop(1,'transparent');
+      c.fillStyle=g; c.fillRect(0,0,W,H);
+    }
+    // simple shapes
+    c.save(); c.translate(W/2,H/2); c.rotate(t*0.3);
+    c.strokeStyle='rgba(255,255,255,0.5)'; c.lineWidth=1;
+    c.strokeRect(-W*0.15,-H*0.15,W*0.30,H*0.30);
+    c.restore();
+  }
+
+  // Glitch renderers
+  function renderGlitch(c, gIdx, W,H, t){
+    const tmp=document.createElement('canvas'); tmp.width=W; tmp.height=H;
+    const tc=tmp.getContext('2d');
+    drawBaseScene(tc,W,H,t+sceneOffs[gIdx]);
+    const id=tc.getImageData(0,0,W,H);
+    const d=id.data;
+
+    if(gIdx===0){ // Bit Crush — 2-bit (4 levels)
+      for(let i=0;i<d.length;i+=4){
+        d[i]   = Math.round(d[i]/85)*85;
+        d[i+1] = Math.round(d[i+1]/85)*85;
+        d[i+2] = Math.round(d[i+2]/85)*85;
+      }
+      tc.putImageData(id,0,0);
+      c.drawImage(tmp,0,0);
+      // hard scanlines
+      c.save(); c.globalAlpha=0.4;
+      for(let y=0;y<H;y+=2){ c.fillStyle='#000'; c.fillRect(0,y,W,1); }
+      c.restore();
+    }
+    else if(gIdx===1){ // Data Moshing — random block replacements
+      c.drawImage(tmp,0,0);
+      const blocks=Math.floor(t*2)%6+2;
+      for(let b=0;b<blocks;b++){
+        const sx=Math.floor(rng(0,W-32)), sy=Math.floor(rng(0,H-24));
+        const dx=Math.floor(rng(0,W-32)), dy=Math.floor(rng(0,H-24));
+        const bw=Math.floor(rng(16,48)), bh=Math.floor(rng(12,36));
+        try{c.drawImage(tmp,sx,sy,bw,bh,dx,dy,bw,bh);}catch(e){}
+      }
+    }
+    else if(gIdx===2){ // Horizontal Hold Failure — bands drift
+      const bandH=H/6;
+      for(let row=0;row<6;row++){
+        const drift=Math.sin(t*2.5+row*1.3)*W*0.15*(row%3===0?1:0.3);
+        c.drawImage(tmp,0,row*bandH,W,bandH, drift,row*bandH,W,bandH);
+      }
+      // add noise at seams
+      c.save(); c.globalAlpha=0.5;
+      for(let row=1;row<6;row++){
+        c.fillStyle=`rgba(255,255,255,${rng(0,0.15)})`; c.fillRect(0,row*bandH-1,W,2);
+      }
+      c.restore();
+    }
+    else if(gIdx===3){ // Chroma Crawl — color channel offset
+      c.drawImage(tmp,0,0);
+      const offset=Math.sin(t*3)*4+2;
+      c.save(); c.globalCompositeOperation='screen'; c.globalAlpha=0.35;
+      c.drawImage(tmp,offset,0); c.drawImage(tmp,-offset,0);
+      c.restore();
+      // crawl pattern
+      const crawlY=((t*H*0.5)%H);
+      c.save(); c.globalAlpha=0.2;
+      c.fillStyle='rgba(255,0,180,0.3)'; c.fillRect(0,crawlY,W,2);
+      c.restore();
+    }
+    else if(gIdx===4){ // Capacitor Plague — rolling distortion
+      const rollY=((t*H*0.4)%H);
+      c.drawImage(tmp,0,0);
+      // Rolling bar
+      c.save();
+      c.fillStyle='rgba(255,255,200,0.08)'; c.fillRect(0,rollY,W,H*0.08);
+      // Distort region near roll
+      const dist=20;
+      for(let y=rollY-dist;y<rollY+dist;y++){
+        if(y<0||y>=H) continue;
+        const sx=Math.sin((y-rollY)*0.3+t)*W*0.04;
+        c.drawImage(tmp,0,y,W,1, sx,y,W,1);
+      }
+      c.restore();
+    }
+    else if(gIdx===5){ // Tape Dropout — white horizontal noise lines
+      c.drawImage(tmp,0,0);
+      const drops=Math.floor(rng(1,4));
+      for(let d2=0;d2<drops;d2++){
+        const y=Math.floor(rng(0,H));
+        const x=Math.floor(rng(0,W*0.6));
+        const w=Math.floor(rng(W*0.1,W*0.5));
+        c.save(); c.globalAlpha=rng(0.3,0.9);
+        c.fillStyle='#ffffff'; c.fillRect(x,y,w,1);
+        c.restore();
+      }
+    }
+    else if(gIdx===6){ // VHS Tracking — image tears
+      const tearY=Math.floor((Math.sin(t*0.5)*0.5+0.5)*H);
+      const shift=Math.floor(rng(-W*0.15,W*0.15));
+      // Above tear: normal
+      c.drawImage(tmp,0,0,W,tearY,0,0,W,tearY);
+      // Below tear: shifted
+      c.drawImage(tmp,0,tearY,W,H-tearY,shift,tearY,W,H-tearY);
+      // Tear line noise
+      c.save(); c.globalAlpha=0.7;
+      c.fillStyle='rgba(255,255,255,0.3)'; c.fillRect(0,tearY,W,2);
+      // VHS chroma noise
+      for(let x=0;x<W;x+=2){
+        c.fillStyle=`rgba(${rng(0,255)|0},${rng(0,100)|0},${rng(100,255)|0},${rng(0.1,0.4)})`;
+        c.fillRect(x,tearY-1,2,4);
+      }
+      c.restore();
+    }
+    else if(gIdx===7){ // Signal Noise — full analog noise with ghost
+      // Ghost image (dim underlying scene)
+      c.globalAlpha=0.2; c.drawImage(tmp,0,0); c.globalAlpha=1;
+      const nid=c.createImageData(W,H);
+      const nd=nid.data;
+      for(let i=0;i<nd.length;i+=4){
+        const v=rng(0,180)|0;
+        nd[i]=v; nd[i+1]=v+(rng(-20,20)|0); nd[i+2]=v+(rng(-20,20)|0); nd[i+3]=220;
+      }
+      c.globalAlpha=0.75; c.putImageData(nid,0,0); c.globalAlpha=1;
+      // Occasional ghost flicker
+      if(Math.random()<0.04){
+        c.globalAlpha=0.3; c.drawImage(tmp,Math.floor(rng(-5,5)),Math.floor(rng(-5,5))); c.globalAlpha=1;
+      }
+    }
+  }
+
+  document.querySelectorAll('.glitch-cell').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      const gi=parseInt(cell.dataset.glitch);
+      expandedGlitch=gi;
+      document.getElementById('glitchExpanded').style.display='block';
+      const info=GLITCH_INFO[gi];
+      document.getElementById('gcInfo').innerHTML=
+        `<strong style="color:var(--accent2)">${cell.querySelector('.glitch-label').textContent}</strong><br>
+         <strong>Hardware origin:</strong> ${info.src}<br>
+         <strong>Artists:</strong> ${info.artists}`;
+    });
+  });
+  window.closeGlitchExpanded=function(){
+    expandedGlitch=-1;
+    document.getElementById('glitchExpanded').style.display='none';
+  };
+
+  let gFrame=0;
+  function glitchTick(){
+    gFrame++;
+    const t=gFrame/60;
+    for(let i=0;i<8;i++){
+      ctxs[i].clearRect(0,0,W,H);
+      renderGlitch(ctxs[i],i,W,H,t);
+    }
+    if(expandedGlitch>=0){
+      bigCtx.clearRect(0,0,800,500);
+      renderGlitch(bigCtx,expandedGlitch,800,500,t);
+    }
+    requestAnimationFrame(glitchTick);
+  }
+  sceneT=0;
+  glitchTick();
+})();
+
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: RecursiveGeometryExplorer (Section 6)
+// ──────────────────────────────────────────────────────────────────────
+(function initRecursiveGeometry(){
+  const canvas=document.getElementById('fracCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  let currentFractal='tree', evolving=false, evolveDepth=0, evolveTarget=0;
+  const FRAC_INFO={
+    tree:'<strong>Recursive Tree:</strong> Each branch spawns two sub-branches at a fixed angle and length ratio. As depth increases, branches grow as 2<sup>n</sup>. The boundary between tree and air becomes infinitely complex — a fractal edge.',
+    koch:'<strong>Koch Snowflake:</strong> Start from an equilateral triangle. Replace each line segment\'s middle third with a triangular bump. At each iteration, the perimeter multiplies by 4/3 — growing toward infinite length in finite space.',
+    sierpinski:'<strong>Sierpinski Triangle:</strong> Recursively subdivide a triangle into 3 smaller triangles by connecting midpoints, leaving the center empty. At depth n: 3<sup>n</sup> filled triangles, each 1/4 the area of its parent.',
+    fern:'<strong>Barnsley Fern:</strong> Four affine transformations applied to a random point, chosen by probability. The stem (2%), small leaflets (7%), large left/right sub-fronds (7% each), main frond body (85%). Millions of points reveal a photorealistic fern.',
+  };
+
+  window.switchFractal=function(name,btn){
+    currentFractal=name;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    // Show correct sub-controls
+    ['treeControls','kochControls','sierControls','fernControls'].forEach(id=>{
+      document.getElementById(id).style.display='none';
+    });
+    const map={tree:'treeControls',koch:'kochControls',sierpinski:'sierControls',fern:'fernControls'};
+    document.getElementById(map[name]).style.display='block';
+    document.getElementById('fracInfo').innerHTML=FRAC_INFO[name];
+    drawCurrent();
+  };
+
+  // Slider listeners
+  ['treeDepth','treeAngle','treeRatio','kochDepth','sierDepth','fernPoints'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input',()=>{
+      const v=parseFloat(el.value);
+      const vid=id+'Val';
+      const ve=document.getElementById(vid);
+      if(!ve) return;
+      if(id==='fernPoints') ve.textContent=Math.round(v/1000)+'k';
+      else if(id==='treeAngle') ve.textContent=v+'°';
+      else ve.textContent=v;
+      drawCurrent();
+    });
+  });
+
+  function drawCurrent(){
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    if(currentFractal==='tree') drawTree();
+    else if(currentFractal==='koch') drawKoch();
+    else if(currentFractal==='sierpinski') drawSierpinski();
+    else if(currentFractal==='fern') drawFern();
+  }
+
+  // ── Recursive Tree ──
+  function drawTree(){
+    const depth=parseInt(document.getElementById('treeDepth').value)||7;
+    const angle=(parseFloat(document.getElementById('treeAngle').value)||35)*Math.PI/180;
+    const ratio=parseFloat(document.getElementById('treeRatio').value)||0.72;
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    ctx.save();
+    function branch(x,y,len,dir,d){
+      if(d<0||len<0.5) return;
+      const ex=x+Math.cos(dir)*len;
+      const ey=y+Math.sin(dir)*len;
+      const t=1-(d/depth);
+      const hue=260+t*80;
+      const lum=clamp(40+t*35,40,75);
+      ctx.strokeStyle=`hsla(${hue},75%,${lum}%,${0.5+t*0.5})`;
+      ctx.lineWidth=Math.max(0.5,len*0.06);
+      ctx.shadowColor=hsl(hue,80,60,0.3); ctx.shadowBlur=2;
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey); ctx.stroke();
+      branch(ex,ey,len*ratio, dir-angle, d-1);
+      branch(ex,ey,len*ratio, dir+angle, d-1);
+    }
+    const startLen=H*0.22;
+    branch(W/2, H-20, startLen, -Math.PI/2, depth);
+    ctx.restore();
+  }
+
+  // ── Koch Snowflake ──
+  function kochSegment(pts,depth){
+    if(depth===0) return pts;
+    const next=[];
+    for(let i=0;i<pts.length-1;i++){
+      const ax=pts[i][0],ay=pts[i][1];
+      const bx=pts[i+1][0],by=pts[i+1][1];
+      const mx=(bx-ax)/3, my=(by-ay)/3;
+      const p1=[ax+mx,ay+my];
+      const p2=[ax+mx*2,ay+my*2];
+      const angle=Math.atan2(by-ay,bx-ax)-Math.PI/3;
+      const len=Math.sqrt(mx*mx+my*my);
+      const peak=[ax+mx+Math.cos(angle)*len, ay+my+Math.sin(angle)*len];
+      next.push(pts[i],p1,peak,p2);
+    }
+    next.push(pts[pts.length-1]);
+    return kochSegment(next,depth-1);
+  }
+  function drawKoch(){
+    const depth=parseInt(document.getElementById('kochDepth').value)||4;
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    const r=H*0.32; const cx=W/2, cy=H/2+r*0.12;
+    const tri=[];
+    for(let i=0;i<3;i++){
+      const a=i/3*Math.PI*2-Math.PI/2;
+      tri.push([cx+Math.cos(a)*r, cy+Math.sin(a)*r]);
+    }
+    const sides=[[...tri,tri[0]],[tri[1],tri[2],tri[0]],[tri[2],tri[0],tri[1]]];
+    ctx.save();
+    // Draw each of 3 sides
+    const allPts=[];
+    for(let s=0;s<3;s++){
+      const seg=kochSegment([tri[s],tri[(s+1)%3]],depth);
+      allPts.push(...seg.slice(0,-1));
+    }
+    allPts.push(allPts[0]);
+    ctx.beginPath();
+    allPts.forEach((p,i)=>i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]));
+    ctx.closePath();
+    ctx.strokeStyle=hsl(270,80,65,0.9); ctx.lineWidth=1;
+    ctx.shadowColor=hsl(270,80,60,0.5); ctx.shadowBlur=4;
+    ctx.stroke();
+    // Fill faintly
+    ctx.fillStyle=hsl(270,70,20,0.12); ctx.fill();
+    ctx.restore();
+  }
+
+  // ── Sierpinski Triangle ──
+  function drawSierpinski(){
+    const depth=parseInt(document.getElementById('sierDepth').value)||5;
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    const size=Math.min(W,H)*0.80;
+    const bx=W/2-size/2, by=H-20, tx=W/2, ty=H-20-size*0.866;
+    function sier(ax,ay,bx2,by2,cx,cy,d){
+      if(d===0){
+        ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx2,by2); ctx.lineTo(cx,cy); ctx.closePath();
+        const t=1-d/(depth+1);
+        ctx.fillStyle=hsl(260+t*40,75,clamp(30+t*20,30,50),0.8);
+        ctx.fill();
+        ctx.strokeStyle=hsl(270,80,70,0.4); ctx.lineWidth=0.5; ctx.stroke();
+        return;
+      }
+      const mx=(ax+bx2)/2, my=(ay+by2)/2;
+      const nx=(bx2+cx)/2, ny=(by2+cy)/2;
+      const ox=(ax+cx)/2, oy=(ay+cy)/2;
+      sier(ax,ay,mx,my,ox,oy,d-1);
+      sier(mx,my,bx2,by2,nx,ny,d-1);
+      sier(ox,oy,nx,ny,cx,cy,d-1);
+    }
+    ctx.save();
+    ctx.shadowColor=hsl(270,80,60,0.3); ctx.shadowBlur=2;
+    sier(bx,by,W/2+size/2,by,tx,ty,depth);
+    ctx.restore();
+  }
+
+  // ── Barnsley Fern ──
+  function drawFern(){
+    const pts=parseInt(document.getElementById('fernPoints').value)||50000;
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    // Scale fern to canvas
+    const scaleX=W/11; const scaleY=H/10.5;
+    const offX=W/2; const offY=H;
+    let x=0,y=0;
+    for(let i=0;i<pts;i++){
+      const r=Math.random();
+      let nx,ny;
+      if(r<0.01){        nx=0;               ny=0.16*y; }
+      else if(r<0.86){   nx=0.85*x+0.04*y;  ny=-0.04*x+0.85*y+1.6; }
+      else if(r<0.93){   nx=0.20*x-0.26*y;  ny=0.23*x+0.22*y+1.6; }
+      else{              nx=-0.15*x+0.28*y; ny=0.26*x+0.24*y+0.44; }
+      x=nx; y=ny;
+      const px=offX+x*scaleX, py=offY-y*scaleY;
+      const t=y/10;
+      ctx.fillStyle=hsl(260+t*60,80,clamp(30+t*40,30,75),0.7);
+      ctx.fillRect(px,py,1.2,1.2);
+    }
+  }
+
+  // Evolve button
+  document.getElementById('fracEvolveBtn').addEventListener('click',()=>{
+    if(evolving) return;
+    evolving=true;
+    const depthSliders={tree:'treeDepth',koch:'kochDepth',sierpinski:'sierDepth',fern:null};
+    const sid=depthSliders[currentFractal];
+    if(!sid){ evolving=false; drawCurrent(); return; }
+    const slider=document.getElementById(sid);
+    const maxVal=parseInt(slider.max);
+    const orig=parseInt(slider.value);
+    slider.value=1; slider.dispatchEvent(new Event('input'));
+    let d=1;
+    function step(){
+      d++;
+      slider.value=d;
+      slider.dispatchEvent(new Event('input'));
+      if(d<Math.min(orig,maxVal)) setTimeout(step,350);
+      else evolving=false;
+    }
+    setTimeout(step,350);
+  });
+  document.getElementById('fracResetBtn').addEventListener('click',()=>{ evolving=false; drawCurrent(); });
+
+  drawCurrent();
+})();
+
+// ──────────────────────────────────────────────────────────────────────
+// SYSTEM: AudiovisualRecursion (Section 7)
+// ──────────────────────────────────────────────────────────────────────
+(function initAVRecursion(){
+  const canvas=document.getElementById('avCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const buf=document.createElement('canvas'); buf.width=W; buf.height=H;
+  const bctx=buf.getContext('2d');
+  bctx.fillStyle='#050508'; bctx.fillRect(0,0,W,H);
+
+  let avT=0, resonancePhase=0, resonanceDelta=0;
+  const lagScale=new LagFilter(1.0,0.08);
+  const lagRot=new LagFilter(0,0.06);
+
+  function getOscValue(t, wave, freq, amp){
+    const phase=t*freq*Math.PI*2;
+    if(wave==='sine')     return Math.sin(phase)*amp;
+    if(wave==='square')   return (Math.sin(phase)>0?1:-1)*amp;
+    if(wave==='sawtooth') return ((phase%(Math.PI*2))/(Math.PI*2)*2-1)*amp;
+    if(wave==='triangle') return (Math.asin(Math.sin(phase))/(Math.PI/2))*amp;
+    return Math.sin(phase)*amp;
+  }
+
+  document.getElementById('avFreq').addEventListener('input',()=>{
+    document.getElementById('avFreqVal').textContent=parseFloat(document.getElementById('avFreq').value).toFixed(2)+' Hz';
+  });
+  document.getElementById('avAmp').addEventListener('input',()=>{
+    document.getElementById('avAmpVal').textContent=parseFloat(document.getElementById('avAmp').value).toFixed(2);
+  });
+  document.getElementById('avResonance').addEventListener('change',()=>{
+    const on=document.getElementById('avResonance').checked;
+    document.getElementById('avResLabel').textContent=on?'On — coupled loop':'Off — open loop';
+  });
+
+  window.setAVPreset=function(name){
+    const map={
+      breathe:{freq:'0.20',amp:'0.60',wave:'sine',res:false},
+      strobe: {freq:'4.00',amp:'0.90',wave:'square',res:false},
+      drift:  {freq:'0.50',amp:'0.70',wave:'sawtooth',res:true},
+    };
+    const p=map[name]; if(!p) return;
+    document.getElementById('avFreq').value=p.freq;
+    document.getElementById('avFreqVal').textContent=parseFloat(p.freq).toFixed(2)+' Hz';
+    document.getElementById('avAmp').value=p.amp;
+    document.getElementById('avAmpVal').textContent=parseFloat(p.amp).toFixed(2);
+    document.getElementById('avWave').value=p.wave;
+    document.getElementById('avResonance').checked=p.res;
+    document.getElementById('avResLabel').textContent=p.res?'On — coupled loop':'Off — open loop';
+  };
+
+  let hueAcc=260;
+  function avTick(){
+    const freq=parseFloat(document.getElementById('avFreq').value);
+    const amp= parseFloat(document.getElementById('avAmp').value);
+    const wave=document.getElementById('avWave').value;
+    const resonance=document.getElementById('avResonance').checked;
+
+    // Resonance: visual output modulates frequency slightly
+    let effectiveFreq=freq;
+    if(resonance){
+      resonanceDelta+=(Math.sin(resonancePhase)*0.08 - resonanceDelta)*0.04;
+      effectiveFreq=clamp(freq+resonanceDelta*freq*0.3, 0.05, 8.0);
+    }
+
+    avT+=1/60;
+    const oscVal=getOscValue(avT,wave,effectiveFreq,amp);
+    resonancePhase+=effectiveFreq*0.05;
+
+    hueAcc=(hueAcc+0.5+Math.abs(oscVal)*0.5)%360;
+
+    // Scale and rotation driven by oscillator
+    const targetScale=1.0+oscVal*0.18;
+    const targetRot=oscVal*0.12;
+    const scaleV=lagScale.update(targetScale);
+    const rotV=lagRot.update(targetRot);
+
+    // Feedback decay
+    bctx.save(); bctx.globalAlpha=0.04+Math.abs(oscVal)*0.02;
+    bctx.fillStyle='#050508'; bctx.fillRect(0,0,W,H); bctx.restore();
+
+    // Draw scaled+rotated copy of canvas onto buf
+    bctx.save();
+    bctx.translate(W/2,H/2);
+    bctx.rotate(rotV*0.3);
+    bctx.scale(1.0+oscVal*0.012, 1.0+oscVal*0.012);
+    bctx.globalAlpha=0.94;
+    bctx.drawImage(canvas,-W/2,-H/2);
+    bctx.restore();
+
+    // Draw new visual element
+    const cx=W/2+Math.sin(avT*effectiveFreq*0.7)*W*0.1*amp;
+    const cy=H/2+Math.cos(avT*effectiveFreq*0.5)*H*0.12*amp;
+    const r=8+Math.abs(oscVal)*W*0.08;
+    const g=bctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    g.addColorStop(0,hsl(hueAcc,90,75,0.9));
+    g.addColorStop(0.5,hsl(hueAcc,80,50,0.4));
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    bctx.fillStyle=g; bctx.beginPath(); bctx.arc(cx,cy,r,0,Math.PI*2); bctx.fill();
+
+    // Waveform display bar at bottom
+    ctx.globalAlpha=1; ctx.drawImage(buf,0,0);
+
+    // Draw waveform trace
+    ctx.save();
+    ctx.strokeStyle=hsl(hueAcc,80,65,0.7); ctx.lineWidth=1.5;
+    ctx.beginPath();
+    const waveH=H*0.12, waveY=H-waveH-8;
+    for(let x=0;x<W;x++){
+      const t2=(avT - (W-x)/W/effectiveFreq);
+      const v=getOscValue(t2,wave,effectiveFreq,amp);
+      const y=waveY+waveH/2 - v*waveH*0.45;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // Zero line
+    ctx.strokeStyle='rgba(100,116,139,0.3)'; ctx.lineWidth=0.5; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(0,waveY+waveH/2); ctx.lineTo(W,waveY+waveH/2); ctx.stroke();
+    ctx.setLineDash([]);
+    // Freq label
+    ctx.fillStyle=hsl(hueAcc,70,70,0.8); ctx.font='10px Courier New';
+    ctx.textAlign='right'; ctx.fillText(effectiveFreq.toFixed(2)+' Hz  Δ='+(resonanceDelta).toFixed(3),W-8,waveY-4);
+    ctx.restore();
+
+    // Scanlines
+    ctx.save(); ctx.globalAlpha=0.07;
+    for(let y=0;y<H;y+=4){ ctx.fillStyle='#000'; ctx.fillRect(0,y,W,1); }
+    ctx.restore();
+
+    requestAnimationFrame(avTick);
+  }
+  avTick();
+})();
+
+</script>

@@ -1,0 +1,1420 @@
+---
+layout: world.njk
+title: "WAVGEN — Tape & Vinyl Lab"
+description: "Immersive music world exploring tape vinyl"
+domain: music
+permalink: /music/tape-vinyl-lab/
+---
+
+
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<div id="hero-section">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">TAPE &amp; VINYL LAB</div>
+<div class="hero-sub">THE PHYSICS OF ANALOG MEMORY</div>
+<div class="hero-badges">
+<div class="badge">GROOVE WIDTH <span id="b-groove">2.2µm</span></div>
+<div class="badge">TAPE SPEED <span id="b-speed">15 IPS</span></div>
+<div class="badge">BIAS FREQ <span id="b-bias">75kHz</span></div>
+<div class="badge">SATURATION <span id="b-sat">12%</span></div>
+</div>
+</div>
+</div>
+<div id="hero" style="height:0;margin:0;padding:0"></div>
+<!-- ═══════════════════════════════ SATURATION ═══════════════════════════════ -->
+<section id="saturation">
+<div class="section-tag hidden">Section 02</div>
+<div class="section-title hidden stagger-1">Saturation Transfer Curve</div>
+<div class="section-sub hidden stagger-2">How magnetic tape compresses and colors audio — the warmth is in the asymmetry.</div>
+<div class="flex-row" style="align-items:stretch">
+<div style="flex:1;min-width:280px">
+<div class="canvas-wrap hidden stagger-2" style="margin-bottom:1rem">
+<canvas height="300" id="sat-curve" width="600"></canvas>
+</div>
+<div class="canvas-wrap hidden stagger-3">
+<canvas height="140" id="sat-spectrum" width="600"></canvas>
+</div>
+</div>
+<div style="min-width:220px;display:flex;flex-direction:column;gap:1rem">
+<div class="card card-amber hidden stagger-2">
+<h4>Drive Level</h4>
+<div class="ctrl-row">
+<input id="sat-drive" max="6" min="-24" step="0.5" type="range" value="-6"/>
+<span class="val-badge" id="sat-drive-val">-6 dB</span>
+</div>
+<h4 style="margin-top:0.75rem">Tape Speed (IPS)</h4>
+<div class="ctrl-row" style="gap:0.5rem">
+<button class="btn active" id="ips30" onclick="setIPS(30)">30</button>
+<button class="btn" id="ips15" onclick="setIPS(15)">15</button>
+<button class="btn" id="ips75" onclick="setIPS(7.5)">7.5</button>
+</div>
+<h4 style="margin-top:0.75rem">Material</h4>
+<div class="ctrl-row" style="gap:0.5rem;flex-wrap:wrap">
+<button class="btn active" id="matTape" onclick="setMaterial('tape')">¼″ Tape</button>
+<button class="btn" id="matCass" onclick="setMaterial('cassette')">Cassette</button>
+<button class="btn" id="matDig" onclick="setMaterial('digital')">Digital</button>
+</div>
+<h4 style="margin-top:0.75rem">Audio</h4>
+<button class="btn primary" id="sat-audio-btn" onclick="toggleSatAudio()">▶ PLAY SINE</button>
+</div>
+<div class="card hidden stagger-3">
+<h4>Transfer Curve Physics</h4>
+<p>Tape oxide reaches magnetic saturation non-linearly. The B-H curve creates even-order harmonics (2nd, 4th) — perceived as warmth. Hard clipping creates odd-order harmonics — perceived as harshness.</p>
+</div>
+<div class="card hidden stagger-4">
+<h4>2nd vs 3rd Harmonic</h4>
+<p><span style="color:#22c55e">■</span> 2nd harmonic = octave above = even, musical, warm<br/>
+<span style="color:#ef4444">■</span> 3rd harmonic = fifth above octave = odd, tense, edgy<br/>
+        IPS affects high-frequency saturation onset.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ WOW & FLUTTER ═══════════════════════════════ -->
+<section id="wow-flutter">
+<div class="section-tag hidden">Section 03</div>
+<div class="section-title hidden stagger-1">Wow &amp; Flutter Observatory</div>
+<div class="section-sub hidden stagger-2">Speed variations in tape transport: slow drift (wow) and rapid tremor (flutter) define the soul of analog.</div>
+<div class="canvas-wrap hidden stagger-2" style="margin-bottom:1rem">
+<canvas height="180" id="wf-wave" width="900"></canvas>
+</div>
+<div class="canvas-wrap hidden stagger-3" style="margin-bottom:1.5rem">
+<canvas height="100" id="wf-pitch" width="900"></canvas>
+</div>
+<div class="flex-row hidden stagger-3">
+<div class="card card-amber" style="flex:1;min-width:220px">
+<h4>Wow Rate</h4>
+<div class="ctrl-row">
+<span class="ctrl-label">Rate (Hz)</span>
+<input id="wow-rate" max="3" min="0.05" step="0.05" type="range" value="0.3"/>
+<span class="val-badge" id="wow-rate-val">0.30 Hz</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Depth</span>
+<input id="wow-depth" max="0.02" min="0" step="0.0005" type="range" value="0.003"/>
+<span class="val-badge" id="wow-depth-val">0.3%</span>
+</div>
+<h4 style="margin-top:0.75rem">Flutter Rate</h4>
+<div class="ctrl-row">
+<span class="ctrl-label">Rate (Hz)</span>
+<input id="flutter-rate" max="25" min="4" step="0.5" type="range" value="8"/>
+<span class="val-badge" id="flutter-rate-val">8.0 Hz</span>
+</div>
+<div class="ctrl-row">
+<span class="ctrl-label">Depth</span>
+<input id="flutter-depth" max="0.008" min="0" step="0.0002" type="range" value="0.001"/>
+<span class="val-badge" id="flutter-depth-val">0.1%</span>
+</div>
+</div>
+<div class="card" style="flex:1;min-width:220px">
+<h4>Presets</h4>
+<div style="display:flex;flex-direction:column;gap:0.5rem">
+<button class="btn" onclick="setWFPreset('pristine')">✦ Pristine (NAB Spec)</button>
+<button class="btn" onclick="setWFPreset('used')">◈ Used Machine</button>
+<button class="btn" onclick="setWFPreset('degraded')">◉ Degraded Transport</button>
+<button class="btn" onclick="setWFPreset('boc')">◎ Boards of Canada Mode</button>
+</div>
+<div style="margin-top:0.75rem">
+<button class="btn primary" id="wf-audio-btn" onclick="toggleWFAudio()">▶ PLAY NOTE</button>
+</div>
+</div>
+<div class="card" style="flex:1;min-width:220px">
+<h4>Physical Causes</h4>
+<p><strong style="color:var(--accent)">Wow</strong> — capstan bearing eccentricity, pinch-roller diameter variation, AC motor synchronization drift. Characterized below 6 Hz.<br/><br/>
+<strong style="color:var(--accent)">Flutter</strong> — tape-guide resonance, mechanical vibration, capstan surface irregularities. Characterized above 6 Hz.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ TAPE SPEED ═══════════════════════════════ -->
+<section id="tape-speed">
+<div class="section-tag hidden">Section 04</div>
+<div class="section-title hidden stagger-1">Tape Speed Time Machine</div>
+<div class="section-sub hidden stagger-2">Faster tape speed = more oxide per second = wider frequency response and lower noise floor.</div>
+<div class="grid-4 hidden stagger-2" id="speed-panels">
+<!-- injected by JS -->
+</div>
+<div class="flex-row hidden stagger-4" style="margin-top:1.5rem">
+<div class="card card-amber" style="flex:1">
+<h4>Compare Speeds</h4>
+<div class="ctrl-row" style="gap:0.5rem;flex-wrap:wrap">
+<button class="btn primary" onclick="playSpeedDemo(30)">▶ 30 IPS</button>
+<button class="btn" onclick="playSpeedDemo(15)">▶ 15 IPS</button>
+<button class="btn" onclick="playSpeedDemo(7.5)">▶ 7.5 IPS</button>
+<button class="btn" onclick="playSpeedDemo(3.75)">▶ 3.75 IPS</button>
+<button class="btn" onclick="stopSpeedDemo()">■ STOP</button>
+</div>
+</div>
+<div class="card" style="flex:2">
+<h4>Head Bump &amp; HF Roll-Off</h4>
+<p>At lower IPS, the reproduce head becomes electrically longer relative to the recorded wavelength. This creates a characteristic "head bump" — a low-frequency boost — and accelerates HF roll-off above a cutoff that scales with tape velocity.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ DISINTEGRATION ═══════════════════════════════ -->
+<section id="disintegration">
+<div class="section-tag hidden">Section 05</div>
+<div class="section-title hidden stagger-1">Disintegration Loop Builder</div>
+<div class="section-sub hidden stagger-2">Inspired by William Basinski — a loop decays in real time, never resetting. Magnetic oxide falls from the tape. The music becomes its own eulogy.</div>
+<div class="canvas-wrap hidden stagger-2" style="margin-bottom:1rem">
+<canvas height="180" id="dis-wave" width="900"></canvas>
+</div>
+<div id="dis-progress"><div id="dis-bar"></div></div>
+<div class="flex-row hidden stagger-3">
+<div class="card card-amber" style="flex:1;min-width:220px">
+<h4>Loop Controls</h4>
+<div class="ctrl-row" style="gap:0.5rem;flex-wrap:wrap">
+<button class="btn primary" id="dis-play-btn" onclick="toggleDisintegration()">▶ BEGIN DECAY</button>
+<button class="btn" disabled="" id="dis-pause-btn" onclick="pauseDisintegration()">⏸ PAUSE</button>
+</div>
+<h4 style="margin-top:0.75rem">Duration</h4>
+<div class="ctrl-row" id="dis-dur-btns" style="gap:0.5rem">
+<button class="btn active" onclick="setDisDuration(120,this)">2 MIN</button>
+<button class="btn" onclick="setDisDuration(300,this)">5 MIN</button>
+<button class="btn" onclick="setDisDuration(600,this)">10 MIN</button>
+</div>
+<h4 style="margin-top:0.75rem">Speed</h4>
+<div class="ctrl-row" id="dis-speed-btns" style="gap:0.5rem">
+<button class="btn" onclick="setDisSpeed(0.5,this)">0.5×</button>
+<button class="btn active" onclick="setDisSpeed(1,this)">1×</button>
+<button class="btn" onclick="setDisSpeed(2,this)">2×</button>
+</div>
+<div class="ctrl-row" style="margin-top:0.75rem">
+<span class="ctrl-label">Decay</span>
+<span class="val-badge" id="dis-pct-val" style="min-width:120px;text-align:left;font-size:0.75rem;color:var(--dim)">0.0% degraded</span>
+</div>
+</div>
+<div class="card" style="flex:2;min-width:240px">
+<h4>William Basinski — Disintegration Loops (2002)</h4>
+<p>In 2001, composer William Basinski attempted to digitize decaying reel-to-reel tape loops from the 1980s. As the oxide shed from the aging polyester base, the music literally disintegrated on playback — each pass removing more magnetic information. He recorded the process over hours.<br/><br/>
+      On September 11, 2001, he watched the World Trade Center towers fall from his Brooklyn rooftop while the final loop played out. The recordings became an accidental elegy. The disintegration was not reversible. The decay was the composition.</p>
+</div>
+</div>
+<div class="dis-warning hidden stagger-4">⚠ ANALOG TRUTH: A loop in decay cannot be reset. Start a new browser session to restore the original signal. This is not a bug — it is the physics.</div>
+</section>
+<!-- ═══════════════════════════════ RIAA ═══════════════════════════════ -->
+<section id="riaa">
+<div class="section-tag hidden">Section 06</div>
+<div class="section-title hidden stagger-1">RIAA Curve Simulator</div>
+<div class="section-sub hidden stagger-2">Vinyl cannot cut loud bass — the groove would be too wide. RIAA equalization solves this with pre-emphasis during cutting and de-emphasis in your phono stage.</div>
+<div class="riaa-toggle hidden stagger-2">
+<button class="btn active" id="riaa-enc-btn" onclick="setRIAAView('encode')">ENCODING (Cut)</button>
+<button class="btn" id="riaa-dec-btn" onclick="setRIAAView('decode')">DECODING (Phono)</button>
+<button class="btn" id="riaa-com-btn" onclick="setRIAAView('combined')">COMBINED (Flat)</button>
+</div>
+<div class="canvas-wrap hidden stagger-2" style="margin-bottom:1.25rem">
+<canvas height="300" id="riaa-canvas" width="900"></canvas>
+</div>
+<div class="flex-row hidden stagger-3">
+<div class="card card-amber" style="flex:1">
+<h4>Listen: With vs. Without Phono Stage</h4>
+<div class="ctrl-row" style="gap:0.5rem;flex-wrap:wrap">
+<button class="btn primary" id="riaa-raw-btn" onclick="playRIAA(false)">▶ RAW (Harsh)</button>
+<button class="btn" id="riaa-eq-btn" onclick="playRIAA(true)">▶ EQUALIZED (Natural)</button>
+<button class="btn" onclick="stopRIAA()">■ STOP</button>
+</div>
+</div>
+<div class="card" style="flex:2">
+<h4>RIAA Time Constants</h4>
+<p>The RIAA standard defines three time constants: 3180µs (50Hz), 318µs (500Hz), and 75µs (2122Hz). Together they create a shelving response — boosting bass by +20dB and cutting treble by −20dB during cutting. The phono stage applies the exact inverse. Without it, bass disappears and highs screech.</p>
+</div>
+<div class="card" style="flex:1">
+<h4>Groove Physics</h4>
+<p>A 20Hz bass note cut at full level would require a groove excursion wide enough to consume space for 30 seconds of music. RIAA compression brings all frequencies to roughly equal groove width, maximizing playing time and preventing the stylus jumping grooves.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ NOISE ARCHAEOLOGY ═══════════════════════════════ -->
+<section id="noise-archaeology">
+<div class="section-tag hidden">Section 07</div>
+<div class="section-title hidden stagger-1">Vinyl Noise Archaeology</div>
+<div class="section-sub hidden stagger-2">Five distinct noise profiles, each with its own physical cause and restoration limit. Listen carefully — they are not the same.</div>
+<div class="exhibit-row hidden stagger-2" id="noise-exhibits">
+<!-- Injected by JS -->
+</div>
+<div class="flex-row hidden stagger-4" style="margin-top:1.5rem">
+<div class="card card-amber" style="flex:1">
+<h4>Restoration Limit Slider</h4>
+<div class="ctrl-row">
+<span class="ctrl-label">Effort</span>
+<input id="restore-slider" max="100" min="0" type="range" value="0"/>
+<span class="val-badge" id="restore-val">0%</span>
+</div>
+<p style="margin-top:0.5rem;font-size:0.7rem">Surface noise, clicks, and crackle respond well. Warp wow and inner groove distortion are geometric — they cannot be undone without the original master.</p>
+</div>
+<div class="card" style="flex:2">
+<h4>Physical Archaeology</h4>
+<p>Every noise type is a fossil record of the vinyl's history. Surface noise tells of humidity and dust. Clicks mark debris impacts. Crackle reveals micro-fractures in the pressing. Warp wow records temperature stress. Inner groove distortion is the mathematical consequence of geometry — the stylus must reproduce the same lateral velocity as the cutting head, but at a smaller radius.</p>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ TAPE STACK ═══════════════════════════════ -->
+<section id="tape-stack">
+<div class="section-tag hidden">Section 08</div>
+<div class="section-title hidden stagger-1">The Tape Stack</div>
+<div class="section-sub hidden stagger-2">Three independent tape stages in series. Each adds warmth. Three times too much warmth is not three times as warm.</div>
+<div class="flex-row hidden stagger-2">
+<div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:1rem">
+<!-- Stage controls -->
+<div class="card" id="stage-card-0">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+<span style="color:var(--accent);font-size:0.8rem;letter-spacing:0.1em">STAGE 1 — INPUT</span>
+<button class="btn active" id="stage-tog-0" onclick="toggleStage(0)">■ ON</button>
+</div>
+<div class="ctrl-row"><span class="ctrl-label">Drive</span><input id="stage-sat-0" max="100" min="0" type="range" value="25"/><span class="val-badge" id="stage-sat-val-0">25%</span></div>
+<div class="ctrl-row"><span class="ctrl-label">Noise Floor</span><input id="stage-noise-0" max="-40" min="-90" type="range" value="-72"/><span class="val-badge" id="stage-noise-val-0">-72 dB</span></div>
+<div class="ctrl-row"><span class="ctrl-label">HF Rolloff</span><input id="stage-hf-0" max="22000" min="5000" type="range" value="18000"/><span class="val-badge" id="stage-hf-val-0">18k</span></div>
+</div>
+<div class="card" id="stage-card-1">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+<span style="color:var(--accent);font-size:0.8rem;letter-spacing:0.1em">STAGE 2 — DUPE</span>
+<button class="btn active" id="stage-tog-1" onclick="toggleStage(1)">■ ON</button>
+</div>
+<div class="ctrl-row"><span class="ctrl-label">Drive</span><input id="stage-sat-1" max="100" min="0" type="range" value="20"/><span class="val-badge" id="stage-sat-val-1">20%</span></div>
+<div class="ctrl-row"><span class="ctrl-label">Noise Floor</span><input id="stage-noise-1" max="-40" min="-90" type="range" value="-68"/><span class="val-badge" id="stage-noise-val-1">-68 dB</span></div>
+<div class="ctrl-row"><span class="ctrl-label">HF Rolloff</span><input id="stage-hf-1" max="22000" min="5000" type="range" value="16000"/><span class="val-badge" id="stage-hf-val-1">16k</span></div>
+</div>
+<div class="card" id="stage-card-2">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem">
+<span style="color:var(--accent);font-size:0.8rem;letter-spacing:0.1em">STAGE 3 — OUTPUT</span>
+<button class="btn active" id="stage-tog-2" onclick="toggleStage(2)">■ ON</button>
+</div>
+<div class="ctrl-row"><span class="ctrl-label">Drive</span><input id="stage-sat-2" max="100" min="0" type="range" value="15"/><span class="val-badge" id="stage-sat-val-2">15%</span></div>
+<div class="ctrl-row"><span class="ctrl-label">Noise Floor</span><input id="stage-noise-2" max="-40" min="-90" type="range" value="-65"/><span class="val-badge" id="stage-noise-val-2">-65 dB</span></div>
+<div class="ctrl-row"><span class="ctrl-label">HF Rolloff</span><input id="stage-hf-2" max="22000" min="5000" type="range" value="14000"/><span class="val-badge" id="stage-hf-val-2">14k</span></div>
+</div>
+</div>
+<div style="flex:2;min-width:280px;display:flex;flex-direction:column;gap:1rem">
+<div class="canvas-wrap">
+<canvas height="280" id="stack-canvas" width="700"></canvas>
+</div>
+<div style="display:flex;gap:1rem;flex-wrap:wrap">
+<div class="card card-amber" style="flex:1;min-width:160px">
+<h4>Cumulative State</h4>
+<div style="margin:0.5rem 0">
+<div style="font-size:0.7rem;color:var(--dim);margin-bottom:4px">Total Saturation</div>
+<div id="stack-sat-total" style="font-size:1.2rem;color:var(--accent)">60%</div>
+</div>
+<div>
+<div style="font-size:0.7rem;color:var(--dim);margin-bottom:4px">Combined Noise</div>
+<div id="stack-noise-total" style="font-size:1.2rem;color:var(--accent)">-62 dB</div>
+</div>
+<div style="margin-top:0.75rem">
+<div style="font-size:0.7rem;color:var(--dim);margin-bottom:4px">Quality Indicator</div>
+<div id="stack-quality" style="font-size:0.85rem;font-weight:700;color:var(--green)">● SWEET SPOT</div>
+</div>
+</div>
+<div class="card" style="flex:2;min-width:200px">
+<h4>The Accumulation Problem</h4>
+<p>Professional orchestral recordings in the 1960s–70s often involved 3–4 tape generations: session → edit master → mixing → lacquer cut. Each generation added noise and coloration. Engineers balanced this against digital's lack of "air." Three stages of modest saturation sound better than one stage of heavy saturation — the harmonics stay musical.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════ ARTISTS + GLOSSARY ═══════════════════════════════ -->
+<section id="artists">
+<div class="section-tag hidden">Section 09</div>
+<div class="section-title hidden stagger-1">Artists &amp; Glossary</div>
+<div class="section-sub hidden stagger-2">Practitioners who shaped our understanding of what tape and vinyl can be — and the vocabulary they used to do it.</div>
+<div class="hidden stagger-2" style="font-size:0.7rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">Artists</div>
+<div class="grid-4 hidden stagger-3" id="artist-grid"></div>
+<div class="hidden stagger-3" style="font-size:0.7rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin:2rem 0 1rem">Glossary</div>
+<div class="gloss-grid hidden stagger-4" id="glossary-grid"></div>
+</section>
+<footer>
+<div>WAVGEN TAPE &amp; VINYL LAB — App 12 of 16 — Part of The Waveform Generation Music Universe</div>
+<div style="margin-top:0.5rem"><a href="https://wavgen.ca">wavgen.ca</a></div>
+</footer>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CORE SETUP
+// ═══════════════════════════════════════════════════════════════
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = 0; }
+  update(target, dt) {
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+function phosphorPersist(ctx, W, H, alpha) {
+  ctx.fillStyle = `rgba(5,5,8,${alpha})`;
+  ctx.fillRect(0, 0, W, H);
+}
+function glowLine(ctx, color, blur) {
+  ctx.shadowBlur = blur || 10;
+  ctx.shadowColor = color || '#d97706';
+}
+function clearGlow(ctx) { ctx.shadowBlur = 0; }
+
+// IntersectionObserver for entrance
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => obs.observe(el));
+
+// Nav active link tracking
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const id = e.target.id;
+    const link = document.querySelector(`.nav-link[href="#${id}"]`);
+    if (link) link.classList.toggle('active', e.isIntersecting);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('section[id], div[id="hero"]').forEach(el => navObs.observe(el));
+
+// ═══════════════════════════════════════════════════════════════
+// HERO CANVAS
+// ═══════════════════════════════════════════════════════════════
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const crackleNodes = [];
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawGroove() {
+    phosphorPersist(ctx, W, H, 0.08);
+
+    // Draw groove cross-section
+    const cx = W * 0.5, cy = H * 0.5;
+    const amp = 55, freq = 0.018;
+    const grooveDepth = 40;
+
+    // Left groove wall
+    ctx.beginPath();
+    for (let x = 0; x < W; x++) {
+      const signal = Math.sin(x * freq + t * 0.8) * amp * 0.7 + Math.sin(x * freq * 2.3 + t * 1.1) * amp * 0.3;
+      const y = cy - grooveDepth - signal * 0.5 + signal * 0.4;
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    glowLine(ctx, '#d97706', 12);
+    ctx.strokeStyle = 'rgba(217,119,6,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Right groove wall
+    ctx.beginPath();
+    for (let x = 0; x < W; x++) {
+      const signal = Math.sin(x * freq + t * 0.8) * amp * 0.7 + Math.sin(x * freq * 2.3 + t * 1.1) * amp * 0.3;
+      const y = cy + grooveDepth + signal * 0.5 - signal * 0.4;
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(180,83,9,0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Stylus diamond
+    const stylusX = W * 0.15 + Math.sin(t * 0.7) * 8;
+    const stylusY = cy;
+    ctx.beginPath();
+    ctx.moveTo(stylusX, stylusY - 12);
+    ctx.lineTo(stylusX + 5, stylusY);
+    ctx.lineTo(stylusX, stylusY + 10);
+    ctx.lineTo(stylusX - 5, stylusY);
+    ctx.closePath();
+    glowLine(ctx, '#e2e8f0', 20);
+    ctx.fillStyle = 'rgba(226,232,240,0.9)';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // Lateral signal line
+    const lat = Math.sin(t * 1.2) * 20;
+    ctx.beginPath();
+    ctx.moveTo(W * 0.3, cy);
+    for (let x = W * 0.3; x < W * 0.85; x++) {
+      const s = Math.sin((x - W * 0.3) * freq * 1.5 + t * 1.5) * 18 + Math.sin((x - W * 0.3) * freq * 3.7 + t * 0.9) * 8;
+      ctx.lineTo(x, cy + s);
+    }
+    glowLine(ctx, '#60a5fa', 8);
+    ctx.strokeStyle = 'rgba(96,165,250,0.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Labels
+    clearGlow(ctx);
+    ctx.fillStyle = 'rgba(217,119,6,0.6)';
+    ctx.font = '10px Courier New';
+    ctx.fillText('LATERAL (L+R)', W * 0.32, cy - 30);
+    ctx.fillText('GROOVE WALL', 30, cy - grooveDepth - 25);
+    ctx.fillText('STYLUS', stylusX + 12, cy - 5);
+
+    t += 0.02;
+  }
+
+  function animateBadges() {
+    document.getElementById('b-groove').textContent = (2.0 + Math.sin(t * 0.3) * 0.3).toFixed(1) + 'µm';
+    document.getElementById('b-sat').textContent = (10 + Math.sin(t * 0.5) * 5).toFixed(0) + '%';
+  }
+
+  function heroLoop() {
+    drawGroove();
+    animateBadges();
+    requestAnimationFrame(heroLoop);
+  }
+  heroLoop();
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// SATURATION SECTION
+// ═══════════════════════════════════════════════════════════════
+let satMaterial = 'tape', satIPS = 30;
+let satAudioActive = false, satOsc = null, satNodes = {};
+let satAnimFrame;
+const satCurveCanvas = document.getElementById('sat-curve');
+const satSpecCanvas = document.getElementById('sat-spectrum');
+const satCurveCtx = satCurveCanvas.getContext('2d');
+const satSpecCtx = satSpecCanvas.getContext('2d');
+
+function satTransfer(x, material, drive) {
+  const d = Math.pow(10, drive / 20);
+  const xd = x * d;
+  if (material === 'digital') {
+    return Math.max(-1, Math.min(1, xd));
+  } else if (material === 'cassette') {
+    const k = material === 'cassette' ? 2.8 : 2.2;
+    return xd / Math.pow(1 + Math.pow(Math.abs(xd), k), 1 / k);
+  } else {
+    return Math.tanh(xd * 1.6) / Math.tanh(1.6);
+  }
+}
+
+function drawSatCurve() {
+  const W = satCurveCanvas.width, H = satCurveCanvas.height;
+  satCurveCtx.clearRect(0, 0, W, H);
+  satCurveCtx.fillStyle = '#050508';
+  satCurveCtx.fillRect(0, 0, W, H);
+
+  const drive = parseFloat(document.getElementById('sat-drive').value);
+  const mx = W / 2, my = H / 2, sc = Math.min(W, H) * 0.44;
+
+  // Grid
+  satCurveCtx.strokeStyle = '#1e1e2e';
+  satCurveCtx.lineWidth = 1;
+  for (let i = -4; i <= 4; i++) {
+    const x = mx + i * sc / 4, y = my + i * sc / 4;
+    satCurveCtx.beginPath(); satCurveCtx.moveTo(x, 0); satCurveCtx.lineTo(x, H); satCurveCtx.stroke();
+    satCurveCtx.beginPath(); satCurveCtx.moveTo(0, y); satCurveCtx.lineTo(W, y); satCurveCtx.stroke();
+  }
+  satCurveCtx.strokeStyle = '#2e2e3e';
+  satCurveCtx.lineWidth = 1;
+  satCurveCtx.beginPath(); satCurveCtx.moveTo(mx, 0); satCurveCtx.lineTo(mx, H); satCurveCtx.stroke();
+  satCurveCtx.beginPath(); satCurveCtx.moveTo(0, my); satCurveCtx.lineTo(W, my); satCurveCtx.stroke();
+
+  // Linear reference
+  satCurveCtx.beginPath();
+  satCurveCtx.moveTo(mx - sc, my + sc); satCurveCtx.lineTo(mx + sc, my - sc);
+  satCurveCtx.strokeStyle = 'rgba(100,116,139,0.3)'; satCurveCtx.lineWidth = 1;
+  satCurveCtx.stroke();
+
+  // Curves
+  const materials = [
+    { id: 'tape', color: '#d97706', label: '¼″ Tape' },
+    { id: 'cassette', color: '#ef4444', label: 'Cassette' },
+    { id: 'digital', color: '#60a5fa', label: 'Digital Clip' }
+  ];
+  materials.forEach(mat => {
+    satCurveCtx.beginPath();
+    for (let xi = -1; xi <= 1; xi += 0.01) {
+      const yo = -satTransfer(xi, mat.id, drive);
+      const px = mx + xi * sc, py = my + yo * sc;
+      if (xi === -1) satCurveCtx.moveTo(px, py); else satCurveCtx.lineTo(px, py);
+    }
+    satCurveCtx.shadowBlur = mat.id === satMaterial ? 14 : 0;
+    satCurveCtx.shadowColor = mat.color;
+    satCurveCtx.strokeStyle = mat.id === satMaterial ? mat.color : mat.color + '44';
+    satCurveCtx.lineWidth = mat.id === satMaterial ? 2.5 : 1;
+    satCurveCtx.stroke();
+    satCurveCtx.shadowBlur = 0;
+
+    // Operating point
+    if (mat.id === satMaterial) {
+      const inLevel = Math.pow(10, drive / 20) * 0.5;
+      const clampedIn = Math.max(-1, Math.min(1, inLevel));
+      const outLevel = -satTransfer(clampedIn, mat.id, 0);
+      const px = mx + clampedIn * sc, py = my + outLevel * sc;
+      satCurveCtx.beginPath(); satCurveCtx.arc(px, py, 6, 0, Math.PI * 2);
+      satCurveCtx.fillStyle = '#d97706';
+      satCurveCtx.shadowBlur = 16; satCurveCtx.shadowColor = '#d97706';
+      satCurveCtx.fill(); satCurveCtx.shadowBlur = 0;
+    }
+
+    satCurveCtx.fillStyle = mat.color;
+    satCurveCtx.font = '10px Courier New';
+    satCurveCtx.fillText(mat.label, 8, mat.id === 'tape' ? H * 0.2 : mat.id === 'cassette' ? H * 0.3 : H * 0.1);
+  });
+
+  satCurveCtx.fillStyle = '#64748b'; satCurveCtx.font = '10px Courier New';
+  satCurveCtx.fillText('INPUT', W - 45, my - 8);
+  satCurveCtx.fillText('OUTPUT', mx + 6, 14);
+}
+
+function drawSatSpectrum() {
+  const W = satSpecCanvas.width, H = satSpecCanvas.height;
+  satSpecCtx.fillStyle = 'rgba(5,5,8,0.15)';
+  satSpecCtx.fillRect(0, 0, W, H);
+
+  const drive = parseFloat(document.getElementById('sat-drive').value);
+  const dNorm = (drive + 24) / 30;
+
+  const harmonics = [
+    { freq: 1, amp: 1.0, color: '#d97706', label: 'F' },
+    { freq: 2, amp: dNorm * 0.6, color: '#22c55e', label: '2nd' },
+    { freq: 3, amp: dNorm * 0.3 * (satMaterial === 'digital' ? 1.8 : 1), color: '#ef4444', label: '3rd' },
+    { freq: 4, amp: dNorm * 0.15, color: '#22c55e', label: '4th' },
+    { freq: 5, amp: dNorm * 0.08 * (satMaterial === 'digital' ? 1.5 : 0.7), color: '#ef4444', label: '5th' },
+  ];
+  const barW = W / 8;
+  harmonics.forEach((h, i) => {
+    const barH = Math.min(H - 20, h.amp * (H - 20));
+    const x = barW * (i + 0.5);
+    satSpecCtx.fillStyle = h.color + '33';
+    satSpecCtx.fillRect(x - barW * 0.3, H - barH, barW * 0.6, barH);
+    satSpecCtx.shadowBlur = 8; satSpecCtx.shadowColor = h.color;
+    satSpecCtx.fillStyle = h.color;
+    satSpecCtx.fillRect(x - barW * 0.3, H - barH, barW * 0.6, 2);
+    satSpecCtx.shadowBlur = 0;
+    satSpecCtx.fillStyle = h.color; satSpecCtx.font = '9px Courier New'; satSpecCtx.textAlign = 'center';
+    satSpecCtx.fillText(h.label, x, H - 4);
+  });
+  satSpecCtx.fillStyle = '#64748b'; satSpecCtx.font = '9px Courier New'; satSpecCtx.textAlign = 'left';
+  satSpecCtx.fillText('HARMONIC SPECTRUM', 6, 14);
+  satSpecCtx.textAlign = 'start';
+}
+
+function satLoop() { drawSatCurve(); drawSatSpectrum(); satAnimFrame = requestAnimationFrame(satLoop); }
+satLoop();
+
+document.getElementById('sat-drive').addEventListener('input', function() {
+  document.getElementById('sat-drive-val').textContent = this.value + ' dB';
+});
+
+function setIPS(v) {
+  satIPS = v;
+  ['ips30','ips15','ips75'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('ips' + String(v).replace('.', '')).classList.add('active');
+}
+function setMaterial(m) {
+  satMaterial = m;
+  ['tape','cassette','digital'].forEach(id => document.getElementById('mat' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('active'));
+  document.getElementById('mat' + m.charAt(0).toUpperCase() + m.slice(1)).classList.add('active');
+}
+function toggleSatAudio() {
+  const ac = getAudioCtx();
+  if (satAudioActive) {
+    satOsc && satOsc.stop();
+    satOsc = null;
+    satAudioActive = false;
+    document.getElementById('sat-audio-btn').textContent = '▶ PLAY SINE';
+  } else {
+    satOsc = ac.createOscillator();
+    const waveShape = ac.createWaveShaper();
+    const n = 256;
+    const curve = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = (i * 2 / n) - 1;
+      curve[i] = satMaterial === 'digital' ? Math.max(-0.7, Math.min(0.7, x)) : Math.tanh(x * 2) / Math.tanh(2);
+    }
+    waveShape.curve = curve;
+    const gain = ac.createGain(); gain.gain.value = 0.15;
+    satOsc.frequency.value = 220;
+    satOsc.connect(waveShape); waveShape.connect(gain); gain.connect(ac.destination);
+    satOsc.start();
+    satAudioActive = true;
+    document.getElementById('sat-audio-btn').textContent = '■ STOP';
+  }
+}
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// WOW & FLUTTER
+// ═══════════════════════════════════════════════════════════════
+const wfWaveCanvas = document.getElementById('wf-wave');
+const wfPitchCanvas = document.getElementById('wf-pitch');
+const wfWaveCtx = wfWaveCanvas.getContext('2d');
+const wfPitchCtx = wfPitchCanvas.getContext('2d');
+let wfT = 0, wfAudioActive = false, wfOsc = null, wfLFO = null, wfGain = null;
+const wfParams = { wowRate: 0.3, wowDepth: 0.003, flutterRate: 8, flutterDepth: 0.001 };
+
+function setWFPreset(name) {
+  const presets = {
+    pristine:  { wowRate: 0.5,  wowDepth: 0.0005, flutterRate: 8,  flutterDepth: 0.0002 },
+    used:      { wowRate: 0.3,  wowDepth: 0.003,  flutterRate: 9,  flutterDepth: 0.001 },
+    degraded:  { wowRate: 0.8,  wowDepth: 0.008,  flutterRate: 12, flutterDepth: 0.003 },
+    boc:       { wowRate: 0.15, wowDepth: 0.018,  flutterRate: 7,  flutterDepth: 0.006 }
+  };
+  const p = presets[name];
+  document.getElementById('wow-rate').value = p.wowRate;
+  document.getElementById('wow-depth').value = p.wowDepth;
+  document.getElementById('flutter-rate').value = p.flutterRate;
+  document.getElementById('flutter-depth').value = p.flutterDepth;
+  document.getElementById('wow-rate-val').textContent = p.wowRate.toFixed(2) + ' Hz';
+  document.getElementById('wow-depth-val').textContent = (p.wowDepth * 100).toFixed(2) + '%';
+  document.getElementById('flutter-rate-val').textContent = p.flutterRate.toFixed(1) + ' Hz';
+  document.getElementById('flutter-depth-val').textContent = (p.flutterDepth * 100).toFixed(2) + '%';
+  Object.assign(wfParams, p);
+}
+
+['wow-rate','wow-depth','flutter-rate','flutter-depth'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() {
+    const key = id === 'wow-rate' ? 'wowRate' : id === 'wow-depth' ? 'wowDepth' : id === 'flutter-rate' ? 'flutterRate' : 'flutterDepth';
+    wfParams[key] = parseFloat(this.value);
+    const labels = { 'wow-rate': 'wow-rate-val', 'wow-depth': 'wow-depth-val', 'flutter-rate': 'flutter-rate-val', 'flutter-depth': 'flutter-depth-val' };
+    const units = { 'wow-rate': v => v.toFixed(2) + ' Hz', 'wow-depth': v => (v*100).toFixed(2)+'%', 'flutter-rate': v => v.toFixed(1)+' Hz', 'flutter-depth': v => (v*100).toFixed(2)+'%' };
+    document.getElementById(labels[id]).textContent = units[id](parseFloat(this.value));
+  });
+});
+
+function drawWFWave() {
+  const W = wfWaveCanvas.width, H = wfWaveCanvas.height;
+  phosphorPersist(wfWaveCtx, W, H, 0.12);
+  const amp = H * 0.35, mid = H * 0.5;
+  const baseFreq = 0.02;
+  const wow = Math.sin(wfT * wfParams.wowRate * 0.1) * wfParams.wowDepth;
+  const flutter = Math.sin(wfT * wfParams.flutterRate * 0.05) * wfParams.flutterDepth;
+  const totalMod = 1 + wow + flutter;
+
+  wfWaveCtx.beginPath();
+  for (let x = 0; x < W; x++) {
+    const phase = x * baseFreq * totalMod;
+    const y = mid - Math.sin(phase) * amp;
+    if (x === 0) wfWaveCtx.moveTo(x, y); else wfWaveCtx.lineTo(x, y);
+  }
+  glowLine(wfWaveCtx, '#d97706', 10);
+  wfWaveCtx.strokeStyle = '#d97706';
+  wfWaveCtx.lineWidth = 1.5;
+  wfWaveCtx.stroke();
+
+  // Perfect reference ghost
+  wfWaveCtx.beginPath();
+  for (let x = 0; x < W; x++) {
+    const y = mid - Math.sin(x * baseFreq) * amp;
+    if (x === 0) wfWaveCtx.moveTo(x, y); else wfWaveCtx.lineTo(x, y);
+  }
+  clearGlow(wfWaveCtx);
+  wfWaveCtx.strokeStyle = 'rgba(96,165,250,0.25)';
+  wfWaveCtx.lineWidth = 1;
+  wfWaveCtx.stroke();
+
+  wfWaveCtx.fillStyle = '#64748b'; wfWaveCtx.font = '10px Courier New';
+  wfWaveCtx.fillText('MODULATED (amber) / PERFECT REFERENCE (blue)', 8, 14);
+}
+
+function drawWFPitch() {
+  const W = wfPitchCanvas.width, H = wfPitchCanvas.height;
+  phosphorPersist(wfPitchCtx, W, H, 0.15);
+  const mid = H * 0.5;
+  const pitchBuf = [];
+  for (let x = 0; x < W; x++) {
+    const t2 = (wfT - W + x) * 0.02;
+    const wow = Math.sin(t2 * wfParams.wowRate * 0.1) * wfParams.wowDepth;
+    const flutter = Math.sin(t2 * wfParams.flutterRate * 0.05) * wfParams.flutterDepth;
+    pitchBuf.push((wow + flutter) * (H * 10));
+  }
+  wfPitchCtx.beginPath();
+  pitchBuf.forEach((v, x) => { if (x === 0) wfPitchCtx.moveTo(x, mid - v); else wfPitchCtx.lineTo(x, mid - v); });
+  glowLine(wfPitchCtx, '#22c55e', 8);
+  wfPitchCtx.strokeStyle = '#22c55e'; wfPitchCtx.lineWidth = 1.5; wfPitchCtx.stroke();
+  clearGlow(wfPitchCtx);
+  wfPitchCtx.strokeStyle = 'rgba(30,30,46,0.8)'; wfPitchCtx.lineWidth = 1;
+  wfPitchCtx.beginPath(); wfPitchCtx.moveTo(0, mid); wfPitchCtx.lineTo(W, mid); wfPitchCtx.stroke();
+  wfPitchCtx.fillStyle = '#64748b'; wfPitchCtx.font = '10px Courier New';
+  wfPitchCtx.fillText('PITCH DEVIATION', 8, 14);
+}
+
+function wfLoop() { drawWFWave(); drawWFPitch(); wfT += 1; requestAnimationFrame(wfLoop); }
+wfLoop();
+
+function toggleWFAudio() {
+  const ac = getAudioCtx();
+  if (wfAudioActive) {
+    wfOsc && wfOsc.stop(); wfLFO && wfLFO.stop();
+    wfOsc = null; wfLFO = null;
+    wfAudioActive = false;
+    document.getElementById('wf-audio-btn').textContent = '▶ PLAY NOTE';
+  } else {
+    wfOsc = ac.createOscillator();
+    wfLFO = ac.createOscillator();
+    const lfoGain = ac.createGain();
+    wfGain = ac.createGain();
+    wfOsc.frequency.value = 440;
+    wfOsc.type = 'triangle';
+    wfLFO.frequency.value = wfParams.wowRate;
+    lfoGain.gain.value = wfParams.wowDepth * 440;
+    wfLFO.connect(lfoGain); lfoGain.connect(wfOsc.frequency);
+    wfGain.gain.value = 0.12;
+    wfOsc.connect(wfGain); wfGain.connect(ac.destination);
+    wfOsc.start(); wfLFO.start();
+    wfAudioActive = true;
+    document.getElementById('wf-audio-btn').textContent = '■ STOP';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TAPE SPEED PANELS
+// ═══════════════════════════════════════════════════════════════
+const speedData = [
+  { ips: 30, label: '30 IPS', hfCutoff: 22000, noiseFloor: -75, use: 'Professional Studio', color: '#d97706' },
+  { ips: 15, label: '15 IPS', hfCutoff: 16000, noiseFloor: -70, use: 'Project Studio',      color: '#f59e0b' },
+  { ips: 7.5, label: '7.5 IPS', hfCutoff: 10000, noiseFloor: -64, use: 'Lo-Fi Aesthetic',  color: '#b45309' },
+  { ips: 3.75, label: '3.75 IPS', hfCutoff: 6000, noiseFloor: -58, use: 'Cassette / Deep Lo-Fi', color: '#92400e' }
+];
+
+const speedPanel = document.getElementById('speed-panels');
+speedData.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `
+    <div style="color:${s.color};font-size:0.9rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.5rem">${s.label}</div>
+    <canvas id="speed-canvas-${i}" width="200" height="120" style="width:100%;border-radius:4px;background:#050508"></canvas>
+    <div style="margin-top:0.5rem;font-size:0.7rem;color:var(--dim)">HF: ${(s.hfCutoff/1000).toFixed(0)}kHz | NF: ${s.noiseFloor}dB</div>
+    <div style="font-size:0.68rem;color:var(--text);margin-top:0.25rem">${s.use}</div>
+  `;
+  speedPanel.appendChild(div);
+});
+
+function drawSpeedCanvas(idx) {
+  const s = speedData[idx];
+  const canvas = document.getElementById(`speed-canvas-${idx}`);
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#050508'; ctx.fillRect(0, 0, W, H);
+
+  // Frequency response curve
+  ctx.beginPath();
+  for (let x = 0; x < W; x++) {
+    const freq = 20 * Math.pow(1000, x / W);
+    let response = 0;
+    if (freq < s.hfCutoff) response = 0;
+    else response = -20 * Math.log10(freq / s.hfCutoff);
+    const y = H * 0.15 + (H * 0.65) * (-response / 40);
+    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.shadowBlur = 8; ctx.shadowColor = s.color;
+  ctx.strokeStyle = s.color; ctx.lineWidth = 2; ctx.stroke(); ctx.shadowBlur = 0;
+
+  // Noise floor line
+  const nfY = H * 0.15 + (H * 0.65) * (1 - (s.noiseFloor + 90) / 50);
+  ctx.beginPath(); ctx.moveTo(0, nfY); ctx.lineTo(W, nfY);
+  ctx.strokeStyle = 'rgba(100,116,139,0.4)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+  ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#64748b'; ctx.font = '8px Courier New';
+  ctx.fillText('noise floor', 4, nfY - 3);
+}
+
+speedData.forEach((_, i) => drawSpeedCanvas(i));
+
+let speedDemoOsc = null, speedDemoFilter = null, speedDemoActive = false;
+function playSpeedDemo(ips) {
+  stopSpeedDemo();
+  const ac = getAudioCtx();
+  speedDemoOsc = ac.createOscillator();
+  speedDemoFilter = ac.createBiquadFilter();
+  const s = speedData.find(d => d.ips === ips);
+  speedDemoOsc.frequency.value = 440; speedDemoOsc.type = 'sawtooth';
+  speedDemoFilter.type = 'lowpass'; speedDemoFilter.frequency.value = s.hfCutoff; speedDemoFilter.Q.value = 0.5;
+  const g = ac.createGain(); g.gain.value = 0.1;
+  speedDemoOsc.connect(speedDemoFilter); speedDemoFilter.connect(g); g.connect(ac.destination);
+  speedDemoOsc.start(); speedDemoActive = true;
+}
+function stopSpeedDemo() {
+  if (speedDemoOsc) { speedDemoOsc.stop(); speedDemoOsc = null; }
+  speedDemoActive = false;
+}
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DISINTEGRATION LOOP
+// ═══════════════════════════════════════════════════════════════
+const disCanvas = document.getElementById('dis-wave');
+const disCtx = disCanvas.getContext('2d');
+let disRunning = false, disPaused = false, disStartTime = null, disPauseOffset = 0;
+let disDuration = 120, disSpeed = 1, disT = 0, disDecay = 0;
+let disAudioNodes = {}, disOscs = [];
+const originalWave = [];
+const W_DIS = 900, H_DIS = 180;
+
+// Generate original waveform once
+(function genOriginalWave() {
+  for (let x = 0; x < W_DIS; x++) {
+    const v = Math.sin(x * 0.04) * 0.6 + Math.sin(x * 0.11) * 0.25 + Math.sin(x * 0.23) * 0.15;
+    originalWave.push(v);
+  }
+})();
+
+function setDisDuration(s, btn) {
+  if (disRunning) return;
+  disDuration = s;
+  document.querySelectorAll('#dis-dur-btns .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setDisSpeed(s, btn) {
+  disSpeed = s;
+  document.querySelectorAll('#dis-speed-btns .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleDisintegration() {
+  if (!disRunning) {
+    disRunning = true; disPaused = false;
+    disStartTime = performance.now();
+    document.getElementById('dis-play-btn').textContent = '▶ RUNNING';
+    document.getElementById('dis-play-btn').disabled = true;
+    document.getElementById('dis-pause-btn').disabled = false;
+    startDisAudio();
+  }
+}
+
+function pauseDisintegration() {
+  if (!disRunning) return;
+  if (!disPaused) {
+    disPaused = true;
+    disPauseOffset += performance.now() - disStartTime;
+    document.getElementById('dis-pause-btn').textContent = '▶ RESUME';
+    stopDisAudio();
+  } else {
+    disPaused = false;
+    disStartTime = performance.now();
+    document.getElementById('dis-pause-btn').textContent = '⏸ PAUSE';
+    startDisAudio();
+  }
+}
+
+function startDisAudio() {
+  const ac = getAudioCtx();
+  const baseFreqs = [110, 165, 220, 330];
+  stopDisAudio();
+  baseFreqs.forEach((f, i) => {
+    const osc = ac.createOscillator();
+    const filt = ac.createBiquadFilter();
+    const gain = ac.createGain();
+    osc.frequency.value = f; osc.type = 'triangle';
+    filt.type = 'lowpass'; filt.frequency.value = Math.max(500, 4000 * (1 - disDecay));
+    gain.gain.value = 0.025 * (1 - disDecay * 0.7);
+    osc.connect(filt); filt.connect(gain); gain.connect(ac.destination);
+    osc.start();
+    disOscs.push({ osc, filt, gain });
+  });
+}
+
+function stopDisAudio() {
+  disOscs.forEach(n => { try { n.osc.stop(); } catch(e) {} });
+  disOscs = [];
+}
+
+function drawDisintegration() {
+  if (!disRunning || disPaused) { requestAnimationFrame(drawDisintegration); return; }
+  const elapsed = (disPauseOffset + performance.now() - disStartTime) / 1000 * disSpeed;
+  disDecay = Math.min(1, elapsed / disDuration);
+  document.getElementById('dis-bar').style.width = (disDecay * 100) + '%';
+  document.getElementById('dis-pct-val').textContent = (disDecay * 100).toFixed(1) + '% degraded';
+
+  // Update audio
+  disOscs.forEach(n => {
+    n.filt.frequency.value = Math.max(200, 4000 * (1 - disDecay));
+    n.gain.gain.value = 0.025 * (1 - disDecay * 0.8);
+  });
+
+  disCtx.fillStyle = 'rgba(5,5,8,0.18)';
+  disCtx.fillRect(0, 0, W_DIS, H_DIS);
+
+  const mid = H_DIS * 0.5;
+  disCtx.beginPath();
+  for (let x = 0; x < W_DIS; x++) {
+    const dropoutRoll = Math.random();
+    const dropout = dropoutRoll < disDecay * 0.25;
+    const noise = (Math.random() * 2 - 1) * disDecay * 0.35;
+    const fadeAmp = 1 - disDecay * 0.85;
+    const v = dropout ? noise * 0.3 : originalWave[x] * fadeAmp + noise;
+    const y = mid - v * (H_DIS * 0.38);
+    if (x === 0) disCtx.moveTo(x, y); else disCtx.lineTo(x, y);
+  }
+  const hue = `hsl(${38 - disDecay * 30}, ${80 - disDecay * 50}%, ${55 - disDecay * 35}%)`;
+  disCtx.shadowBlur = 8 * (1 - disDecay); disCtx.shadowColor = '#d97706';
+  disCtx.strokeStyle = hue; disCtx.lineWidth = 1.5;
+  disCtx.stroke(); disCtx.shadowBlur = 0;
+
+  // Noise floor visualizer
+  if (disDecay > 0.05) {
+    disCtx.beginPath();
+    for (let x = 0; x < W_DIS; x++) {
+      const n = (Math.random() * 2 - 1) * disDecay * 0.12;
+      const y = mid + n * H_DIS;
+      if (x === 0) disCtx.moveTo(x, y); else disCtx.lineTo(x, y);
+    }
+    disCtx.strokeStyle = `rgba(100,116,139,${disDecay * 0.4})`; disCtx.lineWidth = 0.5;
+    disCtx.stroke();
+  }
+
+  disCtx.fillStyle = '#64748b'; disCtx.font = '10px Courier New';
+  disCtx.fillText(`DECAY: ${(disDecay * 100).toFixed(1)}%  |  ELAPSED: ${Math.floor(elapsed)}s / ${disDuration}s`, 8, 14);
+
+  requestAnimationFrame(drawDisintegration);
+}
+
+function disIdleLoop() {
+  if (disRunning) return;
+  disCtx.fillStyle = 'rgba(5,5,8,0.08)'; disCtx.fillRect(0, 0, W_DIS, H_DIS);
+  const mid = H_DIS * 0.5;
+  disCtx.beginPath();
+  originalWave.forEach((v, x) => {
+    const y = mid - v * (H_DIS * 0.38);
+    if (x === 0) disCtx.moveTo(x, y); else disCtx.lineTo(x, y);
+  });
+  disCtx.shadowBlur = 10; disCtx.shadowColor = '#d97706';
+  disCtx.strokeStyle = '#d97706'; disCtx.lineWidth = 1.5; disCtx.stroke(); disCtx.shadowBlur = 0;
+  disCtx.fillStyle = '#64748b'; disCtx.font = '10px Courier New';
+  disCtx.fillText('PRISTINE — press BEGIN DECAY to start', 8, 14);
+  requestAnimationFrame(disIdleLoop);
+}
+disIdleLoop();
+
+// ═══════════════════════════════════════════════════════════════
+// RIAA CURVE
+// ═══════════════════════════════════════════════════════════════
+const riaaCanvas = document.getElementById('riaa-canvas');
+const riaaCtx = riaaCanvas.getContext('2d');
+let riaaView = 'encode', riaaAudioActive = false, riaaOsc = null, riaaChain = [];
+
+function setRIAAView(v) {
+  riaaView = v;
+  ['enc','dec','com'].forEach(id => document.getElementById(`riaa-${id}-btn`).classList.remove('active'));
+  document.getElementById(`riaa-${v.slice(0,3)}-btn`).classList.add('active');
+  drawRIAA();
+}
+
+function riaaResponse(freq, type) {
+  const f1 = 50, f2 = 500, f3 = 2122;
+  const w = 2 * Math.PI * freq;
+  const w1 = 2 * Math.PI * f1, w2 = 2 * Math.PI * f2, w3 = 2 * Math.PI * f3;
+  const encode = 20 * Math.log10(
+    Math.sqrt((1 + (w / w1) ** 2) / (1 + (w / w3) ** 2)) *
+    (w2 / w1)
+  );
+  if (type === 'encode') return encode;
+  if (type === 'decode') return -encode;
+  return 0;
+}
+
+function drawRIAA() {
+  const W = riaaCanvas.width, H = riaaCanvas.height;
+  riaaCtx.fillStyle = '#050508'; riaaCtx.fillRect(0, 0, W, H);
+  const logMin = Math.log10(20), logMax = Math.log10(20000);
+
+  // Grid
+  [20,50,100,200,500,1000,2000,5000,10000,20000].forEach(f => {
+    const x = W * (Math.log10(f) - logMin) / (logMax - logMin);
+    riaaCtx.beginPath(); riaaCtx.moveTo(x, 0); riaaCtx.lineTo(x, H);
+    riaaCtx.strokeStyle = '#1e1e2e'; riaaCtx.lineWidth = 1; riaaCtx.stroke();
+    riaaCtx.fillStyle = '#2e2e4e'; riaaCtx.font = '9px Courier New'; riaaCtx.textAlign = 'center';
+    riaaCtx.fillText(f >= 1000 ? (f / 1000) + 'k' : f, x, H - 4);
+  });
+  [-20,-10,0,10,20].forEach(db => {
+    const y = H * 0.5 - db * (H / 60);
+    riaaCtx.beginPath(); riaaCtx.moveTo(0, y); riaaCtx.lineTo(W, y);
+    riaaCtx.strokeStyle = db === 0 ? '#2e2e4e' : '#1e1e2e'; riaaCtx.stroke();
+    riaaCtx.fillStyle = '#2e2e4e'; riaaCtx.font = '9px Courier New'; riaaCtx.textAlign = 'left';
+    riaaCtx.fillText(db + 'dB', 4, y - 2);
+  });
+
+  // RIAA curves
+  const curves = riaaView === 'combined'
+    ? [{ type: 'encode', color: '#d97706' }, { type: 'decode', color: '#60a5fa' }]
+    : [{ type: riaaView, color: riaaView === 'encode' ? '#d97706' : '#60a5fa' }];
+
+  curves.forEach(c => {
+    riaaCtx.beginPath();
+    for (let i = 0; i <= W; i++) {
+      const freq = Math.pow(10, logMin + (logMax - logMin) * i / W);
+      const db = riaaResponse(freq, c.type);
+      const y = H * 0.5 - db * (H / 60);
+      if (i === 0) riaaCtx.moveTo(i, y); else riaaCtx.lineTo(i, y);
+    }
+    riaaCtx.shadowBlur = 12; riaaCtx.shadowColor = c.color;
+    riaaCtx.strokeStyle = c.color; riaaCtx.lineWidth = 2.5; riaaCtx.stroke(); riaaCtx.shadowBlur = 0;
+  });
+  riaaCtx.textAlign = 'start';
+
+  const label = riaaView === 'encode' ? 'RIAA PRE-EMPHASIS (vinyl cutting — bass cut, treble boost)'
+               : riaaView === 'decode' ? 'RIAA DE-EMPHASIS (phono stage — treble cut, bass boost)'
+               : 'COMBINED RESPONSE (encoding + decoding = flat)';
+  riaaCtx.fillStyle = '#64748b'; riaaCtx.font = '10px Courier New';
+  riaaCtx.fillText(label, 8, 14);
+}
+drawRIAA();
+
+function playRIAA(equalized) {
+  stopRIAA();
+  const ac = getAudioCtx();
+  riaaOsc = ac.createOscillator();
+  riaaOsc.type = 'sawtooth'; riaaOsc.frequency.value = 440;
+  let node = riaaOsc;
+  if (equalized) {
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 40;
+    const ls = ac.createBiquadFilter(); ls.type = 'lowshelf'; ls.frequency.value = 500; ls.gain.value = 6;
+    const hs = ac.createBiquadFilter(); hs.type = 'highshelf'; hs.frequency.value = 2000; hs.gain.value = -8;
+    node.connect(hp); hp.connect(ls); ls.connect(hs); node = hs;
+  } else {
+    const hs2 = ac.createBiquadFilter(); hs2.type = 'highshelf'; hs2.frequency.value = 1000; hs2.gain.value = 14;
+    const ls2 = ac.createBiquadFilter(); ls2.type = 'lowshelf'; ls2.frequency.value = 300; ls2.gain.value = -12;
+    node.connect(ls2); ls2.connect(hs2); node = hs2;
+  }
+  const g = ac.createGain(); g.gain.value = 0.1;
+  node.connect(g); g.connect(ac.destination);
+  riaaOsc.start(); riaaAudioActive = true;
+}
+function stopRIAA() {
+  if (riaaOsc) { try { riaaOsc.stop(); } catch(e) {} riaaOsc = null; }
+  riaaAudioActive = false;
+}
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// NOISE ARCHAEOLOGY
+// ═══════════════════════════════════════════════════════════════
+const noiseExhibits = [
+  { id: 'surface', name: 'Surface Noise', cause: 'Broadband vinyl crackle from microscopic dust and oxide particulates in the groove.' },
+  { id: 'clicks',  name: 'Clicks', cause: 'Sharp impulse contamination from debris impact; a single spike corrupts one groove pass.' },
+  { id: 'crackle', name: 'Crackle', cause: 'Micro-fractures in vinyl from thermal stress; high-frequency burst clusters.' },
+  { id: 'warp',    name: 'Warp Wow', cause: 'LF modulation from a physically warped record — geometric; cannot be digitally corrected.' },
+  { id: 'inner',   name: 'Inner Groove', cause: 'Harmonic distortion at small radius — stylus velocity falls while HF demand rises.' },
+];
+
+const exhibitContainer = document.getElementById('noise-exhibits');
+noiseExhibits.forEach(ex => {
+  const div = document.createElement('div');
+  div.className = 'exhibit';
+  div.innerHTML = `
+    <div class="exhibit-name">${ex.name}</div>
+    <canvas id="noise-${ex.id}" width="220" height="80" style="width:100%;display:block"></canvas>
+    <p>${ex.cause}</p>
+    <div style="margin-top:0.5rem;display:flex;gap:0.5rem">
+      <button class="btn" style="font-size:0.65rem;padding:3px 8px" onclick="playNoiseAudio('${ex.id}')">▶</button>
+      <button class="btn" style="font-size:0.65rem;padding:3px 8px" onclick="stopAllNoise()">■</button>
+    </div>`;
+  exhibitContainer.appendChild(div);
+});
+
+let noiseAnimT = 0;
+let noiseAudioNode = null;
+
+function drawNoiseExhibit(id, t) {
+  const canvas = document.getElementById(`noise-${id}`);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = 'rgba(5,5,8,0.2)'; ctx.fillRect(0, 0, W, H);
+
+  const mid = H * 0.5;
+  ctx.beginPath();
+  for (let x = 0; x < W; x++) {
+    let y = mid;
+    switch (id) {
+      case 'surface': y = mid + (Math.random() * 2 - 1) * H * 0.18; break;
+      case 'clicks':
+        y = mid + Math.sin(x * 0.05 + t * 0.05) * H * 0.2;
+        if (Math.random() < 0.005) y = mid + (Math.random() > 0.5 ? 1 : -1) * H * 0.48;
+        break;
+      case 'crackle':
+        y = mid + Math.sin(x * 0.08 + t * 0.04) * H * 0.15;
+        if (Math.random() < 0.02) y += (Math.random() * 2 - 1) * H * 0.35;
+        break;
+      case 'warp':
+        y = mid + Math.sin(x * 0.02 + t * 0.01) * H * 0.38 + Math.sin(x * 0.08 + t * 0.05) * H * 0.1;
+        break;
+      case 'inner':
+        const base = Math.sin(x * 0.09 + t * 0.06) * H * 0.25;
+        const dist = Math.sin(x * 0.27 + t * 0.18) * H * (0.05 + x / W * 0.18);
+        y = mid + base + dist;
+        break;
+    }
+    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.shadowBlur = 8; ctx.shadowColor = '#d97706';
+  ctx.strokeStyle = '#d97706'; ctx.lineWidth = 1; ctx.stroke(); ctx.shadowBlur = 0;
+}
+
+function noiseLoop() {
+  noiseExhibits.forEach(ex => drawNoiseExhibit(ex.id, noiseAnimT));
+  noiseAnimT++;
+  requestAnimationFrame(noiseLoop);
+}
+noiseLoop();
+
+let activeNoiseOsc = null;
+function playNoiseAudio(type) {
+  stopAllNoise();
+  const ac = getAudioCtx();
+  const masterGain = ac.createGain(); masterGain.gain.value = 0.08;
+  masterGain.connect(ac.destination);
+
+  if (type === 'surface' || type === 'crackle') {
+    const buf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * (type === 'crackle' && Math.random() < 0.01 ? 1 : 0.08);
+    }
+    const src = ac.createBufferSource();
+    const filt = ac.createBiquadFilter(); filt.type = 'bandpass'; filt.frequency.value = type === 'surface' ? 3000 : 6000; filt.Q.value = 0.5;
+    src.buffer = buf; src.loop = true;
+    src.connect(filt); filt.connect(masterGain);
+    src.start(); activeNoiseOsc = src;
+  } else if (type === 'clicks') {
+    function clickBurst() {
+      const osc2 = ac.createOscillator();
+      const env = ac.createGain();
+      osc2.frequency.value = 1500 + Math.random() * 3000;
+      env.gain.setValueAtTime(0.5, ac.currentTime);
+      env.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.005);
+      osc2.connect(env); env.connect(masterGain);
+      osc2.start(); osc2.stop(ac.currentTime + 0.005);
+    }
+    const clickInt = setInterval(clickBurst, 300 + Math.random() * 500);
+    activeNoiseOsc = { stop: () => clearInterval(clickInt) };
+  } else if (type === 'warp' || type === 'inner') {
+    const osc = ac.createOscillator();
+    const lfo = ac.createOscillator();
+    const lfoG = ac.createGain();
+    osc.type = 'triangle'; osc.frequency.value = 440;
+    lfo.frequency.value = type === 'warp' ? 1 : 0.3;
+    lfoG.gain.value = type === 'warp' ? 20 : 40;
+    const wshaper = ac.createWaveShaper();
+    const crv = new Float32Array(256);
+    for (let i = 0; i < 256; i++) {
+      const x = (i * 2 / 256) - 1;
+      crv[i] = type === 'inner' ? Math.sign(x) * Math.pow(Math.abs(x), 0.7) : x;
+    }
+    wshaper.curve = crv;
+    lfo.connect(lfoG); lfoG.connect(osc.frequency);
+    osc.connect(wshaper); wshaper.connect(masterGain);
+    osc.start(); lfo.start();
+    activeNoiseOsc = { stop: () => { osc.stop(); lfo.stop(); } };
+  }
+}
+
+function stopAllNoise() {
+  if (activeNoiseOsc) { try { activeNoiseOsc.stop(); } catch(e) {} activeNoiseOsc = null; }
+}
+
+document.getElementById('restore-slider').addEventListener('input', function() {
+  document.getElementById('restore-val').textContent = this.value + '%';
+});
+
+// ═══════════════════════════════════════════════════════════════
+// TAPE STACK
+// ═══════════════════════════════════════════════════════════════
+const stackCanvas = document.getElementById('stack-canvas');
+const stackCtx = stackCanvas.getContext('2d');
+const stageState = [
+  { on: true, sat: 25, noise: -72, hf: 18000 },
+  { on: true, sat: 20, noise: -68, hf: 16000 },
+  { on: true, sat: 15, noise: -65, hf: 14000 }
+];
+
+function toggleStage(i) {
+  stageState[i].on = !stageState[i].on;
+  const btn = document.getElementById(`stage-tog-${i}`);
+  const card = document.getElementById(`stage-card-${i}`);
+  btn.textContent = stageState[i].on ? '■ ON' : '○ OFF';
+  btn.classList.toggle('active', stageState[i].on);
+  card.style.opacity = stageState[i].on ? '1' : '0.4';
+}
+
+// Wire up stage sliders
+for (let i = 0; i < 3; i++) {
+  ['sat','noise','hf'].forEach(type => {
+    const el = document.getElementById(`stage-${type}-${i}`);
+    el.addEventListener('input', function() {
+      stageState[i][type] = parseFloat(this.value);
+      const val = document.getElementById(`stage-${type}-val-${i}`);
+      if (type === 'sat') val.textContent = this.value + '%';
+      else if (type === 'noise') val.textContent = this.value + ' dB';
+      else val.textContent = (parseInt(this.value) / 1000).toFixed(0) + 'k';
+      updateStackDisplay();
+    });
+  });
+}
+
+function getCumulativeStack() {
+  let totalSat = 0, lowestNoise = 0, lowestHF = 22000;
+  stageState.forEach(s => {
+    if (!s.on) return;
+    totalSat += s.sat;
+    lowestNoise = Math.min(s.noise, lowestNoise || s.noise);
+    lowestHF = Math.min(s.hf, lowestHF);
+  });
+  const activeCount = stageState.filter(s => s.on).length;
+  if (activeCount === 0) return { sat: 0, noise: -90, hf: 22000 };
+  const combinedNoise = -90 + (activeCount * (90 + stageState.reduce((a, s) => s.on ? a + s.noise : a, 0) / Math.max(1, activeCount))) * 0.15;
+  return { sat: Math.min(100, totalSat), noise: Math.round(stageState.reduce((a, s) => s.on ? Math.max(a, s.noise) : a, -90)), hf: lowestHF };
+}
+
+function updateStackDisplay() {
+  const { sat, noise, hf } = getCumulativeStack();
+  document.getElementById('stack-sat-total').textContent = sat + '%';
+  document.getElementById('stack-noise-total').textContent = noise + ' dB';
+  const quality = sat < 50 ? '● SWEET SPOT' : sat < 80 ? '▲ ACCUMULATING' : '■ DEGRADED';
+  const qColor = sat < 50 ? '#22c55e' : sat < 80 ? '#f59e0b' : '#ef4444';
+  const qEl = document.getElementById('stack-quality');
+  qEl.textContent = quality; qEl.style.color = qColor;
+}
+
+let stackT = 0;
+function drawStackCanvas() {
+  const W = stackCanvas.width, H = stackCanvas.height;
+  stackCtx.fillStyle = 'rgba(5,5,8,0.15)'; stackCtx.fillRect(0, 0, W, H);
+
+  const colors = ['#d97706', '#60a5fa', '#22c55e'];
+  stageState.forEach((s, i) => {
+    if (!s.on) return;
+    const yOffset = H * 0.25 + i * H * 0.25;
+    const ampScale = (100 - s.sat * 0.7) / 100;
+    stackCtx.beginPath();
+    for (let x = 0; x < W; x++) {
+      const sig = Math.sin(x * 0.04 + stackT * 0.03) * 0.6 + Math.sin(x * 0.13 + stackT * 0.05) * 0.4;
+      const sat = sig > 1 / ampScale ? 1 / ampScale : sig < -1 / ampScale ? -1 / ampScale : sig;
+      const shaped = Math.tanh(sat * ampScale * 1.5) * (H * 0.1);
+      const y = yOffset - shaped;
+      if (x === 0) stackCtx.moveTo(x, y); else stackCtx.lineTo(x, y);
+    }
+    stackCtx.shadowBlur = 8; stackCtx.shadowColor = colors[i];
+    stackCtx.strokeStyle = colors[i]; stackCtx.lineWidth = 1.5; stackCtx.stroke(); stackCtx.shadowBlur = 0;
+    stackCtx.fillStyle = colors[i]; stackCtx.font = '10px Courier New';
+    stackCtx.fillText(`Stage ${i + 1}`, 8, yOffset - H * 0.12 - 4);
+  });
+
+  // Final output
+  const { sat } = getCumulativeStack();
+  stackCtx.beginPath();
+  for (let x = 0; x < W; x++) {
+    let sig = Math.sin(x * 0.04 + stackT * 0.03) * 0.6 + Math.sin(x * 0.13 + stackT * 0.05) * 0.4;
+    stageState.forEach(s => { if (s.on) sig = Math.tanh(sig * (1 + s.sat / 100)); });
+    const y = H * 0.9 - sig * (H * 0.08);
+    if (x === 0) stackCtx.moveTo(x, y); else stackCtx.lineTo(x, y);
+  }
+  stackCtx.shadowBlur = 12; stackCtx.shadowColor = '#d97706';
+  stackCtx.strokeStyle = '#d97706'; stackCtx.lineWidth = 2; stackCtx.stroke(); stackCtx.shadowBlur = 0;
+  stackCtx.fillStyle = '#d97706'; stackCtx.font = '10px Courier New';
+  stackCtx.fillText('CUMULATIVE OUTPUT', 8, H * 0.9 - H * 0.1 - 4);
+
+  stackT++;
+  requestAnimationFrame(drawStackCanvas);
+}
+drawStackCanvas();
+updateStackDisplay();
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ARTISTS GRID
+// ═══════════════════════════════════════════════════════════════
+const artists = [
+  { name: 'William Basinski', era: '1980s–present | New York / LA', desc: 'Composed the Disintegration Loops by recording decaying tape, capturing the irreversible dissolution of magnetic memory as a meditation on time and loss.' },
+  { name: 'Boards of Canada', era: '1990s–present | Edinburgh', desc: 'Deliberately introduced wow, flutter, and tape degradation to evoke childhood nostalgia. Their saturated loops feel like memory on the verge of forgetting.' },
+  { name: 'The Caretaker', era: '1999–2019 | UK', desc: 'Processed crumbling 78rpm ballroom recordings across six albums to map the stages of Alzheimer's disease — vinyl as neural deterioration.' },
+  { name: 'Hiroshi Yoshimura', era: '1982–2003 | Tokyo', desc: 'Pioneered Japanese ambient music on vinyl, using the format's warmth and silence between tracks as compositional elements in Music for Nine Post Cards.' },
+  { name: 'The National', era: '2001–present | Cincinnati / NY', desc: 'Mixed much of their early catalog to tape, using analog saturation and room acoustics to give their orchestral arrangements a felt, imperfect presence.' },
+  { name: 'Brian Wilson', era: '1960s–present | California', desc: 'Famously used multiple tape bounces to build the Wall of Sound aesthetic on Pet Sounds, exploiting harmonic accumulation across tape generations.' },
+  { name: 'Ennio Morricone', era: '1960s–2020 | Rome', desc: 'Mastered the RCA Studio A mixing console to manipulate tape echo and speed, creating the "spaghetti western" echo aesthetic from mechanical tape delay.' },
+  { name: 'Four Tet', era: '1997–present | London', desc: 'Samples vinyl at the macro and micro level — isolating single-groove crackle, pitch wobble, and surface noise as rhythmic and tonal instruments.' },
+];
+
+const artistGrid = document.getElementById('artist-grid');
+artists.forEach(a => {
+  const div = document.createElement('div');
+  div.className = 'artist-card hidden';
+  div.innerHTML = `<div class="artist-name">${a.name}</div><div class="artist-era">${a.era}</div><div class="artist-desc">${a.desc}</div>`;
+  artistGrid.appendChild(div);
+  obs.observe(div);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// GLOSSARY
+// ═══════════════════════════════════════════════════════════════
+const glossary = [
+  { term: 'Saturation', def: 'The point at which a magnetic medium can accept no further flux increase; causes soft compression and harmonic distortion.' },
+  { term: 'Harmonic Distortion', def: 'Integer multiples of a fundamental frequency added by non-linear processing. Even-order (2nd, 4th) harmonics are musical; odd-order (3rd, 5th) are harsher.' },
+  { term: 'Wow', def: 'Slow periodic pitch fluctuation below 6 Hz caused by capstan bearing eccentricity or motor speed drift. Audible as a subtle wavering.' },
+  { term: 'Flutter', def: 'Rapid pitch variation above 6 Hz from tape-guide resonance or mechanical vibration. Perceived as a tremolo or roughness on sustained notes.' },
+  { term: 'IPS', def: 'Inches Per Second — tape transport speed. Higher IPS means more tape per second, yielding wider frequency response and lower noise floor.' },
+  { term: 'Head Bump', def: 'A low-frequency boost caused by the reproduce head's playback wavelength matching the recorded wavelength at low frequencies, creating a resonant peak.' },
+  { term: 'Tape Hiss', def: 'Broadband noise inherent to the random magnetic particle orientation in unmagnetized tape oxide. Proportional to the square root of bandwidth.' },
+  { term: 'Print-Through', def: 'Magnetic signal leaching from one layer of a tightly wound tape reel to adjacent layers — audible as a pre-echo or ghost of the recorded material.' },
+  { term: 'RIAA Equalization', def: 'A standardized frequency response curve applied during vinyl cutting (pre-emphasis) and reversed in playback (de-emphasis) to maximize playing time and minimize noise.' },
+  { term: 'Phono Stage', def: 'A preamplifier that applies RIAA de-emphasis and boosts the low-level cartridge signal to line level. Without it, vinyl sounds thin and bright.' },
+  { term: 'Vinyl Groove', def: 'A continuous spiral channel cut into vinyl at 33⅓ or 45 RPM. Groove walls carry the lateral (L+R) and vertical (L−R) stereo information.' },
+  { term: 'Stylus', def: 'The diamond or sapphire tip that tracks the groove. Shape (spherical, elliptical, line contact) determines high-frequency tracking accuracy.' },
+  { term: 'Cantilever', def: 'The thin aluminum or boron tube that suspends the stylus and transmits groove vibration to the cartridge generator — its resonant properties color the sound.' },
+  { term: 'Inner Groove Distortion', def: 'Increased harmonic distortion toward the record center, where the groove radius shrinks but the recorded velocity must remain constant, demanding more from the stylus.' },
+  { term: 'Pressing', def: 'The physical vinyl disc stamped from a metal mother. Pressing quality (vinyl purity, temperature control, cooling rate) directly affects surface noise and warp.' },
+  { term: 'Lacquer', def: 'The aluminum disc coated with nitrocellulose lacquer onto which the mastering lathe cuts the groove. The lacquer is the original physical master.' },
+  { term: 'Mastering Lathe', def: 'A precision machine (Neumann VMS 70, Scully) that converts audio to groove geometry, controlling depth, width, and pitch according to RIAA and level standards.' },
+  { term: 'Pressing Plant', def: 'The facility that electroforms metal stampers from lacquers and presses vinyl. Plants like Rainbo, United, and QRP have characteristic sonic signatures.' },
+  { term: 'Dynamic Range', def: 'The ratio between the loudest and quietest signals a medium can reproduce before noise (floor) or distortion (ceiling) becomes unacceptable. Vinyl: ~65dB; tape: ~70dB.' },
+  { term: 'Noise Floor', def: 'The self-noise level of a medium in the absence of signal. Determines the minimum audible detail. Tape hiss and vinyl surface noise define their respective floors.' },
+];
+
+const glossGrid = document.getElementById('glossary-grid');
+glossary.forEach(g => {
+  const div = document.createElement('div');
+  div.className = 'gloss-item hidden';
+  div.innerHTML = `<div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div>`;
+  glossGrid.appendChild(div);
+  obs.observe(div);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// DISINTEGRATION: kick off animation loop after page load
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('dis-play-btn').addEventListener('click', function() {
+  requestAnimationFrame(drawDisintegration);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// HERO BADGE ANIMATION (static values)
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('b-speed').textContent = '15 IPS';
+document.getElementById('b-bias').textContent = '75kHz';
+
+// ═══════════════════════════════════════════════════════════════
+// GLOBAL AudioContext UNLOCK
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('click', () => {
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: false });
+
+// ═══════════════════════════════════════════════════════════════
+// CANVAS RESIZE HANDLING
+// ═══════════════════════════════════════════════════════════════
+function resizeAllCanvases() {
+  [satCurveCanvas, satSpecCanvas, wfWaveCanvas, wfPitchCanvas, riaaCanvas, stackCanvas].forEach(c => {
+    if (!c) return;
+    const parent = c.parentElement;
+    if (parent && parent.offsetWidth > 0) {
+      const ratio = c.height / c.width || 0.5;
+      c.style.height = '';
+    }
+  });
+}
+window.addEventListener('resize', resizeAllCanvases);
+resizeAllCanvases();
+
+console.log('%cWAVGEN TAPE & VINYL LAB — App 12 of 16', 'color:#d97706;font-family:monospace;font-size:14px');
+console.log('%cwavgen.ca | vanilla JS + Canvas2D + WebAudio API', 'color:#64748b;font-family:monospace;font-size:10px');
+</script>

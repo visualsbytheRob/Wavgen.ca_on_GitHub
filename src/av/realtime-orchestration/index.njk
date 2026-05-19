@@ -1,0 +1,1362 @@
+---
+layout: world.njk
+title: "Realtime Orchestration World — WAVGEN AV Universe"
+description: "Immersive av world exploring realtime orchestration"
+domain: av
+permalink: /av/realtime-orchestration/
+---
+
+
+<!-- NAV -->
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 1 — HERO: THE COMMAND CENTER                          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s1" style="padding-top:52px; border-bottom:1px solid var(--border); opacity:1; transform:none;">
+<canvas height="440" id="hero-canvas" style="width:100%;height:440px;display:block;" width="1400"></canvas>
+<div class="hero-text">
+<div class="hero-title">Realtime Orchestration World</div>
+<div class="hero-headline">Inside a Realtime Audiovisual<br/>Command Center</div>
+<div class="hero-sub">Multi-system synchronization, OSC routing, SMPTE timecode, MIDI orchestration — the living architecture of live AV production.</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 2 — SIGNAL SYNCHRONIZATION GRAPH                      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s2">
+<div class="section-inner">
+<div class="section-label">Section 02 — Sync</div>
+<div class="section-title">Signal Synchronization</div>
+<div class="section-subtitle">Four clocks negotiate a shared timeline. Drift is the enemy. Perfect sync is a living negotiation.</div>
+<div class="controls">
+<button class="btn btn-green" id="sync-btn">⟳ Sync All</button>
+<button class="btn btn-red" id="drift-btn">≈ Drift</button>
+<span class="lbl">Drift amount:</span>
+<input id="drift-slider" max="80" min="0" style="width:120px;" type="range" value="0"/>
+<span class="val-display" id="drift-val">0 ms</span>
+</div>
+<div class="canvas-wrap">
+<span class="canvas-label">SIGNAL TIMELINES — PHASE OFFSET VIEW</span>
+<canvas height="380" id="sync-canvas" style="width:100%;height:380px;" width="1100"></canvas>
+</div>
+<div class="info-row" id="sync-stats">
+<div class="info-cell"><div class="info-cell-label">Audio BPM</div><div class="info-cell-val red" id="si-abpm">120.0</div></div>
+<div class="info-cell"><div class="info-cell-label">Video Frame</div><div class="info-cell-val green" id="si-vfps">24 fps</div></div>
+<div class="info-cell"><div class="info-cell-label">MIDI Clock</div><div class="info-cell-val amber" id="si-midi">24 ppqn</div></div>
+<div class="info-cell"><div class="info-cell-label">Lighting Cue</div><div class="info-cell-val" id="si-light">Event</div></div>
+<div class="info-cell"><div class="info-cell-label">A→B Offset</div><div class="info-cell-val" id="si-ab">0.0 ms</div></div>
+<div class="info-cell"><div class="info-cell-label">A→C Offset</div><div class="info-cell-val" id="si-ac">0.0 ms</div></div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 3 — OSC ROUTING SIMULATOR                             -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s3">
+<div class="section-inner">
+<div class="section-label">Section 03 — OSC</div>
+<div class="section-title">OSC Routing Simulator</div>
+<div class="section-subtitle">Open Sound Control — a network of named addresses carrying realtime data between creative applications. Click two nodes to route.</div>
+<div class="controls">
+<button class="btn btn-red" id="osc-test">▶ Send Test Message</button>
+<button class="btn btn-dim" id="osc-clear">✕ Clear Routes</button>
+<span class="stat-pill green" id="osc-route-count">0 routes</span>
+<span class="stat-pill amber" id="osc-bw">0.0 kb/s</span>
+</div>
+<div class="canvas-wrap" style="height:420px;">
+<span class="canvas-label">OSC NETWORK — DRAG NODES / CLICK TO ROUTE</span>
+<canvas height="420" id="osc-canvas" style="width:100%;height:420px;" width="1100"></canvas>
+</div>
+<div class="info-row">
+<div class="info-cell"><div class="info-cell-label">Protocol</div><div class="info-cell-val">UDP / TCP</div></div>
+<div class="info-cell"><div class="info-cell-label">Port</div><div class="info-cell-val amber">7000</div></div>
+<div class="info-cell"><div class="info-cell-label">Address Space</div><div class="info-cell-val green">/td/ /midi/ /lights/</div></div>
+<div class="info-cell"><div class="info-cell-label">Packet Rate</div><div class="info-cell-val" id="osc-pps">0 pkt/s</div></div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 4 — MIDI VISUALIZATION                                -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s4">
+<div class="section-inner">
+<div class="section-label">Section 04 — MIDI</div>
+<div class="section-title">MIDI Visualization</div>
+<div class="section-subtitle">Musical Instrument Digital Interface — the language of electronic music performance. Note, velocity, CC, and clock data in motion.</div>
+<div class="tabs" id="midi-tabs">
+<button class="tab active" data-tab="piano">Piano Roll</button>
+<button class="tab" data-tab="cc">CC Monitor</button>
+<button class="tab" data-tab="clock">Clock / Transport</button>
+</div>
+<div class="tab-panel active" id="tab-piano">
+<div class="canvas-wrap">
+<span class="canvas-label">MIDI PIANO ROLL — 16 CHANNELS</span>
+<canvas height="340" id="piano-canvas" style="width:100%;height:340px;" width="1100"></canvas>
+</div>
+</div>
+<div class="tab-panel" id="tab-cc">
+<div class="canvas-wrap">
+<span class="canvas-label">CONTROL CHANGE MONITOR — CC 0–7</span>
+<canvas height="280" id="cc-canvas" style="width:100%;height:280px;" width="1100"></canvas>
+</div>
+</div>
+<div class="tab-panel" id="tab-clock">
+<div class="canvas-wrap">
+<span class="canvas-label">MIDI CLOCK — 24 PPQN</span>
+<canvas height="300" id="clock-canvas" style="width:100%;height:300px;" width="1100"></canvas>
+</div>
+</div>
+<div class="info-row">
+<div class="info-cell"><div class="info-cell-label">Active Channels</div><div class="info-cell-val green" id="midi-ch">16</div></div>
+<div class="info-cell"><div class="info-cell-label">Notes/sec</div><div class="info-cell-val amber" id="midi-nps">—</div></div>
+<div class="info-cell"><div class="info-cell-label">PPQN</div><div class="info-cell-val">24</div></div>
+<div class="info-cell"><div class="info-cell-label">BPM</div><div class="info-cell-val red" id="midi-bpm">120</div></div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5 — TIMECODE & SYNC SYSTEMS                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s5">
+<div class="section-inner">
+<div class="section-label">Section 05 — Timecode</div>
+<div class="section-title">Timecode &amp; Sync Systems</div>
+<div class="section-subtitle">SMPTE timecode — the universal production clock. LTC carries it on audio wire. MTC carries it through MIDI. Word Clock locks sample rates.</div>
+<div class="controls">
+<select id="fps-sel">
+<option value="24">24 fps — Cinema</option>
+<option value="25">25 fps — PAL</option>
+<option value="29.97">29.97 fps — NTSC</option>
+<option selected="" value="30">30 fps — Broadcast</option>
+<option value="60">60 fps — High Frame</option>
+</select>
+<span class="lbl">MTC Drift:</span>
+<input id="mtc-drift" max="50" min="0" style="width:100px;" type="range" value="0"/>
+<span class="val-display" id="mtc-drift-val">0 ms</span>
+<span class="led green" id="tc-lock-led"></span>
+<span class="lbl" id="tc-lock-txt">LOCKED</span>
+</div>
+<div class="canvas-wrap">
+<span class="canvas-label">SMPTE TIMECODE — LIVE</span>
+<canvas height="360" id="tc-canvas" style="width:100%;height:360px;" width="1100"></canvas>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 6 — DISTRIBUTED AV SYSTEMS                            -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s6">
+<div class="section-inner">
+<div class="section-label">Section 06 — Distributed</div>
+<div class="section-title">Distributed AV Systems</div>
+<div class="section-subtitle">A production-grade AV rig is a network. Click a node to inspect. Simulate failure to see how dependent systems respond.</div>
+<div class="controls">
+<button class="btn btn-red" id="fail-btn">⚡ Simulate Failure</button>
+<button class="btn btn-green" id="restore-btn">↺ Restore All</button>
+<span class="lbl">System health:</span>
+<span class="led green" id="sys-health-led"></span>
+<span class="val-display" id="sys-health-txt">NOMINAL</span>
+</div>
+<div class="canvas-wrap" style="height:430px;">
+<span class="canvas-label">NETWORK TOPOLOGY — CLICK NODE TO INSPECT / FAIL</span>
+<canvas height="430" id="dist-canvas" style="width:100%;height:430px;" width="1100"></canvas>
+</div>
+<div class="info-row" id="node-info">
+<div class="info-cell"><div class="info-cell-label">Selected Node</div><div class="info-cell-val" id="node-name">—</div></div>
+<div class="info-cell"><div class="info-cell-label">Status</div><div class="info-cell-val green" id="node-status">—</div></div>
+<div class="info-cell"><div class="info-cell-label">Protocol</div><div class="info-cell-val amber" id="node-proto">—</div></div>
+<div class="info-cell"><div class="info-cell-label">Latency</div><div class="info-cell-val" id="node-lat">—</div></div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 7 — AV ORCHESTRATION ENGINE                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s7">
+<div class="section-inner">
+<div class="section-label">Section 07 — Orchestration</div>
+<div class="section-title">AV Orchestration Engine</div>
+<div class="section-subtitle">The conductor's interface. Fire scenes, ride faders, arm cues. A 32-bar loop that never stops.</div>
+<div class="controls">
+<button class="btn btn-red" id="orch-play">▶ LIVE</button>
+<button class="btn btn-dim" id="orch-stop">■ STOP</button>
+<button class="btn btn-amber" id="tap-btn">TAP TEMPO</button>
+<span class="lbl">BPM:</span>
+<span class="val-display" id="orch-bpm">120</span>
+<button class="btn btn-dim" id="blackout-btn" style="margin-left:auto; background:rgba(255,0,0,0.18); color:#ff6060; border-color:rgba(255,0,0,0.35);">BLACKOUT</button>
+</div>
+<div class="canvas-wrap">
+<span class="canvas-label">ORCHESTRATION ENGINE — LIVE PERFORMANCE</span>
+<canvas height="460" id="orch-canvas" style="width:100%;height:460px;" width="1100"></canvas>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 8 — ARTISTS                                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s8">
+<div class="section-inner">
+<div class="section-label">Section 08 — Artists</div>
+<div class="section-title">Practitioners at the Frontier</div>
+<div class="section-subtitle">Eight artists who built live systems worth studying — each a different answer to the question of what realtime orchestration can be.</div>
+<div class="artist-grid" id="artist-grid"></div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 9 — GLOSSARY                                          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="section" id="s9" style="border-bottom:none;">
+<div class="section-inner">
+<div class="section-label">Section 09 — Glossary</div>
+<div class="section-title">24 Essential Terms</div>
+<div class="section-subtitle">The vocabulary of multi-system AV coordination — from the physical layer to the performance layer.</div>
+<div class="glossary-grid" id="glossary-grid"></div>
+</div>
+</section>
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SHARED SYSTEMS                                                  */
+/* ══════════════════════════════════════════════════════════════ */
+
+class LagFilter {
+  constructor(initial=0, tau=0.15) {
+    this.value=initial; this.target=initial; this.tau=tau;
+  }
+  update(dt) {
+    const a = 1-Math.exp(-dt/Math.max(this.tau,0.001));
+    this.value += (this.target-this.value)*a;
+    return this.value;
+  }
+  set(t) { this.target=t; }
+  snap(v) { this.value=this.target=v; }
+}
+
+class BPMEngine {
+  constructor(bpm=120) {
+    this.bpm=bpm; this._startTime=performance.now();
+    this._beatCount=0; this.running=false;
+    this._subs=new Map(); this.tapTimes=[];
+    this.phase=0; this.beat=0;
+  }
+  start() { this.running=true; this._startTime=performance.now(); this._beatCount=0; }
+  stop()  { this.running=false; }
+  tick(now) {
+    if(!this.running) return;
+    const elapsed=now-this._startTime;
+    const msPerBeat=60000/this.bpm;
+    const expected=Math.floor(elapsed/msPerBeat);
+    this.phase=(elapsed%msPerBeat)/msPerBeat;
+    this.beat=this._beatCount;
+    while(this._beatCount<=expected){ this._fire(this._beatCount); this._beatCount++; }
+  }
+  _fire(n){
+    this._subs.forEach(fn=>fn({beat:n,bpm:this.bpm,phase:n%16}));
+  }
+  tap(){
+    const now=performance.now(); this.tapTimes.push(now);
+    if(this.tapTimes.length>8)this.tapTimes.shift();
+    if(this.tapTimes.length>=2){
+      const intervals=this.tapTimes.slice(1).map((t,i)=>t-this.tapTimes[i]);
+      const avg=intervals.reduce((s,v)=>s+v)/intervals.length;
+      this.setBPM(Math.round(60000/avg));
+    }
+  }
+  setBPM(b){ this.bpm=Math.max(40,Math.min(300,b)); this.start(); this._notify(); }
+  _notify(){document.dispatchEvent(new CustomEvent("wavgen:bpm",{detail:{bpm:this.bpm}}));}
+  sub(id,fn){this._subs.set(id,fn);}
+}
+
+const globalBPM = new BPMEngine(120);
+globalBPM.start();
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SECTION 1 — HERO COMMAND CENTER                                */
+/* ══════════════════════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById("hero-canvas");
+  const ctx=canvas.getContext("2d");
+  let W,H;
+
+  function resize(){
+    W=canvas.offsetWidth; H=440;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    canvas.style.width=W+"px"; canvas.style.height=H+"px";
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize();
+  window.addEventListener("resize",resize);
+
+  /* 6 panel layouts */
+  const panels=[];
+  function buildPanels(){
+    panels.length=0;
+    const cols=3, rows=2;
+    const pw=(W-48)/cols, ph=(H-32)/rows;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      panels.push({
+        x:8+c*(pw+8), y:8+r*(ph+8), w:pw, h:ph,
+        type:r*cols+c
+      });
+    }
+  }
+
+  // Panel-local state
+  const osc = {history:new Float32Array(200), idx:0};
+  const bars = {vals:new Float32Array(12), targets:new Float32Array(12)};
+  for(let i=0;i<12;i++) bars.targets[i]=Math.random();
+  const nodes = [];
+  for(let i=0;i<7;i++) nodes.push({
+    x:0.15+Math.random()*0.7, y:0.2+Math.random()*0.6,
+    vx:(Math.random()-0.5)*0.002, vy:(Math.random()-0.5)*0.002,
+    con:Math.floor(Math.random()*7)
+  });
+  const wfLags = Array.from({length:80},()=>new LagFilter(0,0.08));
+  const xyPts = Array.from({length:60},()=>({
+    x:new LagFilter(0.5,0.05), y:new LagFilter(0.5,0.05),
+    tx:0.5+Math.random()*0.4-0.2, ty:0.5+Math.random()*0.4-0.2
+  }));
+
+  let t=0, dt=0, last=0;
+  let bpmFlash=new LagFilter(0,0.08);
+  let beatPulse=new LagFilter(0,0.06);
+
+  globalBPM.sub("hero",(e)=>{ bpmFlash.set(1); beatPulse.set(1); });
+
+  function drawGrid(px,py,pw,ph){
+    ctx.strokeStyle="rgba(255,255,255,0.06)";
+    ctx.lineWidth=0.5;
+    const gs=20;
+    for(let x=px;x<px+pw;x+=gs){ ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x,py+ph);ctx.stroke(); }
+    for(let y=py;y<py+ph;y+=gs){ ctx.beginPath();ctx.moveTo(px,y);ctx.lineTo(px+pw,y);ctx.stroke(); }
+  }
+
+  function drawOscilloscope(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    // label
+    ctx.fillStyle="rgba(34,197,94,0.8)"; ctx.font="9px monospace";
+    ctx.fillText("OSC — AUDIO SIGNAL",p.x+8,p.y+14);
+    // LED
+    ctx.fillStyle="#22c55e"; ctx.shadowBlur=6; ctx.shadowColor="#22c55e";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    // trace
+    ctx.strokeStyle="#22c55e"; ctx.lineWidth=1.5;
+    ctx.shadowBlur=8; ctx.shadowColor="#22c55e";
+    ctx.beginPath();
+    const mid=p.y+p.h/2;
+    for(let i=0;i<osc.history.length;i++){
+      const x=p.x+4+(i/osc.history.length)*(p.w-8);
+      const y=mid+osc.history[(osc.idx+i)%osc.history.length]*(p.h*0.42);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+  }
+
+  function drawBarGraph(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    ctx.fillStyle="rgba(255,60,60,0.7)"; ctx.font="9px monospace";
+    ctx.fillText("FFT — FREQ SPECTRUM",p.x+8,p.y+14);
+    ctx.fillStyle="#ff3c3c"; ctx.shadowBlur=6; ctx.shadowColor="#ff3c3c";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    const bw=(p.w-16)/(bars.vals.length);
+    for(let i=0;i<bars.vals.length;i++){
+      const bh=bars.vals[i]*(p.h-28);
+      const x=p.x+8+i*bw;
+      const y=p.y+p.h-4-bh;
+      ctx.fillStyle="rgba(255,"+(60+i*8)+",60,0.85)";
+      ctx.shadowBlur=4; ctx.shadowColor="#ff3c3c";
+      ctx.fillRect(x+1,y,bw-3,bh);
+    }
+    ctx.shadowBlur=0;
+  }
+
+  function drawBPMClock(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    ctx.fillStyle="rgba(251,191,36,0.7)"; ctx.font="9px monospace";
+    ctx.fillText("MASTER CLOCK — BPM",p.x+8,p.y+14);
+    ctx.fillStyle="#fbbf24"; ctx.shadowBlur=6; ctx.shadowColor="#fbbf24";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+
+    // Large BPM display
+    const cx=p.x+p.w/2, cy=p.y+p.h/2+4;
+    const pulse=beatPulse.value;
+    ctx.shadowBlur=10+pulse*20; ctx.shadowColor="#fbbf24";
+    ctx.fillStyle="rgba(251,191,36,"+(0.85+pulse*0.15)+")";
+    ctx.font="bold "+Math.round(38+pulse*4)+"px monospace";
+    ctx.textAlign="center";
+    ctx.fillText(String(Math.round(globalBPM.bpm)).padStart(3,"0"),cx,cy);
+    ctx.font="10px monospace"; ctx.fillStyle="rgba(251,191,36,0.5)";
+    ctx.fillText("BPM",cx,cy+18);
+    ctx.textAlign="left"; ctx.shadowBlur=0;
+
+    // Beat flash bar
+    const flashW=(p.w-16)*globalBPM.phase;
+    ctx.fillStyle="rgba(251,191,36,"+(0.1+pulse*0.2)+")";
+    ctx.fillRect(p.x+8,p.y+p.h-12,flashW,6);
+    ctx.fillStyle="rgba(251,191,36,0.15)";
+    ctx.fillRect(p.x+8,p.y+p.h-12,p.w-16,6);
+  }
+
+  function drawNetworkNode(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    ctx.fillStyle="rgba(251,191,36,0.7)"; ctx.font="9px monospace";
+    ctx.fillText("NET — OSC TOPOLOGY",p.x+8,p.y+14);
+    ctx.fillStyle="#fbbf24"; ctx.shadowBlur=6; ctx.shadowColor="#fbbf24";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+
+    const off=30;
+    // draw connections
+    ctx.strokeStyle="rgba(251,191,36,0.25)"; ctx.lineWidth=0.8;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i], b=nodes[a.con%nodes.length];
+      ctx.beginPath();
+      ctx.moveTo(p.x+a.x*p.w,p.y+off+a.y*(p.h-off));
+      ctx.lineTo(p.x+b.x*p.w,p.y+off+b.y*(p.h-off));
+      ctx.stroke();
+    }
+    // draw nodes
+    for(let i=0;i<nodes.length;i++){
+      const n=nodes[i];
+      const nx=p.x+n.x*p.w, ny=p.y+off+n.y*(p.h-off);
+      ctx.shadowBlur=6; ctx.shadowColor="#fbbf24";
+      ctx.fillStyle="#fbbf24"; ctx.beginPath();
+      ctx.arc(nx,ny,3.5,0,Math.PI*2); ctx.fill();
+      ctx.shadowBlur=0;
+    }
+  }
+
+  function drawWaveform(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    ctx.fillStyle="rgba(34,197,94,0.7)"; ctx.font="9px monospace";
+    ctx.fillText("WAVEFORM — COMPOSITE",p.x+8,p.y+14);
+    ctx.fillStyle="#22c55e"; ctx.shadowBlur=6; ctx.shadowColor="#22c55e";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+
+    ctx.strokeStyle="rgba(34,197,94,0.8)"; ctx.lineWidth=1.2;
+    ctx.shadowBlur=6; ctx.shadowColor="#22c55e";
+    ctx.beginPath();
+    const mid=p.y+p.h/2;
+    for(let i=0;i<wfLags.length;i++){
+      const x=p.x+4+(i/wfLags.length)*(p.w-8);
+      const y=mid+wfLags[i].value*(p.h*0.4);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+  }
+
+  function drawXYPlot(p){
+    drawGrid(p.x,p.y,p.w,p.h);
+    ctx.fillStyle="rgba(255,60,60,0.7)"; ctx.font="9px monospace";
+    ctx.fillText("XY PLOT — LISSAJOUS",p.x+8,p.y+14);
+    ctx.fillStyle="#ff3c3c"; ctx.shadowBlur=6; ctx.shadowColor="#ff3c3c";
+    ctx.beginPath(); ctx.arc(p.x+p.w-10,p.y+10,3,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle="rgba(255,60,60,0.6)"; ctx.shadowBlur=4; ctx.shadowColor="#ff3c3c";
+    const off=20;
+    for(let pt of xyPts){
+      const x=p.x+off+pt.x.value*(p.w-off*2);
+      const y=p.y+off+pt.y.value*(p.h-off*2);
+      ctx.beginPath(); ctx.arc(x,y,1.5,0,Math.PI*2); ctx.fill();
+    }
+    ctx.shadowBlur=0;
+  }
+
+  let animT=0;
+  function frame(now){
+    dt=Math.min((now-last)*0.001,0.05); last=now; animT+=dt;
+    globalBPM.tick(now);
+    bpmFlash.update(dt); beatPulse.update(dt);
+    bpmFlash.set(bpmFlash.value*0.88); beatPulse.set(beatPulse.value*0.85);
+
+    // update nav BPM
+    document.getElementById("nav-bpm").textContent=Math.round(globalBPM.bpm)+" BPM";
+
+    // Phosphor decay
+    ctx.fillStyle="rgba(2,2,2,0.08)"; ctx.fillRect(0,0,W,H);
+
+    buildPanels();
+
+    // Update panel data
+    const v=Math.sin(animT*5)*0.5+Math.sin(animT*13)*0.3+Math.sin(animT*7)*0.2;
+    osc.history[osc.idx%osc.history.length]=v; osc.idx++;
+
+    for(let i=0;i<bars.vals.length;i++){
+      if(Math.random()<0.03) bars.targets[i]=Math.random();
+      bars.vals[i]+=(bars.targets[i]-bars.vals[i])*0.05;
+    }
+
+    for(let lag of wfLags){
+      lag.set(Math.sin(animT*3+Math.random()*0.3)*0.7);
+      lag.update(dt);
+    }
+
+    for(let pt of xyPts){
+      if(Math.random()<0.02){ pt.tx=Math.random(); pt.ty=Math.random(); }
+      pt.x.set(pt.tx); pt.y.set(pt.ty);
+      pt.x.update(dt); pt.y.update(dt);
+    }
+
+    for(let n of nodes){
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0.05||n.x>0.95)n.vx*=-1;
+      if(n.y<0.05||n.y>0.95)n.vy*=-1;
+    }
+
+    // Panel borders
+    ctx.strokeStyle="rgba(255,60,60,0.18)"; ctx.lineWidth=1;
+    for(let p of panels){
+      ctx.strokeRect(p.x,p.y,p.w,p.h);
+    }
+
+    // Draw panels
+    const drawFns=[drawOscilloscope,drawBarGraph,drawBPMClock,drawNetworkNode,drawWaveform,drawXYPlot];
+    for(let i=0;i<panels.length&&i<drawFns.length;i++){
+      ctx.save();
+      ctx.beginPath(); ctx.rect(panels[i].x,panels[i].y,panels[i].w,panels[i].h);
+      ctx.clip();
+      drawFns[i](panels[i]);
+      ctx.restore();
+    }
+
+    // Title overlay
+    ctx.fillStyle="rgba(255,60,60,0.12)";
+    ctx.fillRect(0,H-28,W,28);
+    ctx.fillStyle="rgba(255,60,60,0.6)"; ctx.font="10px monospace";
+    ctx.textAlign="center";
+    ctx.fillText("REALTIME ORCHESTRATION WORLD  —  WAVGEN AV UNIVERSE  —  ALL SYSTEMS NOMINAL",W/2,H-10);
+    ctx.textAlign="left";
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SECTION 2 — SIGNAL SYNCHRONIZATION GRAPH                       */
+/* ══════════════════════════════════════════════════════════════ */
+(function(){
+  const canvas = document.getElementById('sync-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){
+    W = canvas.offsetWidth; H = 380;
+    canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  // Signal definitions
+  const signals = [
+    { label:'Audio BPM Clock', color:'#ff3c3c', period:0, phase:new LagFilter(0,0.15), locked:true },
+    { label:'Video Frame 24fps', color:'#22c55e', period:1, phase:new LagFilter(0,0.15), locked:true },
+    { label:'MIDI Clock 24ppqn', color:'#fbbf24', period:2, phase:new LagFilter(0,0.15), locked:true },
+    { label:'Lighting Cue',       color:'#e2e8f0', period:3, phase:new LagFilter(0,0.15), locked:true }
+  ];
+
+  let drift = 0;         // ms of drift applied to signals B, C
+  let synced = true;
+  let offsets = [0, 0, 0, 0];  // phase offsets per signal in ms
+  let glowLags = signals.map(() => new LagFilter(0, 0.08));
+  let last = 0;
+
+  // Controls
+  document.getElementById('sync-btn').addEventListener('click', () => {
+    synced = true; drift = 0;
+    document.getElementById('drift-slider').value = 0;
+    document.getElementById('drift-val').textContent = '0 ms';
+    offsets = [0,0,0,0];
+  });
+  document.getElementById('drift-btn').addEventListener('click', () => {
+    synced = false;
+    drift = 30;
+    document.getElementById('drift-slider').value = 30;
+    document.getElementById('drift-val').textContent = '30 ms';
+  });
+  document.getElementById('drift-slider').addEventListener('input', function(){
+    drift = parseFloat(this.value);
+    if(drift > 0) synced = false;
+    document.getElementById('drift-val').textContent = drift.toFixed(0) + ' ms';
+  });
+
+  globalBPM.sub('sync', () => {
+    glowLags[0].set(1);
+    if(synced){ glowLags[1].set(0.8); glowLags[2].set(0.7); glowLags[3].set(0.5); }
+  });
+
+  let animT = 0;
+  function frame(now){
+    const dt = Math.min((now - last) * 0.001, 0.05); last = now;
+    animT += dt;
+    for(let g of glowLags){ g.set(g.value * 0.85); g.update(dt); }
+    for(let s of signals) s.phase.update(dt);
+
+    // compute offsets
+    const msPerBeat = 60000 / globalBPM.bpm;
+    offsets[0] = 0;
+    offsets[1] = synced ? 0 : drift * 0.4;
+    offsets[2] = synced ? 0 : drift * 0.7;
+    offsets[3] = synced ? 0 : drift * 1.0;
+
+    // update stats
+    document.getElementById('si-ab').textContent = offsets[1].toFixed(1) + ' ms';
+    document.getElementById('si-ac').textContent = offsets[2].toFixed(1) + ' ms';
+
+    // Phosphor decay
+    ctx.fillStyle = 'rgba(8,8,8,0.12)'; ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5;
+    for(let x=0; x<W; x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for(let y=0; y<H; y+=40){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    const rowH = (H - 40) / 4;
+    const tickW = W / 32;  // 32 ticks visible
+
+    // Draw each signal timeline
+    for(let si=0; si<signals.length; si++){
+      const sig = signals[si];
+      const cy = 28 + si * rowH + rowH * 0.5;
+      const col = sig.color;
+      const glow = glowLags[si].value;
+      const phOff = offsets[si] / msPerBeat;  // offset in beats
+
+      // Track line
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(32, cy); ctx.lineTo(W-8, cy); ctx.stroke();
+
+      // Label
+      ctx.fillStyle = col; ctx.font = '10px monospace';
+      ctx.fillText(sig.label, 8, cy + 4);
+
+      // Lock icon
+      const lockX = 160;
+      ctx.fillStyle = synced || si===0 ? '#22c55e' : '#ff3c3c';
+      ctx.shadowBlur = 4; ctx.shadowColor = ctx.fillStyle;
+      ctx.beginPath(); ctx.arc(lockX, cy, 3, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Ticks — one per beat subdivision
+      const subdivs = si===2 ? 4 : (si===1 ? 1 : 2);  // MIDI gets more subdivs
+      const beatPhase = globalBPM.phase + phOff;
+      const startBeat = -beatPhase;
+
+      for(let b = startBeat - 2; b < 34; b += 1/subdivs){
+        const bx = 180 + (b + beatPhase) * tickW;
+        if(bx < 180 || bx > W-8) continue;
+        const isMajor = Math.abs(b * subdivs - Math.round(b * subdivs)) < 0.01;
+        const th = isMajor ? rowH*0.35 : rowH*0.18;
+        ctx.strokeStyle = col;
+        ctx.globalAlpha = isMajor ? (0.7 + glow * 0.3) : 0.3;
+        ctx.lineWidth = isMajor ? 2 : 0.8;
+        ctx.shadowBlur = isMajor ? (4 + glow*12) : 0;
+        ctx.shadowColor = col;
+        ctx.beginPath(); ctx.moveTo(bx, cy-th); ctx.lineTo(bx, cy+th); ctx.stroke();
+        ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+      }
+
+      // Phase offset annotation
+      if(offsets[si] > 0.5){
+        ctx.fillStyle = '#ff3c3c'; ctx.font = '9px monospace';
+        ctx.fillText('+' + offsets[si].toFixed(1) + ' ms', W-70, cy+3);
+      }
+    }
+
+    // Sync/Drift label
+    ctx.font = 'bold 11px monospace';
+    ctx.fillStyle = synced ? '#22c55e' : '#ff3c3c';
+    ctx.shadowBlur = synced ? 6 : 8; ctx.shadowColor = ctx.fillStyle;
+    ctx.fillText(synced ? '⟳ PHASE LOCKED' : '≈ DRIFTING — ' + drift.toFixed(0) + 'ms', 12, 18);
+    ctx.shadowBlur = 0;
+
+    // Master clock line
+    const masterX = 180 + globalBPM.phase * tickW;
+    ctx.strokeStyle = 'rgba(255,60,60,0.4)'; ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(masterX, 24); ctx.lineTo(masterX, H-8); ctx.stroke();
+    ctx.setLineDash([]);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SECTION 3 — OSC ROUTING SIMULATOR                              */
+/* ══════════════════════════════════════════════════════════════ */
+(function(){
+  const canvas = document.getElementById('osc-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){
+    W = canvas.offsetWidth; H = 420;
+    canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  const nodeData = [
+    { name:'Computer A',     proto:'OSC/UDP', role:'source' },
+    { name:'TouchDesigner',  proto:'OSC/UDP', role:'render' },
+    { name:'Max/MSP',        proto:'OSC/TCP', role:'audio'  },
+    { name:'LED Controller', proto:'sACN',    role:'lights' },
+    { name:'Projector',      proto:'NDI',     role:'output' },
+  ];
+  const nodes = nodeData.map((d, i) => ({
+    ...d,
+    x: 0, y: 0,  // set in layout
+    vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3,
+    lag: new VectorLag(0, 0, 0.12),
+    dragging: false,
+    selected: false,
+  }));
+
+  // Position nodes in pentagon
+  function layoutNodes(){
+    const cx = W/2, cy = H/2 + 10, r = Math.min(W,H)*0.32;
+    nodes.forEach((n, i) => {
+      const a = (i/nodes.length) * Math.PI * 2 - Math.PI/2;
+      if(!n.pinned){ n.x = cx + Math.cos(a)*r; n.y = cy + Math.sin(a)*r; }
+      n.lag.x.snap(n.x); n.lag.y.snap(n.y);
+    });
+  }
+
+  const routes = [];
+  let selectFirst = null;
+  const routeColors = { audio:'#ff3c3c', video:'#22c55e', lights:'#fbbf24', data:'#60a5fa' };
+  const routeAddrs = ['/audio/level','/video/opacity','/lights/dimmer','/midi/note','/sensor/x'];
+  const packets = [];
+  let last = 0, animT = 0;
+
+  // Determine route type from node roles
+  function routeType(a, b){
+    if(a.role==='audio' || b.role==='audio') return 'audio';
+    if(a.role==='lights' || b.role==='lights') return 'lights';
+    if(a.role==='render' || b.role==='render') return 'video';
+    return 'data';
+  }
+
+  // VectorLag class (simple 2D)
+  function VectorLag(x,y,tau){
+    this.x = new LagFilter(x,tau); this.y = new LagFilter(y,tau);
+  }
+  VectorLag.prototype.set = function(x,y){ this.x.set(x); this.y.set(y); };
+  VectorLag.prototype.update = function(dt){ this.x.update(dt); this.y.update(dt); };
+
+  function addPacket(routeIdx){
+    const r = routes[routeIdx];
+    if(!r) return;
+    packets.push({ route: routeIdx, t: 0, speed: 0.4 + Math.random()*0.4 });
+  }
+
+  // Click to select / create routes
+  canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / canvas.offsetWidth) / devicePixelRatio;
+    const my = (e.clientY - rect.top)  * (canvas.height / canvas.offsetHeight) / devicePixelRatio;
+    let hit = null;
+    for(let n of nodes){
+      if(Math.hypot(n.x-mx, n.y-my) < 28){ hit = n; break; }
+    }
+    if(hit){
+      if(!selectFirst){ selectFirst = hit; hit.selected = true; }
+      else if(selectFirst !== hit){
+        // Create route if not exists
+        const exists = routes.find(r => (r.a===selectFirst&&r.b===hit)||(r.a===hit&&r.b===selectFirst));
+        if(!exists){
+          const type = routeType(selectFirst, hit);
+          routes.push({
+            a: selectFirst, b: hit, type,
+            addr: routeAddrs[routes.length % routeAddrs.length],
+            rate: 30 + Math.floor(Math.random()*70),
+            pTimer: 0,
+          });
+        }
+        selectFirst.selected = false; hit.selected = false; selectFirst = null;
+        updateRouteUI();
+      }
+    } else {
+      if(selectFirst){ selectFirst.selected = false; selectFirst = null; }
+    }
+  });
+
+  // Drag
+  let dragNode = null, dragOx = 0, dragOy = 0;
+  canvas.addEventListener('mousedown', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/canvas.offsetWidth)/devicePixelRatio;
+    const my = (e.clientY-rect.top)*(canvas.height/canvas.offsetHeight)/devicePixelRatio;
+    for(let n of nodes){
+      if(Math.hypot(n.x-mx,n.y-my)<28){ dragNode=n; dragOx=n.x-mx; dragOy=n.y-my; n.pinned=true; break; }
+    }
+  });
+  canvas.addEventListener('mousemove', e => {
+    if(!dragNode) return;
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(canvas.width/canvas.offsetWidth)/devicePixelRatio;
+    const my = (e.clientY-rect.top)*(canvas.height/canvas.offsetHeight)/devicePixelRatio;
+    dragNode.x = mx+dragOx; dragNode.y = my+dragOy;
+    dragNode.lag.set(dragNode.x, dragNode.y);
+  });
+  canvas.addEventListener('mouseup', () => { dragNode = null; });
+
+  document.getElementById('osc-test').addEventListener('click', () => {
+    if(routes.length>0) addPacket(Math.floor(Math.random()*routes.length));
+  });
+  document.getElementById('osc-clear').addEventListener('click', () => {
+    routes.length=0; packets.length=0; updateRouteUI();
+  });
+
+  function updateRouteUI(){
+    document.getElementById('osc-route-count').textContent = routes.length + ' routes';
+    const bw = (routes.reduce((s,r)=>s+r.rate,0)*0.064).toFixed(1);
+    document.getElementById('osc-bw').textContent = bw + ' kb/s';
+  }
+
+  let ppsCount = 0, ppsTimer = 0;
+
+  function drawBezier(ax,ay,bx,by,col,alpha=0.5,w=1.5){
+    const cx1 = ax+(bx-ax)*0.5, cy1 = ay;
+    const cx2 = ax+(bx-ax)*0.5, cy2 = by;
+    ctx.strokeStyle = col; ctx.lineWidth = w; ctx.globalAlpha = alpha;
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.bezierCurveTo(cx1,cy1,cx2,cy2,bx,by); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function bezierPt(ax,ay,bx,by,t){
+    const cx1=ax+(bx-ax)*0.5, cy1=ay, cx2=ax+(bx-ax)*0.5, cy2=by;
+    const mt=1-t;
+    return {
+      x: mt*mt*mt*ax + 3*mt*mt*t*cx1 + 3*mt*t*t*cx2 + t*t*t*bx,
+      y: mt*mt*mt*ay + 3*mt*mt*t*cy1 + 3*mt*t*t*cy2 + t*t*t*by
+    };
+  }
+
+  function frame(now){
+    const dt = Math.min((now-last)*0.001,0.05); last=now; animT+=dt;
+    ppsTimer += dt;
+
+    // Update node lags
+    for(let n of nodes){ n.lag.update(dt); }
+
+    // Update packet timers per route
+    for(let r of routes){
+      r.pTimer += dt;
+      const interval = 1/r.rate * 10;
+      if(r.pTimer > interval){ r.pTimer=0; addPacket(routes.indexOf(r)); }
+    }
+
+    // Advance packets
+    for(let i=packets.length-1;i>=0;i--){
+      packets[i].t += dt * packets[i].speed;
+      if(packets[i].t >= 1){ packets.splice(i,1); ppsCount++; }
+    }
+
+    if(ppsTimer > 1){
+      document.getElementById('osc-pps').textContent = ppsCount + ' pkt/s';
+      ppsCount=0; ppsTimer=0;
+    }
+
+    // Render
+    ctx.fillStyle = 'rgba(8,8,8,0.10)'; ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.035)'; ctx.lineWidth=0.5;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // Routes (bezier)
+    for(let r of routes){
+      const col = routeColors[r.type];
+      drawBezier(r.a.lag.x.value, r.a.lag.y.value, r.b.lag.x.value, r.b.lag.y.value, col, 0.35, 1.2);
+      // Direction arrow at midpoint
+      const mid = bezierPt(r.a.lag.x.value,r.a.lag.y.value,r.b.lag.x.value,r.b.lag.y.value,0.5);
+      ctx.fillStyle = col; ctx.globalAlpha=0.6;
+      ctx.beginPath(); ctx.arc(mid.x,mid.y,2.5,0,Math.PI*2); ctx.fill();
+      ctx.globalAlpha=1;
+      // Address label
+      ctx.fillStyle=col; ctx.font='8px monospace'; ctx.globalAlpha=0.6;
+      ctx.fillText(r.addr, mid.x+5, mid.y-4);
+      ctx.globalAlpha=1;
+    }
+
+    // Packets
+    for(let p of packets){
+      const r = routes[p.route];
+      if(!r) continue;
+      const pt = bezierPt(r.a.lag.x.value,r.a.lag.y.value,r.b.lag.x.value,r.b.lag.y.value,p.t);
+      const col = routeColors[r.type];
+      ctx.fillStyle=col; ctx.shadowBlur=8; ctx.shadowColor=col;
+      ctx.beginPath(); ctx.arc(pt.x,pt.y,3,0,Math.PI*2); ctx.fill();
+      ctx.shadowBlur=0;
+    }
+
+    // Nodes
+    for(let n of nodes){
+      const nx=n.lag.x.value, ny=n.lag.y.value;
+      const isSel = (n===selectFirst);
+      ctx.shadowBlur = isSel ? 16 : 8;
+      ctx.shadowColor = isSel ? '#ff3c3c' : '#22c55e';
+      // Node circle
+      ctx.fillStyle = isSel ? 'rgba(255,60,60,0.2)' : 'rgba(34,197,94,0.1)';
+      ctx.strokeStyle = isSel ? '#ff3c3c' : '#22c55e';
+      ctx.lineWidth = isSel ? 2 : 1.2;
+      ctx.beginPath(); ctx.arc(nx,ny,22,0,Math.PI*2);
+      ctx.fill(); ctx.stroke();
+      ctx.shadowBlur=0;
+      // LED
+      ctx.fillStyle='#22c55e'; ctx.shadowBlur=4; ctx.shadowColor='#22c55e';
+      ctx.beginPath(); ctx.arc(nx+14,ny-14,3,0,Math.PI*2); ctx.fill();
+      ctx.shadowBlur=0;
+      // Label
+      ctx.fillStyle='#f0f0e8'; ctx.font='bold 9px monospace'; ctx.textAlign='center';
+      ctx.fillText(n.name.split(' ')[0], nx, ny+1);
+      ctx.fillStyle='#606050'; ctx.font='8px monospace';
+      ctx.fillText(n.proto, nx, ny+11);
+      ctx.textAlign='left';
+    }
+
+    // Hint if no routes
+    if(routes.length===0){
+      ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.font='12px monospace'; ctx.textAlign='center';
+      ctx.fillText('Click two nodes to create an OSC route', W/2, H-16);
+      ctx.textAlign='left';
+    }
+
+    requestAnimationFrame(frame);
+  }
+  layoutNodes();
+  requestAnimationFrame(frame);
+})();
+
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SECTION 4 — MIDI VISUALIZATION                                 */
+/* ══════════════════════════════════════════════════════════════ */
+(function(){
+  // Tab switching
+  const tabs = document.querySelectorAll('#midi-tabs .tab');
+  const panels = document.querySelectorAll('#s4 .tab-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ─ Piano Roll ─────────────────────────────────────── */
+  const pianoC = document.getElementById('piano-canvas');
+  const pianoCtx = pianoC.getContext('2d');
+  let pW,pH;
+  function resizePiano(){
+    pW=pianoC.offsetWidth; pH=340;
+    pianoC.width=pW*devicePixelRatio; pianoC.height=pH*devicePixelRatio;
+    pianoC.style.width=pW+'px'; pianoC.style.height=pH+'px';
+    pianoCtx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resizePiano(); window.addEventListener('resize',resizePiano);
+
+  const NOTES = 48, KEYS_W = 32, NOTE_H = 5;
+  const CH_COLORS = [
+    '#ff3c3c','#22c55e','#fbbf24','#60a5fa','#a78bfa','#f472b6',
+    '#34d399','#fb923c','#94a3b8','#e879f9','#facc15','#38bdf8',
+    '#4ade80','#f87171','#818cf8','#c084fc'
+  ];
+
+  // Active notes: array of { pitch, ch, x, w, vel }
+  const activeNotes = [];
+  const noteQueue = [];
+  let scrollX = 0;
+  let pianoLast=0, pianoT=0, noteTimer=0, nps=0, npsCount=0, npsTimer=0;
+
+  function fireRandomNote(){
+    const ch = Math.floor(Math.random()*16);
+    const pitch = 24 + Math.floor(Math.random()*NOTES);
+    const vel = 50 + Math.floor(Math.random()*77);
+    const dur = 0.1 + Math.random()*0.6;
+    activeNotes.push({ pitch, ch, x: scrollX+pW, w: dur*(pW*0.08), vel });
+    npsCount++;
+  }
+
+  // Schedule notes at BPM subdivisions
+  globalBPM.sub('piano', () => {
+    for(let i=0;i<2+Math.floor(Math.random()*3);i++) fireRandomNote();
+  });
+
+  function drawPianoRoll(now){
+    const dt=Math.min((now-pianoLast)*0.001,0.05); pianoLast=now; pianoT+=dt;
+    scrollX += dt * pW * 0.06;
+    npsTimer+=dt;
+    if(npsTimer>1){
+      document.getElementById('midi-nps').textContent=npsCount+'/s';
+      npsCount=0; npsTimer=0;
+    }
+    document.getElementById('midi-bpm').textContent=Math.round(globalBPM.bpm);
+
+    pianoCtx.fillStyle='rgba(8,8,8,0.12)'; pianoCtx.fillRect(0,0,pW,pH);
+
+    // Grid lines (beat positions)
+    pianoCtx.strokeStyle='rgba(255,255,255,0.05)'; pianoCtx.lineWidth=0.5;
+    const beatPx=pW*0.08;
+    for(let x=KEYS_W+(pW-KEYS_W - scrollX%beatPx);x<pW;x+=beatPx){
+      pianoCtx.beginPath();pianoCtx.moveTo(x,0);pianoCtx.lineTo(x,pH);pianoCtx.stroke();
+    }
+
+    // Pitch grid lines
+    for(let i=0;i<=NOTES;i++){
+      const y=i*NOTE_H+4;
+      pianoCtx.strokeStyle='rgba(255,255,255,0.03)';
+      pianoCtx.beginPath();pianoCtx.moveTo(KEYS_W,y);pianoCtx.lineTo(pW,y);pianoCtx.stroke();
+    }
+
+    // Draw notes
+    for(let i=activeNotes.length-1;i>=0;i--){
+      const n=activeNotes[i];
+      const nx=(n.x-scrollX)+pW;
+      const ny=4+(NOTES-(n.pitch-24)-1)*NOTE_H;
+      if(nx+n.w < KEYS_W+4){ activeNotes.splice(i,1); continue; }
+      const col=CH_COLORS[n.ch%16];
+      pianoCtx.fillStyle=col; pianoCtx.shadowBlur=4; pianoCtx.shadowColor=col;
+      pianoCtx.globalAlpha=0.75+(n.vel/127)*0.25;
+      pianoCtx.fillRect(Math.max(KEYS_W+4,nx),ny+1,Math.min(n.w,nx+n.w-KEYS_W-4),NOTE_H-2);
+      pianoCtx.globalAlpha=1; pianoCtx.shadowBlur=0;
+    }
+
+    // Piano keyboard sidebar
+    pianoCtx.fillStyle='#080808'; pianoCtx.fillRect(0,0,KEYS_W,pH);
+    for(let i=0;i<NOTES;i++){
+      const y=4+i*NOTE_H; const note=i%12;
+      const isBlack=[1,3,6,8,10].includes(note);
+      pianoCtx.fillStyle=isBlack?'#111':'#2a2a2a';
+      pianoCtx.fillRect(2,y,KEYS_W-4,NOTE_H-1);
+    }
+
+    // Channel legend
+    for(let c=0;c<16;c++){
+      const x=KEYS_W+8+(c%8)*40, y=(c<8)?pH-30:pH-16;
+      pianoCtx.fillStyle=CH_COLORS[c]; pianoCtx.shadowBlur=3; pianoCtx.shadowColor=CH_COLORS[c];
+      pianoCtx.fillRect(x,y,12,7);
+      pianoCtx.shadowBlur=0;
+      pianoCtx.fillStyle='#606050'; pianoCtx.font='7px monospace';
+      pianoCtx.fillText('CH'+(c+1),x,y-2);
+    }
+
+    if(document.getElementById('tab-piano').classList.contains('active'))
+      requestAnimationFrame(drawPianoRoll);
+    else pianoLast=0;
+  }
+  requestAnimationFrame(drawPianoRoll);
+
+  /* ─ CC Monitor ──────────────────────────────────────── */
+  const ccC=document.getElementById('cc-canvas');
+  const ccCtx=ccC.getContext('2d');
+  let ccW,ccH;
+  function resizeCC(){
+    ccW=ccC.offsetWidth; ccH=280;
+    ccC.width=ccW*devicePixelRatio; ccC.height=ccH*devicePixelRatio;
+    ccC.style.width=ccW+'px'; ccC.style.height=ccH+'px';
+    ccCtx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resizeCC(); window.addEventListener('resize',resizeCC);
+
+  const CC_NUMS=[1,7,11,74,71,72,73,76];
+  const CC_NAMES=['Mod','Vol','Expr','Cutoff','Res','Atk','Rel','Vib'];
+  const ccVals = CC_NUMS.map((_,i)=>new LagFilter(Math.random()*0.7+0.1, 0.12+i*0.03));
+  const ccTargets = ccVals.map(()=>Math.random());
+  let ccLast=0;
+
+  function drawCC(now){
+    const dt=Math.min((now-ccLast)*0.001,0.05); ccLast=now;
+    for(let i=0;i<ccVals.length;i++){
+      if(Math.random()<0.01) ccTargets[i]=Math.random();
+      ccVals[i].set(ccTargets[i]); ccVals[i].update(dt);
+    }
+    ccCtx.fillStyle='rgba(8,8,8,0.12)'; ccCtx.fillRect(0,0,ccW,ccH);
+    // Grid
+    ccCtx.strokeStyle='rgba(255,255,255,0.04)'; ccCtx.lineWidth=0.5;
+    for(let y=0;y<ccH;y+=40){ccCtx.beginPath();ccCtx.moveTo(0,y);ccCtx.lineTo(ccW,y);ccCtx.stroke();}
+
+    const barW=(ccW-48)/CC_NUMS.length;
+    const maxH=ccH-60;
+    for(let i=0;i<CC_NUMS.length;i++){
+      const v=ccVals[i].value;
+      const x=24+i*barW; const bh=v*maxH;
+      const y=20+maxH-bh;
+      const col=CH_COLORS[i%16];
+      // BG
+      ccCtx.fillStyle='rgba(255,255,255,0.04)';
+      ccCtx.fillRect(x+4,20,barW-12,maxH);
+      // Bar
+      ccCtx.fillStyle=col; ccCtx.shadowBlur=6; ccCtx.shadowColor=col;
+      ccCtx.fillRect(x+4,y,barW-12,bh);
+      ccCtx.shadowBlur=0;
+      // Labels
+      ccCtx.fillStyle='#808070'; ccCtx.font='9px monospace'; ccCtx.textAlign='center';
+      ccCtx.fillText('CC'+CC_NUMS[i],x+barW/2,20+maxH+14);
+      ccCtx.fillText(CC_NAMES[i],x+barW/2,20+maxH+24);
+      ccCtx.fillStyle=col; ccCtx.font='bold 10px monospace';
+      ccCtx.fillText(Math.round(v*127),x+barW/2,y-4);
+      ccCtx.textAlign='left';
+    }
+    if(document.getElementById('tab-cc').classList.contains('active'))
+      requestAnimationFrame(drawCC);
+    else ccLast=0;
+  }
+  requestAnimationFrame(drawCC);
+
+  /* ─ MIDI Clock ──────────────────────────────────────── */
+  const clkC=document.getElementById('clock-canvas');
+  const clkCtx=clkC.getContext('2d');
+  let clkW,clkH;
+  function resizeClk(){
+    clkW=clkC.offsetWidth; clkH=300;
+    clkC.width=clkW*devicePixelRatio; clkC.height=clkH*devicePixelRatio;
+    clkC.style.width=clkW+'px'; clkC.style.height=clkH+'px';
+    clkCtx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resizeClk(); window.addEventListener('resize',resizeClk);
+
+  let clkLast=0, currentTick=0, clkFlash=new LagFilter(0,0.04);
+  globalBPM.sub('clock',()=>{ clkFlash.set(1); currentTick=(currentTick+1)%24; });
+
+  function drawClock(now){
+    const dt=Math.min((now-clkLast)*0.001,0.05); clkLast=now;
+    clkFlash.set(clkFlash.value*0.7); clkFlash.update(dt);
+
+    clkCtx.fillStyle='rgba(8,8,8,0.12)'; clkCtx.fillRect(0,0,clkW,clkH);
+
+    // 24-tick circle
+    const cx=clkW*0.25, cy=clkH/2, r=Math.min(clkW*0.18,clkH*0.38);
+    clkCtx.strokeStyle='rgba(255,255,255,0.06)'; clkCtx.lineWidth=1;
+    clkCtx.beginPath(); clkCtx.arc(cx,cy,r,0,Math.PI*2); clkCtx.stroke();
+    clkCtx.beginPath(); clkCtx.arc(cx,cy,r*0.6,0,Math.PI*2); clkCtx.stroke();
+
+    for(let i=0;i<24;i++){
+      const a=(i/24)*Math.PI*2-Math.PI/2;
+      const isActive=i===currentTick%24;
+      const isBeat=i%6===0;
+      const inner=isBeat?r*0.55:r*0.68;
+      const outer=isBeat?r*1.08:r*0.96;
+      const x1=cx+Math.cos(a)*inner, y1=cy+Math.sin(a)*inner;
+      const x2=cx+Math.cos(a)*outer, y2=cy+Math.sin(a)*outer;
+      const col=isActive?'#fbbf24':(isBeat?'#ff3c3c':'rgba(255,255,255,0.15)');
+      clkCtx.strokeStyle=col; clkCtx.lineWidth=isActive?3:isBeat?2:1;
+      clkCtx.shadowBlur=isActive?12+(clkFlash.value*16):isBeat?4:0;
+      clkCtx.shadowColor=col;
+      clkCtx.beginPath(); clkCtx.moveTo(x1,y1); clkCtx.lineTo(x2,y2); clkCtx.stroke();
+      clkCtx.shadowBlur=0;
+    }
+
+    // Center dot
+    clkCtx.fillStyle='#fbbf24'; clkCtx.shadowBlur=8+(clkFlash.value*12); clkCtx.shadowColor='#fbbf24';
+    clkCtx.beginPath(); clkCtx.arc(cx,cy,5,0,Math.PI*2); clkCtx.fill();
+    clkCtx.shadowBlur=0;
+
+    // Tick label
+    clkCtx.fillStyle='#808070'; clkCtx.font='10px monospace'; clkCtx.textAlign='center';
+    clkCtx.fillText('TICK '+String(currentTick%24).padStart(2,'0')+'/23',cx,cy+r+20);
+    clkCtx.fillText(Math.round(globalBPM.bpm)+' BPM',cx,cy+r+34);
+    clkCtx.textAlign='left';
+
+    // Song position right panel
+    const px=clkW*0.5, barW=clkW*0.46;
+    clkCtx.fillStyle='rgba(255,255,255,0.04)'; clkCtx.fillRect(px,clkH*0.12,barW,clkH*0.08);
+    clkCtx.fillStyle='rgba(251,191,36,0.25)'; clkCtx.fillRect(px,clkH*0.12,(globalBPM.phase)*barW,clkH*0.08);
+    clkCtx.fillStyle='#fbbf24'; clkCtx.shadowBlur=4; clkCtx.shadowColor='#fbbf24';
+    clkCtx.fillRect(px+globalBPM.phase*barW-1,clkH*0.10,2,clkH*0.12); clkCtx.shadowBlur=0;
+    clkCtx.fillStyle='#808070'; clkCtx.font='9px monospace';
+    clkCtx.fillText('BEAT PHASE',px,clkH*0.12-4);
+
+    // MTC quarter frames
+    const qf=Math.floor(globalBPM.phase*8);
+    for(let i=0;i<8;i++){
+      const qx=px+i*(barW/8.5); const qy=clkH*0.4;
+      const isAct=i===qf;
+      clkCtx.fillStyle=isAct?'#ff3c3c':'rgba(255,255,255,0.07)';
+      clkCtx.shadowBlur=isAct?6:0; clkCtx.shadowColor='#ff3c3c';
+      clkCtx.fillRect(qx+1,qy,barW/8.5-3,28);
+      clkCtx.shadowBlur=0;
+      clkCtx.fillStyle='#606050'; clkCtx.font='7px monospace'; clkCtx.textAlign='center';
+      clkCtx.fillText('QF'+i,qx+barW/17,qy+38);
+      clkCtx.textAlign='left';
+    }
+    clkCtx.fillStyle='#606050'; clkCtx.font='9px monospace';
+    clkCtx.fillText('MTC QUARTER FRAMES',px,clkH*0.4-6);
+
+    if(document.getElementById('tab-clock').classList.contains('active'))
+      requestAnimationFrame(drawClock);
+    else clkLast=0;
+  }
+  requestAnimationFrame(drawClock);
+})();
+
+/* ══════════════════════════════════════════════════════════════ */
+/* SECTION 5 — TIMECODE & SYNC SYSTEMS                            */
+/* ══════════════════════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('tc-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.offsetWidth; H=360;
+    canvas.width=W*devicePixelRatio; canvas.height=H*devicePixelRatio;
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  let fps=30, mtcDrift=0, tcStart=performance.now();
+  let last=0, animT=0;
+  let lockLag=new LagFilter(1,0.3);
+  const waveHistory=new Float32Array(200);
+  let waveIdx=0;
+  const ltcBits=new Array(64).fill(0).map((_,i)=>i%3===0?1:0);
+
+  document.getElementById('fps-sel').addEventListener('change',function(){ fps=parseFloat(this.value); });
+  document.getElementById('mtc-drift').addEventListener('input',function(){
+    mtcDrift=parseFloat(this.value);
+    document.getElementById('mtc-drift-val').textContent=mtcDrift.toFixed(0)+' ms';
+    lockLag.set(mtcDrift>5?0:1);
+  });
+
+  function getSMPTE(offsetMs){
+    const t=(performance.now()-tcStart+offsetMs)/1000;
+    const totalSec=Math.max(0,t);
+    const h=Math.floor(totalSec/3600)%24;
+    const m=Math.floor(totalSec/60)%60;
+    const s=Math.floor(totalSec)%60;
+    const f=Math.floor((totalSec%1)*fps);
+    return { h,m,s,f };
+  }
+
+  function fmt2(n){ return String(n).padStart(2,'0'); }
+
+  function frame(now){
+    const dt=Math.min((now-last)*0.001,0.05); last=now; animT+=dt;
+    lockLag.update(dt);
+
+    // Update LTC bit pattern slowly
+    if(Math.floor(animT*fps)%2===0){
+      ltcBits.shift(); ltcBits.push(Math.random()>0.4?1:0);
+    }
+    // Word clock wave
+    const wv=Math.sign(Math.sin(animT*44100*0.0001));
+    waveHistory[waveIdx%200]=wv; waveIdx++;
+
+    ctx.fillStyle='rgba(8,8,8,0.1)'; ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=0.5;
+    for(let x=0;x<W;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // ── SMPTE TIMECODE DISPLAY ─────────────────────────
+    const tc=getSMPTE(0);
+    const tcStr=fmt2(tc.h)+':'+fmt2(tc.m)+':'+fmt2(tc.s)+':'+fmt2(tc.f);
+    const tcX=W*0.03, tcY=90;
+    ctx.shadowBlur=18; ctx.shadowColor='#fbbf24';
+    ctx.fillStyle='#fbbf24';
+    ctx.font='bold 52px monospace'; ctx.textAlign='left';
+    ctx.fillText(tcStr,tcX,tcY);
+    ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(251,191,36,0.4)'; ctx.font='10px monospace';
+    ctx.fillText('SMPTE TIMECODE  '+fps+' FPS',tcX,tcY+18);
+
+    // Frame rate badge
+    ctx.fillStyle='rgba(251,191,36,0.1)';
+    ctx.strokeStyle='rgba(251,191,36,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(W-90,14,80,28,4); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#fbbf24'; ctx.font='bold 12px monospace'; ctx.textAlign='center';
+    ctx.fillText(fps+' FPS',W-50,33);
+    ctx.textAlign='left';
+
+    // ── WORD CLOCK ────────────────────────────────────
+    const wcY=126, wcH=24, wcW=W*0.42;
+    ctx.fillStyle='rgba(34,197,94,0.07)'; ctx.fillRect(0,wcY-4,W,wcH+8);
+    ctx.fillStyle='rgba(34,197,94,0.5)'; ctx.font='9px monospace';
+    ctx.fillText('WORD CLOCK — 48 kHz SAMPLE RATE',6,wcY-8);
+    ctx.strokeStyle='#22c55e'; ctx.lineWidth=1.5;
+    ctx.shadowBlur=6; ctx.shadowColor='#22c55e';
+    ctx.beginPath();
+    for(let i=0;i<200;i++){
+      const x=i*(W/200);
+      const v=Math.sign(Math.sin(i*0.8+animT*8));
+      const y=wcY+wcH/2+v*wcH*0.42;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+
+    // ── MTC QUARTER FRAMES ────────────────────────────
+    const mtcY=180;
+    const mtcTC=getSMPTE(mtcDrift);
+    const mtcStr=fmt2(mtcTC.h)+':'+fmt2(mtcTC.m)+':'+fmt2(mtcTC.s)+':'+fmt2(mtcTC.f);
+    ctx.fillStyle='rgba(255,60,60,0.07)'; ctx.fillRect(0,mtcY-4,W,40);
+    ctx.fillStyle='rgba(255,60,60,0.5)'; ctx.font='9px monospace';
+    ctx.fillText('MTC (MIDI TIMECODE)  '+mtcStr+(mtcDrift>0?' +'+mtcDrift+'ms DRIFT':'  LOCKED'),6,mtcY-8);
+
+    const qfCount=8;
+    const qfW=(W-24)/qfCount;
+    const curQF=Math.floor(globalBPM.phase*qfCount);
+    for(let i=0;i<qfCount;i++){
+      const qx=8+i*qfW;
+      const isAct=i===curQF;
+      ctx.fillStyle=isAct?'rgba(255,60,60,0.3)':'rgba(255,255,255,0.04)';
+      ctx.shadowBlur=isAct?8:0; ctx.shadowColor='#ff3c3c';
+      ctx.beginPath(); ctx.roundRect(qx,mtcY,qfW-4,28,2); ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.strokeStyle='rgba(255,60,60,0.2)'; ctx.lineWidth=0.8;
+      ctx.beginPath(); ctx.roundRect(qx,mtcY,qfW-4,28,2); ctx.stroke();
+      ctx.fillStyle=isAct?'#ff3c3c':'#606050'; ctx.font='8px monospace'; ctx.textAlign='center';
+      ctx.fillText('QF'+i,qx+qfW/2-2,mtcY+18);
+      ctx.textAlign='left';
+    }
+
+    // ── LTC BIPHASE ───────────────────────────────────
+    const ltcY=250;
+    ctx.fillStyle='rgba(251,191,36,0.07)'; ctx.fillRect(0,ltcY-4,W,36);
+    ctx.fillStyle='rgba(251,191,36,0.5)'; ctx.font='9px monospace';
+    ctx.fillText('LTC (LINEAR TIMECODE) — BIPHASE MARK CODE',6,ltcY-8);
+    ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.5;
+    ctx.shadowBlur=4; ctx.shadowColor='#fbbf24';
+    const ltcBitW=W/ltcBits.length;
+    ctx.beginPath();
+    let ltcY2=ltcY+8, ltcHigh=true;
+    for(let i=0;i<ltcBits.length;i++){
+      const bx=i*ltcBitW;
+      ctx.lineTo(bx,ltcY2);
+      if(ltcBits[i]===1){ ltcHigh=!ltcHigh; ctx.lineTo(bx,ltcHigh?ltcY+8:ltcY+26); }
+      ltcHigh=!ltcHigh; ctx.lineTo((i+1)*ltcBitW,ltcHigh?ltcY+8:ltcY+26);
+      ltcY2=ltcHigh?ltcY+8:ltcY+26;
+    }
+    ctx.stroke(); ctx.shadowBlur=0;
+
+    // ── LOCK STATUS ────────────────────────────────────
+    const locked=lockLag.value>0.5;
+    const lockEl=document.getElementById('tc-lock-led');
+    const lockTxt=document.getElementById('tc-lock-txt');
+    lockEl.className='led '+(locked?'green':'red');
+    lockTxt.textContent=locked?'LOCKED':'DRIFT '+mtcDrift.toFixed(0)+'ms';
+
+    ctx.fillStyle=locked?'rgba(34,197,94,0.08)':'rgba(255,60,60,0.08)';
+    ctx.fillRect(0,H-28,W,28);
+    ctx.fillStyle=locked?'rgba(34,197,94,0.6)':'rgba(255,60,60,0.6)';
+    ctx.shadowBlur=locked?6:8; ctx.shadowColor=locked?'#22c55e':'#ff3c3c';
+    ctx.font='bold 10px monospace'; ctx.textAlign='center';
+    ctx.fillText(locked?'⟳ ALL CLOCKS PHASE LOCKED':'≈ MTC DRIFT DETECTED — RESYNC REQUIRED',W/2,H-12);
+    ctx.shadowBlur=0; ctx.textAlign='left';
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

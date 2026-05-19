@@ -1,0 +1,1929 @@
+---
+layout: world.njk
+title: "SAMPLING LAB — WAVGEN"
+description: "Immersive music world exploring sampling"
+domain: music
+permalink: /music/sampling-lab/
+---
+
+
+
+<!-- ════════════════════════════════════════════
+     SECTION 1 — HERO: THE MEMORY ENGINE
+═════════════════════════════════════════════ -->
+<section id="hero" style="padding:0; max-width:100%; position:relative; height:540px; overflow:hidden;">
+<canvas height="540" id="hero-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;" width="1400"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">SAMPLING LAB</div>
+<div class="hero-sub">Inside the memory engine of sampled music.</div>
+<div class="hero-bpm">
+<span class="bpm-dot" id="bpm-dot"></span>
+<span id="hero-bpm-display">90 BPM</span>
+</div>
+</div>
+</section>
+<!-- ════ SHARED JS INFRASTRUCTURE ════ -->
+<script>
+/* ── LagFilter ── */
+class LagFilter {
+  constructor(initial=0, tau=0.15) {
+    this.value=initial; this.target=initial; this.tau=tau;
+  }
+  update(dt) {
+    const a=1-Math.exp(-dt/Math.max(this.tau,0.001));
+    this.value+=(this.target-this.value)*a;
+    return this.value;
+  }
+  set(t){ this.target=t; }
+  snap(v){ this.value=this.target=v; }
+}
+
+/* ── BPMEngine ── */
+class BPMEngine {
+  constructor(bpm=120){
+    this.bpm=bpm; this._start=null; this._beat=0;
+    this._rafId=null; this.running=false;
+    this._subs=new Map();
+  }
+  start(){
+    this.running=true; this._start=performance.now(); this._beat=0; this._tick();
+  }
+  stop(){ this.running=false; if(this._rafId) cancelAnimationFrame(this._rafId); }
+  _tick(){
+    if(!this.running) return;
+    const now=performance.now();
+    const mspb=60000/this.bpm;
+    const expected=Math.floor((now-this._start)/mspb);
+    while(this._beat<=expected){ this._fire(this._beat++); }
+    this._rafId=requestAnimationFrame(()=>this._tick());
+  }
+  _fire(n){
+    const phase=n%16;
+    const ev={bpm:this.bpm,beat:n,phase,isDown:phase===0,isQ:phase%4===0};
+    document.dispatchEvent(new CustomEvent('wavgen:beat',{detail:ev}));
+    this._subs.forEach(fn=>fn(ev));
+  }
+  setBPM(b){ this.bpm=Math.max(30,Math.min(300,b)); if(this.running){this.stop();this.start();} }
+  subscribe(id,fn){ this._subs.set(id,fn); }
+  unsubscribe(id){ this._subs.delete(id); }
+  phase(){ /* 0..1 position within current beat */
+    if(!this._start) return 0;
+    const mspb=60000/this.bpm;
+    return ((performance.now()-this._start)%mspb)/mspb;
+  }
+}
+
+/* ── Global BPM engine at 90BPM ── */
+const globalBPM = new BPMEngine(90);
+globalBPM.start();
+
+/* ── Colour palette ── */
+const C = {
+  black:'#080603', surface:'#100c06', accent:'#c48e48',
+  accent2:'#8a7a6a', accent3:'#6b4a28', accent4:'#f0c060',
+  text:'#e8dcc8', dim:'#7a6e5e'
+};
+</script>
+<!-- ════ SECTION 1 HERO JS ════ -->
+<script>
+(function(){
+  const canvas=document.getElementById('hero-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=canvas.width, H=canvas.height;
+
+  /* Resize */
+  function resize(){
+    W=canvas.width=canvas.offsetWidth*Math.min(window.devicePixelRatio,2);
+    H=canvas.height=canvas.offsetHeight*Math.min(window.devicePixelRatio,2);
+  }
+  window.addEventListener('resize',resize); resize();
+
+  /* Spinning vinyl record */
+  const vinyl={
+    x:0, y:0, r:0,
+    angle:0, wobble:0, wobbleV:0,
+    init(){
+      this.x=W*0.72; this.y=H*0.44; this.r=Math.min(W,H)*0.33;
+    }
+  };
+
+  /* Waveform tape — procedural Amen-style amplitude envelope */
+  const WAVE_LEN=512;
+  const waveAmp=new Float32Array(WAVE_LEN);
+  (function buildWave(){
+    // Amen break amplitude envelope: kick, snare, ghost notes
+    const hits=[
+      {pos:0,   amp:1.0,  w:18},
+      {pos:32,  amp:0.35, w:10},
+      {pos:48,  amp:0.25, w:8},
+      {pos:64,  amp:0.85, w:14},
+      {pos:96,  amp:0.55, w:12},
+      {pos:112, amp:0.20, w:8},
+      {pos:128, amp:1.0,  w:18},
+      {pos:160, amp:0.30, w:10},
+      {pos:176, amp:0.45, w:10},
+      {pos:192, amp:0.80, w:14},
+      {pos:224, amp:0.25, w:8},
+      {pos:240, amp:0.60, w:12},
+      {pos:256, amp:1.0,  w:18},
+      {pos:288, amp:0.35, w:9},
+      {pos:304, amp:0.28, w:8},
+      {pos:320, amp:0.9,  w:16},
+      {pos:352, amp:0.22, w:7},
+      {pos:368, amp:0.50, w:11},
+      {pos:384, amp:0.75, w:14},
+      {pos:416, amp:0.30, w:9},
+      {pos:432, amp:0.45, w:10},
+      {pos:448, amp:0.95, w:17},
+      {pos:480, amp:0.28, w:8},
+      {pos:496, amp:0.40, w:10},
+    ];
+    for(let i=0;i<WAVE_LEN;i++){
+      let v=0.04+Math.random()*0.06;
+      for(const h of hits){
+        const d=Math.abs(i-h.pos);
+        if(d<h.w) v=Math.max(v, h.amp*Math.exp(-(d*d)/(h.w*h.w*0.5)));
+      }
+      waveAmp[i]=Math.min(1,v);
+    }
+  })();
+
+  let waveOffset=new LagFilter(0,2.0);
+  let waveOffsetT=0;
+
+  /* Dust particles */
+  const NUM_DUST=60;
+  const dust=Array.from({length:NUM_DUST},()=>({
+    x:Math.random(), y:Math.random(),
+    vx:(Math.random()-0.5)*0.00015,
+    vy:-(Math.random()*0.0002+0.00005),
+    r:Math.random()*1.5+0.5,
+    alpha:Math.random()*0.5+0.15,
+    flicker:Math.random()*Math.PI*2
+  }));
+
+  /* Needle arm */
+  const needle={angle:-0.18}; /* resting just off groove */
+  const needleLag=new LagFilter(-0.18,0.8);
+
+  /* Beat flash */
+  let beatFlash=new LagFilter(0,0.04);
+
+  document.addEventListener('wavgen:beat', e=>{
+    if(e.detail.isQ){
+      beatFlash.set(1);
+      vinyl.wobbleV+=0.08;
+    }
+  });
+
+  let lastT=0;
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+
+    /* Update lags */
+    beatFlash.set(0); beatFlash.update(dt);
+    needleLag.update(dt);
+    vinyl.wobbleV*=0.92;
+    vinyl.wobble+=vinyl.wobbleV*dt*60;
+    vinyl.wobble*=0.97;
+
+    /* Advance wave tape */
+    waveOffsetT+=dt*(W*0.04);
+    waveOffset.set(waveOffsetT);
+    waveOffset.update(dt);
+
+    vinyl.angle+=dt*(globalBPM.bpm/60)*Math.PI*2*0.125; /* 1 revolution per 8 beats */
+
+    /* ── PHOSPHOR DECAY ── */
+    ctx.globalAlpha=0.09;
+    ctx.fillStyle='#080603';
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+
+    /* ── VINYL RECORD ── */
+    vinyl.init();
+    const vx=vinyl.x, vy=vinyl.y, vr=vinyl.r;
+    const wobRad=vinyl.wobble*0.004;
+    ctx.save();
+    ctx.translate(vx,vy);
+    ctx.rotate(vinyl.angle+wobRad);
+
+    /* Outer groove rings */
+    for(let i=0;i<28;i++){
+      const gr=vr*(0.38+i*0.022);
+      const alpha=0.04+beatFlash.value*0.06;
+      ctx.beginPath();
+      ctx.arc(0,0,gr,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(196,142,72,${alpha})`;
+      ctx.lineWidth=0.6*(W/1400);
+      ctx.shadowBlur=0; ctx.stroke();
+    }
+
+    /* Vinyl body */
+    const grad=ctx.createRadialGradient(0,0,vr*0.08,0,0,vr);
+    grad.addColorStop(0,'#1a1208');
+    grad.addColorStop(0.35,'#0d0b06');
+    grad.addColorStop(1,'#050402');
+    ctx.beginPath();
+    ctx.arc(0,0,vr,0,Math.PI*2);
+    ctx.fillStyle=grad;
+    ctx.shadowBlur=0;
+    ctx.fill();
+
+    /* Groove lines on top */
+    for(let i=0;i<28;i++){
+      const gr=vr*(0.38+i*0.022);
+      ctx.beginPath();
+      ctx.arc(0,0,gr,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(100,80,30,0.18)`;
+      ctx.lineWidth=0.8*(W/1400);
+      ctx.stroke();
+    }
+
+    /* Label circle */
+    const labR=vr*0.32;
+    const labGrad=ctx.createRadialGradient(0,0,0,0,0,labR);
+    labGrad.addColorStop(0,'#3a2a10');
+    labGrad.addColorStop(1,'#1e1508');
+    ctx.beginPath();
+    ctx.arc(0,0,labR,0,Math.PI*2);
+    ctx.fillStyle=labGrad;
+    ctx.shadowBlur=beatFlash.value*20;
+    ctx.shadowColor='#c48e48';
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    /* Label text */
+    ctx.rotate(-vinyl.angle-wobRad); /* counter-rotate text */
+    ctx.fillStyle=`rgba(196,142,72,0.85)`;
+    ctx.font=`bold ${labR*0.18}px 'Courier New',monospace`;
+    ctx.textAlign='center';
+    ctx.fillText('SAMPLE',0,-labR*0.15);
+    ctx.fillText('LAB',0,labR*0.12);
+    ctx.font=`${labR*0.10}px 'Courier New',monospace`;
+    ctx.fillStyle='rgba(138,122,106,0.7)';
+    ctx.fillText('WAVGEN RECORDINGS',0,labR*0.35);
+
+    /* Spindle hole */
+    ctx.beginPath();
+    ctx.arc(0,0,vr*0.018,0,Math.PI*2);
+    ctx.fillStyle='#000';
+    ctx.fill();
+
+    ctx.restore();
+
+    /* ── NEEDLE ARM ── */
+    const needleBase={x:vx+vr*1.08, y:vy-vr*0.9};
+    const needleAng=needleLag.value+(-0.3+Math.sin(Date.now()*0.0003)*0.01);
+    const armLen=vr*1.05;
+    const tipX=needleBase.x+Math.sin(needleAng)*armLen;
+    const tipY=needleBase.y+Math.cos(needleAng)*armLen;
+
+    ctx.save();
+    /* Arm shadow */
+    ctx.shadowBlur=6; ctx.shadowColor='rgba(0,0,0,0.8)';
+    ctx.beginPath();
+    ctx.moveTo(needleBase.x, needleBase.y);
+    ctx.lineTo(tipX,tipY);
+    ctx.strokeStyle=`rgba(196,142,72,0.7)`;
+    ctx.lineWidth=2.5*(W/1400);
+    ctx.stroke();
+    /* Pivot */
+    ctx.beginPath();
+    ctx.arc(needleBase.x,needleBase.y,4*(W/1400),0,Math.PI*2);
+    ctx.fillStyle='#c48e48';
+    ctx.shadowBlur=8; ctx.shadowColor='#c48e48';
+    ctx.fill();
+    /* Needle tip */
+    ctx.beginPath();
+    ctx.arc(tipX,tipY,2.5*(W/1400),0,Math.PI*2);
+    ctx.fillStyle='#f0c060';
+    ctx.shadowBlur=12; ctx.shadowColor='#f0c060';
+    ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.restore();
+
+    /* ── SCROLLING WAVEFORM ── */
+    const wh=H*0.18;
+    const wy=H*0.82;
+    const wx=0;
+    const ww=W;
+
+    /* Phosphor trail under waveform */
+    ctx.fillStyle='rgba(8,6,3,0.4)';
+    ctx.fillRect(wx,wy-wh*0.5-4,ww,wh+8);
+
+    /* Centre line */
+    ctx.beginPath();
+    ctx.moveTo(wx,wy); ctx.lineTo(wx+ww,wy);
+    ctx.strokeStyle='rgba(107,74,40,0.3)';
+    ctx.lineWidth=1;
+    ctx.stroke();
+
+    /* Waveform */
+    const off=Math.floor(waveOffset.value) % WAVE_LEN;
+    ctx.beginPath();
+    ctx.shadowBlur=beatFlash.value*16+8;
+    ctx.shadowColor='#c48e48';
+    for(let i=0;i<=ww;i++){
+      const idx=(off+Math.floor(i*(WAVE_LEN*0.6)/ww)+WAVE_LEN)%WAVE_LEN;
+      const amp=waveAmp[idx];
+      const noise=(Math.random()-0.5)*0.03;
+      const y=wy+(amp+noise)*(wh*0.45)*(Math.sin(i/ww*Math.PI*2+Date.now()*0.002)>0?1:-1);
+      i===0?ctx.moveTo(wx+i,y):ctx.lineTo(wx+i,y);
+    }
+    ctx.strokeStyle=`rgba(196,142,72,${0.6+beatFlash.value*0.3})`;
+    ctx.lineWidth=1.2;
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    /* Playhead line */
+    const ph=((globalBPM.phase())*ww*0.25+ww*0.375)%ww;
+    ctx.beginPath();
+    ctx.moveTo(wx+ph,wy-wh*0.5-2);
+    ctx.lineTo(wx+ph,wy+wh*0.5+2);
+    ctx.strokeStyle=`rgba(240,192,96,${0.3+beatFlash.value*0.5})`;
+    ctx.lineWidth=1;
+    ctx.stroke();
+
+    /* ── DUST PARTICLES ── */
+    for(const p of dust){
+      p.x+=p.vx; p.y+=p.vy;
+      p.flicker+=dt*3;
+      if(p.y<0) p.y=1;
+      if(p.x<0) p.x=1;
+      if(p.x>1) p.x=0;
+      const fa=p.alpha*(0.7+0.3*Math.sin(p.flicker));
+      ctx.beginPath();
+      ctx.arc(p.x*W, p.y*H, p.r*(W/1400), 0, Math.PI*2);
+      ctx.fillStyle=`rgba(196,142,72,${fa})`;
+      ctx.shadowBlur=4; ctx.shadowColor='#c48e48';
+      ctx.fill();
+      ctx.shadowBlur=0;
+    }
+
+    /* ── BPM INDICATOR ── */
+    const bpmEl=document.getElementById('hero-bpm-display');
+    if(bpmEl) bpmEl.textContent=`${globalBPM.bpm} BPM`;
+
+    /* Update bpm dot pulse timing via CSS variable */
+    const dot=document.getElementById('bpm-dot');
+    if(dot){
+      const bpmMs=Math.round(60000/globalBPM.bpm);
+      dot.style.animationDuration=bpmMs+'ms';
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 2 — WAVEFORM SLICER
+═════════════════════════════════════════════ -->
+<section class="hidden delay-1" id="slicer">
+<div class="sec-label">02 — Waveform Slicer</div>
+<div class="sec-title">Every chop is a decision about time.</div>
+<div class="sec-sub">Drag slice markers to divide the break. Up to 16 slices.</div>
+<div class="stats-row">
+<div class="stat"><span class="stat-label">Slices</span><span class="stat-value" id="sl-count">8</span></div>
+<div class="stat"><span class="stat-label">Duration</span><span class="stat-value" id="sl-dur">2.00s</span></div>
+<div class="stat"><span class="stat-label">BPM</span><span class="stat-value" id="sl-bpm-disp">90</span></div>
+<div class="stat"><span class="stat-label">Active</span><span class="stat-value" id="sl-active">—</span></div>
+</div>
+<div class="canvas-wrap">
+<canvas height="160" id="slicer-canvas" width="1000"></canvas>
+</div>
+<div class="ctrl-row">
+<button class="btn" id="sl-play">▶ PLAY</button>
+<button class="btn" id="sl-stop">■ STOP</button>
+<button class="btn" id="sl-add">+ SLICE</button>
+<button class="btn" id="sl-remove">− SLICE</button>
+<div class="ctrl-group">
+<span class="ctrl-label">BPM</span>
+<input id="sl-bpm" max="180" min="60" style="width:120px;" type="range" value="90"/>
+</div>
+<span class="ctrl-value" id="sl-bpm-val">90</span>
+</div>
+</section>
+<script>
+(function(){
+  const canvas=document.getElementById('slicer-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=canvas.width, H=canvas.height;
+
+  /* Waveform data — reuse Amen-style build */
+  const SL=512;
+  const slWave=new Float32Array(SL);
+  const slHits=[
+    {p:0,a:1.0,w:16},{p:30,a:0.3,w:9},{p:48,a:0.22,w:7},{p:64,a:0.88,w:14},
+    {p:96,a:0.5,w:10},{p:112,a:0.18,w:7},{p:128,a:1.0,w:16},{p:158,a:0.28,w:8},
+    {p:176,a:0.4,w:9},{p:192,a:0.82,w:13},{p:224,a:0.22,w:7},{p:240,a:0.55,w:10},
+    {p:256,a:1.0,w:16},{p:288,a:0.32,w:8},{p:304,a:0.25,w:7},{p:320,a:0.9,w:14},
+    {p:352,a:0.2,w:6},{p:368,a:0.48,w:10},{p:384,a:0.78,w:13},{p:416,a:0.28,w:8},
+    {p:432,a:0.42,w:9},{p:448,a:0.95,w:15},{p:480,a:0.25,w:7},{p:496,a:0.38,w:9},
+  ];
+  for(let i=0;i<SL;i++){
+    let v=0.04+Math.random()*0.04;
+    for(const h of slHits){const d=Math.abs(i-h.p);if(d<h.w) v=Math.max(v,h.a*Math.exp(-(d*d)/(h.w*h.w*0.5)));}
+    slWave[i]=Math.min(1,v);
+  }
+
+  const SLICE_COLORS=['#c48e48','#8a7a6a','#f0c060','#6b4a28','#a09070','#d4a460',
+                      '#786050','#e8b840','#c48e48','#708060','#b47840','#988070',
+                      '#d0a050','#7a6a58','#f0c060','#c08038'];
+
+  /* State */
+  let slices=[0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]; /* normalized 0..1 positions */
+  let draggingIdx=-1;
+  let playing=false;
+  let playhead=new LagFilter(0,0.02);
+  let playheadT=0;
+  let activeSlice=-1;
+  let slBPM=90;
+
+  const beatMs=()=>60000/slBPM;
+
+  function sliceCount(){ return slices.length-1; }
+  function sliceDur(){ return (slices.length-1)>0 ? (2.0/(slices.length-1)).toFixed(2)+'s' : '—'; }
+
+  function updateStats(){
+    document.getElementById('sl-count').textContent=sliceCount();
+    document.getElementById('sl-dur').textContent=sliceDur();
+    document.getElementById('sl-bpm-disp').textContent=slBPM;
+    document.getElementById('sl-active').textContent=activeSlice>=0?('S'+(activeSlice+1)):'—';
+  }
+
+  /* Canvas interaction */
+  function posToNorm(x){ return Math.max(0,Math.min(1,x/W)); }
+
+  canvas.addEventListener('mousedown',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const norm=posToNorm(mx);
+    /* Find nearest non-endpoint slice */
+    let nearest=-1, nearestD=0.03;
+    for(let i=1;i<slices.length-1;i++){
+      const d=Math.abs(slices[i]-norm);
+      if(d<nearestD){ nearestD=d; nearest=i; }
+    }
+    draggingIdx=nearest;
+  });
+
+  canvas.addEventListener('mousemove',e=>{
+    if(draggingIdx<0) return;
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const norm=posToNorm(mx);
+    /* Clamp between neighbours */
+    const lo=slices[draggingIdx-1]+0.02;
+    const hi=slices[draggingIdx+1]-0.02;
+    slices[draggingIdx]=Math.max(lo,Math.min(hi,norm));
+    updateStats();
+  });
+
+  window.addEventListener('mouseup',()=>{ draggingIdx=-1; });
+
+  /* Play logic */
+  let playInterval=null;
+  let cycleIdx=0;
+
+  function startPlay(){
+    playing=true;
+    cycleIdx=0;
+    clearInterval(playInterval);
+    const sliceDurMs=(60000/slBPM)*2; /* 2 beats per full loop */
+    const perSlice=sliceDurMs/sliceCount();
+    playInterval=setInterval(()=>{
+      activeSlice=cycleIdx%sliceCount();
+      playhead.snap(slices[activeSlice]);
+      playhead.set(slices[activeSlice+1]);
+      cycleIdx++;
+      updateStats();
+    }, perSlice);
+  }
+
+  function stopPlay(){
+    playing=false; activeSlice=-1;
+    clearInterval(playInterval);
+    updateStats();
+  }
+
+  document.getElementById('sl-play').addEventListener('click',startPlay);
+  document.getElementById('sl-stop').addEventListener('click',stopPlay);
+  document.getElementById('sl-add').addEventListener('click',()=>{
+    if(sliceCount()>=16) return;
+    /* Insert midpoint of largest gap */
+    let maxGap=0, maxI=0;
+    for(let i=0;i<slices.length-1;i++){
+      const g=slices[i+1]-slices[i];
+      if(g>maxGap){ maxGap=g; maxI=i; }
+    }
+    slices.splice(maxI+1,0,(slices[maxI]+slices[maxI+1])/2);
+    updateStats();
+  });
+  document.getElementById('sl-remove').addEventListener('click',()=>{
+    if(sliceCount()<=1) return;
+    /* Remove smallest gap */
+    let minGap=99, minI=1;
+    for(let i=1;i<slices.length-1;i++){
+      const g=slices[i]-slices[i-1];
+      if(g<minGap){ minGap=g; minI=i; }
+    }
+    slices.splice(minI,1);
+    updateStats();
+  });
+  document.getElementById('sl-bpm').addEventListener('input',function(){
+    slBPM=parseInt(this.value);
+    document.getElementById('sl-bpm-val').textContent=slBPM;
+    globalBPM.setBPM(slBPM);
+    if(playing){ stopPlay(); startPlay(); }
+    updateStats();
+  });
+
+  /* Resize */
+  function resize(){
+    W=canvas.width=canvas.offsetWidth*Math.min(devicePixelRatio,2);
+    H=canvas.height=canvas.offsetHeight*Math.min(devicePixelRatio,2)||160;
+  }
+  window.addEventListener('resize',resize); resize();
+
+  let beatFlash=new LagFilter(0,0.05);
+  document.addEventListener('wavgen:beat',e=>{ if(e.detail.isQ) beatFlash.set(1); });
+
+  let lastT=0;
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    beatFlash.set(0); beatFlash.update(dt);
+    playhead.update(dt);
+
+    /* Phosphor decay */
+    ctx.globalAlpha=0.12; ctx.fillStyle='#080603'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    const padY=H*0.08, padH=H*0.84;
+
+    /* Slice regions background */
+    for(let i=0;i<slices.length-1;i++){
+      const x1=slices[i]*W, x2=slices[i+1]*W;
+      const isActive=(i===activeSlice);
+      ctx.fillStyle=isActive?'rgba(196,142,72,0.12)':'rgba(16,12,6,0.6)';
+      ctx.fillRect(x1,padY,x2-x1,padH);
+      /* Colour strip at top */
+      ctx.fillStyle=SLICE_COLORS[i%16];
+      ctx.globalAlpha=isActive?0.8:0.3;
+      ctx.fillRect(x1+1,padY,x2-x1-2,4);
+      ctx.globalAlpha=1;
+    }
+
+    /* Waveform */
+    ctx.beginPath();
+    ctx.shadowBlur=8+beatFlash.value*12; ctx.shadowColor='#c48e48';
+    for(let x=0;x<W;x++){
+      const idx=Math.floor((x/W)*SL);
+      const amp=slWave[idx]*(0.9+Math.random()*0.06);
+      const cy=padY+padH*0.5;
+      const yA=cy-amp*padH*0.45;
+      const yB=cy+amp*padH*0.45;
+      if(x===0) ctx.moveTo(x,yA); else ctx.lineTo(x,yA);
+    }
+    for(let x=W-1;x>=0;x--){
+      const idx=Math.floor((x/W)*SL);
+      const amp=slWave[idx]*(0.9+Math.random()*0.06);
+      const cy=padY+padH*0.5;
+      ctx.lineTo(x,cy+amp*padH*0.45);
+    }
+    ctx.closePath();
+    ctx.fillStyle=`rgba(196,142,72,${0.18+beatFlash.value*0.1})`;
+    ctx.fill();
+
+    /* Waveform outline */
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const idx=Math.floor((x/W)*SL);
+      const amp=slWave[idx];
+      const cy=padY+padH*0.5;
+      const y=cy-amp*padH*0.45;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=`rgba(240,192,96,${0.5+beatFlash.value*0.4})`;
+    ctx.lineWidth=1; ctx.stroke();
+    ctx.shadowBlur=0;
+
+    /* Slice markers */
+    for(let i=1;i<slices.length-1;i++){
+      const x=slices[i]*W;
+      const hover=Math.abs(slices[i]-(draggingIdx===i?slices[i]:0))<0.005;
+      ctx.beginPath();
+      ctx.moveTo(x,padY-2); ctx.lineTo(x,padY+padH+2);
+      ctx.strokeStyle=draggingIdx===i?'#f0c060':'rgba(196,142,72,0.7)';
+      ctx.lineWidth=draggingIdx===i?2:1;
+      ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+      /* Handle diamond */
+      ctx.beginPath();
+      ctx.moveTo(x,padY-6); ctx.lineTo(x+4,padY); ctx.lineTo(x,padY+6); ctx.lineTo(x-4,padY); ctx.closePath();
+      ctx.fillStyle=draggingIdx===i?'#f0c060':'#c48e48';
+      ctx.shadowBlur=draggingIdx===i?10:4; ctx.shadowColor='#c48e48';
+      ctx.fill(); ctx.shadowBlur=0;
+    }
+
+    /* Playhead sweep */
+    if(playing && activeSlice>=0){
+      const phx=playhead.value*W;
+      ctx.beginPath();
+      ctx.moveTo(phx,padY); ctx.lineTo(phx,padY+padH);
+      ctx.strokeStyle='rgba(240,192,96,0.9)';
+      ctx.lineWidth=1.5;
+      ctx.shadowBlur=12; ctx.shadowColor='#f0c060';
+      ctx.stroke(); ctx.shadowBlur=0;
+    }
+
+    /* Slice number labels */
+    ctx.fillStyle='rgba(196,142,72,0.6)';
+    ctx.font=`${10*(W/1000)}px 'Courier New',monospace`;
+    for(let i=0;i<slices.length-1;i++){
+      const x=(slices[i]+slices[i+1])*0.5*W;
+      ctx.textAlign='center';
+      ctx.fillText('S'+(i+1),x,padY+padH-4);
+    }
+
+    requestAnimationFrame(loop);
+  }
+  updateStats();
+  requestAnimationFrame(loop);
+  /* Export slices for sequencer */
+  window.getSlices=()=>slices;
+  window.getSliceColors=()=>SLICE_COLORS;
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 3 — CHOP SEQUENCER
+═════════════════════════════════════════════ -->
+<section class="hidden delay-2" id="sequencer">
+<div class="sec-label">03 — Chop Sequencer</div>
+<div class="sec-title">The MPC Grid</div>
+<div class="sec-sub">Build a pattern. Humanize adds feel. Watch the machine breathe.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+<div>
+<div class="ctrl-label" style="margin-bottom:0.5rem;">PADS — assign to sequence</div>
+<div class="pad-grid" id="mpc-pads"></div>
+</div>
+<div>
+<div class="ctrl-label" style="margin-bottom:0.5rem;">STEP SEQUENCER — 16 steps</div>
+<div class="seq-row" id="seq-steps"></div>
+<div class="seq-row" id="seq-pad-assign" style="margin-top:4px;"></div>
+<canvas height="60" id="seq-canvas" style="margin-top:8px;border:1px solid var(--border);border-radius:2px;" width="800"></canvas>
+</div>
+</div>
+<div class="ctrl-row" style="margin-top:1rem;">
+<button class="btn active" id="seq-play">▶ PLAY</button>
+<button class="btn" id="seq-stop">■ STOP</button>
+<button class="btn" id="seq-humanize">≈ HUMANIZE</button>
+<button class="btn" id="seq-clear">✕ CLEAR</button>
+<button class="btn" id="seq-export">↗ EXPORT</button>
+<div class="ctrl-group">
+<span class="ctrl-label">BPM</span>
+<input id="seq-bpm" max="180" min="60" style="width:100px;" type="range" value="90"/>
+</div>
+<span class="ctrl-value" id="seq-bpm-val">90</span>
+</div>
+<div class="export-text" id="seq-export-text" style="display:none;"></div>
+</section>
+<script>
+(function(){
+  const SEQ_STEPS=16;
+  const PAD_COLORS=['#c48e48','#8a7a6a','#f0c060','#6b4a28','#a09070','#d4a460',
+                    '#786050','#e8b840','#c48e48','#708060','#b47840','#988070',
+                    '#d0a050','#7a6a58','#f0c060','#c08038'];
+  let padAssign=Array.from({length:SEQ_STEPS},(_,i)=>i%8); /* which pad each step triggers */
+  let stepOn=Array.from({length:SEQ_STEPS},(_,i)=>[0,4,8,12].includes(i)); /* default pattern */
+  let humanize=false;
+  let humanOffsets=new Array(SEQ_STEPS).fill(0);
+  let currentStep=-1;
+  let seqBPM=90;
+  let seqPlaying=true;
+  let selectedPad=0;
+  let padActive=new Array(16).fill(new LagFilter(0,0.05));
+  padActive=padActive.map(()=>new LagFilter(0,0.05));
+
+  /* Build pads */
+  const padGrid=document.getElementById('mpc-pads');
+  for(let i=0;i<16;i++){
+    const d=document.createElement('div');
+    d.className='pad'; d.id=`pad-${i}`;
+    d.innerHTML=`<span class="pad-num">P${i+1}</span><span class="pad-color" style="background:${PAD_COLORS[i]}"></span>`;
+    d.addEventListener('click',()=>{ selectedPad=i; updatePadHighlight(); });
+    padGrid.appendChild(d);
+  }
+
+  /* Build steps */
+  const stepRow=document.getElementById('seq-steps');
+  const assignRow=document.getElementById('seq-pad-assign');
+  for(let i=0;i<SEQ_STEPS;i++){
+    const s=document.createElement('div');
+    s.className='step'+(stepOn[i]?' on':'');
+    s.id=`step-${i}`;
+    s.innerHTML=`<span class="step-label">${i+1}</span>`;
+    s.addEventListener('click',()=>{ stepOn[i]=!stepOn[i]; s.classList.toggle('on',stepOn[i]); });
+    stepRow.appendChild(s);
+
+    const a=document.createElement('div');
+    a.className='step';
+    a.id=`assign-${i}`;
+    a.style.cursor='pointer';
+    a.style.background=`rgba(${hexToRgbStr(PAD_COLORS[padAssign[i]])},0.3)`;
+    a.style.borderColor=PAD_COLORS[padAssign[i]];
+    a.innerHTML=`<span class="step-label">P${padAssign[i]+1}</span>`;
+    a.addEventListener('click',()=>{
+      padAssign[i]=(padAssign[i]+1)%16;
+      a.style.background=`rgba(${hexToRgbStr(PAD_COLORS[padAssign[i]])},0.3)`;
+      a.style.borderColor=PAD_COLORS[padAssign[i]];
+      a.querySelector('.step-label').textContent='P'+(padAssign[i]+1);
+    });
+    assignRow.appendChild(a);
+  }
+
+  function hexToRgbStr(hex){
+    const n=parseInt(hex.replace('#',''),16);
+    return `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+  }
+
+  function updatePadHighlight(){
+    for(let i=0;i<16;i++){
+      const p=document.getElementById(`pad-${i}`);
+      p.classList.toggle('active',i===selectedPad);
+    }
+  }
+  updatePadHighlight();
+
+  /* Sequencer clock */
+  let stepTimer=null;
+  function stepMs(){ return (60000/seqBPM)/4; } /* 16th notes */
+
+  function fireStep(idx){
+    const realIdx=idx%SEQ_STEPS;
+    /* Un-highlight previous */
+    for(let i=0;i<SEQ_STEPS;i++){
+      document.getElementById(`step-${i}`).classList.remove('playing');
+    }
+    currentStep=realIdx;
+    document.getElementById(`step-${realIdx}`).classList.add('playing');
+    if(stepOn[realIdx]){
+      const pad=padAssign[realIdx];
+      padActive[pad].set(1);
+      const p=document.getElementById(`pad-${pad}`);
+      if(p){ p.classList.add('active'); setTimeout(()=>p.classList.remove('active'),120); }
+    }
+  }
+
+  let stepCount=0;
+  function startSeq(){
+    seqPlaying=true;
+    clearInterval(stepTimer);
+    const fire=()=>{
+      const offset=humanize?humanOffsets[stepCount%SEQ_STEPS]:0;
+      setTimeout(()=>fireStep(stepCount++), Math.max(0,offset));
+    };
+    fire();
+    stepTimer=setInterval(fire, stepMs());
+  }
+
+  function stopSeq(){
+    seqPlaying=false;
+    clearInterval(stepTimer);
+    currentStep=-1;
+    for(let i=0;i<SEQ_STEPS;i++) document.getElementById(`step-${i}`).classList.remove('playing');
+  }
+
+  document.getElementById('seq-play').addEventListener('click',()=>{ startSeq(); });
+  document.getElementById('seq-stop').addEventListener('click',()=>{ stopSeq(); });
+  document.getElementById('seq-humanize').addEventListener('click',function(){
+    humanize=!humanize;
+    this.classList.toggle('active',humanize);
+    humanOffsets=humanOffsets.map(()=>(Math.random()-0.5)*40); /* ±20ms */
+    if(seqPlaying){ stopSeq(); startSeq(); }
+  });
+  document.getElementById('seq-clear').addEventListener('click',()=>{
+    stepOn.fill(false);
+    for(let i=0;i<SEQ_STEPS;i++) document.getElementById(`step-${i}`).classList.remove('on');
+  });
+  document.getElementById('seq-export').addEventListener('click',()=>{
+    const el=document.getElementById('seq-export-text');
+    let txt='STEP PATTERN:\n';
+    txt+='  '+Array.from({length:SEQ_STEPS},(_,i)=>(i+1).toString().padStart(2)).join(' ')+'\n';
+    txt+='  '+stepOn.map(o=>o?'■':'□').join(' ')+'\n';
+    txt+='PAD:\n';
+    txt+='  '+padAssign.map(p=>('P'+(p+1)).padStart(2)).join(' ');
+    el.textContent=txt;
+    el.style.display=el.style.display==='none'?'block':'none';
+  });
+  document.getElementById('seq-bpm').addEventListener('input',function(){
+    seqBPM=parseInt(this.value);
+    document.getElementById('seq-bpm-val').textContent=seqBPM;
+    globalBPM.setBPM(seqBPM);
+    if(seqPlaying){ stopSeq(); startSeq(); }
+  });
+
+  startSeq();
+
+  /* Canvas visualizer */
+  const seqCanvas=document.getElementById('seq-canvas');
+  const sc=seqCanvas.getContext('2d');
+  let sW=seqCanvas.width, sH=seqCanvas.height;
+  function resizeSC(){
+    sW=seqCanvas.width=seqCanvas.offsetWidth*Math.min(devicePixelRatio,2);
+    sH=seqCanvas.height=seqCanvas.offsetHeight||60;
+  }
+  window.addEventListener('resize',resizeSC); resizeSC();
+
+  let lastST=0;
+  function seqLoop(t){
+    const dt=Math.min((t-lastST)*0.001,0.05); lastST=t;
+    padActive.forEach(lag=>{ lag.set(0); lag.update(dt); });
+
+    sc.globalAlpha=0.15; sc.fillStyle='#080603'; sc.fillRect(0,0,sW,sH); sc.globalAlpha=1;
+
+    const cellW=sW/SEQ_STEPS;
+    for(let i=0;i<SEQ_STEPS;i++){
+      const x=i*cellW;
+      const isCurrent=(i===currentStep);
+      const isOn=stepOn[i];
+      const padIdx=padAssign[i];
+      const gv=padActive[padIdx].value;
+
+      if(isOn){
+        const alpha=0.15+gv*0.6;
+        sc.fillStyle=`rgba(${hexToRgbStr(PAD_COLORS[padIdx])},${alpha})`;
+        sc.shadowBlur=isCurrent?(8+gv*16):0; sc.shadowColor=PAD_COLORS[padIdx];
+        sc.fillRect(x+1,2,cellW-2,sH-4);
+        sc.shadowBlur=0;
+      }
+      if(isCurrent){
+        sc.strokeStyle=`rgba(240,192,96,0.9)`;
+        sc.lineWidth=1.5;
+        sc.strokeRect(x+1,1,cellW-2,sH-2);
+      }
+    }
+    requestAnimationFrame(seqLoop);
+  }
+  requestAnimationFrame(seqLoop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 4 — TIMESTRETCH VISUALIZER
+═════════════════════════════════════════════ -->
+<section class="hidden delay-2" id="timestretch">
+<div class="sec-label">04 — Timestretch Visualizer</div>
+<div class="sec-title">Bending Time Without Breaking Pitch</div>
+<div class="sec-sub">Observe how algorithms handle extreme stretch ratios. Artifacts emerge at the edges.</div>
+<div class="ctrl-row">
+<div class="ctrl-group">
+<span class="ctrl-label">Stretch Ratio</span>
+<input id="ts-ratio" max="200" min="50" style="width:160px;" type="range" value="100"/>
+</div>
+<span class="ctrl-value" id="ts-ratio-val">1.00×</span>
+<div class="ctrl-group">
+<span class="ctrl-label">Algorithm</span>
+<select id="ts-algo">
+<option value="phase">Phase Vocoder</option>
+<option value="granular">Granular</option>
+<option value="pitch">Pitch-Shift</option>
+</select>
+</div>
+<button class="btn active" id="ts-pitchlock">⚿ PITCH LOCK</button>
+</div>
+<div class="stats-row">
+<div class="stat"><span class="stat-label">Ratio</span><span class="stat-value" id="ts-stat-ratio">1.00×</span></div>
+<div class="stat"><span class="stat-label">Pitch</span><span class="stat-value" id="ts-stat-pitch">±0.0 st</span></div>
+<div class="stat"><span class="stat-label">Artifacts</span><span class="stat-value" id="ts-stat-art">None</span></div>
+<div class="stat"><span class="stat-label">Algorithm</span><span class="stat-value" id="ts-stat-algo">Phase Vocoder</span></div>
+</div>
+<div class="canvas-wrap">
+<div class="ctrl-label" style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--border);">ORIGINAL</div>
+<canvas height="100" id="ts-canvas-orig" width="1000"></canvas>
+</div>
+<div class="canvas-wrap">
+<div class="ctrl-label" id="ts-bottom-label" style="padding:0.4rem 0.6rem;border-bottom:1px solid var(--border);">STRETCHED — 1.00×</div>
+<canvas height="100" id="ts-canvas-stretch" width="1000"></canvas>
+</div>
+</section>
+<script>
+(function(){
+  const origCanvas=document.getElementById('ts-canvas-orig');
+  const strCanvas=document.getElementById('ts-canvas-stretch');
+  const oCtx=origCanvas.getContext('2d');
+  const sCtx=strCanvas.getContext('2d');
+  let oW=origCanvas.width, oH=origCanvas.height;
+  let sW=strCanvas.width, sH=strCanvas.height;
+
+  let ratioLag=new LagFilter(1.0,0.18);
+  let ratio=1.0, pitchLock=true, algo='phase';
+  let elapsed=0;
+
+  /* Waveform source (same Amen-style) */
+  const TS=512;
+  const tsWave=new Float32Array(TS);
+  {
+    const hits=[{p:0,a:1},{p:64,a:0.88},{p:128,a:1},{p:192,a:0.82},{p:256,a:1},{p:320,a:0.9},{p:384,a:0.78},{p:448,a:0.95}];
+    for(let i=0;i<TS;i++){
+      let v=0.05+Math.random()*0.04;
+      for(const h of hits){const d=Math.abs(i-h.p);if(d<20) v=Math.max(v,h.a*Math.exp(-(d*d)/150));}
+      tsWave[i]=Math.min(1,v);
+    }
+  }
+
+  function resize(){
+    oW=origCanvas.width=origCanvas.offsetWidth*Math.min(devicePixelRatio,2);
+    oH=origCanvas.height=origCanvas.offsetHeight||100;
+    sW=strCanvas.width=strCanvas.offsetWidth*Math.min(devicePixelRatio,2);
+    sH=strCanvas.height=strCanvas.offsetHeight||100;
+  }
+  window.addEventListener('resize',resize); resize();
+
+  document.getElementById('ts-ratio').addEventListener('input',function(){
+    ratio=parseInt(this.value)/100;
+    ratioLag.set(ratio);
+    updateStats();
+  });
+
+  document.getElementById('ts-algo').addEventListener('change',function(){
+    algo=this.value;
+    document.getElementById('ts-stat-algo').textContent=this.options[this.selectedIndex].text;
+    updateStats();
+  });
+
+  document.getElementById('ts-pitchlock').addEventListener('click',function(){
+    pitchLock=!pitchLock;
+    this.classList.toggle('active',pitchLock);
+    updateStats();
+  });
+
+  function artifactLevel(){ return (ratio>1.7||ratio<0.6)?Math.max(ratio-1.7,0.6-ratio)*5:0; }
+
+  function pitchShift(){
+    if(pitchLock) return '±0.0';
+    const semitones=Math.log2(ratio)*12;
+    return (semitones>=0?'+':'')+semitones.toFixed(1);
+  }
+
+  function updateStats(){
+    document.getElementById('ts-stat-ratio').textContent=ratio.toFixed(2)+'×';
+    document.getElementById('ts-stat-pitch').textContent=pitchShift()+' st';
+    const art=artifactLevel();
+    document.getElementById('ts-stat-art').textContent=art<0.1?'None':art<0.5?'Mild':'Severe';
+    document.getElementById('ts-ratio-val').textContent=ratio.toFixed(2)+'×';
+    document.getElementById('ts-bottom-label').textContent=`STRETCHED — ${ratio.toFixed(2)}× (${document.getElementById('ts-algo').options[document.getElementById('ts-algo').selectedIndex].text})`;
+  }
+  updateStats();
+
+  function drawWaveform(ctx, W, H, wave, stretch, artAmt, t, color='#c48e48'){
+    ctx.globalAlpha=0.1; ctx.fillStyle='#080603'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    const cy=H*0.5;
+    const scaleX=stretch;
+    ctx.shadowBlur=8; ctx.shadowColor=color;
+    ctx.strokeStyle=color; ctx.lineWidth=1.2;
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const srcX=(x/scaleX);
+      const srcIdx=Math.floor((srcX/W)*TS)%TS;
+      const amp=wave[(srcIdx+TS)%TS];
+
+      /* Artifact: smearing at extremes */
+      let artNoise=0;
+      if(artAmt>0){
+        if(algo==='phase'){
+          artNoise=(Math.sin(x*0.3+t*8)*Math.sin(x*0.07+t*3))*artAmt*0.3;
+        } else if(algo==='granular'){
+          artNoise=(Math.random()-0.5)*artAmt*0.5;
+        } else {
+          artNoise=Math.sin(x*0.15+t*12)*artAmt*0.4;
+        }
+      }
+
+      const y=cy-(amp+artNoise)*cy*0.85;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    /* Mirror */
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const srcX=(x/scaleX);
+      const srcIdx=Math.floor((srcX/W)*TS)%TS;
+      const amp=wave[(srcIdx+TS)%TS];
+      let artNoise=0;
+      if(artAmt>0){
+        if(algo==='phase') artNoise=(Math.sin(x*0.31+t*7.8)*Math.sin(x*0.08+t*2.9))*artAmt*0.3;
+        else if(algo==='granular') artNoise=(Math.random()-0.5)*artAmt*0.4;
+        else artNoise=Math.sin(x*0.16+t*11.5)*artAmt*0.35;
+      }
+      const y=cy+(amp+artNoise)*cy*0.85;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=`rgba(${color==='#c48e48'?'196,142,72':'138,122,106'},0.4)`;
+    ctx.stroke(); ctx.shadowBlur=0;
+
+    /* Fill */
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const srcX=(x/scaleX); const srcIdx=Math.floor((srcX/W)*TS)%TS;
+      const amp=wave[(srcIdx+TS)%TS];
+      x===0?ctx.moveTo(x,cy-amp*cy*0.85):ctx.lineTo(x,cy-amp*cy*0.85);
+    }
+    for(let x=W-1;x>=0;x--){
+      const srcX=(x/scaleX); const srcIdx=Math.floor((srcX/W)*TS)%TS;
+      const amp=wave[(srcIdx+TS)%TS];
+      ctx.lineTo(x,cy+amp*cy*0.85);
+    }
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${color==='#c48e48'?'196,142,72':'138,122,106'},0.07)`;
+    ctx.fill();
+
+    /* Artifact overlay smear bands */
+    if(artAmt>0.2){
+      const bands=Math.floor(artAmt*8);
+      for(let b=0;b<bands;b++){
+        const bx=(b/bands+t*0.05)%1.0;
+        const bw=(0.01+Math.random()*0.03)*W;
+        ctx.fillStyle=`rgba(196,142,72,${artAmt*0.08})`;
+        ctx.fillRect(bx*W,0,bw,H);
+      }
+    }
+  }
+
+  let lastT=0;
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    elapsed+=dt; ratioLag.update(dt);
+    const art=artifactLevel();
+    drawWaveform(oCtx, oW, oH, tsWave, 1.0, 0, elapsed, '#c48e48');
+    drawWaveform(sCtx, sW, sH, tsWave, ratioLag.value, art, elapsed, art>0.3?'#a09070':'#c48e48');
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 5 — CRATE DIGGING EXPLORER
+═════════════════════════════════════════════ -->
+<section class="hidden delay-3" id="crate">
+<div class="sec-label">05 — Crate Digging Explorer</div>
+<div class="sec-title">The Vinyl Archive</div>
+<div class="sec-sub">Hover to inspect. Drag to the sample target. Classic breaks glow amber.</div>
+<div class="ctrl-row">
+<button class="btn" id="crate-dig">↻ DIG DEEPER</button>
+<div class="stat"><span class="stat-label">In Target</span><span class="stat-value" id="crate-target-name">—</span></div>
+</div>
+<div class="crate-wrap">
+<div style="flex:2;min-width:0;">
+<div class="canvas-wrap" style="height:300px;">
+<canvas height="300" id="crate-canvas" style="cursor:pointer;" width="700"></canvas>
+</div>
+</div>
+<div class="record-info-panel" id="crate-info">
+<strong>Hover a record</strong>
+<span id="crate-info-body">Select a record from the crate to inspect it.</span>
+</div>
+</div>
+</section>
+<script>
+(function(){
+  const canvas=document.getElementById('crate-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=canvas.width, H=canvas.height;
+
+  const GENRES=['Funk','Soul','Jazz','Breaks','Latin','Reggae','R&B','Afrobeat'];
+  const DECADES=['60s','70s','80s'];
+  const CONDITIONS=['VG+','NM','G+','VG','EX'];
+  const LABELS=['Blue Note','Atlantic','Stax','Prestige','Columbia','Sire','Rough Trade','Trojan'];
+
+  /* Build 20 records */
+  function buildRecord(i, classic=false){
+    const genre=GENRES[Math.floor(Math.random()*GENRES.length)];
+    const decade=DECADES[Math.floor(Math.random()*DECADES.length)];
+    const cond=CONDITIONS[Math.floor(Math.random()*CONDITIONS.length)];
+    const label=LABELS[Math.floor(Math.random()*LABELS.length)];
+    const bpm=60+Math.floor(Math.random()*80);
+    const keys=['Am','Cm','Dm','Em','Fm','Gm','Ab','Bb'];
+    const key=keys[Math.floor(Math.random()*keys.length)];
+    const artists=['The Meters','James Brown','Nina Simone','Mongo Santamaría',
+      'Ike & Tina','Grant Green','Sly Stone','Lee Perry','Hugh Masekela',
+      'Billy Cobham','The Winstons','Clyde Stubblefield','Bob James','Roy Ayers',
+      'Charles Wright','Cymande','Average White Band','The J.B.\'s'];
+    const titles=['Cissy Strut','Funky Drummer','Soulful Strut','Soul Power',
+      'Apache','Amen Brother','Take Me to the Mardi Gras','Brain Damage',
+      'Think (About It)','Impeach The President','Fat Back','Super Bad'];
+    return {
+      id:i, genre, decade, cond, label, bpm, key,
+      artist:artists[i%artists.length],
+      title:titles[i%titles.length],
+      classic, notable:classic?'Used in 100+ hip-hop tracks':'',
+      x:0, y:0, targetted:false, hovered:false,
+      wobble:0, wobbleV:0
+    };
+  }
+
+  let records=[];
+  function buildCrate(){
+    records=Array.from({length:20},(_,i)=>buildRecord(i,i<5));
+  }
+  buildCrate();
+
+  /* Layout: vertical slabs in crate */
+  const CRATE_X=30, CRATE_Y=40, CRATE_W=W-160, CRATE_H=H-60;
+  const SLAB_W=18, SLAB_GAP=3;
+  function layoutRecords(){
+    records.forEach((r,i)=>{
+      if(!r.targetted){
+        r.x=CRATE_X+(SLAB_W+SLAB_GAP)*i;
+        r.y=CRATE_Y;
+      }
+    });
+  }
+  layoutRecords();
+
+  let hoveredRecord=null;
+  let targetRecord=null;
+  const TARGET_X=W-120, TARGET_Y=H*0.3, TARGET_W=80, TARGET_H=H*0.5;
+
+  function resize(){
+    W=canvas.width=canvas.offsetWidth*Math.min(devicePixelRatio,2);
+    H=canvas.height=canvas.offsetHeight*Math.min(devicePixelRatio,2)||300;
+    layoutRecords();
+  }
+  window.addEventListener('resize',resize); resize();
+
+  /* Mouse */
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    hoveredRecord=null;
+    records.forEach(r=>{
+      r.hovered=false;
+      if(!r.targetted){
+        if(mx>r.x&&mx<r.x+SLAB_W&&my>r.y&&my<r.y+CRATE_H){
+          r.hovered=true; hoveredRecord=r;
+        }
+      }
+    });
+    if(hoveredRecord){
+      const el=document.getElementById('crate-info-body');
+      el.innerHTML=`<b>${hoveredRecord.artist}</b><br>"${hoveredRecord.title}"<br>
+      Genre: ${hoveredRecord.genre} / ${hoveredRecord.decade}<br>
+      Label: ${hoveredRecord.label}<br>
+      Condition: ${hoveredRecord.cond}<br>
+      BPM: ${hoveredRecord.bpm} &nbsp; Key: ${hoveredRecord.key}<br>
+      ${hoveredRecord.classic?'<span style="color:#f0c060">★ CLASSIC BREAK</span><br>'+hoveredRecord.notable:''}`;
+    }
+  });
+
+  canvas.addEventListener('click',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    records.forEach(r=>{
+      if(!r.targetted&&r.hovered){
+        r.targetted=true;
+        targetRecord=r;
+        r.x=TARGET_X+10; r.y=TARGET_Y+10;
+        document.getElementById('crate-target-name').textContent=`"${r.title}" — ${r.artist}`;
+      }
+    });
+  });
+
+  document.getElementById('crate-dig').addEventListener('click',()=>{
+    buildCrate(); layoutRecords();
+    targetRecord=null;
+    document.getElementById('crate-target-name').textContent='—';
+    document.getElementById('crate-info-body').textContent='Select a record from the crate to inspect it.';
+  });
+
+  let elapsed=0, lastT=0;
+  let beatFlash=new LagFilter(0,0.06);
+  document.addEventListener('wavgen:beat',e=>{ if(e.detail.isQ) beatFlash.set(1); });
+
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    elapsed+=dt; beatFlash.set(0); beatFlash.update(dt);
+
+    ctx.globalAlpha=0.15; ctx.fillStyle='#080603'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    /* Crate outline */
+    ctx.strokeStyle='rgba(196,142,72,0.25)';
+    ctx.lineWidth=2;
+    ctx.strokeRect(CRATE_X-8, CRATE_Y-8, (SLAB_W+SLAB_GAP)*20+16, CRATE_H+16);
+    ctx.fillStyle='rgba(107,74,40,0.08)';
+    ctx.fillRect(CRATE_X-8, CRATE_Y-8, (SLAB_W+SLAB_GAP)*20+16, CRATE_H+16);
+
+    /* Crate label */
+    ctx.fillStyle='rgba(122,110,94,0.7)';
+    ctx.font=`${10*(W/700)}px 'Courier New',monospace`;
+    ctx.textAlign='left';
+    ctx.fillText('CRATE — VINYL', CRATE_X, CRATE_Y-14);
+
+    /* Target zone */
+    ctx.strokeStyle=`rgba(196,142,72,${0.3+beatFlash.value*0.3})`;
+    ctx.lineWidth=1;
+    ctx.setLineDash([4,4]);
+    ctx.strokeRect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H);
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(107,74,40,0.1)';
+    ctx.fillRect(TARGET_X, TARGET_Y, TARGET_W, TARGET_H);
+    ctx.fillStyle='rgba(196,142,72,0.4)';
+    ctx.font=`${9*(W/700)}px 'Courier New',monospace`;
+    ctx.textAlign='center';
+    ctx.fillText('SAMPLE', TARGET_X+TARGET_W/2, TARGET_Y-6);
+    ctx.fillText('TARGET', TARGET_X+TARGET_W/2, TARGET_Y-6+12);
+
+    /* Draw records */
+    records.forEach((r,i)=>{
+      if(r.targetted) return; /* draw targetted separately */
+      const hh=r.hovered?CRATE_H*1.05:CRATE_H;
+      const yOff=r.hovered?-CRATE_H*0.05:0;
+      /* Spine background */
+      const hue=r.classic?'rgba(196,142,72,':'rgba(80,70,55,';
+      ctx.fillStyle=r.hovered?`rgba(196,142,72,0.7)`:(r.classic?'rgba(107,74,40,0.9)':'rgba(30,22,12,0.95)');
+      ctx.shadowBlur=r.hovered?(12+beatFlash.value*8):0;
+      ctx.shadowColor='#c48e48';
+      ctx.fillRect(r.x, r.y+yOff, SLAB_W, hh);
+      ctx.shadowBlur=0;
+      /* Outline */
+      ctx.strokeStyle=r.classic?`rgba(240,192,96,${0.5+beatFlash.value*0.4})`:'rgba(196,142,72,0.2)';
+      ctx.lineWidth=r.hovered?1.5:0.5;
+      ctx.strokeRect(r.x, r.y+yOff, SLAB_W, hh);
+      /* Classic glow stripe */
+      if(r.classic){
+        ctx.fillStyle=`rgba(240,192,96,${0.3+beatFlash.value*0.4})`;
+        ctx.fillRect(r.x+SLAB_W-3, r.y+yOff, 3, hh);
+      }
+    });
+
+    /* Targetted record */
+    if(targetRecord){
+      const r=targetRecord;
+      ctx.fillStyle='rgba(107,74,40,0.9)';
+      ctx.shadowBlur=16; ctx.shadowColor='#c48e48';
+      ctx.fillRect(r.x, r.y, TARGET_W-20, TARGET_H-20);
+      ctx.shadowBlur=0;
+      ctx.strokeStyle='rgba(240,192,96,0.8)';
+      ctx.lineWidth=1.5;
+      ctx.strokeRect(r.x, r.y, TARGET_W-20, TARGET_H-20);
+      ctx.fillStyle='rgba(240,192,96,0.8)';
+      ctx.font=`bold ${10*(W/700)}px 'Courier New',monospace`;
+      ctx.textAlign='center';
+      ctx.save();
+      ctx.translate(r.x+(TARGET_W-20)*0.5, r.y+(TARGET_H-20)*0.5);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText(r.title.substring(0,16), 0, 0);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 6 — BREAKBEAT RECONSTRUCTION
+═════════════════════════════════════════════ -->
+<section class="hidden delay-3" id="breakbeat">
+<div class="sec-label">06 — Breakbeat Reconstruction</div>
+<div class="sec-title">Anatomy of a Break</div>
+<div class="sec-sub">"This is how jungle was born." — A 6-second drum loop became a genre's skeleton.</div>
+<div class="canvas-wrap">
+<canvas height="280" id="bb-canvas" width="1000"></canvas>
+</div>
+<div class="ctrl-row">
+<button class="btn active" id="bb-phase1">① FULL</button>
+<button class="btn" id="bb-phase2">② SEPARATE</button>
+<button class="btn" id="bb-phase3">③ SCRAMBLE</button>
+<button class="btn" id="bb-phase4">④ RECONSTRUCT</button>
+<div class="ctrl-group">
+<span class="ctrl-label">Swing</span>
+<input id="bb-swing" max="100" min="0" style="width:100px;" type="range" value="0"/>
+</div>
+<span class="ctrl-value" id="bb-swing-val">0%</span>
+</div>
+<div class="quote" style="margin-top:0.5rem;">The Amen break: 6 seconds from 1969 that created drum &amp; bass, jungle, and hip-hop as we know it.</div>
+</section>
+<script>
+(function(){
+  const canvas=document.getElementById('bb-canvas');
+  const ctx=canvas.getContext('2d');
+  let W=canvas.width, H=canvas.height;
+
+  /* 4-part drum pattern based on Amen Break grid */
+  /* Each array: 16 steps, intensity 0..1, 0=silent */
+  const PARTS={
+    kick:   [1,0,0,0, 0,0,0.4,0, 0.8,0,0,0, 0,0,0,0],
+    snare:  [0,0,0,0, 1,0,0,0.3, 0,0,0,0,   1,0,0,0.2],
+    hihat:  [0.6,0.4,0.5,0.4, 0.6,0.4,0.5,0.4, 0.6,0.4,0.5,0.4, 0.6,0.4,0.5,0.4],
+    ghost:  [0,0.2,0,0.15, 0,0.25,0,0, 0.2,0,0.1,0, 0,0.2,0,0.3]
+  };
+
+  const PART_KEYS=['kick','snare','hihat','ghost'];
+  const PART_LABELS=['KICK','SNARE','HI-HAT','GHOST'];
+  const PART_COLORS=['#f0c060','#c48e48','#8a7a6a','#6b4a28'];
+
+  let phase=1; /* 1=full, 2=separate, 3=scramble, 4=reconstruct */
+  let phaseLag=new LagFilter(1,0.3);
+  let scrambleOrder=PART_KEYS.slice();
+  let scrambled=false;
+  let swing=0;
+
+  /* Reconstructed pattern (after scramble = reordered) */
+  let reconstructParts={...PARTS};
+
+  function scrambleParts(){
+    /* Shuffle the part rows */
+    const keys=[...PART_KEYS];
+    for(let i=keys.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [keys[i],keys[j]]=[keys[j],keys[i]];
+    }
+    scrambleOrder=keys;
+    scrambled=true;
+    /* Reconstruct: new random arrangement */
+    reconstructParts={};
+    PART_KEYS.forEach((k,i)=>{ reconstructParts[k]=PARTS[keys[i]]; });
+  }
+
+  document.getElementById('bb-phase1').addEventListener('click',()=>{ phase=1; phaseLag.set(1); updateBtns(); });
+  document.getElementById('bb-phase2').addEventListener('click',()=>{ phase=2; phaseLag.set(2); updateBtns(); });
+  document.getElementById('bb-phase3').addEventListener('click',()=>{ phase=3; phaseLag.set(3); scrambleParts(); updateBtns(); });
+  document.getElementById('bb-phase4').addEventListener('click',()=>{ phase=4; phaseLag.set(4); updateBtns(); });
+  document.getElementById('bb-swing').addEventListener('input',function(){
+    swing=parseInt(this.value)/100;
+    document.getElementById('bb-swing-val').textContent=this.value+'%';
+  });
+
+  function updateBtns(){
+    ['bb-phase1','bb-phase2','bb-phase3','bb-phase4'].forEach((id,i)=>{
+      document.getElementById(id).classList.toggle('active',phase===i+1);
+    });
+  }
+
+  /* Current beat position */
+  let beatPos=0;
+  document.addEventListener('wavgen:beat',e=>{
+    beatPos=e.detail.phase;
+  });
+
+  function resize(){
+    W=canvas.width=canvas.offsetWidth*Math.min(devicePixelRatio,2);
+    H=canvas.height=canvas.offsetHeight||280;
+  }
+  window.addEventListener('resize',resize); resize();
+
+  let elapsed=0, lastT=0;
+  let beatFlash=new LagFilter(0,0.05);
+  document.addEventListener('wavgen:beat',e=>{ if(e.detail.isQ) beatFlash.set(1); });
+
+  /* Per-pad glow lags */
+  const glowLags={}; 
+  PART_KEYS.forEach(k=>{ glowLags[k]=Array.from({length:16},()=>new LagFilter(0,0.04)); });
+
+  document.addEventListener('wavgen:beat',e=>{
+    const s=e.detail.phase;
+    PART_KEYS.forEach(k=>{
+      const parts=phase===4?reconstructParts:PARTS;
+      const v=parts[k][s];
+      if(v>0) glowLags[k][s].set(v);
+    });
+  });
+
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    elapsed+=dt;
+    beatFlash.set(0); beatFlash.update(dt);
+    phaseLag.update(dt);
+    PART_KEYS.forEach(k=>glowLags[k].forEach(l=>{ l.set(l.target>0?0:l.target); l.update(dt); }));
+
+    ctx.globalAlpha=0.12; ctx.fillStyle='#080603'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+
+    const nParts=phase===1?1:4;
+    const rowH=phase===1?H*0.6:H/4-8;
+    const startY=phase===1?(H-rowH)/2:4;
+    const parts=phase===4?reconstructParts:PARTS;
+    const labels=phase===3?scrambleOrder.map(k=>PART_LABELS[PART_KEYS.indexOf(k)]):PART_LABELS;
+    const colors=phase===3?scrambleOrder.map(k=>PART_COLORS[PART_KEYS.indexOf(k)]):PART_COLORS;
+    const partData=phase===3?scrambleOrder.map(k=>PARTS[k]):PART_KEYS.map(k=>parts[k]);
+
+    for(let pi=0;pi<nParts;pi++){
+      const py=startY+pi*(rowH+8);
+      const data=partData[pi];
+      const color=colors[pi];
+      const label=labels[pi];
+
+      /* Row background */
+      ctx.fillStyle='rgba(16,12,6,0.5)';
+      ctx.fillRect(4,py,W-8,rowH);
+      ctx.strokeStyle='rgba(196,142,72,0.15)';
+      ctx.lineWidth=0.5;
+      ctx.strokeRect(4,py,W-8,rowH);
+
+      /* Label */
+      ctx.fillStyle=color;
+      ctx.font=`${9*(W/1000)}px 'Courier New',monospace`;
+      ctx.textAlign='left';
+      ctx.fillText(label,10,py+12);
+
+      /* Steps */
+      const stepW=(W-100)/16;
+      const startX=55;
+      for(let s=0;s<16;s++){
+        const sx=startX+s*stepW;
+        const v=data[s];
+        if(v>0){
+          const isCurrent=(s===beatPos);
+          const gv=glowLags[PART_KEYS[pi]]?glowLags[PART_KEYS[pi]][s].value:0;
+          const bright=isCurrent?(0.5+gv*0.5):(0.3+gv*0.4);
+          ctx.shadowBlur=isCurrent?(8+gv*12):0; ctx.shadowColor=color;
+          ctx.fillStyle=color;
+          ctx.globalAlpha=v*bright+0.1;
+          const barH=(rowH-20)*v;
+          ctx.fillRect(sx+2,py+rowH-barH-8,stepW-4,barH);
+          ctx.globalAlpha=1;
+          ctx.shadowBlur=0;
+        }
+        /* Grid line */
+        if(s%4===0){
+          ctx.fillStyle='rgba(196,142,72,0.06)';
+          ctx.fillRect(startX+s*stepW,py,1,rowH);
+        }
+      }
+
+      /* Current beat playhead */
+      const phx=startX+beatPos*stepW+stepW*0.5;
+      ctx.beginPath(); ctx.moveTo(phx,py); ctx.lineTo(phx,py+rowH);
+      ctx.strokeStyle=`rgba(240,192,96,${0.3+beatFlash.value*0.5})`;
+      ctx.lineWidth=1; ctx.stroke();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 7 — SAMPLE LAYERING SYSTEM
+═════════════════════════════════════════════ -->
+<section class="hidden delay-4" id="layering">
+<div class="sec-label">07 — Sample Layering System</div>
+<div class="sec-title">Three Channels, One Sound</div>
+<div class="sec-sub">Blend break, bass, and melody. Transient collisions marked in the master.</div>
+<div class="mixer-channels" id="mixer-channels">
+<div class="channel" id="ch-A">
+<div class="channel-label">A — Break Loop</div>
+<canvas height="60" id="ch-canvas-A" width="280"></canvas>
+<div class="fader-row" style="margin-top:0.5rem;">
+<span class="ctrl-label">VOL</span>
+<input class="ch-vol" id="vol-A" max="100" min="0" style="flex:1;" type="range" value="80"/>
+<span class="ctrl-value ch-vol-val" id="vol-A-val">80</span>
+</div>
+<div class="fader-row">
+<span class="ctrl-label">PITCH</span>
+<input class="ch-pitch" id="pitch-A" max="12" min="-12" style="flex:1;" type="range" value="0"/>
+<span class="ctrl-value ch-pitch-val" id="pitch-A-val">0 st</span>
+</div>
+<button class="btn" id="mute-A" style="margin-top:0.3rem;width:100%;">MUTE</button>
+</div>
+<div class="channel" id="ch-B">
+<div class="channel-label">B — Bass Hit</div>
+<canvas height="60" id="ch-canvas-B" width="280"></canvas>
+<div class="fader-row" style="margin-top:0.5rem;">
+<span class="ctrl-label">VOL</span>
+<input class="ch-vol" id="vol-B" max="100" min="0" style="flex:1;" type="range" value="70"/>
+<span class="ctrl-value ch-vol-val" id="vol-B-val">70</span>
+</div>
+<div class="fader-row">
+<span class="ctrl-label">PITCH</span>
+<input class="ch-pitch" id="pitch-B" max="12" min="-12" style="flex:1;" type="range" value="0"/>
+<span class="ctrl-value ch-pitch-val" id="pitch-B-val">0 st</span>
+</div>
+<button class="btn" id="mute-B" style="margin-top:0.3rem;width:100%;">MUTE</button>
+</div>
+<div class="channel" id="ch-C">
+<div class="channel-label">C — Melody</div>
+<canvas height="60" id="ch-canvas-C" width="280"></canvas>
+<div class="fader-row" style="margin-top:0.5rem;">
+<span class="ctrl-label">VOL</span>
+<input class="ch-vol" id="vol-C" max="100" min="0" style="flex:1;" type="range" value="60"/>
+<span class="ctrl-value ch-vol-val" id="vol-C-val">60</span>
+</div>
+<div class="fader-row">
+<span class="ctrl-label">PITCH</span>
+<input class="ch-pitch" id="pitch-C" max="12" min="-12" style="flex:1;" type="range" value="0"/>
+<span class="ctrl-value ch-pitch-val" id="pitch-C-val">0 st</span>
+</div>
+<button class="btn" id="mute-C" style="margin-top:0.3rem;width:100%;">MUTE</button>
+</div>
+</div>
+<div class="ctrl-label" style="margin-bottom:0.4rem;">MASTER OUTPUT — Combined Signal + Transient Collisions</div>
+<div class="canvas-wrap">
+<canvas height="80" id="master-canvas" width="1000"></canvas>
+</div>
+<div class="ctrl-row">
+<button class="btn active" id="layer-play">▶ PLAY</button>
+<button class="btn" id="layer-stop">■ STOP</button>
+<div class="stat"><span class="stat-label">Collisions</span><span class="stat-value" id="collision-count">0</span></div>
+</div>
+</section>
+<script>
+(function(){
+  const CHANNELS=['A','B','C'];
+  const CH_COLORS={'A':'#c48e48','B':'#8a7a6a','C':'#f0c060'};
+
+  /* Per-channel state */
+  const state={
+    A:{vol:new LagFilter(0.8,0.12),pitch:0,muted:false,phase:0,playhead:0},
+    B:{vol:new LagFilter(0.7,0.12),pitch:0,muted:false,phase:0.25,playhead:0},
+    C:{vol:new LagFilter(0.6,0.12),pitch:0,muted:false,phase:0.5,playhead:0}
+  };
+
+  let playing=true;
+  let collisions=0;
+
+  /* Waveform shapes */
+  const TS=128;
+  const waves={
+    A: Array.from({length:TS},(_,i)=>{
+      const hits=[0,16,32,48,64,80,96,112];
+      let v=0.04; for(const h of hits){const d=Math.abs(i-h);if(d<8) v=Math.max(v,Math.exp(-(d*d)/20));}
+      return v;
+    }),
+    B: Array.from({length:TS},(_,i)=>{
+      const v=Math.exp(-(i/TS)*4)*Math.abs(Math.sin(i*0.4));
+      return v;
+    }),
+    C: Array.from({length:TS},(_,i)=>{
+      return 0.15+0.35*Math.abs(Math.sin(i*0.2))*Math.abs(Math.sin(i*0.07));
+    })
+  };
+
+  /* Bind controls */
+  CHANNELS.forEach(ch=>{
+    document.getElementById(`vol-${ch}`).addEventListener('input',function(){
+      state[ch].vol.set(parseInt(this.value)/100);
+      document.getElementById(`vol-${ch}-val`).textContent=this.value;
+    });
+    document.getElementById(`pitch-${ch}`).addEventListener('input',function(){
+      state[ch].pitch=parseInt(this.value);
+      document.getElementById(`pitch-${ch}-val`).textContent=this.value+' st';
+    });
+    document.getElementById(`mute-${ch}`).addEventListener('click',function(){
+      state[ch].muted=!state[ch].muted;
+      this.classList.toggle('active',state[ch].muted);
+      document.getElementById(`ch-${ch}`).classList.toggle('muted',state[ch].muted);
+    });
+  });
+
+  document.getElementById('layer-play').addEventListener('click',function(){ playing=true; this.classList.add('active'); });
+  document.getElementById('layer-stop').addEventListener('click',function(){
+    playing=false;
+    document.getElementById('layer-play').classList.remove('active');
+  });
+
+  /* Channel canvases */
+  const chCtx={};
+  CHANNELS.forEach(ch=>{
+    const cv=document.getElementById(`ch-canvas-${ch}`);
+    chCtx[ch]=cv.getContext('2d');
+    function rsz(){
+      cv.width=cv.offsetWidth*Math.min(devicePixelRatio,2);
+      cv.height=cv.offsetHeight||60;
+    }
+    window.addEventListener('resize',rsz); rsz();
+  });
+
+  const masterCanvas=document.getElementById('master-canvas');
+  const mCtx=masterCanvas.getContext('2d');
+  let mW=masterCanvas.width, mH=masterCanvas.height;
+  function rsz(){ mW=masterCanvas.width=masterCanvas.offsetWidth*Math.min(devicePixelRatio,2); mH=masterCanvas.height=masterCanvas.offsetHeight||80; }
+  window.addEventListener('resize',rsz); rsz();
+
+  let elapsed=0, lastT=0;
+  let beatFlash=new LagFilter(0,0.05);
+  document.addEventListener('wavgen:beat',e=>{ if(e.detail.isQ) beatFlash.set(1); });
+
+  function loop(t){
+    const dt=Math.min((t-lastT)*0.001,0.05); lastT=t;
+    if(playing) elapsed+=dt;
+    beatFlash.set(0); beatFlash.update(dt);
+
+    CHANNELS.forEach(ch=>{
+      const s=state[ch];
+      s.vol.update(dt);
+      if(playing) s.playhead=(s.playhead+dt*0.5*(1+Math.abs(s.pitch)/12))%1;
+
+      const c=chCtx[ch];
+      const cv=document.getElementById(`ch-canvas-${ch}`);
+      const cW=cv.width, cH=cv.height;
+
+      /* Channel waveform */
+      c.globalAlpha=0.12; c.fillStyle='#080603'; c.fillRect(0,0,cW,cH); c.globalAlpha=1;
+      if(!s.muted){
+        c.shadowBlur=4+beatFlash.value*8; c.shadowColor=CH_COLORS[ch];
+        c.strokeStyle=CH_COLORS[ch]; c.lineWidth=1;
+        c.beginPath();
+        const wav=waves[ch];
+        for(let x=0;x<cW;x++){
+          const idx=Math.floor((x/cW)*TS);
+          const amp=wav[idx]*s.vol.value;
+          const cy=cH*0.5;
+          const y=cy-amp*cy*0.85;
+          x===0?c.moveTo(x,y):c.lineTo(x,y);
+        }
+        c.stroke();
+        for(let x=0;x<cW;x++){
+          const idx=Math.floor((x/cW)*TS);
+          const amp=waves[ch][idx]*s.vol.value;
+          const cy=cH*0.5;
+          const y=cy+amp*cy*0.85;
+          x===0?c.moveTo(x,y):c.lineTo(x,y);
+        }
+        c.stroke(); c.shadowBlur=0;
+        /* Playhead */
+        const phx=s.playhead*cW;
+        c.beginPath(); c.moveTo(phx,0); c.lineTo(phx,cH);
+        c.strokeStyle=`rgba(240,192,96,0.7)`; c.lineWidth=1; c.stroke();
+      }
+    });
+
+    /* Master canvas */
+    mCtx.globalAlpha=0.1; mCtx.fillStyle='#080603'; mCtx.fillRect(0,0,mW,mH); mCtx.globalAlpha=1;
+    const cy=mH*0.5;
+
+    /* Sum waveforms */
+    mCtx.beginPath();
+    mCtx.shadowBlur=6; mCtx.shadowColor='#c48e48';
+    let localCollisions=0;
+    for(let x=0;x<mW;x++){
+      let sum=0;
+      CHANNELS.forEach(ch=>{
+        if(!state[ch].muted){
+          const idx=Math.floor((x/mW)*TS);
+          sum+=waves[ch][idx]*state[ch].vol.value;
+        }
+      });
+      sum=Math.min(1,sum/2);
+      const y=cy-sum*cy*0.85;
+      x===0?mCtx.moveTo(x,y):mCtx.lineTo(x,y);
+    }
+    mCtx.strokeStyle='rgba(196,142,72,0.7)'; mCtx.lineWidth=1; mCtx.stroke();
+    /* Mirror */
+    mCtx.beginPath();
+    for(let x=0;x<mW;x++){
+      let sum=0;
+      CHANNELS.forEach(ch=>{
+        if(!state[ch].muted){ const idx=Math.floor((x/mW)*TS); sum+=waves[ch][idx]*state[ch].vol.value; }
+      });
+      sum=Math.min(1,sum/2);
+      const y=cy+sum*cy*0.85;
+      x===0?mCtx.moveTo(x,y):mCtx.lineTo(x,y);
+    }
+    mCtx.strokeStyle='rgba(138,122,106,0.3)'; mCtx.lineWidth=0.8; mCtx.stroke(); mCtx.shadowBlur=0;
+
+    /* Collision markers — where 2+ channels have high transients */
+    const transientThreshold=0.6;
+    let colCount=0;
+    for(let x=0;x<mW;x+=4){
+      let active=0;
+      CHANNELS.forEach(ch=>{
+        if(!state[ch].muted){
+          const idx=Math.floor((x/mW)*TS);
+          if(waves[ch][idx]>transientThreshold) active++;
+        }
+      });
+      if(active>=2){
+        colCount++;
+        mCtx.fillStyle=`rgba(240,80,50,0.7)`;
+        mCtx.shadowBlur=8; mCtx.shadowColor='rgba(240,80,50,0.8)';
+        mCtx.fillRect(x,0,2,mH);
+        mCtx.shadowBlur=0;
+      }
+    }
+    document.getElementById('collision-count').textContent=colCount;
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<!-- ════════════════════════════════════════════
+     SECTION 8 — ARTISTS
+═════════════════════════════════════════════ -->
+<section class="hidden delay-4" id="artists">
+<div class="sec-label">08 — Architects of the Sample</div>
+<div class="sec-title">The Producers Who Built the Language</div>
+<div class="sec-sub">Eight figures whose approach to found sound changed music permanently.</div>
+<div class="artists-grid">
+<div class="artist-card">
+<div class="artist-name">DJ Premier</div>
+<div class="artist-era">1989 — present · NYC</div>
+<div class="artist-technique">Chops jazz and soul into staccato, rhythmic loops. Signature scratch hooks over dusty 2-bar breaks. Uses the SP-1200 and MPC3000. Every sample becomes percussion as much as melody — he slices at the attack, not the note.</div>
+<div class="artist-releases">Illmatic · Moment of Truth · Hard to Earn</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Pete Rock</div>
+<div class="artist-era">1990 — present · Mount Vernon NY</div>
+<div class="artist-technique">Soul-drenched jazz flips from rare 45s. Deep crate-digger who finds obscure horn and piano loops, pitches them down, adds boom-bap drums and a 1-bar bassline. The melancholy sampling aesthetic — music that sounds like memory.</div>
+<div class="artist-releases">Mecca &amp; the Soul Brother · All Souled Out</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">J Dilla</div>
+<div class="artist-era">1974–2006 · Detroit</div>
+<div class="artist-technique">MPC3000 with the quantize off. Deliberately unquantized timing became "Dilla Time" — a layered polyrhythm where kick, snare, and sample exist in intentional tension. "Donuts" (2006): 31 tracks of pure sampled material, finished from a hospital bed. Changed the concept of feel in hip-hop.</div>
+<div class="artist-releases">Donuts · Voodoo · Ruff Draft</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Marley Marl</div>
+<div class="artist-era">1985 — present · Queensbridge NY</div>
+<div class="artist-technique">Discovered sampling drum hits (not loops) by accident when a snare triggered a sample of itself. First to build beats from individual sampled drum sounds rather than loop sections — the methodology that defines all subsequent hip-hop production.</div>
+<div class="artist-releases">In Control Vol.1 · The Juice Crew Anthology</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Large Professor</div>
+<div class="artist-era">1991 — present · Queens NY</div>
+<div class="artist-technique">Dense, sophisticated jazz sample arrangements. Extended loop structures pulled from rare LPs. Worked with Nas, Rakim, and A Tribe Called Quest during the early 90s creative peak. Known for building complete sonic environments from a single source record.</div>
+<div class="artist-releases">Illmatic sessions · The LP · 1st Class</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">The Bomb Squad</div>
+<div class="artist-era">1987–1994 · Long Island NY</div>
+<div class="artist-technique">Hank Shocklee, Chuck D, Eric "Vietnam" Sadler. Layered 10–20 samples per track into dense, dissonant sonic collages. "Fight the Power" samples James Brown, Sly Stone, and 8 others simultaneously. Treated sampling as avant-garde composition before the legal crackdown made it impossible.</div>
+<div class="artist-releases">It Takes a Nation · Fear of a Black Planet</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Madlib</div>
+<div class="artist-era">1994 — present · Oxnard CA</div>
+<div class="artist-technique">Crate-digging across jazz, Brazilian, Afrobeat, Turkish psych, and library music. Prolific and eclectic — releases under 30+ aliases. With MF DOOM on "Madvillainy": loops as non-sequitur cinema. Sampling as world music scholarship conducted through a MPC in a bedroom.</div>
+<div class="artist-releases">Madvillainy · Quasimoto · Yessir Whatever</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Amen Andrews (4hero)</div>
+<div class="artist-era">1990–2000 · London</div>
+<div class="artist-technique">Jungle pioneer who took the Amen break and shredded it through timestretching, pitch-shifting, and granular processing. At 170BPM, the break becomes abstract percussion sculpture. Demonstrated that a 6-second drum loop could become the backbone of an entire genre's rhythmic vocabulary when treated as raw material rather than source.</div>
+<div class="artist-releases">Mr Kirk's Nightmare · Two Pages · Creating Patterns</div>
+</div>
+</div>
+</section>
+<!-- ════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+═════════════════════════════════════════════ -->
+<section class="hidden delay-5" id="glossary">
+<div class="sec-label">09 — Glossary</div>
+<div class="sec-title">The Language of Sampling</div>
+<div class="sec-sub">22 terms. The vocabulary of found sound and its transformations.</div>
+<hr class="divider"/>
+<div class="glossary-grid">
+<div class="glossary-item">
+<div class="glossary-term">Amen Break</div>
+<div class="glossary-def">A 6-second drum solo from "Amen Brother" (The Winstons, 1969). Sampled in thousands of tracks; the rhythmic foundation of jungle, drum &amp; bass, and hip-hop. The most sampled recording in history.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Bit Crush</div>
+<div class="glossary-def">Reducing the bit depth of a sample (from 16-bit to 8-bit) to introduce quantization distortion and digital grit. Characteristic of early samplers like the E-mu SP-1200 (12-bit) and Akai S950.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Breakbeat</div>
+<div class="glossary-def">A drum loop taken from the break section of a funk or soul record — where the drums play alone without other instruments. The founding element of hip-hop. DJ Kool Herc isolated and extended breaks using two copies of the same record in 1973.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Chop</div>
+<div class="glossary-def">To slice a sample into segments and rearrange them into a new rhythmic pattern. The foundational technique of MPC-based production. Each chop is a decision about which moment to preserve and when to place it in time.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Creative Commons</div>
+<div class="glossary-def">A flexible copyright licensing framework that allows creators to permit certain uses of their work (sampling, remixing, commercial use) without requiring individual clearance. An alternative to the all-rights-reserved default.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Crate Digging</div>
+<div class="glossary-def">Searching through vinyl records in physical crates — at record stores, thrift shops, estate sales — to find obscure source material. The practice is both methodology and ritual. DJ Shadow epitomizes crate-digging as a way of life.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Fair Use</div>
+<div class="glossary-def">A US copyright doctrine allowing limited use of copyrighted material without permission. Factors: purpose (commercial/educational), nature of work, amount used, market impact. Transformative use strengthens fair use claims but rarely fully protects samples.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Flip</div>
+<div class="glossary-def">Transforming a recognizable sample into something unrecognizable through chopping, pitching, filtering, and rearranging. The sample flip is considered the highest form of sampling artistry — the original becomes raw material, not a reference.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Ghost Note</div>
+<div class="glossary-def">A very soft, barely audible drum hit between main beats. In sampled breaks, ghost notes on the snare create the "breathe" between the 2 and 4 — the organic feel that makes a programmed beat sound human.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Granular Timestretch</div>
+<div class="glossary-def">A time-stretching algorithm that splits audio into short grains (10–100ms) and repeats or skips them to change duration without changing pitch. Creates characteristic smearing artifacts at extreme ratios. Used in Ableton's Complex/Texture modes.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Interpolation</div>
+<div class="glossary-def">Re-recording (not sampling) a portion of an original song with new musicians. Avoids master recording rights but still requires composition rights clearance. Legally and economically different from direct sampling.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Loop</div>
+<div class="glossary-def">A sample that repeats seamlessly — a fundamental building block of sampled music. The loop is sampling's base unit: a moment from someone else's time made permanent and recombined into something new.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">MPC</div>
+<div class="glossary-def">Akai's MIDI Production Center. The dominant hip-hop production tool since 1988. The MPC60, MPC3000, and MPC2000XL define three generations of beat-making culture. J Dilla's MPC3000 timing redefined what "feel" means in rhythm.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">One-Shot</div>
+<div class="glossary-def">A sample triggered once per hit, not looped — typically a drum sound (kick, snare, hi-hat). Building beats from one-shots rather than loops (Marley Marl's innovation) gave producers rhythmic control impossible with looped breaks.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Phase Vocoder</div>
+<div class="glossary-def">A frequency-domain time-stretching algorithm using Short-Time Fourier Transform (STFT). Analyzes and resynthesizes audio preserving spectral content. Higher quality than granular at moderate ratios; develops phase artifacts ("phasiness") at extremes.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Pitch Shift</div>
+<div class="glossary-def">Changing a sample's pitch without changing its duration. Requires a time-stretching algorithm operating inversely. Producers use pitch shift to fit samples into a song's key or to create harmonic variation from a single source.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Quantize</div>
+<div class="glossary-def">Snapping note and sample triggers to the nearest grid division. Over-quantization removes the human timing variations that create feel. J Dilla deliberately turned quantize off to preserve (and exaggerate) the natural drift between beats.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">S950</div>
+<div class="glossary-def">Akai S950 — a 12-bit, 48kHz hardware sampler widely used in hip-hop and jungle production. Its limited bit depth creates a characteristic grittiness; early house and hip-hop producers treated this limitation as a feature, not a bug.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Sample Clearance</div>
+<div class="glossary-def">Legal permission obtained from both the master recording holder (label/artist) and composition rights holder (songwriter/publisher) to use a sample commercially. Post-1991, legally mandatory. Can cost tens of thousands of dollars or be refused entirely.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Swing</div>
+<div class="glossary-def">A timing pattern where even subdivisions are played slightly uneven — typically the second 16th note in a pair is delayed. MPC swing pushes off-beats back, creating the "bounce" that separates hip-hop from metronomic electronic music.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">Timestretching</div>
+<div class="glossary-def">Changing a sample's duration without changing its pitch — allowing material recorded at any tempo to fit a new BPM. Algorithms include granular, phase vocoder, and formant-preserving methods. The key technology enabling sample-based production across tempos.</div>
+</div>
+<div class="glossary-item">
+<div class="glossary-term">44.1kHz</div>
+<div class="glossary-def">Standard digital audio sample rate (44,100 samples per second). Derived from the Nyquist theorem: must be at least twice the highest audible frequency (20kHz). CD quality. Early samplers used lower rates (22kHz, 11kHz) producing characteristic digital degradation.</div>
+</div>
+</div>
+</section>
+<!-- ════ INTERSECTION OBSERVER + NAV WIRING ════ -->
+<script>
+/* ── IntersectionObserver — reveal on scroll ── */
+(function(){
+  const sections=document.querySelectorAll('section.hidden');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  },{ threshold:0.10 });
+  sections.forEach(s=>obs.observe(s));
+})();
+
+/* ── Active nav link on scroll ── */
+(function(){
+  const navLinks=document.querySelectorAll('nav a[data-nav]');
+  const sectionIds=['hero','slicer','sequencer','timestretch','crate','breakbeat','layering','artists','glossary'];
+
+  function updateNav(){
+    const scrollY=window.scrollY+80;
+    let active='hero';
+    for(const id of sectionIds){
+      const el=document.getElementById(id);
+      if(el&&el.offsetTop<=scrollY) active=id;
+    }
+    navLinks.forEach(a=>{
+      a.classList.toggle('active',a.getAttribute('data-nav')===active);
+    });
+  }
+
+  window.addEventListener('scroll',updateNav,{passive:true});
+  updateNav();
+})();
+
+/* ── Touch support for sliders ── */
+document.querySelectorAll('input[type=range]').forEach(el=>{
+  el.addEventListener('touchstart',()=>{},{ passive:true });
+});
+
+/* ── Hero canvas resize on load ── */
+window.addEventListener('load',()=>{
+  const hc=document.getElementById('hero-canvas');
+  if(hc){
+    hc.width=window.innerWidth*Math.min(devicePixelRatio,2);
+    hc.height=540*Math.min(devicePixelRatio,2);
+  }
+});
+
+/* ── Scanline overlay vignette ── */
+(function(){
+  const body=document.body;
+  /* Already handled by CSS body::before — no extra canvas needed */
+})();
+
+console.log('%cSAMPLING LAB — WAVGEN', 'color:#c48e48;font-size:1.2rem;font-family:monospace;font-weight:bold;');
+console.log('%cInside the memory engine of sampled music.', 'color:#7a6e5e;font-family:monospace;');
+</script>

@@ -1,0 +1,1613 @@
+---
+layout: world.njk
+title: "SOA & Microservices: A Visual Guide"
+description: "Immersive data world exploring soa microservices"
+domain: data
+permalink: /data/soa-microservices/
+---
+
+
+<!-- ═══════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════ -->
+<nav>
+<div class="nav-inner">
+<span class="nav-logo">⬡ SOA &amp; µServices</span>
+<a class="nav-link" href="#hero">Home</a>
+<a class="nav-link" href="#timeline">Timeline</a>
+<a class="nav-link" href="#soa">SOA</a>
+<a class="nav-link" href="#microservices">Microservices</a>
+<a class="nav-link" href="#compare">Compare</a>
+<a class="nav-link" href="#visualizer">Visualizer</a>
+<a class="nav-link" href="#patterns">Patterns</a>
+<a class="nav-link" href="#resources">Resources</a>
+<a class="nav-link" href="#roadmap">Roadmap</a>
+<a class="nav-link" href="#expert-resources">Expert</a>
+<a class="nav-link" href="#key-terms">Terms</a>
+<a class="nav-link" href="#knowledge-check">Quiz</a>
+<a class="nav-link" href="#cheatsheet">Cheat Sheet</a>
+</div>
+</nav>
+<!-- ═══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+<div class="container">
+<div class="hero-badge">🏗 Architecture Patterns · Visual Learning Guide</div>
+<h1 class="hero-title">From Monolith<br/>to Microservices</h1>
+<p class="hero-subtitle">A visual, hands-on guide to Service-Oriented Architecture and Microservices — when to use each, how they evolved, and the patterns that make them work.</p>
+<div class="hero-ctas">
+<a class="btn-primary" href="#timeline">Start Learning →</a>
+<a class="btn-secondary" href="#cheatsheet">Quick Reference</a>
+</div>
+<!-- Hero Evolution Diagram -->
+<div class="hero-diagram">
+<svg aria-label="Evolution from Monolith to SOA to Microservices" role="img" viewbox="0 0 860 220" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="hg1" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#f5a623" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#e8872a" stop-opacity="0.9"></stop>
+</lineargradient>
+<lineargradient id="hg2" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#00b4d8" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#0077b6" stop-opacity="0.9"></stop>
+</lineargradient>
+<lineargradient id="hg3" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4ade80" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#22c55e" stop-opacity="0.9"></stop>
+</lineargradient>
+<filter id="glow"><fegaussianblur result="blur" stddeviation="3"></fegaussianblur><femerge><femergenode in="blur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+<!-- Background panels -->
+<rect fill="rgba(22,33,62,0.85)" height="180" rx="14" stroke="rgba(245,166,35,0.25)" stroke-width="1.5" width="240" x="8" y="20"></rect>
+<rect fill="rgba(22,33,62,0.85)" height="180" rx="14" stroke="rgba(0,180,216,0.25)" stroke-width="1.5" width="240" x="308" y="20"></rect>
+<rect fill="rgba(22,33,62,0.85)" height="180" rx="14" stroke="rgba(74,222,128,0.25)" stroke-width="1.5" width="240" x="608" y="20"></rect>
+<!-- Era labels -->
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1" text-anchor="middle" x="128" y="46">MONOLITH</text>
+<text fill="#00b4d8" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1" text-anchor="middle" x="428" y="46">SOA  (2000s)</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1" text-anchor="middle" x="728" y="46">MICROSERVICES</text>
+<!-- MONOLITH: big single block -->
+<rect fill="url(#hg1)" height="116" opacity="0.18" rx="8" width="148" x="54" y="62"></rect>
+<rect fill="none" height="116" rx="8" stroke="url(#hg1)" stroke-width="2" width="148" x="54" y="62"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="128" y="95">UI Layer</text>
+<line stroke="rgba(245,166,35,0.25)" stroke-width="1" x1="64" x2="192" y1="102" y2="102"></line>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="128" y="120">Business Logic</text>
+<line stroke="rgba(245,166,35,0.25)" stroke-width="1" x1="64" x2="192" y1="130" y2="130"></line>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="128" y="148">Data Access</text>
+<line stroke="rgba(245,166,35,0.25)" stroke-width="1" x1="64" x2="192" y1="158" y2="158"></line>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="128" y="172">🗄 DB (single)</text>
+<!-- Arrow 1 -->
+<line marker-end="url(#arr)" stroke="rgba(255,255,255,0.3)" stroke-width="2" x1="256" x2="302" y1="110" y2="110"></line>
+<text fill="rgba(255,255,255,0.4)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="279" y="105">evolves</text>
+<!-- SOA: ESB hub + services -->
+<ellipse cx="428" cy="120" fill="rgba(0,180,216,0.15)" rx="30" ry="22" stroke="#00b4d8" stroke-width="2"></ellipse>
+<text fill="#00b4d8" font-family="Inter,sans-serif" font-size="9" font-weight="700" text-anchor="middle" x="428" y="116">ESB</text>
+<text fill="#00b4d8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="428" y="128">Bus</text>
+<!-- SOA services -->
+<rect fill="rgba(0,180,216,0.1)" height="28" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="54" x="330" y="68"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="357" y="86">Orders Svc</text>
+<rect fill="rgba(0,180,216,0.1)" height="28" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="54" x="330" y="148"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="357" y="166">User Svc</text>
+<rect fill="rgba(0,180,216,0.1)" height="28" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="54" x="466" y="68"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="493" y="86">Payment Svc</text>
+<rect fill="rgba(0,180,216,0.1)" height="28" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="54" x="466" y="148"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="493" y="166">Inventory</text>
+<!-- ESB connections -->
+<line class="flow-line" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="384" x2="402" y1="82" y2="105"></line>
+<line class="flow-line-2" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="384" x2="402" y1="162" y2="135"></line>
+<line class="flow-line-3" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="464" x2="455" y1="82" y2="105"></line>
+<line class="flow-line" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="464" x2="455" y1="162" y2="135"></line>
+<!-- Arrow 2 -->
+<line stroke="rgba(255,255,255,0.3)" stroke-width="2" x1="556" x2="602" y1="110" y2="110"></line>
+<text fill="rgba(255,255,255,0.4)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="579" y="105">evolves</text>
+<!-- MICROSERVICES: grid of small boxes -->
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="618" y="60"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="640" y="75">Auth</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="640" y="86">:3001</text>
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="672" y="60"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="694" y="75">Orders</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="694" y="86">:3002</text>
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="726" y="60"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="748" y="75">Cart</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="748" y="86">:3003</text>
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="618" y="104"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="640" y="119">Payment</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="640" y="130">:3004</text>
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="672" y="104"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="694" y="119">Inventory</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="694" y="130">:3005</text>
+<rect fill="rgba(74,222,128,0.1)" height="34" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="44" x="726" y="104"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="748" y="119">Notify</text>
+<text fill="#4ade80" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="748" y="130">:3006</text>
+<!-- API Gateway box -->
+<rect fill="rgba(167,139,250,0.12)" height="28" rx="6" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" width="70" x="672" y="152"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="9" font-weight="700" text-anchor="middle" x="707" y="170">API Gateway</text>
+<!-- Gateway connections -->
+<line class="flow-line-2" stroke="rgba(74,222,128,0.35)" stroke-width="1" x1="694" x2="640" y1="152" y2="138"></line>
+<line class="flow-line-3" stroke="rgba(74,222,128,0.35)" stroke-width="1" x1="707" x2="694" y1="152" y2="138"></line>
+<line class="flow-line" stroke="rgba(74,222,128,0.35)" stroke-width="1" x1="720" x2="748" y1="152" y2="138"></line>
+<!-- Arrow markers -->
+<defs>
+<marker id="arr" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="3">
+<path d="M0,0 L0,6 L8,3 z" fill="rgba(255,255,255,0.35)"></path>
+</marker>
+</defs>
+<line marker-end="url(#arr)" stroke="rgba(255,255,255,0.3)" stroke-width="2" x1="556" x2="604" y1="110" y2="110"></line>
+<line marker-end="url(#arr)" stroke="rgba(255,255,255,0.3)" stroke-width="2" x1="256" x2="304" y1="110" y2="110"></line>
+<!-- Era date labels -->
+<text fill="rgba(245,166,35,0.5)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="128" y="196">1970s – 1990s</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="428" y="196">2000s – 2010s</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="728" y="196">2010s → present</text>
+</svg>
+</div>
+</div>
+</section>
+<!-- ══ TIMELINE SECTION ══ -->
+<section id="timeline">
+<div class="container text-center">
+<p class="section-label">The Journey</p>
+<h2 class="section-title">Three Eras of Architecture</h2>
+<p class="section-subtitle">Software architecture didn't jump from monolith to microservices overnight — it evolved through hard-won lessons over decades.</p>
+<div class="timeline">
+<!-- ERA 1: Monolith -->
+<div class="timeline-item">
+<div class="timeline-side">
+<div class="timeline-content">
+<div class="timeline-era">Era 1 · 1970s–1990s</div>
+<h3>🏢 The Monolith</h3>
+<p>Everything in one deployable unit. The UI, business logic, and database access compiled and shipped together. Simple to develop and debug — until the codebase grows and teams multiply.</p>
+<br/>
+<div class="code-block" style="font-size:0.78rem;">
+<span class="code-comment">// All in one process</span>
+app/
+  ├── controllers/
+  ├── services/
+  ├── models/
+  └── <span class="code-key">main.jar</span> <span class="code-comment">← deploy EVERYTHING</span>
+</div>
+<br/>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-green">✓ Simple deploy</span>
+<span class="badge badge-green">✓ Easy debug</span>
+<span class="badge badge-red">✗ Coupled scaling</span>
+<span class="badge badge-red">✗ Long build times</span>
+</div>
+</div>
+</div>
+<div class="timeline-center">🏢</div>
+<div class="timeline-side"></div>
+</div>
+<!-- ERA 2: SOA -->
+<div class="timeline-item">
+<div class="timeline-side"></div>
+<div class="timeline-center" style="border-color:var(--accent-teal);">🔌</div>
+<div class="timeline-side">
+<div class="timeline-content">
+<div class="timeline-era" style="color:var(--accent-teal);">Era 2 · 2000s–2010s</div>
+<h3>🔌 Service-Oriented Architecture</h3>
+<p>Enterprises decomposed monoliths into <strong style="color:var(--text-primary)">coarse-grained services</strong> connected by an Enterprise Service Bus (ESB). Contracts via WSDL, communication via SOAP. Solved the tangle — but introduced the ESB as a new bottleneck.</p>
+<br/>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-teal">✓ Reusable services</span>
+<span class="badge badge-teal">✓ Loose coupling</span>
+<span class="badge badge-red">✗ ESB = bottleneck</span>
+<span class="badge badge-red">✗ Heavy XML/SOAP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ERA 3: Microservices -->
+<div class="timeline-item">
+<div class="timeline-side">
+<div class="timeline-content">
+<div class="timeline-era" style="color:var(--accent-green);">Era 3 · 2010s–Present</div>
+<h3>⚡ Microservices</h3>
+<p>Netflix, Amazon, and Uber pioneered running hundreds of <strong style="color:var(--text-primary)">small, independently deployable services</strong> communicating via lightweight HTTP/REST or message queues. Docker and Kubernetes made this operationally feasible at scale.</p>
+<br/>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-green">✓ Independent deploy</span>
+<span class="badge badge-green">✓ Polyglot stacks</span>
+<span class="badge badge-green">✓ Fine-grained scale</span>
+<span class="badge badge-red">✗ Distributed complexity</span>
+</div>
+</div>
+</div>
+<div class="timeline-center" style="border-color:var(--accent-green);">⚡</div>
+<div class="timeline-side"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     SOA DEEP DIVE
+═══════════════════════════════════════════════ -->
+<section id="soa">
+<div class="container text-center">
+<p class="section-label">Deep Dive</p>
+<h2 class="section-title" style="color:var(--accent-teal)">Service-Oriented Architecture</h2>
+<p class="section-subtitle">SOA brought modularity to the enterprise — but at the cost of a heavy central bus. Understanding SOA makes you a better microservices architect.</p>
+<div class="card-grid card-grid-2" style="text-align:left;">
+<div class="card">
+<div class="card-icon" style="background:rgba(0,180,216,0.12);color:var(--accent-teal);">🔌</div>
+<h3>What is SOA?</h3>
+<p style="margin-bottom:1rem;">SOA is an architectural style where software components expose their functionality as <strong style="color:var(--text-primary)">services</strong> with well-defined interfaces. Services are reusable, loosely coupled, and communicate over a network.</p>
+<p style="font-size:0.88rem;">The 4 core principles: <strong style="color:var(--text-primary)">service contract</strong> (explicit interface), <strong style="color:var(--text-primary)">loose coupling</strong>, <strong style="color:var(--text-primary)">abstraction</strong> (hide internals), and <strong style="color:var(--text-primary)">reusability</strong> (shared across consumers).</p>
+<br/><div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-teal">WSDL contracts</span>
+<span class="badge badge-orange">WS-Security</span>
+<span class="badge badge-purple">WS-* standards</span>
+</div>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(0,180,216,0.12);color:var(--accent-teal);">🚌</div>
+<h3>The Enterprise Service Bus (ESB)</h3>
+<p style="margin-bottom:0.75rem;">The ESB is SOA's central nervous system — middleware handling <strong style="color:var(--text-primary)">message routing, transformation, protocol mediation, and orchestration</strong>. Powerful but a single point of failure.</p>
+<svg style="width:100%;height:110px;margin:0.5rem 0;" viewbox="0 0 420 130">
+<rect fill="rgba(0,180,216,0.12)" height="36" rx="6" stroke="#00b4d8" stroke-width="2" width="120" x="150" y="50"></rect>
+<text fill="#00b4d8" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="210" y="73">ESB</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="10" y="18"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="55" y="34">CRM Service</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="10" y="54"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="55" y="70">ERP Service</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="10" y="90"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="55" y="106">HR Service</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="320" y="18"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="365" y="34">Web App</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="320" y="54"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="365" y="70">Mobile</text>
+<rect fill="rgba(22,33,62,1)" height="24" rx="5" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="90" x="320" y="90"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="365" y="106">Partner API</text>
+<line class="flow-line" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="100" x2="150" y1="30" y2="60"></line>
+<line class="flow-line-2" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="100" x2="150" y1="66" y2="68"></line>
+<line class="flow-line-3" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="100" x2="150" y1="102" y2="76"></line>
+<line class="flow-line" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="270" x2="320" y1="60" y2="30"></line>
+<line class="flow-line-2" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="270" x2="320" y1="68" y2="66"></line>
+<line class="flow-line-3" stroke="rgba(0,180,216,0.5)" stroke-width="1.5" x1="270" x2="320" y1="76" y2="102"></line>
+</svg>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(0,180,216,0.12);color:var(--accent-teal);">📋</div>
+<h3>SOAP vs REST</h3>
+<p style="margin-bottom:0.75rem;">SOA traditionally used <strong style="color:var(--text-primary)">SOAP</strong> — an XML-based protocol with formal contracts (WSDL). Modern SOA often uses REST for lighter communication.</p>
+<div class="code-block" style="font-size:0.78rem;"><span class="code-comment">&lt;!-- SOAP envelope --&gt;</span>
+<span class="code-key">&lt;soap:Envelope&gt;</span>
+<span class="code-key">&lt;soap:Body&gt;</span>
+<span class="code-val">&lt;getOrder&gt;&lt;id&gt;42&lt;/id&gt;&lt;/getOrder&gt;</span>
+<span class="code-key">&lt;/soap:Body&gt;</span>
+<span class="code-key">&lt;/soap:Envelope&gt;</span>
+<span class="code-comment">// REST equivalent</span>
+<span class="code-key">GET</span> <span class="code-val">/orders/42</span> <span class="code-comment">Accept: application/json</span></div>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(0,180,216,0.12);color:var(--accent-teal);">🏆</div>
+<h3>When SOA Still Wins</h3>
+<ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
+<li style="display:flex;gap:0.6rem;"><span style="color:var(--accent-teal);">▸</span><span style="font-size:0.87rem;color:var(--text-secondary);"><strong style="color:var(--text-primary)">Legacy integration</strong> — connecting COBOL mainframes to modern apps via protocol translation</span></li>
+<li style="display:flex;gap:0.6rem;"><span style="color:var(--accent-teal);">▸</span><span style="font-size:0.87rem;color:var(--text-secondary);"><strong style="color:var(--text-primary)">Regulated industries</strong> — banking &amp; healthcare needing auditable, formal message flow</span></li>
+<li style="display:flex;gap:0.6rem;"><span style="color:var(--accent-teal);">▸</span><span style="font-size:0.87rem;color:var(--text-secondary);"><strong style="color:var(--text-primary)">Formal contracts</strong> — WSDL/WS-Policy provides machine-verifiable service agreements</span></li>
+<li style="display:flex;gap:0.6rem;"><span style="color:var(--accent-teal);">▸</span><span style="font-size:0.87rem;color:var(--text-secondary);"><strong style="color:var(--text-primary)">Small/mid teams</strong> — microservices operational overhead can overwhelm teams under ~30 engineers</span></li>
+<li style="display:flex;gap:0.6rem;"><span style="color:var(--accent-teal);">▸</span><span style="font-size:0.87rem;color:var(--text-secondary);"><strong style="color:var(--text-primary)">Coarse-grained decomposition</strong> — fewer, larger services are easier to govern than hundreds of tiny ones</span></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     MICROSERVICES DEEP DIVE
+═══════════════════════════════════════════════ -->
+<section id="microservices">
+<div class="container text-center">
+<p class="section-label">Deep Dive</p>
+<h2 class="section-title" style="color:var(--accent-green)">Microservices Architecture</h2>
+<p class="section-subtitle">Small services, loosely coupled, independently deployable. Learn the patterns that make microservices work in production.</p>
+<div class="card-grid card-grid-2" style="text-align:left;margin-bottom:2rem;">
+<div class="card">
+<div class="card-icon" style="background:rgba(74,222,128,0.1);color:var(--accent-green);">🚪</div>
+<h3>API Gateway Pattern</h3>
+<p style="margin-bottom:0.75rem;">A single entry point for all clients — handling <strong style="color:var(--text-primary)">auth, rate limiting, SSL termination, request routing, and response aggregation</strong>. Clients never talk to services directly.</p>
+<svg style="width:100%;height:90px;margin:0.5rem 0;" viewbox="0 0 380 100">
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" width="60" x="5" y="34"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="35" y="50">Mobile</text>
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" width="60" x="5" y="66"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="35" y="82">Web SPA</text>
+<rect fill="rgba(167,139,250,0.12)" height="52" rx="8" stroke="#a78bfa" stroke-width="2" width="80" x="118" y="24"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="158" y="48">API</text>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="158" y="63">Gateway</text>
+<rect fill="rgba(74,222,128,0.08)" height="22" rx="5" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="68" x="258" y="6"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="292" y="21">Auth Svc</text>
+<rect fill="rgba(74,222,128,0.08)" height="22" rx="5" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="68" x="258" y="36"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="292" y="51">Orders Svc</text>
+<rect fill="rgba(74,222,128,0.08)" height="22" rx="5" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="68" x="258" y="66"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="292" y="81">User Svc</text>
+<line class="flow-line" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" x1="65" x2="118" y1="46" y2="46"></line>
+<line class="flow-line-2" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" x1="65" x2="118" y1="78" y2="62"></line>
+<line class="flow-line" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="198" x2="258" y1="38" y2="17"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="198" x2="258" y1="50" y2="47"></line>
+<line class="flow-line-3" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="198" x2="258" y1="62" y2="77"></line>
+</svg>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-purple">Kong</span><span class="badge badge-purple">AWS API GW</span><span class="badge badge-purple">NGINX</span>
+</div>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(74,222,128,0.1);color:var(--accent-green);">🐳</div>
+<h3>Docker + Kubernetes</h3>
+<p style="margin-bottom:0.75rem;">Microservices and containers are a natural pair. Docker packages each service with its dependencies. Kubernetes orchestrates them at scale — auto-healing, rolling deploys, and horizontal scaling.</p>
+<div class="code-block" style="font-size:0.78rem;"><span class="code-key">FROM</span> node:20-alpine
+<span class="code-key">WORKDIR</span> <span class="code-val">/app</span>
+<span class="code-key">COPY</span> package*.json ./
+<span class="code-key">RUN</span> npm ci --only=production
+<span class="code-key">CMD</span> [<span class="code-val">"node"</span>, <span class="code-val">"server.js"</span>]
+
+<span class="code-comment"># scale horizontally</span>
+<span class="code-key">kubectl scale</span> deployment orders <span class="code-val">--replicas=10</span></div>
+<br/><div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-teal">Immutable</span><span class="badge badge-teal">Auto-healing</span><span class="badge badge-teal">Rolling deploys</span>
+</div>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(74,222,128,0.1);color:var(--accent-green);">🔍</div>
+<h3>Service Discovery</h3>
+<p style="margin-bottom:0.75rem;">In dynamic cloud environments, services spin up and down — IPs change. Service Discovery lets services find each other automatically via a registry.</p>
+<div class="code-block" style="font-size:0.78rem;"><span class="code-comment"># Client-side (Eureka/Consul)</span>
+<span class="code-key">1.</span> Service registers: <span class="code-val">POST /v1/agent/service/register</span>
+<span class="code-key">2.</span> Client queries: <span class="code-val">GET /v1/catalog/service/orders</span>
+<span class="code-key">3.</span> Client load-balances across instances
+
+<span class="code-comment"># Server-side (K8s ClusterIP)</span>
+<span class="code-key">orders.default.svc.cluster.local:8080</span></div>
+<br/><div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-green">Consul</span><span class="badge badge-green">Eureka</span><span class="badge badge-green">K8s DNS</span>
+</div>
+</div>
+<div class="card">
+<div class="card-icon" style="background:rgba(74,222,128,0.1);color:var(--accent-green);">⚡</div>
+<h3>Circuit Breaker</h3>
+<p style="margin-bottom:0.75rem;">Prevents cascading failures. When a service fails too often, the circuit opens — calls fail fast, giving the downstream service time to recover.</p>
+<div class="cb-states">
+<div class="cb-state cb-closed"><div class="cb-icon">🟢</div><h4 style="color:var(--accent-green);">CLOSED</h4><p style="font-size:0.76rem;">Normal — requests pass through.</p></div>
+<div class="cb-state cb-open"><div class="cb-icon">🔴</div><h4 style="color:var(--accent-red);">OPEN</h4><p style="font-size:0.76rem;">Threshold exceeded — fail fast.</p></div>
+<div class="cb-state cb-half"><div class="cb-icon">🟡</div><h4 style="color:var(--accent-orange);">HALF-OPEN</h4><p style="font-size:0.76rem;">Trial probe — success or re-open.</p></div>
+</div>
+<br/><div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+<span class="badge badge-orange">Resilience4j</span><span class="badge badge-orange">Hystrix</span><span class="badge badge-orange">Polly</span>
+</div>
+</div>
+</div>
+<div class="card" style="text-align:left;">
+<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
+<div class="card-icon" style="background:rgba(74,222,128,0.1);color:var(--accent-green);margin-bottom:0;">📋</div>
+<div><h3 style="margin:0;">The 12-Factor App</h3><p style="font-size:0.85rem;margin:0.2rem 0 0;">Heroku's methodology for building cloud-native, microservices-ready applications</p></div>
+</div>
+<div class="factor-grid">
+<div class="factor-item"><div class="fi-num">I</div><div class="fi-name">Codebase</div><div class="fi-desc">One repo, many deploys</div></div>
+<div class="factor-item"><div class="fi-num">II</div><div class="fi-name">Dependencies</div><div class="fi-desc">Explicitly declared &amp; isolated</div></div>
+<div class="factor-item"><div class="fi-num">III</div><div class="fi-name">Config</div><div class="fi-desc">Stored in environment vars</div></div>
+<div class="factor-item"><div class="fi-num">IV</div><div class="fi-name">Backing Services</div><div class="fi-desc">Treat as attached resources</div></div>
+<div class="factor-item"><div class="fi-num">V</div><div class="fi-name">Build/Release/Run</div><div class="fi-desc">Strictly separated stages</div></div>
+<div class="factor-item"><div class="fi-num">VI</div><div class="fi-name">Processes</div><div class="fi-desc">Execute as stateless procs</div></div>
+<div class="factor-item"><div class="fi-num">VII</div><div class="fi-name">Port Binding</div><div class="fi-desc">Export via port binding</div></div>
+<div class="factor-item"><div class="fi-num">VIII</div><div class="fi-name">Concurrency</div><div class="fi-desc">Scale via process model</div></div>
+<div class="factor-item"><div class="fi-num">IX</div><div class="fi-name">Disposability</div><div class="fi-desc">Fast startup &amp; graceful shutdown</div></div>
+<div class="factor-item"><div class="fi-num">X</div><div class="fi-name">Dev/Prod Parity</div><div class="fi-desc">Keep environments similar</div></div>
+<div class="factor-item"><div class="fi-num">XI</div><div class="fi-name">Logs</div><div class="fi-desc">Treat as event streams</div></div>
+<div class="factor-item"><div class="fi-num">XII</div><div class="fi-name">Admin Processes</div><div class="fi-desc">Run as one-off processes</div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     COMPARISON TABLE
+═══════════════════════════════════════════════ -->
+<section id="compare">
+<div class="container text-center">
+<p class="section-label">Side by Side</p>
+<h2 class="section-title">SOA vs Microservices</h2>
+<p class="section-subtitle">Not enemies — SOA is the parent, microservices the evolution. Here's exactly where they differ.</p>
+<div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border-subtle);">
+<table class="comp-table">
+<thead>
+<tr>
+<th style="width:22%;">Dimension</th>
+<th style="width:39%;">🔌 SOA</th>
+<th style="width:39%;">⚡ Microservices</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Service Size</td><td>Coarse-grained — a "service" may contain many business functions (e.g. entire order management)</td><td>Fine-grained — each service does one thing (e.g. just placing an order)</td></tr>
+<tr><td>Communication</td><td>ESB middleware, SOAP/XML, heavy WS-* protocols, synchronous orchestration</td><td>Direct HTTP/REST, gRPC, or async message queues (Kafka, RabbitMQ) — no central bus</td></tr>
+<tr><td>Data Ownership</td><td>Shared database is common — multiple services may share a schema or DB instance</td><td>Database per service — each service owns its data store; no shared schemas</td></tr>
+<tr><td>Coupling</td><td>Loose at the service level, but tightly coupled through the ESB and shared data</td><td>Loosely coupled end-to-end; services only know about each other's APIs</td></tr>
+<tr><td>Deployment</td><td>Services often deployed together or on shared app servers; coordinated releases</td><td>Each service deployed independently on its own schedule — continuous delivery</td></tr>
+<tr><td>Team Size</td><td>Works well with centralized teams; governance by an architecture board</td><td>"Two-pizza team" rule (Amazon) — small autonomous teams own their service end-to-end</td></tr>
+<tr><td>Scalability</td><td>Scale entire service groups; less granular control</td><td>Scale individual services independently — only scale what needs it</td></tr>
+<tr><td>Technology</td><td>Usually standardized on one stack per enterprise (Java EE, .NET)</td><td>Polyglot — each team picks the right language/DB for their service</td></tr>
+<tr><td>Governance</td><td>Centralized — enterprise architecture team enforces standards</td><td>Decentralized — teams govern themselves within loose conventions</td></tr>
+<tr><td>Failure Isolation</td><td>ESB failure can cascade; limited bulkhead patterns</td><td>Circuit breakers, bulkheads, and retry policies are first-class concerns</td></tr>
+<tr><td>Testing</td><td>Integration testing through the ESB; contract testing less common</td><td>Consumer-driven contract tests (Pact), chaos engineering, distributed tracing</td></tr>
+<tr><td>Best For</td><td>Enterprise integration, legacy modernization, regulated industries</td><td>High-velocity product teams, cloud-native apps, massive scale</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     INTERACTIVE ARCHITECTURE VISUALIZER
+═══════════════════════════════════════════════ -->
+<section id="visualizer">
+<div class="container text-center">
+<p class="section-label">Interactive</p>
+<h2 class="section-title">E-Commerce Architecture Visualizer</h2>
+<p class="section-subtitle">See how the same e-commerce app looks across all three architectural styles. Click each tab to switch.</p>
+<div class="viz-container">
+<div class="tab-bar" id="viz-tabs">
+<button class="tab-btn active" onclick="showArch('monolith')">🏢 Monolith</button>
+<button class="tab-btn" onclick="showArch('soa')">🔌 SOA</button>
+<button class="tab-btn" onclick="showArch('microservices')">⚡ Microservices</button>
+</div>
+<!-- MONOLITH VIEW -->
+<div class="tab-panel active" id="arch-monolith">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left;margin-bottom:1.5rem;">
+<div>
+<h4 style="color:var(--accent-orange);margin-bottom:0.5rem;">Architecture</h4>
+<p style="font-size:0.88rem;">All features — browsing, cart, checkout, payments, notifications — live in a single deployable JAR/WAR. One database, one codebase.</p>
+</div>
+<div>
+<h4 style="color:var(--accent-orange);margin-bottom:0.5rem;">Deploy Strategy</h4>
+<p style="font-size:0.88rem;">Release the entire app at once. A bug in the notification module means re-deploying everything. Teams serialize on one codebase.</p>
+</div>
+</div>
+<div class="viz-svg-wrap">
+<svg viewbox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<!-- Browser client -->
+<rect fill="rgba(22,33,62,1)" height="40" rx="7" stroke="rgba(245,166,35,0.5)" stroke-width="1.5" width="80" x="20" y="110"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="60" y="134">Browser / App</text>
+<!-- Arrow -->
+<line class="flow-line" marker-end="url(#ma1)" stroke="rgba(245,166,35,0.4)" stroke-width="2" x1="100" x2="160" y1="130" y2="130"></line>
+<defs><marker id="ma1" markerheight="7" markerwidth="7" orient="auto" refx="5" refy="3"><path d="M0,0 L0,6 L7,3 z" fill="rgba(245,166,35,0.5)"></path></marker></defs>
+<!-- Monolith box -->
+<rect fill="rgba(245,166,35,0.05)" height="200" rx="12" stroke="rgba(245,166,35,0.4)" stroke-width="2" width="320" x="160" y="30"></rect>
+<text fill="rgba(245,166,35,0.7)" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1" text-anchor="middle" x="320" y="55">MONOLITH  (one deployable unit)</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="180" y="70"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="245" y="89">Product Catalog Module</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="330" y="70"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="395" y="89">Cart &amp; Checkout Module</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="180" y="115"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="245" y="134">User &amp; Auth Module</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="330" y="115"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="395" y="134">Payment Module</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="180" y="160"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="245" y="179">Order Module</text>
+<rect fill="rgba(245,166,35,0.1)" height="30" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="130" x="330" y="160"></rect>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="395" y="179">Notification Module</text>
+<!-- DB -->
+<ellipse cx="600" cy="130" fill="rgba(245,166,35,0.07)" rx="50" ry="28" stroke="rgba(245,166,35,0.35)" stroke-width="1.5"></ellipse>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="600" y="127">🗄 Single</text>
+<text fill="#f5a623" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="600" y="141">Database</text>
+<line class="flow-line-2" stroke="rgba(245,166,35,0.35)" stroke-width="1.5" x1="480" x2="550" y1="130" y2="130"></line>
+</svg>
+</div>
+<div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+<span class="badge badge-green">✓ Simple to develop initially</span>
+<span class="badge badge-green">✓ Easy to test end-to-end</span>
+<span class="badge badge-red">✗ Scales as a unit only</span>
+<span class="badge badge-red">✗ Long build &amp; deploy cycles</span>
+<span class="badge badge-red">✗ Tech stack lock-in</span>
+</div>
+</div>
+<!-- SOA VIEW -->
+<div class="tab-panel" id="arch-soa">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left;margin-bottom:1.5rem;">
+<div>
+<h4 style="color:var(--accent-teal);margin-bottom:0.5rem;">Architecture</h4>
+<p style="font-size:0.88rem;">Services communicate through a central ESB. The ESB handles routing, transformation, and orchestration. Services are bigger than microservices but smaller than a monolith.</p>
+</div>
+<div>
+<h4 style="color:var(--accent-teal);margin-bottom:0.5rem;">Deploy Strategy</h4>
+<p style="font-size:0.88rem;">Services can be deployed somewhat independently, but the shared ESB and often shared DB schemas mean coordination is still needed for major changes.</p>
+</div>
+</div>
+<div class="viz-svg-wrap">
+<svg viewbox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ma2" markerheight="7" markerwidth="7" orient="auto" refx="5" refy="3"><path d="M0,0 L0,6 L7,3 z" fill="rgba(0,180,216,0.5)"></path></marker></defs>
+<!-- Client -->
+<rect fill="rgba(22,33,62,1)" height="36" rx="6" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" width="72" x="10" y="110"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="46" y="131">Web Client</text>
+<line class="flow-line" marker-end="url(#ma2)" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="82" x2="120" y1="128" y2="128"></line>
+<!-- ESB -->
+<rect fill="rgba(0,180,216,0.12)" height="58" rx="10" stroke="#00b4d8" stroke-width="2" width="100" x="120" y="98"></rect>
+<text fill="#00b4d8" font-family="Inter,sans-serif" font-size="11" font-weight="700" text-anchor="middle" x="170" y="122">ESB</text>
+<text fill="rgba(0,180,216,0.65)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="170" y="138">route · transform</text>
+<text fill="rgba(0,180,216,0.65)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="170" y="150">orchestrate</text>
+<!-- Services -->
+<rect fill="rgba(0,180,216,0.08)" height="38" rx="6" stroke="rgba(0,180,216,0.35)" stroke-width="1.5" width="110" x="290" y="20"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="345" y="37">Product Service</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="345" y="50">SOAP/WSDL</text>
+<rect fill="rgba(0,180,216,0.08)" height="38" rx="6" stroke="rgba(0,180,216,0.35)" stroke-width="1.5" width="110" x="290" y="78"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="345" y="95">Order Service</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="345" y="108">SOAP/WSDL</text>
+<rect fill="rgba(0,180,216,0.08)" height="38" rx="6" stroke="rgba(0,180,216,0.35)" stroke-width="1.5" width="110" x="290" y="136"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="345" y="153">Payment Service</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="345" y="166">SOAP/WSDL</text>
+<rect fill="rgba(0,180,216,0.08)" height="38" rx="6" stroke="rgba(0,180,216,0.35)" stroke-width="1.5" width="110" x="290" y="194"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="345" y="211">User Service</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="345" y="224">SOAP/WSDL</text>
+<!-- ESB connections -->
+<line class="flow-line" marker-end="url(#ma2)" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="220" x2="290" y1="118" y2="39"></line>
+<line class="flow-line-2" marker-end="url(#ma2)" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="220" x2="290" y1="122" y2="97"></line>
+<line class="flow-line-3" marker-end="url(#ma2)" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="220" x2="290" y1="132" y2="155"></line>
+<line class="flow-line" marker-end="url(#ma2)" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="220" x2="290" y1="136" y2="213"></line>
+<!-- Shared DB -->
+<ellipse cx="590" cy="127" fill="rgba(0,180,216,0.05)" rx="68" ry="30" stroke="rgba(0,180,216,0.3)" stroke-width="1.5"></ellipse>
+<text fill="rgba(0,180,216,0.7)" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="590" y="122">🗄 Shared DB</text>
+<text fill="rgba(0,180,216,0.5)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="590" y="136">(common schema)</text>
+<line stroke="rgba(0,180,216,0.25)" stroke-dasharray="4 3" stroke-width="1" x1="400" x2="522" y1="39" y2="120"></line>
+<line stroke="rgba(0,180,216,0.25)" stroke-dasharray="4 3" stroke-width="1" x1="400" x2="522" y1="97" y2="124"></line>
+<line stroke="rgba(0,180,216,0.25)" stroke-dasharray="4 3" stroke-width="1" x1="400" x2="522" y1="155" y2="130"></line>
+<line stroke="rgba(0,180,216,0.25)" stroke-dasharray="4 3" stroke-width="1" x1="400" x2="522" y1="213" y2="136"></line>
+</svg>
+</div>
+<div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+<span class="badge badge-teal">✓ Service reuse</span>
+<span class="badge badge-teal">✓ Protocol mediation</span>
+<span class="badge badge-red">✗ ESB = single point of failure</span>
+<span class="badge badge-red">✗ Shared DB coupling</span>
+</div>
+</div>
+<!-- MICROSERVICES VIEW -->
+<div class="tab-panel" id="arch-microservices">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left;margin-bottom:1.5rem;">
+<div>
+<h4 style="color:var(--accent-green);margin-bottom:0.5rem;">Architecture</h4>
+<p style="font-size:0.88rem;">Each function is its own service with its own database. An API Gateway handles external traffic. Services communicate async via Kafka events or sync via REST/gRPC.</p>
+</div>
+<div>
+<h4 style="color:var(--accent-green);margin-bottom:0.5rem;">Deploy Strategy</h4>
+<p style="font-size:0.88rem;">Any team can ship their service independently — multiple times a day. K8s rolls updates with zero downtime. Each service has its own CI/CD pipeline.</p>
+</div>
+</div>
+<div class="viz-svg-wrap">
+<svg viewbox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ma3" markerheight="7" markerwidth="7" orient="auto" refx="5" refy="3"><path d="M0,0 L0,6 L7,3 z" fill="rgba(74,222,128,0.5)"></path></marker>
+<marker id="ma4" markerheight="7" markerwidth="7" orient="auto" refx="5" refy="3"><path d="M0,0 L0,6 L7,3 z" fill="rgba(167,139,250,0.6)"></path></marker></defs>
+<!-- Client -->
+<rect fill="rgba(22,33,62,1)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="68" x="8" y="112"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="42" y="132">Web / App</text>
+<!-- API Gateway -->
+<rect fill="rgba(167,139,250,0.12)" height="58" rx="8" stroke="#a78bfa" stroke-width="2" width="80" x="110" y="100"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="150" y="125">API</text>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="150" y="140">Gateway</text>
+<text fill="rgba(167,139,250,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="150" y="152">auth · routing</text>
+<!-- Lines client → GW -->
+<line class="flow-line" marker-end="url(#ma4)" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" x1="76" x2="110" y1="129" y2="129"></line>
+<!-- Services -->
+<rect fill="rgba(74,222,128,0.08)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="88" x="270" y="16"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="314" y="31">Auth Svc</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="314" y="43">:3001 · JWT</text>
+<rect fill="rgba(74,222,128,0.08)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="88" x="270" y="64"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="314" y="79">Product Svc</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="314" y="91">:3002 · REST</text>
+<rect fill="rgba(74,222,128,0.08)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="88" x="270" y="112"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="314" y="127">Cart Svc</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="314" y="139">:3003 · REST</text>
+<rect fill="rgba(74,222,128,0.08)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="88" x="270" y="160"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="314" y="175">Order Svc</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="314" y="187">:3004 · events</text>
+<rect fill="rgba(74,222,128,0.08)" height="34" rx="6" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" width="88" x="270" y="208"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="314" y="223">Payment Svc</text>
+<text fill="rgba(74,222,128,0.5)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="314" y="235">:3005 · gRPC</text>
+<!-- GW → Services -->
+<line class="flow-line" marker-end="url(#ma3)" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="190" x2="270" y1="116" y2="33"></line>
+<line class="flow-line-2" marker-end="url(#ma3)" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="190" x2="270" y1="120" y2="81"></line>
+<line class="flow-line-3" marker-end="url(#ma3)" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="190" x2="270" y1="129" y2="129"></line>
+<line class="flow-line" marker-end="url(#ma3)" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="190" x2="270" y1="138" y2="177"></line>
+<line class="flow-line-2" marker-end="url(#ma3)" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="190" x2="270" y1="142" y2="225"></line>
+<!-- Own DBs -->
+<rect fill="rgba(245,166,35,0.07)" height="22" rx="4" stroke="rgba(245,166,35,0.25)" stroke-width="1" width="54" x="430" y="20"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="457" y="35">🗄 Auth DB</text>
+<rect fill="rgba(245,166,35,0.07)" height="22" rx="4" stroke="rgba(245,166,35,0.25)" stroke-width="1" width="54" x="430" y="68"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="457" y="83">🗄 Mongo</text>
+<rect fill="rgba(245,166,35,0.07)" height="22" rx="4" stroke="rgba(245,166,35,0.25)" stroke-width="1" width="54" x="430" y="116"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="457" y="131">🗄 Redis</text>
+<rect fill="rgba(245,166,35,0.07)" height="22" rx="4" stroke="rgba(245,166,35,0.25)" stroke-width="1" width="54" x="430" y="164"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="457" y="179">🗄 Postgres</text>
+<rect fill="rgba(245,166,35,0.07)" height="22" rx="4" stroke="rgba(245,166,35,0.25)" stroke-width="1" width="54" x="430" y="212"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="457" y="227">🗄 Postgres</text>
+<!-- svc → db -->
+<line stroke="rgba(245,166,35,0.3)" stroke-dasharray="3 3" stroke-width="1" x1="358" x2="430" y1="33" y2="31"></line>
+<line stroke="rgba(245,166,35,0.3)" stroke-dasharray="3 3" stroke-width="1" x1="358" x2="430" y1="81" y2="79"></line>
+<line stroke="rgba(245,166,35,0.3)" stroke-dasharray="3 3" stroke-width="1" x1="358" x2="430" y1="129" y2="127"></line>
+<line stroke="rgba(245,166,35,0.3)" stroke-dasharray="3 3" stroke-width="1" x1="358" x2="430" y1="177" y2="175"></line>
+<line stroke="rgba(245,166,35,0.3)" stroke-dasharray="3 3" stroke-width="1" x1="358" x2="430" y1="225" y2="223"></line>
+<!-- Kafka bus -->
+<rect fill="rgba(248,113,113,0.07)" height="58" rx="8" stroke="rgba(248,113,113,0.35)" stroke-width="1.5" width="100" x="550" y="100"></rect>
+<text fill="rgba(248,113,113,0.8)" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="600" y="124">Kafka</text>
+<text fill="rgba(248,113,113,0.5)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="600" y="138">event bus</text>
+<text fill="rgba(248,113,113,0.5)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="600" y="151">async msgs</text>
+<line stroke="rgba(248,113,113,0.35)" stroke-dasharray="4 3" stroke-width="1" x1="484" x2="550" y1="177" y2="140"></line>
+<line stroke="rgba(248,113,113,0.35)" stroke-dasharray="4 3" stroke-width="1" x1="484" x2="550" y1="225" y2="148"></line>
+</svg>
+</div>
+<div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+<span class="badge badge-green">✓ Independent deploys</span>
+<span class="badge badge-green">✓ DB per service</span>
+<span class="badge badge-green">✓ Polyglot stacks</span>
+<span class="badge badge-red">✗ Distributed systems complexity</span>
+<span class="badge badge-red">✗ Operational overhead</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     PATTERNS GALLERY
+═══════════════════════════════════════════════ -->
+<section id="patterns">
+<div class="container text-center">
+<p class="section-label">Pattern Library</p>
+<h2 class="section-title">Essential Microservices Patterns</h2>
+<p class="section-subtitle">These patterns from Chris Richardson's microservices.io solve the hard distributed systems problems — data consistency, service resiliency, and observability.</p>
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(290px,1fr));text-align:left;">
+<!-- API Gateway -->
+<div class="pattern-card">
+<span class="pattern-tag">Routing</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(167,139,250,0.08)" height="26" rx="5" stroke="rgba(167,139,250,0.35)" stroke-width="1.5" width="52" x="4" y="26"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="30" y="43">Client</text>
+<rect fill="rgba(167,139,250,0.15)" height="42" rx="7" stroke="#a78bfa" stroke-width="2" width="66" x="98" y="18"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="10" font-weight="700" text-anchor="middle" x="131" y="40">API GW</text>
+<text fill="rgba(167,139,250,0.6)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="131" y="53">auth · limit · route</text>
+<rect fill="rgba(74,222,128,0.08)" height="20" rx="4" stroke="rgba(74,222,128,0.35)" stroke-width="1" width="60" x="196" y="8"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="226" y="22">Svc A</text>
+<rect fill="rgba(74,222,128,0.08)" height="20" rx="4" stroke="rgba(74,222,128,0.35)" stroke-width="1" width="60" x="196" y="34"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="226" y="48">Svc B</text>
+<rect fill="rgba(74,222,128,0.08)" height="20" rx="4" stroke="rgba(74,222,128,0.35)" stroke-width="1" width="60" x="196" y="60"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="226" y="74">Svc C</text>
+<line class="flow-line" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" x1="56" x2="98" y1="39" y2="39"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="164" x2="196" y1="32" y2="18"></line>
+<line class="flow-line-3" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="164" x2="196" y1="39" y2="44"></line>
+<line class="flow-line" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="164" x2="196" y1="46" y2="70"></line>
+</svg>
+<h4>API Gateway</h4>
+<p>Single entry point that routes, authenticates, and aggregates responses. Decouples clients from internal service topology.</p>
+</div>
+<!-- Saga -->
+<div class="pattern-card">
+<span class="pattern-tag">Data Consistency</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="50" x="4" y="28"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="29" y="44">Order Svc</text>
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="50" x="76" y="28"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="101" y="44">Payment Svc</text>
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="50" x="148" y="28"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="173" y="44">Inventory</text>
+<rect fill="rgba(74,222,128,0.08)" height="24" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="36" x="220" y="28"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="238" y="44">Notify</text>
+<line class="flow-line" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="54" x2="76" y1="40" y2="40"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="126" x2="148" y1="40" y2="40"></line>
+<line class="flow-line-3" stroke="rgba(74,222,128,0.5)" stroke-width="1.5" x1="198" x2="220" y1="40" y2="40"></line>
+<!-- compensating arrows -->
+<path d="M198 54 Q173 72 148 54" fill="none" stroke="rgba(248,113,113,0.5)" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<text fill="rgba(248,113,113,0.6)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="173" y="74">compensate on failure</text>
+</svg>
+<h4>Saga Pattern</h4>
+<p>Manages distributed transactions across services. Each step publishes an event; failures trigger compensating transactions to undo prior steps.</p>
+</div>
+<!-- CQRS -->
+<div class="pattern-card">
+<span class="pattern-tag">Data Access</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(0,180,216,0.08)" height="28" rx="5" stroke="rgba(0,180,216,0.35)" stroke-width="1.5" width="72" x="4" y="10"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="40" y="27">Write Model</text>
+<rect fill="rgba(245,166,35,0.08)" height="28" rx="5" stroke="rgba(245,166,35,0.35)" stroke-width="1.5" width="72" x="4" y="46"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="40" y="63">Read Model</text>
+<rect fill="rgba(167,139,250,0.12)" height="24" rx="5" stroke="rgba(167,139,250,0.4)" stroke-width="1.5" width="60" x="112" y="28"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="142" y="44">Event Bus</text>
+<rect fill="rgba(0,180,216,0.08)" height="24" rx="5" stroke="rgba(0,180,216,0.3)" stroke-width="1" width="58" x="198" y="10"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="227" y="26">Write DB</text>
+<rect fill="rgba(245,166,35,0.08)" height="24" rx="5" stroke="rgba(245,166,35,0.3)" stroke-width="1" width="58" x="198" y="46"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="227" y="62">Read DB</text>
+<line class="flow-line" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="76" x2="112" y1="24" y2="36"></line>
+<line class="flow-line-2" stroke="rgba(0,180,216,0.4)" stroke-width="1.5" x1="172" x2="198" y1="36" y2="22"></line>
+<line class="flow-line-3" stroke="rgba(245,166,35,0.4)" stroke-width="1.5" x1="172" x2="198" y1="44" y2="58"></line>
+</svg>
+<h4>CQRS</h4>
+<p>Command Query Responsibility Segregation — separate write and read models. Write side handles commands; read side is optimized for queries with denormalized views.</p>
+</div>
+<!-- Event Sourcing -->
+<div class="pattern-card">
+<span class="pattern-tag">Data Storage</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(167,139,250,0.08)" height="24" rx="5" stroke="rgba(167,139,250,0.35)" stroke-width="1.5" width="56" x="4" y="28"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="32" y="44">Command</text>
+<rect fill="rgba(245,166,35,0.07)" height="64" rx="6" stroke="rgba(245,166,35,0.4)" stroke-width="1.5" width="60" x="82" y="8"></rect>
+<text fill="rgba(245,166,35,0.8)" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" text-anchor="middle" x="112" y="28">Event Store</text>
+<text fill="rgba(245,166,35,0.55)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="112" y="42">OrderCreated</text>
+<text fill="rgba(245,166,35,0.55)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="112" y="54">PaymentMade</text>
+<text fill="rgba(245,166,35,0.55)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="112" y="66">ItemShipped</text>
+<rect fill="rgba(74,222,128,0.08)" height="22" rx="4" stroke="rgba(74,222,128,0.3)" stroke-width="1" width="52" x="166" y="20"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="192" y="35">Projection A</text>
+<rect fill="rgba(74,222,128,0.08)" height="22" rx="4" stroke="rgba(74,222,128,0.3)" stroke-width="1" width="52" x="166" y="50"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="192" y="65">Projection B</text>
+<line class="flow-line" stroke="rgba(167,139,250,0.5)" stroke-width="1.5" x1="60" x2="82" y1="40" y2="40"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="142" x2="166" y1="34" y2="31"></line>
+<line class="flow-line-3" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="142" x2="166" y1="46" y2="61"></line>
+</svg>
+<h4>Event Sourcing</h4>
+<p>Store state as an immutable log of events rather than current values. Replay events to reconstruct state at any point in time. Natural audit trail.</p>
+</div>
+<!-- Sidecar -->
+<div class="pattern-card">
+<span class="pattern-tag">Deployment</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(22,33,62,0.8)" height="52" rx="8" stroke="rgba(74,222,128,0.25)" stroke-dasharray="5 3" stroke-width="1.5" width="220" x="20" y="16"></rect>
+<text fill="rgba(74,222,128,0.45)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="130" y="10">Pod / Container Group</text>
+<rect fill="rgba(74,222,128,0.1)" height="36" rx="6" stroke="rgba(74,222,128,0.45)" stroke-width="1.5" width="90" x="34" y="24"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="79" y="44">App Container</text>
+<rect fill="rgba(167,139,250,0.1)" height="36" rx="6" stroke="rgba(167,139,250,0.45)" stroke-width="1.5" width="80" x="144" y="24"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="184" y="38">Sidecar</text>
+<text fill="rgba(167,139,250,0.6)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="184" y="51">proxy · logs · mTLS</text>
+<line stroke="rgba(255,255,255,0.2)" stroke-width="1.5" x1="124" x2="144" y1="42" y2="42"></line>
+</svg>
+<h4>Sidecar Pattern</h4>
+<p>Deploy a helper container alongside each service container. The sidecar handles cross-cutting concerns: logging, tracing, mTLS, config — without touching app code.</p>
+</div>
+<!-- Service Mesh -->
+<div class="pattern-card">
+<span class="pattern-tag">Infrastructure</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(74,222,128,0.08)" height="28" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="56" x="10" y="10"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="38" y="27">Svc + Envoy</text>
+<rect fill="rgba(74,222,128,0.08)" height="28" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="56" x="100" y="10"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="128" y="27">Svc + Envoy</text>
+<rect fill="rgba(245,166,35,0.08)" height="26" rx="5" stroke="rgba(245,166,35,0.4)" stroke-width="1.5" width="148" x="55" y="48"></rect>
+<text fill="rgba(245,166,35,0.8)" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" text-anchor="middle" x="129" y="64">Control Plane (Istio)</text>
+<rect fill="rgba(74,222,128,0.08)" height="28" rx="5" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="56" x="194" y="10"></rect>
+<text fill="#9ca3c8" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle" x="222" y="27">Svc + Envoy</text>
+<line class="flow-line" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="66" x2="100" y1="38" y2="20"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="156" x2="194" y1="24" y2="24"></line>
+<line stroke="rgba(245,166,35,0.35)" stroke-dasharray="3 3" stroke-width="1" x1="38" x2="60" y1="38" y2="52"></line>
+<line stroke="rgba(245,166,35,0.35)" stroke-dasharray="3 3" stroke-width="1" x1="128" x2="128" y1="38" y2="48"></line>
+<line stroke="rgba(245,166,35,0.35)" stroke-dasharray="3 3" stroke-width="1" x1="222" x2="200" y1="38" y2="52"></line>
+</svg>
+<h4>Service Mesh</h4>
+<p>Infrastructure layer for service-to-service communication. Sidecars (Envoy proxies) handle retries, mTLS, tracing, and traffic shaping — all without app code changes.</p>
+</div>
+<!-- Strangler Fig -->
+<div class="pattern-card">
+<span class="pattern-tag">Migration</span>
+<svg viewbox="0 0 260 80">
+<rect fill="rgba(245,166,35,0.07)" height="60" rx="7" stroke="rgba(245,166,35,0.35)" stroke-width="1.5" width="80" x="20" y="10"></rect>
+<text fill="rgba(245,166,35,0.6)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="60" y="44">Legacy</text>
+<text fill="rgba(245,166,35,0.4)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="60" y="56">Monolith</text>
+<rect fill="rgba(74,222,128,0.07)" height="60" rx="7" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" width="78" x="160" y="10"></rect>
+<text fill="rgba(74,222,128,0.6)" font-family="Inter,sans-serif" font-size="9" text-anchor="middle" x="199" y="40">New</text>
+<text fill="rgba(74,222,128,0.4)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle" x="199" y="52">Microservices</text>
+<rect fill="rgba(167,139,250,0.12)" height="24" rx="5" stroke="#a78bfa" stroke-width="1.5" width="42" x="110" y="28"></rect>
+<text fill="#a78bfa" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" text-anchor="middle" x="131" y="43">Façade</text>
+<line class="flow-line" stroke="rgba(245,166,35,0.4)" stroke-width="1.5" x1="100" x2="110" y1="40" y2="40"></line>
+<line class="flow-line-2" stroke="rgba(74,222,128,0.4)" stroke-width="1.5" x1="152" x2="160" y1="40" y2="40"></line>
+<!-- growth indicator -->
+<path d="M152 34 L176 18" stroke="rgba(74,222,128,0.5)" stroke-dasharray="4 2" stroke-width="1.5"></path>
+<path d="M148 30 L182 14" stroke="rgba(74,222,128,0.3)" stroke-dasharray="3 2" stroke-width="1"></path>
+</svg>
+<h4>Strangler Fig</h4>
+<p>Incrementally replace a monolith by routing new features to microservices while keeping legacy running. Named after the fig tree that slowly envelops its host. Coined by Martin Fowler.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     RESOURCES
+═══════════════════════════════════════════════ -->
+<section id="resources">
+<div class="container text-center">
+<p class="section-label">Learn More</p>
+<h2 class="section-title">Curated Resources</h2>
+<p class="section-subtitle">The best videos, interactive labs, articles, and books — carefully selected from top practitioners.</p>
+<div class="tab-bar" id="res-tabs">
+<button class="tab-btn active" onclick="showRes('videos')">🎬 Videos</button>
+<button class="tab-btn" onclick="showRes('interactive')">💻 Interactive</button>
+<button class="tab-btn" onclick="showRes('read')">📚 Read</button>
+<button class="tab-btn" onclick="showRes('books')">📖 Books</button>
+</div>
+<div class="tab-panel active" id="res-videos">
+<div class="resource-item">
+<div class="resource-icon">🎬</div>
+<div class="resource-info">
+<a href="https://www.youtube.com/watch?v=rv4LlmLmVWk" rel="noopener" target="_blank">Microservices Full Course — TechWorld with Nana</a>
+<p>In-depth tutorial covering all microservices fundamentals with real examples</p>
+<div class="resource-meta">YouTube · ~3.5 hours · Beginner–Intermediate</div>
+</div>
+<span class="badge badge-orange" style="flex-shrink:0;align-self:flex-start;">Free</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">🎬</div>
+<div class="resource-info">
+<a href="https://www.youtube.com/watch?v=qYhRvH9tJKw" rel="noopener" target="_blank">SOA vs Microservices — IBM Technology</a>
+<p>Clear visual explanation of the key differences by IBM architects</p>
+<div class="resource-meta">YouTube · ~10 min · Beginner</div>
+</div>
+<span class="badge badge-orange" style="flex-shrink:0;align-self:flex-start;">Free</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">🎬</div>
+<div class="resource-info">
+<a href="https://www.youtube.com/watch?v=rv4LlmLmVWk" rel="noopener" target="_blank">Microservices in 100 Seconds — Fireship</a>
+<p>Lightning-fast visual overview perfect for a quick mental model refresh</p>
+<div class="resource-meta">YouTube · 100 seconds · All levels</div>
+</div>
+<span class="badge badge-orange" style="flex-shrink:0;align-self:flex-start;">Free</span>
+</div>
+</div>
+<div class="tab-panel" id="res-interactive">
+<div class="resource-item">
+<div class="resource-icon">🐳</div>
+<div class="resource-info">
+<a href="https://labs.play-with-docker.com/" rel="noopener" target="_blank">Play with Docker — Docker Labs</a>
+<p>Free browser-based Docker playground. Run containers and multi-service apps without installing anything.</p>
+<div class="resource-meta">In-browser lab · Free · No signup required</div>
+</div>
+<span class="badge badge-teal" style="flex-shrink:0;align-self:flex-start;">Interactive</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">⚔️</div>
+<div class="resource-info">
+<a href="https://killercoda.com/courses/microservices" rel="noopener" target="_blank">Killercoda Microservices Scenarios</a>
+<p>Hands-on browser-based labs covering Docker, Kubernetes, service mesh, and microservices patterns step by step.</p>
+<div class="resource-meta">Browser labs · Free tier available</div>
+</div>
+<span class="badge badge-teal" style="flex-shrink:0;align-self:flex-start;">Interactive</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">☁️</div>
+<div class="resource-info">
+<a href="https://aws.amazon.com/microservices/" rel="noopener" target="_blank">AWS Microservices — Hands-On Labs</a>
+<p>AWS's official microservices documentation with workshop labs using ECS, Lambda, and API Gateway.</p>
+<div class="resource-meta">AWS Docs + Labs · Free tier eligible</div>
+</div>
+<span class="badge badge-teal" style="flex-shrink:0;align-self:flex-start;">Interactive</span>
+</div>
+</div>
+<div class="tab-panel" id="res-read">
+<div class="resource-item">
+<div class="resource-icon">✍️</div>
+<div class="resource-info">
+<a href="https://martinfowler.com/articles/microservices.html" rel="noopener" target="_blank">Microservices — Martin Fowler &amp; James Lewis</a>
+<p>The canonical article that defined microservices for the industry. Still required reading in 2025.</p>
+<div class="resource-meta">martinfowler.com · Long read · ~45 min</div>
+</div>
+<span class="badge badge-purple" style="flex-shrink:0;align-self:flex-start;">Canonical</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">🗺️</div>
+<div class="resource-info">
+<a href="https://microservices.io/patterns/index.html" rel="noopener" target="_blank">Microservices Patterns — microservices.io (Chris Richardson)</a>
+<p>The most comprehensive pattern catalog: 50+ patterns with diagrams, trade-offs, and code examples.</p>
+<div class="resource-meta">microservices.io · Reference site · Free</div>
+</div>
+<span class="badge badge-purple" style="flex-shrink:0;align-self:flex-start;">Reference</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">📘</div>
+<div class="resource-info">
+<a href="https://www.atlassian.com/microservices" rel="noopener" target="_blank">Microservices Guide — Atlassian</a>
+<p>Practical guide covering architecture, DevOps practices, and common pitfalls from Atlassian's engineering team.</p>
+<div class="resource-meta">atlassian.com · Medium reads · Free</div>
+</div>
+<span class="badge badge-purple" style="flex-shrink:0;align-self:flex-start;">Guide</span>
+</div>
+</div>
+<div class="tab-panel" id="res-books">
+<div class="resource-item">
+<div class="resource-icon">📗</div>
+<div class="resource-info">
+<a href="https://www.oreilly.com/library/view/building-microservices-2nd/9781492034018/" rel="noopener" target="_blank">Building Microservices, 2nd Ed. — Sam Newman</a>
+<p>The definitive book. Covers decomposition, communication, deployment, security, and observability. 600+ pages of battle-tested wisdom.</p>
+<div class="resource-meta">O'Reilly · ~$50 · 2021 · Advanced</div>
+</div>
+<span class="badge badge-green" style="flex-shrink:0;align-self:flex-start;">Top Pick</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">📕</div>
+<div class="resource-info">
+<a href="https://www.manning.com/books/microservices-patterns" rel="noopener" target="_blank">Microservices Patterns — Chris Richardson</a>
+<p>Companion book to microservices.io. Deep dives into Saga, CQRS, Event Sourcing with Java examples.</p>
+<div class="resource-meta">Manning · ~$50 · 2018 · Intermediate</div>
+</div>
+<span class="badge badge-green" style="flex-shrink:0;align-self:flex-start;">Top Pick</span>
+</div>
+<div class="resource-item">
+<div class="resource-icon">📙</div>
+<div class="resource-info">
+<a href="https://www.oreilly.com/library/view/monolith-to-microservices/9781492047834/" rel="noopener" target="_blank">Monolith to Microservices — Sam Newman</a>
+<p>Practical migration patterns: Strangler Fig, Branch by Abstraction, parallel runs. How to make the journey safely.</p>
+<div class="resource-meta">O'Reilly · ~$50 · 2019 · All levels</div>
+</div>
+<span class="badge badge-green" style="flex-shrink:0;align-self:flex-start;">Migration</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     LEARNING ROADMAP
+═══════════════════════════════════════════════ -->
+<section id="roadmap">
+<div class="container text-center">
+<p class="section-label">Learning Path</p>
+<h2 class="section-title">Your Roadmap to Cloud-Native</h2>
+<p class="section-subtitle">Follow this progression from first principles to production-grade distributed systems engineering.</p>
+<div class="roadmap">
+<div class="roadmap-step">
+<div class="roadmap-num">1</div>
+<h4>Monolith Mastery</h4>
+<p>Build a full-stack app. Learn MVC, ORM, REST APIs. Understand why monoliths work well at first.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">2</div>
+<h4>REST &amp; HTTP</h4>
+<p>Master HTTP verbs, status codes, JSON, OpenAPI spec. Build and consume RESTful APIs.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">3</div>
+<h4>Docker Basics</h4>
+<p>Containerize apps, write Dockerfiles, use docker-compose to run multi-service stacks locally.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">4</div>
+<h4>SOA Concepts</h4>
+<p>Study SOAP, WSDL, ESB patterns. Understand enterprise integration and service contracts.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">5</div>
+<h4>Microservices Patterns</h4>
+<p>Implement API Gateway, Service Discovery, Circuit Breaker, Saga, and CQRS from scratch.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">6</div>
+<h4>Kubernetes</h4>
+<p>Deploy services to K8s. Learn Deployments, Services, ConfigMaps, Ingress, and HPA scaling.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">7</div>
+<h4>Service Mesh</h4>
+<p>Install Istio or Linkerd. Enable mTLS, distributed tracing, and traffic management policies.</p>
+</div>
+<div class="roadmap-gap"></div>
+<div class="roadmap-step">
+<div class="roadmap-num">8</div>
+<h4>Cloud-Native</h4>
+<p>GitOps with ArgoCD, observability stack (Prometheus + Grafana + Jaeger), chaos engineering.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════════
+     CHEAT SHEET
+═══════════════════════════════════════════════ -->
+<section id="cheatsheet">
+<div class="container text-center">
+<p class="section-label">Quick Reference</p>
+<h2 class="section-title">Architecture Cheat Sheet</h2>
+<p class="section-subtitle">16 essential terms, patterns, and people you need to know in microservices and SOA.</p>
+<div class="cheat-grid">
+<div class="cheat-card">
+<div class="cheat-term">SOA</div>
+<h4>Service-Oriented Architecture</h4>
+<p>Architectural style using coarse-grained services on shared infrastructure, connected by an ESB.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">ESB</div>
+<h4>Enterprise Service Bus</h4>
+<p>SOA's central middleware: routes, transforms, and orchestrates messages between services.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">SOAP</div>
+<h4>Simple Object Access Protocol</h4>
+<p>XML-based messaging protocol used in SOA. Verbose but formally typed via WSDL contracts.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">WSDL</div>
+<h4>Web Services Description Language</h4>
+<p>XML schema that formally describes a SOAP service's operations, messages, and data types.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">µSvc</div>
+<h4>Microservice</h4>
+<p>Small, independently deployable service responsible for a single bounded context. Owns its data.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">API GW</div>
+<h4>API Gateway</h4>
+<p>Single entry point for all client requests. Handles auth, rate limiting, routing, and aggregation.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">SAGA</div>
+<h4>Saga Pattern</h4>
+<p>Distributed transaction across services using events. Failures trigger compensating transactions.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">CQRS</div>
+<h4>Command Query Responsibility Segregation</h4>
+<p>Separate read and write models. Commands mutate state; queries use optimized read projections.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">ES</div>
+<h4>Event Sourcing</h4>
+<p>Store state as an immutable sequence of events. Replay to reconstruct any historical state.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">CB</div>
+<h4>Circuit Breaker</h4>
+<p>Prevents cascading failures. Opens when error threshold exceeded; probes recovery with half-open.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">SD</div>
+<h4>Service Discovery</h4>
+<p>Services register their location. Clients query the registry (Consul/Eureka/K8s DNS) to find them.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">DDD</div>
+<h4>Domain-Driven Design</h4>
+<p>Design paradigm by Eric Evans. Bounded Contexts map naturally to microservice boundaries.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">BFF</div>
+<h4>Backend for Frontend</h4>
+<p>A separate API Gateway tailored for each client type (mobile vs web) to avoid over-fetching.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">FOWLER</div>
+<h4>Martin Fowler</h4>
+<p>Software architect at Thoughtworks. Co-authored the seminal microservices article with James Lewis (2014).</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">NEWMAN</div>
+<h4>Sam Newman</h4>
+<p>Author of "Building Microservices" and "Monolith to Microservices." Leading practitioner and speaker.</p>
+</div>
+<div class="cheat-card">
+<div class="cheat-term">RICHARDSON</div>
+<h4>Chris Richardson</h4>
+<p>Author of "Microservices Patterns" and creator of microservices.io — the go-to pattern catalog.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- EXPERT RESOURCES SECTION -->
+<section id="expert-resources">
+<div class="container">
+<div class="text-center">
+<div class="section-label">Primary Sources</div>
+<h2 class="section-title">Expert Resources &amp; Pattern Library</h2>
+<p class="section-subtitle">Key insights drawn from the canonical authorities on microservices and SOA — Fowler, Richardson, and the Twelve-Factor methodology.</p>
+</div>
+<!-- Source Authority Cards -->
+<div class="card-grid card-grid-3" style="margin-bottom:3rem;">
+<div class="card" style="border-color:rgba(245,166,35,0.35);">
+<div class="card-icon" style="background:rgba(245,166,35,0.12);">🐚</div>
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">martinfowler.com · 2014</div>
+<h3>Martin Fowler &amp; James Lewis</h3>
+<p style="margin:0.75rem 0 0.5rem;">"The microservice architectural style is an approach to developing a single application as a <strong style="color:var(--text-primary);">suite of small services</strong>, each running in its own process and communicating with lightweight mechanisms."</p>
+<p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.75rem;">9 canonical characteristics · Services organized around business capabilities · Decentralized governance · Smart endpoints and dumb pipes</p>
+</div>
+<div class="card" style="border-color:rgba(0,180,216,0.35);">
+<div class="card-icon" style="background:rgba(0,180,216,0.12);">📐</div>
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">microservices.io · Chris Richardson</div>
+<h3>Richardson's Pattern Catalog</h3>
+<p style="margin:0.75rem 0 0.5rem;">The definitive catalog of <strong style="color:var(--text-primary);">44+ microservices patterns</strong> covering decomposition, data management, communication, reliability, observability, deployment, and security — each with context, problem, and solution.</p>
+<p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.75rem;">Decomposition · Data patterns · Communication · Reliability · UI patterns · Security patterns</p>
+</div>
+<div class="card" style="border-color:rgba(74,222,128,0.35);">
+<div class="card-icon" style="background:rgba(74,222,128,0.12);">⚙️</div>
+<div class="badge badge-green" style="margin-bottom:0.75rem;">12factor.net · Adam Wiggins · 2011</div>
+<h3>The Twelve-Factor App</h3>
+<p style="margin:0.75rem 0 0.5rem;">Drafted by Heroku engineers from observations running thousands of SaaS apps: a methodology for building <strong style="color:var(--text-primary);">cloud-native applications</strong> that maximize portability, deployability, and scalability.</p>
+<p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.75rem;">12 factors · Codebase → Build → Release → Run · Stateless processes · Config in environment</p>
+</div>
+</div>
+<!-- Pattern Library -->
+<div class="text-center" style="margin-bottom:2rem;">
+<div class="section-label">Richardson's Pattern Catalog</div>
+<h3 style="font-size:1.5rem;">Core Microservices Patterns</h3>
+</div>
+<div class="card-grid card-grid-4" style="margin-bottom:3rem;">
+<div class="pattern-card">
+<div class="pattern-tag">DECOMPOSITION</div>
+<h4>Decompose by Business Capability</h4>
+<p>Define services corresponding to stable business capabilities — cross-functional areas producing value. Aligns service boundaries with organizational structure per Conway's Law, enabling team autonomy and independent deployment.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">COMMUNICATION</div>
+<h4>API Gateway</h4>
+<p>A single entry point for all clients, routing requests to appropriate services. Handles cross-cutting concerns: authentication, rate limiting, SSL termination, and response aggregation without burdening individual services.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">RELIABILITY</div>
+<h4>Circuit Breaker</h4>
+<p>Prevents cascading failures by detecting unhealthy downstream services and short-circuiting calls for a cooldown period. Popularized by Netflix's Hystrix — opens the circuit when error thresholds are exceeded.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">DATA MANAGEMENT</div>
+<h4>Saga</h4>
+<p>Manages distributed transactions across services via a sequence of local transactions. Each step publishes an event; on failure, compensating transactions undo prior steps. Uses choreography or orchestration approaches.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">DATA MANAGEMENT</div>
+<h4>CQRS</h4>
+<p>Command Query Responsibility Segregation — separates the write model (commands) from the read model (queries), each with its own data store. Enables independent scaling and optimization of reads vs writes.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">DATA MANAGEMENT</div>
+<h4>Event Sourcing</h4>
+<p>Persists business entity state as a sequence of state-changing events rather than current snapshot. Current state is reconstituted by replaying events. Enables full audit trails, temporal queries, and event-driven integration.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">DEPLOYMENT</div>
+<h4>Service Mesh</h4>
+<p>A dedicated infrastructure layer handling service-to-service communication — observability, traffic management, and mutual TLS without modifying application code. Implementations: Istio, Linkerd, Consul Connect.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">DEPLOYMENT</div>
+<h4>Sidecar</h4>
+<p>Deploys a helper process alongside the primary service container sharing its lifecycle. Handles cross-cutting concerns — logging, monitoring, service discovery, security — independently of core business logic.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">RELIABILITY</div>
+<h4>Bulkhead</h4>
+<p>Named after ship hull compartments: isolates service resource pools so overload on one downstream dependency cannot exhaust resources for others. Prevents cascading resource exhaustion across the system.</p>
+</div>
+<div class="pattern-card">
+<div class="pattern-tag">MIGRATION</div>
+<h4>Strangler Fig</h4>
+<p>Incrementally migrates a legacy monolith by routing new functionality to new microservices while legacy requests stay in the monolith. Named by Martin Fowler (2004) after tropical fig trees that gradually surround and replace a host tree.</p>
+</div>
+</div>
+<!-- Twelve-Factor Quick Reference -->
+<div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:2rem;">
+<div class="text-center" style="margin-bottom:1.5rem;">
+<div class="section-label">12factor.net · Adam Wiggins · Heroku · 2011</div>
+<h3 style="font-size:1.25rem;">The Twelve Factors — Quick Reference</h3>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.65rem;">
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">I.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Codebase</span> <span style="color:var(--text-muted);font-size:0.8rem;">— one repo, many deploys</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">II.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Dependencies</span> <span style="color:var(--text-muted);font-size:0.8rem;">— explicitly declared &amp; isolated</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">III.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Config</span> <span style="color:var(--text-muted);font-size:0.8rem;">— stored in environment variables</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">IV.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Backing Services</span> <span style="color:var(--text-muted);font-size:0.8rem;">— treat as attached resources</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">V.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Build, Release, Run</span> <span style="color:var(--text-muted);font-size:0.8rem;">— strictly separate stages</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">VI.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Processes</span> <span style="color:var(--text-muted);font-size:0.8rem;">— stateless, share-nothing</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">VII.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Port Binding</span> <span style="color:var(--text-muted);font-size:0.8rem;">— export services via port</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">VIII.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Concurrency</span> <span style="color:var(--text-muted);font-size:0.8rem;">— scale out via process model</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">IX.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Disposability</span> <span style="color:var(--text-muted);font-size:0.8rem;">— fast startup, graceful shutdown</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">X.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Dev/Prod Parity</span> <span style="color:var(--text-muted);font-size:0.8rem;">— keep environments similar</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">XI.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Logs</span> <span style="color:var(--text-muted);font-size:0.8rem;">— treat as event streams</span></div>
+<div style="padding:0.7rem 0.9rem;background:rgba(0,0,0,0.25);border-radius:8px;border:1px solid var(--border-subtle);"><span style="color:var(--accent-orange);font-weight:800;font-size:0.8rem;">XII.</span> <span style="color:var(--text-primary);font-size:0.88rem;font-weight:600;">Admin Processes</span> <span style="color:var(--text-muted);font-size:0.8rem;">— run as one-off processes</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- KEY TERMS SECTION -->
+<section id="key-terms">
+<div class="container">
+<div class="text-center">
+<div class="section-label">Industry Definitions</div>
+<h2 class="section-title">Key Terms in Their Own Words</h2>
+<p class="section-subtitle">Precise definitions drawn directly from primary sources — Fowler, Richardson, Evans, OASIS, and cloud-native practitioners.</p>
+</div>
+<div class="card-grid card-grid-3">
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">SOA Principle</div>
+<h3>Service Contract</h3>
+<p>Services adhere to a communications agreement defined by one or more service description documents. The contract expresses purpose, capabilities, constraints, and requirements — decoupled from the implementation behind it.</p>
+<p class="def-source">— Thomas Erl, SOA Principles of Service Design (2007)</p>
+</div>
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">SOA Principle</div>
+<h3>Loose Coupling</h3>
+<p>Service relationships are minimized to only what is necessary. Consumers depend only on what the contract exposes — not implementation details. Enables services and consumers to evolve independently with minimal impact on each other.</p>
+<p class="def-source">— OASIS SOA Reference Architecture Foundation</p>
+</div>
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">SOA Principle</div>
+<h3>Service Abstraction</h3>
+<p>Beyond what is described in the service contract, services hide logic from the outside world. Abstraction preserves loose coupling by preventing consumers from forming dependencies on internal implementation details that may change.</p>
+<p class="def-source">— Thomas Erl, SOA Principles of Service Design (2007)</p>
+</div>
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">SOA Principle</div>
+<h3>Service Reusability</h3>
+<p>Logic is divided into services with the intention of promoting reuse. A service is designed to solve a generic business problem agnostic to any particular consumer, enabling it to serve multiple applications over time.</p>
+<p class="def-source">— Thomas Erl, SOA Principles of Service Design (2007)</p>
+</div>
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">SOA Principle</div>
+<h3>Service Composability</h3>
+<p>Collections of services are coordinated and assembled to form composite services or complete solutions. Services can become building blocks regardless of the size and complexity of the composition they participate in.</p>
+<p class="def-source">— Thomas Erl, SOA Principles of Service Design (2007)</p>
+</div>
+<div class="card">
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">Domain-Driven Design</div>
+<h3>Bounded Context</h3>
+<p>A central pattern in DDD: an explicit boundary within which a particular domain model applies. A ubiquitous language is valid only inside its context. Microservices map cleanly to bounded contexts — each service owns its model and data.</p>
+<p class="def-source-teal">— Eric Evans, Domain-Driven Design (2003)</p>
+</div>
+<div class="card">
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">Domain-Driven Design</div>
+<h3>Domain-Driven Design</h3>
+<p>An approach to software development centering design on the core domain and its logic, basing complex designs on a model, and fostering collaboration between technical and domain experts to iteratively refine conceptual understanding.</p>
+<p class="def-source-teal">— Eric Evans, Domain-Driven Design (2003)</p>
+</div>
+<div class="card">
+<div class="badge badge-purple" style="margin-bottom:0.75rem;">Distributed Systems</div>
+<h3>Eventual Consistency</h3>
+<p>A consistency model where, given no new updates, all replicas of a data item will eventually return the last updated value. Microservices embrace eventual consistency because each service owns its own data store — ACID across services is generally avoided.</p>
+<p class="def-source-purple">— Werner Vogels, CTO Amazon, "Eventually Consistent" (2008)</p>
+</div>
+<div class="card">
+<div class="badge badge-purple" style="margin-bottom:0.75rem;">Distributed Systems</div>
+<h3>Idempotency</h3>
+<p>An operation is idempotent if applying it multiple times produces the same result as applying it once. Critical in microservices for safe message retries — duplicate messages from retries must not cause duplicate effects.</p>
+<p class="def-source-purple">— Chris Richardson, Microservices Patterns (2018)</p>
+</div>
+<div class="card">
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">Infrastructure Pattern</div>
+<h3>Service Mesh</h3>
+<p>A dedicated infrastructure layer for handling service-to-service communication. Implemented as lightweight network proxies deployed alongside application code, making communication manageable, observable, and reliable without app changes.</p>
+<p class="def-source-teal">— Buoyant Inc. (creators of Linkerd), coined 2017</p>
+</div>
+<div class="card">
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">Deployment Pattern</div>
+<h3>Sidecar Pattern</h3>
+<p>A helper process deployed alongside the primary application container, sharing its lifecycle. Handles cross-cutting concerns — log shipping, service discovery, security, health checks — independently, keeping core service logic clean.</p>
+<p class="def-source-teal">— Microsoft Azure Architecture Center; CNCF ecosystem</p>
+</div>
+<div class="card">
+<div class="badge badge-green" style="margin-bottom:0.75rem;">Migration Pattern</div>
+<h3>Strangler Fig</h3>
+<p>Incrementally replace a monolith by routing new feature requests to microservices while legacy requests stay in the monolith. Named after tropical strangler fig trees that germinate in the canopy, grow roots to the ground, and slowly replace the original host.</p>
+<p class="def-source-green">— Martin Fowler, bliki/StranglerFigApplication (2004)</p>
+</div>
+<div class="card">
+<div class="badge badge-purple" style="margin-bottom:0.75rem;">Organizational Design</div>
+<h3>Conway's Law</h3>
+<p>"Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations." Microservices teams use the Inverse Conway Maneuver — structure the org to match the target architecture.</p>
+<p class="def-source-purple">— Mel Conway, Datamation magazine (April 1968)</p>
+</div>
+<div class="card">
+<div class="badge badge-teal" style="margin-bottom:0.75rem;">Communication Pattern</div>
+<h3>API Gateway</h3>
+<p>A server acting as a single entry point into the system. Responsible for request routing, composition, and protocol translation. May also perform authentication, rate limiting, caching, and response transformation before returning to the client.</p>
+<p class="def-source-teal">— Chris Richardson, microservices.io/patterns/apigateway.html</p>
+</div>
+<div class="card">
+<div class="badge badge-orange" style="margin-bottom:0.75rem;">Discovery Pattern</div>
+<h3>Service Registry</h3>
+<p>A database of available service instances. Services register on startup and deregister on shutdown. Clients query the registry directly (client-side discovery) or via a router (server-side discovery) to locate a live, healthy instance to call.</p>
+<p class="def-source">— Chris Richardson, microservices.io/patterns/service-registry.html</p>
+</div>
+<div class="card">
+<div class="badge badge-green" style="margin-bottom:0.75rem;">Observability Pattern</div>
+<h3>Health Endpoint</h3>
+<p>Each service exposes a dedicated endpoint (e.g. <code style="color:var(--accent-green);font-size:0.85em;">/health</code>) returning its operational status. Load balancers and orchestrators (Kubernetes liveness/readiness probes) poll this to route traffic only to healthy instances.</p>
+<p class="def-source-green">— Chris Richardson, microservices.io (Health Check API pattern)</p>
+</div>
+<div class="card">
+<div class="badge badge-red" style="margin-bottom:0.75rem;">Resilience Pattern</div>
+<h3>Bulkhead</h3>
+<p>Partitions service resources (thread pools, connection pools) so excessive load on one downstream dependency cannot exhaust resources serving other dependencies. Named after watertight ship hull compartments — if one floods, the ship still sails.</p>
+<p class="def-source-red">— Michael Nygard, Release It! (2007); popularized by Netflix Engineering</p>
+</div>
+<div class="card">
+<div class="badge badge-red" style="margin-bottom:0.75rem;">Resilience Pattern</div>
+<h3>Backpressure</h3>
+<p>A flow-control mechanism where downstream services signal capacity constraints upstream, causing producers to slow their emission rate rather than allowing buffers to overflow. Essential in reactive and event-driven microservices to prevent unbounded resource growth.</p>
+<p class="def-source-red">— Reactive Manifesto (2014); Reactive Streams Specification</p>
+</div>
+</div>
+</div>
+</section>
+<!-- KNOWLEDGE CHECK SECTION -->
+<section id="knowledge-check">
+<div class="container">
+<div class="text-center">
+<div class="section-label">Test Your Knowledge</div>
+<h2 class="section-title">Knowledge Check</h2>
+<p class="section-subtitle">8 questions drawn directly from primary source material — Fowler, Richardson, Evans, Conway, and the Twelve-Factor team.</p>
+</div>
+<!-- Score Bar -->
+<div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:2.5rem;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:1.1rem 1.5rem;flex-wrap:wrap;">
+<div style="text-align:center;">
+<div id="kc-correct" style="font-size:2rem;font-weight:800;color:var(--accent-green);">0</div>
+<div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;">Correct</div>
+</div>
+<div style="width:1px;height:40px;background:var(--border-subtle);"></div>
+<div style="text-align:center;">
+<div id="kc-wrong" style="font-size:2rem;font-weight:800;color:var(--accent-red);">0</div>
+<div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;">Incorrect</div>
+</div>
+<div style="width:1px;height:40px;background:var(--border-subtle);"></div>
+<div style="text-align:center;">
+<div id="kc-remaining" style="font-size:2rem;font-weight:800;color:var(--accent-orange);">8</div>
+<div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;">Remaining</div>
+</div>
+<button class="btn-secondary" onclick="kcReset()" style="padding:0.4rem 1.1rem;font-size:0.82rem;">↻ Reset</button>
+</div>
+<!-- Questions -->
+<div style="display:flex;flex-direction:column;gap:1.5rem;">
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q1</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">According to Fowler and Lewis (2014), the microservice architectural style develops a single application as what?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">A set of shared libraries with well-defined interfaces</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">A suite of small services, each in its own process, communicating via lightweight mechanisms</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">A monolithic application with internal service facades</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">A cluster of replicated processes sharing a single database</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> Fowler and Lewis: "an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API." <em style="color:var(--text-muted);">— martinfowler.com/articles/microservices.html (2014)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> The canonical definition: "a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API." <em style="color:var(--text-muted);">— martinfowler.com/articles/microservices.html (2014)</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q2</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">The Strangler Fig pattern was named after what natural phenomenon, and coined by whom?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">A parasitic vine — coined by Chris Richardson</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Ship hull compartments — coined by Sam Newman</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Tropical strangler fig trees that surround and replace a host tree — coined by Martin Fowler in 2004</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Cascading waterfalls — coined by Netflix Engineering</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> Fowler coined it in 2004, inspired by a strangler fig that germinates in the canopy, drops roots to the ground, and gradually surrounds and replaces the host — mirroring incremental legacy system replacement. <em style="color:var(--text-muted);">— Martin Fowler, bliki/StranglerFigApplication (2004)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> Martin Fowler coined it in 2004, named after tropical strangler fig trees that slowly envelop and replace a host tree. <em style="color:var(--text-muted);">— Martin Fowler, bliki/StranglerFigApplication (2004)</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q3</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">In Richardson's pattern catalog, which pattern specifically addresses managing distributed transactions across multiple microservices?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">CQRS (Command Query Responsibility Segregation)</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Circuit Breaker</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Saga</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Event Sourcing</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> The Saga pattern manages distributed transactions as a sequence of local transactions. Richardson identifies two approaches: choreography-based (events) and orchestration-based (central coordinator). <em style="color:var(--text-muted);">— Chris Richardson, microservices.io/patterns/data/saga.html</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> The Saga pattern handles distributed transactions. CQRS separates reads from writes; Circuit Breaker prevents cascading failures; Event Sourcing persists state as events. <em style="color:var(--text-muted);">— Chris Richardson, microservices.io/patterns/data/saga.html</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q4</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">The Twelve-Factor App methodology was developed by engineers at which company, and roughly when?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Netflix Engineering — circa 2013</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Heroku (Adam Wiggins et al.) — circa 2011</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Amazon Web Services — circa 2009</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Google SRE team — circa 2014</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> Adam Wiggins and Heroku engineers published it circa 2011, distilling lessons from running thousands of SaaS apps on Heroku's PaaS platform into 12 factors for cloud-native SaaS design. <em style="color:var(--text-muted);">— Adam Wiggins, 12factor.net (2011)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> Adam Wiggins and the Heroku team published the methodology circa 2011, drawn from observations of thousands of SaaS apps on their platform. <em style="color:var(--text-muted);">— Adam Wiggins, 12factor.net (2011)</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q5</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">Conway's Law states that organizations design systems that mirror what?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Their financial constraints and budget cycles</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Their communication structures — the org chart becomes the system architecture</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">The technical stack chosen by their engineering leads</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">The regulatory environment they operate in</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> "Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations." Microservices teams use the Inverse Conway Maneuver — structuring teams to match the desired architecture. <em style="color:var(--text-muted);">— Mel Conway, Datamation (April 1968)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> Conway's Law (1968): "Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations." <em style="color:var(--text-muted);">— Mel Conway, Datamation (April 1968)</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q6</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">The Bulkhead resilience pattern takes its name from which engineering domain?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Aviation — compartmentalized fuel tanks on aircraft</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Naval engineering — watertight hull compartments on ships</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Civil engineering — flood barriers and retaining walls</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Electrical engineering — fuse panels preventing overload</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> Named after watertight compartments in ship hulls — if one compartment floods, the others keep the ship afloat. In microservices, isolating thread pools means one slow dependency cannot exhaust all resources and bring the service down. <em style="color:var(--text-muted);">— Michael Nygard, Release It! (2007)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> The Bulkhead pattern comes from naval engineering: watertight hull compartments prevent a single breach from sinking the vessel. <em style="color:var(--text-muted);">— Michael Nygard, Release It! (2007)</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q7</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">In CQRS (Command Query Responsibility Segregation), what is the fundamental separation?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Separating synchronous calls from asynchronous messaging</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">Separating the write model (commands) from the read model (queries) with independent data stores</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Separating internal service calls from external API calls</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">Separating authentication logic from business logic</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> CQRS separates the write model (commands) from the read model (queries), each with its own optimized data store — enabling independent scaling. CQRS is often combined with Event Sourcing. <em style="color:var(--text-muted);">— Chris Richardson, microservices.io/patterns/data/cqrs.html</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> CQRS separates the write model (commands) from the read model (queries), each with its own data store for independent scaling and optimization. <em style="color:var(--text-muted);">— Chris Richardson, microservices.io/patterns/data/cqrs.html</em></p>
+</div>
+</div>
+<div class="card kc-q" data-answered="false">
+<div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+<span style="background:linear-gradient(135deg,var(--accent-orange),var(--accent-amber));color:#1a1a2e;font-weight:800;font-size:0.8rem;padding:0.25rem 0.65rem;border-radius:100px;flex-shrink:0;">Q8</span>
+<p style="color:var(--text-primary);font-weight:600;margin:0;">The Twelve-Factor App's "Config" principle (Factor III) specifies that application configuration should be stored where?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.6rem;">
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">In a configuration file checked into the code repository</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">In a database shared across all service instances</button>
+<button class="kc-opt kc-correct-ans" onclick="kcAnswer(this,true,this.closest('.kc-q'))">In the environment — environment variables, not in code or config files</button>
+<button class="kc-opt" onclick="kcAnswer(this,false,this.closest('.kc-q'))">In the service's in-memory configuration object at startup</button>
+</div>
+<div class="kc-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-green);">✓ Correct.</strong> Factor III: "Store config in the environment." Config is anything that varies between deploys — credentials, backing service URLs, port numbers. The test: could you open-source the codebase right now without compromising credentials? <em style="color:var(--text-muted);">— Adam Wiggins, 12factor.net/config (2011)</em></p>
+</div>
+<div class="kc-wrong-explanation" style="display:none;margin-top:1rem;padding:0.9rem 1rem;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:8px;">
+<p style="color:var(--text-primary);font-size:0.88rem;"><strong style="color:var(--accent-red);">✗ Not quite.</strong> Factor III says config belongs in environment variables — not in code or config files in the repository, which would expose credentials and prevent portability. <em style="color:var(--text-muted);">— Adam Wiggins, 12factor.net/config (2011)</em></p>
+</div>
+</div>
+</div><!-- /questions -->
+</div>
+</section>
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<p>Built for visual learners · Covers microservices.io patterns, Martin Fowler's canonical articles, Sam Newman's books, and real-world cloud-native practices</p>
+<p style="margin-top:0.5rem;">Key references: <a href="https://martinfowler.com/articles/microservices.html" rel="noopener" style="color:var(--accent-orange);text-decoration:none;" target="_blank">martinfowler.com</a> · <a href="https://microservices.io" rel="noopener" style="color:var(--accent-orange);text-decoration:none;" target="_blank">microservices.io</a> · <a href="https://12factor.net" rel="noopener" style="color:var(--accent-orange);text-decoration:none;" target="_blank">12factor.net</a></p>
+</div>
+</footer>
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+// &#8212;&#8212; Architecture Visualizer Tabs &#8212;&#8212;
+function showArch(id) {
+  document.querySelectorAll('#viz-tabs .tab-btn').forEach(function(b, i) {
+    var ids = ['monolith','soa','microservices'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('[id^="arch-"]').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'arch-' + id);
+  });
+}
+
+// &#8212;&#8212; Resources Tabs &#8212;&#8212;
+function showRes(id) {
+  document.querySelectorAll('#res-tabs .tab-btn').forEach(function(b, i) {
+    var ids = ['videos','interactive','read','books'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('[id^="res-"]').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'res-' + id);
+  });
+}
+
+// &#8212;&#8212; Scroll-based fade-in for cards &#8212;&#8212;
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.style.animation = 'fadeSlideUp 0.5s ease both';
+        e.target.style.opacity = '1';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.card, .pattern-card, .cheat-card, .roadmap-step, .timeline-content, .resource-item').forEach(function(el) {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+})();
+
+// &#8212;&#8212; Active nav link highlighting on scroll &#8212;&#8212;
+(function() {
+  var sections = document.querySelectorAll('section[id]');
+  var links = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    sections.forEach(function(sec) {
+      var top = sec.offsetTop - 90;
+      var bottom = top + sec.offsetHeight;
+      if (scrollY >= top && scrollY < bottom) {
+        links.forEach(function(l) {
+          l.style.color = l.getAttribute('href') === '#' + sec.id
+            ? 'var(--accent-orange)'
+            : '';
+          l.style.background = l.getAttribute('href') === '#' + sec.id
+            ? 'rgba(245,166,35,0.1)'
+            : '';
+        });
+      }
+    });
+  }, { passive: true });
+})();
+
+// &#8212;&#8212; Knowledge Check Quiz &#8212;&#8212;
+function kcAnswer(btn, isCorrect, qEl) {
+  if (qEl.getAttribute('data-answered') === 'true') return;
+  qEl.setAttribute('data-answered', 'true');
+
+  var opts = qEl.querySelectorAll('.kc-opt');
+  opts.forEach(function(o) {
+    o.disabled = true;
+    if (o.classList.contains('kc-correct-ans')) {
+      o.style.background  = 'rgba(74,222,128,0.15)';
+      o.style.borderColor = 'rgba(74,222,128,0.5)';
+      o.style.color       = 'var(--accent-green)';
+    }
+  });
+
+  var correctEl = document.getElementById('kc-correct');
+  var wrongEl   = document.getElementById('kc-wrong');
+  var remEl     = document.getElementById('kc-remaining');
+
+  if (!isCorrect) {
+    btn.style.background  = 'rgba(248,113,113,0.15)';
+    btn.style.borderColor = 'rgba(248,113,113,0.5)';
+    btn.style.color       = 'var(--accent-red)';
+    qEl.querySelector('.kc-wrong-explanation').style.display = 'block';
+    wrongEl.textContent = parseInt(wrongEl.textContent) + 1;
+  } else {
+    qEl.querySelector('.kc-explanation').style.display = 'block';
+    correctEl.textContent = parseInt(correctEl.textContent) + 1;
+  }
+  remEl.textContent = Math.max(0, parseInt(remEl.textContent) - 1);
+}
+
+function kcReset() {
+  document.querySelectorAll('.kc-q').forEach(function(q) {
+    q.setAttribute('data-answered', 'false');
+    q.querySelectorAll('.kc-opt').forEach(function(o) {
+      o.disabled = false;
+      o.style.background  = '';
+      o.style.borderColor = '';
+      o.style.color       = '';
+    });
+    q.querySelectorAll('.kc-explanation, .kc-wrong-explanation').forEach(function(e) {
+      e.style.display = 'none';
+    });
+  });
+  document.getElementById('kc-correct').textContent   = '0';
+  document.getElementById('kc-wrong').textContent     = '0';
+  document.getElementById('kc-remaining').textContent = '8';
+}
+</script>

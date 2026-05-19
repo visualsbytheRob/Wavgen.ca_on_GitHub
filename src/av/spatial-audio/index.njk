@@ -1,0 +1,2139 @@
+---
+layout: world.njk
+title: "WAVGEN — Spatial Audio World"
+description: "Immersive av world exploring spatial audio"
+domain: av
+permalink: /av/spatial-audio/
+---
+
+
+<!-- NAV -->
+<nav>
+<div class="nav-logo">▌WAVGEN</div>
+<div class="nav-links">
+<a href="#hero">HERO</a>
+<a href="#hrtf">HRTF</a>
+<a href="#ambi">AMBI</a>
+<a href="#rooms">ROOMS</a>
+<a href="#psycho">PSYCHO</a>
+<a href="#paths">PATHS</a>
+<a href="#reverb">REVERB</a>
+<a href="#artists">ARTISTS</a>
+<a href="#glossary">GLOSSARY</a>
+</div>
+</nav>
+<!-- ═══════════════════════════════════════════ SECTION 1: HERO -->
+<section id="hero" style="min-height:100vh;padding:0;max-width:100%;justify-content:center;align-items:center;display:flex;flex-direction:column;gap:0">
+<div style="width:100%;position:relative">
+<canvas height="440" id="hero-canvas" style="width:100%;height:440px;display:block" width="1200"></canvas>
+<div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none">
+<div style="font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;letter-spacing:.15em;color:var(--text)">SPATIAL AUDIO WORLD</div>
+<div style="font-size:.8rem;letter-spacing:.3em;color:var(--dim);margin-top:.5rem">binaural · ambisonics · psychoacoustics</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 2: HRTF -->
+<section id="hrtf">
+<div class="hidden stagger-1">
+<div class="section-label">Section 02</div>
+<div class="section-title">Binaural HRTF Explorer</div>
+<div class="section-sub">Drag the sound source around the head to explore head-related transfer functions — the acoustic filtering your ears and head apply to localize sound in 3D space.</div>
+</div>
+<div class="two-col hidden stagger-2">
+<div>
+<div class="canvas-wrap" style="margin-bottom:1rem">
+<canvas height="340" id="hrtf-top" style="width:100%;max-width:340px;height:340px" width="340"></canvas>
+</div>
+<div class="ctrl-group">
+<div class="ctrl-label">Elevation</div>
+<input id="hrtf-elev" max="90" min="-40" style="width:100%" type="range" value="0"/>
+<div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim)"><span>-40°</span><span id="hrtf-elev-val">0°</span><span>+90°</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:1rem">
+<div class="info-card">
+<h4>ITD — Interaural Time Delay</h4>
+<div class="info-val" id="itd-val">0 μs</div>
+<div style="margin:.75rem 0 .5rem;font-size:.65rem;color:var(--dim)">L EAR → R EAR</div>
+<div style="height:24px;background:var(--border);border-radius:3px;position:relative;overflow:hidden">
+<div id="itd-bar" style="position:absolute;height:100%;background:var(--accent2);opacity:.6;transition:all .15s"></div>
+</div>
+</div>
+<div class="info-card">
+<h4>ILD — Interaural Level Difference</h4>
+<div class="info-val" id="ild-val">0 dB</div>
+<div style="margin:.75rem 0 .3rem">
+<div class="meter-row"><span class="meter-lbl">L</span><div class="meter-track"><div class="meter-fill" id="ild-l" style="background:var(--accent2)"></div></div><span class="meter-val" id="ild-l-val">0 dB</span></div>
+<div class="meter-row"><span class="meter-lbl">R</span><div class="meter-track"><div class="meter-fill" id="ild-r" style="background:var(--accent3)"></div></div><span class="meter-val" id="ild-r-val">0 dB</span></div>
+</div>
+</div>
+<div class="info-card">
+<h4>HRTF Frequency Coloring</h4>
+<canvas height="90" id="hrtf-eq" style="width:100%;height:90px" width="280"></canvas>
+<div id="hrtf-eq-label" style="font-size:.65rem;color:var(--dim);margin-top:.4rem">Azimuth: 0° | Front</div>
+</div>
+<div class="info-card" style="font-size:.72rem;color:var(--dim)">
+<h4>Cone of Confusion</h4>
+<div id="coc-msg">At 0° elevation, frontal and rear sources share identical ITD/ILD cues — the cone of confusion. Elevation cues from pinna notches distinguish them.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 3: AMBISONICS -->
+<section id="ambi">
+<div class="hidden stagger-1">
+<div class="section-label">Section 03</div>
+<div class="section-title">Ambisonics Field Visualizer</div>
+<div class="section-sub">B-Format spherical harmonics decoded into spatial audio fields. Higher orders resolve finer spatial detail — drag the source to decode amplitude at any position.</div>
+</div>
+<div class="hidden stagger-2">
+<div class="tabs" style="margin-bottom:1rem">
+<button class="btn-active" data-ambi-tab="1st">1st Order (4ch)</button>
+<button data-ambi-tab="2nd">2nd Order (9ch)</button>
+<button data-ambi-tab="3rd">3rd Order (16ch)</button>
+</div>
+<div class="two-col">
+<div class="canvas-wrap">
+<canvas height="380" id="ambi-canvas" style="width:100%;max-width:380px;height:380px" width="380"></canvas>
+</div>
+<div style="display:flex;flex-direction:column;gap:1rem">
+<div class="info-card">
+<h4>Spherical Harmonic Channels</h4>
+<canvas height="120" id="ambi-sh" style="width:100%;height:120px" width="260"></canvas>
+</div>
+<div class="info-card">
+<h4>Spatial Resolution</h4>
+<canvas height="80" id="ambi-res" style="width:100%;height:80px" width="260"></canvas>
+<div id="ambi-res-label" style="font-size:.65rem;color:var(--dim);margin-top:.4rem">Drag source to see decoded field</div>
+</div>
+<div class="info-card">
+<h4>Controls</h4>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem">
+<button id="ambi-speaker-btn">Toggle Speakers</button>
+</div>
+<div id="ambi-info" style="font-size:.72rem;color:var(--dim)">1st order: W (omni) + X,Y,Z (figure-8 pairs)</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 4: ROOMS -->
+<section id="rooms">
+<div class="hidden stagger-1">
+<div class="section-label">Section 04</div>
+<div class="section-title">Acoustic Environment Map</div>
+<div class="section-sub">Five acoustic environments visualized isometrically. RT60 reverberation time characterizes each space — from the anechoic studio to the resonant cathedral.</div>
+</div>
+<div class="hidden stagger-2">
+<div class="controls" style="margin-bottom:1rem">
+<div class="tabs">
+<button class="btn-active" data-room="hall">Concert Hall</button>
+<button data-room="cathedral">Cathedral</button>
+<button data-room="studio">Studio</button>
+<button data-room="bathroom">Bathroom</button>
+<button data-room="forest">Forest</button>
+</div>
+</div>
+<div class="two-col">
+<div class="canvas-wrap">
+<canvas height="360" id="room-canvas" style="width:100%;height:360px" width="440"></canvas>
+</div>
+<div style="display:flex;flex-direction:column;gap:1rem">
+<div class="info-card">
+<h4>Reverberation Time</h4>
+<div class="info-val" id="room-rt60">2.0 s</div>
+<div id="room-name-label" style="font-size:.65rem;color:var(--dim);margin-top:.3rem">Concert Hall</div>
+</div>
+<div class="formula" id="sabine-formula">RT60 = 0.161 × V / (α × S)</div>
+<div class="info-card">
+<h4>Room Properties</h4>
+<div id="room-props" style="font-size:.75rem;color:var(--dim)">V: 15,000 m³ | S: 4,200 m² | α: 0.29</div>
+</div>
+<div class="info-card">
+<h4>Surface Materials</h4>
+<div id="room-materials" style="font-size:.72rem;color:var(--dim);line-height:1.8">
+            Walls: Plaster / Concrete<br/>Floor: Wood<br/>Ceiling: Acoustic tile<br/>Seats: Upholstered
+          </div>
+</div>
+<div class="info-card">
+<h4>RT60 Guide</h4>
+<canvas height="80" id="room-guide" style="width:100%;height:80px" width="260"></canvas>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 5: PSYCHOACOUSTICS -->
+<section id="psycho">
+<div class="hidden stagger-1">
+<div class="section-label">Section 05</div>
+<div class="section-title">Psychoacoustic Effects Lab</div>
+<div class="section-sub">How the auditory system interprets spatial cues — from the Haas precedence window to cocktail party attention filtering.</div>
+</div>
+<div class="hidden stagger-2">
+<div class="tabs" style="margin-bottom:1rem">
+<button class="btn-active" data-psycho-tab="haas">Haas Effect</button>
+<button data-psycho-tab="precedence">Precedence</button>
+<button data-psycho-tab="cocktail">Cocktail Party</button>
+<button data-psycho-tab="phantom">Phantom Center</button>
+</div>
+<!-- HAAS -->
+<div class="tab-content active" id="psycho-haas">
+<div class="two-col">
+<div>
+<div class="canvas-wrap"><canvas height="200" id="haas-canvas" style="width:100%;height:200px" width="400"></canvas></div>
+<div class="ctrl-group" style="margin-top:.8rem">
+<div class="ctrl-label">Delay: <span id="haas-delay-val">15</span> ms</div>
+<input id="haas-delay" max="50" min="0" style="width:100%" type="range" value="15"/>
+</div>
+</div>
+<div class="info-card">
+<h4>Haas Effect</h4>
+<p style="font-size:.75rem;color:var(--dim);line-height:1.6">With delays of 1–30ms, the auditory system fuses the direct and delayed sounds, perceiving one sound located at the first-arrival source. Beyond 30–40ms the delay becomes an echo.</p>
+<div style="margin-top:.8rem;font-size:.75rem">
+<div id="haas-zone" style="color:var(--accent2)">● Fusion zone — perceived as one sound</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PRECEDENCE -->
+<div class="tab-content" id="psycho-precedence">
+<div class="two-col">
+<div>
+<div class="canvas-wrap"><canvas height="200" id="prec-canvas" style="width:100%;height:200px" width="400"></canvas></div>
+<div class="ctrl-group" style="margin-top:.8rem">
+<div class="ctrl-label">Level difference: <span id="prec-level-val">+6</span> dB (delayed louder)</div>
+<input id="prec-level" max="20" min="0" style="width:100%" type="range" value="6"/>
+</div>
+</div>
+<div class="info-card">
+<h4>Precedence Effect</h4>
+<p style="font-size:.75rem;color:var(--dim);line-height:1.6">The first-arriving sound determines perceived direction even when the delayed copy is up to ~10dB louder. This is the basis of concert hall design — early reflections enhance the direct sound.</p>
+</div>
+</div>
+</div>
+<!-- COCKTAIL PARTY -->
+<div class="tab-content" id="psycho-cocktail">
+<div class="two-col">
+<div>
+<div class="canvas-wrap"><canvas height="220" id="cocktail-canvas" style="width:100%;height:220px" width="400"></canvas></div>
+<div class="ctrl-group" style="margin-top:.8rem">
+<div class="ctrl-label">Attention focus: <span id="cocktail-focus-val">Source A</span></div>
+<input id="cocktail-focus" max="4" min="0" step="1" style="width:100%" type="range" value="0"/>
+</div>
+</div>
+<div class="info-card">
+<h4>Cocktail Party Effect</h4>
+<p style="font-size:.75rem;color:var(--dim);line-height:1.6">The auditory system selectively attends to one conversation in a noisy environment using spatial, pitch, and timbre cues. Focused streams are perceptually enhanced; others are suppressed.</p>
+</div>
+</div>
+</div>
+<!-- PHANTOM CENTER -->
+<div class="tab-content" id="psycho-phantom">
+<div class="two-col">
+<div>
+<div class="canvas-wrap"><canvas height="200" id="phantom-canvas" style="width:100%;height:200px" width="400"></canvas></div>
+<div class="ctrl-group" style="margin-top:.8rem">
+<div class="ctrl-label">Pan: <span id="phantom-pan-val">Center</span></div>
+<input id="phantom-pan" max="100" min="-100" style="width:100%" type="range" value="0"/>
+</div>
+</div>
+<div class="info-card">
+<h4>Phantom Center Image</h4>
+<p style="font-size:.75rem;color:var(--dim);line-height:1.6">Equal energy in both speakers creates a phantom center image — a perceptual illusion of a sound between the speakers. ILD controlled by pan law determines the perceived position.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 6: PATHS -->
+<section id="paths">
+<div class="hidden stagger-1">
+<div class="section-label">Section 06</div>
+<div class="section-title">Sound Movement Paths</div>
+<div class="section-sub">Animated sound sources moving through space. Doppler shift causes frequency changes proportional to approach/recession velocity relative to the listener.</div>
+</div>
+<div class="hidden stagger-2">
+<div class="path-buttons" style="margin-bottom:1rem">
+<button class="btn-active" data-path="circular">Circular Orbit</button>
+<button data-path="figure8">Figure-8</button>
+<button data-path="doppler">Doppler Fly-By</button>
+</div>
+<div class="two-col">
+<div class="canvas-wrap">
+<canvas height="360" id="path-canvas" style="width:100%;height:360px" width="420"></canvas>
+</div>
+<div style="display:flex;flex-direction:column;gap:1rem">
+<div class="ctrl-group">
+<div class="ctrl-label">Speed: <span id="path-speed-val">20</span> m/s</div>
+<input id="path-speed" max="40" min="1" style="width:100%" type="range" value="20"/>
+</div>
+<div class="ctrl-group">
+<div class="ctrl-label">Distance: <span id="path-dist-val">80</span> m</div>
+<input id="path-dist" max="200" min="20" style="width:100%" type="range" value="80"/>
+</div>
+<div class="info-card">
+<h4>Doppler Shift</h4>
+<canvas height="100" id="doppler-canvas" style="width:100%;height:100px" width="260"></canvas>
+<div class="doppler-display" style="margin-top:.5rem">
+<span style="font-size:.65rem;color:var(--dim)">Δf =</span>
+<span class="doppler-val" id="doppler-val" style="color:var(--accent2)">0.0%</span>
+</div>
+</div>
+<div class="info-card">
+<h4>Path Info</h4>
+<div id="path-info" style="font-size:.75rem;color:var(--dim);line-height:1.7">
+            Sound source orbits at constant angular velocity. Apparent position rotates 360° around listener.
+          </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 7: REVERB -->
+<section id="reverb">
+<div class="hidden stagger-1">
+<div class="section-label">Section 07</div>
+<div class="section-title">Reverb &amp; Room Acoustics</div>
+<div class="section-sub">Sabine's formula predicts RT60 from room volume and surface absorption. Adjust dimensions and materials to design your acoustic space.</div>
+</div>
+<div class="hidden stagger-2">
+<div class="two-col">
+<div>
+<div style="display:flex;flex-direction:column;gap:.8rem;margin-bottom:1rem">
+<div class="ctrl-group">
+<div class="ctrl-label">Width: <span id="rv-w-val">12</span> m</div>
+<input id="rv-width" max="50" min="3" style="width:100%" type="range" value="12"/>
+</div>
+<div class="ctrl-group">
+<div class="ctrl-label">Depth: <span id="rv-d-val">10</span> m</div>
+<input id="rv-depth" max="50" min="3" style="width:100%" type="range" value="10"/>
+</div>
+<div class="ctrl-group">
+<div class="ctrl-label">Height: <span id="rv-h-val">4</span> m</div>
+<input id="rv-height" max="20" min="2" style="width:100%" type="range" value="4"/>
+</div>
+</div>
+<div class="surface-grid">
+<div class="surface-item"><div class="surface-name">Front Wall</div><select class="mat-select" id="mat-front"></select></div>
+<div class="surface-item"><div class="surface-name">Back Wall</div><select class="mat-select" id="mat-back"></select></div>
+<div class="surface-item"><div class="surface-name">Left Wall</div><select class="mat-select" id="mat-left"></select></div>
+<div class="surface-item"><div class="surface-name">Right Wall</div><select class="mat-select" id="mat-right"></select></div>
+<div class="surface-item"><div class="surface-name">Floor</div><select class="mat-select" id="mat-floor"></select></div>
+<div class="surface-item"><div class="surface-name">Ceiling</div><select class="mat-select" id="mat-ceil"></select></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:1rem">
+<div class="info-card">
+<h4>Calculated RT60</h4>
+<div class="info-val" id="rv-rt60">0.48 s</div>
+<div class="formula" style="margin-top:.75rem;font-size:.75rem">RT60 = 0.161 × V / Σ(αₙSₙ)</div>
+</div>
+<div class="info-card">
+<h4>Decay Curve</h4>
+<canvas height="100" id="decay-canvas" style="width:100%;height:100px" width="260"></canvas>
+</div>
+<div class="info-card">
+<h4>Ideal RT60 Guide</h4>
+<canvas height="90" id="rt60-guide" style="width:100%;height:90px" width="260"></canvas>
+</div>
+<div class="info-card">
+<h4>Room Volume &amp; Total Absorption</h4>
+<div id="rv-stats" style="font-size:.75rem;color:var(--dim)">V: 480 m³ | A: 160 sabin | ᾱ: 0.33</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 8: ARTISTS -->
+<section id="artists">
+<div class="hidden stagger-1">
+<div class="section-label">Section 08</div>
+<div class="section-title">Spatial Audio Artists &amp; Researchers</div>
+<div class="section-sub">Pioneers shaping how we hear space — from psychoacoustic science to immersive field recording and object-based cinema audio.</div>
+</div>
+<div class="artists-grid hidden stagger-2">
+<div class="artist-card">
+<div class="artist-name">Hildegard Westerkamp</div>
+<div class="artist-role">Soundscape Pioneer</div>
+<div class="artist-desc">Acoustic ecology visionary. Her compositions foreground environmental listening, making urban and natural soundscapes the primary subject of the work.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Francisco López</div>
+<div class="artist-role">Acousmatic Performer</div>
+<div class="artist-desc">Immersive multi-channel performances using raw environmental recordings radically transformed — listeners blindfolded, surrendering to pure sound experience.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Janet Cardiff</div>
+<div class="artist-role">Binaural Walk Artist</div>
+<div class="artist-desc">"The Forty Part Motet" and her audio walks use binaural recording and spatial narrative to blur the boundary between recording and live presence.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Dolby Atmos Team</div>
+<div class="artist-role">Object-Based Audio</div>
+<div class="artist-desc">Revolutionized cinema and music delivery with object-based audio metadata — sounds placed and moved precisely in 3D space regardless of playback format.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Jens Blauert</div>
+<div class="artist-role">Binaural Researcher</div>
+<div class="artist-desc">Author of "Spatial Hearing" — the foundational textbook on binaural psychoacoustics, HRTF measurement, and the perceptual mechanisms of sound localization.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Trond Engum</div>
+<div class="artist-role">Spatial Composer</div>
+<div class="artist-desc">Norwegian composer specializing in ambisonics field recording and spatial diffusion — creating sonic environments that place the listener inside vast acoustic landscapes.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Chris Salter</div>
+<div class="artist-role">Immersive Environment Artist</div>
+<div class="artist-desc">Cross-disciplinary artist whose immersive environments fuse spatial audio, kinetics, and light — dissolving boundaries between observer and sonic field.</div>
+</div>
+<div class="artist-card">
+<div class="artist-name">Natasha Barrett</div>
+<div class="artist-role">Ambisonics Composer</div>
+<div class="artist-desc">First-order ambisonics composition and live spatial diffusion. Her work explores the compositional potential of acoustic space as a structural parameter.</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SECTION 9: GLOSSARY -->
+<section id="glossary">
+<div class="hidden stagger-1">
+<div class="section-label">Section 09</div>
+<div class="section-title">Glossary of Spatial Audio Terms</div>
+<div class="section-sub">22 essential concepts in spatial audio, psychoacoustics, and acoustic engineering.</div>
+</div>
+<div class="glossary-grid hidden stagger-2">
+<div class="glossary-item"><div class="glossary-term">Ambisonics</div><div class="glossary-def">A full-sphere surround sound technique using spherical harmonic decomposition. Higher orders encode finer spatial resolution.</div></div>
+<div class="glossary-item"><div class="glossary-term">Azimuth</div><div class="glossary-def">The horizontal angle of a sound source relative to a listener, measured 0°–360° or ±180° from front.</div></div>
+<div class="glossary-item"><div class="glossary-term">B-Format</div><div class="glossary-def">The standard encoding for first-order ambisonics: W (pressure), X, Y, Z (velocity components on each axis).</div></div>
+<div class="glossary-item"><div class="glossary-term">Binaural</div><div class="glossary-def">Two-channel audio processed with HRTFs to simulate 3D spatial hearing over headphones, replicating natural listening cues.</div></div>
+<div class="glossary-item"><div class="glossary-term">Cocktail Party Effect</div><div class="glossary-def">The auditory system's ability to selectively attend to one conversation in a noisy multi-talker environment using spatial and spectral segregation.</div></div>
+<div class="glossary-item"><div class="glossary-term">Cone of Confusion</div><div class="glossary-def">A set of positions on a cone around the interaural axis that produce identical ITD and ILD values, requiring pinna spectral cues for disambiguation.</div></div>
+<div class="glossary-item"><div class="glossary-term">Convolution Reverb</div><div class="glossary-def">Reverberation created by convolving an audio signal with an impulse response (IR) captured in a real acoustic space.</div></div>
+<div class="glossary-item"><div class="glossary-term">Doppler Effect</div><div class="glossary-def">The perceived frequency shift caused by relative motion between source and listener — higher pitch on approach, lower on recession.</div></div>
+<div class="glossary-item"><div class="glossary-term">Elevation</div><div class="glossary-def">The vertical angle of a sound source above or below the listener's horizon, typically -90° (below) to +90° (above).</div></div>
+<div class="glossary-item"><div class="glossary-term">Externalization</div><div class="glossary-def">The perceptual quality of a binaural sound appearing outside the head rather than inside it — dependent on accurate HRTF rendering.</div></div>
+<div class="glossary-item"><div class="glossary-term">Haas Effect</div><div class="glossary-def">When two identical sounds arrive within 1–30ms, the auditory system perceives one sound at the first-arrival location (precedence/fusion zone).</div></div>
+<div class="glossary-item"><div class="glossary-term">HRTF</div><div class="glossary-def">Head-Related Transfer Function — the frequency-domain filter representing how the head, ears, and torso transform sound at each azimuth and elevation.</div></div>
+<div class="glossary-item"><div class="glossary-term">ILD</div><div class="glossary-def">Interaural Level Difference — the intensity difference between ears. Primary localization cue for high frequencies (above ~1.5kHz).</div></div>
+<div class="glossary-item"><div class="glossary-term">Impulse Response</div><div class="glossary-def">The complete acoustic "fingerprint" of a space — its response to a theoretically instantaneous sound, capturing all reflections and decay.</div></div>
+<div class="glossary-item"><div class="glossary-term">ITD</div><div class="glossary-def">Interaural Time Delay — the arrival time difference between ears (max ~690μs at 90°). Primary cue for low-frequency lateralization.</div></div>
+<div class="glossary-item"><div class="glossary-term">Localization</div><div class="glossary-def">The perceptual process of determining the spatial position of a sound source using binaural, monaural, and environmental cues.</div></div>
+<div class="glossary-item"><div class="glossary-term">Object-Based Audio</div><div class="glossary-def">An audio format in which sounds are encoded as objects with position metadata rather than fixed channel assignments, enabling adaptive rendering.</div></div>
+<div class="glossary-item"><div class="glossary-term">Phantom Image</div><div class="glossary-def">A perceived sound source located between two loudspeakers, created by amplitude panning — no physical source exists at that position.</div></div>
+<div class="glossary-item"><div class="glossary-term">Precedence Effect</div><div class="glossary-def">The perceptual mechanism by which the first-arriving sound dominates localization, suppressing directional information from later reflections.</div></div>
+<div class="glossary-item"><div class="glossary-term">RT60</div><div class="glossary-def">Reverberation time — the time for sound pressure level to decay 60dB after the source stops. A key descriptor of room acoustics.</div></div>
+<div class="glossary-item"><div class="glossary-term">Soundfield</div><div class="glossary-def">The complete 3D distribution of acoustic energy in a space — ambisonics encodes the soundfield as a set of spherical harmonic components.</div></div>
+<div class="glossary-item"><div class="glossary-term">VBAP</div><div class="glossary-def">Vector Base Amplitude Panning — a loudspeaker panning method using triplets of speakers to position virtual sources anywhere in 3D space.</div></div>
+</div>
+<div style="height:4rem"></div>
+</section>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════ LAGFILTER
+class LagFilter {
+  constructor(tau) { this.tau = tau; this.value = null; }
+  update(target, dt) {
+    if (this.value === null) this.value = target;
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════ UTILITIES
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+const C = { black:'#0a0a0f', surface:'#111118', border:'#1e1e2e', text:'#e2e2f0', dim:'#6b6b8a', accent:'#0891b2', accent2:'#00e5ff', accent3:'#f59e0b' };
+
+// ═══════════════════════════════════════════════════════════ SECTION 1: HERO
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width, H = canvas.height;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio;
+    canvas.height = 440 * ratio;
+    W = canvas.width; H = canvas.height;
+    ctx.scale(ratio, ratio);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // 3 sources with different orbits
+  const sources = [
+    { r: 120, speed: 0.0008, phase: 0,         color: C.accent2,  name: 'A', rings: [] },
+    { r: 190, speed: 0.00045, phase: Math.PI*0.7, color: C.accent,   name: 'B', rings: [] },
+    { r: 260, speed: 0.00022, phase: Math.PI*1.4, color: C.accent3,  name: 'C', rings: [] },
+  ];
+
+  // Sonar sweep
+  let sweepAngle = 0;
+  const SWEEP_SPEED = 0.00025;
+
+  let lastT = null;
+  let ringTimer = [0, 0, 0];
+  const RING_INTERVAL = [900, 700, 1200]; // ms between ring pulses
+
+  function drawGrid(cx, cy) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(${hexToRgb(C.border)},0.4)`;
+    ctx.lineWidth = 0.5;
+    [80, 140, 200, 260, 320].forEach(r => {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.stroke();
+    });
+    for (let a = 0; a < Math.PI*2; a += Math.PI/6) {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(a)*320, cy + Math.sin(a)*320);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawListener(cx, cy) {
+    // Outer ring
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 14, 0, Math.PI*2);
+    ctx.strokeStyle = C.accent2;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    // Inner dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, 5, 0, Math.PI*2);
+    ctx.fillStyle = C.accent2;
+    ctx.fill();
+    // Ear markers
+    ctx.fillStyle = `rgba(${hexToRgb(C.accent2)},0.6)`;
+    ctx.beginPath(); ctx.arc(cx - 18, cy, 4, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + 18, cy, 4, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSweep(cx, cy, angle) {
+    ctx.save();
+    // Sweep gradient
+    const grad = ctx.createConicalGradient ? null : null;
+    // Glow arc (trailing)
+    ctx.globalAlpha = 0.08;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, 320, angle - 0.35, angle);
+    ctx.closePath();
+    ctx.fillStyle = C.accent2;
+    ctx.fill();
+
+    // Sweep line
+    ctx.globalAlpha = 0.7;
+    ctx.strokeStyle = C.accent2;
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = C.accent2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(angle)*320, cy + Math.sin(angle)*320);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawSourcePath(cx, cy, src) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(${hexToRgb(src.color)},0.15)`;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 8]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, src.r, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  function drawRings(cx, cy, src, now) {
+    src.rings = src.rings.filter(ring => {
+      const age = now - ring.born;
+      const life = 2200;
+      if (age > life) return false;
+      const prog = age / life;
+      const maxR = 90;
+      const radius = prog * maxR;
+      const alpha = (1 - prog) * 0.6;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(ring.x, ring.y, radius, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(${hexToRgb(src.color)},${alpha})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+      return true;
+    });
+  }
+
+  function drawSource(x, y, src, dist, sweepAngle) {
+    // Check if near sweep line for illumination
+    const srcAngle = Math.atan2(y - (H/2), x - (W/2));
+    let sweepDiff = Math.abs(((srcAngle - sweepAngle) + Math.PI*3) % (Math.PI*2) - Math.PI);
+    const sweepGlow = sweepDiff < 0.2 ? (1 - sweepDiff/0.2) : 0;
+
+    // Proximity brightness (closer = brighter)
+    const brightness = Math.max(0.4, 1 - dist/300);
+
+    ctx.save();
+    const glowR = 8 + sweepGlow * 12;
+    ctx.shadowBlur = 16 + sweepGlow * 20;
+    ctx.shadowColor = src.color;
+    ctx.beginPath();
+    ctx.arc(x, y, glowR, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${hexToRgb(src.color)},${0.3 * brightness})`;
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI*2);
+    ctx.fillStyle = src.color;
+    ctx.globalAlpha = 0.6 + 0.4 * brightness;
+    ctx.fill();
+
+    // Label
+    ctx.globalAlpha = 0.5 + 0.4 * sweepGlow;
+    ctx.fillStyle = src.color;
+    ctx.font = '11px Courier New';
+    ctx.fillText(src.name, x + 10, y - 6);
+    ctx.restore();
+  }
+
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    const dt = lastT === null ? 16 : ts - lastT;
+    lastT = ts;
+
+    const cx = W/2, cy = H/2;
+
+    // Phosphor decay
+    ctx.fillStyle = 'rgba(10,10,15,0.05)';
+    ctx.fillRect(0, 0, W, H);
+
+    drawGrid(cx, cy);
+
+    // Update sweep
+    sweepAngle = (sweepAngle + SWEEP_SPEED * dt) % (Math.PI*2);
+    drawSweep(cx, cy, sweepAngle);
+
+    // Update sources
+    sources.forEach((src, i) => {
+      src.phase += src.speed * dt;
+      const sx = cx + Math.cos(src.phase) * src.r;
+      const sy = cy + Math.sin(src.phase) * src.r;
+      src.x = sx; src.y = sy;
+
+      const dist = Math.sqrt((sx-cx)**2 + (sy-cy)**2);
+
+      drawSourcePath(cx, cy, src);
+
+      // Ring emission
+      ringTimer[i] += dt;
+      if (ringTimer[i] > RING_INTERVAL[i]) {
+        ringTimer[i] = 0;
+        src.rings.push({ x: sx, y: sy, born: ts });
+      }
+
+      drawRings(cx, cy, src, ts);
+      drawSource(sx, sy, src, dist, sweepAngle);
+
+      // Sound path line (faint)
+      ctx.save();
+      ctx.strokeStyle = `rgba(${hexToRgb(src.color)},0.07)`;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2,6]);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    });
+
+    drawListener(cx, cy);
+  }
+  requestAnimationFrame(frame);
+})();
+
+
+// ═══════════════════════════════════════════════════════════ SECTION 2: HRTF
+(function() {
+  const canvas = document.getElementById('hrtf-top');
+  const ctx = canvas.getContext('2d');
+  const W = 340, H = 340;
+  const cx = W/2, cy = H/2;
+  const HEAD_R = 52, EAR_R = 10;
+
+  const eqCanvas = document.getElementById('hrtf-eq');
+  const eqCtx = eqCanvas.getContext('2d');
+
+  let azimuth = 0; // degrees, 0 = front
+  let elevation = 0;
+  let dragging = false;
+  let srcX = new LagFilter(0.08), srcY = new LagFilter(0.08);
+  let itdLag = new LagFilter(0.06);
+  let ildLag = new LagFilter(0.06);
+  let elevLag = new LagFilter(0.15);
+  let rawX = cx, rawY = cy - 160;
+  let lastT = null;
+
+  // Sliders
+  const elevSlider = document.getElementById('hrtf-elev');
+  elevSlider.addEventListener('input', () => {
+    elevation = parseInt(elevSlider.value);
+    document.getElementById('hrtf-elev-val').textContent = elevation + '°';
+    updateDisplays();
+  });
+
+  // Mouse/touch on hrtf-top canvas
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: (clientX - rect.left)*scaleX, y: (clientY - rect.top)*scaleY };
+  }
+  canvas.addEventListener('mousedown', e => { dragging = true; moveSrc(getPos(e)); });
+  canvas.addEventListener('mousemove', e => { if(dragging) moveSrc(getPos(e)); });
+  canvas.addEventListener('mouseup', () => dragging = false);
+  canvas.addEventListener('mouseleave', () => dragging = false);
+  canvas.addEventListener('touchstart', e => { dragging = true; moveSrc(getPos(e)); e.preventDefault(); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { if(dragging) moveSrc(getPos(e)); e.preventDefault(); }, {passive:false});
+  canvas.addEventListener('touchend', () => dragging = false);
+
+  function moveSrc(pos) {
+    const dx = pos.x - cx, dy = pos.y - cy;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const clampR = Math.min(dist, 155);
+    rawX = cx + (dx/dist)*clampR;
+    rawY = cy + (dy/dist)*clampR;
+    azimuth = Math.atan2(dx, -dy) * 180/Math.PI;
+    if (azimuth < 0) azimuth += 360;
+    updateDisplays();
+  }
+
+  function updateDisplays() {
+    const az = azimuth;
+    // ITD: max 690μs at 90°, sinusoidal
+    const itdMax = 690;
+    const azRad = (az * Math.PI) / 180;
+    const itd = Math.round(itdMax * Math.sin(azRad));
+    document.getElementById('itd-val').textContent = itd + ' μs';
+
+    // ITD bar: center bar, goes left or right
+    const bar = document.getElementById('itd-bar');
+    const pct = (itd + itdMax) / (2*itdMax);
+    if (itd >= 0) {
+      bar.style.left = '50%'; bar.style.right = 'auto';
+      bar.style.width = (pct*100 - 50) + '%';
+      bar.style.background = C.accent2;
+    } else {
+      bar.style.right = '50%'; bar.style.left = 'auto';
+      bar.style.width = (50 - pct*100) + '%';
+      bar.style.background = C.accent3;
+    }
+
+    // ILD: max ~20dB at 90°
+    const ildMax = 20;
+    const ild = Math.round(ildMax * Math.abs(Math.sin(azRad)) * 10)/10;
+    const isRight = itd > 0; // source is to the right
+    const lLevel = isRight ? (0 + ild*0.5) : 0;
+    const rLevel = isRight ? 0 : (0 + ild*0.5);
+    const lDb = Math.round((20 - lLevel)*10)/10;
+    const rDb = Math.round((20 - rLevel)*10)/10;
+
+    document.getElementById('ild-val').textContent = ild + ' dB';
+    document.getElementById('ild-l').style.width = (isRight ? Math.min(100,100-ild*2.5) : 100) + '%';
+    document.getElementById('ild-r').style.width = (!isRight ? Math.min(100,100-ild*2.5) : 100) + '%';
+    document.getElementById('ild-l-val').textContent = (isRight ? (20-ild).toFixed(1) : '20.0') + ' dB';
+    document.getElementById('ild-r-val').textContent = (!isRight ? (20-ild).toFixed(1) : '20.0') + ' dB';
+
+    // Cone of confusion
+    const elev = parseInt(elevation);
+    const cocMsg = document.getElementById('coc-msg');
+    if (Math.abs(elev) < 10) {
+      cocMsg.textContent = 'At ' + elev + '° elevation, front/rear ambiguity exists — same cone. Pinna notches above 8kHz resolve front vs. rear.';
+    } else if (elev > 40) {
+      cocMsg.textContent = 'High elevation (' + elev + '°): pinna spectral notches create strong upward cues. Less cone-of-confusion ambiguity.';
+    } else {
+      cocMsg.textContent = 'At ' + elev + '° elevation, pinna spectral filtering begins to distinguish front/back positions on the confusion cone.';
+    }
+
+    // EQ label
+    let region = 'Front';
+    if (az > 160 && az < 200) region = 'Rear';
+    else if (az > 200 && az < 340) region = 'Rear-Left';
+    else if (az > 20 && az < 160) region = 'Right';
+    else if (az > 340 || az < 20) region = 'Front';
+    if (elev > 30) region += ' / Above';
+    document.getElementById('hrtf-eq-label').textContent = 'Az: ' + Math.round(az) + '° | ' + region;
+    drawEQ(az, elev);
+  }
+
+  function drawEQ(az, elev) {
+    const W2 = eqCanvas.width, H2 = eqCanvas.height;
+    eqCtx.clearRect(0,0,W2,H2);
+    eqCtx.fillStyle = C.surface;
+    eqCtx.fillRect(0,0,W2,H2);
+
+    // frequency axis: 200Hz to 20kHz (log scale)
+    const freqs = [200,500,1000,2000,4000,8000,16000,20000];
+    const logMin = Math.log10(200), logMax = Math.log10(20000);
+    function fToX(f) { return (Math.log10(f)-logMin)/(logMax-logMin)*W2; }
+    function dbToY(db) { return H2/2 - db*(H2/2)/15; }
+
+    // Grid
+    eqCtx.strokeStyle = `rgba(${hexToRgb(C.border)},0.5)`;
+    eqCtx.lineWidth = 0.5;
+    freqs.forEach(f => {
+      const x = fToX(f);
+      eqCtx.beginPath(); eqCtx.moveTo(x,0); eqCtx.lineTo(x,H2); eqCtx.stroke();
+    });
+    eqCtx.beginPath(); eqCtx.moveTo(0,H2/2); eqCtx.lineTo(W2,H2/2); eqCtx.stroke();
+
+    // HRTF curve based on azimuth + elevation
+    const rear = Math.cos((az-180)*Math.PI/180);
+    const above = elev / 90;
+
+    eqCtx.beginPath();
+    eqCtx.strokeStyle = C.accent2;
+    eqCtx.lineWidth = 2;
+    eqCtx.shadowBlur = 6;
+    eqCtx.shadowColor = C.accent2;
+
+    for (let xi = 0; xi < W2; xi++) {
+      const logF = logMin + (xi/W2)*(logMax-logMin);
+      const f = Math.pow(10, logF);
+      let db = 0;
+      // Low frequency: mostly flat
+      if (f < 1000) db = 0;
+      // Pinna notch at 8-10kHz for rear
+      else if (f >= 6000 && f < 10000) db = rear * (-8) + above * 3;
+      // High freq rolloff for rear
+      else if (f >= 10000) db = rear * (-12) + above * (-2) + (f-10000)/5000 * (-3);
+      // Mid-range elevation boost
+      else db = above * 4 * Math.sin((f-1000)/5000*Math.PI);
+      // Add some gentle HF rolloff always
+      db -= (f/20000)**2 * 3;
+
+      const y = dbToY(db);
+      if (xi === 0) eqCtx.moveTo(xi, y);
+      else eqCtx.lineTo(xi, y);
+    }
+    eqCtx.stroke();
+    eqCtx.shadowBlur = 0;
+
+    // Labels
+    eqCtx.fillStyle = C.dim;
+    eqCtx.font = '8px Courier New';
+    [500,2000,8000].forEach(f => {
+      eqCtx.fillText(f>=1000 ? (f/1000)+'k' : f, fToX(f)+2, H2-3);
+    });
+    eqCtx.fillText('+15dB', 2, 8);
+    eqCtx.fillText('-15dB', 2, H2-2);
+  }
+
+  function draw(ts) {
+    requestAnimationFrame(draw);
+    const dt = lastT === null ? 16 : ts - lastT;
+    lastT = ts;
+
+    const sx = srcX.update(rawX, dt);
+    const sy = srcY.update(rawY, dt);
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = C.surface;
+    ctx.fillRect(0,0,W,H);
+
+    // Grid circles
+    ctx.strokeStyle = `rgba(${hexToRgb(C.border)},0.4)`;
+    ctx.lineWidth = 0.5;
+    [60,100,140,160].forEach(r => {
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+    });
+
+    // Source path circle
+    const srcDist = Math.sqrt((sx-cx)**2+(sy-cy)**2);
+    ctx.strokeStyle = `rgba(${hexToRgb(C.accent2)},0.15)`;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,6]);
+    ctx.beginPath(); ctx.arc(cx,cy,srcDist,0,Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Line from center to source
+    ctx.strokeStyle = `rgba(${hexToRgb(C.accent2)},0.3)`;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(sx,sy); ctx.stroke();
+
+    // Head outline
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, HEAD_R, HEAD_R*1.2, 0, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${hexToRgb(C.surface)},0.8)`;
+    ctx.fill();
+    ctx.strokeStyle = C.border;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    // Nose
+    ctx.beginPath();
+    ctx.moveTo(cx-8, cy-HEAD_R*1.15);
+    ctx.lineTo(cx, cy-HEAD_R*1.35);
+    ctx.lineTo(cx+8, cy-HEAD_R*1.15);
+    ctx.strokeStyle = C.dim;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+
+    // Ears
+    [[-1,1],[1,1]].forEach(([side]) => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx + side*(HEAD_R+EAR_R*0.5), cy, EAR_R*0.7, EAR_R, 0, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${hexToRgb(C.accent)},0.2)`;
+      ctx.fill();
+      ctx.strokeStyle = C.accent;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // ITD delay visual — animated line segments
+    const itd = Math.sin(azimuth*Math.PI/180);
+    if (Math.abs(itd) > 0.05) {
+      const earL = { x: cx - HEAD_R - EAR_R*0.5, y: cy };
+      const earR = { x: cx + HEAD_R + EAR_R*0.5, y: cy };
+      const nearEar = itd > 0 ? earR : earL;
+      const farEar = itd > 0 ? earL : earR;
+      const pulsePos = (ts % 600) / 600;
+
+      ctx.save();
+      ctx.strokeStyle = C.accent2;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4,4]);
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(nearEar.x, nearEar.y);
+      ctx.stroke();
+      ctx.globalAlpha = 0.2;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(farEar.x, farEar.y);
+      ctx.stroke();
+      // Pulse dot on near ear path
+      const px = sx + (nearEar.x - sx)*pulsePos;
+      const py = sy + (nearEar.y - sy)*pulsePos;
+      ctx.globalAlpha = 0.8;
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(px,py,3,0,Math.PI*2);
+      ctx.fillStyle = C.accent2;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Source dot
+    ctx.save();
+    ctx.shadowBlur = 14; ctx.shadowColor = C.accent2;
+    ctx.beginPath(); ctx.arc(sx,sy,7,0,Math.PI*2);
+    ctx.fillStyle = C.accent2; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = C.text; ctx.font='10px Courier New';
+    ctx.fillText('SRC', sx+10, sy+4);
+    ctx.restore();
+
+    // Azimuth label
+    ctx.fillStyle = C.dim;
+    ctx.font = '10px Courier New';
+    ctx.fillText('Az: ' + Math.round(azimuth) + '°', 8, 16);
+    ctx.fillText('El: ' + elevation + '°', 8, 28);
+  }
+  requestAnimationFrame(draw);
+  updateDisplays();
+  drawEQ(0, 0);
+})();
+
+// ═══════════════════════════════════════════════════════════ SECTION 3: AMBISONICS
+(function() {
+  const canvas = document.getElementById('ambi-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 380, H = 380, cx = W/2, cy = H/2;
+
+  const shCanvas = document.getElementById('ambi-sh');
+  const shCtx = shCanvas.getContext('2d');
+  const resCanvas = document.getElementById('ambi-res');
+  const resCtx = resCanvas.getContext('2d');
+
+  let order = 1;
+  let showSpeakers = false;
+  let srcAngle = 0;
+  let srcDragging = false;
+  let srcX_lag = new LagFilter(0.1), srcY_lag = new LagFilter(0.1);
+  let rawSrcAngle = 0;
+  let lastT = null;
+
+  const ORDERS = {
+    1: { channels: 4, label: '1st Order (W, X, Y, Z)' },
+    2: { channels: 9, label: '2nd Order (+5 channels)' },
+    3: { channels: 16, label: '3rd Order (+7 channels)' }
+  };
+
+  // Spherical harmonics (2D horizontal slice, normalized)
+  function sh(l, m, angle) {
+    switch(`${l}${m}`) {
+      case '00': return 1 / Math.sqrt(4*Math.PI); // W
+      case '1-1': return Math.sin(angle);           // Y
+      case '10': return Math.cos(angle);             // X (using Z conceptually)
+      case '11': return Math.cos(angle);             // X
+      case '2-2': return Math.sin(2*angle);
+      case '2-1': return Math.sin(angle)*Math.cos(angle)*2;
+      case '20': return (3*Math.cos(angle)**2-1)/2;
+      case '21': return Math.cos(angle)*Math.cos(angle);
+      case '22': return Math.cos(2*angle);
+      case '3-3': return Math.sin(3*angle);
+      case '3-2': return Math.sin(2*angle)*Math.cos(angle);
+      case '3-1': return Math.sin(angle)*(5*Math.cos(angle)**2-1)/4;
+      case '30': return (5*Math.cos(angle)**3-3*Math.cos(angle))/2;
+      case '31': return Math.cos(angle)*(5*Math.cos(angle)**2-1)/4;
+      case '32': return Math.cos(2*angle)*Math.cos(angle);
+      case '33': return Math.cos(3*angle);
+      default: return 0;
+    }
+  }
+
+  const SH_SETS = {
+    1: [['00',C.dim],['1-1',C.accent2],['10',C.accent],['11',C.accent3]],
+    2: [['00',C.dim],['1-1',C.accent2],['11',C.accent],['2-2','#a855f7'],['2-1','#ec4899'],['20','#22d3ee'],['21','#f97316'],['22','#84cc16'],['10',C.accent3]],
+    3: [['00',C.dim],['1-1',C.accent2],['11',C.accent],['2-2','#a855f7'],['22','#22d3ee'],['3-3','#f97316'],['33','#84cc16'],['3-1',C.accent3],['31','#ec4899']]
+  };
+
+  function drawPolarPatterns(srcAng) {
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = C.surface;
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle = `rgba(${hexToRgb(C.border)},0.3)`;
+    ctx.lineWidth = 0.5;
+    [60,110,160].forEach(r => { ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); });
+
+    // SH patterns for current order
+    const set = SH_SETS[order];
+    set.forEach(([key, color]) => {
+      const l = parseInt(key[0]), m = parseInt(key.slice(1));
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      const scale = 140;
+      let first = true;
+      for (let a = 0; a <= Math.PI*2; a += 0.03) {
+        const val = sh(l, m, a);
+        const r = Math.abs(val) * scale;
+        const x = cx + Math.cos(a) * r;
+        const y = cy + Math.sin(a) * r;
+        first ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+        first = false;
+      }
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.06;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Speaker array
+    if (showSpeakers) {
+      const nSpk = 8;
+      for (let i = 0; i < nSpk; i++) {
+        const a = (i/nSpk)*Math.PI*2;
+        const sx = cx + Math.cos(a)*165, sy = cy + Math.sin(a)*165;
+        ctx.save();
+        ctx.beginPath(); ctx.arc(sx,sy,6,0,Math.PI*2);
+        ctx.fillStyle = C.accent3; ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Source dot
+    const sxr = cx + Math.cos(rawSrcAngle)*155;
+    const syr = cy + Math.sin(rawSrcAngle)*155;
+    const sx = srcX_lag.value ?? sxr;
+    const sy = srcY_lag.value ?? syr;
+
+    // Decode amplitude at source position for each channel
+    const amp = set.reduce((sum,[key]) => {
+      const l = parseInt(key[0]),m = parseInt(key.slice(1));
+      return sum + Math.abs(sh(l,m,rawSrcAngle));
+    }, 0);
+    const normAmp = Math.min(amp/set.length,1);
+
+    ctx.save();
+    // Source line
+    ctx.strokeStyle = `rgba(${hexToRgb(C.accent2)},0.4)`;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,6]);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(sxr,syr); ctx.stroke();
+    ctx.setLineDash([]);
+    // Source dot
+    ctx.shadowBlur = 16; ctx.shadowColor = C.accent2;
+    ctx.beginPath(); ctx.arc(sxr,syr,7,0,Math.PI*2);
+    ctx.fillStyle = C.accent2; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+
+    // Listener
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx,cy,10,0,Math.PI*2);
+    ctx.strokeStyle = C.accent2; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+    ctx.fillStyle = C.accent2; ctx.fill();
+    ctx.restore();
+
+    // Info
+    ctx.fillStyle = C.dim;
+    ctx.font = '9px Courier New';
+    ctx.fillText('ORDER ' + order + ' | ' + ORDERS[order].channels + ' CH', 8, 14);
+    ctx.fillText('AZ: ' + Math.round(rawSrcAngle*180/Math.PI) + '°', 8, 26);
+
+    drawSHBars(normAmp);
+    drawResViz();
+  }
+
+  function drawSHBars(normAmp) {
+    const W2 = shCanvas.width, H2 = shCanvas.height;
+    shCtx.clearRect(0,0,W2,H2);
+    shCtx.fillStyle = C.surface; shCtx.fillRect(0,0,W2,H2);
+
+    const set = SH_SETS[order];
+    const barW = (W2 - 16) / set.length;
+    set.forEach(([key, color], i) => {
+      const l = parseInt(key[0]), m = parseInt(key.slice(1));
+      const amp = Math.abs(sh(l, m, rawSrcAngle));
+      const barH = amp * (H2 - 24);
+      const x = 8 + i * barW;
+      const y = H2 - 16 - barH;
+      shCtx.fillStyle = `rgba(${hexToRgb(color)},0.7)`;
+      shCtx.fillRect(x+1, y, barW-3, barH);
+      shCtx.fillStyle = C.dim;
+      shCtx.font = '7px Courier New';
+      shCtx.fillText(key, x+2, H2-3);
+    });
+    shCtx.fillStyle = C.dim;
+    shCtx.font = '8px Courier New';
+    shCtx.fillText('Channel amplitudes at source position', 8, 10);
+  }
+
+  function drawResViz() {
+    const W2 = resCanvas.width, H2 = resCanvas.height;
+    resCtx.clearRect(0,0,W2,H2);
+    resCtx.fillStyle = C.surface; resCtx.fillRect(0,0,W2,H2);
+
+    // Simple "blur" visualization: draw a band showing angular resolution
+    // 1st order: ~90° blur, 2nd: ~45°, 3rd: ~22.5°
+    const blurDeg = [0, 90, 45, 22.5][order];
+    const blurRad = blurDeg * Math.PI / 180;
+    const pc = W2/2, pr = H2/2;
+    const focusR = Math.min(pc, pr) - 8;
+
+    // Background arc
+    resCtx.beginPath(); resCtx.arc(pc, pr, focusR, 0, Math.PI*2);
+    resCtx.strokeStyle = `rgba(${hexToRgb(C.border)},0.5)`;
+    resCtx.lineWidth = 1; resCtx.stroke();
+
+    // Source spread arc
+    const srcAng = rawSrcAngle;
+    const startA = srcAng - blurRad/2, endA = srcAng + blurRad/2;
+    resCtx.beginPath();
+    resCtx.moveTo(pc, pr);
+    resCtx.arc(pc, pr, focusR, startA, endA);
+    resCtx.closePath();
+    resCtx.fillStyle = `rgba(${hexToRgb(C.accent2)},0.3)`;
+    resCtx.fill();
+    resCtx.strokeStyle = C.accent2;
+    resCtx.lineWidth = 1.5; resCtx.stroke();
+
+    // Center
+    resCtx.fillStyle = C.accent;
+    resCtx.beginPath(); resCtx.arc(pc, pr, 4, 0, Math.PI*2); resCtx.fill();
+
+    resCtx.fillStyle = C.dim;
+    resCtx.font = '8px Courier New';
+    resCtx.fillText('Resolution: ~' + Math.round(blurDeg) + '° blur', 8, 10);
+    document.getElementById('ambi-res-label').textContent =
+      order === 1 ? '1st order: coarse 90° resolution' :
+      order === 2 ? '2nd order: fine 45° resolution' :
+                    '3rd order: precise 22.5° resolution';
+  }
+
+  // Source dragging
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    const cx2 = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy2 = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: (cx2-rect.left)*scaleX, y: (cy2-rect.top)*scaleY };
+  }
+  function moveSrc(pos) {
+    rawSrcAngle = Math.atan2(pos.y - cy, pos.x - cx);
+    srcX_lag.value = cx + Math.cos(rawSrcAngle)*155;
+    srcY_lag.value = cy + Math.sin(rawSrcAngle)*155;
+  }
+  canvas.addEventListener('mousedown', e => { srcDragging = true; moveSrc(getPos(e)); });
+  canvas.addEventListener('mousemove', e => { if(srcDragging) moveSrc(getPos(e)); });
+  canvas.addEventListener('mouseup', () => srcDragging = false);
+  canvas.addEventListener('touchstart', e => { srcDragging = true; moveSrc(getPos(e)); e.preventDefault(); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { if(srcDragging) moveSrc(getPos(e)); e.preventDefault(); }, {passive:false});
+  canvas.addEventListener('touchend', () => srcDragging = false);
+
+  // Tabs
+  document.querySelectorAll('[data-ambi-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-ambi-tab]').forEach(b => b.classList.remove('btn-active'));
+      btn.classList.add('btn-active');
+      order = parseInt(btn.dataset.ambiTab);
+      document.getElementById('ambi-info').textContent = ORDERS[order].label;
+    });
+  });
+
+  document.getElementById('ambi-speaker-btn').addEventListener('click', function() {
+    showSpeakers = !showSpeakers;
+    this.classList.toggle('btn-active', showSpeakers);
+  });
+
+  // Auto-rotate source when not dragging
+  let autoAngle = 0;
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    if (!srcDragging) {
+      autoAngle += 0.004;
+      rawSrcAngle = autoAngle;
+      srcX_lag.value = cx + Math.cos(rawSrcAngle)*155;
+      srcY_lag.value = cy + Math.sin(rawSrcAngle)*155;
+    }
+    drawPolarPatterns(rawSrcAngle);
+  }
+  requestAnimationFrame(frame);
+})();
+
+
+// ═══════════════════════════════════════════════════════════ SECTION 4: ROOMS
+(function() {
+  const canvas = document.getElementById('room-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 440, H = 360;
+  const guideCanvas = document.getElementById('room-guide');
+  const gCtx = guideCanvas.getContext('2d');
+
+  const ROOMS = {
+    hall:     { name:'Concert Hall', rt60:2.0, vol:15000, surf:4200, alpha:0.29, color:C.accent2,
+                mats:'Walls: Plaster · Floor: Wood · Ceiling: Acoustic tile · Seats: Upholstered',
+                details:{ w:80, d:60, h:40 } },
+    cathedral:{ name:'Cathedral',    rt60:5.0, vol:80000, surf:18000, alpha:0.072, color:'#a855f7',
+                mats:'Walls: Stone · Floor: Marble · Ceiling: Stone vault · Pews: Wood',
+                details:{ w:70, d:100, h:70 } },
+    studio:   { name:'Studio',       rt60:0.3, vol:200,   surf:340, alpha:0.39, color:C.accent3,
+                mats:'Walls: Foam panels · Floor: Carpet · Ceiling: Rockwool · Desk: Mixed',
+                details:{ w:30, d:28, h:22 } },
+    bathroom: { name:'Bathroom',     rt60:1.2, vol:15,    surf:56, alpha:0.06, color:'#22d3ee',
+                mats:'Walls: Tile · Floor: Tile · Ceiling: Plaster',
+                details:{ w:18, d:14, h:12 } },
+    forest:   { name:'Forest',       rt60:0.05,vol:1e6,   surf:0, alpha:1.0, color:'#84cc16',
+                mats:'Canopy: Leaves · Ground: Soil · No hard boundaries',
+                details:{ w:90, d:90, h:60 } },
+  };
+
+  let currentRoom = 'hall';
+  let rayAnim = 0;
+  let lastT = null;
+  let rt60Lag = new LagFilter(0.3);
+  let roomColorLag = new LagFilter(0.25);
+  let srcDistLag = new LagFilter(0.18);
+
+  // Source positions (3 sources on perimeter)
+  const srcPositions = [
+    { angle: -0.6, dist: 0.82 },
+    { angle: 1.1,  dist: 0.75 },
+    { angle: 2.8,  dist: 0.80 },
+  ];
+
+  function isometricProject(x, y, z, ox, oy, scale) {
+    const ix = ox + (x - y) * scale * 0.866;
+    const iy = oy + (x + y) * scale * 0.5 - z * scale;
+    return { x: ix, y: iy };
+  }
+
+  function drawRoom(room) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, W, H);
+
+    const d = room.details;
+    const ox = W * 0.45, oy = H * 0.72;
+    const scale = Math.min(W, H) / Math.max(d.w + d.d, d.h + d.d) * 1.1;
+
+    // Draw floor
+    const floorPts = [
+      isometricProject(0,   0,   0, ox, oy, scale),
+      isometricProject(d.w, 0,   0, ox, oy, scale),
+      isometricProject(d.w, d.d, 0, ox, oy, scale),
+      isometricProject(0,   d.d, 0, ox, oy, scale),
+    ];
+    ctx.beginPath();
+    floorPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${hexToRgb(room.color)},0.06)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${hexToRgb(room.color)},0.3)`;
+    ctx.lineWidth = 1; ctx.stroke();
+
+    // Left wall
+    const lwPts = [
+      isometricProject(0, 0,   0,   ox, oy, scale),
+      isometricProject(0, d.d, 0,   ox, oy, scale),
+      isometricProject(0, d.d, d.h, ox, oy, scale),
+      isometricProject(0, 0,   d.h, ox, oy, scale),
+    ];
+    ctx.beginPath();
+    lwPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${hexToRgb(room.color)},0.04)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${hexToRgb(room.color)},0.2)`;
+    ctx.stroke();
+
+    // Right wall
+    const rwPts = [
+      isometricProject(d.w, 0,   0,   ox, oy, scale),
+      isometricProject(d.w, d.d, 0,   ox, oy, scale),
+      isometricProject(d.w, d.d, d.h, ox, oy, scale),
+      isometricProject(d.w, 0,   d.h, ox, oy, scale),
+    ];
+    ctx.beginPath();
+    rwPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${hexToRgb(room.color)},0.04)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${hexToRgb(room.color)},0.15)`;
+    ctx.stroke();
+
+    // Ceiling (ghost)
+    const ceilPts = [
+      isometricProject(0,   0,   d.h, ox, oy, scale),
+      isometricProject(d.w, 0,   d.h, ox, oy, scale),
+      isometricProject(d.w, d.d, d.h, ox, oy, scale),
+      isometricProject(0,   d.d, d.h, ox, oy, scale),
+    ];
+    ctx.beginPath();
+    ceilPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.closePath();
+    ctx.strokeStyle = `rgba(${hexToRgb(room.color)},0.1)`;
+    ctx.lineWidth = 0.5; ctx.stroke();
+
+    // Listener (center of floor)
+    const lx = d.w/2, ly = d.d/2;
+    const lpos = isometricProject(lx, ly, 0, ox, oy, scale);
+    ctx.save();
+    ctx.shadowBlur = 12; ctx.shadowColor = room.color;
+    ctx.beginPath(); ctx.arc(lpos.x, lpos.y, 7, 0, Math.PI*2);
+    ctx.fillStyle = room.color; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = C.text; ctx.font = '9px Courier New';
+    ctx.fillText('L', lpos.x+10, lpos.y+4);
+    ctx.restore();
+
+    // Sources
+    const srcColors = [C.accent2, C.accent3, '#a855f7'];
+    srcPositions.forEach((sp, i) => {
+      const sx2 = lx + Math.cos(sp.angle) * d.w * sp.dist * 0.35;
+      const sy2 = ly + Math.sin(sp.angle) * d.d * sp.dist * 0.35;
+      const spos = isometricProject(sx2, sy2, 0, ox, oy, scale);
+      ctx.save();
+      ctx.shadowBlur = 10; ctx.shadowColor = srcColors[i];
+      ctx.beginPath(); ctx.arc(spos.x, spos.y, 5, 0, Math.PI*2);
+      ctx.fillStyle = srcColors[i]; ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = srcColors[i]; ctx.font = '9px Courier New';
+      ctx.fillText('S'+(i+1), spos.x+7, spos.y+3);
+      ctx.restore();
+
+      // Ray trace: source → listener → wall reflection
+      const prog = ((rayAnim + i*0.33) % 1);
+      const midX = lpos.x, midY = lpos.y;
+      const wallX = ox + (d.w - lx)*scale*0.2;
+      const wallY = lpos.y - 20;
+
+      ctx.save();
+      ctx.strokeStyle = `rgba(${hexToRgb(srcColors[i])},0.25)`;
+      ctx.lineWidth = 1; ctx.setLineDash([3,5]);
+      ctx.beginPath();
+      ctx.moveTo(spos.x, spos.y);
+      ctx.lineTo(midX, midY);
+      ctx.lineTo(wallX, wallY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Animated pulse
+      const t = prog;
+      const px = spos.x + (midX-spos.x)*Math.min(t*2,1);
+      const py = spos.y + (midY-spos.y)*Math.min(t*2,1);
+      ctx.globalAlpha = Math.max(0, 1-t*1.5);
+      ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI*2);
+      ctx.fillStyle = srcColors[i]; ctx.fill();
+      ctx.restore();
+    });
+
+    // RT60 label
+    const rt = rt60Lag.value ?? room.rt60;
+    ctx.fillStyle = room.color;
+    ctx.font = 'bold 20px Courier New';
+    ctx.fillText('RT60: ' + rt.toFixed(2) + 's', 12, 28);
+    ctx.fillStyle = C.dim;
+    ctx.font = '9px Courier New';
+    ctx.fillText(room.name.toUpperCase(), 12, 42);
+  }
+
+  function drawGuide(currentRT) {
+    const W2 = guideCanvas.width, H2 = guideCanvas.height;
+    gCtx.clearRect(0,0,W2,H2);
+    gCtx.fillStyle = C.surface; gCtx.fillRect(0,0,W2,H2);
+
+    const maxRT = 7, scl = (W2-60)/maxRT;
+    const zones = [
+      { label:'Speech', min:0.3, max:0.8, color:C.accent3 },
+      { label:'Music',  min:1.5, max:2.5, color:C.accent2 },
+      { label:'Cathedral', min:3, max:7, color:'#a855f7' },
+    ];
+    zones.forEach((z,i) => {
+      const y = 10 + i*22;
+      gCtx.fillStyle = `rgba(${hexToRgb(z.color)},0.2)`;
+      gCtx.fillRect(40+z.min*scl, y, (z.max-z.min)*scl, 14);
+      gCtx.strokeStyle = z.color;
+      gCtx.lineWidth = 1;
+      gCtx.strokeRect(40+z.min*scl, y, (z.max-z.min)*scl, 14);
+      gCtx.fillStyle = z.color;
+      gCtx.font = '8px Courier New';
+      gCtx.fillText(z.label, 2, y+10);
+    });
+    // Current RT marker
+    const markerX = 40 + Math.min(currentRT, maxRT)*scl;
+    gCtx.strokeStyle = C.text;
+    gCtx.lineWidth = 2;
+    gCtx.beginPath(); gCtx.moveTo(markerX, 5); gCtx.lineTo(markerX, H2-5); gCtx.stroke();
+    gCtx.fillStyle = C.text;
+    gCtx.font = '8px Courier New';
+    gCtx.fillText(currentRT.toFixed(2)+'s', markerX+2, H2-2);
+  }
+
+  function setRoom(key) {
+    currentRoom = key;
+    const room = ROOMS[key];
+    document.getElementById('room-rt60').textContent = room.rt60.toFixed(1) + ' s';
+    document.getElementById('room-name-label').textContent = room.name;
+    document.getElementById('room-props').textContent =
+      'V: ' + (room.vol >= 1000 ? (room.vol/1000).toFixed(0)+'k' : room.vol) + ' m³ | S: ' + room.surf + ' m² | α: ' + room.alpha;
+    document.getElementById('room-materials').innerHTML = room.mats.replace(/·/g,'<br>');
+    rt60Lag.value = room.rt60;
+  }
+
+  document.querySelectorAll('[data-room]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-room]').forEach(b => b.classList.remove('btn-active'));
+      btn.classList.add('btn-active');
+      setRoom(btn.dataset.room);
+    });
+  });
+
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    const dt = lastT === null ? 16 : ts - lastT;
+    lastT = ts;
+    rayAnim = (rayAnim + dt * 0.0004) % 1;
+    const room = ROOMS[currentRoom];
+    rt60Lag.update(room.rt60, dt);
+    drawRoom(room);
+    drawGuide(room.rt60);
+  }
+  setRoom('hall');
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════ SECTION 5: PSYCHOACOUSTICS
+(function() {
+  // --- TAB WIRING ---
+  document.querySelectorAll('[data-psycho-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-psycho-tab]').forEach(b => b.classList.remove('btn-active'));
+      btn.classList.add('btn-active');
+      document.querySelectorAll('[id^="psycho-"]').forEach(el => el.classList.remove('active'));
+      document.getElementById('psycho-'+btn.dataset.psychoTab).classList.add('active');
+    });
+  });
+
+  // ── HAAS ──
+  (function() {
+    const canvas = document.getElementById('haas-canvas');
+    const ctx = canvas.getContext('2d');
+    const W=400,H=200;
+    const delaySlider = document.getElementById('haas-delay');
+    const delayVal = document.getElementById('haas-delay-val');
+    const haasZone = document.getElementById('haas-zone');
+    let delayMs = 15;
+    delaySlider.addEventListener('input', () => { delayMs = parseInt(delaySlider.value); delayVal.textContent = delayMs; });
+    let t = 0, lastT2 = null;
+
+    function drawHaas(ts) {
+      requestAnimationFrame(drawHaas);
+      const dt = lastT2 === null ? 16 : ts - lastT2;
+      lastT2 = ts;
+      t += dt * 0.001;
+
+      ctx.fillStyle = C.surface; ctx.fillRect(0,0,W,H);
+      // Timeline
+      ctx.strokeStyle = `rgba(${hexToRgb(C.border)},0.5)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(20,H/2); ctx.lineTo(W-20,H/2); ctx.stroke();
+
+      // Source A pulse (direct)
+      const srcAX = 80;
+      const pulseAnim = (t * 0.8) % 1;
+      const pxA = srcAX + pulseAnim * (W-100);
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, 1 - pulseAnim * 1.6);
+      ctx.strokeStyle = C.accent2;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(pxA, H/2-20); ctx.lineTo(pxA, H/2+20); ctx.stroke();
+      ctx.restore();
+
+      // Source B (delayed)
+      const delayPx = delayMs / 50 * (W - 120);
+      const pxB = srcAX + delayPx + pulseAnim * (W - 100 - delayPx);
+      if (pxB < W-20) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - pulseAnim * 1.6);
+        ctx.strokeStyle = C.accent3;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(pxB, H/2-16); ctx.lineTo(pxB, H/2+16); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
+
+      // Labels
+      ctx.fillStyle = C.accent2; ctx.font = '10px Courier New';
+      ctx.fillText('SRC A (direct)', srcAX-10, H/2-30);
+      ctx.fillStyle = C.accent3;
+      ctx.fillText('SRC B (+' + delayMs + 'ms)', srcAX+delayPx-10, H/2+38);
+
+      // Zones
+      const fuseEnd = (30/50)*(W-120)+srcAX;
+      const echoEnd = (50/50)*(W-120)+srcAX;
+      ctx.fillStyle = `rgba(${hexToRgb(C.accent2)},0.07)`;
+      ctx.fillRect(srcAX, H/2-40, fuseEnd-srcAX, 80);
+      ctx.fillStyle = `rgba(${hexToRgb(C.accent3)},0.07)`;
+      ctx.fillRect(fuseEnd, H/2-40, echoEnd-fuseEnd, 80);
+      ctx.fillStyle = C.dim; ctx.font = '8px Courier New';
+      ctx.fillText('FUSION 1-30ms', srcAX+4, H/2-32);
+      ctx.fillText('ECHO >30ms', fuseEnd+4, H/2-32);
+
+      // Zone indicator
+      if (delayMs <= 1) haasZone.textContent = '● Below Haas threshold — sounds appear simultaneous';
+      else if (delayMs <= 30) { haasZone.style.color=C.accent2; haasZone.textContent = '● Fusion zone — perceived as one sound from first arrival'; }
+      else { haasZone.style.color=C.accent3; haasZone.textContent = '● Echo zone — distinct second sound perceived'; }
+    }
+    requestAnimationFrame(drawHaas);
+  })();
+
+  // ── PRECEDENCE ──
+  (function() {
+    const canvas = document.getElementById('prec-canvas');
+    const ctx = canvas.getContext('2d');
+    const W=400,H=200;
+    const lvlSlider = document.getElementById('prec-level');
+    const lvlVal = document.getElementById('prec-level-val');
+    let levelDb = 6;
+    lvlSlider.addEventListener('input', () => { levelDb = parseInt(lvlSlider.value); lvlVal.textContent = '+'+levelDb; });
+    let t=0,lastT2=null;
+
+    function drawPrec(ts) {
+      requestAnimationFrame(drawPrec);
+      const dt=lastT2===null?16:ts-lastT2; lastT2=ts; t+=dt*0.0008;
+      ctx.fillStyle=C.surface; ctx.fillRect(0,0,W,H);
+      const cx=W/2, cy=H/2;
+      // Two speakers
+      const spA={x:60,y:cy}, spB={x:W-60,y:cy};
+      const listener={x:cx,y:cy};
+      // Source A (first, direct, left)
+      [spA,spB].forEach((sp,i) => {
+        ctx.save();
+        ctx.beginPath(); ctx.arc(sp.x,sp.y,12,0,Math.PI*2);
+        ctx.strokeStyle = i===0 ? C.accent2 : C.accent3;
+        ctx.lineWidth=2; ctx.stroke();
+        ctx.fillStyle=C.dim; ctx.font='8px Courier New';
+        ctx.fillText(i===0?'FIRST':'DELAYED',sp.x-16,sp.y+26);
+        if(i===1){
+          const dBStr='+'+levelDb+'dB';
+          ctx.fillStyle=C.accent3;
+          ctx.fillText(dBStr,sp.x-10,sp.y-18);
+        }
+        ctx.restore();
+        // Ripple
+        const prog=(t+(i*0.5))%1;
+        const r=prog*60;
+        ctx.save();
+        ctx.globalAlpha=(1-prog)*0.5;
+        ctx.strokeStyle=i===0?C.accent2:C.accent3;
+        ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.arc(sp.x,sp.y,r,0,Math.PI*2); ctx.stroke();
+        ctx.restore();
+      });
+      // Perceived direction arrow
+      const percDom = levelDb < 10 ? -1 : 0; // first arrival always wins up to 10dB
+      ctx.save();
+      ctx.fillStyle=C.text; ctx.font='9px Courier New';
+      ctx.fillText('Perceived: '+(percDom<=0?'← FIRST ARRIVAL':'AMBIGUOUS'),cx-50,cy-50);
+      ctx.restore();
+      // Listener
+      ctx.save();
+      ctx.beginPath(); ctx.arc(listener.x,listener.y,8,0,Math.PI*2);
+      ctx.fillStyle=C.accent; ctx.fill();
+      ctx.restore();
+    }
+    requestAnimationFrame(drawPrec);
+  })();
+
+  // ── COCKTAIL PARTY ──
+  (function() {
+    const canvas=document.getElementById('cocktail-canvas');
+    const ctx=canvas.getContext('2d');
+    const W=400,H=220;
+    const focusSlider=document.getElementById('cocktail-focus');
+    const focusVal=document.getElementById('cocktail-focus-val');
+    const NAMES=['Source A','Source B','Source C','Source D','Source E'];
+    const COLORS=[C.accent2,C.accent3,'#a855f7','#22d3ee','#84cc16'];
+    let focus=0;
+    focusSlider.addEventListener('input',()=>{focus=parseInt(focusSlider.value);focusVal.textContent=NAMES[focus];});
+    let t=0,lastT2=null;
+    const freqs=[1.0,1.3,0.8,1.6,0.95];
+    const phases=[0,0.7,1.4,2.1,2.8];
+
+    function drawCocktail(ts) {
+      requestAnimationFrame(drawCocktail);
+      const dt=lastT2===null?16:ts-lastT2; lastT2=ts; t+=dt*0.001;
+      ctx.fillStyle=C.surface; ctx.fillRect(0,0,W,H);
+      const trackH=28, gap=8, startY=12;
+      NAMES.forEach((name,i)=>{
+        const y=startY+i*(trackH+gap);
+        const isFocus=(i===focus);
+        const alpha=isFocus?1:0.18;
+        ctx.save();
+        ctx.globalAlpha=alpha;
+        // Waveform
+        ctx.strokeStyle=COLORS[i]; ctx.lineWidth=isFocus?2:1;
+        ctx.beginPath();
+        for(let x=0;x<W-80;x++){
+          const freq=freqs[i];
+          const amp=(isFocus?14:8)*(0.5+0.5*Math.sin(t*0.7+i));
+          const y2=y+trackH/2+Math.sin(x*0.08*freq+t*freqs[i]+phases[i])*amp;
+          x===0?ctx.moveTo(80+x,y2):ctx.lineTo(80+x,y2);
+        }
+        ctx.stroke();
+        // Label
+        ctx.fillStyle=COLORS[i]; ctx.font=(isFocus?'bold ':'')+' 9px Courier New';
+        ctx.fillText(name,4,y+trackH/2+4);
+        if(isFocus){
+          ctx.strokeStyle=COLORS[i]; ctx.lineWidth=0.5;
+          ctx.strokeRect(78,y,W-80,trackH);
+          ctx.globalAlpha=0.06; ctx.fillStyle=COLORS[i];
+          ctx.fillRect(78,y,W-80,trackH);
+        }
+        ctx.restore();
+      });
+      ctx.fillStyle=C.dim; ctx.font='8px Courier New';
+      ctx.fillText('FOCUSED →',4,220-8);
+    }
+    requestAnimationFrame(drawCocktail);
+  })();
+
+  // ── PHANTOM CENTER ──
+  (function() {
+    const canvas=document.getElementById('phantom-canvas');
+    const ctx=canvas.getContext('2d');
+    const W=400,H=200;
+    const panSlider=document.getElementById('phantom-pan');
+    const panVal=document.getElementById('phantom-pan-val');
+    let pan=0;
+    let panLag=new LagFilter(0.12);
+    let lastT2=null;
+    panSlider.addEventListener('input',()=>{
+      pan=parseInt(panSlider.value);
+      panVal.textContent=pan===0?'Center':pan<0?'Left '+(Math.abs(pan))+'%':'Right '+pan+'%';
+    });
+
+    function drawPhantom(ts) {
+      requestAnimationFrame(drawPhantom);
+      const dt=lastT2===null?16:ts-lastT2; lastT2=ts;
+      const smoothPan=panLag.update(pan,dt)/100;
+      ctx.fillStyle=C.surface; ctx.fillRect(0,0,W,H);
+      const cy=H/2;
+      // Left speaker
+      const spL={x:60,y:cy}, spR={x:W-60,y:cy};
+      // Phantom position
+      const phantomX=W/2+smoothPan*(W/2-80);
+      // Level indicator (equal power pan law)
+      const lGain=Math.cos((smoothPan+1)*Math.PI/4);
+      const rGain=Math.sin((smoothPan+1)*Math.PI/4);
+
+      // Speaker icons
+      [spL,spR].forEach((sp,i)=>{
+        const gain=i===0?lGain:rGain;
+        ctx.save();
+        ctx.strokeStyle=i===0?C.accent2:C.accent3;
+        ctx.lineWidth=1.5+gain*1.5;
+        ctx.globalAlpha=0.4+gain*0.6;
+        ctx.beginPath(); ctx.arc(sp.x,sp.y,14,0,Math.PI*2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sp.x,sp.y,5,0,Math.PI*2);
+        ctx.fillStyle=i===0?C.accent2:C.accent3; ctx.fill();
+        ctx.fillStyle=i===0?C.accent2:C.accent3; ctx.font='8px Courier New'; ctx.globalAlpha=1;
+        ctx.fillText((gain*gain*100).toFixed(0)+'%',sp.x-12,sp.y+28);
+        ctx.restore();
+        // Sound beam
+        ctx.save();
+        ctx.strokeStyle=i===0?C.accent2:C.accent3;
+        ctx.globalAlpha=gain*0.4;
+        ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(sp.x,sp.y); ctx.lineTo(phantomX,cy); ctx.stroke();
+        ctx.restore();
+      });
+
+      // Phantom image
+      ctx.save();
+      ctx.shadowBlur=20; ctx.shadowColor=C.accent2;
+      ctx.beginPath(); ctx.arc(phantomX,cy,9,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${hexToRgb(C.accent2)},0.8)`; ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.fillStyle=C.text; ctx.font='9px Courier New';
+      ctx.fillText('PHANTOM',phantomX-22,cy-20);
+      ctx.restore();
+
+      // ILD curve
+      ctx.fillStyle=C.dim; ctx.font='8px Courier New';
+      ctx.fillText('L: '+(lGain*lGain*100).toFixed(0)+'% R: '+(rGain*rGain*100).toFixed(0)+'%',W/2-40,20);
+    }
+    requestAnimationFrame(drawPhantom);
+  })();
+})();
+
+
+// ═══════════════════════════════════════════════════════════ SECTION 6: SOUND PATHS
+(function() {
+  const canvas = document.getElementById('path-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 420, H = 360;
+  const cx = W/2, cy = H/2;
+
+  const doppCanvas = document.getElementById('doppler-canvas');
+  const dCtx = doppCanvas.getContext('2d');
+
+  let pathType = 'circular';
+  let speed = 20; // m/s
+  let distance = 80; // m
+  let t = 0, lastTp = null;
+  let dopplerShift = 0;
+  let dShiftLag = new LagFilter(0.2);
+  let srcXLag = new LagFilter(0.09);
+  let srcYLag = new LagFilter(0.09);
+  let speedLag = new LagFilter(0.3);
+
+  const SOUND_SPEED = 343; // m/s
+  const PATH_SCALE = 1.2; // px per meter
+
+  document.getElementById('path-speed').addEventListener('input', function() {
+    speed = parseInt(this.value);
+    document.getElementById('path-speed-val').textContent = speed;
+  });
+  document.getElementById('path-dist').addEventListener('input', function() {
+    distance = parseInt(this.value);
+    document.getElementById('path-dist-val').textContent = distance;
+  });
+  document.querySelectorAll('[data-path]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-path]').forEach(b => b.classList.remove('btn-active'));
+      btn.classList.add('btn-active');
+      pathType = btn.dataset.path;
+      t = 0;
+      document.getElementById('path-info').textContent = {
+        circular: 'Sound source orbits at constant angular velocity. Apparent position rotates 360° around listener.',
+        figure8:  'Source traces a Lissajous figure-8. Continuous crossing through the listener\'s median plane.',
+        doppler:  'Source flies past listener in a straight line. Hear Doppler compression on approach, expansion on recession.'
+      }[pathType];
+    });
+  });
+
+  // Trail of previous positions
+  let trail = [];
+  const TRAIL_LEN = 60;
+
+  function getSrcPos(t2, pType) {
+    const r = distance * PATH_SCALE;
+    switch(pType) {
+      case 'circular': {
+        const angle = t2;
+        return {
+          x: cx + Math.cos(angle) * r,
+          y: cy + Math.sin(angle) * r,
+          vx: -Math.sin(angle)*speed*PATH_SCALE,
+          vy:  Math.cos(angle)*speed*PATH_SCALE
+        };
+      }
+      case 'figure8': {
+        const s = r * 0.7;
+        const x2 = cx + Math.sin(t2) * s;
+        const y2 = cy + Math.sin(t2*2)*0.5 * s;
+        const dx2 = Math.cos(t2)*s;
+        const dy2 = Math.cos(t2*2)*s;
+        return { x: x2, y: y2, vx: dx2*speed*0.03, vy: dy2*speed*0.03 };
+      }
+      case 'doppler': {
+        const period = 1200 / speed;
+        const frac = (t2 / (Math.PI*2)) % 1;
+        const startX = -r, endX = r + W*0.1;
+        const x2 = startX + (endX-startX)*frac;
+        const y2 = cy;
+        return { x: cx + x2*0.5, y: y2, vx: speed*PATH_SCALE, vy: 0 };
+      }
+    }
+  }
+
+  function calcDoppler(srcX, srcY, vx, vy) {
+    const dx = srcX - cx, dy = srcY - cy;
+    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+    // Radial velocity (positive = approaching)
+    const radialV = -(dx*vx + dy*vy) / dist / PATH_SCALE;
+    const fShift = 1 - radialV / SOUND_SPEED;
+    return (1 - fShift) * 100; // percent shift
+  }
+
+  let doppHistory = new Array(60).fill(0);
+
+  function drawPath(ts) {
+    requestAnimationFrame(drawPath);
+    const dt = lastTp === null ? 16 : ts - lastTp;
+    lastTp = ts;
+
+    const angSpeed = speed / (distance * PATH_SCALE || 1) * 0.05;
+    t += dt * angSpeed * 0.1;
+
+    ctx.fillStyle = 'rgba(10,10,15,0.08)';
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle = `rgba(${hexToRgb(C.border)},0.3)`;
+    ctx.lineWidth = 0.5;
+    [60,100,150].forEach(r => { ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); });
+    ctx.beginPath(); ctx.moveTo(cx-160,cy); ctx.lineTo(cx+160,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy-160); ctx.lineTo(cx,cy+160); ctx.stroke();
+
+    // Path preview
+    if (pathType !== 'doppler') {
+      ctx.save();
+      ctx.strokeStyle = `rgba(${hexToRgb(C.dim)},0.15)`;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3,6]);
+      ctx.beginPath();
+      for (let a = 0; a <= Math.PI*2; a += 0.05) {
+        const p = getSrcPos(a, pathType);
+        a===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
+      }
+      ctx.closePath(); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    // Trail
+    const pos = getSrcPos(t, pathType);
+    trail.push({ x: pos.x, y: pos.y, t: ts });
+    if (trail.length > TRAIL_LEN) trail.shift();
+    trail.forEach((pt, i) => {
+      const alpha = (i/TRAIL_LEN)*0.5;
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, 2, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${hexToRgb(C.accent2)},${alpha})`;
+      ctx.fill();
+    });
+
+    // Doppler
+    const rawShift = calcDoppler(pos.x, pos.y, pos.vx, pos.vy);
+    dopplerShift = dShiftLag.update(rawShift, dt);
+    doppHistory.push(dopplerShift);
+    doppHistory.shift();
+
+    // Source
+    ctx.save();
+    ctx.shadowBlur = 16; ctx.shadowColor = C.accent2;
+    ctx.beginPath(); ctx.arc(pos.x, pos.y, 7, 0, Math.PI*2);
+    ctx.fillStyle = C.accent2; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+
+    // Velocity arrow
+    const vLen = Math.sqrt(pos.vx**2 + pos.vy**2);
+    if (vLen > 0.1) {
+      const nvx = pos.vx/vLen, nvy = pos.vy/vLen;
+      const arrowLen = 30;
+      ctx.save();
+      ctx.strokeStyle = C.accent3; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(pos.x,pos.y);
+      ctx.lineTo(pos.x+nvx*arrowLen, pos.y+nvy*arrowLen);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Listener
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx,cy,10,0,Math.PI*2);
+    ctx.strokeStyle = C.accent; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+    ctx.fillStyle = C.accent; ctx.fill();
+    ctx.restore();
+
+    // Labels
+    ctx.fillStyle = C.dim; ctx.font = '9px Courier New';
+    ctx.fillText(pathType.toUpperCase(), 8, 14);
+    ctx.fillText(speed + ' m/s', 8, 26);
+    ctx.fillStyle = Math.abs(dopplerShift) > 1 ? (dopplerShift < 0 ? C.accent3 : C.accent2) : C.dim;
+    ctx.fillText('Δf: ' + (dopplerShift >= 0 ? '+' : '') + dopplerShift.toFixed(1) + '%', 8, 38);
+
+    // Doppler bar
+    document.getElementById('doppler-val').textContent =
+      (dopplerShift >= 0 ? '+' : '') + dopplerShift.toFixed(1) + '%';
+    document.getElementById('doppler-val').style.color =
+      Math.abs(dopplerShift) > 2 ? (dopplerShift < 0 ? C.accent3 : C.accent2) : C.dim;
+
+    drawDopplerHistory();
+  }
+
+  function drawDopplerHistory() {
+    const W2=doppCanvas.width, H2=doppCanvas.height;
+    dCtx.clearRect(0,0,W2,H2);
+    dCtx.fillStyle=C.surface; dCtx.fillRect(0,0,W2,H2);
+    const mid=H2/2;
+    dCtx.strokeStyle=`rgba(${hexToRgb(C.border)},0.4)`;
+    dCtx.lineWidth=0.5;
+    dCtx.beginPath(); dCtx.moveTo(0,mid); dCtx.lineTo(W2,mid); dCtx.stroke();
+
+    const maxShift=10;
+    dCtx.beginPath();
+    dCtx.strokeStyle=C.accent2; dCtx.lineWidth=1.5;
+    doppHistory.forEach((v,i)=>{
+      const x=i/doppHistory.length*(W2-4)+2;
+      const y=mid - (v/maxShift)*(H2/2-4);
+      i===0?dCtx.moveTo(x,y):dCtx.lineTo(x,y);
+    });
+    dCtx.stroke();
+
+    dCtx.fillStyle=C.dim; dCtx.font='8px Courier New';
+    dCtx.fillText('+'+maxShift+'%',2,10);
+    dCtx.fillText('-'+maxShift+'%',2,H2-3);
+    dCtx.fillText('← Doppler history',W2-90,mid-4);
+  }
+
+  requestAnimationFrame(drawPath);
+})();
+
+// ═══════════════════════════════════════════════════════════ SECTION 7: REVERB
+(function() {
+  const decayCanvas = document.getElementById('decay-canvas');
+  const dCtx = decayCanvas.getContext('2d');
+  const guideCanvas = document.getElementById('rt60-guide');
+  const gCtx = guideCanvas.getContext('2d');
+
+  const MATERIALS = {
+    'Concrete':       { alpha: 0.02, color: '#888' },
+    'Brick':          { alpha: 0.03, color: '#c87' },
+    'Plaster':        { alpha: 0.05, color: '#aaa' },
+    'Wood':           { alpha: 0.10, color: '#c8a' },
+    'Carpet':         { alpha: 0.35, color: '#8a8' },
+    'Glass':          { alpha: 0.04, color: '#8cc' },
+    'Foam/Acoustic':  { alpha: 0.75, color: C.accent2 },
+    'Fabric/Drapes':  { alpha: 0.45, color: '#a8c' },
+    'Plywood':        { alpha: 0.15, color: '#ca8' },
+    'Tile':           { alpha: 0.02, color: '#9aa' },
+  };
+  const MAT_KEYS = Object.keys(MATERIALS);
+
+  // Populate selects
+  const selects = document.querySelectorAll('.mat-select');
+  selects.forEach((sel, i) => {
+    MAT_KEYS.forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = k;
+      if (i === 4) opt.selected = k === 'Carpet';
+      else if (k === 'Plaster') opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', recalc);
+  });
+
+  let rvW = 12, rvD = 10, rvH = 4;
+  let currentRT = 0.48;
+  let rtLag = new LagFilter(0.4);
+
+  document.getElementById('rv-width').addEventListener('input', function() { rvW = parseInt(this.value); document.getElementById('rv-w-val').textContent = rvW; recalc(); });
+  document.getElementById('rv-depth').addEventListener('input', function() { rvD = parseInt(this.value); document.getElementById('rv-d-val').textContent = rvD; recalc(); });
+  document.getElementById('rv-height').addEventListener('input', function() { rvH = parseInt(this.value); document.getElementById('rv-h-val').textContent = rvH; recalc(); });
+
+  function getSurfaces() {
+    const ids = ['mat-front','mat-back','mat-left','mat-right','mat-floor','mat-ceil'];
+    const areas = [rvW*rvH, rvW*rvH, rvD*rvH, rvD*rvH, rvW*rvD, rvW*rvD];
+    return ids.map((id, i) => ({ mat: document.getElementById(id).value, area: areas[i] }));
+  }
+
+  function recalc() {
+    const surfaces = getSurfaces();
+    const V = rvW * rvD * rvH;
+    let totalAbsorption = 0;
+    let totalSurface = 0;
+    surfaces.forEach(s => {
+      const alpha = MATERIALS[s.mat].alpha;
+      totalAbsorption += alpha * s.area;
+      totalSurface += s.area;
+    });
+    const rt60 = (0.161 * V) / (totalAbsorption || 0.001);
+    currentRT = Math.min(rt60, 30);
+    rtLag.value = currentRT;
+    document.getElementById('rv-rt60').textContent = currentRT.toFixed(2) + ' s';
+    document.getElementById('rv-stats').textContent =
+      'V: ' + V.toFixed(0) + ' m³ | A: ' + totalAbsorption.toFixed(1) + ' sabin | ᾱ: ' + (totalAbsorption/totalSurface).toFixed(3);
+    drawDecay(currentRT);
+    drawGuide(currentRT);
+  }
+
+  function drawDecay(rt60) {
+    const W2 = decayCanvas.width, H2 = decayCanvas.height;
+    dCtx.clearRect(0,0,W2,H2);
+    dCtx.fillStyle = C.surface; dCtx.fillRect(0,0,W2,H2);
+
+    // Decay curve: SPL(t) = -60 * t / rt60
+    const timeScale = Math.max(rt60*1.2, 0.5);
+    dCtx.strokeStyle = C.dim; dCtx.lineWidth = 0.5;
+    dCtx.beginPath(); dCtx.moveTo(0,H2*0.1); dCtx.lineTo(W2,H2*0.1); dCtx.stroke(); // 0dB
+    dCtx.beginPath(); dCtx.moveTo(0,H2-8); dCtx.lineTo(W2,H2-8); dCtx.stroke(); // -60dB
+
+    // Dry (instant decay)
+    dCtx.strokeStyle = `rgba(${hexToRgb(C.dim)},0.5)`;
+    dCtx.lineWidth = 1; dCtx.setLineDash([3,4]);
+    dCtx.beginPath(); dCtx.moveTo(8, H2*0.1); dCtx.lineTo(12, H2-8); dCtx.stroke();
+    dCtx.setLineDash([]);
+
+    // Calculated decay
+    dCtx.strokeStyle = C.accent2; dCtx.lineWidth = 2;
+    dCtx.shadowBlur = 4; dCtx.shadowColor = C.accent2;
+    dCtx.beginPath();
+    for (let xi = 0; xi <= W2-16; xi++) {
+      const tSec = (xi/(W2-16))*timeScale;
+      const db = -60 * tSec / rt60;
+      const y = H2*0.1 + Math.max(0, Math.min(-db/60*(H2-20), H2-16));
+      xi===0 ? dCtx.moveTo(xi+8, y) : dCtx.lineTo(xi+8, y);
+      if (db <= -60) break;
+    }
+    dCtx.stroke(); dCtx.shadowBlur = 0;
+
+    // -60dB mark
+    const markX = 8 + (rt60/timeScale)*(W2-16);
+    if (markX < W2) {
+      dCtx.strokeStyle = C.accent3; dCtx.lineWidth = 1; dCtx.setLineDash([2,3]);
+      dCtx.beginPath(); dCtx.moveTo(markX,H2*0.1); dCtx.lineTo(markX,H2-8); dCtx.stroke();
+      dCtx.setLineDash([]);
+      dCtx.fillStyle = C.accent3; dCtx.font='8px Courier New';
+      dCtx.fillText(rt60.toFixed(2)+'s', markX+2, H2-10);
+    }
+
+    dCtx.fillStyle=C.dim; dCtx.font='8px Courier New';
+    dCtx.fillText('0 dB', W2-28, H2*0.1-2);
+    dCtx.fillText('-60 dB', W2-40, H2-10);
+  }
+
+  function drawGuide(currentRT) {
+    const W2=guideCanvas.width, H2=guideCanvas.height;
+    gCtx.clearRect(0,0,W2,H2);
+    gCtx.fillStyle=C.surface; gCtx.fillRect(0,0,W2,H2);
+    const maxRT=8, scl=(W2-50)/maxRT;
+    const zones=[
+      {label:'Speech',min:0.3,max:0.8,color:C.accent3},
+      {label:'Music',min:1.5,max:2.5,color:C.accent2},
+      {label:'Cathedral',min:3,max:7,color:'#a855f7'},
+    ];
+    zones.forEach((z,i)=>{
+      const y=8+i*24;
+      gCtx.fillStyle=`rgba(${hexToRgb(z.color)},0.15)`;
+      gCtx.fillRect(38+z.min*scl,y,(z.max-z.min)*scl,16);
+      gCtx.strokeStyle=z.color; gCtx.lineWidth=1;
+      gCtx.strokeRect(38+z.min*scl,y,(z.max-z.min)*scl,16);
+      gCtx.fillStyle=z.color; gCtx.font='8px Courier New';
+      gCtx.fillText(z.label,2,y+11);
+    });
+    const markerX=38+Math.min(currentRT,maxRT)*scl;
+    gCtx.strokeStyle=C.text; gCtx.lineWidth=1.5;
+    gCtx.beginPath(); gCtx.moveTo(markerX,4); gCtx.lineTo(markerX,H2-4); gCtx.stroke();
+    gCtx.fillStyle=C.text; gCtx.font='8px Courier New';
+    gCtx.fillText(currentRT.toFixed(2)+'s',markerX+2,H2-2);
+  }
+
+  recalc();
+})();
+
+
+// ═══════════════════════════════════════════════════════════ INTERSECTION OBSERVER
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+})();
+
+// ═══════════════════════════════════════════════════════════ NAV WIRING
+(function() {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => obs.observe(s));
+
+  // Smooth nav on click already handled by CSS scroll-behavior
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
+
+</script>

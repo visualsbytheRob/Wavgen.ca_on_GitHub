@@ -1,0 +1,1346 @@
+---
+layout: world.njk
+title: "WAVGEN — Unreal Engine & Virtual Production World"
+description: "Immersive av world exploring unreal engine"
+domain: av
+permalink: /av/unreal-engine/
+---
+
+
+
+<!-- SECTION 1: WebGL Hero -->
+<div id="hero-wrap">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<h1>UNREAL ENGINE 5</h1>
+<p>VIRTUAL PRODUCTION / nDISPLAY / LUMEN / NANITE / ICVFX</p>
+</div>
+</div>
+<!-- SECTION 2: nDisplay Cluster -->
+<section class="hidden" id="ndisplay">
+<div class="section-label">§ 02 — nDISPLAY CLUSTER</div>
+<h2>Multi-Node Render Cluster</h2>
+<p class="sub">nDisplay distributes Unreal Engine rendering across multiple nodes, each driving one or more displays in a synchronized cluster. A primary node orchestrates frame timing, camera frustum distribution, and genlock across the full LED volume or dome display system.</p>
+<div class="canvas-panel">
+<div class="panel-label">nDISPLAY CLUSTER TOPOLOGY — LIVE FRAME SYNC</div>
+<canvas height="240" id="cluster-canvas" width="1020"></canvas>
+</div>
+<div class="node-grid" id="node-grid"></div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">FRAME SYNC OSCILLOSCOPE</div>
+<canvas height="180" id="sync-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">GPU UTILIZATION PER NODE</div>
+<canvas height="180" id="gpu-canvas" width="480"></canvas>
+</div>
+</div>
+<div class="blend-controls">
+<div class="ctrl-group">
+<label>CLUSTER CONFIG</label>
+<div class="ctrl-row"><span>Render Nodes</span><input id="num-nodes" max="8" min="2" type="range" value="4"/><span class="val" id="num-nodes-val">4</span></div>
+<div class="ctrl-row"><span>Target FPS</span><input id="target-fps" max="120" min="24" type="range" value="48"/><span class="val" id="target-fps-val">48</span></div>
+<div class="ctrl-row"><span>Render Scale</span><input id="render-scale" max="100" min="50" type="range" value="85"/><span class="val" id="render-scale-val">85%</span></div>
+<div class="ctrl-row"><span>Sync Tolerance</span><input id="sync-tol" max="20" min="1" type="range" value="4"/><span class="val" id="sync-tol-val">0.4ms</span></div>
+</div>
+<div class="ctrl-group">
+<label>DISPLAY CONFIG</label>
+<div class="ctrl-row"><span>Wall Width (px)</span><input id="wall-w" max="15360" min="1920" step="1920" type="range" value="7680"/><span class="val" id="wall-w-val">7680</span></div>
+<div class="ctrl-row"><span>Wall Height (px)</span><input id="wall-h" max="4320" min="1080" step="1080" type="range" value="2160"/><span class="val" id="wall-h-val">2160</span></div>
+<div class="ctrl-row"><span>Overlap Pixels</span><input id="overlap-px" max="64" min="0" type="range" value="16"/><span class="val" id="overlap-px-val">16</span></div>
+<div class="ctrl-row"><span>Genlock Source</span><input id="genlock" max="2" min="0" type="range" value="1"/><span class="val" id="genlock-val">HOUSE</span></div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Live Link -->
+<section class="hidden" id="livelink">
+<div class="section-label">§ 03 — LIVE LINK PROTOCOL</div>
+<h2>Live Link Motion Capture → UE5</h2>
+<p class="sub">Live Link is Unreal Engine's real-time data streaming protocol, connecting motion capture systems, face trackers, camera tracking, and custom data sources directly into the engine's animation framework with sub-frame timing accuracy.</p>
+<div class="canvas-panel">
+<div class="panel-label">LIVE LINK SUBJECTS — REAL-TIME DATA STREAMS</div>
+<canvas height="200" id="livelink-canvas" width="1020"></canvas>
+</div>
+<div class="pipeline-row">
+<div class="pipe-stage"><div class="ps-name">MoCap Source</div><div class="ps-desc">Vicon, Rokoko, Xsens, iPhone ARKit, Faceware, OptiTrack</div></div>
+<div class="pipe-stage"><div class="ps-name">Live Link Plugin</div><div class="ps-desc">Source-specific protocol adapter. UDP/TCP data ingest, subject discovery, frame buffering</div></div>
+<div class="pipe-stage"><div class="ps-name">Subject Router</div><div class="ps-desc">Named subjects: Body, Face, Camera, Props. Type-tagged frame data with metadata</div></div>
+<div class="pipe-stage"><div class="ps-name">Animation Blueprint</div><div class="ps-desc">LiveLinkPose node evaluates subject data, maps to skeleton, applies retargeting</div></div>
+<div class="pipe-stage"><div class="ps-name">Character Output</div><div class="ps-desc">Rendered skeletal mesh with live-driven deformations, physics, IK overlays</div></div>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">SKELETON LIVE DRIVE</div>
+<canvas height="260" id="skeleton-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">SUBJECT DATA RATES</div>
+<canvas height="260" id="datarate-canvas" width="480"></canvas>
+</div>
+</div>
+</section>
+<!-- SECTION 4: ICVFX / LED Volume -->
+<section class="hidden" id="icvfx">
+<div class="section-label">§ 04 — IN-CAMERA VFX</div>
+<h2>LED Volume &amp; ICVFX Workflow</h2>
+<p class="sub">In-Camera Visual Effects (ICVFX) projects a photo-real virtual environment onto a curved LED volume while the camera captures both physical foreground elements and the LED backdrop simultaneously — eliminating green screen compositing from the pipeline entirely.</p>
+<div class="canvas-panel">
+<div class="panel-label">LED VOLUME TOP-DOWN LAYOUT — INNER FRUSTUM TRACKING</div>
+<canvas height="260" id="volume-canvas" width="1020"></canvas>
+</div>
+<div class="pipeline-row">
+<div class="pipe-stage"><div class="ps-name">Camera Tracker</div><div class="ps-desc">OptiTrack/Mo-Sys tracking camera position &amp; orientation in real-time. Live Link to UE5</div></div>
+<div class="pipe-stage"><div class="ps-name">Inner Frustum</div><div class="ps-desc">UE5 renders camera-perspective view onto LED wall section seen by camera lens</div></div>
+<div class="pipe-stage"><div class="ps-name">Outer Frustum</div><div class="ps-desc">Extended surround environment for lighting spill and peripheral immersion of talent</div></div>
+<div class="pipe-stage"><div class="ps-name">Color Science</div><div class="ps-desc">ACES gamut mapping, per-tile LED calibration, mura correction, and display LUT</div></div>
+<div class="pipe-stage"><div class="ps-name">In-Camera Capture</div><div class="ps-desc">Physical camera records final composite — talent + LED backdrop in a single pass</div></div>
+</div>
+<div class="blend-controls">
+<div class="ctrl-group">
+<label>LED VOLUME PARAMS</label>
+<div class="ctrl-row"><span>Wall Diameter (m)</span><input id="vol-dia" max="30" min="5" type="range" value="15"/><span class="val" id="vol-dia-val">15m</span></div>
+<div class="ctrl-row"><span>Wall Height (m)</span><input id="vol-h" max="12" min="3" type="range" value="6"/><span class="val" id="vol-h-val">6m</span></div>
+<div class="ctrl-row"><span>Pixel Pitch (mm)</span><input id="pixel-pitch" max="40" min="1" type="range" value="28"/><span class="val" id="pixel-pitch-val">2.8mm</span></div>
+<div class="ctrl-row"><span>Refresh Rate (Hz)</span><input id="led-hz" max="960" min="60" step="60" type="range" value="480"/><span class="val" id="led-hz-val">480Hz</span></div>
+</div>
+<div class="ctrl-group">
+<label>CAMERA TRACKING</label>
+<div class="ctrl-row"><span>Tracking Latency</span><input id="track-lat" max="40" min="1" type="range" value="8"/><span class="val" id="track-lat-val">0.8ms</span></div>
+<div class="ctrl-row"><span>Frustum FOV</span><input id="frust-fov" max="90" min="20" type="range" value="50"/><span class="val" id="frust-fov-val">50°</span></div>
+<div class="ctrl-row"><span>Camera Distance</span><input id="cam-dist" max="15" min="2" type="range" value="6"/><span class="val" id="cam-dist-val">6m</span></div>
+<div class="ctrl-row"><span>Mura Correction</span><input id="mura" max="100" min="0" type="range" value="80"/><span class="val" id="mura-val">80%</span></div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: Lumen GI -->
+<section class="hidden" id="lumen">
+<div class="section-label">§ 05 — LUMEN GLOBAL ILLUMINATION</div>
+<h2>Lumen Real-Time GI</h2>
+<p class="sub">Lumen is UE5's fully dynamic global illumination system — tracking light bounces in real-time at cinematic quality without baking. Using a combination of mesh distance fields, surface cache, and radiance cache, Lumen delivers plausible indirect lighting at interactive frame rates.</p>
+<div class="canvas-panel">
+<div class="panel-label">LUMEN RADIANCE CACHE VISUALIZATION — MOVE CURSOR</div>
+<canvas height="240" id="lumen-canvas" width="1020"></canvas>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">SURFACE CACHE PROBE MAP</div>
+<canvas height="200" id="probe-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">INDIRECT LIGHTING PASS</div>
+<canvas height="200" id="indirect-canvas" width="480"></canvas>
+</div>
+</div>
+<div style="margin-top: 8px;">
+<div class="section-label">LUMEN SYSTEM PERFORMANCE</div>
+<div class="stat-row"><span class="st-label">Lumen Scene Update (ms)</span><div class="st-bar"><div class="st-fill" style="width:72%"></div></div><span class="st-val">2.8 ms</span></div>
+<div class="stat-row"><span class="st-label">Radiance Cache Samples</span><div class="st-bar"><div class="st-fill" style="width:88%"></div></div><span class="st-val">512K</span></div>
+<div class="stat-row"><span class="st-label">Surface Cache Texels</span><div class="st-bar"><div class="st-fill" style="width:91%"></div></div><span class="st-val">4M</span></div>
+<div class="stat-row"><span class="st-label">Shadow Map Update</span><div class="st-bar"><div class="st-fill" style="width:60%"></div></div><span class="st-val">1.4 ms</span></div>
+<div class="stat-row"><span class="st-label">Final Gather Quality</span><div class="st-bar"><div class="st-fill" style="width:95%"></div></div><span class="st-val">High</span></div>
+</div>
+</section>
+<!-- SECTION 6: Nanite -->
+<section class="hidden" id="nanite">
+<div class="section-label">§ 06 — NANITE VIRTUALIZED GEOMETRY</div>
+<h2>Nanite Geometry Pipeline</h2>
+<p class="sub">Nanite is UE5's virtualized micropolygon geometry system — streaming and rendering only the geometry detail visible to the current camera view at pixel scale, enabling billions of polygons without artist-managed LODs or memory budget worries.</p>
+<div class="canvas-panel">
+<div class="panel-label">NANITE CLUSTER LOD VISUALIZATION</div>
+<canvas height="220" id="nanite-canvas" width="1020"></canvas>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">TRIANGLE COUNT VS DISTANCE</div>
+<canvas height="180" id="lod-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">CLUSTER HIERARCHY TREE</div>
+<canvas height="180" id="cluster-tree-canvas" width="480"></canvas>
+</div>
+</div>
+<div style="margin-top: 8px;">
+<div class="section-label">NANITE FRAME STATS</div>
+<div class="stat-row"><span class="st-label">Input Triangles (scene total)</span><div class="st-bar"><div class="st-fill" style="width:100%"></div></div><span class="st-val">12.4B</span></div>
+<div class="stat-row"><span class="st-label">Rasterized Triangles (visible)</span><div class="st-bar"><div class="st-fill" style="width:31%"></div></div><span class="st-val">3.8M</span></div>
+<div class="stat-row"><span class="st-label">Clusters Drawn</span><div class="st-bar"><div class="st-fill" style="width:44%"></div></div><span class="st-val">228K</span></div>
+<div class="stat-row"><span class="st-label">Streaming Pool Used</span><div class="st-bar"><div class="st-fill" style="width:67%"></div></div><span class="st-val">6.7 GB</span></div>
+<div class="stat-row"><span class="st-label">Visibility Buffer (ms)</span><div class="st-bar"><div class="st-fill" style="width:55%"></div></div><span class="st-val">1.1 ms</span></div>
+</div>
+</section>
+<!-- SECTION 7: Blueprint Visual Scripting -->
+<section class="hidden" id="blueprint">
+<div class="section-label">§ 07 — BLUEPRINT VISUAL SCRIPTING</div>
+<h2>Blueprint Node Graph</h2>
+<p class="sub">Blueprint is UE5's visual scripting system — a node-based graph where events, functions, and data flow are represented as connected pins. Used for gameplay logic, cinematic sequencer control, Live Link data routing, and nDisplay cluster management without writing C++.</p>
+<div class="canvas-panel">
+<div class="panel-label">BLUEPRINT GRAPH — INTERACTIVE SIMULATION — CLICK NODES</div>
+<canvas height="320" id="bp-canvas" width="1020"></canvas>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">EVENT FLOW TIMELINE</div>
+<canvas height="180" id="event-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">VARIABLE WATCH</div>
+<canvas height="180" id="watch-canvas" width="480"></canvas>
+</div>
+</div>
+</section>
+<!-- SECTION 8: Artists -->
+<section class="hidden" id="artists">
+<div class="section-label">§ 08 — PRACTITIONERS</div>
+<h2>Studios &amp; Innovators</h2>
+<p class="sub">The virtual production vanguard — from real-time pipeline architects to the LED volume pioneers who transformed The Mandalorian's backlot into infinite worlds.</p>
+<div class="artists-grid" id="artists-grid"></div>
+</section>
+<!-- SECTION 9: Glossary -->
+<section class="hidden" id="glossary">
+<div class="section-label">§ 09 — GLOSSARY</div>
+<h2>Virtual Production Lexicon</h2>
+<p class="sub">Core vocabulary for Unreal Engine virtual production, nDisplay rendering, and LED volume workflows.</p>
+<div class="glossary-grid" id="glossary-grid"></div>
+</section>
+<script>
+// ─── Utilities ────────────────────────────────────────────────────────────
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const rand = (lo = 0, hi = 1) => lo + Math.random() * (hi - lo);
+
+function noise21(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+  const h = (a,b) => { let n=(a*1619+b*31337)^(a*31337); n=(n>>8)^n; return (n&0xffff)/65535; };
+  return lerp(lerp(h(ix,iy),h(ix+1,iy),ux), lerp(h(ix,iy+1),h(ix+1,iy+1),ux), uy);
+}
+
+function fbm(x, y, oct=4) {
+  let v=0, a=0.5, f=1;
+  for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}
+  return v;
+}
+
+// ─── LagFilter ────────────────────────────────────────────────────────────
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// 17 LagFilter instances
+const lagHeroMX    = new LagFilter(0.5, 0.9);
+const lagHeroMY    = new LagFilter(0.5, 0.9);
+const lagHeroFog   = new LagFilter(0.3, 0.6);
+const lagClusterN  = new LagFilter(4, 1.0);
+const lagFPS       = new LagFilter(48, 0.5);
+const lagGPULoad   = new LagFilter(0.7, 0.4);
+const lagSyncErr   = new LagFilter(0, 0.2);
+const lagCamX      = new LagFilter(0, 0.3);
+const lagCamY      = new LagFilter(0, 0.3);
+const lagCamZ      = new LagFilter(6, 0.5);
+const lagFrustFOV  = new LagFilter(50, 0.5);
+const lagLumenGI   = new LagFilter(0.5, 0.4);
+const lagNaniteL   = new LagFilter(0.5, 0.4);
+const lagBPFlow    = new LagFilter(0, 0.3);
+const lagProbeR    = new LagFilter(0.5, 0.5);
+const lagIndirect  = new LagFilter(0.5, 0.5);
+const lagVolDia    = new LagFilter(15, 0.6);
+
+// ─── IntersectionObserver ─────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersectionRatio>=0.1) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+let mouseX = 0.5, mouseY = 0.5;
+document.addEventListener('mousemove', e => { mouseX=e.clientX/window.innerWidth; mouseY=e.clientY/window.innerHeight; });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 1: WebGL Hero — Cinematic real-time scene
+// ═══════════════════════════════════════════════════════════════════════════
+(function initHero() {
+  const wrap = document.getElementById('hero-wrap');
+  const canvas = document.getElementById('hero-canvas');
+  canvas.width = wrap.offsetWidth || window.innerWidth;
+  canvas.height = 440;
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const VS = `attribute vec2 pos; void main() { gl_Position = vec4(pos,0.0,1.0); }`;
+  const FS = `
+    precision highp float;
+    uniform vec2 uRes;
+    uniform float uTime;
+    uniform vec2 uMouse;
+
+    vec2 hash2(vec2 p) {
+      p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
+      return fract(sin(p)*43758.5453);
+    }
+    float noise(vec2 p) {
+      vec2 i=floor(p); vec2 f=fract(p); vec2 u=f*f*(3.0-2.0*f);
+      float a=dot(hash2(i),f); float b=dot(hash2(i+vec2(1,0)),f-vec2(1,0));
+      float c=dot(hash2(i+vec2(0,1)),f-vec2(0,1)); float d=dot(hash2(i+vec2(1,1)),f-vec2(1,1));
+      return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+    }
+    float fbm(vec2 p) {
+      float v=0.0, a=0.5;
+      for(int i=0;i<5;i++){ v+=a*noise(p); a*=0.5; p=p*2.1+vec2(1.3,1.7); }
+      return v;
+    }
+
+    // Sphere ray intersection for UE5-style mesh
+    float sphere(vec3 ro, vec3 rd, vec3 c, float r) {
+      vec3 oc = ro - c;
+      float b = dot(oc,rd), discr = b*b - dot(oc,oc) + r*r;
+      if(discr < 0.0) return -1.0;
+      return -b - sqrt(discr);
+    }
+
+    vec3 lumenGI(vec3 p, vec3 n, float t) {
+      // Simulated indirect light from Lumen radiance cache
+      vec3 gi = vec3(0.0);
+      // "Sky" contribution
+      float skyFactor = clamp(dot(n, vec3(0,1,0)), 0.0, 1.0);
+      gi += vec3(0.1, 0.2, 0.6) * skyFactor * 0.5;
+      // Bounce from floor
+      float floorBounce = clamp(dot(n, vec3(0,-1,0))*0.5+0.5, 0.0, 1.0);
+      gi += vec3(0.3, 0.15, 0.05) * floorBounce * 0.3;
+      // Dynamic indirect from emissive wall (LED volume)
+      float wallLight = fbm(n.xy * 2.0 + t * 0.1) * 0.5;
+      gi += vec3(0.0, 0.4, 1.0) * wallLight * 0.4;
+      return gi;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uRes;
+      uv.y = 1.0 - uv.y;
+      vec2 ndc = (uv * 2.0 - 1.0) * vec2(uRes.x/uRes.y, 1.0);
+
+      // Camera setup
+      float camYaw = (uMouse.x - 0.5) * 1.2;
+      float camPitch = (uMouse.y - 0.5) * 0.6;
+      vec3 ro = vec3(sin(camYaw)*6.0, 1.5 + camPitch*2.0, cos(camYaw)*6.0);
+      vec3 target = vec3(0.0, 0.5, 0.0);
+      vec3 forward = normalize(target - ro);
+      vec3 right = normalize(cross(forward, vec3(0,1,0)));
+      vec3 up = cross(right, forward);
+      float fov = 0.8;
+      vec3 rd = normalize(forward + right*ndc.x*fov + up*ndc.y*fov);
+
+      // Scene
+      vec3 col = vec3(0.0);
+      bool hit = false;
+      float tmin = 1e10;
+
+      // Ground plane
+      float tPlane = -ro.y / rd.y;
+      if(rd.y < -0.01 && tPlane > 0.0 && tPlane < tmin) {
+        tmin = tPlane;
+        vec3 p = ro + rd * tPlane;
+        vec3 n = vec3(0,1,0);
+        // Tile pattern
+        float gx = fract(p.x * 0.8); float gz = fract(p.z * 0.8);
+        float tile = (step(0.05,gx)*step(gx,0.95)) * (step(0.05,gz)*step(gz,0.95));
+        vec3 floorAlbedo = mix(vec3(0.05,0.07,0.1), vec3(0.08,0.1,0.14), tile);
+        vec3 gi = lumenGI(p, n, uTime);
+        col = floorAlbedo * (gi + 0.1);
+        // Reflection-ish
+        float refl = 0.3;
+        col += floorAlbedo * refl * 0.3;
+        hit = true;
+      }
+
+      // Multiple spheres (Nanite-style mesh objects)
+      vec3 sphereCenters[4];
+      sphereCenters[0] = vec3(0.0, 0.8, 0.0);
+      sphereCenters[1] = vec3(-2.5, 0.5, 1.0);
+      sphereCenters[2] = vec3(2.5, 0.6, 0.5);
+      sphereCenters[3] = vec3(0.5, 0.4, -2.0);
+      float sphereR[4];
+      sphereR[0]=0.8; sphereR[1]=0.5; sphereR[2]=0.6; sphereR[3]=0.4;
+      vec3 sphereCol[4];
+      sphereCol[0]=vec3(0.6,0.6,0.7);
+      sphereCol[1]=vec3(0.7,0.4,0.2);
+      sphereCol[2]=vec3(0.2,0.5,0.8);
+      sphereCol[3]=vec3(0.5,0.7,0.3);
+
+      for(int si=0;si<4;si++) {
+        float ts = sphere(ro, rd, sphereCenters[si], sphereR[si]);
+        if(ts > 0.0 && ts < tmin) {
+          tmin = ts;
+          vec3 p = ro + rd * ts;
+          vec3 n = normalize(p - sphereCenters[si]);
+          // PBR-ish shading with Lumen GI
+          vec3 sun = normalize(vec3(1.0, 2.0, 0.5));
+          float diff = max(dot(n,sun), 0.0);
+          vec3 h = normalize(sun - rd);
+          float spec = pow(max(dot(n,h),0.0), 32.0) * 0.5;
+          vec3 gi = lumenGI(p, n, uTime);
+          col = sphereCol[si] * (gi + vec3(0.9,0.85,0.7)*diff) + spec;
+          // UE5-style bloom rim
+          float rim = pow(1.0-max(dot(n,-rd),0.0), 3.0);
+          col += vec3(0.0,0.4,1.0) * rim * 0.4;
+          hit = true;
+        }
+      }
+
+      // Sky / LED volume background
+      if(!hit) {
+        float dome = fbm(rd.xy * 1.5 + uTime * 0.04) * 0.4;
+        float horizGlow = exp(-abs(rd.y + 0.1) * 4.0);
+        vec3 skyHigh = vec3(0.01,0.02,0.08);
+        vec3 skyLow = vec3(0.0, 0.15, 0.6) * 0.5;
+        col = mix(skyHigh, skyLow, clamp(-rd.y * 2.0 + 0.5, 0.0, 1.0));
+        col += vec3(0.0,0.3,1.0) * horizGlow * 0.4;
+        col += vec3(0.04,0.1,0.3) * dome;
+        // Stars
+        vec2 starUV = rd.xy / (rd.z + 0.01);
+        float star = step(0.99, noise(starUV * 20.0));
+        col += star * 0.4 * vec3(0.7,0.8,1.0);
+      }
+
+      // Cinematic DOF vignette + tone map
+      vec2 vcuv = uv - 0.5;
+      float vig = 1.0 - dot(vcuv,vcuv) * 1.6;
+      col *= vig;
+      // Reinhard tone map
+      col = col / (col + 1.0);
+      col = pow(col, vec3(1.0/2.2));
+      // Chromatic aberration
+      float ca = 0.004 * length(vcuv);
+      col.r += noise(uv * 100.0 + uTime) * ca * 0.3;
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  function compile(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog,'pos');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  const uRes = gl.getUniformLocation(prog,'uRes');
+  const uTime = gl.getUniformLocation(prog,'uTime');
+  const uMouse = gl.getUniformLocation(prog,'uMouse');
+
+  let t=0, last=performance.now();
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    const mx=lagHeroMX.update(mouseX,dt), my=lagHeroMY.update(mouseY,dt);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  window.addEventListener('resize', () => { canvas.width=wrap.offsetWidth; gl.viewport(0,0,canvas.width,canvas.height); });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 2: nDisplay Cluster
+// ═══════════════════════════════════════════════════════════════════════════
+(function initCluster() {
+  // Node grid
+  const nodeData = [
+    { name: 'PRIMARY-01', role: 'Master / Sync', gpu: 0.72, vram: 0.84, fps: 48 },
+    { name: 'RENDER-02', role: 'Wall Segment A', gpu: 0.88, vram: 0.91, fps: 48 },
+    { name: 'RENDER-03', role: 'Wall Segment B', gpu: 0.85, vram: 0.89, fps: 48 },
+    { name: 'RENDER-04', role: 'Wall Segment C', gpu: 0.79, vram: 0.77, fps: 48 },
+  ];
+  const nodeGrid = document.getElementById('node-grid');
+  nodeData.forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'node-card';
+    card.innerHTML = `
+      <div class="nc-title">${n.name}</div>
+      <div class="nc-stat">Role: ${n.role}</div>
+      <div class="nc-stat">GPU: ${Math.round(n.gpu*100)}% | VRAM: ${Math.round(n.vram*100)}%</div>
+      <div class="nc-stat">Frame: ${n.fps} fps</div>
+      <div class="nc-bar"><div class="nc-fill" style="width:${n.gpu*100}%"></div></div>
+    `;
+    nodeGrid.appendChild(card);
+  });
+
+  // Cluster topology canvas
+  const cc = document.getElementById('cluster-canvas');
+  const cctx = cc.getContext('2d');
+  const W = cc.width, H = cc.height;
+
+  // Sync canvas
+  const sc = document.getElementById('sync-canvas');
+  const sctx = sc.getContext('2d');
+  const SW = sc.width, SH = sc.height;
+
+  // GPU canvas
+  const gc = document.getElementById('gpu-canvas');
+  const gctx = gc.getContext('2d');
+  const GW = gc.width, GH = gc.height;
+
+  const syncHistory = Array(SW).fill(0);
+  const gpuHistories = nodeData.map(() => Array(GW).fill(0.7));
+
+  let t=0, last=performance.now();
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    const nNodes = Math.floor(lagClusterN.update(parseFloat(document.getElementById('num-nodes').value||4),dt));
+
+    // Cluster canvas
+    cctx.fillStyle='rgba(2,4,8,0.2)'; cctx.fillRect(0,0,W,H);
+
+    // Primary node
+    const primX=W/2, primY=50;
+    const pulse=0.5+0.5*Math.sin(t*2);
+    cctx.strokeStyle=`rgba(255,109,0,${0.6+0.2*pulse})`;
+    cctx.lineWidth=2;
+    cctx.strokeRect(primX-60,primY-20,120,40);
+    cctx.fillStyle='rgba(255,109,0,0.1)'; cctx.fillRect(primX-60,primY-20,120,40);
+    cctx.fillStyle='#FF6D00'; cctx.font='10px Courier New'; cctx.textAlign='center';
+    cctx.fillText('PRIMARY',primX,primY-2);
+    cctx.fillStyle='#607090'; cctx.font='9px Courier New';
+    cctx.fillText(`SYNC MASTER · ${Math.round(lagFPS.update(48,dt))}fps`,primX,primY+14);
+
+    // Wall display below
+    const wallW=W-120, wallH=80, wallX=60, wallY=H-wallH-15;
+    cctx.strokeStyle='rgba(0,96,255,0.4)'; cctx.lineWidth=1;
+    cctx.strokeRect(wallX,wallY,wallW,wallH);
+    cctx.fillStyle='rgba(0,96,255,0.04)'; cctx.fillRect(wallX,wallY,wallW,wallH);
+    const segW=wallW/nNodes;
+    for(let i=0;i<nNodes;i++) {
+      const sx=wallX+i*segW;
+      const v=fbm(i*0.5,t*0.15);
+      cctx.fillStyle=`hsla(${220+v*40},80%,${20+v*30}%,0.7)`;
+      cctx.fillRect(sx+2,wallY+2,segW-4,wallH-4);
+      cctx.strokeStyle='rgba(0,96,255,0.3)'; cctx.lineWidth=0.5;
+      cctx.strokeRect(sx,wallY,segW,wallH);
+      cctx.fillStyle='rgba(0,200,255,0.8)'; cctx.font='9px Courier New'; cctx.textAlign='center';
+      cctx.fillText(`SEG ${i+1}`,sx+segW/2,wallY+wallH/2+4);
+    }
+    cctx.fillStyle='#607090'; cctx.font='9px Courier New'; cctx.textAlign='center';
+    cctx.fillText('LED VOLUME DISPLAY WALL',W/2,wallY+wallH+14);
+
+    // Render node circles + connections to primary and wall
+    for(let i=0;i<nNodes;i++) {
+      const angle=(i/(nNodes-1))*Math.PI*0.8-Math.PI*0.4;
+      const nx=primX+Math.sin(angle)*280, ny=primY+Math.cos(angle)*80+50;
+      // Connection to primary
+      const syncOff=lagSyncErr.update(Math.random()*0.0001,dt);
+      cctx.strokeStyle=`rgba(0,96,255,${0.4+0.2*Math.sin(t*3+i*0.5)})`;
+      cctx.lineWidth=1; cctx.setLineDash([4,4]);
+      cctx.beginPath(); cctx.moveTo(primX,primY+20); cctx.lineTo(nx,ny-18); cctx.stroke();
+      // Connection to wall
+      cctx.beginPath(); cctx.moveTo(nx,ny+18); cctx.lineTo(wallX+i*segW+segW/2,wallY); cctx.stroke();
+      cctx.setLineDash([]);
+      // Node box
+      cctx.strokeStyle=`rgba(0,96,255,${0.7+0.2*Math.sin(t*1.5+i)})`; cctx.lineWidth=1.5;
+      cctx.strokeRect(nx-50,ny-18,100,36);
+      cctx.fillStyle='rgba(0,96,255,0.08)'; cctx.fillRect(nx-50,ny-18,100,36);
+      cctx.fillStyle='#00C8FF'; cctx.font='9px Courier New'; cctx.textAlign='center';
+      cctx.fillText(`RENDER-0${i+2}`,nx,ny-4);
+      const gpuPct=Math.round((0.75+0.15*Math.sin(t*0.8+i))*100);
+      cctx.fillStyle='#607090'; cctx.fillText(`GPU ${gpuPct}%`,nx,ny+10);
+      // GPU bar
+      cctx.fillStyle='rgba(0,96,255,0.2)'; cctx.fillRect(nx-40,ny+16,80,6);
+      cctx.fillStyle='#0060FF'; cctx.fillRect(nx-40,ny+16,gpuPct*0.8,6);
+    }
+
+    // Sync canvas
+    sctx.fillStyle='rgba(2,4,8,0.25)'; sctx.fillRect(0,0,SW,SH);
+    syncHistory.shift();
+    syncHistory.push((Math.random()-0.5)*2);
+    const syncColors=['#FF6D00','#0060FF','#00C8FF','#FF9940'];
+    for(let n=0;n<nNodes;n++) {
+      sctx.strokeStyle=syncColors[n%4]; sctx.lineWidth=1;
+      sctx.beginPath();
+      const yOff=(n+0.5)*SH/nNodes;
+      const amp=SH/(nNodes*2)*0.5;
+      for(let xi=0;xi<SW;xi++) {
+        const jitter=syncHistory[xi]*(0.3+n*0.1);
+        const y=yOff+jitter*amp;
+        xi===0?sctx.moveTo(xi,y):sctx.lineTo(xi,y);
+      }
+      sctx.stroke();
+      sctx.fillStyle=syncColors[n%4]; sctx.font='8px Courier New'; sctx.textAlign='left';
+      sctx.fillText(`N${n+1}`,2,yOff-amp-2);
+    }
+    sctx.fillStyle='#607090'; sctx.font='9px Courier New'; sctx.textAlign='center';
+    sctx.fillText('FRAME SYNC DEVIATION',SW/2,SH-4);
+
+    // GPU canvas
+    gctx.fillStyle='rgba(2,4,8,0.25)'; gctx.fillRect(0,0,GW,GH);
+    nodeData.forEach((nd,n) => {
+      gpuHistories[n].shift();
+      gpuHistories[n].push(nd.gpu+Math.sin(t*1.5+n*2)*0.05+Math.random()*0.02);
+      gctx.strokeStyle=syncColors[n%4]; gctx.lineWidth=1;
+      gctx.beginPath();
+      const yOff=(n+0.5)*GH/nNodes;
+      const amp=GH/(nNodes*2)*0.7;
+      gpuHistories[n].forEach((v,xi) => {
+        const y=yOff-v*amp*2+amp;
+        xi===0?gctx.moveTo(xi,y):gctx.lineTo(xi,y);
+      });
+      gctx.stroke();
+      const latest=gpuHistories[n][gpuHistories[n].length-1];
+      gctx.fillStyle=syncColors[n%4]; gctx.font='8px Courier New'; gctx.textAlign='left';
+      gctx.fillText(`${nd.name.slice(0,8)}: ${Math.round(latest*100)}%`,2,yOff-amp-2);
+    });
+    gctx.fillStyle='#607090'; gctx.font='9px Courier New'; gctx.textAlign='center';
+    gctx.fillText('GPU UTILIZATION PER NODE',GW/2,GH-4);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  [['num-nodes','num-nodes-val',v=>v],['target-fps','target-fps-val',v=>v],
+   ['render-scale','render-scale-val',v=>v+'%'],['sync-tol','sync-tol-val',v=>(v/10).toFixed(1)+'ms'],
+   ['wall-w','wall-w-val',v=>v],['wall-h','wall-h-val',v=>v],
+   ['overlap-px','overlap-px-val',v=>v],['genlock','genlock-val',v=>['INT','HOUSE','BLACK'][+v]]
+  ].forEach(([id,vid,fmt]) => {
+    const el=document.getElementById(id),vl=document.getElementById(vid);
+    if(!el||!vl)return; el.addEventListener('input',()=>vl.textContent=fmt(el.value));
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 3: Live Link
+// ═══════════════════════════════════════════════════════════════════════════
+(function initLiveLink() {
+  const llc = document.getElementById('livelink-canvas');
+  const llctx = llc.getContext('2d');
+  const W=llc.width, H=llc.height;
+
+  const skc = document.getElementById('skeleton-canvas');
+  const skctx = skc.getContext('2d');
+  const SW=skc.width, SH=skc.height;
+
+  const drc = document.getElementById('datarate-canvas');
+  const drctx = drc.getContext('2d');
+  const DW=drc.width, DH=drc.height;
+
+  const subjects = [
+    {name:'Body_Talent01',type:'Animation',fps:120,joints:23,bytes:1840},
+    {name:'Face_Talent01',type:'Animation',fps:60,joints:52,bytes:3320},
+    {name:'Camera_A',type:'Camera',fps:120,joints:1,bytes:96},
+    {name:'Camera_B',type:'Camera',fps:120,joints:1,bytes:96},
+    {name:'Props_Sword',type:'Transform',fps:120,joints:1,bytes:48},
+    {name:'HMC_Sensor',type:'Meta',fps:30,joints:0,bytes:24},
+  ];
+
+  const drHistories = subjects.map(s => Array(DW).fill(s.bytes/4000));
+
+  let t=0, last=performance.now();
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+
+    // Live Link subject table
+    llctx.fillStyle='rgba(2,4,8,0.25)'; llctx.fillRect(0,0,W,H);
+    const rowH=H/subjects.length;
+    subjects.forEach((s,i) => {
+      const y=i*rowH;
+      const active=0.5+0.5*Math.sin(t*4+i);
+      llctx.fillStyle=`rgba(0,96,255,${0.04+0.02*active})`;
+      llctx.fillRect(0,y,W,rowH);
+      // Status dot
+      const statusColor=i<4?'#00FF88':'#FF6D00';
+      llctx.fillStyle=statusColor;
+      llctx.beginPath(); llctx.arc(20,y+rowH/2,5,0,Math.PI*2); llctx.fill();
+      // Subject info
+      llctx.fillStyle='#E8F4FF'; llctx.font='10px Courier New'; llctx.textAlign='left';
+      llctx.fillText(s.name,40,y+rowH/2+4);
+      llctx.fillStyle='#FF6D00'; llctx.font='9px Courier New';
+      llctx.fillText(s.type,220,y+rowH/2+4);
+      llctx.fillStyle='#607090';
+      llctx.fillText(`${s.fps}fps`,340,y+rowH/2+4);
+      llctx.fillText(`${s.joints} joints`,420,y+rowH/2+4);
+      // Packet activity
+      const pkt=Math.sin(t*s.fps/10+i)>0.8;
+      if(pkt){llctx.fillStyle='#00C8FF'; llctx.fillRect(520,y+rowH/2-3,6,6);}
+      // Data rate bar
+      const rate=(s.bytes*s.fps)/1000;
+      const barW=clamp(rate/2000,0,1)*(W-620);
+      llctx.fillStyle='rgba(0,96,255,0.5)'; llctx.fillRect(560,y+4,barW,rowH-8);
+      llctx.fillStyle='#607090'; llctx.font='9px Courier New'; llctx.textAlign='right';
+      llctx.fillText(`${(rate).toFixed(0)}B/s`,W-10,y+rowH/2+4);
+    });
+    llctx.strokeStyle='rgba(0,96,255,0.15)'; llctx.lineWidth=0.5;
+    subjects.forEach((_,i) => {
+      llctx.beginPath(); llctx.moveTo(0,i*rowH); llctx.lineTo(W,i*rowH); llctx.stroke();
+    });
+
+    // Skeleton canvas — 23-joint walk cycle
+    skctx.fillStyle='rgba(2,4,8,0.2)'; skctx.fillRect(0,0,SW,SH);
+    const cx=SW/2, cy=SH*0.25, scale=SH*0.12;
+    const walk=t*2;
+    function joint(jt) {
+      const map={
+        HIPS:[0,0],SPINE:[0,-1],CHEST:[0,-2],NECK:[0,-2.8],HEAD:[0,-3.5],
+        LSHOULDER:[-1,-2.2],LELBOW:[-1.7,-1.5],LWRIST:[-2.2,-0.8],
+        RSHOULDER:[1,-2.2],RELBOW:[1.7,-1.5],RWRIST:[2.2,-0.8],
+        LHIP:[-0.6,0.3],LKNEE:[-0.7,1.5],LANKLE:[-0.6,2.8],
+        RHIP:[0.6,0.3],RKNEE:[0.7,1.5],RANKLE:[0.6,2.8],
+        LTOE:[-0.8,3.2],RTOE:[0.9,3.2],
+        LSHOULDER2:[-0.8,-1.8],RSHOULDER2:[0.8,-1.8],
+        SPINE2:[0,-1.5],SPINE3:[0,-1.0]
+      };
+      const pos=map[jt]||[0,0];
+      let x=pos[0], y=pos[1];
+      // Walk cycle animations
+      if(jt==='LKNEE'||jt==='LANKLE'||jt==='LTOE') { x+=Math.sin(walk)*0.3; y+=Math.cos(walk)*0.2; }
+      if(jt==='RKNEE'||jt==='RANKLE'||jt==='RTOE') { x+=Math.sin(walk+Math.PI)*0.3; y+=Math.cos(walk+Math.PI)*0.2; }
+      if(jt==='LELBOW'||jt==='LWRIST') { x+=Math.sin(walk+Math.PI)*0.2; }
+      if(jt==='RELBOW'||jt==='RWRIST') { x+=Math.sin(walk)*0.2; }
+      if(jt==='SPINE'||jt==='CHEST'||jt==='NECK') { x+=Math.sin(walk)*0.05; }
+      return {x:cx+x*scale, y:cy+y*scale};
+    }
+    const bones=[
+      ['HIPS','SPINE'],['SPINE','CHEST'],['CHEST','NECK'],['NECK','HEAD'],
+      ['CHEST','LSHOULDER'],['LSHOULDER','LELBOW'],['LELBOW','LWRIST'],
+      ['CHEST','RSHOULDER'],['RSHOULDER','RELBOW'],['RELBOW','RWRIST'],
+      ['HIPS','LHIP'],['LHIP','LKNEE'],['LKNEE','LANKLE'],['LANKLE','LTOE'],
+      ['HIPS','RHIP'],['RHIP','RKNEE'],['RKNEE','RANKLE'],['RANKLE','RTOE']
+    ];
+    skctx.strokeStyle='rgba(0,96,255,0.7)'; skctx.lineWidth=2;
+    bones.forEach(([a,b])=>{
+      const pa=joint(a),pb=joint(b);
+      skctx.beginPath(); skctx.moveTo(pa.x,pa.y); skctx.lineTo(pb.x,pb.y); skctx.stroke();
+    });
+    ['HIPS','SPINE','CHEST','NECK','HEAD','LSHOULDER','LELBOW','LWRIST',
+     'RSHOULDER','RELBOW','RWRIST','LHIP','LKNEE','LANKLE','RHIP','RKNEE','RANKLE'].forEach(jt=>{
+      const p=joint(jt);
+      skctx.fillStyle='#00C8FF'; skctx.beginPath(); skctx.arc(p.x,p.y,3,0,Math.PI*2); skctx.fill();
+    });
+    skctx.fillStyle='#FF6D00'; skctx.font='9px Courier New'; skctx.textAlign='center';
+    skctx.fillText('LIVE LINK BODY_TALENT01',SW/2,SH-8);
+    skctx.fillStyle='#607090'; skctx.fillText(`23 joints · 120fps`,SW/2,SH-20);
+
+    // Data rate canvas
+    drctx.fillStyle='rgba(2,4,8,0.2)'; drctx.fillRect(0,0,DW,DH);
+    subjects.forEach((s,i) => {
+      drHistories[i].shift();
+      drHistories[i].push(s.bytes/4000*(0.85+0.15*Math.sin(t*3+i)));
+    });
+    const cols=['#0060FF','#FF6D00','#00C8FF','#FF9940','#0080FF','#CC6600'];
+    subjects.forEach((s,i) => {
+      const yOff=(i+0.5)*DH/subjects.length;
+      const amp=DH/(subjects.length*2)*0.7;
+      drctx.strokeStyle=cols[i]; drctx.lineWidth=1;
+      drctx.beginPath();
+      drHistories[i].forEach((v,xi)=>{
+        const y=yOff-v*amp*2;
+        xi===0?drctx.moveTo(xi,y):drctx.lineTo(xi,y);
+      });
+      drctx.stroke();
+      drctx.fillStyle=cols[i]; drctx.font='8px Courier New'; drctx.textAlign='left';
+      drctx.fillText(s.name.slice(0,14),2,yOff-amp-2);
+    });
+    drctx.fillStyle='#607090'; drctx.font='9px Courier New'; drctx.textAlign='center';
+    drctx.fillText('DATA RATE BY SUBJECT',DW/2,DH-4);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 4: ICVFX / LED Volume
+// ═══════════════════════════════════════════════════════════════════════════
+(function initICVFX() {
+  const vc = document.getElementById('volume-canvas');
+  const vctx = vc.getContext('2d');
+  const W=vc.width, H=vc.height;
+  let t=0, last=performance.now();
+
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    vctx.fillStyle='rgba(2,4,8,0.2)'; vctx.fillRect(0,0,W,H);
+
+    const cx=W/2, cy=H/2;
+    const dia=lagVolDia.update(parseFloat(document.getElementById('vol-dia').value||15)*8,dt);
+    const R=Math.min(dia/2,110);
+    const fov=lagFrustFOV.update(parseFloat(document.getElementById('frust-fov').value||50),dt)*Math.PI/180;
+    const camDist=lagCamZ.update(parseFloat(document.getElementById('cam-dist').value||6)*12,dt);
+
+    // LED wall arc
+    const arcStart=-Math.PI*0.7, arcEnd=Math.PI*0.7;
+    // LED panels on arc
+    const nPanels=16;
+    vctx.strokeStyle='rgba(0,96,255,0.5)'; vctx.lineWidth=0.5;
+    for(let i=0;i<nPanels;i++) {
+      const a1=arcStart+(arcEnd-arcStart)*i/nPanels;
+      const a2=arcStart+(arcEnd-arcStart)*(i+1)/nPanels;
+      const v=fbm(i*0.4,t*0.12);
+      vctx.fillStyle=`hsla(${220+v*40},80%,${15+v*20}%,0.9)`;
+      vctx.beginPath();
+      vctx.moveTo(cx+(R+2)*Math.cos(a1),cy+(R+2)*Math.sin(a1));
+      vctx.arc(cx,cy,R+2,a1,a2);
+      vctx.arc(cx,cy,R+15,a2,a1,true);
+      vctx.closePath(); vctx.fill(); vctx.stroke();
+    }
+    // LED wall outline
+    vctx.strokeStyle='rgba(0,96,255,0.8)'; vctx.lineWidth=2;
+    vctx.beginPath(); vctx.arc(cx,cy,R,arcStart,arcEnd); vctx.stroke();
+    vctx.beginPath(); vctx.arc(cx,cy,R+17,arcStart,arcEnd); vctx.stroke();
+    // End walls
+    vctx.lineWidth=2;
+    vctx.beginPath();
+    vctx.moveTo(cx+R*Math.cos(arcStart),cy+R*Math.sin(arcStart));
+    vctx.lineTo(cx+(R+17)*Math.cos(arcStart),cy+(R+17)*Math.sin(arcStart));
+    vctx.moveTo(cx+R*Math.cos(arcEnd),cy+R*Math.sin(arcEnd));
+    vctx.lineTo(cx+(R+17)*Math.cos(arcEnd),cy+(R+17)*Math.sin(arcEnd));
+    vctx.stroke();
+
+    // Camera position (front, inside)
+    const camAngle=Math.PI/2; // looking "into" screen
+    const camX=cx, camY=cy+camDist/2;
+    vctx.fillStyle='#FF6D00';
+    vctx.beginPath(); vctx.arc(camX,camY,6,0,Math.PI*2); vctx.fill();
+    vctx.strokeStyle='#FF6D00'; vctx.lineWidth=1.5;
+    vctx.fillText=null;
+
+    // Camera frustum (inner)
+    const halfFOV=fov/2;
+    const frustLen=R-camDist/2-10;
+    vctx.strokeStyle='rgba(255,109,0,0.8)'; vctx.lineWidth=1.5;
+    vctx.setLineDash([6,3]);
+    [[-halfFOV,halfFOV]].forEach(()=>{
+      const la=camAngle-halfFOV, ra=camAngle+halfFOV;
+      vctx.beginPath();
+      vctx.moveTo(camX,camY);
+      vctx.lineTo(camX+Math.sin(-la)*frustLen,camY-Math.cos(-la)*frustLen);
+      vctx.moveTo(camX,camY);
+      vctx.lineTo(camX+Math.sin(-ra)*frustLen,camY-Math.cos(-ra)*frustLen);
+      vctx.stroke();
+    });
+    vctx.setLineDash([]);
+    // Inner frustum fill
+    const la=camAngle-halfFOV, ra=camAngle+halfFOV;
+    vctx.fillStyle='rgba(255,109,0,0.06)';
+    vctx.beginPath();
+    vctx.moveTo(camX,camY);
+    vctx.lineTo(camX+Math.sin(-la)*frustLen,camY-Math.cos(-la)*frustLen);
+    vctx.lineTo(camX+Math.sin(-ra)*frustLen,camY-Math.cos(-ra)*frustLen);
+    vctx.closePath(); vctx.fill();
+
+    // Tracking markers
+    const nMarkers=8;
+    for(let i=0;i<nMarkers;i++) {
+      const a=arcStart+(arcEnd-arcStart)*(i+0.5)/nMarkers;
+      const mx=cx+(R-2)*Math.cos(a), my=cy+(R-2)*Math.sin(a);
+      vctx.fillStyle='#00FF88';
+      vctx.beginPath(); vctx.arc(mx,my,3,0,Math.PI*2); vctx.fill();
+    }
+
+    // Labels
+    vctx.fillStyle='#FF6D00'; vctx.font='10px Courier New'; vctx.textAlign='center';
+    vctx.fillText('CAMERA',camX,camY+18);
+    vctx.fillStyle='#0060FF'; vctx.fillText('LED VOLUME',cx,cy-R-24);
+    vctx.fillStyle='rgba(255,109,0,0.7)'; vctx.font='9px Courier New';
+    vctx.fillText(`INNER FRUSTUM ${Math.round(lagFrustFOV.value)}°`,cx,cy-R+8);
+    vctx.fillStyle='#607090';
+    vctx.fillText('◆ TRACKING MARKERS',cx-30,H-8);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  [['vol-dia','vol-dia-val',v=>v+'m'],['vol-h','vol-h-val',v=>v+'m'],
+   ['pixel-pitch','pixel-pitch-val',v=>(v/10).toFixed(1)+'mm'],['led-hz','led-hz-val',v=>v+'Hz'],
+   ['track-lat','track-lat-val',v=>(v/10).toFixed(1)+'ms'],['frust-fov','frust-fov-val',v=>v+'°'],
+   ['cam-dist','cam-dist-val',v=>v+'m'],['mura','mura-val',v=>v+'%']
+  ].forEach(([id,vid,fmt]) => {
+    const el=document.getElementById(id),vl=document.getElementById(vid);
+    if(!el||!vl)return; el.addEventListener('input',()=>vl.textContent=fmt(el.value));
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 5: Lumen GI
+// ═══════════════════════════════════════════════════════════════════════════
+(function initLumen() {
+  const lc = document.getElementById('lumen-canvas');
+  const lctx = lc.getContext('2d');
+  const W=lc.width, H=lc.height;
+  let localMX=W/2, localMY=H/2;
+  lc.addEventListener('mousemove',e=>{const r=lc.getBoundingClientRect();localMX=(e.clientX-r.left)*(W/r.width);localMY=(e.clientY-r.top)*(H/r.height);});
+
+  const pc = document.getElementById('probe-canvas');
+  const pctx = pc.getContext('2d');
+  const PW=pc.width, PH=pc.height;
+
+  const ic = document.getElementById('indirect-canvas');
+  const ictx = ic.getContext('2d');
+  const IW=ic.width, IH=ic.height;
+
+  let t=0, last=performance.now();
+
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    const giStr=lagLumenGI.update(0.5+0.5*Math.sin(t*0.3),dt);
+
+    // Radiance cache visualization
+    lctx.fillStyle='rgba(2,4,8,0.2)'; lctx.fillRect(0,0,W,H);
+    const mx=localMX/W, my=localMY/H;
+
+    // Draw environment with GI probes
+    for(let py=0;py<H;py+=4) {
+      for(let px=0;px<W;px+=4) {
+        const nx=px/W, ny=py/H;
+        const base=fbm(nx*3+t*0.04,ny*3);
+        const dist=Math.sqrt((nx-mx)*(nx-mx)+(ny-my)*(ny-my));
+        const lightPulse=Math.exp(-dist*dist*4)*0.8;
+        const hue=220+base*40+lightPulse*60;
+        const lum=5+base*20+lightPulse*40;
+        lctx.fillStyle=`hsl(${hue},80%,${lum}%)`;
+        lctx.fillRect(px,py,4,4);
+      }
+    }
+
+    // Radiance cache probes grid
+    const probeSize=8;
+    for(let pry=0;pry<H;pry+=H/8) {
+      for(let prx=0;prx<W;prx+=W/16) {
+        const nx=prx/W, ny=pry/H;
+        const dist=Math.sqrt((nx-mx)*(nx-mx)+(ny-my)*(ny-my));
+        const brightness=0.3+0.7*Math.exp(-dist*dist*3);
+        const hue=220+brightness*100;
+        // Probe hemisphere indicator
+        lctx.strokeStyle=`hsla(${hue},90%,${40+brightness*40}%,0.6)`;
+        lctx.lineWidth=1;
+        lctx.beginPath(); lctx.arc(prx,pry,probeSize,0,Math.PI*2); lctx.stroke();
+        lctx.fillStyle=`hsla(${hue},90%,${30+brightness*30}%,0.4)`;
+        lctx.beginPath(); lctx.arc(prx,pry,probeSize,0,Math.PI); lctx.fill();
+      }
+    }
+    lctx.fillStyle='rgba(255,109,0,0.9)';
+    lctx.beginPath(); lctx.arc(localMX,localMY,8,0,Math.PI*2); lctx.fill();
+    lctx.fillStyle='#FF6D00'; lctx.font='9px Courier New'; lctx.textAlign='center';
+    lctx.fillText('LIGHT SOURCE — RADIANCE PROPAGATING',localMX,localMY-14);
+
+    // Probe canvas
+    pctx.fillStyle='#020408'; pctx.fillRect(0,0,PW,PH);
+    for(let pry=0;pry<8;pry++) {
+      for(let prx=0;prx<12;prx++) {
+        const nx=prx/12, ny=pry/8;
+        const v=fbm(nx*4+t*0.08,ny*4+t*0.06);
+        const hue=220+v*80;
+        const px=20+nx*(PW-40), py=20+ny*(PH-40);
+        pctx.fillStyle=`hsl(${hue},80%,${20+v*40}%)`;
+        pctx.fillRect(px-6,py-6,12,12);
+        pctx.strokeStyle='rgba(0,96,255,0.3)'; pctx.lineWidth=0.5;
+        pctx.strokeRect(px-6,py-6,12,12);
+      }
+    }
+    pctx.fillStyle='#607090'; pctx.font='9px Courier New'; pctx.textAlign='center';
+    pctx.fillText('SURFACE CACHE PROBE MAP',PW/2,PH-5);
+
+    // Indirect canvas
+    const STEP=3;
+    for(let iy=0;iy<IH;iy+=STEP) {
+      for(let ix=0;ix<IW;ix+=STEP) {
+        const nx=ix/IW, ny=iy/IH;
+        const direct=Math.max(0,Math.sin(ny*Math.PI));
+        const indirect=fbm(nx*2+t*0.06,ny*2)*giStr;
+        const shadow=noise21(nx*8,ny*8)>0.7?0:1;
+        const r=indirect*0.2*shadow;
+        const g=indirect*0.5*shadow+direct*0.3*shadow;
+        const b=0.15+indirect*0.8*shadow;
+        ictx.fillStyle=`rgba(${r*255|0},${g*255|0},${b*255|0},0.9)`;
+        ictx.fillRect(ix,iy,STEP,STEP);
+      }
+    }
+    ictx.fillStyle='#607090'; ictx.font='9px Courier New'; ictx.textAlign='center';
+    ictx.fillText('INDIRECT LIGHTING PASS',IW/2,IH-5);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 6: Nanite
+// ═══════════════════════════════════════════════════════════════════════════
+(function initNanite() {
+  const nc = document.getElementById('nanite-canvas');
+  const nctx = nc.getContext('2d');
+  const W=nc.width, H=nc.height;
+
+  const lc = document.getElementById('lod-canvas');
+  const lctx = lc.getContext('2d');
+  const LW=lc.width, LH=lc.height;
+
+  const ctc = document.getElementById('cluster-tree-canvas');
+  const ctctx = ctc.getContext('2d');
+  const CTW=ctc.width, CTH=ctc.height;
+
+  let t=0, last=performance.now();
+
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    const naniteL=lagNaniteL.update(0.5+0.5*Math.sin(t*0.2),dt);
+
+    // Nanite cluster LOD canvas
+    nctx.fillStyle='rgba(2,4,8,0.2)'; nctx.fillRect(0,0,W,H);
+
+    // Simulate mesh with LOD color coding
+    const nClusters=80;
+    for(let i=0;i<nClusters;i++) {
+      const px=30+Math.random()*960, py=20+Math.random()*180;
+      const dist=Math.sqrt((px-mouseX*W)*(px-mouseX*W)+(py-mouseY*H)*(py-mouseY*H));
+      const lodLevel=Math.floor(clamp(dist/150,0,3));
+      const lodColors=['#FF6D00','#0060FF','#00C8FF','#607090'];
+      const size=clamp(20-dist/30,4,20);
+      const alpha=0.3+0.4*(1-lodLevel/3);
+      nctx.fillStyle=lodColors[lodLevel]+'AA';
+      // Cluster shape (triangle cluster)
+      nctx.beginPath();
+      for(let v=0;v<3;v++) {
+        const a=v*Math.PI*2/3+i*0.5;
+        v===0?nctx.moveTo(px+size*Math.cos(a),py+size*Math.sin(a)):nctx.lineTo(px+size*Math.cos(a),py+size*Math.sin(a));
+      }
+      nctx.closePath(); nctx.fill();
+    }
+    // Legend
+    const lodNames=['LOD 0 — Full','LOD 1 — High','LOD 2 — Mid','LOD 3 — Low'];
+    const lodCols=['#FF6D00','#0060FF','#00C8FF','#607090'];
+    lodNames.forEach((l,i) => {
+      nctx.fillStyle=lodCols[i]; nctx.beginPath(); nctx.arc(20+i*160,H-10,5,0,Math.PI*2); nctx.fill();
+      nctx.fillStyle='#607090'; nctx.font='9px Courier New'; nctx.textAlign='left';
+      nctx.fillText(l,30+i*160,H-6);
+    });
+    nctx.fillStyle='#FF6D00'; nctx.textAlign='center';
+    nctx.fillText('NANITE CLUSTER LOD — CAMERA-RELATIVE DETAIL',W/2,14);
+
+    // LOD chart
+    lctx.fillStyle='rgba(2,4,8,0.3)'; lctx.fillRect(0,0,LW,LH);
+    lctx.strokeStyle='rgba(255,109,0,0.8)'; lctx.lineWidth=2;
+    lctx.beginPath();
+    for(let x=0;x<LW;x++) {
+      const dist=x/LW;
+      const triCount=Math.pow(1-dist,2)*100+0.5;
+      const y=LH-triCount*(LH*0.8)/100-10;
+      x===0?lctx.moveTo(x,y):lctx.lineTo(x,y);
+    }
+    lctx.stroke();
+    lctx.fillStyle='rgba(255,109,0,0.1)';
+    lctx.beginPath();
+    for(let x=0;x<LW;x++) {
+      const dist=x/LW;
+      const triCount=Math.pow(1-dist,2)*100+0.5;
+      const y=LH-triCount*(LH*0.8)/100-10;
+      x===0?lctx.moveTo(x,y):lctx.lineTo(x,y);
+    }
+    lctx.lineTo(LW,LH); lctx.lineTo(0,LH); lctx.closePath(); lctx.fill();
+    lctx.fillStyle='#607090'; lctx.font='9px Courier New'; lctx.textAlign='center';
+    lctx.fillText('NEAR←    DISTANCE    →FAR',LW/2,LH-3);
+    lctx.fillText('TRIANGLE COUNT VS CAMERA DISTANCE',LW/2,12);
+
+    // Cluster hierarchy tree
+    ctctx.fillStyle='rgba(2,4,8,0.3)'; ctctx.fillRect(0,0,CTW,CTH);
+    function drawTree(x,y,w,depth) {
+      if(depth>3||w<10) return;
+      const h=CTH*0.15;
+      const pulse=0.5+0.5*Math.sin(t*2+depth+x*0.01);
+      ctctx.fillStyle=`rgba(0,96,255,${0.2+0.1*pulse})`;
+      ctctx.strokeStyle=`rgba(0,200,255,${0.5+0.2*pulse})`;
+      ctctx.lineWidth=1;
+      ctctx.fillRect(x-w/2,y,w,h);
+      ctctx.strokeRect(x-w/2,y,w,h);
+      ctctx.fillStyle='#607090'; ctctx.font='8px Courier New'; ctctx.textAlign='center';
+      if(w>30) ctctx.fillText(`L${depth}`,x,y+h/2+4);
+      if(depth<3) {
+        const childW=w*0.45;
+        const childY=y+h+8;
+        const offsets=[-w*0.3,w*0.3];
+        offsets.forEach(ox=>{
+          ctctx.strokeStyle='rgba(0,96,255,0.3)'; ctctx.lineWidth=0.5;
+          ctctx.beginPath(); ctctx.moveTo(x,y+h); ctctx.lineTo(x+ox,childY); ctctx.stroke();
+          drawTree(x+ox,childY,childW,depth+1);
+        });
+      }
+    }
+    drawTree(CTW/2,10,CTW*0.5,0);
+    ctctx.fillStyle='#607090'; ctctx.font='9px Courier New'; ctctx.textAlign='center';
+    ctctx.fillText('NANITE CLUSTER HIERARCHY (BVH)',CTW/2,CTH-5);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 7: Blueprint
+// ═══════════════════════════════════════════════════════════════════════════
+(function initBlueprint() {
+  const bpc = document.getElementById('bp-canvas');
+  const bpctx = bpc.getContext('2d');
+  const W=bpc.width, H=bpc.height;
+
+  const evc = document.getElementById('event-canvas');
+  const evctx = evc.getContext('2d');
+  const EW=evc.width, EH=evc.height;
+
+  const wc = document.getElementById('watch-canvas');
+  const wctx = wc.getContext('2d');
+  const WW=wc.width, WH=wc.height;
+
+  // Blueprint nodes definition
+  const nodes = [
+    { id:0, name:'Event Tick', type:'event', x:60, y:130, pins:{out:['exec','Delta Seconds']} },
+    { id:1, name:'Get Live Link Data', type:'function', x:220, y:110, pins:{in:['exec','Subject Name'],out:['exec','Transform','FPS']} },
+    { id:2, name:'Set Actor Transform', type:'function', x:460, y:90, pins:{in:['exec','Target','Transform'],out:['exec']} },
+    { id:3, name:'Branch', type:'branch', x:300, y:200, pins:{in:['exec','Condition'],out:['True','False']} },
+    { id:4, name:'Print String', type:'function', x:460, y:210, pins:{in:['exec','String'],out:['exec']} },
+    { id:5, name:'Timeline', type:'special', x:140, y:240, pins:{in:['Play'],out:['Update','Finished','Alpha']} },
+    { id:6, name:'Lerp (Float)', type:'pure', x:320, y:260, pins:{in:['A','B','Alpha'],out:['Return Value']} },
+    { id:7, name:'nDisplay Cluster\nSync', type:'function', x:580, y:160, pins:{in:['exec'],out:['exec','Frame']} },
+  ];
+
+  const edges = [
+    {from:0,fromPin:'exec',to:1,toPin:'exec',type:'exec'},
+    {from:0,fromPin:'Delta Seconds',to:6,toPin:'Alpha',type:'data'},
+    {from:1,fromPin:'exec',to:2,toPin:'exec',type:'exec'},
+    {from:1,fromPin:'Transform',to:2,toPin:'Transform',type:'data'},
+    {from:2,fromPin:'exec',to:7,toPin:'exec',type:'exec'},
+    {from:1,fromPin:'exec',to:3,toPin:'exec',type:'exec'},
+    {from:3,fromPin:'True',to:4,toPin:'exec',type:'exec'},
+    {from:5,fromPin:'Alpha',to:6,toPin:'A',type:'data'},
+    {from:6,fromPin:'Return Value',to:4,toPin:'String',type:'data'},
+  ];
+
+  const nodeTypeColors = {event:'#FF6D00',function:'#0060FF',branch:'#00C8FF',special:'#804000',pure:'#007040'};
+  let selectedNode=-1;
+  bpc.addEventListener('click',e=>{
+    const r=bpc.getBoundingClientRect();
+    const mx=(e.clientX-r.left)*(W/r.width), my=(e.clientY-r.top)*(H/r.height);
+    selectedNode=-1;
+    nodes.forEach((n,i)=>{ if(mx>n.x-5&&mx<n.x+155&&my>n.y-5&&my<n.y+55) selectedNode=i; });
+  });
+
+  const watchVars = [
+    {name:'DeltaSeconds',val:()=>(1/48).toFixed(4)},
+    {name:'CameraX',val:()=>(Math.sin(performance.now()*0.0005)*2).toFixed(3)},
+    {name:'CameraY',val:()=>(1.5+Math.cos(performance.now()*0.0003)*0.3).toFixed(3)},
+    {name:'LiveLink_FPS',val:()=>'120'},
+    {name:'SyncFrame',val:()=>Math.floor(performance.now()/20.8)},
+    {name:'Cluster_Nodes',val:()=>'4'},
+  ];
+
+  let t=0, last=performance.now();
+  let flowPackets=[];
+
+  function frame(now) {
+    const dt=(now-last)/1000; last=now; t+=dt;
+    const flow=lagBPFlow.update(t,dt);
+
+    // Blueprint canvas
+    bpctx.fillStyle='rgba(2,4,8,0.25)'; bpctx.fillRect(0,0,W,H);
+    // Grid
+    bpctx.strokeStyle='rgba(0,96,255,0.06)'; bpctx.lineWidth=0.5;
+    for(let gx=0;gx<W;gx+=20){bpctx.beginPath();bpctx.moveTo(gx,0);bpctx.lineTo(gx,H);bpctx.stroke();}
+    for(let gy=0;gy<H;gy+=20){bpctx.beginPath();bpctx.moveTo(0,gy);bpctx.lineTo(W,gy);bpctx.stroke();}
+
+    // Add flow packets
+    if(Math.random()<0.08) {
+      edges.forEach(e=>{
+        if(Math.random()<0.3) flowPackets.push({edge:e,t:0,life:1.0});
+      });
+    }
+
+    // Draw edges
+    edges.forEach(edge=>{
+      const fn=nodes[edge.from], tn=nodes[edge.to];
+      const col=edge.type==='exec'?'#FF6D00':'#0060FF';
+      bpctx.strokeStyle=col+'88'; bpctx.lineWidth=edge.type==='exec'?2:1.5;
+      bpctx.beginPath();
+      const x1=fn.x+160, y1=fn.y+25;
+      const x2=tn.x, y2=tn.y+25;
+      bpctx.moveTo(x1,y1);
+      bpctx.bezierCurveTo(x1+50,y1,x2-50,y2,x2,y2);
+      bpctx.stroke();
+    });
+
+    // Flow packets on edges
+    flowPackets=flowPackets.filter(p=>{
+      p.t+=dt*1.2; p.life-=dt*1.2;
+      if(p.life<=0||p.t>=1) return false;
+      const fn=nodes[p.edge.from], tn=nodes[p.edge.to];
+      const x1=fn.x+160, y1=fn.y+25;
+      const x2=tn.x, y2=tn.y+25;
+      // Bezier eval
+      function bezier(t,p0,p1,p2,p3){
+        const c=1-t;
+        return c*c*c*p0+3*c*c*t*p1+3*c*t*t*p2+t*t*t*p3;
+      }
+      const px=bezier(p.t,x1,x1+50,x2-50,x2);
+      const py=bezier(p.t,y1,y1,y2,y2);
+      const col=p.edge.type==='exec'?'#FF6D00':'#00C8FF';
+      bpctx.fillStyle=col;
+      bpctx.beginPath(); bpctx.arc(px,py,4,0,Math.PI*2); bpctx.fill();
+      bpctx.fillStyle=col+'44';
+      bpctx.beginPath(); bpctx.arc(px,py,8,0,Math.PI*2); bpctx.fill();
+      return true;
+    });
+
+    // Draw nodes
+    nodes.forEach((n,i)=>{
+      const col=nodeTypeColors[n.type];
+      const sel=i===selectedNode;
+      bpctx.fillStyle=sel?'rgba(30,30,50,0.95)':'rgba(10,16,25,0.92)';
+      bpctx.strokeStyle=sel?'#FFFFFF':col;
+      bpctx.lineWidth=sel?2:1.5;
+      bpctx.beginPath(); bpctx.roundRect?bpctx.roundRect(n.x,n.y,160,50,4):bpctx.rect(n.x,n.y,160,50);
+      bpctx.fill(); bpctx.stroke();
+      // Header bar
+      bpctx.fillStyle=col+'40';
+      bpctx.fillRect(n.x,n.y,160,18);
+      bpctx.fillStyle=col; bpctx.font='bold 9px Courier New'; bpctx.textAlign='left';
+      bpctx.fillText(n.name,n.x+8,n.y+13);
+      // Type badge
+      bpctx.fillStyle='#607090'; bpctx.font='8px Courier New';
+      bpctx.textAlign='right'; bpctx.fillText(n.type.toUpperCase(),n.x+155,n.y+13);
+    });
+
+    // Event canvas
+    evctx.fillStyle='rgba(2,4,8,0.25)'; evctx.fillRect(0,0,EW,EH);
+    const events=['Tick','LiveLink','Sequencer','OSC','nDisplay'];
+    const eventColors=['#FF6D00','#0060FF','#00C8FF','#FF9940','#8040FF'];
+    events.forEach((ev,i)=>{
+      const yOff=(i+0.5)*EH/events.length;
+      const amp=EH/(events.length*2)*0.6;
+      // Square pulse
+      evctx.strokeStyle=eventColors[i]; evctx.lineWidth=1;
+      evctx.beginPath();
+      for(let xi=0;xi<EW;xi++) {
+        const timeF=xi/EW*4+t;
+        const freq=[48,120,25,100,48][i];
+        const pulse=Math.sin(timeF*freq*0.05)>0.5?1:0;
+        const y=yOff-pulse*amp;
+        xi===0?evctx.moveTo(xi,y):evctx.lineTo(xi,y);
+      }
+      evctx.stroke();
+      evctx.fillStyle=eventColors[i]; evctx.font='8px Courier New'; evctx.textAlign='left';
+      evctx.fillText(ev,2,yOff-amp-2);
+    });
+
+    // Watch canvas
+    wctx.fillStyle='rgba(2,4,8,0.3)'; wctx.fillRect(0,0,WW,WH);
+    wctx.fillStyle='#FF6D00'; wctx.font='9px Courier New'; wctx.textAlign='left';
+    wctx.fillText('VARIABLE WATCH',4,14);
+    watchVars.forEach((v,i)=>{
+      const y=30+i*(WH-30)/watchVars.length;
+      wctx.fillStyle='#607090'; wctx.fillText(v.name,4,y+14);
+      wctx.fillStyle='#00C8FF'; wctx.textAlign='right';
+      wctx.fillText(String(v.val()),WW-4,y+14);
+      wctx.textAlign='left';
+      wctx.strokeStyle='rgba(0,96,255,0.15)'; wctx.lineWidth=0.5;
+      wctx.beginPath(); wctx.moveTo(0,y+20); wctx.lineTo(WW,y+20); wctx.stroke();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 8: Artists
+// ═══════════════════════════════════════════════════════════════════════════
+(function initArtists() {
+  const artists = [
+    { name:'Jerome Denjean', role:'Virtual Production Supervisor', bio:'Virtual production pioneer at Epic Games — leading nDisplay and ICVFX research, developing reference workflows for LED volume productions worldwide.', geo:'JD' },
+    { name:'DNEG / ILM', role:'VFX & Virtual Production', bio:'Industrial Light & Magic and DNEG deploy UE5-based virtual production pipelines for major film and streaming productions, pioneering StageCraft LED volume systems.', geo:'IL' },
+    { name:'Corridor Digital', role:'Real-Time VFX YouTube', bio:'Wren Weichman and team push UE5 real-time rendering into accessible VFX filmmaking, documenting virtual production workflows for 15M+ subscribers.', geo:'CD' },
+    { name:'Mo-Sys Engineering', role:'Camera Tracking Systems', bio:'Precision camera tracking systems — StarTracker, VP Pro — enabling sub-millimeter accuracy for ICVFX LED volume productions and live broadcast AR.', geo:'MS' },
+    { name:'Ncam Technologies', role:'Augmented Reality Tracking', bio:'AR camera tracking and real-time compositing for live broadcast, sports, and virtual production — integrated with Unreal Engine for real-time background rendering.', geo:'NC' },
+    { name:'Lux Machina', role:'Integrated LED Production', bio:'LED volume production house specializing in nDisplay cluster configuration, color science, and on-set virtual production engineering for feature films and commercials.', geo:'LM' },
+    { name:'Wētā FX', role:'VFX & Real-Time Pipeline', bio:'Wellington studio building hybrid real-time/offline pipelines with Unreal Engine for feature film visual effects, combining Nanite geometry with proprietary simulation tools.', geo:'WX' },
+    { name:'Epic Games VP Team', role:'nDisplay / Live Link Dev', bio:'The Unreal Engine virtual production engineering team — building nDisplay, Live Link, Color Correct Regions, and ICVFX node systems used on productions globally.', geo:'EP' },
+  ];
+
+  const shapes = [
+    (c)=>`<polygon points="40,5 75,30 62,70 18,70 5,30" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (c)=>`<rect x="10" y="10" width="60" height="60" fill="none" stroke="${c}" stroke-width="2" transform="rotate(15 40 40)"/>`,
+    (c)=>`<polygon points="40,8 72,40 40,72 8,40" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (c)=>`<circle cx="40" cy="40" r="32" fill="none" stroke="${c}" stroke-width="2"/><line x1="8" y1="40" x2="72" y2="40" stroke="${c}" stroke-width="1" stroke-dasharray="4,2"/>`,
+    (c)=>`<polygon points="40,5 75,62 5,62" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (c)=>`<rect x="12" y="12" width="56" height="56" rx="4" fill="none" stroke="${c}" stroke-width="2"/><rect x="22" y="22" width="36" height="36" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="3,3"/>`,
+    (c)=>`<polygon points="40,5 72,22 72,58 40,75 8,58 8,22" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (c)=>`<ellipse cx="40" cy="40" rx="35" ry="20" fill="none" stroke="${c}" stroke-width="2"/><ellipse cx="40" cy="40" rx="20" ry="35" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="3,3"/>`,
+  ];
+
+  const grid = document.getElementById('artists-grid');
+  artists.forEach((a,i) => {
+    const c=['#FF6D00','#0060FF','#FF9940','#00C8FF','#FF6D00','#0080FF','#FF8020','#00A0FF'][i];
+    const card = document.createElement('div');
+    card.className='artist-card';
+    card.innerHTML=`
+      <svg class="artist-avatar" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        ${shapes[i](c)}
+        <text x="40" y="45" text-anchor="middle" font-family="Courier New" font-size="11" fill="${c}" font-weight="bold">${a.geo}</text>
+      </svg>
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-role">${a.role}</div>
+      <div class="artist-bio">${a.bio}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 9: Glossary
+// ═══════════════════════════════════════════════════════════════════════════
+(function initGlossary() {
+  const terms = [
+    { term:'Nanite', def:'UE5\'s virtualized micropolygon geometry system — automatically streaming and rendering only geometry detail visible at the current camera\'s pixel resolution, enabling billions of polygons without manual LOD authoring.' },
+    { term:'Lumen', def:'UE5\'s fully dynamic global illumination and reflections system — computing multi-bounce indirect lighting in real-time using surface cache, mesh distance fields, and radiance cache probes.' },
+    { term:'nDisplay', def:'Unreal Engine\'s multi-display cluster rendering system — distributing synchronized frame output across multiple render nodes for LED volumes, dome displays, projection walls, and curved screens.' },
+    { term:'ICVFX', def:'In-Camera Visual Effects — projecting photo-real virtual environments onto LED volumes and capturing physical talent against the LED backdrop in-camera, eliminating green screen compositing.' },
+    { term:'Inner Frustum', def:'The section of the LED volume visible through the production camera\'s lens — rendered from the camera\'s exact perspective in real-time, synchronized with physical camera tracking data.' },
+    { term:'Live Link', def:'UE5\'s real-time data streaming protocol — ingesting motion capture, face tracking, camera tracking, and custom sensor data directly into the engine\'s animation and scene systems with sub-frame accuracy.' },
+    { term:'Virtual Production', def:'Filmmaking methodology using real-time game engine rendering (typically Unreal Engine) for on-set visualization, LED volume background replacement, and combined physical/digital scene capture.' },
+    { term:'MetaHuman', def:'Epic Games\' cloud-based photorealistic digital human creator — producing high-fidelity rigged character meshes with Nanite geometry and Live Link face capture compatibility for real-time animation.' },
+    { term:'StageCraft', def:'ILM\'s proprietary LED volume virtual production system — debuted on The Mandalorian — using curved LED walls with UE5-driven nDisplay clusters and precision camera tracking for ICVFX.' },
+    { term:'Mura Correction', def:'Per-pixel LED panel calibration to compensate for luminance and chrominance non-uniformity (mura) across the LED volume surface — applied as a correction LUT to maintain consistent display response.' },
+    { term:'Visibility Buffer', def:'Nanite\'s GPU rasterization pass producing a screen-space buffer containing material IDs and cluster IDs per pixel — used to defer shading to only visible geometry at pixel resolution.' },
+    { term:'Radiance Cache', def:'Lumen\'s world-space cache of indirect lighting irradiance sampled at sparse probe locations — interpolated to shade surfaces with spatially consistent multi-bounce indirect illumination.' },
+    { term:'nDisplay Config', def:'JSON/text configuration file defining nDisplay cluster node IP addresses, viewports, display geometry, overlap regions, and sync settings — deployed to all render nodes at runtime.' },
+    { term:'Surface Cache', def:'Lumen\'s per-mesh card texture atlas capturing surface color, normals, and emissive for use in fast indirect lighting queries — updated continuously as dynamic objects move or light changes.' },
+    { term:'OSC', def:'Open Sound Control — protocol used in virtual production to route parameter triggers from Sequencer, DAWs, and performance tools to Unreal Engine Blueprint event graphs.' },
+    { term:'Camera Tracking', def:'Real-time 6DoF pose estimation of the physical production camera — using optical marker systems (Mo-Sys StarTracker, OptiTrack) — fed via Live Link to synchronize the UE5 inner frustum render.' },
+    { term:'Genlock', def:'Hardware frame synchronization locking all render nodes and LED processing to a common timing reference (house sync or blackburst) — preventing frame tearing across the LED volume tile boundaries.' },
+    { term:'Blueprint', def:'UE5\'s node-based visual scripting system — connecting events, functions, and data flows in a graph editor without C++. Used for Live Link routing, nDisplay management, and cinematic Sequencer control.' },
+    { term:'World Partition', def:'UE5\'s streaming world system — dividing large environments into cells that stream in/out automatically based on camera position, enabling open-world scene sizes without manual level streaming setup.' },
+    { term:'ACES', def:'Academy Color Encoding System — industry standard color pipeline for virtual production, mapping UE5\'s linear light values through scene-referred ACES color transforms and per-LED-tile display LUTs.' },
+    { term:'Pixel Pitch', def:'Center-to-center distance between LED pixels in millimeters — determining minimum viewing distance for seamless appearance. VP LED volumes typically use 2.0–3.0mm pitch panels for optimal in-camera results.' },
+    { term:'Chaos Physics', def:'UE5\'s unified physics solver — simulating destruction, cloth, fluids, and rigid body dynamics in real-time, integrated with Nanite geometry for photorealistic physical simulation in virtual production.' },
+  ];
+
+  const grid = document.getElementById('glossary-grid');
+  terms.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'gloss-item hidden';
+    item.innerHTML = `<div class="gloss-term">${t.term}</div><div class="gloss-def">${t.def}</div>`;
+    grid.appendChild(item);
+    observer.observe(item);
+  });
+})();
+
+window.addEventListener('load', () => {
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+});
+</script>

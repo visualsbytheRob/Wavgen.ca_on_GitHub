@@ -1,0 +1,1610 @@
+---
+layout: world.njk
+title: "AUDIO REACTIVE VISUALS — WAVGEN"
+description: "Immersive music world exploring audio reactive visuals"
+domain: music
+permalink: /music/audio-reactive-visuals/
+---
+
+
+<!-- SCAN LINES + VIGNETTE -->
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<!-- BACKGROUND HERO CANVAS -->
+<canvas id="hero-canvas"></canvas>
+<!-- NAVIGATION -->
+<nav>
+<a class="nav-logo" href="#">WAVGEN</a>
+<div class="nav-links">
+<a data-nav="01" href="#fft-dissector">01 FFT</a>
+<a data-nav="02" href="#mapping-lab">02 MAPPING</a>
+<a data-nav="03" href="#mandala">03 MANDALA</a>
+<a data-nav="04" href="#beat-detection">04 BEATS</a>
+<a data-nav="05" href="#glsl-lab">05 SHADERS</a>
+<a data-nav="06" href="#ryoji-room">06 RYOJI</a>
+<a data-nav="07" href="#synesthetic">07 SYNESTHESIA</a>
+<a data-nav="08" href="#timeline">08 HISTORY</a>
+<a data-nav="09" href="#artists">09 ARTISTS</a>
+</div>
+<a class="nav-back" href="ambient_systems.html">← 04 AMBIENT</a>
+</nav>
+<!-- HERO -->
+<section id="hero">
+<div class="hero-content">
+<p class="hero-eyebrow hidden stagger-0">WAVGEN MUSIC WORLD 05</p>
+<h1 class="hidden stagger-1">AUDIO REACTIVE<br/><span>VISUALS</span></h1>
+<p class="hero-tagline hidden stagger-2">The FFT as world. Sound made visible in real time.</p>
+<div class="hero-source-row hidden stagger-3">
+<button class="btn active" id="src-mic" onclick="selectSource('mic')">🎤 MICROPHONE</button>
+<button class="btn" id="src-techno" onclick="selectSource('techno')">▶ TECHNO</button>
+<button class="btn" id="src-ambient" onclick="selectSource('ambient')">▶ AMBIENT</button>
+<button class="btn" id="src-jazz" onclick="selectSource('jazz')">▶ JAZZ</button>
+<button class="btn" id="src-noise" onclick="selectSource('noise')">▶ NOISE</button>
+</div>
+<p class="hero-note hidden stagger-3">Mic access required for microphone mode — simulation active by default</p>
+<div class="hero-mode-row hidden stagger-4">
+<button class="btn active" id="mode-scientific" onclick="setMode('scientific')">SCIENTIFIC</button>
+<button class="btn" id="mode-immersive" onclick="setMode('immersive')">IMMERSIVE</button>
+</div>
+</div>
+</section>
+<!-- SECTION 01: FFT DISSECTOR -->
+<section data-nav="01" id="fft-dissector">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">01 / FFT DISSECTOR</p>
+<h2>FFT<br/>Dissector</h2>
+<p class="thesis">See inside sound for the first time.</p>
+</div>
+<div class="two-panel wide-left">
+<!-- LEFT: canvases -->
+<div>
+<div class="card hidden stagger-0" style="margin-bottom:16px">
+<p style="font-size:10px;font-family:monospace;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px">TIME DOMAIN — WAVEFORM</p>
+<canvas height="120" id="waveform-canvas" style="width:100%;height:120px;background:#060610" width="560"></canvas>
+</div>
+<div class="card hidden stagger-1" style="margin-bottom:16px">
+<p style="font-size:10px;font-family:monospace;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px">FREQUENCY DOMAIN — SPECTRUM</p>
+<canvas height="200" id="spectrum-canvas" style="width:100%;height:200px;background:#060610" width="560"></canvas>
+</div>
+<div class="card hidden stagger-2">
+<p style="font-size:10px;font-family:monospace;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px">SPECTROGRAM — TIME × FREQUENCY</p>
+<canvas height="120" id="spectrogram-canvas" style="width:100%;height:120px;background:#060610" width="560"></canvas>
+</div>
+</div>
+<!-- RIGHT: controls -->
+<div>
+<div class="card hidden stagger-0" style="margin-bottom:16px">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:12px">FFT SIZE</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" onclick="setFFTSize(256,this)">256</button>
+<button class="btn" onclick="setFFTSize(512,this)">512</button>
+<button class="btn active" onclick="setFFTSize(1024,this)">1024</button>
+<button class="btn" onclick="setFFTSize(2048,this)">2048</button>
+</div>
+<p style="font-size:11px;color:var(--dim);margin-top:12px;line-height:1.6">Larger FFT = more frequency resolution, less time resolution.</p>
+</div>
+<div class="card hidden stagger-1" style="margin-bottom:16px">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:10px">FREQUENCY BANDS</p>
+<div class="band-chips">
+<span class="band-chip" style="background:rgba(120,40,0,0.3);color:#ff6030;border:1px solid rgba(255,96,48,0.3)">SUB 20–60Hz</span>
+<span class="band-chip" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid rgba(249,115,22,0.3)">BASS 60–250Hz</span>
+<span class="band-chip" style="background:rgba(200,130,0,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)">LO-MID 250–500Hz</span>
+<span class="band-chip" style="background:rgba(200,200,0,0.1);color:#eab308;border:1px solid rgba(234,179,8,0.3)">MID 500Hz–2kHz</span>
+<span class="band-chip" style="background:rgba(80,200,80,0.1);color:#84cc16;border:1px solid rgba(132,204,22,0.3)">HI-MID 2k–6kHz</span>
+<span class="band-chip" style="background:rgba(6,182,212,0.1);color:#06b6d4;border:1px solid rgba(6,182,212,0.3)">AIR 6k–20kHz</span>
+</div>
+<p style="font-size:11px;color:var(--dim);margin-top:10px">Click any bar in the spectrum to audition that frequency.</p>
+</div>
+<div class="card hidden stagger-2">
+<p style="font-size:11px;font-family:monospace;color:var(--orange);letter-spacing:0.1em;margin-bottom:10px">HEISENBERG UNCERTAINTY</p>
+<p style="font-size:12px;color:var(--dim);line-height:1.7">Larger window = more frequency precision, but the time of events is blurred.<br/>Smaller window = precise in time, blurred in frequency.<br/>This is not a limitation of the software — it is a mathematical law.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 02: PARAMETER MAPPING LAB -->
+<section data-nav="02" id="mapping-lab">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">02 / PARAMETER MAPPING LAB</p>
+<h2>Parameter<br/>Mapping Lab</h2>
+<p class="thesis">The core creative act in audiovisual work.</p>
+</div>
+<div class="two-panel">
+<!-- LEFT: Routing Matrix -->
+<div>
+<div class="card hidden stagger-0">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:16px">ROUTING MATRIX — CLICK TO TOGGLE</p>
+<div class="matrix-grid" id="routing-matrix">
+<!-- Header row -->
+<div class="matrix-header"></div>
+<div class="matrix-header">SCALE</div>
+<div class="matrix-header">HUE</div>
+<div class="matrix-header">BRIGHT</div>
+<div class="matrix-header">SPEED</div>
+<div class="matrix-header">ROTATE</div>
+<div class="matrix-header">POSITION</div>
+<!-- Rows: 6 audio features × 6 visual params = 36 cells -->
+<div class="matrix-row-label">RMS Level</div>
+<button class="matrix-cell" data-c="0" data-r="0" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="1" data-r="0" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell on" data-c="2" data-r="0" onclick="toggleCell(this)">●</button>
+<button class="matrix-cell" data-c="3" data-r="0" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="4" data-r="0" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="0" onclick="toggleCell(this)">○</button>
+<div class="matrix-row-label">Sp. Centroid</div>
+<button class="matrix-cell" data-c="0" data-r="1" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell on" data-c="1" data-r="1" onclick="toggleCell(this)">●</button>
+<button class="matrix-cell" data-c="2" data-r="1" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="3" data-r="1" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="4" data-r="1" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="1" onclick="toggleCell(this)">○</button>
+<div class="matrix-row-label">Onset</div>
+<button class="matrix-cell on" data-c="0" data-r="2" onclick="toggleCell(this)">●</button>
+<button class="matrix-cell" data-c="1" data-r="2" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="2" data-r="2" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="3" data-r="2" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="4" data-r="2" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="2" onclick="toggleCell(this)">○</button>
+<div class="matrix-row-label">BPM</div>
+<button class="matrix-cell" data-c="0" data-r="3" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="1" data-r="3" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="2" data-r="3" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell on" data-c="3" data-r="3" onclick="toggleCell(this)">●</button>
+<button class="matrix-cell" data-c="4" data-r="3" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="3" onclick="toggleCell(this)">○</button>
+<div class="matrix-row-label">Bass Energy</div>
+<button class="matrix-cell" data-c="0" data-r="4" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="1" data-r="4" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="2" data-r="4" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="3" data-r="4" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="4" data-r="4" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="4" onclick="toggleCell(this)">○</button>
+<div class="matrix-row-label">Treble Energy</div>
+<button class="matrix-cell" data-c="0" data-r="5" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="1" data-r="5" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="2" data-r="5" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="3" data-r="5" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="4" data-r="5" onclick="toggleCell(this)">○</button>
+<button class="matrix-cell" data-c="5" data-r="5" onclick="toggleCell(this)">○</button>
+</div>
+<div class="preset-row" style="margin-top:16px">
+<button class="preset-btn active" id="preset-poetic" onclick="applyPreset('poetic',this)">
+<div class="preset-name">POETIC</div>
+<div class="preset-desc">RMS→brightness, centroid→hue, onset→scale</div>
+</button>
+<button class="preset-btn" id="preset-literal" onclick="applyPreset('literal',this)">
+<div class="preset-name">LITERAL</div>
+<div class="preset-desc">Amplitude→size, beat→flash, bass→shake</div>
+</button>
+<button class="preset-btn" id="preset-abstract" onclick="applyPreset('abstract',this)">
+<div class="preset-name">ABSTRACT</div>
+<div class="preset-desc">Bass→rotation, onset→color-jump, treble→position</div>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT: 3D Preview -->
+<div>
+<div class="card hidden stagger-1">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:12px">LIVE PREVIEW — ROUTING RESPONSE</p>
+<canvas height="320" id="mapping-preview" style="width:100%;background:#060610;border-radius:6px" width="400"></canvas>
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin:16px 0 8px">SIMULATED TRACK</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+<button class="btn active" onclick="setPreviewTrack('ambient',this)">AMBIENT</button>
+<button class="btn" onclick="setPreviewTrack('techno',this)">TECHNO</button>
+<button class="btn" onclick="setPreviewTrack('jazz',this)">JAZZ</button>
+<button class="btn" onclick="setPreviewTrack('speech',this)">SPEECH</button>
+<button class="btn" onclick="setPreviewTrack('noise',this)">NOISE</button>
+</div>
+<button class="btn" onclick="shareMappingCode()" style="width:100%">SHARE MAPPING</button>
+<div class="share-code" id="share-code-output" style="display:none"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 03: FREQUENCY MANDALA -->
+<section data-nav="03" id="mandala">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">03 / FREQUENCY MANDALA</p>
+<h2>Frequency<br/>Mandala</h2>
+<p class="thesis">The FFT as sacred geometry.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:24px">
+<canvas class="hidden stagger-0" height="500" id="mandala-canvas" style="background:#030308;border-radius:50%;border:1px solid var(--border)" width="500"></canvas>
+<div class="card hidden stagger-1" style="width:100%;max-width:560px">
+<div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
+<div>
+<p style="font-size:10px;font-family:monospace;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px">SYMMETRY AXES</p>
+<div style="display:flex;gap:8px">
+<button class="btn" onclick="setMandalaAxes(4,this)">4</button>
+<button class="btn active" onclick="setMandalaAxes(6,this)">6</button>
+<button class="btn" onclick="setMandalaAxes(8,this)">8</button>
+<button class="btn" onclick="setMandalaAxes(12,this)">12</button>
+</div>
+</div>
+<div>
+<p style="font-size:10px;font-family:monospace;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px">PALETTE</p>
+<div style="display:flex;gap:8px">
+<button class="btn active" onclick="setMandalaColor('warm',this)">WARM</button>
+<button class="btn" onclick="setMandalaColor('cool',this)">COOL</button>
+<button class="btn" onclick="setMandalaColor('spectrum',this)">SPECTRUM</button>
+<button class="btn" onclick="setMandalaColor('mono',this)">MONO</button>
+</div>
+</div>
+</div>
+<div class="slider-row">
+<label>ROTATION SPEED</label>
+<input id="mandala-speed" max="10" min="0" oninput="mandalaCfg.rotSpeed=+this.value;document.getElementById('mandala-speed-val').textContent=this.value" type="range" value="2"/>
+<span class="val" id="mandala-speed-val">2</span>
+</div>
+</div>
+<p class="hidden stagger-2" style="max-width:620px;text-align:center;color:var(--dim);font-size:14px;line-height:1.8">Radial symmetry maps the audio spectrum onto a circular form — the same mathematical structure that appears in snowflakes, sea urchins, and diatoms. The mandala breathes with the music. Meditative with drone, explosive with techno.</p>
+</div>
+</div>
+</section>
+<!-- SECTION 04: BEAT DETECTION -->
+<section data-nav="04" id="beat-detection">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">04 / BEAT DETECTION WORKSHOP</p>
+<h2>Beat Detection<br/>Workshop</h2>
+<p class="thesis">Teaching a computer to feel the groove.</p>
+</div>
+<div class="card hidden stagger-0" style="margin-bottom:24px">
+<canvas height="160" id="beat-canvas" style="width:100%;height:160px;background:#060610;border-radius:6px" width="700"></canvas>
+</div>
+<div class="two-panel hidden stagger-1">
+<div class="card">
+<div class="slider-row">
+<label>SENSITIVITY</label>
+<input id="beat-threshold" max="100" min="0" oninput="beatCfg.threshold=+this.value/100;document.getElementById('beat-thresh-val').textContent=this.value+'%'" type="range" value="60"/>
+<span class="val" id="beat-thresh-val">60%</span>
+</div>
+<div class="slider-row">
+<label>HOLD TIME</label>
+<input id="beat-hold" max="500" min="50" oninput="beatCfg.hold=+this.value;document.getElementById('beat-hold-val').textContent=this.value+'ms'" type="range" value="200"/>
+<span class="val" id="beat-hold-val">200ms</span>
+</div>
+<div class="slider-row">
+<label>RELEASE TIME</label>
+<input id="beat-release" max="300" min="50" oninput="beatCfg.release=+this.value;document.getElementById('beat-release-val').textContent=this.value+'ms'" type="range" value="100"/>
+<span class="val" id="beat-release-val">100ms</span>
+</div>
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin:16px 0 8px">MUSIC STYLE</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn active" onclick="setBeatStyle('techno',this)">TECHNO 130BPM</button>
+<button class="btn" onclick="setBeatStyle('hiphop',this)">HIP-HOP 90BPM</button>
+<button class="btn" onclick="setBeatStyle('jazz',this)">JAZZ 120BPM</button>
+<button class="btn" onclick="setBeatStyle('ambient',this)">AMBIENT 0BPM</button>
+</div>
+</div>
+<div>
+<div class="readout-grid" style="margin-bottom:16px">
+<div class="readout-card">
+<div class="readout-label">DETECTED BPM</div>
+<div class="readout-value" id="bpm-display">130</div>
+</div>
+<div class="readout-card">
+<div class="readout-label">TRUE DETECTIONS</div>
+<div class="readout-value" id="true-detect-display">94%</div>
+</div>
+<div class="readout-card">
+<div class="readout-label">FALSE POSITIVES</div>
+<div class="readout-value" id="false-pos-display">2%</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:16px;justify-content:center;padding:20px">
+<div class="beat-flash" id="beat-flash-circle"></div>
+<span style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em">BEAT FLASH</span>
+</div>
+</div>
+</div>
+<p class="hidden stagger-2" style="max-width:700px;color:var(--dim);font-size:13px;line-height:1.8;margin-top:24px">Beat detection works by monitoring low-frequency energy. When the energy exceeds a threshold relative to recent average energy, a beat is registered. The threshold determines sensitivity — too low catches non-beat transients; too high misses quieter beats. The hold time prevents one loud event from triggering multiple detections.</p>
+</div>
+</section>
+<!-- SECTION 05: GLSL REACTOR LAB -->
+<section data-nav="05" id="glsl-lab">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">05 / GLSL REACTOR LAB</p>
+<h2>GLSL Reactor<br/>Lab</h2>
+<p class="thesis">Write code. Hear the music change the image.</p>
+</div>
+<div class="two-panel wide-right">
+<!-- LEFT: shader selector -->
+<div>
+<div class="card hidden stagger-0">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:12px">SELECT SHADER</p>
+<div class="shader-list">
+<button class="shader-btn active" onclick="selectShader('ripple',this)">
+<span style="color:var(--orange)">RIPPLE</span><br/>
+<span style="font-size:10px">Concentric rings · speed ← bass</span>
+</button>
+<button class="shader-btn" onclick="selectShader('plasma',this)">
+<span style="color:var(--orange)">PLASMA</span><br/>
+<span style="font-size:10px">Rotating color field · hue ← centroid</span>
+</button>
+<button class="shader-btn" onclick="selectShader('fractal',this)">
+<span style="color:var(--orange)">FRACTAL ZOOM</span><br/>
+<span style="font-size:10px">Zooming spiral · speed ← RMS</span>
+</button>
+<button class="shader-btn" onclick="selectShader('particles',this)">
+<span style="color:var(--orange)">PARTICLE FIELD</span><br/>
+<span style="font-size:10px">200 particles · count ← treble · burst on beat</span>
+</button>
+<button class="shader-btn" onclick="selectShader('terrain',this)">
+<span style="color:var(--orange)">TERRAIN</span><br/>
+<span style="font-size:10px">Scrolling height map · amplitude ← bass</span>
+</button>
+</div>
+<div style="margin-top:20px">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:10px">AUDIO → SHADER UNIFORMS</p>
+<div class="uniform-bars">
+<div class="uniform-row">
+<span class="uniform-label">u_amplitude</span>
+<div class="uniform-track"><div class="uniform-fill" id="u-amplitude"></div></div>
+</div>
+<div class="uniform-row">
+<span class="uniform-label">u_bass</span>
+<div class="uniform-track"><div class="uniform-fill" id="u-bass"></div></div>
+</div>
+<div class="uniform-row">
+<span class="uniform-label">u_mid</span>
+<div class="uniform-track"><div class="uniform-fill" id="u-mid"></div></div>
+</div>
+<div class="uniform-row">
+<span class="uniform-label">u_treble</span>
+<div class="uniform-track"><div class="uniform-fill" id="u-treble"></div></div>
+</div>
+<div class="uniform-row">
+<span class="uniform-label">u_onset</span>
+<div class="uniform-track"><div class="uniform-fill" id="u-onset"></div></div>
+</div>
+</div>
+<button class="btn" onclick="autoMapShader()" style="width:100%;margin-top:10px">AUTO-MAP</button>
+<div class="share-code" id="automap-display" style="display:none;margin-top:8px;font-size:10px"></div>
+</div>
+</div>
+</div>
+<!-- RIGHT: canvas -->
+<div>
+<div class="card hidden stagger-1">
+<canvas height="350" id="shader-canvas" style="width:100%;height:350px;background:#060610;border-radius:6px" width="500"></canvas>
+</div>
+<div class="info-box hidden stagger-2" style="margin-top:16px">
+          In real-time graphics, GLSL shaders run on the GPU and can process millions of pixels per frame. Audio features are passed as "uniforms" — variables that stay constant for one frame but can change between frames. The feedback loop: audio analysis → uniform values → visual output → emotional response to audio. This is the audiovisual synthesis pipeline.
+        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 06: RYOJI ROOM -->
+<section data-nav="06" id="ryoji-room">
+<div class="section-inner" style="max-width:100%;padding:0">
+<div style="padding:0 40px;margin-bottom:40px">
+<div class="section-header hidden">
+<p class="section-num">06 / THE RYOJI ROOM</p>
+<h2>The Ryoji<br/>Room</h2>
+<p class="thesis">Data as architecture. Binary as beauty.</p>
+</div>
+</div>
+<canvas class="hidden stagger-0" id="ryoji-canvas"></canvas>
+<div style="padding:24px 40px;display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+<div class="slider-row" style="flex:1;min-width:300px">
+<label>THRESHOLD</label>
+<input id="ryoji-threshold" max="255" min="0" oninput="ryojiCfg.threshold=+this.value;document.getElementById('ryoji-thresh-val').textContent=this.value" type="range" value="80"/>
+<span class="val" id="ryoji-thresh-val">80</span>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn active" onclick="setRyojiMode('mono',this)">MONO</button>
+<button class="btn" onclick="setRyojiMode('color',this)">COLOR</button>
+</div>
+</div>
+<div style="padding:0 40px 40px">
+<p class="centered-text hidden stagger-1">
+<strong style="color:var(--text)">Ryoji Ikeda</strong> (born 1966, Gifu Prefecture) creates mathematical, systematic audio and visual installations at monumental scales. <em>test pattern</em> (2008–present) converts barcode data into precise sine tones. <em>data.tron</em> (2009) filled the Linz Museum of Modern Art with this visual language. The Barbican, Park Avenue Armory, and the High Line have hosted his work. His process: raw data → binary → barcode → sound.
+      </p>
+<p class="centered-text hidden stagger-2" style="margin-top:16px;color:rgba(148,163,184,0.5);font-style:italic">
+        "The only control is the threshold. Everything else is the music."
+      </p>
+</div>
+</div>
+</section>
+<!-- SECTION 07: SYNESTHETIC MIXER -->
+<section data-nav="07" id="synesthetic">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">07 / SYNESTHETIC MIXER</p>
+<h2>Synesthetic<br/>Mixer</h2>
+<p class="thesis">What color is this chord?</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:24px">
+<div style="position:relative;width:100%;max-width:700px">
+<canvas class="hidden stagger-0" height="300" id="synesthesia-canvas" style="width:100%;height:300px;border-radius:8px;border:1px solid var(--border)" width="700"></canvas>
+<button class="btn" onclick="goFullscreen('synesthesia-canvas')" style="position:absolute;top:12px;right:12px;font-size:10px;padding:6px 12px">⛶ FULLSCREEN</button>
+</div>
+<div class="card hidden stagger-1" style="width:100%;max-width:700px">
+<p style="font-size:11px;font-family:monospace;color:var(--dim);letter-spacing:0.1em;margin-bottom:12px">BAND COLOR ASSIGNMENTS</p>
+<div class="synth-controls">
+<div class="synth-band">
+<label>SUB BASS</label>
+<input id="color-sub" oninput="synColors[0]=this.value" type="color" value="#3d0808"/>
+</div>
+<div class="synth-band">
+<label>BASS</label>
+<input id="color-bass" oninput="synColors[1]=this.value" type="color" value="#7c2d08"/>
+</div>
+<div class="synth-band">
+<label>LOW-MID</label>
+<input id="color-lowmid" oninput="synColors[2]=this.value" type="color" value="#78350f"/>
+</div>
+<div class="synth-band">
+<label>MID</label>
+<input id="color-mid" oninput="synColors[3]=this.value" type="color" value="#14532d"/>
+</div>
+<div class="synth-band">
+<label>HIGH-MID</label>
+<input id="color-highmid" oninput="synColors[4]=this.value" type="color" value="#0c4a6e"/>
+</div>
+<div class="synth-band">
+<label>AIR</label>
+<input id="color-air" oninput="synColors[5]=this.value" type="color" value="#312e81"/>
+</div>
+</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<span style="font-size:11px;font-family:monospace;color:var(--dim);line-height:34px;letter-spacing:0.1em">BLEND</span>
+<button class="btn active" onclick="setSynBlend('additive',this)">ADDITIVE</button>
+<button class="btn" onclick="setSynBlend('multiply',this)">MULTIPLY</button>
+<button class="btn" onclick="setSynBlend('screen',this)">SCREEN</button>
+</div>
+</div>
+<p class="hidden stagger-2" style="max-width:620px;text-align:center;color:var(--dim);font-size:14px;line-height:1.8">Synesthesia is a neurological phenomenon where stimulation of one sense produces automatic experiences in another. Composer Alexander Scriabin (1872–1915) experienced colors when he heard specific notes and created a "color organ" for his Prometheus symphony. Wassily Kandinsky painted in response to musical compositions. This mixer lets you design your own synesthetic translation.</p>
+</div>
+</div>
+</section>
+<!-- SECTION 08: AUDIOVISUAL HISTORY TIMELINE -->
+<section data-nav="08" id="timeline">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">08 / AUDIOVISUAL HISTORY</p>
+<h2>Audiovisual<br/>History</h2>
+<p class="thesis">A century of making sound visible.</p>
+</div>
+<div class="timeline-scroll hidden stagger-0">
+<div class="timeline-track">
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1877</div>
+<div class="timeline-text"><span class="timeline-bold">Thomas Young</span> — first visual representation of sound as waveform drawing using tuning forks on smoked glass</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1920s</div>
+<div class="timeline-text"><span class="timeline-bold">Oskar Fischinger</span> — abstract films synchronized to classical music; proto-audiovisual animation</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1940</div>
+<div class="timeline-text"><span class="timeline-bold">Fantasia</span> (Disney) — the original mass-audience audiovisual cinema. Bach's Toccata rendered as animation for millions</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1961</div>
+<div class="timeline-text"><span class="timeline-bold">John Whitney Sr.</span> — computer graphics + music. <em>Catalog</em>: the first audio-reactive computer animation</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1970s</div>
+<div class="timeline-text"><span class="timeline-bold">Laser light shows</span> — Pink Floyd's Wish You Were Here Tour uses laser projectors synced to music in arenas</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1990s</div>
+<div class="timeline-text"><span class="timeline-bold">VJ culture</span> — real-time video mixing synchronized to electronic music in clubs worldwide</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">1996</div>
+<div class="timeline-text"><span class="timeline-bold">Processing</span> (nascent) — creative coding tools enable generative audiovisual art for visual artists</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">2008</div>
+<div class="timeline-text"><span class="timeline-bold">Ryoji Ikeda</span> — <em>test pattern</em> at monumental scale. FFT as installation aesthetic, data as visual material</div>
+</div>
+<div class="timeline-event">
+<div class="timeline-dot"></div>
+<div class="timeline-year">2024</div>
+<div class="timeline-text"><span class="timeline-bold">AI audiovisual generation</span> — real-time neural synthesis connects audio features to latent visual spaces</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 09: ARTISTS -->
+<section data-nav="09" id="artists">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">09 / ARTISTS</p>
+<h2>Artists</h2>
+<p class="thesis">Who made sound visible.</p>
+</div>
+<div class="artist-grid">
+<div class="artist-card hidden stagger-0">
+<div class="artist-name">Ryoji Ikeda</div>
+<div class="artist-sub">Mathematical audiovisual installation</div>
+<div class="artist-desc">test pattern, data.tron, superposition. The reference for data as visual material. Transforms raw binary into barcode patterns and precise sine tones at architectural scale.</div>
+</div>
+<div class="artist-card hidden stagger-1">
+<div class="artist-name">Robert Henke</div>
+<div class="artist-sub">CBL laser series / Monolake</div>
+<div class="artist-desc">Precisely controlled laser light in darkness, responding to composed electronic music. Uses custom software to choreograph light with mathematical rigor.</div>
+</div>
+<div class="artist-card hidden stagger-2">
+<div class="artist-name">Refik Anadol</div>
+<div class="artist-sub">Machine Hallucinations</div>
+<div class="artist-desc">Neural network audiovisual installations at architectural scale. MoMA, Serpentine, and the Sphere in Las Vegas. Data sculptures from millions of images.</div>
+</div>
+<div class="artist-card hidden stagger-3">
+<div class="artist-name">Memo Akten</div>
+<div class="artist-sub">Body of Work</div>
+<div class="artist-desc">Computational audiovisual art exploring perception and consciousness. Uses deep learning and signal processing to create works that interrogate human experience.</div>
+</div>
+<div class="artist-card hidden stagger-0">
+<div class="artist-name">Floating Points</div>
+<div class="artist-sub">Sam Shepherd — live electronic</div>
+<div class="artist-desc">Live electronic performances with audio-reactive lighting rigs. Subtle spectral response to temperature and texture, not just beat. Sound-reactive light design as composition.</div>
+</div>
+<div class="artist-card hidden stagger-1">
+<div class="artist-name">Bileam Tschepe</div>
+<div class="artist-sub">Browser-based audiovisual art</div>
+<div class="artist-desc">Generative systems that respond to music with geometric precision. Works entirely in the browser with WebGL and Web Audio API. Data structures made tangible.</div>
+</div>
+<div class="artist-card hidden stagger-2">
+<div class="artist-name">Universal Everything</div>
+<div class="artist-sub">Studio — computational design</div>
+<div class="artist-desc">Fluid, organic morphology driven by audio envelopes. Works for Google, Nike, and gallery exhibitions. Biological forms that breathe with music.</div>
+</div>
+<div class="artist-card hidden stagger-3">
+<div class="artist-name">Casey Reas</div>
+<div class="artist-sub">Processing co-creator</div>
+<div class="artist-desc">Generative art systems where simple rules create complex emergence — audio feeds the rules. Co-created Processing, democratizing computational art for a generation of artists.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 10: GLOSSARY -->
+<section id="glossary">
+<div class="section-inner">
+<div class="section-header hidden">
+<p class="section-num">10 / GLOSSARY</p>
+<h2>Glossary</h2>
+<p class="thesis">The language of sound made visible.</p>
+</div>
+<div class="glossary-grid">
+<div class="glossary-card hidden stagger-0"><div class="glossary-term">FFT</div><div class="glossary-def">Fast Fourier Transform. An algorithm that converts a time-domain signal into its constituent frequencies in O(n log n) time. The foundation of all audio analysis.</div></div>
+<div class="glossary-card hidden stagger-1"><div class="glossary-term">Frequency Bin</div><div class="glossary-def">One output cell of the FFT. Each bin represents a narrow frequency range; its value is the amplitude of that frequency in the current analysis window.</div></div>
+<div class="glossary-card hidden stagger-2"><div class="glossary-term">Spectral Centroid</div><div class="glossary-def">The "center of mass" of the frequency spectrum. High centroid = bright, treble-heavy sound. Low centroid = dark, bass-heavy. Correlates strongly with perceived timbre.</div></div>
+<div class="glossary-card hidden stagger-3"><div class="glossary-term">Onset Detection</div><div class="glossary-def">The identification of the moment a new note or sound event begins. Computed by measuring sudden increases in spectral flux (change in energy between frames).</div></div>
+<div class="glossary-card hidden stagger-0"><div class="glossary-term">Beat Detection</div><div class="glossary-def">Identifying rhythmic pulse in music, typically by monitoring low-frequency energy and detecting when it exceeds a threshold relative to the recent energy average.</div></div>
+<div class="glossary-card hidden stagger-1"><div class="glossary-term">RMS</div><div class="glossary-def">Root Mean Square. The square root of the mean of squared sample values. A perceptually accurate measure of loudness, corresponding closely to how humans perceive volume.</div></div>
+<div class="glossary-card hidden stagger-2"><div class="glossary-term">Spectrogram</div><div class="glossary-def">A 2D visualization showing time on the X axis, frequency on the Y axis, and amplitude encoded as color. Makes the harmonic and temporal structure of sound visible simultaneously.</div></div>
+<div class="glossary-card hidden stagger-3"><div class="glossary-term">Waterfall Display</div><div class="glossary-def">A scrolling spectrogram that continuously moves the historical data to reveal new analysis. Named for its resemblance to falling water when amplitude is high.</div></div>
+<div class="glossary-card hidden stagger-0"><div class="glossary-term">Lissajous Figure</div><div class="glossary-def">A curve traced by plotting two sinusoidal signals against each other on X and Y axes. Used in audio as a stereo vectorscope — the shape reveals phase relationships between channels.</div></div>
+<div class="glossary-card hidden stagger-1"><div class="glossary-term">Audio Reactivity</div><div class="glossary-def">The technique of extracting real-time features from audio signals and using them to drive visual parameters. The core discipline of this entire field.</div></div>
+<div class="glossary-card hidden stagger-2"><div class="glossary-term">Parameter Mapping</div><div class="glossary-def">The deliberate assignment of audio features to visual parameters. The creative act that defines audiovisual work — the "what controls what" decision.</div></div>
+<div class="glossary-card hidden stagger-3"><div class="glossary-term">GLSL Shader</div><div class="glossary-def">OpenGL Shading Language. A C-like language that runs on the GPU, executing in parallel for every pixel simultaneously. Enables real-time complex visual effects.</div></div>
+<div class="glossary-card hidden stagger-0"><div class="glossary-term">Uniform Variable</div><div class="glossary-def">In GLSL, a variable that remains constant for an entire frame but can be updated between frames. Audio features are typically passed to shaders as uniforms.</div></div>
+<div class="glossary-card hidden stagger-1"><div class="glossary-term">Mel Scale</div><div class="glossary-def">A perceptual frequency scale where equal distances correspond to equal perceived pitch differences. More bins at low frequencies where human hearing has higher resolution.</div></div>
+<div class="glossary-card hidden stagger-2"><div class="glossary-term">Chromagram</div><div class="glossary-def">A representation of audio that collapses all octaves into 12 pitch classes (C through B). Reveals harmonic content and chord progressions independent of octave.</div></div>
+<div class="glossary-card hidden stagger-3"><div class="glossary-term">Synesthesia</div><div class="glossary-def">A neurological phenomenon where one sensory pathway triggers automatic experiences in another — sound producing color, for example. Experienced by ~4% of the population.</div></div>
+<div class="glossary-card hidden stagger-0"><div class="glossary-term">Envelope Following</div><div class="glossary-def">Tracking the amplitude contour of a signal over time. The envelope describes attack, decay, sustain, and release — the shape of sound as opposed to its pitch or timbre.</div></div>
+<div class="glossary-card hidden stagger-1"><div class="glossary-term">Threshold</div><div class="glossary-def">A level value that triggers an action when crossed. In beat detection and Ryoji-style visualization, the threshold is the sole creative parameter — everything else is the music.</div></div>
+<div class="glossary-card hidden stagger-2"><div class="glossary-term">Lag Filter</div><div class="glossary-def">A smoothing technique that makes values follow their targets gradually rather than instantly. Prevents visual jitter and creates organic motion: new = old + (target - old) × rate.</div></div>
+<div class="glossary-card hidden stagger-3"><div class="glossary-term">Real-Time</div><div class="glossary-def">Processing that keeps pace with live input — completing each analysis frame faster than the next frame arrives. Typically 60fps (16.7ms per frame) for smooth visual output.</div></div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer>
+<div class="footer-brand">WAVGEN — AUDIO REACTIVE VISUALS</div>
+<div class="footer-nav">
+<a href="ambient_systems.html">← 04 AMBIENT SYSTEMS</a>
+<a href="reverb_lab.html">06 REVERB LAB →</a>
+</div>
+</footer>
+<script>
+// ════════════════════════════════════════════════════════
+// AUDIO ENGINE
+// ════════════════════════════════════════════════════════
+let audioCtx = null, analyser = null;
+let freqData = new Uint8Array(1024);
+let timeData = new Uint8Array(2048);
+let currentMode = 'scientific';
+let currentSource = 'mic';
+let simTime = 0;
+let simStyle = 'techno';
+const simStyles = {
+  techno:  { bass:0.85, mid:0.4, treble:0.3, bpm:130, beatSharp:true },
+  ambient: { bass:0.3,  mid:0.5, treble:0.6, bpm:0,   beatSharp:false },
+  jazz:    { bass:0.5,  mid:0.8, treble:0.55, bpm:120, beatSharp:false },
+  noise:   { bass:0.7,  mid:0.7, treble:0.7, bpm:0,   beatSharp:false },
+  speech:  { bass:0.2,  mid:0.9, treble:0.5, bpm:0,   beatSharp:false }
+};
+
+function getSimulatedData() {
+  simTime = Date.now() / 1000;
+  const s = simStyles[simStyle] || simStyles.techno;
+  const bps = s.bpm / 60;
+  const beatPhase = (simTime * bps) % 1;
+  const beatEnv = s.beatSharp ? Math.exp(-beatPhase * 8) : (Math.sin(beatPhase * Math.PI) * 0.5 + 0.5);
+
+  for (let i = 0; i < freqData.length; i++) {
+    const t = simTime;
+    const bassBoost = i < 15 ? Math.exp(-i / 5) * 200 * s.bass * (1 + beatEnv * 0.6) : 0;
+    const midBoost  = (i > 40 && i < 160) ? Math.sin((i - 40) / 120 * Math.PI) * 120 * s.mid : 0;
+    const trbBoost  = i > 200 ? Math.sin((i - 200) / 600 * Math.PI) * 80 * s.treble : 0;
+    const noise     = Math.random() * 18;
+    const wobble    = Math.sin(t * 1.7 + i * 0.08) * 20;
+    freqData[i] = Math.max(0, Math.min(255, Math.floor(bassBoost + midBoost + trbBoost + noise + wobble)));
+  }
+  for (let i = 0; i < timeData.length; i++) {
+    const phase = i / timeData.length * Math.PI * 8;
+    timeData[i] = Math.floor(128 + Math.sin(phase + simTime * 3) * 60 * s.mid + Math.sin(phase * 3.1 + simTime * 7) * 20 * s.treble);
+  }
+}
+
+async function initMic() {
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const source = audioCtx.createMediaStreamSource(stream);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    analyser.smoothingTimeConstant = 0.8;
+    source.connect(analyser);
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+    timeData = new Uint8Array(analyser.fftSize);
+    console.log('Mic active');
+  } catch(e) {
+    console.log('Mic denied, using simulation');
+    analyser = null;
+  }
+}
+
+function setFFTSize(sz, btn) {
+  if (analyser) { analyser.fftSize = sz; freqData = new Uint8Array(analyser.frequencyBinCount); }
+  document.querySelectorAll('#fft-dissector .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function extractFeatures() {
+  if (analyser) {
+    analyser.getByteFrequencyData(freqData);
+    analyser.getByteTimeDomainData(timeData);
+  } else {
+    getSimulatedData();
+  }
+  const rms = Math.sqrt(Array.from(freqData).reduce((s,v) => s + v*v, 0) / freqData.length) / 255;
+  const n = freqData.length;
+  const bass    = Array.from(freqData.slice(0,   Math.floor(n*0.02))).reduce((s,v) => s+v,0) / Math.max(1,Math.floor(n*0.02)) / 255;
+  const mid     = Array.from(freqData.slice(Math.floor(n*0.02), Math.floor(n*0.12))).reduce((s,v) => s+v,0) / Math.max(1,Math.floor(n*0.1)) / 255;
+  const treble  = Array.from(freqData.slice(Math.floor(n*0.12), Math.floor(n*0.25))).reduce((s,v) => s+v,0) / Math.max(1,Math.floor(n*0.13)) / 255;
+  const centroid = Array.from(freqData).reduce((s,v,i) => s + v*i, 0) / (Array.from(freqData).reduce((s,v) => s+v, 0) || 1) / n;
+  return { rms, bass, mid, treble, centroid };
+}
+
+function selectSource(src) {
+  currentSource = src;
+  simStyle = src === 'mic' ? simStyle : src;
+  document.querySelectorAll('.hero-source-row .btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('src-' + src);
+  if (btn) btn.classList.add('active');
+  if (src === 'mic') initMic();
+  else { analyser = null; }
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-scientific').classList.toggle('active', mode === 'scientific');
+  document.getElementById('mode-immersive').classList.toggle('active', mode === 'immersive');
+}
+
+// ════════════════════════════════════════════════════════
+// HERO CANVAS — full-screen FFT bars
+// ════════════════════════════════════════════════════════
+const heroCanvas = document.getElementById('hero-canvas');
+const heroCtx = heroCanvas.getContext('2d');
+function resizeHero() {
+  heroCanvas.width = window.innerWidth;
+  heroCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeHero);
+resizeHero();
+
+function drawHero() {
+  const W = heroCanvas.width, H = heroCanvas.height;
+  const feat = extractFeatures();
+  heroCtx.fillStyle = currentMode === 'immersive' ? 'rgba(3,3,5,0.25)' : 'rgba(3,3,5,0.35)';
+  heroCtx.fillRect(0, 0, W, H);
+
+  const bars = 128;
+  const barW = W / bars;
+  const grad = heroCtx.createLinearGradient(0, 0, W, 0);
+  grad.addColorStop(0,   '#f97316');
+  grad.addColorStop(0.5, '#e879a8');
+  grad.addColorStop(1,   '#06b6d4');
+
+  const zoneH  = currentMode === 'immersive' ? H : H * 0.55;
+  const baseY  = H;
+
+  for (let i = 0; i < bars; i++) {
+    const binIdx = Math.floor(i / bars * freqData.length * 0.6);
+    const amp    = freqData[binIdx] / 255;
+    const bh     = amp * zoneH;
+    const x      = i * barW;
+    heroCtx.fillStyle = grad;
+    heroCtx.globalAlpha = 0.55 + amp * 0.4;
+    heroCtx.fillRect(x + 1, baseY - bh, barW - 2, bh);
+    // Glow cap
+    heroCtx.fillStyle = '#fff';
+    heroCtx.globalAlpha = amp * 0.4;
+    heroCtx.fillRect(x + 1, baseY - bh - 2, barW - 2, 2);
+  }
+  heroCtx.globalAlpha = 1;
+
+  if (currentMode === 'scientific') {
+    heroCtx.fillStyle = 'rgba(148,163,184,0.4)';
+    heroCtx.font = '10px monospace';
+    heroCtx.fillText('20Hz', 4, H - 4);
+    heroCtx.fillText('1kHz', W * 0.35 - 12, H - 4);
+    heroCtx.fillText('5kHz', W * 0.65 - 12, H - 4);
+    heroCtx.fillText('20kHz', W - 44, H - 4);
+  }
+  requestAnimationFrame(drawHero);
+}
+drawHero();
+
+// ════════════════════════════════════════════════════════
+// WAVEFORM CANVAS
+// ════════════════════════════════════════════════════════
+const wfCanvas = document.getElementById('waveform-canvas');
+const wfCtx    = wfCanvas.getContext('2d');
+function drawWaveform() {
+  const W = wfCanvas.width, H = wfCanvas.height;
+  wfCtx.fillStyle = 'rgba(6,6,16,0.6)';
+  wfCtx.fillRect(0, 0, W, H);
+  wfCtx.beginPath();
+  wfCtx.strokeStyle = '#f97316';
+  wfCtx.lineWidth = 1.5;
+  wfCtx.shadowBlur = 8;
+  wfCtx.shadowColor = '#f97316';
+  const step = W / timeData.length;
+  for (let i = 0; i < timeData.length; i++) {
+    const y = (timeData[i] / 255) * H;
+    i === 0 ? wfCtx.moveTo(0, y) : wfCtx.lineTo(i * step, y);
+  }
+  wfCtx.stroke();
+  wfCtx.shadowBlur = 0;
+
+  if (currentMode === 'scientific') {
+    wfCtx.strokeStyle = 'rgba(148,163,184,0.2)';
+    wfCtx.lineWidth = 1;
+    wfCtx.beginPath(); wfCtx.moveTo(0, H/2); wfCtx.lineTo(W, H/2); wfCtx.stroke();
+    wfCtx.fillStyle = 'rgba(148,163,184,0.5)';
+    wfCtx.font = '9px monospace';
+    wfCtx.fillText('0', 4, H/2 - 3);
+  }
+  requestAnimationFrame(drawWaveform);
+}
+drawWaveform();
+
+// ════════════════════════════════════════════════════════
+// SPECTRUM CANVAS
+// ════════════════════════════════════════════════════════
+const spCanvas = document.getElementById('spectrum-canvas');
+const spCtx    = spCanvas.getContext('2d');
+
+spCanvas.addEventListener('click', function(e) {
+  const rect = spCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const binIdx = Math.floor(x / rect.width * freqData.length * 0.6);
+  const freq = binIdx / freqData.length * (audioCtx ? audioCtx.sampleRate / 2 : 22050);
+  playTone(freq);
+});
+
+function playTone(freq) {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
+function drawSpectrum() {
+  const W = spCanvas.width, H = spCanvas.height;
+  spCtx.fillStyle = 'rgba(6,6,16,0.5)';
+  spCtx.fillRect(0, 0, W, H);
+  const binsToShow = Math.floor(freqData.length * 0.6);
+  const barW = W / binsToShow;
+  for (let i = 0; i < binsToShow; i++) {
+    const amp = freqData[i] / 255;
+    const bh  = amp * (H - 20);
+    const hue = 30 + (i / binsToShow) * 170;
+    spCtx.fillStyle = `hsla(${hue},80%,${35 + amp * 25}%,0.85)`;
+    spCtx.fillRect(i * barW, H - bh - 10, barW - 1, bh);
+    spCtx.fillStyle = `hsla(${hue},100%,80%,${amp * 0.6})`;
+    spCtx.fillRect(i * barW, H - bh - 12, barW - 1, 2);
+  }
+  if (currentMode === 'scientific') {
+    spCtx.fillStyle = 'rgba(148,163,184,0.5)';
+    spCtx.font = '9px monospace';
+    const labels = [[0,'20Hz'],[0.18,'200Hz'],[0.4,'1kHz'],[0.65,'5kHz'],[0.9,'20kHz']];
+    labels.forEach(([p, lbl]) => spCtx.fillText(lbl, p * W + 2, H - 1));
+    spCtx.strokeStyle = 'rgba(148,163,184,0.15)';
+    for (let i = 1; i <= 4; i++) {
+      spCtx.beginPath();
+      spCtx.moveTo(0, H - (i/4)*(H-10)); spCtx.lineTo(W, H - (i/4)*(H-10));
+      spCtx.stroke();
+    }
+  }
+  requestAnimationFrame(drawSpectrum);
+}
+drawSpectrum();
+
+// ════════════════════════════════════════════════════════
+// SPECTROGRAM CANVAS (scrolling ImageData)
+// ════════════════════════════════════════════════════════
+const sgCanvas = document.getElementById('spectrogram-canvas');
+const sgCtx    = sgCanvas.getContext('2d');
+let sgImageData = sgCtx.createImageData(sgCanvas.width, sgCanvas.height);
+
+function hotColor(v) {
+  // black → blue → cyan → yellow → white
+  if (v < 0.25) { const t = v/0.25; return [0, 0, Math.floor(t*200)]; }
+  if (v < 0.5)  { const t = (v-0.25)/0.25; return [0, Math.floor(t*220), 200]; }
+  if (v < 0.75) { const t = (v-0.5)/0.25; return [Math.floor(t*255), 220, Math.floor(200*(1-t))]; }
+  const t = (v-0.75)/0.25;
+  return [255, 220 + Math.floor(t*35), Math.floor(t*255)];
+}
+
+function drawSpectrogram() {
+  const W = sgCanvas.width, H = sgCanvas.height;
+  // Shift left by 1 pixel
+  const pixels = sgImageData.data;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W - 1; x++) {
+      const dst = (y * W + x) * 4;
+      const src = (y * W + x + 1) * 4;
+      pixels[dst]   = pixels[src];
+      pixels[dst+1] = pixels[src+1];
+      pixels[dst+2] = pixels[src+2];
+      pixels[dst+3] = pixels[src+3];
+    }
+  }
+  // Write new rightmost column
+  const binsToShow = Math.floor(freqData.length * 0.6);
+  for (let y = 0; y < H; y++) {
+    const binIdx = Math.floor((1 - y / H) * binsToShow);
+    const amp = freqData[Math.min(binIdx, freqData.length - 1)] / 255;
+    const [r,g,b] = hotColor(amp);
+    const idx = (y * W + (W - 1)) * 4;
+    pixels[idx]   = r;
+    pixels[idx+1] = g;
+    pixels[idx+2] = b;
+    pixels[idx+3] = 255;
+  }
+  sgCtx.putImageData(sgImageData, 0, 0);
+  requestAnimationFrame(drawSpectrogram);
+}
+drawSpectrogram();
+</script>
+<script>
+// ════════════════════════════════════════════════════════
+// MANDALA
+// ════════════════════════════════════════════════════════
+const mandalaCfg = { axes: 6, rotSpeed: 2, palette: 'warm', rotation: 0 };
+const mandalaCanvas = document.getElementById('mandala-canvas');
+const mandalaCtx    = mandalaCanvas.getContext('2d');
+
+function setMandalaAxes(n, btn) {
+  mandalaCfg.axes = n;
+  document.querySelectorAll('#mandala .btn').forEach(b => { if(['4','6','8','12'].includes(b.textContent)) b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function setMandalaColor(p, btn) {
+  mandalaCfg.palette = p;
+  document.querySelectorAll('#mandala .btn').forEach(b => { if(['WARM','COOL','SPECTRUM','MONO'].includes(b.textContent)) b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function getMandalaColor(amp, i, total) {
+  switch(mandalaCfg.palette) {
+    case 'warm':     return `hsla(${20 + amp*30},90%,${30+amp*40}%,${0.5+amp*0.5})`;
+    case 'cool':     return `hsla(${180 + amp*60},90%,${30+amp*40}%,${0.5+amp*0.5})`;
+    case 'spectrum': return `hsla(${(i/total)*360},80%,${30+amp*40}%,${0.5+amp*0.5})`;
+    case 'mono':     return `rgba(255,255,255,${amp * 0.9})`;
+  }
+}
+
+function drawMandala() {
+  const S = mandalaCanvas.width;
+  mandalaCtx.fillStyle = 'rgba(3,3,5,0.18)';
+  mandalaCtx.fillRect(0, 0, S, S);
+  const cx = S/2, cy = S/2, maxR = S * 0.44;
+  const { axes, rotation } = mandalaCfg;
+  const binsPerAxis = Math.floor(freqData.length * 0.35 / axes);
+
+  for (let axis = 0; axis < axes; axis++) {
+    const baseAngle = (axis / axes) * Math.PI * 2 + rotation;
+    for (let i = 0; i < binsPerAxis; i++) {
+      const bin = Math.min(axis * binsPerAxis + i, freqData.length - 1);
+      const amp = freqData[bin] / 255;
+      if (amp < 0.05) continue;
+      const angle = baseAngle + (i / binsPerAxis) * (Math.PI * 2 / axes);
+      const r = (i / binsPerAxis) * maxR * (0.3 + amp * 0.7);
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      mandalaCtx.strokeStyle = getMandalaColor(amp, axis * binsPerAxis + i, axes * binsPerAxis);
+      mandalaCtx.lineWidth = 0.8 + amp * 2.2;
+      mandalaCtx.shadowBlur = amp * 10;
+      mandalaCtx.shadowColor = '#f97316';
+      mandalaCtx.beginPath();
+      mandalaCtx.moveTo(cx, cy);
+      mandalaCtx.lineTo(x, y);
+      mandalaCtx.stroke();
+    }
+  }
+  // Center dot
+  mandalaCtx.shadowBlur = 16;
+  mandalaCtx.shadowColor = '#f97316';
+  mandalaCtx.fillStyle = '#f97316';
+  mandalaCtx.beginPath();
+  mandalaCtx.arc(cx, cy, 3, 0, Math.PI*2);
+  mandalaCtx.fill();
+  mandalaCtx.shadowBlur = 0;
+
+  mandalaCfg.rotation += mandalaCfg.rotSpeed * 0.0004;
+  requestAnimationFrame(drawMandala);
+}
+drawMandala();
+
+// ════════════════════════════════════════════════════════
+// BEAT DETECTION
+// ════════════════════════════════════════════════════════
+const beatCanvas = document.getElementById('beat-canvas');
+const beatCtx    = beatCanvas.getContext('2d');
+const beatCfg    = { threshold: 0.6, hold: 200, release: 100, style: 'techno' };
+let beatHistory  = new Array(200).fill(0);
+let beatEnvSmooth = 0;
+let lastBeatTime  = 0;
+let beatActive    = false;
+let detectedBPMs  = [];
+let beatIntervals = [];
+
+const BEAT_STYLES = {
+  techno:  { bpm: 130, bass: 0.9, mid: 0.35, treble: 0.2 },
+  hiphop:  { bpm: 90,  bass: 0.75, mid: 0.55, treble: 0.3 },
+  jazz:    { bpm: 120, bass: 0.5,  mid: 0.85, treble: 0.6 },
+  ambient: { bpm: 0,   bass: 0.2,  mid: 0.4,  treble: 0.6 }
+};
+
+function setBeatStyle(style, btn) {
+  beatCfg.style = style;
+  simStyle = style === 'ambient' ? 'ambient' : style;
+  document.querySelectorAll('#beat-detection .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function drawBeatCanvas() {
+  const W = beatCanvas.width, H = beatCanvas.height;
+  const feat = extractFeatures();
+  const bassNow = feat.bass;
+
+  beatEnvSmooth += (bassNow - beatEnvSmooth) * 0.15;
+  beatHistory.push(bassNow);
+  if (beatHistory.length > W) beatHistory.shift();
+
+  beatCtx.fillStyle = 'rgba(6,6,16,0.5)';
+  beatCtx.fillRect(0, 0, W, H);
+
+  // Waveform (top half)
+  beatCtx.beginPath();
+  beatCtx.strokeStyle = 'rgba(249,115,22,0.5)';
+  beatCtx.lineWidth = 1;
+  const step = W / timeData.length;
+  for (let i = 0; i < timeData.length; i++) {
+    const y = (timeData[i] / 255) * (H/2);
+    i === 0 ? beatCtx.moveTo(0, y) : beatCtx.lineTo(i * step, y);
+  }
+  beatCtx.stroke();
+
+  // Envelope trace
+  beatCtx.beginPath();
+  beatCtx.strokeStyle = '#f97316';
+  beatCtx.lineWidth = 2;
+  for (let i = 0; i < beatHistory.length; i++) {
+    const x = i;
+    const y = H/2 + (1 - beatHistory[i]) * (H/2 - 10);
+    i === 0 ? beatCtx.moveTo(x, y) : beatCtx.lineTo(x, y);
+  }
+  beatCtx.stroke();
+
+  // Threshold line
+  const threshY = H/2 + (1 - beatCfg.threshold * beatEnvSmooth * 2.5) * (H/2 - 10);
+  beatCtx.setLineDash([4, 4]);
+  beatCtx.strokeStyle = '#06b6d4';
+  beatCtx.lineWidth = 1;
+  beatCtx.beginPath();
+  beatCtx.moveTo(0, threshY); beatCtx.lineTo(W, threshY);
+  beatCtx.stroke();
+  beatCtx.setLineDash([]);
+
+  // Beat detection
+  const now = Date.now();
+  const avgEnergy = beatHistory.reduce((s,v) => s+v, 0) / beatHistory.length;
+  const isBeat = bassNow > avgEnergy * (1 + beatCfg.threshold) && (now - lastBeatTime) > beatCfg.hold;
+
+  if (isBeat) {
+    if (lastBeatTime > 0) {
+      const interval = now - lastBeatTime;
+      beatIntervals.push(interval);
+      if (beatIntervals.length > 8) beatIntervals.shift();
+    }
+    lastBeatTime = now;
+    beatActive = true;
+    setTimeout(() => { beatActive = false; }, beatCfg.release);
+
+    // Cyan spike
+    beatCtx.strokeStyle = '#06b6d4';
+    beatCtx.lineWidth = 2;
+    beatCtx.shadowBlur = 12; beatCtx.shadowColor = '#06b6d4';
+    beatCtx.beginPath();
+    beatCtx.moveTo(W - 1, H/2); beatCtx.lineTo(W - 1, H * 0.05);
+    beatCtx.stroke();
+    beatCtx.shadowBlur = 0;
+
+    // Flash indicator
+    const fl = document.getElementById('beat-flash-circle');
+    fl.style.opacity = '1';
+    setTimeout(() => fl.style.opacity = '0', 120);
+  }
+
+  // Computed BPM
+  if (beatIntervals.length >= 3) {
+    const avgInterval = beatIntervals.reduce((s,v) => s+v, 0) / beatIntervals.length;
+    const bpm = Math.round(60000 / avgInterval);
+    document.getElementById('bpm-display').textContent = bpm;
+  } else {
+    const style = BEAT_STYLES[beatCfg.style];
+    if (style) document.getElementById('bpm-display').textContent = style.bpm || '—';
+  }
+
+  requestAnimationFrame(drawBeatCanvas);
+}
+drawBeatCanvas();
+
+// ════════════════════════════════════════════════════════
+// RYOJI ROOM
+// ════════════════════════════════════════════════════════
+const ryojiCanvas = document.getElementById('ryoji-canvas');
+const ryojiCtx    = ryojiCanvas.getContext('2d');
+const ryojiCfg    = { threshold: 80, mode: 'mono' };
+let ryojiImageData = null;
+
+function initRyoji() {
+  ryojiCanvas.width  = ryojiCanvas.offsetWidth  || window.innerWidth;
+  ryojiCanvas.height = 280;
+  ryojiImageData = ryojiCtx.createImageData(ryojiCanvas.width, ryojiCanvas.height);
+  // fill black
+  for (let i = 3; i < ryojiImageData.data.length; i += 4) ryojiImageData.data[i] = 255;
+}
+initRyoji();
+window.addEventListener('resize', initRyoji);
+
+function setRyojiMode(m, btn) {
+  ryojiCfg.mode = m;
+  document.querySelectorAll('#ryoji-room .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function drawRyoji() {
+  if (!ryojiImageData) { requestAnimationFrame(drawRyoji); return; }
+  const W = ryojiCanvas.width, H = ryojiCanvas.height;
+  const pixels = ryojiImageData.data;
+
+  // Shift left by 1
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W - 1; x++) {
+      const dst = (y * W + x) * 4;
+      const src = dst + 4;
+      pixels[dst]   = pixels[src];
+      pixels[dst+1] = pixels[src+1];
+      pixels[dst+2] = pixels[src+2];
+    }
+  }
+
+  // New right column
+  const binsVisible = Math.floor(freqData.length * 0.7);
+  for (let y = 0; y < H; y++) {
+    const binIdx = Math.floor((y / H) * binsVisible);
+    const val    = freqData[Math.min(binIdx, freqData.length - 1)];
+    const on     = val > ryojiCfg.threshold;
+    const idx    = (y * W + W - 1) * 4;
+    if (ryojiCfg.mode === 'mono') {
+      const v = on ? 255 : 0;
+      pixels[idx] = pixels[idx+1] = pixels[idx+2] = v;
+    } else {
+      const hue = (binIdx / binsVisible) * 300;
+      const lum = on ? 70 : 8;
+      // rough hsl→rgb
+      const [r,g,b] = hslToRgb(hue/360, 0.9, lum/100);
+      pixels[idx] = r; pixels[idx+1] = g; pixels[idx+2] = b;
+    }
+  }
+  ryojiCtx.putImageData(ryojiImageData, 0, 0);
+  requestAnimationFrame(drawRyoji);
+}
+drawRyoji();
+
+function hslToRgb(h, s, l) {
+  let r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    const q = l < 0.5 ? l*(1+s) : l+s-l*s;
+    const p = 2*l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return [Math.round(r*255), Math.round(g*255), Math.round(b*255)];
+}
+function hue2rgb(p, q, t) {
+  if (t < 0) t += 1; if (t > 1) t -= 1;
+  if (t < 1/6) return p + (q-p)*6*t;
+  if (t < 1/2) return q;
+  if (t < 2/3) return p + (q-p)*(2/3-t)*6;
+  return p;
+}
+
+// ════════════════════════════════════════════════════════
+// SYNESTHETIC MIXER
+// ════════════════════════════════════════════════════════
+const synCanvas = document.getElementById('synesthesia-canvas');
+const synCtx    = synCanvas.getContext('2d');
+let synColors   = ['#3d0808','#7c2d08','#78350f','#14532d','#0c4a6e','#312e81'];
+let synBlend    = 'additive';
+
+function setSynBlend(m, btn) {
+  synBlend = m;
+  document.querySelectorAll('#synesthetic .btn').forEach(b => { if(['ADDITIVE','MULTIPLY','SCREEN'].includes(b.textContent)) b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return [r,g,b];
+}
+
+function drawSynesthesia() {
+  const W = synCanvas.width, H = synCanvas.height;
+  const n = freqData.length;
+  const bandRanges = [
+    [0,   Math.floor(n*0.01)],
+    [Math.floor(n*0.01), Math.floor(n*0.05)],
+    [Math.floor(n*0.05), Math.floor(n*0.12)],
+    [Math.floor(n*0.12), Math.floor(n*0.3)],
+    [Math.floor(n*0.3),  Math.floor(n*0.55)],
+    [Math.floor(n*0.55), Math.floor(n*0.85)]
+  ];
+  const energies = bandRanges.map(([a,b]) => {
+    const slice = Array.from(freqData.slice(a, Math.max(a+1,b)));
+    return slice.reduce((s,v) => s+v,0) / slice.length / 255;
+  });
+
+  synCtx.clearRect(0, 0, W, H);
+  synCtx.fillStyle = '#030305';
+  synCtx.fillRect(0, 0, W, H);
+
+  synCtx.globalCompositeOperation = synBlend === 'additive' ? 'lighter' : synBlend === 'multiply' ? 'multiply' : 'screen';
+
+  energies.forEach((e, i) => {
+    if (e < 0.02) return;
+    const [r, g, b] = hexToRgb(synColors[i] || '#333');
+    const grad = synCtx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W * 0.7);
+    grad.addColorStop(0,   `rgba(${r},${g},${b},${e * 0.9})`);
+    grad.addColorStop(0.5, `rgba(${r},${g},${b},${e * 0.4})`);
+    grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+    synCtx.fillStyle = grad;
+    synCtx.fillRect(0, 0, W, H);
+  });
+
+  synCtx.globalCompositeOperation = 'source-over';
+  requestAnimationFrame(drawSynesthesia);
+}
+drawSynesthesia();
+
+function goFullscreen(canvasId) {
+  const el = document.getElementById(canvasId);
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+</script>
+<script>
+// ════════════════════════════════════════════════════════
+// SHADER LAB — Canvas2D simulations
+// ════════════════════════════════════════════════════════
+const shaderCanvas = document.getElementById('shader-canvas');
+const shaderCtx    = shaderCanvas.getContext('2d');
+let activeShader   = 'ripple';
+let shaderTime     = 0;
+
+// Particle system for PARTICLES shader
+const particles = Array.from({length:200}, () => ({
+  x: Math.random(), y: Math.random(),
+  vx: (Math.random()-0.5)*0.003, vy: (Math.random()-0.5)*0.003,
+  life: Math.random()
+}));
+
+// Terrain buffers
+const terrainPoints = 64;
+let terrainOffset = 0;
+
+function selectShader(name, btn) {
+  activeShader = name;
+  document.querySelectorAll('.shader-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  shaderCtx.fillStyle = '#060610';
+  shaderCtx.fillRect(0, 0, shaderCanvas.width, shaderCanvas.height);
+}
+
+function drawShaderRipple(W, H, feat) {
+  shaderCtx.fillStyle = 'rgba(6,6,16,0.3)';
+  shaderCtx.fillRect(0, 0, W, H);
+  const rings = 8;
+  const speed = 0.5 + feat.bass * 2.5;
+  for (let r = 0; r < rings; r++) {
+    const phase = (shaderTime * speed + r / rings) % 1;
+    const radius = phase * Math.min(W, H) * 0.6;
+    const alpha  = (1 - phase) * (0.4 + feat.bass * 0.5);
+    const hue    = 20 + feat.centroid * 160;
+    shaderCtx.strokeStyle = `hsla(${hue},80%,55%,${alpha})`;
+    shaderCtx.lineWidth   = (1 - phase) * 3 + 0.5;
+    shaderCtx.shadowBlur  = feat.bass * 20; shaderCtx.shadowColor = '#f97316';
+    shaderCtx.beginPath();
+    shaderCtx.arc(W/2, H/2, radius, 0, Math.PI*2);
+    shaderCtx.stroke();
+  }
+  shaderCtx.shadowBlur = 0;
+}
+
+function drawShaderPlasma(W, H, feat) {
+  const imageData = shaderCtx.createImageData(W, H);
+  const d = imageData.data;
+  const t = shaderTime;
+  const centShift = feat.centroid * 4;
+  for (let y = 0; y < H; y += 2) {
+    for (let x = 0; x < W; x += 2) {
+      const v = Math.sin(x * 0.02 + t * 1.5 + centShift) +
+                Math.sin(y * 0.025 + t * 1.2) +
+                Math.sin((x + y) * 0.015 + t) +
+                Math.sin(Math.sqrt(x*x + y*y) * 0.015 + t * 0.8);
+      const hue = ((v + 4) / 8) * 360 + feat.centroid * 120;
+      const [r,g,b] = hslToRgb(((hue % 360) + 360) % 360 / 360, 0.8, 0.3 + feat.rms * 0.3);
+      for (let dy = 0; dy < 2 && y+dy < H; dy++) {
+        for (let dx = 0; dx < 2 && x+dx < W; dx++) {
+          const idx = ((y+dy)*W + (x+dx)) * 4;
+          d[idx] = r; d[idx+1] = g; d[idx+2] = b; d[idx+3] = 255;
+        }
+      }
+    }
+  }
+  shaderCtx.putImageData(imageData, 0, 0);
+}
+
+function drawShaderFractal(W, H, feat) {
+  shaderCtx.fillStyle = 'rgba(6,6,16,0.4)';
+  shaderCtx.fillRect(0, 0, W, H);
+  const zoom  = 1 + shaderTime * feat.rms * 0.3 % 4;
+  const levels = 5;
+  let r = Math.min(W,H) * 0.35 / zoom;
+  for (let lvl = 0; lvl < levels; lvl++) {
+    const alpha = (1 - lvl/levels) * 0.7;
+    const hue   = 20 + (lvl/levels) * 160;
+    shaderCtx.strokeStyle = `hsla(${hue},80%,55%,${alpha})`;
+    shaderCtx.lineWidth   = 1 + (levels - lvl) * 0.4;
+    shaderCtx.shadowBlur  = 8; shaderCtx.shadowColor = `hsl(${hue},80%,55%)`;
+    shaderCtx.beginPath();
+    shaderCtx.arc(W/2, H/2, r, 0, Math.PI*2);
+    shaderCtx.stroke();
+    const angle = shaderTime * 0.5 + lvl * 0.8;
+    shaderCtx.save();
+    shaderCtx.translate(W/2, H/2);
+    shaderCtx.rotate(angle);
+    shaderCtx.strokeStyle = `hsla(${hue+40},70%,50%,${alpha*0.5})`;
+    shaderCtx.lineWidth = 0.8;
+    shaderCtx.strokeRect(-r, -r, r*2, r*2);
+    shaderCtx.restore();
+    r *= 0.55;
+  }
+  shaderCtx.shadowBlur = 0;
+}
+
+function drawShaderParticles(W, H, feat) {
+  shaderCtx.fillStyle = 'rgba(6,6,16,0.25)';
+  shaderCtx.fillRect(0, 0, W, H);
+  const spd = 0.3 + feat.treble * 3;
+  particles.forEach(p => {
+    p.x += p.vx * spd; p.y += p.vy * spd;
+    if (p.x < 0 || p.x > 1) p.vx *= -1;
+    if (p.y < 0 || p.y > 1) p.vy *= -1;
+    p.life += 0.005;
+    if (p.life > 1) { p.life = 0; p.x = Math.random(); p.y = Math.random(); }
+    const alpha = Math.sin(p.life * Math.PI) * (0.5 + feat.treble * 0.5);
+    const hue   = 20 + feat.centroid * 200;
+    shaderCtx.fillStyle = `hsla(${hue},80%,65%,${alpha})`;
+    shaderCtx.shadowBlur = feat.treble * 12; shaderCtx.shadowColor = '#06b6d4';
+    shaderCtx.beginPath();
+    shaderCtx.arc(p.x * W, p.y * H, 1.5 + feat.treble * 2, 0, Math.PI*2);
+    shaderCtx.fill();
+  });
+  shaderCtx.shadowBlur = 0;
+  // Connect nearby particles
+  shaderCtx.strokeStyle = `rgba(6,182,212,${feat.mid * 0.15})`;
+  shaderCtx.lineWidth = 0.4;
+  for (let i = 0; i < particles.length; i += 3) {
+    for (let j = i+1; j < particles.length; j += 3) {
+      const dx = (particles[i].x - particles[j].x)*W;
+      const dy = (particles[i].y - particles[j].y)*H;
+      if (dx*dx+dy*dy < 2500) {
+        shaderCtx.beginPath();
+        shaderCtx.moveTo(particles[i].x*W, particles[i].y*H);
+        shaderCtx.lineTo(particles[j].x*W, particles[j].y*H);
+        shaderCtx.stroke();
+      }
+    }
+  }
+}
+
+function drawShaderTerrain(W, H, feat) {
+  shaderCtx.fillStyle = 'rgba(6,6,16,0.4)';
+  shaderCtx.fillRect(0, 0, W, H);
+  terrainOffset += 0.02 + feat.bass * 0.06;
+  const layers = 4;
+  for (let layer = layers - 1; layer >= 0; layer--) {
+    const baseY   = H * (0.4 + layer * 0.14);
+    const amp     = (H * 0.12) * (1 - layer * 0.2) * (0.3 + feat.bass * 0.7);
+    const freq    = 0.015 + layer * 0.008;
+    const alpha   = 0.5 + layer * 0.1;
+    const hue     = 20 + layer * 30;
+    shaderCtx.beginPath();
+    shaderCtx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 3) {
+      const y = baseY + Math.sin(x * freq + terrainOffset + layer * 1.5) * amp
+                       + Math.sin(x * freq * 2.3 + terrainOffset * 0.7) * amp * 0.4;
+      x === 0 ? shaderCtx.lineTo(x, y) : shaderCtx.lineTo(x, y);
+    }
+    shaderCtx.lineTo(W, H);
+    shaderCtx.closePath();
+    shaderCtx.fillStyle = `hsla(${hue},60%,${12+layer*4}%,${alpha})`;
+    shaderCtx.fill();
+    shaderCtx.strokeStyle = `hsla(${hue},80%,55%,0.7)`;
+    shaderCtx.lineWidth   = 1.2;
+    shaderCtx.stroke();
+  }
+}
+
+function animateShader() {
+  shaderTime += 0.016;
+  const feat = extractFeatures();
+  const W = shaderCanvas.width, H = shaderCanvas.height;
+  switch(activeShader) {
+    case 'ripple':    drawShaderRipple(W, H, feat);    break;
+    case 'plasma':    drawShaderPlasma(W, H, feat);    break;
+    case 'fractal':   drawShaderFractal(W, H, feat);   break;
+    case 'particles': drawShaderParticles(W, H, feat); break;
+    case 'terrain':   drawShaderTerrain(W, H, feat);   break;
+  }
+  // Update uniform bars
+  document.getElementById('u-amplitude').style.width = (feat.rms * 100) + '%';
+  document.getElementById('u-bass').style.width      = (feat.bass * 100) + '%';
+  document.getElementById('u-mid').style.width       = (feat.mid * 100) + '%';
+  document.getElementById('u-treble').style.width    = (feat.treble * 100) + '%';
+  const onset = Math.max(0, feat.bass - 0.3) * 2;
+  document.getElementById('u-onset').style.width = (Math.min(1, onset) * 100) + '%';
+  requestAnimationFrame(animateShader);
+}
+animateShader();
+
+const shaderParamNames = ['amplitude','bass','mid','treble','onset'];
+const shaderVisualParams = ['ring-speed','color-hue','brightness','zoom-rate','burst-size'];
+let shaderMapping = {0:0, 1:1, 2:2, 3:3, 4:4};
+
+function autoMapShader() {
+  const shuffled = [...shaderVisualParams].sort(() => Math.random() - 0.5);
+  shaderMapping = {};
+  shaderParamNames.forEach((n,i) => { shaderMapping[i] = shuffled[i]; });
+  const lines = shaderParamNames.map((n,i) => `u_${n} → ${shuffled[i]}`).join('\n');
+  const el = document.getElementById('automap-display');
+  el.style.display = 'block';
+  el.textContent = lines;
+}
+
+// ════════════════════════════════════════════════════════
+// ROUTING MATRIX
+// ════════════════════════════════════════════════════════
+const PRESETS = {
+  poetic:  [[0,2],[1,1],[2,0],[3,3]],
+  literal: [[0,0],[0,2],[2,0],[4,3],[3,4]],
+  abstract:[[4,4],[2,1],[5,5],[0,3]]
+};
+
+function toggleCell(btn) {
+  const on = btn.classList.toggle('on');
+  btn.textContent = on ? '●' : '○';
+  updatePreviewMapping();
+}
+
+function applyPreset(name, btn) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.matrix-cell').forEach(c => {
+    c.classList.remove('on'); c.textContent = '○';
+  });
+  (PRESETS[name] || []).forEach(([r,c]) => {
+    const cell = document.querySelector(`.matrix-cell[data-r="${r}"][data-c="${c}"]`);
+    if (cell) { cell.classList.add('on'); cell.textContent = '●'; }
+  });
+  updatePreviewMapping();
+}
+
+// ════════════════════════════════════════════════════════
+// MAPPING PREVIEW — wireframe box responding to routing matrix
+// ════════════════════════════════════════════════════════
+const mpCanvas = document.getElementById('mapping-preview');
+const mpCtx    = mpCanvas.getContext('2d');
+let mpHue      = 30;
+let mpScale    = 1;
+let mpRot      = 0;
+let mpSpeed    = 1;
+let previewTrack = 'ambient';
+
+const previewStyles = {
+  ambient: { bass:0.25, mid:0.5, treble:0.55, bpm:0,   rms:0.3, centroid:0.4 },
+  techno:  { bass:0.85, mid:0.4, treble:0.3,  bpm:130, rms:0.7, centroid:0.25 },
+  jazz:    { bass:0.45, mid:0.85, treble:0.6, bpm:120, rms:0.55, centroid:0.6 },
+  speech:  { bass:0.2,  mid:0.9, treble:0.5,  bpm:0,   rms:0.4, centroid:0.65 },
+  noise:   { bass:0.6,  mid:0.6, treble:0.65, bpm:0,   rms:0.65, centroid:0.5 }
+};
+
+function setPreviewTrack(name, btn) {
+  previewTrack = name;
+  document.querySelectorAll('#mapping-lab .btn').forEach(b => { if(['AMBIENT','TECHNO','JAZZ','SPEECH','NOISE'].includes(b.textContent)) b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function updatePreviewMapping() {}
+
+function getActiveConnections() {
+  const conns = {};
+  document.querySelectorAll('.matrix-cell.on').forEach(c => {
+    const r = +c.dataset.r, cl = +c.dataset.c;
+    if (!conns[r]) conns[r] = [];
+    conns[r].push(cl);
+  });
+  return conns;
+}
+
+function drawMappingPreview() {
+  const W = mpCanvas.width, H = mpCanvas.height;
+  const pf = previewStyles[previewTrack] || previewStyles.ambient;
+  const t  = Date.now() / 1000;
+  const tf = {
+    rms: pf.rms * (0.8 + 0.2 * Math.sin(t * 2.3)),
+    bass: pf.bass * (0.7 + 0.3 * Math.sin(t * (pf.bpm/60) * Math.PI * 2)),
+    mid: pf.mid * (0.85 + 0.15 * Math.sin(t * 1.7)),
+    treble: pf.treble * (0.8 + 0.2 * Math.sin(t * 3.1)),
+    centroid: pf.centroid
+  };
+  const featureValues = [tf.rms, tf.centroid, Math.max(0, tf.bass - 0.2), tf.rms, tf.bass, tf.treble];
+  const conns = getActiveConnections();
+
+  // Apply connections: rows=features, cols=[scale,hue,bright,speed,rotation,position]
+  let scale = 0.8, bright = 0.5, speed = 1, rotation = mpRot, posX = W/2, posY = H/2;
+  if (conns[0]) conns[0].forEach(c => { if(c===0) scale += featureValues[0]*0.6; if(c===1) mpHue = featureValues[0]*360; if(c===2) bright = featureValues[0]; if(c===3) speed = 1+featureValues[0]*2; });
+  if (conns[1]) conns[1].forEach(c => { if(c===1) mpHue = featureValues[1]*360; if(c===2) bright = featureValues[1]; });
+  if (conns[2]) conns[2].forEach(c => { if(c===0) scale = 0.6 + featureValues[2]*0.8; if(c===4) rotation += featureValues[2]*0.2; });
+  if (conns[3]) conns[3].forEach(c => { if(c===3) speed = 1+featureValues[3]*3; });
+  if (conns[4]) conns[4].forEach(c => { if(c===3) speed += featureValues[4]*2; if(c===4) rotation += featureValues[4]*0.5; });
+  if (conns[5]) conns[5].forEach(c => { if(c===5) { posX = W/2 + Math.sin(t*speed)*W*featureValues[5]*0.25; posY = H/2 + Math.cos(t*speed)*H*featureValues[5]*0.15; } });
+
+  mpRot += 0.004 * speed;
+
+  mpCtx.fillStyle = `rgba(6,6,16,0.35)`;
+  mpCtx.fillRect(0, 0, W, H);
+
+  // 3D wireframe box projection
+  const s = 70 * scale;
+  const cos = Math.cos(mpRot), sin = Math.sin(mpRot);
+  const tilt = 0.4;
+  function project(x, y, z) {
+    const rx = x * cos - z * sin;
+    const ry = y + (x * sin + z * cos) * tilt;
+    return [posX + rx * s, posY + ry * s];
+  }
+  const verts = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+  const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  const lum = 40 + bright * 35;
+  mpCtx.strokeStyle = `hsl(${mpHue},75%,${lum}%)`;
+  mpCtx.lineWidth   = 1.5;
+  mpCtx.shadowBlur  = 12 + bright * 16;
+  mpCtx.shadowColor = `hsl(${mpHue},80%,55%)`;
+  edges.forEach(([a,b]) => {
+    const [ax,ay] = project(...verts[a]);
+    const [bx,by] = project(...verts[b]);
+    mpCtx.beginPath(); mpCtx.moveTo(ax,ay); mpCtx.lineTo(bx,by); mpCtx.stroke();
+  });
+  mpCtx.shadowBlur = 0;
+
+  requestAnimationFrame(drawMappingPreview);
+}
+drawMappingPreview();
+
+function shareMappingCode() {
+  const cells = [];
+  document.querySelectorAll('.matrix-cell.on').forEach(c => cells.push(`${c.dataset.r},${c.dataset.c}`));
+  const code = `wavgen://mapping?v=1&cells=${cells.join('|')}&track=${previewTrack}`;
+  const el = document.getElementById('share-code-output');
+  el.style.display = 'block';
+  el.textContent = code;
+}
+
+// ════════════════════════════════════════════════════════
+// INTERSECTION OBSERVER — scroll reveal
+// ════════════════════════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+// NAV active section tracking
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const navKey = entry.target.dataset.nav;
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.dataset.nav === navKey);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('section[data-nav]').forEach(s => navObserver.observe(s));
+
+// ════════════════════════════════════════════════════════
+// INIT — start simulation immediately
+// ════════════════════════════════════════════════════════
+simStyle = 'techno';
+selectSource('techno');
+document.getElementById('src-techno').classList.add('active');
+document.getElementById('src-mic').classList.remove('active');
+
+// Ryoji canvas resize on visibility
+const ryojiSection = document.getElementById('ryoji-room');
+const ryojiResizeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) initRyoji(); });
+}, { threshold: 0.1 });
+ryojiResizeObs.observe(ryojiSection);
+</script>

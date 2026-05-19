@@ -1,0 +1,290 @@
+---
+layout: world.njk
+title: "Diffusion Models World"
+description: "Immersive art world exploring diffusion models"
+domain: art
+permalink: /art/diffusion-models/
+---
+
+
+<!-- NAV -->
+<nav>
+<span class="nav-title">⬡ Diffusion Models</span>
+<a href="#denoising">Denoising</a>
+<a href="#unet">U-Net</a>
+<a href="#vae">VAE</a>
+<a href="#samplers">Samplers</a>
+<a href="#conditioning">Conditioning</a>
+<a href="#schedules">Schedules</a>
+<a href="#researchers">Researchers</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 1 — HERO: WebGL Denoising Boundary Sweep
+════════════════════════════════════════════════════ -->
+<div id="hero">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-text">
+<h1>Diffusion Models</h1>
+<p>Learning to reverse the arrow of entropy — noise into signal, chaos into image</p>
+</div>
+</div>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 2 — DENOISING PROCESS
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="denoising">
+<h2>The Denoising Process</h2>
+<p>Diffusion models learn to reverse a gradual noising process. During training, data is corrupted step-by-step with Gaussian noise until only noise remains. The model learns to predict and remove that noise, reconstructing the original signal from pure chaos.</p>
+<div class="canvas-wrap">
+<canvas height="200" id="denoiseCanvas"></canvas>
+<div class="canvas-label">← forward diffusion | reverse denoising →</div>
+</div>
+<div class="slider-row">
+<label>Timestep T</label>
+<input id="tSlider" max="100" min="0" type="range" value="50"/>
+<span id="tVal">50</span>
+</div>
+<div class="slider-row">
+<label>Noise Level σ</label>
+<input id="sigmaSlider" max="100" min="1" type="range" value="50"/>
+<span id="sigmaVal">50</span>
+</div>
+<div class="card-grid" style="margin-top:1.5rem">
+<div class="card"><h3>Forward Process q(xₜ|xₜ₋₁)</h3><p>Adds small Gaussian noise at each step t, creating a Markov chain from clean data x₀ to pure noise xₜ.</p></div>
+<div class="card"><h3>Reverse Process p_θ(xₜ₋₁|xₜ)</h3><p>A neural network learns to reverse each noising step, gradually recovering structure from noise.</p></div>
+<div class="card"><h3>Noise Prediction ε_θ</h3><p>Rather than predicting the denoised image directly, most models predict the noise added at each step.</p></div>
+<div class="card"><h3>Closed-Form Sampling</h3><p>Any timestep xₜ can be sampled directly from x₀ using the reparameterization trick: xₜ = √ᾱₜ x₀ + √(1-ᾱₜ)ε</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 3 — U-NET ARCHITECTURE
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="unet">
+<h2>U-Net Architecture</h2>
+<p>The backbone of most diffusion models is a U-Net: an encoder-decoder with skip connections. The encoder compresses spatial resolution while expanding channels; the decoder reverses this. Skip connections preserve fine detail that would otherwise be lost in compression.</p>
+<div class="canvas-wrap">
+<canvas height="280" id="unetCanvas"></canvas>
+<div class="canvas-label">click a block to inspect</div>
+</div>
+<div class="card-grid">
+<div class="card"><h3>ResNet Blocks</h3><p>Each U-Net level contains residual blocks with group normalization and SiLU activation. Time embeddings are injected via AdaGN.</p></div>
+<div class="card"><h3>Self-Attention</h3><p>At lower resolutions, spatial self-attention allows the model to relate distant image regions and integrate global context.</p></div>
+<div class="card"><h3>Cross-Attention</h3><p>Text or other conditioning signals are injected via cross-attention, where image features attend to conditioning tokens.</p></div>
+<div class="card"><h3>Skip Connections</h3><p>Encoder features are concatenated with decoder features at each resolution, preserving spatial detail across the bottleneck.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 4 — VAE LATENT SPACE
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="vae">
+<h2>VAE Latent Space</h2>
+<p>Latent diffusion models (LDMs) compress images into a compact latent space using a Variational Autoencoder. Diffusion happens in this lower-dimensional space, dramatically reducing compute. The VAE decoder then maps latents back to pixel space.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="vaeCanvas"></canvas>
+<div class="canvas-label">click two points to interpolate</div>
+</div>
+<div class="slider-row">
+<label>Latent Dims</label>
+<input id="ldimSlider" max="64" min="2" type="range" value="4"/>
+<span id="ldimVal">4</span>
+</div>
+<div class="slider-row">
+<label>KL Weight β</label>
+<input id="klSlider" max="100" min="1" type="range" value="10"/>
+<span id="klVal">0.1</span>
+</div>
+<div class="info-box">
+<strong>Stable Diffusion's VAE</strong> compresses 512×512 RGB images into 64×64×4 latents — a 48× spatial compression. The latent space is regularized with a small KL divergence penalty to remain approximately Gaussian, enabling diffusion sampling.
+  </div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 5 — SAMPLER TRAJECTORIES
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="samplers">
+<h2>Sampler Trajectories</h2>
+<p>Different samplers traverse the denoising path differently. DDPM uses thousands of small steps. DDIM skips steps with deterministic updates. DPM++ uses higher-order ODE solvers. Each trades quality, speed, and stochasticity.</p>
+<div class="canvas-wrap">
+<canvas height="280" id="samplerCanvas"></canvas>
+<div class="canvas-label">live sampler race — 5 algorithms</div>
+</div>
+<div class="slider-row">
+<label>Steps</label>
+<input id="stepsSlider" max="50" min="5" type="range" value="20"/>
+<span id="stepsVal">20</span>
+</div>
+<div class="slider-row">
+<label>CFG Scale</label>
+<input id="cfgSlider" max="200" min="10" type="range" value="75"/>
+<span id="cfgVal">7.5</span>
+</div>
+<div class="card-grid">
+<div class="card" style="border-color:#FF6B6B"><h3 style="color:#FF6B6B">DDPM</h3><p>Original stochastic sampler. Requires 1000 steps for best quality. Each step adds controlled noise then denoises.</p></div>
+<div class="card" style="border-color:#4ECDC4"><h3 style="color:#4ECDC4">DDIM</h3><p>Deterministic skip-step sampler. 50 steps achieves near-DDPM quality. Same seed → same image.</p></div>
+<div class="card" style="border-color:#FFE66D"><h3 style="color:#FFE66D">DPM++</h3><p>Multistep ODE solver. 20–30 steps with excellent quality. DPM++ 2M Karras is a community favorite.</p></div>
+<div class="card" style="border-color:#A8E6CF"><h3 style="color:#A8E6CF">Euler</h3><p>Simple first-order ODE solver. Fast and surprisingly effective in 20 steps. Basis for Euler Ancestral.</p></div>
+<div class="card" style="border-color:#C7A8E6"><h3 style="color:#C7A8E6">Heun</h3><p>Second-order method with corrector step. Better accuracy per step at cost of 2× NFE per iteration.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 6 — CONDITIONING SYSTEMS
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="conditioning">
+<h2>Conditioning Systems</h2>
+<p>Modern diffusion models are conditioned on rich signals: text, images, depth maps, poses, audio. These signals steer the denoising trajectory toward a desired output. Classifier-free guidance (CFG) amplifies the conditioning signal at inference time.</p>
+<div class="tabs">
+<button class="tab-btn active" data-tab="text">Text / CLIP</button>
+<button class="tab-btn" data-tab="image">Image Prompts</button>
+<button class="tab-btn" data-tab="controlnet">ControlNet</button>
+<button class="tab-btn" data-tab="cfg">CFG Guidance</button>
+</div>
+<div class="tab-panel active" id="tab-text">
+<div class="canvas-wrap"><canvas height="200" id="clipCanvas"></canvas></div>
+<div class="info-box">
+<strong>CLIP Text Encoding:</strong> Text prompts are tokenized and encoded by a transformer (CLIP ViT-L/14 in SD). The resulting 77×768 token embeddings are injected into the U-Net via cross-attention at each resolution level. CLIP aligns text and image embeddings in a shared space learned from 400M image-text pairs.
+    </div>
+</div>
+<div class="tab-panel" id="tab-image">
+<div class="info-box">
+<strong>Image Conditioning (IP-Adapter, img2img):</strong> Image prompts bypass text entirely — a CLIP image encoder extracts style and content embeddings that are cross-attended alongside or instead of text. img2img adds partial noise to an existing image before denoising, blending structure from the source with direction from the prompt.
+    </div>
+</div>
+<div class="tab-panel" id="tab-controlnet">
+<div class="canvas-wrap"><canvas height="200" id="controlCanvas"></canvas></div>
+<div class="info-box">
+<strong>ControlNet</strong> clones the U-Net encoder weights and trains them on spatial conditions (edge maps, depth, pose skeletons, segmentation masks). The control signals add residuals to the main U-Net decoder, providing hard spatial constraints without overriding the diffusion process.
+    </div>
+</div>
+<div class="tab-panel" id="tab-cfg">
+<div class="slider-row">
+<label>CFG Scale</label>
+<input id="cfgVizSlider" max="200" min="10" type="range" value="75"/>
+<span id="cfgVizVal">7.5</span>
+</div>
+<div class="canvas-wrap"><canvas height="200" id="cfgCanvas"></canvas></div>
+<div class="info-box">
+<strong>Classifier-Free Guidance</strong> runs two forward passes: one conditioned (ε_θ(xₜ,c)), one unconditioned (ε_θ(xₜ,∅)). The output is: ε̃ = ε_uncond + w·(ε_cond − ε_uncond). Higher w = stronger prompt adherence but reduced diversity and potential oversaturation.
+    </div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 7 — NOISE SCHEDULES
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="schedules">
+<h2>Noise Schedules</h2>
+<p>The noise schedule β(t) controls how quickly signal is destroyed. Linear schedules (DDPM) destroy too much signal too early at high resolutions. Cosine schedules preserve signal longer. Karras schedules focus denoising effort where it matters most.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="scheduleCanvas"></canvas>
+<div class="canvas-label">drag to draw your own schedule</div>
+</div>
+<div class="slider-row">
+<label>Schedule Type</label>
+<input id="schedTypeSlider" max="3" min="0" step="1" type="range" value="1"/>
+<span id="schedTypeVal">Cosine</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Linear β</h3><p>Original DDPM schedule. β grows linearly from 10⁻⁴ to 0.02. Works at 32×32 but destroys signal too fast at higher resolutions.</p></div>
+<div class="card"><h3>Cosine ᾱ</h3><p>Proposed by Nichol &amp; Dhariwal (2021). Signal-to-noise ratio follows a cosine curve, preserving structure at high-res throughout training.</p></div>
+<div class="card"><h3>Karras σ(t)</h3><p>Karras et al. (2022) formulate diffusion in terms of noise level σ directly, decoupling schedule from solver. Enables flexible step placement.</p></div>
+<div class="card"><h3>Zero-Terminal SNR</h3><p>Lin et al. (2023) fix the schedule so T=1000 is truly pure noise. Prevents the "grey blob" issue and improves dark scene generation.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 8 — RESEARCHERS
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="researchers">
+<h2>Researchers &amp; Artists</h2>
+<p>The diffusion revolution was built by a small set of researchers and creative practitioners whose work, open-sourced and iterated publicly, transformed generative AI in under three years.</p>
+<div class="researcher-grid">
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(61,43,255,0.2)">🔬</div>
+<h3>Jonathan Ho</h3>
+<div class="role">Google Brain</div>
+<p>Lead author of DDPM (2020), the foundational paper that made diffusion models practical for image synthesis.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(123,63,228,0.2)">🌊</div>
+<h3>Yang Song</h3>
+<div class="role">OpenAI / Stanford</div>
+<p>Score matching, stochastic differential equations framing (SDE/ODE), and DDIM deterministic sampling.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(61,43,255,0.2)">🖼️</div>
+<h3>Robin Rombach</h3>
+<div class="role">Stability AI / LMU</div>
+<p>Lead author of Latent Diffusion Models (LDM) and Stable Diffusion, enabling high-res synthesis on consumer hardware.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,209,102,0.15)">🎨</div>
+<h3>Aditya Ramesh</h3>
+<div class="role">OpenAI</div>
+<p>DALL-E and DALL-E 2. Pioneered text-to-image via CLIP-guided diffusion and hierarchical image generation.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(61,43,255,0.2)">🖌️</div>
+<h3>Chitwan Saharia</h3>
+<div class="role">Google Brain</div>
+<p>Imagen: cascaded pixel-space diffusion with large language model text encoders, achieving photorealistic text-to-image.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(123,63,228,0.2)">⚗️</div>
+<h3>Tim Salimans</h3>
+<div class="role">Google Brain</div>
+<p>Progressive distillation, consistency models precursor work, and improved noise schedules for high-fidelity generation.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(61,43,255,0.2)">🌺</div>
+<h3>Katherine Crowson</h3>
+<div class="role">Independent</div>
+<p>Open-source pioneer: CLIP-guided diffusion, k-diffusion library, aesthetic fine-tuning, and V-prediction parameterization.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(255,209,102,0.15)">📐</div>
+<h3>Tero Karras</h3>
+<div class="role">NVIDIA</div>
+<p>EDM (Elucidating Diffusion Models): unified framework for noise schedules, samplers, and training, enabling DPM++ Karras.</p>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ═══════════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+════════════════════════════════════════════════════ -->
+<section class="hidden" id="glossary">
+<h2>Glossary</h2>
+<p>Key concepts in diffusion model theory and practice.</p>
+<dl class="glossary-grid">
+<div class="glossary-item"><dt>DDPM</dt><dd>Denoising Diffusion Probabilistic Model. Ho et al. (2020). Predicts noise ε at each step t via a learned neural network.</dd></div>
+<div class="glossary-item"><dt>DDIM</dt><dd>Denoising Diffusion Implicit Model. Deterministic skip-step sampling, enabling 50-step generation with DDPM-quality output.</dd></div>
+<div class="glossary-item"><dt>Score Matching</dt><dd>Training objective to match the gradient of the log data density ∇log p(x). Equivalent to noise prediction under certain conditions.</dd></div>
+<div class="glossary-item"><dt>Langevin Dynamics</dt><dd>MCMC sampling method using the score function to walk toward high-density regions. Foundation for score-based generative models.</dd></div>
+<div class="glossary-item"><dt>Latent Diffusion</dt><dd>Running diffusion in a compressed latent space (VAE), not pixel space. Enables high-resolution generation at feasible compute cost.</dd></div>
+<div class="glossary-item"><dt>VAE</dt><dd>Variational Autoencoder. Encoder maps images to latent distributions; decoder reconstructs images. KL loss regularizes the latent space.</dd></div>
+<div class="glossary-item"><dt>CLIP</dt><dd>Contrastive Language-Image Pretraining. Aligns text and image embeddings in a shared space. Used as text encoder in most text-to-image systems.</dd></div>
+<div class="glossary-item"><dt>CFG</dt><dd>Classifier-Free Guidance. Amplifies conditional vs. unconditional score difference at inference to strengthen prompt adherence.</dd></div>
+<div class="glossary-item"><dt>ControlNet</dt><dd>Auxiliary network that adds spatial conditioning (edges, depth, pose) to a pretrained diffusion model without retraining the base.</dd></div>
+<div class="glossary-item"><dt>LoRA</dt><dd>Low-Rank Adaptation. Efficient fine-tuning by injecting small trainable rank decomposition matrices into frozen pretrained weights.</dd></div>
+<div class="glossary-item"><dt>Noise Schedule β(t)</dt><dd>Sequence of noise variances added at each diffusion step. Choice of schedule affects image quality, especially at high resolution.</dd></div>
+<div class="glossary-item"><dt>SNR</dt><dd>Signal-to-Noise Ratio. Ratio of signal power to noise power at a given timestep. Determines how much original structure remains in xₜ.</dd></div>
+<div class="glossary-item"><dt>U-Net</dt><dd>Encoder-decoder architecture with skip connections. Used as the denoising backbone in most diffusion models (original and latent).</dd></div>
+<div class="glossary-item"><dt>Timestep Embedding</dt><dd>Sinusoidal or learned encoding of t injected into each U-Net block, telling the model which noise level it is currently denoising.</dd></div>
+<div class="glossary-item"><dt>V-Prediction</dt><dd>Alternative training target: predict v = √ᾱₜ ε − √(1−ᾱₜ) x₀ instead of noise ε. Improves stability at low noise levels.</dd></div>
+<div class="glossary-item"><dt>Flow Matching</dt><dd>Generalization of diffusion using arbitrary probability paths. Rectified Flow (Stable Diffusion 3) uses straight-line paths for efficient sampling.</dd></div>
+<div class="glossary-item"><dt>Consistency Model</dt><dd>Single-step or few-step model trained to map any noisy xₜ directly to x₀, bypassing iterative sampling entirely.</dd></div>
+<div class="glossary-item"><dt>DPM-Solver</dt><dd>Fast ODE solver exploiting the semi-linear structure of the diffusion ODE. DPM++ 2M achieves near-DDPM quality in 20 steps.</dd></div>
+<div class="glossary-item"><dt>Ancestral Sampling</dt><dd>Stochastic DDPM-style sampling that adds noise at each step. Produces diverse outputs but paths are non-deterministic.</dd></div>
+<div class="glossary-item"><dt>IP-Adapter</dt><dd>Image prompt adapter using a decoupled cross-attention mechanism to condition on reference images without changing base model weights.</dd></div>
+<div class="glossary-item"><dt>Textual Inversion</dt><dd>Learns a new token embedding to represent a concept from a few reference images. Encodes style or subject into a single prompt token.</dd></div>
+<div class="glossary-item"><dt>Rectified Flow</dt><dd>Trains a flow model on straight trajectories connecting noise to data. Used in SD3 and FLUX. Fewer steps needed due to straighter paths.</dd></div>
+</dl>
+</section>
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════ -->
+<script></script>

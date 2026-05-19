@@ -1,0 +1,686 @@
+---
+layout: world.njk
+title: "WAVGEN :: TOUCHDESIGNER AUDIO"
+description: "Immersive music world exploring touchdesigner audio"
+domain: music
+permalink: /music/touchdesigner-audio/
+---
+
+
+<nav>
+<div class="nav-logo">WAVGEN</div>
+<ul class="nav-links">
+<li><a href="#hero">TD AUDIO</a></li>
+<li><a href="#s2">CHOPs</a></li>
+<li><a href="#s3">REACTIVE</a></li>
+<li><a href="#s4">MODULATION</a></li>
+<li><a href="#s5">CONVERSION</a></li>
+<li><a href="#s6">SYNC</a></li>
+<li><a href="#s7">ARTISTS</a></li>
+<li><a href="#s8">GLOSSARY</a></li>
+</ul>
+</nav>
+<div class="hero-wrap" id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">TOUCHDESIGNER AUDIO</div>
+<div class="hero-sub">LIVING AUDIOVISUAL COMPUTATION ENGINE</div>
+</div>
+</div>
+<!-- S2: CHOP NETWORK -->
+<section class="hidden" id="s2">
+<div class="section-label">02 · CHANNEL OPERATORS</div>
+<div class="section-title">CHOP Network Explorer</div>
+<div class="section-sub">Channel Operators (CHOPs) process one-dimensional time-based data streams: audio waveforms, LFO signals, sensor data, MIDI streams. CHOPs connect left-to-right, each transforming the channel data passing through its core. Audio and control signals share the same operator paradigm.</div>
+<div class="canvas-box">
+<canvas height="380" id="chop-canvas" style="width:100%;height:380px;"></canvas>
+<div class="ctrl-row">
+<button class="td-btn active" id="btn-audio-net">AUDIO ANALYSIS</button>
+<button class="td-btn" id="btn-osc-net">OSC + LFO</button>
+<button class="td-btn" id="btn-midi-net">MIDI PIPELINE</button>
+<button class="td-btn uv" id="btn-gen-net">GENERATIVE</button>
+</div>
+</div>
+</section>
+<!-- S3: AUDIO-REACTIVE -->
+<section class="hidden stagger-1" id="s3">
+<div class="section-label">03 · AUDIO REACTIVITY</div>
+<div class="section-title">Audio-Reactive Visual Systems</div>
+<div class="section-sub">Audio analysis CHOPs extract amplitude, spectrum, beat, and onset data from an audio signal. These numeric streams route to visual parameters — geometry scale, shader uniforms, material properties — creating visual systems that breathe with the music.</div>
+<div class="two-col">
+<div class="canvas-box">
+<canvas height="240" id="ar-scope-canvas" style="width:100%;height:240px;"></canvas>
+</div>
+<div class="canvas-box">
+<canvas height="240" id="ar-visual-canvas" style="width:100%;height:240px;"></canvas>
+</div>
+</div>
+<div class="ctrl-row" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;margin-top:0;">
+<div class="ctrl-group"><label>AUDIO FREQ</label><input id="sl-ar-freq" max="2000" min="20" step="1" type="range" value="220"/><span class="ctrl-val" id="v-ar-freq">220 Hz</span></div>
+<div class="ctrl-group"><label>AMPLITUDE</label><input id="sl-ar-amp" max="1" min="0" step="0.01" type="range" value="0.6"/><span class="ctrl-val" id="v-ar-amp">0.60</span></div>
+<div class="ctrl-group"><label>BAND SELECT</label><input id="sl-ar-band" max="2" min="0" step="1" type="range" value="0"/><span class="ctrl-val" id="v-ar-band">LOW</span></div>
+<div class="ctrl-group"><label>SMOOTH</label><input id="sl-ar-smooth" max="1" min="0" step="0.01" type="range" value="0.5"/><span class="ctrl-val" id="v-ar-smooth">50%</span></div>
+</div>
+</section>
+<!-- S4: MODULATION -->
+<section class="hidden stagger-2" id="s4">
+<div class="section-label">04 · PROCEDURAL AUDIO</div>
+<div class="section-title">Audio Modulation Pipelines</div>
+<div class="section-sub">CHOPs chain LFO, Envelope, Math, and Filter operators into modulation pipelines that drive audio synthesis parameters in realtime. Unlike fixed automation, CHOP modulation is live — tempo-synced, audio-derived, or driven by external sensors.</div>
+<div class="canvas-box">
+<canvas height="320" id="mod-canvas" style="width:100%;height:320px;"></canvas>
+<div class="ctrl-row">
+<div class="ctrl-group"><label>LFO RATE</label><input id="sl-lfo-rate" max="20" min="0.1" step="0.1" type="range" value="2"/><span class="ctrl-val" id="v-lfo-rate">2.0 Hz</span></div>
+<div class="ctrl-group"><label>LFO SHAPE</label><input id="sl-lfo-shape" max="4" min="0" step="1" type="range" value="0"/><span class="ctrl-val" id="v-lfo-shape">Sine</span></div>
+<div class="ctrl-group"><label>ENV ATTACK</label><input id="sl-env-att" max="1" min="0.001" step="0.001" type="range" value="0.05"/><span class="ctrl-val" id="v-env-att">0.05s</span></div>
+<div class="ctrl-group"><label>ENV RELEASE</label><input id="sl-env-rel" max="2" min="0.01" step="0.01" type="range" value="0.4"/><span class="ctrl-val" id="v-env-rel">0.40s</span></div>
+</div>
+</div>
+</section>
+<!-- S5: SIGNAL CONVERSION -->
+<section class="hidden stagger-1" id="s5">
+<div class="section-label">05 · OPERATOR FAMILIES</div>
+<div class="section-title">Signal Conversion Pipelines</div>
+<div class="section-sub">TouchDesigner's operator families communicate through defined conversion paths. CHOP audio analysis exports to SOP geometry (wave mesh, particle systems), to MAT shader uniforms (colour, intensity), and to Texture via TOP — audio becomes light, geometry, texture.</div>
+<div class="canvas-box">
+<canvas height="320" id="conv-canvas" style="width:100%;height:320px;"></canvas>
+</div>
+</section>
+<!-- S6: SYNC SYSTEMS -->
+<section class="hidden stagger-2" id="s6">
+<div class="section-label">06 · REALTIME SYNC</div>
+<div class="section-title">Ableton Link / OSC Sync</div>
+<div class="section-sub">TouchDesigner integrates with Ableton Link for tempo/phase synchronisation and receives Open Sound Control (OSC) for realtime parameter control. MIDI and Ableton Link CHOPs make TD a first-class participant in any networked performance environment.</div>
+<div class="canvas-box">
+<canvas height="300" id="sync-canvas" style="width:100%;height:300px;"></canvas>
+<div class="ctrl-row">
+<div class="ctrl-group"><label>BPM</label><input id="sl-td-bpm" max="200" min="60" step="0.5" type="range" value="128"/><span class="ctrl-val" id="v-td-bpm">128 BPM</span></div>
+<div class="ctrl-group"><label>OSC RATE</label><input id="sl-osc-rate" max="120" min="1" step="1" type="range" value="30"/><span class="ctrl-val" id="v-osc-rate">30 Hz</span></div>
+<div class="ctrl-group"><label>JITTER</label><input id="sl-jitter" max="50" min="0" step="0.5" type="range" value="2"/><span class="ctrl-val" id="v-jitter">2 ms</span></div>
+<button class="td-btn active" id="btn-link">LINK ON</button>
+<button class="td-btn" id="btn-osc">OSC MONITOR</button>
+</div>
+</div>
+</section>
+<!-- S7: ARTISTS -->
+<section class="hidden" id="s7">
+<div class="section-label">07 · PRACTITIONERS</div>
+<div class="section-title">TD Audio Artists</div>
+<div class="artists-grid">
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.7" r="22" stroke="#00FF88" stroke-width="1.5"></circle>
+<rect fill="rgba(0,255,136,0.1)" height="16" rx="1" stroke="#00FF88" stroke-width="1" width="16" x="20" y="20"></rect>
+<circle cx="28" cy="28" fill="#00FF88" opacity="0.8" r="3"></circle>
+</svg>
+<div class="artist-name">Elburuz Fidan</div>
+<div class="artist-role">Derivative TD · Audio Systems</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.7" points="28,6 50,42 6,42" stroke="#00FF88" stroke-width="1.5"></polygon>
+<polygon fill="rgba(119,0,255,0.1)" points="28,16 40,36 16,36" stroke="#7700FF" stroke-width="1"></polygon>
+</svg>
+<div class="artist-name">Bileam Tschepe</div>
+<div class="artist-role">TouchDesigner Tutorial · Elekktronaut</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="none" height="40" opacity="0.6" rx="4" stroke="#00FF88" stroke-width="1.5" width="40" x="8" y="8"></rect>
+<line opacity="0.5" stroke="#7700FF" stroke-width="1" x1="8" x2="48" y1="28" y2="28"></line>
+<rect fill="rgba(0,255,136,0.08)" height="20" rx="2" stroke="#00FF88" stroke-width="1" width="20" x="18" y="18"></rect>
+</svg>
+<div class="artist-name">Paketa-Paketa</div>
+<div class="artist-role">Audio-Reactive AV · Japan</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<ellipse cx="28" cy="28" fill="none" opacity="0.6" rx="22" ry="12" stroke="#7700FF" stroke-width="1.5"></ellipse>
+<line opacity="0.5" stroke="#00FF88" stroke-width="1" x1="6" x2="50" y1="28" y2="28"></line>
+<circle cx="28" cy="28" fill="rgba(119,0,255,0.2)" r="5" stroke="#7700FF" stroke-width="1"></circle>
+</svg>
+<div class="artist-name">Matthew Ragan</div>
+<div class="artist-role">Obscura Digital · TD Pipeline</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.5" r="20" stroke="#00FF88" stroke-width="1.5"></circle>
+<circle cx="28" cy="28" fill="none" opacity="0.4" r="12" stroke="#7700FF" stroke-width="1"></circle>
+<circle cx="28" cy="28" fill="rgba(0,255,136,0.2)" r="5" stroke="#00FF88" stroke-width="1"></circle>
+<line opacity="0.3" stroke="#7700FF" stroke-width="1" x1="14" x2="42" y1="14" y2="42"></line>
+</svg>
+<div class="artist-name">Natan Sinigaglia</div>
+<div class="artist-role">Data Visualisation · AV Installation</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.5" points="28,8 48,48 8,48" stroke="#7700FF" stroke-width="1.5"></polygon>
+<circle cx="28" cy="26" fill="rgba(0,255,136,0.15)" r="6" stroke="#00FF88" stroke-width="1"></circle>
+<line opacity="0.4" stroke="#7700FF" stroke-width="1" x1="28" x2="28" y1="32" y2="44"></line>
+</svg>
+<div class="artist-name">noio (Thomas Sanchez)</div>
+<div class="artist-role">TD Generative · AV Systems Design</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<line opacity="0.6" stroke="#00FF88" stroke-width="1.5" x1="8" x2="48" y1="28" y2="28"></line>
+<line opacity="0.5" stroke="#7700FF" stroke-width="1.5" x1="28" x2="28" y1="8" y2="48"></line>
+<rect fill="rgba(0,255,136,0.1)" height="16" rx="2" stroke="#00FF88" stroke-width="1" width="16" x="20" y="20"></rect>
+</svg>
+<div class="artist-name">Daito Manabe</div>
+<div class="artist-role">Rhizomatiks · Realtime AV Art</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.5" r="20" stroke="#7700FF" stroke-width="1.5"></circle>
+<circle cx="28" cy="28" fill="none" opacity="0.4" r="10" stroke="#00FF88" stroke-width="1"></circle>
+<circle cx="28" cy="28" fill="rgba(119,0,255,0.3)" r="4"></circle>
+</svg>
+<div class="artist-name">Zach Lieberman</div>
+<div class="artist-role">School for Poetic Computation · NYC</div>
+</div>
+</div>
+</section>
+<!-- S8: GLOSSARY -->
+<section class="hidden" id="s8">
+<div class="section-label">08 · REFERENCE</div>
+<div class="section-title">TouchDesigner Lexicon</div>
+<div class="gloss-grid">
+<div class="gloss-item"><div class="gloss-term">CHOP (Channel Operator)</div><div class="gloss-def">Operator family processing one-dimensional time-based channel data — audio waveforms, LFO signals, MIDI streams, sensor data. CHOPs are the bridge between audio analysis and visual control in TouchDesigner.</div></div>
+<div class="gloss-item"><div class="gloss-term">TOP (Texture Operator)</div><div class="gloss-def">Operator family processing 2D image data — video, rendered frames, generative textures. TOPs perform compositing, colour correction, and GLSL shader operations in realtime at the GPU level.</div></div>
+<div class="gloss-item"><div class="gloss-term">SOP (Surface Operator)</div><div class="gloss-def">Operator family processing 3D geometry — point clouds, meshes, particles. Audio-driven SOPs create geometry whose vertex positions, normals, or attributes respond to CHOP channels extracted from audio analysis.</div></div>
+<div class="gloss-item"><div class="gloss-term">MAT (Material Operator)</div><div class="gloss-def">Operator family defining surface appearance — GLSL shaders, physically-based materials. MAT shader uniforms can be driven by CHOP audio analysis values, making visual materials respond to audio in realtime.</div></div>
+<div class="gloss-item"><div class="gloss-term">COMP (Component)</div><div class="gloss-def">Self-contained sub-networks in TouchDesigner. COMPs include Geometry, Camera, Light, and Container types. Components create hierarchical project structure and can be reused across performance environments.</div></div>
+<div class="gloss-item"><div class="gloss-term">Audio Analysis CHOP</div><div class="gloss-def">Built-in CHOP that analyses incoming audio and outputs derived channels: RMS level, spectrum bins, onset detection, beat detection, and per-band energy. The primary bridge between audio and visual control.</div></div>
+<div class="gloss-item"><div class="gloss-term">Spectrum CHOP</div><div class="gloss-def">Performs FFT analysis on incoming audio, outputting N channels representing frequency-band energy. Resolution and window type configurable. Output channels route to any visual parameter — geometry scale, colour, particle emission.</div></div>
+<div class="gloss-item"><div class="gloss-term">LFO CHOP</div><div class="gloss-def">Generates periodic waveforms (sine, triangle, square, sawtooth, random) at configurable rates. Syncs to project FPS, an external clock, or Ableton Link beat clock. The core modulation source for procedural animation.</div></div>
+<div class="gloss-item"><div class="gloss-term">Ableton Link CHOP</div><div class="gloss-def">Synchronises TD's timeline to Ableton Link network session. Outputs beat position, bar position, and phase channels at sub-frame accuracy. Enables pixel-perfect beat-sync without MIDI clock jitter.</div></div>
+<div class="gloss-item"><div class="gloss-term">OSC In CHOP</div><div class="gloss-def">Receives Open Sound Control messages over UDP network. Parses OSC address patterns to named channels — remote parameter control from any OSC-compatible device (phone, Ableton, Max/MSP, custom hardware).</div></div>
+<div class="gloss-item"><div class="gloss-term">GLSL CHOP</div><div class="gloss-def">Custom GPU-accelerated CHOP executed as GLSL compute shader. Processes thousands of channels in parallel — particle physics, custom synthesis algorithms, signal processing operations in real GPU time.</div></div>
+<div class="gloss-item"><div class="gloss-term">CHOP to SOP</div><div class="gloss-def">Conversion operator reading CHOP channels as point attribute data and injecting them into SOP geometry — amplitude → vertex Y position, frequency content → particle velocity, beat → geometry scale pulse.</div></div>
+<div class="gloss-item"><div class="gloss-term">Envelope CHOP</div><div class="gloss-def">Tracks amplitude envelope of an audio signal with configurable attack, decay, sustain, and release times. Attack/release ballistics determine how quickly the envelope follows signal changes — critical for smooth visual motion.</div></div>
+<div class="gloss-item"><div class="gloss-term">Filter CHOP</div><div class="gloss-def">Low-pass, high-pass, band-pass, and notch filter for CHOP channel data. Smooths noisy sensor or analysis data before routing to visual parameters — prevents jittery visual response from audio transients.</div></div>
+<div class="gloss-item"><div class="gloss-term">Timeline CHOP</div><div class="gloss-def">Records and plays back CHOP channel data across the TD timeline — captured automation that can be looped, triggered, or blended with live input. Combines composed structure with live improvisation.</div></div>
+<div class="gloss-item"><div class="gloss-term">Beat CHOP</div><div class="gloss-def">Beat detection from audio or external clock source. Outputs onset detection, beat confidence, and current beat/bar position. Phase can be manually nudged for beat-sync correction in live performance.</div></div>
+<div class="gloss-item"><div class="gloss-term">Phaser CHOP</div><div class="gloss-def">Phases one CHOP in time relative to another — delay, advance, or offset. Used to stagger synchronized modulation across multiple channels, creating wave-like cascades in multi-element visual systems.</div></div>
+<div class="gloss-item"><div class="gloss-term">Math CHOP</div><div class="gloss-def">Arithmetic operations on CHOP channels: multiply, add, clamp, remap range. Scales, inverts, and maps analysis values to target parameter ranges — bridge between raw analysis output and visual parameter space.</div></div>
+<div class="gloss-item"><div class="gloss-term">Python in TD</div><div class="gloss-def">Every operator in TouchDesigner is accessible via Python scripting. Parameter values, CHOP channel reads, event callbacks, OSC parsing, and complex procedural logic can be implemented in TD's embedded Python runtime.</div></div>
+<div class="gloss-item"><div class="gloss-term">Realtime Performance</div><div class="gloss-def">TD runs at fixed frame rates (30/60 fps). All processing — CHOP analysis, SOP geometry, TOP compositing — must complete within one frame budget. Performance optimisation and GPU utilisation are core TD design skills.</div></div>
+<div class="gloss-item"><div class="gloss-term">Perform Mode</div><div class="gloss-def">TD's full-screen output mode, hiding the network editor. The performance window uses the full GPU budget — CHOP analysis, SOP rendering, and TOP compositing drive the output with no editor overhead.</div></div>
+<div class="gloss-item"><div class="gloss-term">Multi-Output</div><div class="gloss-def">TD can drive multiple display outputs simultaneously — LED walls, projectors, DeckLink SDI outputs. Window COMPs define output regions; Output TOP operators manage signal processing for each display surface independently.</div></div>
+</div>
+</section>
+<script>
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const rand=(lo=0,hi=1)=>lo+Math.random()*(hi-lo);
+function noise21(x,y){const ix=Math.floor(x),iy=Math.floor(y);const fx=x-ix,fy=y-iy;const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);const h=(a,b)=>{let n=(a*1619+b*31337)^(a*31337);n=(n>>8)^n;return(n&0xffff)/65535;};return lerp(lerp(h(ix,iy),h(ix+1,iy),ux),lerp(h(ix,iy+1),h(ix+1,iy+1),ux),uy);}
+function fbm(x,y,oct=4){let v=0,a=0.5,f=1;for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}return v;}
+
+class LagFilter{constructor(init,tau){this.value=init;this.tau=tau;}update(target,dt){const k=1-Math.exp(-dt/this.tau);this.value+=k*(target-this.value);return this.value;}}
+const lagHMX=new LagFilter(0.5,0.9);
+const lagHMY=new LagFilter(0.5,0.9);
+const lagHPulse=new LagFilter(0,0.15);
+const lagARFreq=new LagFilter(220,0.5);
+const lagARAmp=new LagFilter(0.6,0.3);
+const lagARSmooth=new LagFilter(0.5,0.3);
+const lagLFORate=new LagFilter(2,0.4);
+const lagEnvAtt=new LagFilter(0.05,0.3);
+const lagEnvRel=new LagFilter(0.4,0.4);
+const lagTDBPM=new LagFilter(128,1.0);
+const lagJitter=new LagFilter(2,0.3);
+const lagBeat=new LagFilter(0,0.06);
+const lagEnvFollow=new LagFilter(0,0.15);
+const lagScopeAmp=new LagFilter(0.6,0.2);
+const lagVisualScale=new LagFilter(0.5,0.3);
+const lagLinkPhase=new LagFilter(0,0.1);
+const lagOSCAnim=new LagFilter(0,0.2);
+
+let mouseX=0.5,mouseY=0.5;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX/window.innerWidth;mouseY=e.clientY/window.innerHeight;});
+
+// HERO WebGL
+const hc=document.getElementById('hero-canvas');
+hc.width=window.innerWidth;hc.height=440;
+window.addEventListener('resize',()=>{hc.width=window.innerWidth;hc.height=440;initHGL();});
+const HVS=`attribute vec2 pos;void main(){gl_Position=vec4(pos,0,1);}`;
+const HFS=`
+precision highp float;
+uniform vec2 u_res;uniform float u_time;uniform vec2 u_mouse;
+float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+17.5);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);a*=.5;p=p*2.1+vec2(1.7,9.2);}return v;}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 st=uv*2.-1.;st.x*=u_res.x/u_res.y;
+  float t=u_time;
+  // Oscilloscope-style waveforms
+  float scope=0.;
+  for(int i=0;i<5;i++){
+    float fi=float(i)/5.;
+    float freq=2.+fi*6.;
+    float wave=sin(st.x*freq*10.+t*(1.+fi*0.8))*0.15*(1.-fi*0.5);
+    scope+=exp(-abs(st.y-wave-fi*0.1+0.2)*30.)*(1.-fi*0.5);
+  }
+  // UV field node connections
+  vec2 q=vec2(fbm(st*0.6+t*0.04),fbm(st*0.6+vec2(1.7,9.2)+t*0.03));
+  float f=fbm(st+1.5*q+t*0.02);
+  // Node pulses
+  float nodes=0.;
+  float[6] nx=float[6](-1.,.-.4,.2,.7,-.7,.4);
+  float[6] ny=float[6](0.,.3,-.2,.1,-.4,.4);
+  for(int i=0;i<6;i++){
+    float d=length(st-vec2(nx[i],ny[i]));
+    nodes+=exp(-d*d*8.)*0.4;
+    float ring=(0.8+float(i)*0.2);
+    nodes+=exp(-abs(d-0.05-0.04*sin(t*3.+float(i)))*20.)*0.3;
+  }
+  vec3 cyan=vec3(0.,1.,0.53);
+  vec3 uv_col=vec3(0.47,0.,1.);
+  vec3 col=vec3(0.01,0.01,0.03);
+  col+=cyan*scope*0.7;
+  col+=mix(cyan,uv_col,f)*f*0.1;
+  col+=cyan*nodes*0.2;
+  vec2 ms=u_mouse*2.-1.;ms.x*=u_res.x/u_res.y;
+  col+=uv_col*exp(-length(st-ms)*4.)*0.25;
+  col+=vec3(0.03,0.03,0.08)*noise(st*40.+t)*0.2;
+  float vig=1.-length(uv-0.5)*1.4;
+  col*=clamp(vig,0.,1.);
+  gl_FragColor=vec4(col,1.);
+}`;
+let hgl,hprog,huniforms={};
+function initHGL(){
+  hgl=hc.getContext('webgl');if(!hgl)return;
+  function mkS(t,src){const s=hgl.createShader(t);hgl.shaderSource(s,src);hgl.compileShader(s);return s;}
+  if(hprog)hgl.deleteProgram(hprog);
+  hprog=hgl.createProgram();
+  hgl.attachShader(hprog,mkS(hgl.VERTEX_SHADER,HVS));
+  hgl.attachShader(hprog,mkS(hgl.FRAGMENT_SHADER,HFS));
+  hgl.linkProgram(hprog);hgl.useProgram(hprog);
+  const buf=hgl.createBuffer();hgl.bindBuffer(hgl.ARRAY_BUFFER,buf);
+  hgl.bufferData(hgl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),hgl.STATIC_DRAW);
+  const pl=hgl.getAttribLocation(hprog,'pos');hgl.enableVertexAttribArray(pl);hgl.vertexAttribPointer(pl,2,hgl.FLOAT,false,0,0);
+  huniforms={res:hgl.getUniformLocation(hprog,'u_res'),time:hgl.getUniformLocation(hprog,'u_time'),mouse:hgl.getUniformLocation(hprog,'u_mouse')};
+}
+initHGL();
+
+// CHOP NETWORK
+const chopC=document.getElementById('chop-canvas');
+const chopX=chopC.getContext('2d');
+function resCHOP(){chopC.width=chopC.offsetWidth;chopC.height=380;}resCHOP();
+window.addEventListener('resize',resCHOP);
+
+const CHOP_NETWORKS={
+  'AUDIO ANALYSIS':{
+    nodes:[
+      {id:'in',x:0.04,y:0.5,label:'Audio\nDevice In',type:'audio',w:90},
+      {id:'filt',x:0.20,y:0.5,label:'Band EQ\nCHOP',type:'filter',w:80},
+      {id:'spec',x:0.36,y:0.3,label:'Spectrum\nCHOP',type:'analysis',w:80},
+      {id:'env',x:0.36,y:0.7,label:'Envelope\nCHOP',type:'filter',w:80},
+      {id:'beat',x:0.52,y:0.5,label:'Beat\nCHOP',type:'analysis',w:70},
+      {id:'math',x:0.66,y:0.5,label:'Math\nCHOP',type:'filter',w:70},
+      {id:'sop',x:0.80,y:0.3,label:'→ SOP\nGeo',type:'gen',w:70},
+      {id:'mat',x:0.80,y:0.7,label:'→ MAT\nShader',type:'gen',w:70},
+    ],
+    edges:[['in','filt'],['filt','spec'],['filt','env'],['spec','beat'],['env','beat'],['beat','math'],['math','sop'],['math','mat']],
+  },
+  'OSC + LFO':{
+    nodes:[
+      {id:'osc',x:0.06,y:0.5,label:'OSC In\nCHOP',type:'audio',w:80},
+      {id:'lfo',x:0.22,y:0.5,label:'LFO\nCHOP',type:'gen',w:70},
+      {id:'mult',x:0.38,y:0.5,label:'Multiply\nCHOP',type:'filter',w:70},
+      {id:'lag',x:0.54,y:0.5,label:'Lag\nCHOP',type:'filter',w:70},
+      {id:'clamp',x:0.68,y:0.5,label:'Clamp\nCHOP',type:'filter',w:70},
+      {id:'out',x:0.84,y:0.5,label:'→ Param\nOut',type:'gen',w:70},
+    ],
+    edges:[['osc','mult'],['lfo','mult'],['mult','lag'],['lag','clamp'],['clamp','out']],
+  },
+  'MIDI PIPELINE':{
+    nodes:[
+      {id:'midi',x:0.06,y:0.5,label:'MIDI In\nCHOP',type:'audio',w:80},
+      {id:'note',x:0.22,y:0.3,label:'MIDI Note\nTrack',type:'filter',w:80},
+      {id:'cc',x:0.22,y:0.7,label:'MIDI CC\nTrack',type:'filter',w:80},
+      {id:'mtof',x:0.38,y:0.3,label:'MIDI to\nFreq',type:'analysis',w:80},
+      {id:'math2',x:0.55,y:0.5,label:'Math\nRemap',type:'filter',w:70},
+      {id:'param',x:0.72,y:0.5,label:'→ CHOP\nParams',type:'gen',w:80},
+    ],
+    edges:[['midi','note'],['midi','cc'],['note','mtof'],['cc','math2'],['mtof','math2'],['math2','param']],
+  },
+  'GENERATIVE':{
+    nodes:[
+      {id:'noise',x:0.06,y:0.5,label:'Noise\nCHOP',type:'gen',w:80},
+      {id:'lfog',x:0.22,y:0.3,label:'LFO\nCHOP',type:'gen',w:70},
+      {id:'beat2',x:0.22,y:0.7,label:'Beat\nCHOP',type:'analysis',w:70},
+      {id:'sel',x:0.38,y:0.5,label:'Select\nCHOP',type:'filter',w:70},
+      {id:'glsl',x:0.54,y:0.5,label:'GLSL\nCHOP',type:'gen',w:70},
+      {id:'hold',x:0.70,y:0.5,label:'Hold\nCHOP',type:'filter',w:70},
+      {id:'outos',x:0.86,y:0.5,label:'→ Audio\nDevice Out',type:'audio',w:80},
+    ],
+    edges:[['noise','sel'],['lfog','sel'],['beat2','sel'],['sel','glsl'],['glsl','hold'],['hold','outos']],
+  },
+};
+
+const TYPE_COLS={audio:'#00FF88',gen:'#7700FF',filter:'#00CCAA',analysis:'#FFD060'};
+let currentNet='AUDIO ANALYSIS';
+let chopPackets=[];
+
+document.getElementById('btn-audio-net').addEventListener('click',()=>{currentNet='AUDIO ANALYSIS';setActiveNet('btn-audio-net');chopPackets=[];});
+document.getElementById('btn-osc-net').addEventListener('click',()=>{currentNet='OSC + LFO';setActiveNet('btn-osc-net');chopPackets=[];});
+document.getElementById('btn-midi-net').addEventListener('click',()=>{currentNet='MIDI PIPELINE';setActiveNet('btn-midi-net');chopPackets=[];});
+document.getElementById('btn-gen-net').addEventListener('click',()=>{currentNet='GENERATIVE';setActiveNet('btn-gen-net');chopPackets=[];});
+
+function setActiveNet(id){
+  ['btn-audio-net','btn-osc-net','btn-midi-net','btn-gen-net'].forEach(bid=>{
+    document.getElementById(bid).classList.toggle('active',bid===id);
+  });
+}
+
+function spawnChopPacket(){
+  const net=CHOP_NETWORKS[currentNet];if(!net)return;
+  const edgeIdx=Math.floor(rand(0,net.edges.length));
+  chopPackets.push({edge:edgeIdx,t:0,speed:rand(0.01,0.025)});
+}
+
+function drawCHOP(t){
+  const W=chopC.width,H=chopC.height;
+  chopX.fillStyle='rgba(2,2,8,0.88)';chopX.fillRect(0,0,W,H);
+  const net=CHOP_NETWORKS[currentNet];if(!net)return;
+  const nodePos={};
+  net.nodes.forEach(n=>{nodePos[n.id]={x:n.x*W,y:n.y*H,w:n.w};});
+
+  net.edges.forEach(([from,to])=>{
+    const a=nodePos[from],b=nodePos[to];if(!a||!b)return;
+    chopX.strokeStyle='rgba(0,255,136,0.2)';chopX.lineWidth=1.5;
+    chopX.beginPath();
+    chopX.moveTo(a.x+(a.w||80),a.y);
+    const cpx=(a.x+(a.w||80)+b.x)/2;
+    chopX.bezierCurveTo(cpx,a.y,cpx,b.y,b.x,b.y);
+    chopX.stroke();
+  });
+
+  chopPackets=chopPackets.filter(p=>p.t<1);
+  chopPackets.forEach(p=>{
+    p.t+=p.speed;
+    const [from,to]=net.edges[p.edge]||[];
+    const a=nodePos[from],b=nodePos[to];if(!a||!b)return;
+    const ax=a.x+(a.w||80);
+    const px=lerp(ax,b.x,p.t);const py=lerp(a.y,b.y,p.t);
+    chopX.beginPath();chopX.arc(px,py,4,0,Math.PI*2);
+    chopX.fillStyle='#00FF88';chopX.shadowBlur=10;chopX.shadowColor='#00FF88';
+    chopX.fill();chopX.shadowBlur=0;
+  });
+
+  net.nodes.forEach(n=>{
+    const {x,y,w}=nodePos[n.id];const nw=w||80,nh=36;
+    const col=TYPE_COLS[n.type]||'#00FF88';
+    chopX.fillStyle='#060614';chopX.strokeStyle=col;chopX.lineWidth=1.5;
+    chopX.fillRect(x,y-nh/2,nw,nh);chopX.strokeRect(x,y-nh/2,nw,nh);
+    chopX.fillStyle=col;chopX.font='8px Courier New';chopX.textAlign='center';
+    n.label.split('\n').forEach((l,li)=>chopX.fillText(l,x+nw/2,y+(li-0.5)*11));
+    chopX.beginPath();chopX.arc(x,y,3,0,Math.PI*2);chopX.fill();
+    chopX.beginPath();chopX.arc(x+nw,y,3,0,Math.PI*2);chopX.fill();
+  });
+}
+
+// AUDIO REACTIVE
+const arScopeC=document.getElementById('ar-scope-canvas');
+const arSX=arScopeC.getContext('2d');
+const arVisC=document.getElementById('ar-visual-canvas');
+const arVX=arVisC.getContext('2d');
+function resAR(){arScopeC.width=arScopeC.offsetWidth;arScopeC.height=240;arVisC.width=arVisC.offsetWidth;arVisC.height=240;}resAR();
+window.addEventListener('resize',resAR);
+const BAND_NAMES=['LOW','MID','HIGH'];
+document.getElementById('sl-ar-freq').addEventListener('input',function(){document.getElementById('v-ar-freq').textContent=this.value+' Hz';});
+document.getElementById('sl-ar-amp').addEventListener('input',function(){document.getElementById('v-ar-amp').textContent=parseFloat(this.value).toFixed(2);});
+document.getElementById('sl-ar-band').addEventListener('input',function(){document.getElementById('v-ar-band').textContent=BAND_NAMES[parseInt(this.value)];});
+document.getElementById('sl-ar-smooth').addEventListener('input',function(){document.getElementById('v-ar-smooth').textContent=Math.round(this.value*100)+'%';});
+
+function drawARScope(t){
+  const W=arScopeC.width,H=arScopeC.height;
+  arSX.fillStyle='rgba(2,2,8,0.2)';arSX.fillRect(0,0,W,H);
+  arSX.strokeStyle='rgba(0,255,136,0.08)';arSX.lineWidth=1;
+  for(let i=0;i<4;i++){const y=H/4*i;arSX.beginPath();arSX.moveTo(0,y);arSX.lineTo(W,y);arSX.stroke();}
+  const freq=lagARFreq.value,amp=lagARScopeAmp||lagARAmp;
+  arSX.strokeStyle='rgba(0,255,68,0.9)';arSX.lineWidth=1.5;arSX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const wave=Math.sin(xf*40*(freq/220)+t*4)*lagARAmp.value*0.5;arSX.lineTo(x,H/2+wave*H*0.4);}
+  arSX.stroke();
+  arSX.fillStyle='#00FF88';arSX.font='9px Courier New';arSX.textAlign='left';
+  arSX.fillText('SCOPE',8,16);
+  arSX.fillText(`${Math.round(freq)} Hz  AMP: ${lagARAmp.value.toFixed(2)}`,8,H-8);
+}
+
+function drawARVisual(t){
+  const W=arVisC.width,H=arVisC.height;
+  arVX.fillStyle='rgba(2,2,8,0.18)';arVX.fillRect(0,0,W,H);
+  const amp=lagARAmp.value;
+  const band=parseInt(document.getElementById('sl-ar-band').value);
+  const bandScale=[1,0.6,0.4][band];
+  const N=24;
+  for(let i=0;i<N;i++){
+    const fi=i/N,angle=fi*Math.PI*2;
+    const rBase=40+band*15;
+    const energy=amp*(0.5+noise21(fi*5,t*0.8+band*3)*0.5)*bandScale;
+    const r=rBase+energy*60;
+    const x=W/2+Math.cos(angle)*r;
+    const y=H/2+Math.sin(angle)*r;
+    arVX.beginPath();arVX.arc(x,y,3+energy*6,0,Math.PI*2);
+    const c=Math.round(lerp(0,255,energy));
+    arVX.fillStyle=`rgba(${c*0.5|0},255,${c*0.3|0},${0.3+energy*0.5})`;
+    arVX.shadowBlur=energy*12;arVX.shadowColor='#00FF88';
+    arVX.fill();arVX.shadowBlur=0;
+  }
+  arVX.fillStyle='#404880';arVX.font='9px Courier New';arVX.textAlign='center';
+  arVX.fillText(`BAND: ${BAND_NAMES[band]}  →  VISUAL`,W/2,H-8);
+}
+
+// MODULATION
+const modC=document.getElementById('mod-canvas');
+const modX=modC.getContext('2d');
+function resMOD(){modC.width=modC.offsetWidth;modC.height=320;}resMOD();
+window.addEventListener('resize',resMOD);
+const LFO_SHAPES=['Sine','Triangle','Square','Sawtooth','Random'];
+document.getElementById('sl-lfo-rate').addEventListener('input',function(){document.getElementById('v-lfo-rate').textContent=parseFloat(this.value).toFixed(1)+' Hz';});
+document.getElementById('sl-lfo-shape').addEventListener('input',function(){document.getElementById('v-lfo-shape').textContent=LFO_SHAPES[parseInt(this.value)];});
+document.getElementById('sl-env-att').addEventListener('input',function(){document.getElementById('v-env-att').textContent=parseFloat(this.value).toFixed(3)+'s';});
+document.getElementById('sl-env-rel').addEventListener('input',function(){document.getElementById('v-env-rel').textContent=parseFloat(this.value).toFixed(2)+'s';});
+
+function lfoWave(x,shape){
+  switch(shape){
+    case 0:return Math.sin(x*Math.PI*2);
+    case 1:return 1-Math.abs(((x%1)*2)-1)*2+1-1;
+    case 2:return x%1<0.5?1:-1;
+    case 3:return (x%1)*2-1;
+    case 4:return noise21(x*0.3,1234)*2-1;
+    default:return Math.sin(x*Math.PI*2);
+  }
+}
+
+function drawMod(t){
+  const W=modC.width,H=modC.height;
+  modX.fillStyle='rgba(2,2,8,0.88)';modX.fillRect(0,0,W,H);
+  const lfoRate=lagLFORate.value;
+  const lfoShape=parseInt(document.getElementById('sl-lfo-shape').value);
+  const envAtt=lagEnvAtt.value;
+  const envRel=lagEnvRel.value;
+  const nLanes=4;const laneH=(H-20)/nLanes;
+
+  // Lane 1: LFO
+  const l1y=10;
+  modX.fillStyle='#7700FF';modX.font='9px Courier New';modX.textAlign='left';modX.fillText('LFO CHOP  ('+LFO_SHAPES[lfoShape]+' @ '+lfoRate.toFixed(1)+'Hz)',8,l1y+12);
+  modX.strokeStyle='rgba(119,0,255,0.8)';modX.lineWidth=1.5;modX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const v=lfoWave(xf*lfoRate*2+t*lfoRate,lfoShape);modX.lineTo(x,l1y+laneH/2+v*laneH*0.35);}
+  modX.stroke();
+
+  // Lane 2: Envelope
+  const l2y=10+laneH;
+  modX.fillStyle='#00CCAA';modX.font='9px Courier New';modX.textAlign='left';modX.fillText(`ENVELOPE CHOP  ATT:${envAtt.toFixed(3)}s  REL:${envRel.toFixed(2)}s`,8,l2y+12);
+  modX.strokeStyle='rgba(0,204,170,0.8)';modX.lineWidth=1.5;modX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const period=envAtt+envRel;const phase=(xf*2)%1;const env=phase<envAtt/period?phase/(envAtt/period):Math.exp(-(phase-envAtt/period)/(envRel/period)*3);modX.lineTo(x,l2y+laneH-env*laneH*0.7);}
+  modX.stroke();
+
+  // Lane 3: Combined (LFO × Env)
+  const l3y=10+laneH*2;
+  modX.fillStyle='#00FF88';modX.font='9px Courier New';modX.textAlign='left';modX.fillText('MATH CHOP  (LFO × ENV)',8,l3y+12);
+  modX.strokeStyle='rgba(0,255,136,0.8)';modX.lineWidth=1.5;modX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const lfo=lfoWave(xf*lfoRate*2+t*lfoRate,lfoShape);const period=envAtt+envRel;const phase=(xf*2)%1;const env=phase<envAtt/period?phase/(envAtt/period):Math.exp(-(phase-envAtt/period)/(envRel/period)*3);modX.lineTo(x,l3y+laneH/2+lfo*env*laneH*0.35);}
+  modX.stroke();
+
+  // Lane 4: Output → Parameter
+  const l4y=10+laneH*3;
+  modX.fillStyle='#FFD060';modX.font='9px Courier New';modX.textAlign='left';modX.fillText('→ PARAM OUT  (remapped)',8,l4y+12);
+  modX.strokeStyle='rgba(255,208,96,0.7)';modX.lineWidth=1.5;modX.beginPath();
+  for(let x=0;x<W;x++){const xf=x/W;const v=(lfoWave(xf*lfoRate*2+t*lfoRate,lfoShape)+1)/2;const mapped=0.2+v*0.8;modX.lineTo(x,l4y+laneH-mapped*laneH*0.8);}
+  modX.stroke();
+
+  // Dividers
+  modX.strokeStyle='rgba(0,255,136,0.06)';modX.lineWidth=1;
+  [laneH,laneH*2,laneH*3].forEach(y=>{modX.beginPath();modX.moveTo(0,10+y);modX.lineTo(W,10+y);modX.stroke();});
+}
+
+// CONVERSION Canvas
+const cnvC=document.getElementById('conv-canvas');
+const cnvX=cnvC.getContext('2d');
+function resCNV(){cnvC.width=cnvC.offsetWidth;cnvC.height=320;}resCNV();
+window.addEventListener('resize',resCNV);
+let cnvPackets=[];
+function spawnCnvPacket(){cnvPackets.push({path:Math.floor(rand(0,3)),t:0,speed:rand(0.006,0.015)});}
+
+function drawConv(t){
+  const W=cnvC.width,H=cnvC.height;
+  cnvX.fillStyle='rgba(2,2,8,0.88)';cnvX.fillRect(0,0,W,H);
+  const families=[
+    {name:'CHOP',subtitle:'Audio / Control',x:0.12,y:0.5,color:'#00FF88'},
+    {name:'SOP',subtitle:'3D Geometry',x:0.38,y:0.25,color:'#7700FF'},
+    {name:'TOP',subtitle:'2D Texture',x:0.38,y:0.75,color:'#00CCAA'},
+    {name:'MAT',subtitle:'Material',x:0.65,y:0.5,color:'#FFD060'},
+    {name:'COMP',subtitle:'Component',x:0.88,y:0.5,color:'#FF6080'},
+  ];
+  const convPaths=[
+    {from:0,to:1,label:'CHOP→SOP'},
+    {from:0,to:2,label:'Audio→TOP'},
+    {from:1,to:3,label:'SOP→MAT'},
+    {from:2,to:3,label:'TOP→MAT'},
+    {from:3,to:4,label:'MAT→COMP'},
+  ];
+  const pos=families.map(f=>({x:f.x*W,y:f.y*H}));
+
+  convPaths.forEach((p,pi)=>{
+    const a=pos[p.from],b=pos[p.to];
+    cnvX.strokeStyle='rgba(0,255,136,0.18)';cnvX.lineWidth=1.5;
+    cnvX.beginPath();cnvX.moveTo(a.x+56,a.y);cnvX.lineTo(b.x-56,b.y);cnvX.stroke();
+    const mx=(a.x+56+b.x-56)/2,my=(a.y+b.y)/2;
+    cnvX.fillStyle='#404880';cnvX.font='8px Courier New';cnvX.textAlign='center';
+    cnvX.fillText(p.label,mx,my-4);
+  });
+
+  cnvPackets=cnvPackets.filter(p=>p.t<1);
+  cnvPackets.forEach(p=>{
+    p.t+=p.speed;
+    const cp=convPaths[Math.min(p.path,convPaths.length-1)];
+    const a=pos[cp.from],b=pos[cp.to];
+    const px=lerp(a.x+56,b.x-56,p.t),py=lerp(a.y,b.y,p.t);
+    cnvX.beginPath();cnvX.arc(px,py,5,0,Math.PI*2);
+    cnvX.fillStyle='#00FF88';cnvX.shadowBlur=10;cnvX.shadowColor='#00FF88';
+    cnvX.fill();cnvX.shadowBlur=0;
+  });
+
+  families.forEach(f=>{
+    const x=f.x*W-56,y=f.y*H-24;
+    cnvX.fillStyle='#06061A';cnvX.strokeStyle=f.color;cnvX.lineWidth=1.5;
+    cnvX.fillRect(x,y,112,48);cnvX.strokeRect(x,y,112,48);
+    cnvX.fillStyle=f.color;cnvX.font='12px Courier New';cnvX.textAlign='center';
+    cnvX.fillText(f.name,f.x*W,f.y*H-2);
+    cnvX.fillStyle='#404880';cnvX.font='8px Courier New';
+    cnvX.fillText(f.subtitle,f.x*W,f.y*H+12);
+  });
+}
+
+// SYNC Canvas
+const syncC=document.getElementById('sync-canvas');
+const syncX=syncC.getContext('2d');
+function resSYNC(){syncC.width=syncC.offsetWidth;syncC.height=300;}resSYNC();
+window.addEventListener('resize',resSYNC);
+document.getElementById('sl-td-bpm').addEventListener('input',function(){document.getElementById('v-td-bpm').textContent=parseFloat(this.value).toFixed(1)+' BPM';});
+document.getElementById('sl-osc-rate').addEventListener('input',function(){document.getElementById('v-osc-rate').textContent=this.value+' Hz';});
+document.getElementById('sl-jitter').addEventListener('input',function(){document.getElementById('v-jitter').textContent=parseFloat(this.value).toFixed(1)+' ms';});
+let oscMessages=[];
+
+function drawSync(t){
+  const W=syncC.width,H=syncC.height;
+  syncX.fillStyle='rgba(2,2,8,0.88)';syncX.fillRect(0,0,W,H);
+  const bpm=lagTDBPM.value;
+  const phase=(t*(bpm/60))%1;
+  const jitter=lagJitter.value;
+
+  // Link beat visualizer
+  const cx=W*0.28,cy=H*0.45;const R=60;
+  syncX.strokeStyle='rgba(0,255,136,0.1)';syncX.lineWidth=1;
+  syncX.beginPath();syncX.arc(cx,cy,R,0,Math.PI*2);syncX.stroke();
+  const beatAngle=-Math.PI/2+phase*Math.PI*2;
+  syncX.strokeStyle='rgba(0,255,136,0.6)';syncX.lineWidth=2;
+  syncX.beginPath();syncX.arc(cx,cy,R,-Math.PI/2,beatAngle);syncX.stroke();
+  syncX.beginPath();syncX.arc(cx,cy,6,0,Math.PI*2);
+  syncX.fillStyle='rgba(0,255,136,0.3)';syncX.fill();
+  syncX.fillStyle='#00FF88';syncX.font='11px Courier New';syncX.textAlign='center';
+  syncX.fillText(bpm.toFixed(1),cx,cy-4);
+  syncX.fillStyle='#404880';syncX.font='8px Courier New';
+  syncX.fillText('LINK BPM',cx,cy+10);
+
+  // Beat dot on ring
+  const dotX=cx+R*Math.cos(beatAngle),dotY=cy+R*Math.sin(beatAngle);
+  syncX.beginPath();syncX.arc(dotX,dotY,6,0,Math.PI*2);
+  syncX.fillStyle='#00FF88';syncX.shadowBlur=12;syncX.shadowColor='#00FF88';
+  syncX.fill();syncX.shadowBlur=0;
+
+  // OSC message stream
+  const oscX=W*0.6;
+  syncX.fillStyle='#404880';syncX.font='9px Courier New';syncX.textAlign='left';
+  syncX.fillText('OSC STREAM',oscX,16);
+  const oscRate=parseInt(document.getElementById('sl-osc-rate').value);
+  const period=1/oscRate;
+  const msgCount=Math.floor(t/period)%20;
+  const OSC_MSGS=['/td/beat 1','/td/phase 0.75','/td/amp 0.82','/td/freq 220','/td/color 0.3 0.7 1','/td/scale 1.24','/td/rotate 0.12','/td/pos 0.5 0.3'];
+  for(let i=0;i<8;i++){
+    const age=i*0.1;const alpha=Math.exp(-age*3)*(0.3+Math.sin(t*oscRate+i)*0.1+0.1);
+    const jitterOffset=noise21(i*5,t*10)*jitter*0.002;
+    syncX.fillStyle=`rgba(0,255,136,${alpha})`;
+    syncX.fillText(OSC_MSGS[(msgCount+i)%OSC_MSGS.length],oscX,36+i*24+jitterOffset*100);
+  }
+  // Jitter line
+  const jitY=H-40;
+  syncX.fillStyle='#404880';syncX.font='8px Courier New';
+  syncX.fillText(`JITTER: ${jitter.toFixed(1)}ms`,oscX,jitY-4);
+  for(let x=0;x<W*0.4;x++){const xf=x/(W*0.4);const j=jitter*(noise21(xf*30+t*5,1234)*2-1);const y=jitY+j*0.5;x===0?syncX.moveTo(oscX+x,y):syncX.lineTo(oscX+x,y);}
+}
+
+// MAIN LOOP
+let lastT=0,chopPkT=0,cnvPkT=0;
+function frame(now){
+  const dt=Math.min((now-lastT)/1000,0.05);lastT=now;
+  const t=now/1000;
+  lagHMX.update(mouseX,dt);lagHMY.update(mouseY,dt);
+  lagARFreq.update(parseFloat(document.getElementById('sl-ar-freq').value),dt);
+  lagARAmp.update(parseFloat(document.getElementById('sl-ar-amp').value),dt);
+  lagARSmooth.update(parseFloat(document.getElementById('sl-ar-smooth').value),dt);
+  lagLFORate.update(parseFloat(document.getElementById('sl-lfo-rate').value),dt);
+  lagEnvAtt.update(parseFloat(document.getElementById('sl-env-att').value),dt);
+  lagEnvRel.update(parseFloat(document.getElementById('sl-env-rel').value),dt);
+  lagTDBPM.update(parseFloat(document.getElementById('sl-td-bpm').value),dt);
+  lagJitter.update(parseFloat(document.getElementById('sl-jitter').value),dt);
+  lagHPulse.update(Math.sin(t*2)*0.5+0.5,dt);
+
+  if(hgl&&hprog){hgl.viewport(0,0,hc.width,hc.height);hgl.useProgram(hprog);hgl.uniform2f(huniforms.res,hc.width,hc.height);hgl.uniform1f(huniforms.time,t);hgl.uniform2f(huniforms.mouse,lagHMX.value,1-lagHMY.value);hgl.drawArrays(hgl.TRIANGLE_STRIP,0,4);}
+  chopPkT+=dt;if(chopPkT>0.08){spawnChopPacket();chopPkT=0;}
+  drawCHOP(t);
+  drawARScope(t);
+  drawARVisual(t);
+  drawMod(t);
+  cnvPkT+=dt;if(cnvPkT>0.12){spawnCnvPacket();cnvPkT=0;}
+  drawConv(t);
+  drawSync(t);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t=>{lastT=t;requestAnimationFrame(frame);});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+</script>

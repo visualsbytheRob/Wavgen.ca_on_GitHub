@@ -1,0 +1,987 @@
+---
+layout: world.njk
+title: "Immersive Media — WAVGEN AV Universe"
+description: "Immersive av world exploring immersive media"
+domain: av
+permalink: /av/immersive-media/
+---
+
+
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 1 — HERO: 360° SPHERE / SPATIAL DIMENSION
+     ══════════════════════════════════════════════════════ -->
+<div id="hero">
+<canvas id="hero-webgl"></canvas>
+<canvas id="hero-overlay-canvas"></canvas>
+<div class="hero-hud">
+<div class="hud-line">MODE <span id="hud-mode">VR</span></div>
+<div class="hud-line">FOV <span id="hud-fov">110°</span></div>
+<div class="hud-line">IPD <span id="hud-ipd">63mm</span></div>
+<div class="hud-line">LATENCY <span id="hud-lat">11ms</span></div>
+</div>
+<div class="hero-overlay">
+<div class="hero-label">AV Universe · Spatial Computing</div>
+<div class="hero-title">Immersive<br/>Media</div>
+<div class="hero-sub">Step inside the navigable dimension — where physical and digital dissolve, presence replaces viewership, and every coordinate is an experience.</div>
+</div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 2 — XR SPECTRUM
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="xr-spectrum">
+<div class="sec-label">Section 02 · Reality Continuum</div>
+<h2>The XR Spectrum</h2>
+<p class="prose">Paul Milgram's Reality-Virtuality Continuum spans physical reality through Mixed Reality to full Virtual Reality. Augmented Reality overlays digital onto the physical; Mixed Reality anchors digital objects to physical surfaces; VR replaces perception entirely. Move the slider to explore the continuum.</p>
+<div class="slider-row">
+<label>Reality ↔ Virtual</label>
+<input id="sl-xr" max="100" min="0" type="range" value="50"/>
+<span class="val" id="vl-xr">MR</span>
+</div>
+<div class="xr-track" id="xr-track">
+<div class="xr-track-fill" id="xr-fill" style="width:50%"></div>
+<div class="xr-labels">
+<div class="xr-label-item" id="lbl-ar">Augmented Reality</div>
+<div class="xr-label-item active" id="lbl-mr">Mixed Reality</div>
+<div class="xr-label-item" id="lbl-vr">Virtual Reality</div>
+</div>
+<div class="xr-marker" id="xr-marker" style="left:50%"></div>
+</div>
+<div class="canvas-panel">
+<div class="panel-title">Reality Composition — Drag Slider to Blend</div>
+<canvas height="240" id="xr-canvas" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 3 — SPATIAL COMPUTING
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="spatial">
+<div class="sec-label">Section 03 · Room-Scale Mapping</div>
+<h2>Spatial Computing</h2>
+<p class="prose">Spatial computing anchors digital objects to physical space using simultaneous localization and mapping (SLAM). Anchor points persist across sessions; planes are detected for surface placement; a mesh represents the physical environment as navigable geometry. Move cursor to orbit the room.</p>
+<div class="slider-row">
+<label>Anchor Density</label>
+<input id="sl-anchor" max="60" min="5" type="range" value="20"/>
+<span class="val" id="vl-anchor">20</span>
+</div>
+<div class="slider-row">
+<label>Mesh Detail</label>
+<input id="sl-mesh" max="100" min="0" type="range" value="60"/>
+<span class="val" id="vl-mesh">0.60</span>
+</div>
+<div class="canvas-panel">
+<div class="panel-title">Room-Scale SLAM Map — Move Cursor to Orbit</div>
+<canvas height="360" id="spatial-canvas" style="cursor:crosshair;" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 4 — 360° CAPTURE
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="capture360">
+<div class="sec-label">Section 04 · Spherical Video</div>
+<h2>360° Capture &amp; Projection</h2>
+<p class="prose">360° cameras capture the full sphere simultaneously using fisheye lenses and computational stitching. Equirectangular projection maps the sphere to a 2:1 rectangular image that can be rendered as a skybox or reprojected for any viewing direction. Drag to navigate the projection below.</p>
+<div class="slider-row">
+<label>Yaw</label>
+<input id="sl-yaw" max="180" min="-180" type="range" value="0"/>
+<span class="val" id="vl-yaw">0°</span>
+</div>
+<div class="slider-row">
+<label>Pitch</label>
+<input id="sl-pitch" max="60" min="-60" type="range" value="0"/>
+<span class="val" id="vl-pitch">0°</span>
+</div>
+<div class="slider-row">
+<label>FOV</label>
+<input id="sl-fov360" max="160" min="40" type="range" value="90"/>
+<span class="val" id="vl-fov360">90°</span>
+</div>
+<div class="canvas-panel">
+<div class="panel-title">Equirectangular Projection — Viewport Preview</div>
+<canvas height="280" id="equirect-canvas" style="cursor:grab;" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 5 — HEADSET ECOSYSTEM
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="headsets">
+<div class="sec-label">Section 05 · Device Ecosystem</div>
+<h2>Headset Ecosystem</h2>
+<p class="prose">The XR headset landscape spans standalone mobile compute (Quest), tethered high-fidelity PC VR (Valve Index, Pimax), mixed reality passthrough (Apple Vision Pro, Quest 3), and enterprise AR (HoloLens, Magic Leap). Click a headset to inspect its capability profile.</p>
+<div class="headset-grid" id="headset-grid"></div>
+<div class="canvas-panel" style="margin-top:1.5rem;">
+<div class="panel-title">Capability Radar — Click Headset to Compare</div>
+<canvas height="300" id="headset-radar" width="1000"></canvas>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 6 — DISPLAY TECHNOLOGY
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="display">
+<div class="sec-label">Section 06 · Optics &amp; Display</div>
+<h2>Display Technology</h2>
+<p class="prose">XR displays span LCD, OLED, microOLED, and laser projection. Key parameters are resolution per eye, refresh rate, field of view, lens type (fresnel, pancake, birdbath), and pixel density (PPD). The vergence-accommodation conflict — where eye focus distance and convergence plane diverge — remains the core optical challenge.</p>
+<div class="canvas-panel">
+<div class="panel-title">Display Parameter Comparison</div>
+<canvas height="280" id="display-canvas" width="1000"></canvas>
+</div>
+<div class="display-bars" id="display-bars"></div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 7 — SPATIAL AUDIO
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="audio">
+<div class="sec-label">Section 07 · Binaural Sound</div>
+<h2>Spatial Audio</h2>
+<p class="prose">Head-Related Transfer Functions (HRTFs) model how the ears, head, and pinnae shape sound before it reaches the eardrums. Convolving a mono audio source with direction-dependent HRTFs creates the perception of sound at any 3D position. Move cursor to reposition the audio source.</p>
+<div id="audio-layout">
+<div class="canvas-panel" style="margin-bottom:0;">
+<div class="panel-title">HRTF Sound Position — Move Cursor</div>
+<canvas height="320" id="hrtf-canvas" style="cursor:crosshair;" width="480"></canvas>
+</div>
+<div class="canvas-panel" style="margin-bottom:0;">
+<div class="panel-title">Binaural Waveform — L/R Channel</div>
+<canvas height="320" id="binaural-canvas" width="480"></canvas>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 8 — ARTISTS
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="artists">
+<div class="sec-label">Section 08 · Practitioners</div>
+<h2>Artists &amp; Researchers</h2>
+<p class="prose">Immersive media sits at the intersection of technology, storytelling, embodiment, and neuroscience — practitioners spanning creative VR directors, spatial computing engineers, installation artists, and academic researchers.</p>
+<div class="artists-grid" id="artists-grid"></div>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SECTION 9 — GLOSSARY
+     ══════════════════════════════════════════════════════ -->
+<section class="hidden" id="glossary">
+<div class="sec-label">Section 09 · Reference</div>
+<h2>Glossary</h2>
+<p class="prose">Core terminology spanning XR hardware, spatial computing, display optics, tracking systems, and immersive content production.</p>
+<div class="gloss-grid" id="gloss-grid"></div>
+</section>
+<footer>WAVGEN AV Universe · <span>Immersive Media</span> · Spatial Computing Systems · 2024</footer>
+<script>
+'use strict';
+
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// ── LagFilter instances ──────────────────────────────────────
+const lagHeroMX    = new LagFilter(0.5, 0.4);
+const lagHeroMY    = new LagFilter(0.5, 0.4);
+const lagHeroYaw   = new LagFilter(0, 0.5);
+const lagXRSlider  = new LagFilter(0.5, 0.3);
+const lagAnchor    = new LagFilter(20, 0.4);
+const lagMeshDet   = new LagFilter(0.6, 0.3);
+const lagYaw       = new LagFilter(0, 0.25);
+const lagPitch     = new LagFilter(0, 0.25);
+const lagFOV       = new LagFilter(90, 0.25);
+const lagHRTFX     = new LagFilter(0, 0.2);
+const lagHRTFY     = new LagFilter(0, 0.2);
+const lagSpatialMX = new LagFilter(0.5, 0.2);
+const lagSpatialMY = new LagFilter(0.5, 0.2);
+const lagRadar     = new LagFilter(0, 0.4);
+const lagWave      = new LagFilter(0, 0.15);
+const lagDisplayT  = new LagFilter(0, 0.5);
+
+function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
+function rand(lo,hi){return lo+Math.random()*(hi-lo);}
+function noise21(x,y){const n=Math.sin(x*127.1+y*311.7)*43758.5453;return n-Math.floor(n);}
+function fbm(x,y,oct=4){let v=0,a=0.5,f=1;for(let i=0;i<oct;i++){v+=a*(noise21(x*f,y*f)*2-1);a*=0.5;f*=2.1;}return v;}
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 1 — HERO: NAVIGABLE SPHERE
+   ═══════════════════════════════════════════════════════ */
+(function initHero() {
+  const wgl = document.getElementById('hero-webgl');
+  const gl = wgl.getContext('webgl');
+  let W, H, prog, uTime, uRes, uMouse;
+
+  function resize() {
+    W = wgl.parentElement.clientWidth;
+    H = wgl.parentElement.clientHeight;
+    wgl.width = W; wgl.height = H;
+    if (gl) gl.viewport(0, 0, W, H);
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  let heroMX = 0.5, heroMY = 0.5;
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', e => {
+    const r = wgl.getBoundingClientRect();
+    heroMX = (e.clientX - r.left) / r.width;
+    heroMY = (e.clientY - r.top) / r.height;
+  });
+
+  const vsSrc = `attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
+  const fsSrc = `
+    precision highp float;
+    uniform float u_t;
+    uniform vec2 u_res;
+    uniform vec2 u_mouse;
+    float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+    float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1)),u.x),u.y);}
+    float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.1;a*=.5;}return v;}
+    void main(){
+      vec2 uv=(gl_FragCoord.xy/u_res)*2.-1.;
+      uv.x*=u_res.x/u_res.y;
+      // sphere projection
+      float r=length(uv);
+      if(r>1.2){gl_FragColor=vec4(0.01,0.02,0.04,1.);return;}
+      vec2 m=(u_mouse-.5)*2.;
+      float yaw=m.x*1.5+u_t*.1;
+      float pitch=m.y*.8;
+      // ray direction
+      vec3 rd=normalize(vec3(uv,1.));
+      mat3 Ry=mat3(cos(yaw),0,sin(yaw),0,1,0,-sin(yaw),0,cos(yaw));
+      mat3 Rx=mat3(1,0,0,0,cos(pitch),-sin(pitch),0,sin(pitch),cos(pitch));
+      rd=Ry*Rx*rd;
+      // equirectangular sample
+      float lon=atan(rd.x,rd.z);
+      float lat=asin(clamp(rd.y,-1.,1.));
+      vec2 sph=vec2(lon/3.14159*0.5+0.5, lat/1.5708*0.5+0.5);
+      // procedural 360° scene
+      float n=fbm(sph*4.+u_t*.08);
+      float n2=fbm(sph*8.-u_t*.05);
+      float stars=step(0.98,noise(sph*120.));
+      vec3 skyCol=mix(vec3(0.01,0.02,0.1),vec3(0.05,0.15,0.4),sph.y);
+      skyCol=mix(skyCol,vec3(0.12,0.06,0.25),(1.-sph.y)*0.4);
+      skyCol+=n*.08*vec3(0.1,0.3,0.9);
+      skyCol+=n2*.03*vec3(0.,0.5,1.);
+      skyCol+=stars*0.9;
+      // horizon glow
+      float horiz=exp(-abs(sph.y-.5)*8.)*0.3;
+      skyCol+=horiz*vec3(0.1,0.4,1.0);
+      // vignette
+      float vig=1.-r*0.7;
+      gl_FragColor=vec4(skyCol*vig,1.);
+    }
+  `;
+
+  if (gl) {
+    const compile = (type, src) => { const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; };
+    prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vsSrc));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fsSrc));
+    gl.linkProgram(prog); gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    const a = gl.getAttribLocation(prog, 'a');
+    gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+    uTime = gl.getUniformLocation(prog, 'u_t');
+    uRes  = gl.getUniformLocation(prog, 'u_res');
+    uMouse = gl.getUniformLocation(prog, 'u_mouse');
+  }
+
+  const oc = document.getElementById('hero-overlay-canvas');
+  const ctx2 = oc.getContext('2d');
+  let frame = 0, lastT = performance.now();
+  const modes = ['VR', 'MR', 'AR', 'VR'];
+  let modeIdx = 0, modeTimer = 0;
+
+  function drawHero(ts) {
+    const dt = clamp((ts-lastT)/1000, 0, 0.05); lastT = ts; frame++;
+    const smx = lagHeroMX.update(heroMX, dt);
+    const smy = lagHeroMY.update(heroMY, dt);
+    lagHeroYaw.update((smx - 0.5) * 2, dt);
+
+    modeTimer += dt;
+    if (modeTimer > 3) { modeTimer = 0; modeIdx = (modeIdx + 1) % modes.length; }
+
+    if (gl) {
+      resize();
+      gl.viewport(0, 0, W, H);
+      gl.uniform1f(uTime, ts/1000);
+      gl.uniform2f(uRes, W, H);
+      gl.uniform2f(uMouse, smx, smy);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+
+    oc.width = W; oc.height = H;
+    ctx2.clearRect(0, 0, W, H);
+
+    // reticle
+    const cx = W*0.5, cy = H*0.42;
+    ctx2.strokeStyle='rgba(96,160,255,0.5)'; ctx2.lineWidth=1;
+    ctx2.beginPath(); ctx2.arc(cx,cy,20,0,Math.PI*2); ctx2.stroke();
+    ctx2.beginPath(); ctx2.moveTo(cx-30,cy); ctx2.lineTo(cx+30,cy); ctx2.stroke();
+    ctx2.beginPath(); ctx2.moveTo(cx,cy-30); ctx2.lineTo(cx,cy+30); ctx2.stroke();
+
+    // anchor dots scattered in view
+    for (let i=0;i<8;i++) {
+      const ax = cx + Math.cos(ts/2000+i*1.1)*150*(0.5+i*0.06);
+      const ay = cy + Math.sin(ts/2000+i*0.9)*80*(0.5+i*0.06);
+      ctx2.beginPath(); ctx2.arc(ax,ay,3,0,Math.PI*2);
+      ctx2.fillStyle='rgba(0,212,200,0.6)'; ctx2.fill();
+      ctx2.strokeStyle='rgba(0,212,200,0.3)'; ctx2.lineWidth=1;
+      ctx2.beginPath(); ctx2.arc(ax,ay,8,0,Math.PI*2); ctx2.stroke();
+    }
+
+    document.getElementById('hud-mode').textContent = modes[modeIdx];
+    document.getElementById('hud-lat').textContent = (9+Math.random()*4).toFixed(0)+'ms';
+
+    requestAnimationFrame(drawHero);
+  }
+  requestAnimationFrame(drawHero);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 2 — XR SPECTRUM
+   ═══════════════════════════════════════════════════════ */
+(function initXRSpectrum() {
+  const canvas = document.getElementById('xr-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let xrVal = 0.5;
+
+  const sl = document.getElementById('sl-xr');
+  sl.addEventListener('input', e => {
+    xrVal = e.target.value / 100;
+    const labels = ['AR','MR','MR','VR'];
+    const idx = Math.floor(xrVal * 3);
+    document.getElementById('vl-xr').textContent = labels[Math.min(idx, 3)];
+    document.getElementById('xr-fill').style.width = (xrVal * 100) + '%';
+    document.getElementById('xr-marker').style.left = (xrVal * 100) + '%';
+    ['ar','mr','vr'].forEach((id, i) => {
+      document.getElementById(`lbl-${id}`).classList.toggle('active', Math.abs(xrVal - (i * 0.5)) < 0.25);
+    });
+  });
+
+  let lastX = performance.now();
+  function animXR(ts) {
+    const dt = clamp((ts-lastX)/1000,0,0.05); lastX = ts;
+    const t = ts/1000;
+    const sv = lagXRSlider.update(xrVal, dt);
+
+    ctx.fillStyle = '#04060E'; ctx.fillRect(0,0,W,H);
+
+    // physical world (left) — grid representing real space
+    const physAlpha = clamp(1 - sv * 1.5, 0, 1);
+    ctx.globalAlpha = physAlpha * 0.8 + 0.05;
+    ctx.strokeStyle = '#3A4A70'; ctx.lineWidth = 1;
+    for (let gx=0;gx<W*0.5;gx+=30){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for (let gy=0;gy<H;gy+=30){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W*0.5,gy);ctx.stroke();}
+    ctx.globalAlpha = 1;
+
+    // virtual world (right) — flowing noise field
+    const virtAlpha = clamp(sv * 1.5 - 0.1, 0, 1);
+    const img = ctx.createImageData(W, H);
+    for (let y=0;y<H;y+=2){
+      for (let x=W*0.5|0;x<W;x+=2){
+        const nx=x/W, ny=y/H;
+        const n=fbm(nx*4+t*0.1, ny*4+t*0.08);
+        const r=Math.round(clamp(n+0.3,0,1)*32);
+        const g=Math.round(clamp(n+0.1,0,1)*96);
+        const b=Math.round(clamp(n+0.5,0,1)*255);
+        const a=Math.round(virtAlpha*200);
+        for(let dy=0;dy<2;dy++) for(let dx=0;dx<2;dx++){
+          const i=(y+dy)*W+(x+dx); if(i>=W*H)continue;
+          img.data[i*4]=r;img.data[i*4+1]=g;img.data[i*4+2]=b;img.data[i*4+3]=a;
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+
+    // overlay: anchor points mixed by xrVal
+    const numAnchors = Math.round(sv * 12);
+    for (let i=0;i<numAnchors;i++) {
+      const ax = rand(20, W-20), ay = rand(20, H-20);
+      ctx.beginPath(); ctx.arc(ax,ay,3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,200,${0.4+sv*0.4})`; ctx.fill();
+      ctx.strokeStyle=`rgba(0,212,200,${0.2+sv*0.3})`; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(ax,ay,10,0,Math.PI*2); ctx.stroke();
+    }
+
+    // blend label
+    ctx.fillStyle=`rgba(96,160,255,0.8)`; ctx.font='11px Courier New';
+    ctx.fillText(`Physical: ${Math.round((1-sv)*100)}%  |  Digital: ${Math.round(sv*100)}%`, 12, 20);
+
+    requestAnimationFrame(animXR);
+  }
+  requestAnimationFrame(animXR);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 3 — SPATIAL COMPUTING (3D ROOM)
+   ═══════════════════════════════════════════════════════ */
+(function initSpatial() {
+  const canvas = document.getElementById('spatial-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let mx=0.5, my=0.5, anchorTarget=20, meshTarget=0.6;
+
+  document.getElementById('sl-anchor').addEventListener('input',e=>{
+    anchorTarget=parseInt(e.target.value);
+    document.getElementById('vl-anchor').textContent=anchorTarget;
+  });
+  document.getElementById('sl-mesh').addEventListener('input',e=>{
+    meshTarget=e.target.value/100;
+    document.getElementById('vl-mesh').textContent=meshTarget.toFixed(2);
+  });
+  canvas.addEventListener('mousemove',e=>{
+    const r=canvas.getBoundingClientRect();
+    mx=(e.clientX-r.left)/canvas.clientWidth;
+    my=(e.clientY-r.top)/canvas.clientHeight;
+  });
+
+  // room geometry (8 corners of a box)
+  const ROOM = {w:4, h:3, d:5};
+  const corners = [
+    [-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],
+    [-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]
+  ].map(([x,y,z])=>[x*ROOM.w/2, y*ROOM.h/2, z*ROOM.d/2]);
+  const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+
+  function project(x,y,z,yaw,pitch,scale) {
+    const cy=Math.cos(yaw),sy=Math.sin(yaw);
+    const cp=Math.cos(pitch),sp=Math.sin(pitch);
+    let rx=cy*x+sy*z, rz=-sy*x+cy*z;
+    let ry2=cp*y-sp*rz, rz2=sp*y+cp*rz;
+    rz2=Math.max(rz2+8,0.1);
+    return { x:W/2+rx/rz2*scale, y:H/2-ry2/rz2*scale, z:rz2 };
+  }
+
+  // place anchors randomly in room
+  const anchors = Array.from({length:60},()=>({
+    x:rand(-ROOM.w/2,ROOM.w/2), y:rand(-ROOM.h/2,ROOM.h/2), z:rand(-ROOM.d/2,ROOM.d/2),
+    type:Math.random()<0.3?'plane':'point'
+  }));
+
+  let lastSp = performance.now();
+  function animSpatial(ts) {
+    const dt = clamp((ts-lastSp)/1000,0,0.05); lastSp = ts;
+    const smx = lagSpatialMX.update(mx, dt);
+    const smy = lagSpatialMY.update(my, dt);
+    const yaw = (smx-0.5)*Math.PI*1.2;
+    const pitch = (smy-0.5)*Math.PI*0.5;
+    const scale = 90;
+
+    const na = lagAnchor.update(anchorTarget, dt);
+    const md = lagMeshDet.update(meshTarget, dt);
+
+    ctx.fillStyle = 'rgba(2,4,8,0.25)'; ctx.fillRect(0,0,W,H);
+
+    // room edges
+    const proj = corners.map(([x,y,z])=>project(x,y,z,yaw,pitch,scale));
+    ctx.strokeStyle='rgba(32,96,255,0.25)'; ctx.lineWidth=1;
+    edges.forEach(([a,b])=>{
+      ctx.beginPath();
+      ctx.moveTo(proj[a].x,proj[a].y);
+      ctx.lineTo(proj[b].x,proj[b].y);
+      ctx.stroke();
+    });
+
+    // mesh grid (floor)
+    const meshAlpha = md * 0.5;
+    ctx.strokeStyle=`rgba(32,96,255,${meshAlpha})`;
+    ctx.lineWidth=0.5;
+    const gridN=8;
+    for(let i=0;i<=gridN;i++){
+      const x=lerp(-ROOM.w/2,ROOM.w/2,i/gridN);
+      const p1=project(x,-ROOM.h/2,-ROOM.d/2,yaw,pitch,scale);
+      const p2=project(x,-ROOM.h/2,ROOM.d/2,yaw,pitch,scale);
+      ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+    }
+    for(let i=0;i<=gridN;i++){
+      const z=lerp(-ROOM.d/2,ROOM.d/2,i/gridN);
+      const p1=project(-ROOM.w/2,-ROOM.h/2,z,yaw,pitch,scale);
+      const p2=project(ROOM.w/2,-ROOM.h/2,z,yaw,pitch,scale);
+      ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+    }
+
+    // anchors
+    const nShow = Math.round(na);
+    anchors.slice(0,nShow).forEach(a=>{
+      const p=project(a.x,a.y,a.z,yaw,pitch,scale);
+      const depth=clamp(1-(p.z/15),0.2,1);
+      if(a.type==='plane'){
+        ctx.strokeStyle=`rgba(0,212,200,${depth*0.6})`;
+        ctx.lineWidth=0.8;
+        const s=15/p.z;
+        ctx.strokeRect(p.x-s,p.y-s,s*2,s*2);
+      } else {
+        ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
+        ctx.fillStyle=`rgba(96,160,255,${depth*0.8})`; ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x,p.y,7,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(96,160,255,${depth*0.3})`; ctx.lineWidth=1; ctx.stroke();
+      }
+    });
+
+    // camera indicator
+    ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.font='10px Courier New';
+    ctx.fillText(`ANCHORS: ${nShow}  YAW: ${(yaw*180/Math.PI).toFixed(0)}°  PITCH: ${(pitch*180/Math.PI).toFixed(0)}°`, 12, 20);
+
+    requestAnimationFrame(animSpatial);
+  }
+  requestAnimationFrame(animSpatial);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 4 — 360° EQUIRECTANGULAR
+   ═══════════════════════════════════════════════════════ */
+(function init360() {
+  const canvas = document.getElementById('equirect-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let yawT=0, pitchT=0, fovT=90;
+  let dragging=false, lastDragX=0, lastDragY=0;
+
+  document.getElementById('sl-yaw').addEventListener('input',e=>{
+    yawT=parseInt(e.target.value);
+    document.getElementById('vl-yaw').textContent=yawT+'°';
+  });
+  document.getElementById('sl-pitch').addEventListener('input',e=>{
+    pitchT=parseInt(e.target.value);
+    document.getElementById('vl-pitch').textContent=pitchT+'°';
+  });
+  document.getElementById('sl-fov360').addEventListener('input',e=>{
+    fovT=parseInt(e.target.value);
+    document.getElementById('vl-fov360').textContent=fovT+'°';
+  });
+
+  canvas.addEventListener('mousedown',e=>{dragging=true;lastDragX=e.clientX;lastDragY=e.clientY;canvas.style.cursor='grabbing';});
+  canvas.addEventListener('mouseup',()=>{dragging=false;canvas.style.cursor='grab';});
+  canvas.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    yawT=clamp(yawT+(e.clientX-lastDragX)*0.3,-180,180);
+    pitchT=clamp(pitchT+(e.clientY-lastDragY)*0.2,-60,60);
+    lastDragX=e.clientX; lastDragY=e.clientY;
+    document.getElementById('sl-yaw').value=yawT;
+    document.getElementById('vl-yaw').textContent=yawT.toFixed(0)+'°';
+    document.getElementById('sl-pitch').value=pitchT;
+    document.getElementById('vl-pitch').textContent=pitchT.toFixed(0)+'°';
+  });
+
+  // generate equirectangular panorama
+  const panoW=512, panoH=256;
+  const pano=new Uint8Array(panoW*panoH*3);
+  for(let y=0;y<panoH;y++){
+    for(let x=0;x<panoW;x++){
+      const u=x/panoW, v=y/panoH;
+      const lon=(u-0.5)*Math.PI*2, lat=(v-0.5)*Math.PI;
+      const rx=Math.cos(lat)*Math.sin(lon);
+      const ry=Math.sin(lat);
+      const rz=Math.cos(lat)*Math.cos(lon);
+      const n=fbm(rx*2+1.3, ry*2+0.7)*0.5+fbm(rz*2, ry*3)*0.3;
+      const stars=noise21(u*80,v*40)>0.97?1:0;
+      const sky=clamp(0.5-lat/Math.PI,0,1);
+      const i=(y*panoW+x)*3;
+      pano[i]=Math.round((sky*0.05+n*0.08+stars*0.9)*255);
+      pano[i+1]=Math.round((sky*0.15+n*0.15+stars*0.9)*255);
+      pano[i+2]=Math.round((sky*0.4+n*0.3+stars*0.9)*255);
+    }
+  }
+
+  let lastEq = performance.now();
+  function animEq(ts) {
+    const dt=clamp((ts-lastEq)/1000,0,0.05); lastEq=ts;
+    const sy=lagYaw.update(yawT,dt)*Math.PI/180;
+    const sp=lagPitch.update(pitchT,dt)*Math.PI/180;
+    const sf=lagFOV.update(fovT,dt)*Math.PI/180;
+
+    // render viewport from sphere
+    const img=ctx.createImageData(W,H);
+    const fw=sf*(W/H), fh=sf;
+    for(let y=0;y<H;y+=2){
+      for(let x=0;x<W;x+=2){
+        const rx=(x/W-0.5)*fw, ry=(y/H-0.5)*fh;
+        // ray through viewport
+        const vx=Math.sin(rx)*Math.cos(ry);
+        const vy=Math.sin(ry);
+        const vz=Math.cos(rx)*Math.cos(ry);
+        // rotate by yaw+pitch
+        const cy=Math.cos(sy),_sy=Math.sin(sy);
+        const cp=Math.cos(sp),_sp=Math.sin(sp);
+        const wx=cy*vx+_sy*vz, wz=-_sy*vx+cy*vz;
+        const wy=cp*vy-_sp*wz, wz2=_sp*vy+cp*wz;
+        // sample pano
+        const lon=Math.atan2(wx,wz2);
+        const lat=Math.asin(clamp(wy,-1,1));
+        const pu=Math.floor(((lon/Math.PI)*0.5+0.5)*panoW)%panoW;
+        const pv=Math.floor((lat/Math.PI+0.5)*panoH)%panoH;
+        const pi=Math.max(0,Math.min(panoW*panoH-1,(pv+panoH)%panoH*panoW+(pu+panoW)%panoW))*3;
+        for(let dy=0;dy<2;dy++) for(let dx=0;dx<2;dx++){
+          const ii=(y+dy)*W+(x+dx); if(ii>=W*H)continue;
+          img.data[ii*4]=pano[pi]; img.data[ii*4+1]=pano[pi+1]; img.data[ii*4+2]=pano[pi+2]; img.data[ii*4+3]=255;
+        }
+      }
+    }
+    ctx.putImageData(img,0,0);
+    // viewport frame
+    ctx.strokeStyle='rgba(32,96,255,0.4)'; ctx.lineWidth=2;
+    ctx.strokeRect(2,2,W-4,H-4);
+    ctx.fillStyle='rgba(32,96,255,0.7)'; ctx.font='10px Courier New';
+    ctx.fillText(`YAW:${yawT.toFixed(0)}° PITCH:${pitchT.toFixed(0)}° FOV:${fovT.toFixed(0)}°`,12,20);
+
+    requestAnimationFrame(animEq);
+  }
+  requestAnimationFrame(animEq);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 5 — HEADSET ECOSYSTEM
+   ═══════════════════════════════════════════════════════ */
+(function initHeadsets() {
+  const headsets = [
+    { name:'Meta Quest 3', maker:'Meta', type:'Standalone MR', specs:'PPD:25·FOV:110°·Hz:90·Pass:Color',
+      vals:[0.7,0.85,0.6,0.8,0.5,0.9], color:'#2060FF' },
+    { name:'Apple Vision Pro', maker:'Apple', type:'Spatial Computer', specs:'PPD:34·FOV:100°·Hz:100·Pass:Color',
+      vals:[0.95,0.7,0.9,0.95,0.6,0.8], color:'#60A0FF' },
+    { name:'Valve Index', maker:'Valve', type:'PC VR', specs:'PPD:17·FOV:130°·Hz:144·Pass:None',
+      vals:[0.65,0.9,0.5,0.7,0.95,0.6], color:'#00D4C8' },
+    { name:'PSVR2', maker:'Sony', type:'Console VR', specs:'PPD:22·FOV:110°·Hz:120·Eyetrk:yes',
+      vals:[0.75,0.85,0.55,0.8,0.8,0.7], color:'#FF9040' },
+    { name:'HoloLens 2', maker:'Microsoft', type:'Enterprise AR', specs:'PPD:47·FOV:52°·Hz:120·World:yes',
+      vals:[0.6,0.5,0.95,0.9,0.4,0.55], color:'#00FF88' },
+    { name:'Magic Leap 2', maker:'Magic Leap', type:'Enterprise AR', specs:'PPD:26·FOV:70°·Hz:120·Dim:yes',
+      vals:[0.65,0.6,0.85,0.8,0.35,0.6], color:'#FF00CC' }
+  ];
+
+  const grid = document.getElementById('headset-grid');
+  let activeHS = 0;
+  const cards = [];
+
+  headsets.forEach((hs, i) => {
+    const card = document.createElement('div');
+    card.className = 'headset-card' + (i===0?' active':'');
+    card.innerHTML = `
+      <div class="hs-name">${hs.name}</div>
+      <div class="hs-maker">${hs.maker} · ${hs.type}</div>
+      <div class="hs-specs">${hs.specs.split('·').join('<br>')}</div>
+    `;
+    card.addEventListener('click',()=>{
+      activeHS=i; cards.forEach((c,j)=>c.classList.toggle('active',j===i));
+    });
+    grid.appendChild(card); cards.push(card);
+  });
+
+  const canvas = document.getElementById('headset-radar');
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const labels=['Resolution','FOV','Tracking','Display','Refresh','Standalone'];
+  const N=labels.length;
+  const cx=W/2, cy=H/2, R=100;
+
+  let lastHS=performance.now();
+  const radarFilters=headsets.map(hs=>hs.vals.map(v=>new LagFilter(v,0.5)));
+
+  function animHS(ts) {
+    const dt=clamp((ts-lastHS)/1000,0,0.05); lastHS=ts;
+    ctx.fillStyle='#04060E'; ctx.fillRect(0,0,W,H);
+
+    // radar grid
+    [0.25,0.5,0.75,1.0].forEach(r=>{
+      ctx.strokeStyle=`rgba(32,96,255,${r*0.15})`; ctx.lineWidth=1;
+      ctx.beginPath();
+      for(let i=0;i<N;i++){
+        const a=i/N*Math.PI*2-Math.PI/2;
+        const x=cx+Math.cos(a)*R*r, y=cy+Math.sin(a)*R*r;
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.closePath(); ctx.stroke();
+    });
+    for(let i=0;i<N;i++){
+      const a=i/N*Math.PI*2-Math.PI/2;
+      ctx.strokeStyle='rgba(32,96,255,0.15)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R); ctx.stroke();
+      ctx.fillStyle='rgba(74,88,120,0.8)'; ctx.font='10px Courier New';
+      ctx.textAlign='center';
+      const lx=cx+Math.cos(a)*(R+18), ly=cy+Math.sin(a)*(R+18);
+      ctx.fillText(labels[i],lx,ly+4);
+    }
+
+    // draw each headset (dimmed) + active bright
+    headsets.forEach((hs,hi)=>{
+      const isActive=hi===activeHS;
+      const vals=hs.vals.map((v,vi)=>radarFilters[hi][vi].update(v,dt));
+      ctx.strokeStyle=isActive?hs.color:hs.color+'44';
+      ctx.lineWidth=isActive?2:1;
+      ctx.fillStyle=hs.color+(isActive?'33':'11');
+      ctx.beginPath();
+      vals.forEach((v,i)=>{
+        const a=i/N*Math.PI*2-Math.PI/2;
+        const x=cx+Math.cos(a)*R*v, y=cy+Math.sin(a)*R*v;
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      });
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      if(isActive){
+        vals.forEach((v,i)=>{
+          const a=i/N*Math.PI*2-Math.PI/2;
+          ctx.beginPath(); ctx.arc(cx+Math.cos(a)*R*v,cy+Math.sin(a)*R*v,4,0,Math.PI*2);
+          ctx.fillStyle=hs.color; ctx.fill();
+        });
+      }
+    });
+
+    // legend
+    const lx=W-180;
+    headsets.forEach((hs,i)=>{
+      ctx.fillStyle=activeHS===i?hs.color:'rgba(74,88,120,0.6)';
+      ctx.font=activeHS===i?'bold 10px Courier New':'10px Courier New';
+      ctx.textAlign='left';
+      ctx.fillText('■ '+hs.name, lx, 20+i*18);
+    });
+    ctx.textAlign='left';
+
+    requestAnimationFrame(animHS);
+  }
+  requestAnimationFrame(animHS);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 6 — DISPLAY TECHNOLOGY
+   ═══════════════════════════════════════════════════════ */
+(function initDisplay() {
+  const canvas=document.getElementById('display-canvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  const params=[
+    { name:'LCD/LTPS', ppd:17, fov:110, hz:90, fovRadius:110/2, col:'#2060FF' },
+    { name:'OLED', ppd:22, fov:120, hz:120, col:'#60A0FF' },
+    { name:'MicroOLED', ppd:34, fov:100, hz:100, col:'#00D4C8' },
+    { name:'LCoS', ppd:28, fov:80, hz:60, col:'#FF9040' },
+    { name:'MicroLED', ppd:30, fov:90, hz:90, col:'#00FF88' }
+  ];
+
+  const barsData=[
+    { label:'PPD (pixels/deg)', values:params.map(p=>p.ppd), max:40, unit:'ppd' },
+    { label:'FOV (degrees)', values:params.map(p=>p.fov), max:150, unit:'°' },
+    { label:'Refresh (Hz)', values:params.map(p=>p.hz), max:150, unit:'Hz' }
+  ];
+
+  const barsDiv=document.getElementById('display-bars');
+  barsData.forEach(bd=>{
+    const row=document.createElement('div'); row.style.marginBottom='1rem';
+    row.innerHTML=`<div style="font-size:0.6rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">${bd.label}</div>`;
+    params.forEach((p,i)=>{
+      const frac=bd.values[i]/bd.max;
+      row.innerHTML+=`
+        <div class="disp-bar-row">
+          <div class="disp-bar-label">${p.name}</div>
+          <div class="disp-bar-track"><div class="disp-bar-fill" style="width:${frac*100}%;background:${p.col}"></div></div>
+          <div class="disp-bar-val" style="color:${p.col}">${bd.values[i]}${bd.unit}</div>
+        </div>`;
+    });
+    barsDiv.appendChild(row);
+  });
+
+  // canvas: FOV circles (eye FoV diagram)
+  let lastD=performance.now();
+  function animDisplay(ts) {
+    const dt=clamp((ts-lastD)/1000,0,0.05); lastD=ts;
+    ctx.fillStyle='#04060E'; ctx.fillRect(0,0,W,H);
+
+    // human FoV reference
+    ctx.strokeStyle='rgba(232,240,255,0.1)'; ctx.lineWidth=1; ctx.setLineDash([4,6]);
+    ctx.beginPath(); ctx.arc(W/2,H/2,H*0.42,0,Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(74,88,120,0.4)'; ctx.font='10px Courier New';
+    ctx.textAlign='center'; ctx.fillText('Human FOV ~200°',W/2,16); ctx.textAlign='left';
+
+    params.forEach((p,i)=>{
+      const angle=p.fov/2*Math.PI/180;
+      const cx2=W*(0.12+i*0.17);
+      const scale=H*0.36;
+      ctx.strokeStyle=p.col; ctx.lineWidth=1.5; ctx.fillStyle=p.col+'22';
+      ctx.beginPath();
+      ctx.moveTo(cx2,H*0.5);
+      ctx.arc(cx2,H*0.5,scale,Math.PI/2-angle,Math.PI/2+angle);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // label
+      ctx.fillStyle=p.col; ctx.font='10px Courier New';
+      ctx.textAlign='center';
+      ctx.fillText(p.name,cx2,H-10);
+      ctx.fillText(p.fov+'°',cx2,H*0.5-scale-8);
+      ctx.textAlign='left';
+    });
+
+    requestAnimationFrame(animDisplay);
+  }
+  requestAnimationFrame(animDisplay);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 7 — SPATIAL AUDIO / HRTF
+   ═══════════════════════════════════════════════════════ */
+(function initHRTF() {
+  const hc=document.getElementById('hrtf-canvas');
+  const bc=document.getElementById('binaural-canvas');
+  const hCtx=hc.getContext('2d'), bCtx=bc.getContext('2d');
+  const W=hc.width,H=hc.height;
+
+  let mx=W/2, my=H/2;
+  hc.addEventListener('mousemove',e=>{
+    const r=hc.getBoundingClientRect();
+    mx=(e.clientX-r.left)/hc.clientWidth*W;
+    my=(e.clientY-r.top)/hc.clientHeight*H;
+  });
+
+  const LHIST=new Float32Array(W).fill(0), RHIST=new Float32Array(W).fill(0);
+  let lastH=performance.now();
+
+  function animHRTF(ts) {
+    const dt=clamp((ts-lastH)/1000,0,0.05); lastH=ts;
+    const t=ts/1000;
+    const sx=lagHRTFX.update(mx,dt), sy=lagHRTFY.update(my,dt);
+
+    // HRTF canvas: top-down view with source position
+    hCtx.fillStyle='rgba(2,4,8,0.2)'; hCtx.fillRect(0,0,W,H);
+    const cx=W/2, cy=H/2;
+    // head outline
+    hCtx.beginPath(); hCtx.arc(cx,cy,30,0,Math.PI*2);
+    hCtx.strokeStyle='rgba(232,240,255,0.5)'; hCtx.lineWidth=2; hCtx.stroke();
+    hCtx.fillStyle='rgba(32,96,255,0.1)'; hCtx.fill();
+    // ears
+    hCtx.beginPath(); hCtx.arc(cx-30,cy,5,0,Math.PI*2); hCtx.fillStyle='rgba(96,160,255,0.7)'; hCtx.fill();
+    hCtx.beginPath(); hCtx.arc(cx+30,cy,5,0,Math.PI*2); hCtx.fill();
+    // ITD distance circles
+    [80,140,200].forEach(r=>{
+      hCtx.beginPath(); hCtx.arc(cx,cy,r,0,Math.PI*2);
+      hCtx.strokeStyle=`rgba(32,96,255,${0.08+r*0.0002})`; hCtx.lineWidth=0.5; hCtx.stroke();
+    });
+    // angle lines
+    for(let a=0;a<Math.PI*2;a+=Math.PI/6){
+      hCtx.strokeStyle='rgba(32,96,255,0.06)'; hCtx.lineWidth=0.5;
+      hCtx.beginPath(); hCtx.moveTo(cx,cy); hCtx.lineTo(cx+Math.cos(a)*220,cy+Math.sin(a)*220); hCtx.stroke();
+    }
+    // sound source
+    hCtx.beginPath(); hCtx.arc(sx,sy,10,0,Math.PI*2);
+    hCtx.fillStyle='rgba(255,144,64,0.9)'; hCtx.fill();
+    hCtx.shadowColor='#FF9040'; hCtx.shadowBlur=15;
+    hCtx.beginPath(); hCtx.arc(sx,sy,10,0,Math.PI*2); hCtx.fill();
+    hCtx.shadowBlur=0;
+    // line to ears
+    [[cx-30,cy,'L'],[cx+30,cy,'R']].forEach(([ex,ey,label])=>{
+      const dist=Math.sqrt((sx-ex)**2+(sy-ey)**2);
+      hCtx.strokeStyle='rgba(255,144,64,0.3)'; hCtx.lineWidth=1;
+      hCtx.setLineDash([3,4]);
+      hCtx.beginPath(); hCtx.moveTo(sx,sy); hCtx.lineTo(ex,ey); hCtx.stroke();
+      hCtx.setLineDash([]);
+      hCtx.fillStyle='rgba(96,160,255,0.8)'; hCtx.font='9px Courier New';
+      hCtx.fillText(`${label}: ${dist.toFixed(0)}px`,ex+6,ey-6);
+    });
+    // position info
+    const ang=Math.atan2(sy-cy,sx-cx)*180/Math.PI;
+    hCtx.fillStyle='rgba(96,160,255,0.8)'; hCtx.font='10px Courier New';
+    hCtx.fillText(`AZ: ${ang.toFixed(0)}°  EL: ${((0.5-sy/H)*90).toFixed(0)}°`,8,H-10);
+
+    // binaural waveforms
+    const distL=Math.sqrt((sx-(cx-30))**2+(sy-cy)**2)/W;
+    const distR=Math.sqrt((sx-(cx+30))**2+(sy-cy)**2)/W;
+    const angRad=Math.atan2(sy-cy,sx-cx);
+    const ampL=clamp(1-(distL*0.6),0.2,1)*(angRad<0?1:0.7);
+    const ampR=clamp(1-(distR*0.6),0.2,1)*(angRad>0?1:0.7);
+    const phase=distL*8;
+
+    LHIST.copyWithin(0,1); LHIST[W-1]=ampL*Math.sin(t*8+phase)*0.8+(noise21(t*4,1)*2-1)*0.1;
+    RHIST.copyWithin(0,1); RHIST[W-1]=ampR*Math.sin(t*8+phase+distR*8)*0.8+(noise21(t*4,2)*2-1)*0.1;
+    lagWave.update(ampL, dt);
+
+    bCtx.fillStyle='rgba(2,4,8,0.25)'; bCtx.fillRect(0,0,W,H);
+    [['L',LHIST,'#2060FF',H/4],[' R',RHIST,'#60A0FF',3*H/4]].forEach(([label,hist,col,cy2])=>{
+      bCtx.strokeStyle='rgba(232,240,255,0.06)'; bCtx.lineWidth=1;
+      bCtx.beginPath(); bCtx.moveTo(0,cy2); bCtx.lineTo(W,cy2); bCtx.stroke();
+      bCtx.strokeStyle=col; bCtx.lineWidth=1.5;
+      bCtx.beginPath();
+      hist.forEach((v,x)=>{ const y=cy2-v*(H/5); x===0?bCtx.moveTo(x,y):bCtx.lineTo(x,y); });
+      bCtx.stroke();
+      bCtx.fillStyle=col; bCtx.font='10px Courier New';
+      bCtx.fillText(`${label} Channel`,8,cy2-H/5-4);
+    });
+
+    requestAnimationFrame(animHRTF);
+  }
+  requestAnimationFrame(animHRTF);
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 8 — ARTISTS
+   ═══════════════════════════════════════════════════════ */
+(function initArtists() {
+  const artists = [
+    { name:'Nonny de la Peña', title:'VR Journalism Pioneer', bio:'The "Godmother of VR" created immersive journalism pieces like Hunger in Los Angeles and Project Syria, establishing narrative presence as a journalistic tool.', shape:'circle', color:'#2060FF' },
+    { name:'Chris Milk', title:'VR Director', bio:'Co-founded Within and directed Clouds Over Sidra for UNICEF. His TED talk "How Virtual Reality Can Create the Ultimate Empathy Machine" defined immersive media\'s humanitarian potential.', shape:'hex', color:'#60A0FF' },
+    { name:'teamLab', title:'Art Collective', bio:'Tokyo collective creating room-scale digital art environments where participants immerse in reactive ecosystems of light, sound, and biology — dissolving the boundary between viewer and artwork.', shape:'triangle', color:'#00D4C8' },
+    { name:'Marshmallow Laser Feast', title:'Immersive Studio', bio:'UK collective creating sensory VR experiences like Treehugger and In the Eyes of the Animal that position the viewer inside biological and geological systems beyond human perception.', shape:'diamond', color:'#FF9040' },
+    { name:'Olafur Eliasson', title:'Artist', bio:'Danish-Icelandic artist whose immersive installations at massive scale — The Weather Project, Your Rainbow Panorama — preceded digital XR by transforming architecture into perceptual experience.', shape:'square', color:'#00FF88' },
+    { name:'Char Davies', title:'VR Artist', bio:'Created Osmose (1995) and Ephémère (1998) — early landmark VR works using breath and balance as navigation controls, exploring embodied presence in living virtual ecologies.', shape:'hex', color:'#FF00CC' },
+    { name:'Kent Bye', title:'XR Journalist', bio:'Voices of VR podcast host who has documented the immersive media ecosystem through thousands of interviews, building the definitive oral history of VR as a medium and artform.', shape:'circle', color:'#FFCC00' },
+    { name:'Alan Milligan (USC ICT)', title:'Researcher', bio:'Institute for Creative Technologies researchers developed EmotionAR, ICT World Builder, and pioneered therapeutic and training applications for XR including virtual reality exposure therapy.', shape:'triangle', color:'#CC00FF' }
+  ];
+
+  const grid=document.getElementById('artists-grid');
+  const svgNS='http://www.w3.org/2000/svg';
+  artists.forEach(a=>{
+    const card=document.createElement('div'); card.className='artist-card';
+    const svg=document.createElementNS(svgNS,'svg'); svg.setAttribute('class','artist-avatar'); svg.setAttribute('viewBox','0 0 52 52');
+    const S={
+      circle:()=>{const c=document.createElementNS(svgNS,'circle');c.setAttribute('cx','26');c.setAttribute('cy','26');c.setAttribute('r','22');c.setAttribute('fill','none');c.setAttribute('stroke',a.color);c.setAttribute('stroke-width','2');const c2=document.createElementNS(svgNS,'circle');c2.setAttribute('cx','26');c2.setAttribute('cy','26');c2.setAttribute('r','11');c2.setAttribute('fill',a.color);c2.setAttribute('opacity','0.3');svg.appendChild(c);svg.appendChild(c2);},
+      hex:()=>{const pts=Array.from({length:6},(_,i)=>{const ang=i*Math.PI/3-Math.PI/6;return`${26+22*Math.cos(ang)},${26+22*Math.sin(ang)}`;}).join(' ');const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points',pts);p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p);},
+      triangle:()=>{const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points','26,4 48,46 4,46');p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p);},
+      diamond:()=>{const p=document.createElementNS(svgNS,'polygon');p.setAttribute('points','26,2 50,26 26,50 2,26');p.setAttribute('fill','none');p.setAttribute('stroke',a.color);p.setAttribute('stroke-width','2');svg.appendChild(p);},
+      square:()=>{const r=document.createElementNS(svgNS,'rect');r.setAttribute('x','4');r.setAttribute('y','4');r.setAttribute('width','44');r.setAttribute('height','44');r.setAttribute('fill','none');r.setAttribute('stroke',a.color);r.setAttribute('stroke-width','2');svg.appendChild(r);}
+    };
+    (S[a.shape]||S.circle)();
+    card.innerHTML=`<div class="ph"></div><div class="artist-name">${a.name}</div><div class="artist-title">${a.title}</div><div class="artist-bio">${a.bio}</div>`;
+    card.querySelector('.ph').replaceWith(svg); grid.appendChild(card);
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════
+   SECTION 9 — GLOSSARY
+   ═══════════════════════════════════════════════════════ */
+(function initGlossary() {
+  const terms=[
+    {term:'Extended Reality (XR)',def:'Umbrella term for the full spectrum of Augmented, Mixed, and Virtual Reality technologies that modify or replace perceived reality.'},
+    {term:'Head-Mounted Display',def:'Wearable display device worn on the head with screens positioned in front of one or both eyes, delivering stereoscopic visual content.'},
+    {term:'Field of View (FOV)',def:'The angular extent of the visible scene in a headset, measured diagonally or per-axis. Wider FOV increases immersion but requires more pixels.'},
+    {term:'Pixels Per Degree (PPD)',def:'Resolution metric for XR displays measuring how many pixels subtend one degree of visual arc. The human visual system resolves ~60 PPD at peak foveal acuity.'},
+    {term:'SLAM',def:'Simultaneous Localization and Mapping — computing the camera\'s 6DoF pose while building a 3D map of the environment from sensor data.'},
+    {term:'6DoF Tracking',def:'Six degrees of freedom — three rotational (pitch, yaw, roll) plus three translational (surge, heave, sway) — enabling room-scale VR movement.'},
+    {term:'Inside-Out Tracking',def:'Headset self-localization using onboard cameras and SLAM, eliminating external base stations required by outside-in optical systems.'},
+    {term:'Reprojection',def:'Technique to reduce perceived latency by rendering at a lower frame rate and extrapolating the last frame to match the current head pose before display.'},
+    {term:'HRTF',def:'Head-Related Transfer Function — the direction-dependent acoustic filter imposed by the head, pinnae, and torso, used to spatialize audio binaurally.'},
+    {term:'Interpupillary Distance (IPD)',def:'The distance between the centers of the pupils, typically 54–72mm. Headsets require adjustable IPD for correct stereo convergence and lens alignment.'},
+    {term:'Vergence-Accommodation Conflict',def:'Perceptual conflict in current HMDs where the eyes converge to a virtual depth but must accommodate (focus) to the fixed display plane, causing fatigue.'},
+    {term:'Equirectangular Projection',def:'A 2:1 image mapping the full sphere onto a rectangle using longitude for the horizontal axis and latitude for the vertical — the standard 360° video format.'},
+    {term:'Passthrough AR',def:'Video see-through augmented reality where headset cameras capture the real world and composite digital content onto the live camera feed displayed to the user.'},
+    {term:'Spatial Anchor',def:'A persistent coordinate in physical space tagged with a device identifier, allowing virtual objects to remain spatially fixed across sessions and multiple users.'},
+    {term:'Foveated Rendering',def:'Eye-tracked rendering that reduces GPU load by computing full resolution only in the foveal region where the eye is focused, with lower resolution in periphery.'},
+    {term:'World Locking',def:'Keeping virtual content anchored to physical space coordinates even as the user\'s head moves, using SLAM to maintain spatial consistency.'},
+    {term:'Stereoscopy',def:'Presenting slightly offset images to each eye to create the perception of depth through binocular disparity — the primary depth cue exploited by HMDs.'},
+    {term:'Presence',def:'The subjective sensation of "being there" in a virtual environment, dependent on tracking quality, display resolution, latency, and content quality.'},
+    {term:'Latency (Motion to Photon)',def:'The total delay from physical head movement to the corresponding display update. Below 20ms is perceptually acceptable; below 7ms is ideal for preventing VR sickness.'},
+    {term:'Haptic Feedback',def:'Force, vibration, or texture sensations delivered through controllers, gloves, or suits to reinforce the sense of touching virtual objects.'},
+    {term:'Social VR',def:'Multi-user virtual environments with embodied avatars enabling shared presence, communication, and activity — platforms include VRChat, Rec Room, and Horizon Worlds.'},
+    {term:'Varifocal Display',def:'Experimental XR display technology with adjustable optical focus that matches the eye\'s accommodation depth to the vergence target, resolving the VAC problem.'}
+  ];
+
+  const grid=document.getElementById('gloss-grid');
+  terms.forEach(t=>{
+    const d=document.createElement('div'); d.className='gloss-item';
+    d.innerHTML=`<div class="gloss-term">${t.term}</div><div class="gloss-def">${t.def}</div>`;
+    grid.appendChild(d);
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════
+   INTERSECTION OBSERVER
+   ═══════════════════════════════════════════════════════ */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);} });
+},{threshold:0.08});
+document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
+</script>

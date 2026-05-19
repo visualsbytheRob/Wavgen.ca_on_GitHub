@@ -1,0 +1,847 @@
+---
+layout: world.njk
+title: "Immersive Galleries World"
+description: "Immersive art world exploring immersive galleries"
+domain: art
+permalink: /art/immersive-galleries/
+---
+
+
+<nav>
+<span class="nav-title">◈ Immersive Galleries</span>
+<a href="#exhibition">Exhibition</a>
+<a href="#reactive">Reactive</a>
+<a href="#curation">Curation</a>
+<a href="#lighting">Lighting</a>
+<a href="#visitor">Visitor</a>
+<a href="#history">History</a>
+<a href="#artists">Artists</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- SECTION 1: HERO — First-Person Gallery Corridor -->
+<div id="hero">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-text">
+<h1>Immersive Galleries</h1>
+<p>Spaces that dissolve the boundary between viewer and viewed</p>
+</div>
+</div>
+<div class="divider"></div>
+<!-- SECTION 2: EXHIBITION DESIGN -->
+<section class="hidden" id="exhibition">
+<h2>Exhibition Design</h2>
+<p>The white cube transformed into a dynamic spatial experience. Immersive exhibition design considers flow, pacing, sensory layering, and the choreography of surprise. The viewer is not a passive observer but an active participant whose movement through space generates the experience.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="exhibitCanvas"></canvas>
+<div class="canvas-label">floor plan — click to navigate</div>
+</div>
+<div class="slider-row">
+<label>Ceiling Height</label>
+<input id="ceilSlider" max="100" min="20" type="range" value="60"/>
+<span id="ceilVal">60%</span>
+</div>
+<div class="slider-row">
+<label>Density</label>
+<input id="densSlider" max="100" min="10" type="range" value="50"/>
+<span id="densVal">50%</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Spatial Sequence</h3><p>Entry compression followed by expansive reveal. Low ceiling → grand space creates psychological impact. The path choreographs emotion.</p></div>
+<div class="card"><h3>White Cube Legacy</h3><p>Brian O'Doherty's 1976 critique: the neutral gallery space is never neutral. Its architecture encodes ideology and frames interpretation.</p></div>
+<div class="card"><h3>Threshold Design</h3><p>Transitions between spaces — doorways, curtains, darkness — reset the viewer's senses and prime them for the next encounter.</p></div>
+<div class="card"><h3>Scale and Body</h3><p>Immersive work often operates at scales that dwarf the viewer — forcing a shift from ocular to full-body, proprioceptive engagement.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 3: REACTIVE ENVIRONMENT -->
+<section class="hidden" id="reactive">
+<h2>Reactive Environments</h2>
+<p>Sensor-driven spaces that respond to visitors' presence, movement, voice, or biometric signals. The gallery becomes a living system — the artwork is the feedback loop between audience and space.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="reactiveCanvas"></canvas>
+<div class="canvas-label">move cursor to activate — reactive field</div>
+</div>
+<div class="slider-row">
+<label>Reaction Speed</label>
+<input id="reactSpeedSlider" max="100" min="5" type="range" value="50"/>
+<span id="reactSpeedVal">50</span>
+</div>
+<div class="slider-row">
+<label>Sensitivity</label>
+<input id="sensitSlider" max="100" min="10" type="range" value="70"/>
+<span id="sensitVal">70</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Presence Detection</h3><p>PIR sensors, depth cameras (Kinect, Intel RealSense, Lidar), computer vision — each trades resolution, latency, and privacy differently.</p></div>
+<div class="card"><h3>Crowd Dynamics</h3><p>Group behavior creates emergent patterns: flocking, standing waves, spontaneous synchrony. The aggregate visitor body becomes the artwork.</p></div>
+<div class="card"><h3>Latency Design</h3><p>Delay is compositional. Immediate response feels like a mirror; delayed response feels like memory; very long delay feels like geological time.</p></div>
+<div class="card"><h3>Calibration Drift</h3><p>Reactive systems must handle the full range of visitor behaviors — from still meditation to chaotic children. Robustness is artistic intent.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 4: SPATIAL CURATION -->
+<section class="hidden" id="curation">
+<h2>Spatial Curation</h2>
+<p>How works are placed in relation to each other, to architectural features, and to the visitor's path. Curation creates dialogue, tension, and meaning that no single work contains in isolation. The space between artworks is as curated as the artworks themselves.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="curationCanvas"></canvas>
+<div class="canvas-label">drag artworks to explore spatial dialogue</div>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Sight Lines</h3><p>Works positioned to create visual conversations across rooms. A viewer encountering one work should have a sightline to the work that will answer it.</p></div>
+<div class="card"><h3>Rhythm and Pause</h3><p>Dense installation followed by a single object. The pause — a bare wall, a silent room — gives the nervous system time to integrate.</p></div>
+<div class="card"><h3>Narrative Arc</h3><p>Exhibition curators construct narrative arcs: building tension, reaching climax, providing resolution. The exit is as important as the entrance.</p></div>
+<div class="card"><h3>Context Contamination</h3><p>Adjacent works affect each other's meaning. A violent work becomes comic next to the wrong neighbor. Curation determines interpretation.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 5: LIGHTING DESIGN -->
+<section class="hidden" id="lighting">
+<h2>Gallery Lighting Design</h2>
+<p>Light is the primary medium of gallery experience. Spectral quality, directionality, intensity, and color temperature all shape how artworks read. Immersive work extends this to dynamic lighting that is itself part of the artwork's temporal dimension.</p>
+<div class="canvas-wrap">
+<canvas height="260" id="lightCanvas"></canvas>
+<div class="canvas-label">dynamic gallery lighting simulation</div>
+</div>
+<div class="slider-row">
+<label>Color Temperature</label>
+<input id="kelvinSlider" max="100" min="0" type="range" value="50"/>
+<span id="kelvinVal">4000K</span>
+</div>
+<div class="slider-row">
+<label>Beam Angle</label>
+<input id="beamSlider" max="100" min="5" type="range" value="40"/>
+<span id="beamVal">40°</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Color Rendering Index</h3><p>CRI 90+ required for accurate color rendering of artwork. LED advances now achieve CRI 97-99 with full spectrum and no UV damage.</p></div>
+<div class="card"><h3>Accent vs. Ambient</h3><p>Track lighting creates pools of attention. Ambient fill prevents harsh shadows. The ratio determines whether the space feels theatrical or open.</p></div>
+<div class="card"><h3>Conservation Limits</h3><p>Works on paper: maximum 50 lux. Oil paintings: 150-200 lux. Digital works: unlimited but screen technology determines color fidelity.</p></div>
+<div class="card"><h3>Dynamic Lighting</h3><p>Circadian tuning, dawn-to-dusk simulation, weather-responsive color temperature — lighting systems as temporal artwork in their own right.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 6: VISITOR EXPERIENCE -->
+<section class="hidden" id="visitor">
+<h2>Visitor Experience Design</h2>
+<p>UX thinking applied to gallery space. Wayfinding, accessibility, crowd management, rest nodes, and sensory relief areas are not concessions to comfort but integral to the sustained depth of engagement the work requires.</p>
+<div class="canvas-wrap">
+<canvas height="240" id="visitorCanvas"></canvas>
+<div class="canvas-label">visitor flow simulation</div>
+</div>
+<div class="slider-row">
+<label>Visitor Density</label>
+<input id="crowdSlider" max="100" min="5" type="range" value="40"/>
+<span id="crowdVal">40</span>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Dwell Time</h3><p>Average museum dwell time per artwork: 28 seconds (Getty study). Immersive works achieve 5-15 minute dwell. Environment design mediates this.</p></div>
+<div class="card"><h3>Sensory Accessibility</h3><p>Low-sensory hours, audio descriptions, tactile models, large-print materials — accessibility is not an accommodation but an artistic mandate.</p></div>
+<div class="card"><h3>The Instagram Problem</h3><p>Photogenic immersive spaces attract audiences but risk reducing complex work to backdrop. Curatorial response: design for the 30-second visitor AND the 30-minute visitor.</p></div>
+<div class="card"><h3>Re-entry Protocols</h3><p>Some immersive works require the visitor to be decompressed before re-entering daily reality. Exit design is emotional design.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 7: GALLERY HISTORY -->
+<section class="hidden" id="history">
+<h2>A History of Immersive Space</h2>
+<p>From panoramic paintings of the 1800s to digital infinity rooms today, the desire to surround the viewer — to dissolve the frame — is a recurring aspiration across media and centuries.</p>
+<div class="canvas-wrap">
+<canvas height="200" id="historyCanvas"></canvas>
+<div class="canvas-label">timeline of immersive space</div>
+</div>
+<div class="card-grid">
+<div class="card"><h3>Panorama (1790s)</h3><p>Robert Barker's rotunda paintings: 360° painted cityscapes viewed from a central platform. The first mass-market immersive experience.</p></div>
+<div class="card"><h3>Happenings (1960s)</h3><p>Allan Kaprow, Yoko Ono, Fluxus. The gallery as event space. Viewer as participant. Art as durational experience, not object.</p></div>
+<div class="card"><h3>Light &amp; Space (1970s)</h3><p>LACMA's breakthrough: Turrell, Irwin, Wheeler. Perception itself as medium. The viewer's nervous system as the instrument of reception.</p></div>
+<div class="card"><h3>Digital Immersion (2010s)</h3><p>teamLab, Superblue, Atelier des Lumières. Projector arrays, sound design, and real-time rendering merge into walk-in generative worlds.</p></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 8: ARTISTS -->
+<section class="hidden" id="artists">
+<h2>Artists &amp; Collectives</h2>
+<p>These practitioners define the field of immersive gallery art — each developing a distinct approach to enveloping the viewer in constructed perceptual reality.</p>
+<div class="researcher-grid">
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.15)">🌊</div>
+<h3>teamLab</h3>
+<div class="role">Digital Art Collective, Tokyo</div>
+<p>Borderless and Planets installations. Real-time generative systems respond to visitor presence across entire room-scale environments.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.1)">🤖</div>
+<h3>Refik Anadol</h3>
+<div class="role">Media Artist, LA</div>
+<p>Machine Hallucinations, WDCH Dreams. AI-processed datasets rendered as architectural-scale projections on museum facades and interiors.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.15)">💡</div>
+<h3>James Turrell</h3>
+<div class="role">Light Artist, Arizona</div>
+<p>Roden Crater, Ganzfeld pieces. Pure light sculpts perception of space and time. No projected images — only light itself as medium.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.1)">☀️</div>
+<h3>Olafur Eliasson</h3>
+<div class="role">Studio Olafur Eliasson</div>
+<p>The Weather Project, Your Rainbow Panorama. Natural phenomena reconstructed at architectural scale to make perception the subject.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.15)">📺</div>
+<h3>Bruce Nauman</h3>
+<div class="role">Conceptual / Video Art</div>
+<p>Corridors and video installations create psychological confinement. Space used to produce anxiety, disorientation, and self-consciousness.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.1)">📝</div>
+<h3>Jenny Holzer</h3>
+<div class="role">Text / LED Art</div>
+<p>Inflammatory Essays, Truisms on LED arrays. Language as architectural material. Text projected at building scale or intimate whisper.</p>
+</div>
+<div class="researcher-card">
+<div class="researcher-avatar" style="background:rgba(0,200,200,0.15)">🔴</div>
+<h3>Yayoi Kusama</h3>
+<div class="role">Infinity Rooms</div>
+<p>Mirror-walled infinity rooms with suspended light installations. Obliteration of self through endless repetition of the artist's obsessive forms.</p>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SECTION 9: GLOSSARY -->
+<section class="hidden" id="glossary">
+<h2>Glossary</h2>
+<p>Key terminology in immersive and experiential gallery practice.</p>
+<dl class="glossary-grid">
+<div class="glossary-item"><dt>White Cube</dt><dd>The neutral gallery ideal — white walls, even lighting, no distraction. Brian O'Doherty's critique revealed its hidden ideological content.</dd></div>
+<div class="glossary-item"><dt>Dwell Time</dt><dd>Duration a visitor spends engaging with an artwork or installation. A key metric for immersive experience design and curatorial success.</dd></div>
+<div class="glossary-item"><dt>Ganzfeld Effect</dt><dd>Perceptual phenomenon when the visual field becomes uniform, causing hallucinations. Turrell's Ganzfeld works induce this deliberately.</dd></div>
+<div class="glossary-item"><dt>Haptic Experience</dt><dd>Engagement of the sense of touch in gallery space — vibration, temperature, texture. Often absent in galleries; powerful when deliberately designed.</dd></div>
+<div class="glossary-item"><dt>Spatial Audio</dt><dd>Multi-channel sound systems that position audio in three-dimensional space. Ambisonics (B-format) enables full 360° audio environments.</dd></div>
+<div class="glossary-item"><dt>Projection Mapping</dt><dd>Projecting images onto non-flat surfaces, calibrated to the architecture. Turns walls, columns, and irregular objects into display surfaces.</dd></div>
+<div class="glossary-item"><dt>Real-Time Rendering</dt><dd>Generative imagery computed in real-time rather than pre-rendered. Enables visitor interaction and endless variation in immersive installations.</dd></div>
+<div class="glossary-item"><dt>Participatory Art</dt><dd>Works that require audience action to exist or complete. The viewer becomes co-author. Relational aesthetics (Bourriaud) theorized this shift.</dd></div>
+<div class="glossary-item"><dt>Threshold</dt><dd>The transition zone between gallery spaces. Curatorial tool: darkness, sound change, scale shift, or material change signals context switch.</dd></div>
+<div class="glossary-item"><dt>Site-Specificity</dt><dd>Work created for and inseparable from a particular location. Removing or reproducing it in another context fundamentally changes the work.</dd></div>
+<div class="glossary-item"><dt>Superblue</dt><dd>Large-scale immersive art venue model (Miami, NYC). Dedicated to ambitious immersive installations that museums cannot accommodate.</dd></div>
+<div class="glossary-item"><dt>Biofeedback Art</dt><dd>Works that respond to visitors' physiological signals — heart rate, skin conductance, EEG. The body's internal state becomes compositional input.</dd></div>
+<div class="glossary-item"><dt>Dark Art</dt><dd>Works experienced in darkness, typically using light as primary medium. Darkness isolates the visual system and amplifies perceptual sensitivity.</dd></div>
+<div class="glossary-item"><dt>Lux</dt><dd>Unit of illuminance. Conservation standards: 50 lux for works on paper, 150-200 for paintings. Immersive digital: calibrated per work requirement.</dd></div>
+<div class="glossary-item"><dt>CRI</dt><dd>Color Rendering Index. 0-100 scale. Gallery standard: CRI 90+. Measures how accurately a light source reveals object colors relative to daylight.</dd></div>
+<div class="glossary-item"><dt>Circulation</dt><dd>The path visitors move through an exhibition. Designed or emergent, circulation determines encounter order and spatial rhythm.</dd></div>
+<div class="glossary-item"><dt>Infinity Room</dt><dd>Gallery space lined with mirrors and suspended lights, creating an illusion of boundless depth. Kusama popularized the format.</dd></div>
+<div class="glossary-item"><dt>Sensory Deprivation</dt><dd>Intentional reduction of sensory input to heighten awareness of remaining senses. Used in gallery contexts for meditation and perceptual experimentation.</dd></div>
+<div class="glossary-item"><dt>Expanded Cinema</dt><dd>Gene Youngblood's 1970 term for cinema beyond the screen — environmental projection, multi-screen, and interactive film installations.</dd></div>
+<div class="glossary-item"><dt>Flow State</dt><dd>Csikszentmihalyi's optimal experience: full absorption with no self-consciousness. Well-designed immersive work can reliably induce flow in viewers.</dd></div>
+</dl>
+</section>
+<script>
+'use strict';
+
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// 15+ LagFilter instances
+const lagHeroMX    = new LagFilter(0.5, 0.8);
+const lagHeroMY    = new LagFilter(0.5, 0.8);
+const lagCeil      = new LagFilter(60,  0.5);
+const lagDens      = new LagFilter(50,  0.4);
+const lagReactSpd  = new LagFilter(50,  0.3);
+const lagSensit    = new LagFilter(70,  0.4);
+const lagKelvin    = new LagFilter(50,  0.4);
+const lagBeam      = new LagFilter(40,  0.4);
+const lagCrowd     = new LagFilter(40,  0.4);
+const lagReactMouseX = new LagFilter(0.5, 0.15);
+const lagReactMouseY = new LagFilter(0.5, 0.15);
+const lagLightX    = new LagFilter(0.5, 0.6);
+const lagLightY    = new LagFilter(0.3, 0.6);
+const lagHistPhase = new LagFilter(0,   0.3);
+const lagCurateHov = new LagFilter(0,   0.3);
+const lagVisFlow   = new LagFilter(40,  0.4);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+function bindSlider(id, outId, fn) {
+  const s = document.getElementById(id), o = document.getElementById(outId);
+  if (!s || !o) return;
+  const upd = () => { o.textContent = fn ? fn(+s.value) : s.value; };
+  s.addEventListener('input', upd); upd();
+}
+bindSlider('ceilSlider',      'ceilVal',      v => v + '%');
+bindSlider('densSlider',      'densVal',      v => v + '%');
+bindSlider('reactSpeedSlider','reactSpeedVal',v => v);
+bindSlider('sensitSlider',    'sensitVal',    v => v);
+bindSlider('kelvinSlider',    'kelvinVal',    v => Math.round(2700 + v * 57) + 'K');
+bindSlider('beamSlider',      'beamVal',      v => Math.round(5 + v * 0.55) + '°');
+bindSlider('crowdSlider',     'crowdVal',     v => v);
+
+/* ═══ HERO — First-Person Corridor ═══ */
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: 0.5, y: 0.5 };
+  function resize() { W = canvas.offsetWidth; H = canvas.offsetHeight; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = (e.clientY - r.top) / r.height;
+  });
+
+  let lastT = Date.now(), phase = 0;
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    phase += dt * 0.15;
+
+    const mx = lagHeroMX.update(mouse.x, dt);
+    const my = lagHeroMY.update(mouse.y, dt);
+
+    ctx.fillStyle = 'rgba(8,12,12,0.15)';
+    ctx.fillRect(0, 0, W, H);
+
+    // First-person corridor perspective
+    const cx = W * (0.3 + mx * 0.4);
+    const cy = H * (0.3 + my * 0.4);
+
+    // Draw receding corridor segments
+    const numSegs = 8;
+    for (let i = numSegs; i >= 0; i--) {
+      const t = i / numSegs;
+      const scale = Math.pow(0.7, i);
+      const hw = W * 0.45 * scale;
+      const hh = H * 0.42 * scale;
+      const cx2 = cx + (W / 2 - cx) * (1 - t);
+      const cy2 = cy + (H / 2 - cy) * (1 - t);
+
+      const cyanAlpha = 0.05 + (1 - t) * 0.15 + Math.sin(phase * 2 + i * 0.5) * 0.03;
+      ctx.strokeStyle = `rgba(0,200,200,${cyanAlpha})`;
+      ctx.lineWidth = 1;
+
+      // Walls
+      ctx.beginPath();
+      ctx.moveTo(cx2 - hw, 0);
+      ctx.lineTo(cx2 - hw, H);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx2 + hw, 0);
+      ctx.lineTo(cx2 + hw, H);
+      ctx.stroke();
+
+      // Ceiling/floor lines
+      ctx.beginPath();
+      ctx.moveTo(0, cy2 - hh);
+      ctx.lineTo(W, cy2 - hh);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, cy2 + hh);
+      ctx.lineTo(W, cy2 + hh);
+      ctx.stroke();
+
+      // Artwork on walls (glow panels)
+      if (i % 2 === 0 && i > 0) {
+        const artW = hw * 0.3, artH = hh * 0.5;
+        const artY = cy2 - artH / 2;
+        const hue = 160 + i * 15;
+        const artAlpha = (1 - t) * 0.3;
+
+        ctx.fillStyle = `hsla(${hue}, 80%, 60%, ${artAlpha})`;
+        ctx.fillRect(cx2 - hw - artW, artY, artW * 0.9, artH);
+        ctx.fillRect(cx2 + hw, artY, artW * 0.9, artH);
+      }
+    }
+
+    // Ambient cyan glow at vanishing point
+    const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.min(W, H) * 0.3);
+    grad.addColorStop(0, 'rgba(0,200,200,0.06)');
+    grad.addColorStop(1, 'rgba(0,200,200,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ EXHIBITION CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('exhibitCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const ceilSlider = document.getElementById('ceilSlider');
+  const densSlider = document.getElementById('densSlider');
+  let lastT = Date.now(), selectedRoom = 0;
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width * W;
+    const cy = (e.clientY - r.top) / r.height * H;
+    rooms.forEach((room, i) => {
+      if (cx > room.x && cx < room.x + room.w && cy > room.y && cy < room.y + room.h) selectedRoom = i;
+    });
+  });
+
+  const rooms = [
+    { x: 0.05, y: 0.1, w: 0.2, h: 0.5, label: 'Entry' },
+    { x: 0.28, y: 0.05, w: 0.35, h: 0.6, label: 'Main Hall' },
+    { x: 0.66, y: 0.1, w: 0.28, h: 0.3, label: 'Gallery A' },
+    { x: 0.66, y: 0.5, w: 0.28, h: 0.25, label: 'Gallery B' },
+    { x: 0.28, y: 0.7, w: 0.35, h: 0.22, label: 'Exit' },
+  ].map(r => ({ ...r, x: r.x * 900, y: r.y * 240, w: r.w * 900, h: r.h * 240 }));
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - Date.now() + Date.now() - lastT) / 1000, 0.1);
+    lastT = now;
+    const ceil = lagCeil.update(ceilSlider ? +ceilSlider.value : 60, dt);
+    const dens = lagDens.update(densSlider ? +densSlider.value : 50, dt);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#04080800';
+    ctx.fillRect(0, 0, W, H);
+
+    rooms.forEach((room, i) => {
+      const isSelected = i === selectedRoom;
+      const scale = W / 900;
+      const rx = room.x * scale, ry = room.y, rw = room.w * scale, rh = room.h;
+
+      ctx.fillStyle = isSelected ? 'rgba(0,200,200,0.12)' : 'rgba(0,100,100,0.06)';
+      ctx.strokeStyle = isSelected ? 'rgba(0,200,200,0.8)' : 'rgba(0,200,200,0.25)';
+      ctx.lineWidth = isSelected ? 1.5 : 1;
+      ctx.fillRect(rx, ry, rw, rh);
+      ctx.strokeRect(rx, ry, rw, rh);
+
+      // Artworks on walls
+      const numArt = Math.floor(dens / 30) + 1;
+      for (let j = 0; j < numArt; j++) {
+        const ax = rx + (j + 1) * rw / (numArt + 1);
+        const aw = rw * 0.08, ah = rh * 0.3 * (ceil / 100);
+        ctx.fillStyle = `rgba(0,${150 + j * 30},${150 + j * 20},0.4)`;
+        ctx.fillRect(ax - aw / 2, ry + rh * 0.2, aw, ah);
+      }
+
+      // Label
+      ctx.fillStyle = isSelected ? 'rgba(0,232,232,0.8)' : 'rgba(88,120,120,0.6)';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(room.label, rx + rw / 2, ry + rh - 6);
+    });
+
+    ctx.textAlign = 'left';
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ REACTIVE CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('reactiveCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: 0.5, y: 0.5, active: false };
+  function resize() { W = canvas.offsetWidth; H = 260; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = (e.clientY - r.top) / r.height;
+    mouse.active = true;
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.active = false; });
+
+  const reactSpd = document.getElementById('reactSpeedSlider');
+  const sensit   = document.getElementById('sensitSlider');
+
+  const particles = Array.from({ length: 60 }, () => ({
+    x: Math.random(), y: Math.random(),
+    vx: 0, vy: 0, hue: 160 + Math.random() * 40
+  }));
+
+  let lastT = Date.now();
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    const spd = lagReactSpd.update(reactSpd ? +reactSpd.value : 50, dt) / 100;
+    const sens = lagSensit.update(sensit ? +sensit.value : 70, dt) / 100;
+
+    const mx = lagReactMouseX.update(mouse.active ? mouse.x : 0.5, dt);
+    const my = lagReactMouseY.update(mouse.active ? mouse.y : 0.5, dt);
+
+    ctx.fillStyle = 'rgba(8,12,12,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    particles.forEach(p => {
+      const dx = mx - p.x, dy = my - p.y;
+      const dist = Math.hypot(dx, dy) + 0.01;
+      const force = mouse.active ? sens * spd * 0.003 / dist : 0;
+      p.vx = p.vx * (1 - spd * 0.15) + dx * force;
+      p.vy = p.vy * (1 - spd * 0.15) + dy * force;
+      p.x = Math.max(0.01, Math.min(0.99, p.x + p.vx));
+      p.y = Math.max(0.01, Math.min(0.99, p.y + p.vy));
+
+      const speed = Math.hypot(p.vx, p.vy);
+      ctx.strokeStyle = `hsla(${p.hue}, 80%, 60%, ${Math.min(0.9, speed * 50)})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(p.x * W, p.y * H);
+      ctx.lineTo((p.x - p.vx * 10) * W, (p.y - p.vy * 10) * H);
+      ctx.stroke();
+    });
+
+    // Cursor glow
+    if (mouse.active) {
+      const grad = ctx.createRadialGradient(mx * W, my * H, 0, mx * W, my * H, 60 * sens);
+      grad.addColorStop(0, 'rgba(0,200,200,0.15)');
+      grad.addColorStop(1, 'rgba(0,200,200,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ CURATION CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('curationCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const artworks = [
+    { x: 0.2, y: 0.35, w: 0.12, h: 0.18, hue: 180, label: 'A' },
+    { x: 0.45, y: 0.25, w: 0.18, h: 0.25, hue: 160, label: 'B' },
+    { x: 0.72, y: 0.35, w: 0.1, h: 0.15, hue: 200, label: 'C' },
+    { x: 0.3,  y: 0.65, w: 0.08, h: 0.12, hue: 140, label: 'D' },
+    { x: 0.6,  y: 0.7,  w: 0.14, h: 0.1,  hue: 170, label: 'E' },
+  ];
+
+  let drag = null, dragOffX = 0, dragOffY = 0;
+  canvas.addEventListener('mousedown', e => {
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width;
+    const cy = (e.clientY - r.top) / r.height;
+    artworks.forEach((a, i) => {
+      if (cx > a.x && cx < a.x + a.w && cy > a.y && cy < a.y + a.h) {
+        drag = i; dragOffX = cx - a.x; dragOffY = cy - a.y;
+      }
+    });
+  });
+  canvas.addEventListener('mousemove', e => {
+    if (drag === null) return;
+    const r = canvas.getBoundingClientRect();
+    artworks[drag].x = (e.clientX - r.left) / r.width - dragOffX;
+    artworks[drag].y = (e.clientY - r.top) / r.height - dragOffY;
+  });
+  canvas.addEventListener('mouseup', () => { drag = null; });
+
+  let lastT = Date.now();
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    lagCurateHov.update(drag !== null ? 1 : 0, dt);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#050A0A';
+    ctx.fillRect(0, 0, W, H);
+
+    // Gallery walls
+    ctx.fillStyle = '#0A1414';
+    ctx.fillRect(W * 0.05, 0, W * 0.9, H);
+
+    // Sight lines between artworks
+    artworks.forEach((a, i) => {
+      artworks.forEach((b, j) => {
+        if (j <= i) return;
+        const ax = (a.x + a.w / 2) * W, ay = (a.y + a.h / 2) * H;
+        const bx = (b.x + b.w / 2) * W, by = (b.y + b.h / 2) * H;
+        const dist = Math.hypot(ax - bx, ay - by);
+        const alpha = Math.max(0, 0.3 - dist / (W * 1.5));
+        ctx.strokeStyle = `rgba(0,200,200,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.setLineDash([3, 6]);
+        ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+        ctx.setLineDash([]);
+      });
+    });
+
+    // Draw artworks
+    artworks.forEach((a, i) => {
+      const isDragged = drag === i;
+      const ax = a.x * W, ay = a.y * H, aw = a.w * W, ah = a.h * H;
+      ctx.fillStyle = `hsla(${a.hue}, 60%, ${isDragged ? 35 : 20}%, 0.8)`;
+      ctx.strokeStyle = `hsla(${a.hue}, 80%, 60%, ${isDragged ? 1 : 0.5})`;
+      ctx.lineWidth = isDragged ? 2 : 1;
+      ctx.fillRect(ax, ay, aw, ah);
+      ctx.strokeRect(ax, ay, aw, ah);
+      ctx.fillStyle = `hsla(${a.hue}, 60%, 70%, 0.7)`;
+      ctx.font = 'bold 12px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(a.label, ax + aw / 2, ay + ah / 2 + 4);
+    });
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(88,120,120,0.4)';
+    ctx.font = '10px monospace';
+    ctx.fillText('drag artworks to explore spatial dialogue', 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ LIGHT CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('lightCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: 0.5, y: 0.3 };
+  function resize() { W = canvas.offsetWidth; H = 260; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - r.left) / r.width;
+    mouse.y = (e.clientY - r.top) / r.height;
+  });
+
+  const kelvinSlider = document.getElementById('kelvinSlider');
+  const beamSlider   = document.getElementById('beamSlider');
+  let lastT = Date.now();
+
+  function kelvinToRGB(k) {
+    // Simplified Planckian locus approximation
+    const t = k / 100;
+    let r = t <= 66 ? 255 : Math.max(0, Math.min(255, 329.699 * Math.pow(t - 60, -0.133)));
+    let g = t <= 66 ? Math.max(0, Math.min(255, 99.47 * Math.log(t) - 161.12)) : Math.max(0, Math.min(255, 288.12 * Math.pow(t - 60, -0.0755)));
+    let b = t >= 66 ? 255 : t <= 19 ? 0 : Math.max(0, Math.min(255, 138.52 * Math.log(t - 10) - 305.04));
+    return [r, g, b];
+  }
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    const kelvin = 2700 + lagKelvin.update(kelvinSlider ? +kelvinSlider.value : 50, dt) * 57;
+    const beam   = 5 + lagBeam.update(beamSlider ? +beamSlider.value : 40, dt) * 0.55;
+    const lx = lagLightX.update(mouse.x, dt);
+    const ly = lagLightY.update(mouse.y, dt);
+    const [lr, lg, lb] = kelvinToRGB(kelvin);
+
+    ctx.fillStyle = '#04080800';
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#05090900';
+    ctx.fillRect(0, 0, W, H);
+
+    // Gallery room
+    ctx.fillStyle = '#0A1414';
+    ctx.fillRect(W * 0.1, H * 0.15, W * 0.8, H * 0.75);
+
+    // Spotlight cone
+    const spotX = lx * W;
+    const spotY = ly * H * 0.25;
+    const beamRadius = Math.tan((beam / 2) * Math.PI / 180) * (H * 0.6);
+    const grad = ctx.createRadialGradient(spotX, H * 0.9, 0, spotX, H * 0.9, beamRadius * 1.2);
+    grad.addColorStop(0, `rgba(${lr},${lg},${lb},0.2)`);
+    grad.addColorStop(0.7, `rgba(${lr},${lg},${lb},0.05)`);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(spotX, spotY);
+    ctx.lineTo(spotX - beamRadius, H * 0.9);
+    ctx.lineTo(spotX + beamRadius, H * 0.9);
+    ctx.closePath();
+    ctx.fill();
+
+    // Artwork on wall
+    ctx.fillStyle = `rgba(${lr * 0.4},${lg * 0.4},${lb * 0.4},0.6)`;
+    ctx.fillRect(W * 0.35, H * 0.25, W * 0.3, H * 0.3);
+    ctx.strokeStyle = 'rgba(240,248,248,0.2)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(W * 0.35, H * 0.25, W * 0.3, H * 0.3);
+
+    // Kelvin label
+    ctx.fillStyle = 'rgba(88,120,120,0.6)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`${Math.round(kelvin)}K  ${Math.round(beam)}°  move cursor for spotlight`, 8, H - 8);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ VISITOR CANVAS ═══ */
+(function() {
+  const canvas = document.getElementById('visitorCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 240; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const crowdSlider = document.getElementById('crowdSlider');
+  const visitors = Array.from({ length: 80 }, () => ({
+    x: Math.random(), y: Math.random(),
+    tx: Math.random(), ty: Math.random(),
+    speed: 0.0005 + Math.random() * 0.001,
+    hue: 160 + Math.random() * 40,
+    lag: new LagFilter(Math.random() * 0.5, 0.3 + Math.random() * 0.5)
+  }));
+
+  const attractPoints = [{ x: 0.2, y: 0.4 }, { x: 0.5, y: 0.5 }, { x: 0.8, y: 0.4 }, { x: 0.5, y: 0.75 }];
+  let lastT = Date.now();
+
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    const crowd = lagCrowd.update(crowdSlider ? +crowdSlider.value : 40, dt);
+    lagVisFlow.update(crowd, dt);
+
+    ctx.fillStyle = 'rgba(8,12,12,0.2)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Gallery floor
+    ctx.strokeStyle = 'rgba(0,200,200,0.08)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath(); ctx.moveTo(i * W / 4, 0); ctx.lineTo(i * W / 4, H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, i * H / 4); ctx.lineTo(W, i * H / 4); ctx.stroke();
+    }
+
+    // Attract points (artworks)
+    attractPoints.forEach(a => {
+      ctx.fillStyle = 'rgba(0,200,200,0.1)';
+      ctx.beginPath(); ctx.arc(a.x * W, a.y * H, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(0,200,200,0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    const numActive = Math.floor(crowd * 0.8);
+    visitors.slice(0, numActive).forEach(v => {
+      // Move toward nearest attract point
+      let nearest = attractPoints[0];
+      let nearDist = Infinity;
+      attractPoints.forEach(a => {
+        const d = Math.hypot(a.x - v.x, a.y - v.y);
+        if (d < nearDist) { nearDist = d; nearest = a; }
+      });
+
+      if (nearDist < 0.05) {
+        // Pick new target
+        v.tx = Math.random();
+        v.ty = Math.random();
+      } else {
+        v.tx = nearest.x + (Math.random() - 0.5) * 0.15;
+        v.ty = nearest.y + (Math.random() - 0.5) * 0.15;
+      }
+
+      v.x += (v.tx - v.x) * v.speed * 3;
+      v.y += (v.ty - v.y) * v.speed * 3;
+
+      ctx.fillStyle = `hsla(${v.hue}, 60%, 60%, 0.5)`;
+      ctx.beginPath();
+      ctx.arc(v.x * W, v.y * H, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.fillStyle = 'rgba(88,120,120,0.4)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`visitors: ${numActive}`, 6, H - 6);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ═══ HISTORY CANVAS — Timeline ═══ */
+(function() {
+  const canvas = document.getElementById('historyCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.offsetWidth; H = 200; canvas.width = W; canvas.height = H; }
+  resize(); window.addEventListener('resize', resize);
+
+  const events = [
+    { year: 1790, label: 'Panorama', color: '#00C8C8' },
+    { year: 1850, label: 'Diorama', color: '#40E8E8' },
+    { year: 1960, label: 'Happenings', color: '#00A0A0' },
+    { year: 1970, label: 'Light & Space', color: '#00C8C8' },
+    { year: 1990, label: 'Video Installation', color: '#40E8E8' },
+    { year: 2010, label: 'Digital Immersive', color: '#00C8C8' },
+    { year: 2020, label: 'AI + Real-time', color: '#60F0F0' },
+  ];
+
+  let lastT = Date.now(), scrollPhase = 0;
+  function draw() {
+    const now = Date.now();
+    const dt = Math.min((now - lastT) / 1000, 0.1); lastT = now;
+    scrollPhase = lagHistPhase.update(scrollPhase + dt * 0.2, dt);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#04080800';
+    ctx.fillRect(0, 0, W, H);
+
+    const minYear = 1780, maxYear = 2030;
+    const timeW = maxYear - minYear;
+    const pad = 50;
+
+    // Timeline axis
+    ctx.strokeStyle = 'rgba(0,200,200,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad, H * 0.55);
+    ctx.lineTo(W - pad, H * 0.55);
+    ctx.stroke();
+
+    events.forEach((e, i) => {
+      const x = pad + ((e.year - minYear) / timeW) * (W - pad * 2);
+      const above = i % 2 === 0;
+      const y = H * 0.55;
+      const textY = above ? y - 35 : y + 40;
+
+      // Dot
+      ctx.fillStyle = e.color;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Line
+      ctx.strokeStyle = e.color + '80';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, textY + (above ? 12 : -12));
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = e.color;
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.label, x, textY);
+      ctx.fillStyle = 'rgba(88,120,120,0.6)';
+      ctx.fillText(e.year, x, textY + (above ? 12 : -12));
+    });
+
+    ctx.textAlign = 'left';
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+</script>

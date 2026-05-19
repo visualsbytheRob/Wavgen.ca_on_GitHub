@@ -1,0 +1,1565 @@
+---
+layout: world.njk
+title: "WAVGEN :: SERVERLESS"
+description: "Immersive data world exploring serverless"
+domain: data
+permalink: /data/serverless/
+---
+
+
+<nav>
+<div>
+<div class="nav-logo">WAVGEN</div>
+<div class="nav-sub">DATA UNIVERSE</div>
+</div>
+<div class="nav-tag">SERVERLESS · EPHEMERAL COMPUTE</div>
+</nav>
+<div class="hero-wrap">
+<canvas id="hero-canvas"></canvas>
+</div>
+<!-- SECTION 2: Event Flow Explorer -->
+<section class="section hidden" id="s2">
+<div class="section-title">02 · TRIGGER TOPOLOGY</div>
+<div class="section-heading">Event <span>Flow</span> Explorer</div>
+<div class="stage-row">
+<div class="stage-node">HTTP API</div><div class="stage-arrow">→</div>
+<div class="stage-node">Event Bus</div><div class="stage-arrow">→</div>
+<div class="stage-node">Router</div><div class="stage-arrow">→</div>
+<div class="stage-node">Function</div><div class="stage-arrow">→</div>
+<div class="stage-node">Destination</div>
+</div>
+<div class="canvas-wrap">
+<canvas height="300" id="event-flow-canvas" style="width:100%;height:300px;" width="1100"></canvas>
+</div>
+<div class="controls">
+<div class="ctrl">
+<label>Event Rate</label>
+<input id="sl-event-rate" max="30" min="1" step="1" type="range" value="12"/>
+<div class="ctrl-val" id="sv-event-rate">12 evt/s</div>
+</div>
+<div class="ctrl">
+<label>Concurrency</label>
+<input id="sl-concurrency" max="20" min="1" step="1" type="range" value="6"/>
+<div class="ctrl-val" id="sv-concurrency">6 inst</div>
+</div>
+<div class="ctrl">
+<label>Fan-Out</label>
+<input id="sl-fanout" max="8" min="1" step="1" type="range" value="3"/>
+<div class="ctrl-val" id="sv-fanout">3×</div>
+</div>
+<div class="ctrl">
+<label>Retry Delay</label>
+<input id="sl-retry" max="5" min="0" step="0.1" type="range" value="1"/>
+<div class="ctrl-val" id="sv-retry">1.0s</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Cold Start Visualizer -->
+<section class="section hidden" id="s3">
+<div class="section-title">03 · EXECUTION LIFECYCLE</div>
+<div class="section-heading">Cold Start <span>Anatomy</span></div>
+<div class="metric-row">
+<div class="metric">
+<div class="metric-label">Cold Start P50</div>
+<div class="metric-val" id="m-cold-p50">248<span class="metric-unit">ms</span></div>
+</div>
+<div class="metric">
+<div class="metric-label">Warm Reuse P50</div>
+<div class="metric-val">4<span class="metric-unit">ms</span></div>
+</div>
+<div class="metric">
+<div class="metric-label">Init Overhead</div>
+<div class="metric-val" id="m-init">180<span class="metric-unit">ms</span></div>
+</div>
+<div class="metric">
+<div class="metric-label">Container Recycle</div>
+<div class="metric-val">15<span class="metric-unit">min</span></div>
+</div>
+</div>
+<div class="canvas-wrap">
+<canvas height="320" id="coldstart-canvas" style="width:100%;height:320px;" width="1100"></canvas>
+</div>
+<div class="controls">
+<div class="ctrl">
+<label>Memory (MB)</label>
+<input id="sl-mem" max="3008" min="128" step="64" type="range" value="512"/>
+<div class="ctrl-val" id="sv-mem">512 MB</div>
+</div>
+<div class="ctrl">
+<label>Runtime</label>
+<input id="sl-runtime" max="4" min="0" step="1" type="range" value="1"/>
+<div class="ctrl-val" id="sv-runtime">Node.js</div>
+</div>
+<div class="ctrl">
+<label>Pkg Size (MB)</label>
+<input id="sl-pkg" max="250" min="1" step="1" type="range" value="12"/>
+<div class="ctrl-val" id="sv-pkg">12 MB</div>
+</div>
+<div class="ctrl">
+<label>Provisioned</label>
+<input id="sl-provisioned" max="10" min="0" step="1" type="range" value="0"/>
+<div class="ctrl-val" id="sv-provisioned">0 inst</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Cloud Execution Timeline -->
+<section class="section hidden" id="s4">
+<div class="section-title">04 · TEMPORAL EXECUTION</div>
+<div class="section-heading">Cloud Execution <span>Timeline</span></div>
+<div class="canvas-wrap">
+<canvas height="340" id="timeline-canvas" style="width:100%;height:340px;" width="1100"></canvas>
+</div>
+<div class="controls">
+<div class="ctrl">
+<label>Exec Time (ms)</label>
+<input id="sl-exectime" max="900" min="10" step="10" type="range" value="150"/>
+<div class="ctrl-val" id="sv-exectime">150 ms</div>
+</div>
+<div class="ctrl">
+<label>Burst Limit</label>
+<input id="sl-burst" max="3000" min="100" step="100" type="range" value="1000"/>
+<div class="ctrl-val" id="sv-burst">1000</div>
+</div>
+<div class="ctrl">
+<label>Timeout (s)</label>
+<input id="sl-timeout" max="900" min="1" step="1" type="range" value="30"/>
+<div class="ctrl-val" id="sv-timeout">30s</div>
+</div>
+<div class="ctrl">
+<label>Error Rate %</label>
+<input id="sl-errrate" max="20" min="0" step="0.5" type="range" value="2"/>
+<div class="ctrl-val" id="sv-errrate">2%</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: Edge Routing Systems -->
+<section class="section hidden" id="s5">
+<div class="section-title">05 · EDGE COMPUTE</div>
+<div class="section-heading">Edge <span>Routing</span> Systems</div>
+<div class="canvas-wrap">
+<canvas height="380" id="edge-canvas" style="width:100%;height:380px;" width="1100"></canvas>
+</div>
+<div class="controls">
+<div class="ctrl">
+<label>Edge Nodes</label>
+<input id="sl-edgenodes" max="24" min="6" step="1" type="range" value="14"/>
+<div class="ctrl-val" id="sv-edgenodes">14</div>
+</div>
+<div class="ctrl">
+<label>Routing Policy</label>
+<input id="sl-policy" max="2" min="0" step="1" type="range" value="0"/>
+<div class="ctrl-val" id="sv-policy">Latency</div>
+</div>
+<div class="ctrl">
+<label>Cache Hit %</label>
+<input id="sl-cache" max="100" min="0" step="1" type="range" value="72"/>
+<div class="ctrl-val" id="sv-cache">72%</div>
+</div>
+<div class="ctrl">
+<label>Origin Fallback</label>
+<input id="sl-fallback" max="100" min="0" step="1" type="range" value="28"/>
+<div class="ctrl-val" id="sv-fallback">28%</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: Trigger Orchestration -->
+<section class="section hidden" id="s6">
+<div class="section-title">06 · EVENT ORCHESTRATION</div>
+<div class="section-heading">Trigger <span>Orchestration</span> Patterns</div>
+<div class="two-col">
+<div>
+<div class="canvas-wrap">
+<canvas height="300" id="trigger-canvas" style="width:100%;height:300px;" width="520"></canvas>
+</div>
+</div>
+<div>
+<div class="canvas-wrap" style="height:300px;overflow:hidden;">
+<canvas height="300" id="stepfn-canvas" style="width:100%;height:300px;" width="520"></canvas>
+</div>
+</div>
+</div>
+<div class="controls">
+<div class="ctrl">
+<label>Event Sources</label>
+<input id="sl-sources" max="10" min="2" step="1" type="range" value="5"/>
+<div class="ctrl-val" id="sv-sources">5</div>
+</div>
+<div class="ctrl">
+<label>Filter Selectivity</label>
+<input id="sl-filter" max="100" min="0" step="5" type="range" value="40"/>
+<div class="ctrl-val" id="sv-filter">40%</div>
+</div>
+<div class="ctrl">
+<label>Step Count</label>
+<input id="sl-steps" max="10" min="2" step="1" type="range" value="5"/>
+<div class="ctrl-val" id="sv-steps">5</div>
+</div>
+<div class="ctrl">
+<label>Parallel Branches</label>
+<input id="sl-branches" max="4" min="1" step="1" type="range" value="2"/>
+<div class="ctrl-val" id="sv-branches">2</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7: Distributed Execution Map -->
+<section class="section hidden" id="s7">
+<div class="section-title">07 · GLOBAL DISTRIBUTION</div>
+<div class="section-heading">Distributed <span>Execution</span> Map</div>
+<div class="canvas-wrap">
+<canvas height="360" id="distmap-canvas" style="width:100%;height:360px;" width="1100"></canvas>
+</div>
+<div style="margin-top:16px;">
+<table>
+<thead>
+<tr>
+<th>Region</th><th>Provider</th><th>Invocations/s</th><th>Avg Latency</th><th>Cold %</th><th>Status</th>
+</tr>
+</thead>
+<tbody id="region-table"></tbody>
+</table>
+</div>
+</section>
+<!-- SECTION 8: Artists -->
+<section class="section hidden" id="s8">
+<div class="section-title">08 · PRACTITIONERS</div>
+<div class="section-heading">Serverless <span>Architects</span></div>
+<div class="artists-grid">
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.6" points="28,4 52,18 52,38 28,52 4,38 4,18" stroke="#00E5FF" stroke-width="1.5"></polygon>
+<circle cx="28" cy="28" fill="rgba(0,229,255,0.2)" r="6" stroke="#00E5FF" stroke-width="1"></circle>
+<line opacity="0.4" stroke="#00E5FF" stroke-width="1" x1="28" x2="28" y1="22" y2="14"></line>
+</svg>
+<div class="artist-name">Werner Vogels</div>
+<div class="artist-role">CTO · Amazon · Everything Fails</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="none" height="40" opacity="0.6" rx="4" stroke="#00E5FF" stroke-width="1.5" width="40" x="8" y="8"></rect>
+<rect fill="rgba(0,229,255,0.15)" height="16" rx="2" stroke="#00E5FF" stroke-width="1" width="16" x="20" y="20"></rect>
+<circle cx="28" cy="28" fill="#00E5FF" opacity="0.8" r="3"></circle>
+</svg>
+<div class="artist-name">Tim Wagner</div>
+<div class="artist-role">Creator · AWS Lambda · FaaS Pioneer</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.6" points="28,6 50,42 6,42" stroke="#00E5FF" stroke-width="1.5"></polygon>
+<polygon fill="rgba(0,229,255,0.1)" points="28,16 40,36 16,36" stroke="#00E5FF" stroke-width="1"></polygon>
+<circle cx="28" cy="30" fill="#00E5FF" opacity="0.6" r="3"></circle>
+</svg>
+<div class="artist-name">Ben Kehoe</div>
+<div class="artist-role">Serverless Advocate · iRobot · Cloud Native</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<ellipse cx="28" cy="28" fill="none" opacity="0.6" rx="22" ry="10" stroke="#00E5FF" stroke-width="1.5"></ellipse>
+<ellipse cx="28" cy="28" fill="none" opacity="0.4" rx="10" ry="22" stroke="#00E5FF" stroke-width="1"></ellipse>
+<circle cx="28" cy="28" fill="rgba(0,229,255,0.3)" r="4" stroke="#00E5FF" stroke-width="1"></circle>
+</svg>
+<div class="artist-name">Gregor Hohpe</div>
+<div class="artist-role">Enterprise Integration Patterns · Google</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="none" height="10" opacity="0.6" rx="2" stroke="#00E5FF" stroke-width="1.5" width="28" x="14" y="8"></rect>
+<rect fill="rgba(0,229,255,0.1)" height="10" rx="2" stroke="#00E5FF" stroke-width="1" width="28" x="14" y="23"></rect>
+<rect fill="none" height="10" opacity="0.4" rx="2" stroke="#00E5FF" stroke-width="1" width="28" x="14" y="38"></rect>
+<line opacity="0.4" stroke="#00E5FF" stroke-width="1" x1="28" x2="28" y1="18" y2="23"></line>
+<line opacity="0.4" stroke="#00E5FF" stroke-width="1" x1="28" x2="28" y1="33" y2="38"></line>
+</svg>
+<div class="artist-name">Sam Kroonenburg</div>
+<div class="artist-role">Co-founder · A Cloud Guru · AWS Education</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<circle cx="28" cy="28" fill="none" opacity="0.6" r="20" stroke="#00E5FF" stroke-width="1.5"></circle>
+<circle cx="28" cy="28" fill="none" opacity="0.4" r="12" stroke="#00E5FF" stroke-width="1"></circle>
+<circle cx="28" cy="28" fill="rgba(0,229,255,0.2)" r="5" stroke="#00E5FF" stroke-width="1"></circle>
+<line opacity="0.3" stroke="#00E5FF" stroke-width="1" x1="8" x2="23" y1="28" y2="28"></line>
+<line opacity="0.3" stroke="#00E5FF" stroke-width="1" x1="33" x2="48" y1="28" y2="28"></line>
+</svg>
+<div class="artist-name">Yan Cui</div>
+<div class="artist-role">Production Ready Serverless · AWS Hero</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<polygon fill="none" opacity="0.5" points="28,8 48,48 8,48" stroke="#00E5FF" stroke-width="1.5"></polygon>
+<line opacity="0.4" stroke="#00E5FF" stroke-width="1" x1="18" x2="38" y1="38" y2="38"></line>
+<line opacity="0.4" stroke="#00E5FF" stroke-width="1" x1="22" x2="34" y1="30" y2="30"></line>
+<circle cx="28" cy="22" fill="rgba(0,229,255,0.3)" r="3" stroke="#00E5FF" stroke-width="1"></circle>
+</svg>
+<div class="artist-name">Paul Johnston</div>
+<div class="artist-role">Serverless Architect · Author · SLS Community</div>
+</div>
+<div class="artist-card">
+<svg class="artist-avatar" height="56" viewbox="0 0 56 56" width="56">
+<rect fill="rgba(0,229,255,0.1)" height="16" opacity="0.7" rx="2" stroke="#00E5FF" stroke-width="1.5" width="16" x="10" y="10"></rect>
+<rect fill="none" height="16" opacity="0.4" rx="2" stroke="#00E5FF" stroke-width="1" width="16" x="30" y="10"></rect>
+<rect fill="none" height="16" opacity="0.4" rx="2" stroke="#00E5FF" stroke-width="1" width="16" x="10" y="30"></rect>
+<rect fill="rgba(0,229,255,0.05)" height="16" opacity="0.6" rx="2" stroke="#00E5FF" stroke-width="1" width="16" x="30" y="30"></rect>
+<line opacity="0.5" stroke="#00E5FF" stroke-width="1" x1="26" x2="30" y1="18" y2="18"></line>
+<line opacity="0.5" stroke="#00E5FF" stroke-width="1" x1="18" x2="18" y1="26" y2="30"></line>
+<line opacity="0.5" stroke="#00E5FF" stroke-width="1" x1="38" x2="38" y1="26" y2="30"></line>
+<line opacity="0.5" stroke="#00E5FF" stroke-width="1" x1="26" x2="30" y1="38" y2="38"></line>
+</svg>
+<div class="artist-name">Forrest Brazeal</div>
+<div class="artist-role">Cloud Educator · Google · FaaS Cartoonist</div>
+</div>
+</div>
+</section>
+<!-- SECTION 9: Glossary -->
+<section class="section hidden" id="s9">
+<div class="section-title">09 · REFERENCE LAYER</div>
+<div class="section-heading">Serverless <span>Lexicon</span></div>
+<div class="glossary-grid">
+<div class="gloss-item">
+<div class="gloss-term">FaaS</div>
+<div class="gloss-def">Function as a Service — execution model where code runs in stateless containers managed entirely by the cloud provider, billed per invocation and execution duration.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Cold Start</div>
+<div class="gloss-def">Latency penalty incurred when a function has no warm container available, requiring the platform to initialize a new execution environment including runtime and dependencies.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Warm Container</div>
+<div class="gloss-def">A previously-initialized execution environment retained by the platform for reuse, eliminating initialization overhead and reducing invocation latency to single-digit milliseconds.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Event Source Mapping</div>
+<div class="gloss-def">Configuration that connects a stream or queue (Kinesis, SQS, DynamoDB Streams) to a Lambda function, allowing automatic invocation as records arrive without polling code.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Concurrency Limit</div>
+<div class="gloss-def">Maximum number of simultaneous function executions within an account or region. AWS Lambda default is 1,000 per region; reserved concurrency allocates a fixed pool per function.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Provisioned Concurrency</div>
+<div class="gloss-def">Pre-initialized execution environments that eliminate cold starts entirely, held ready at a fixed cost regardless of invocation volume — ideal for latency-sensitive endpoints.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Step Functions</div>
+<div class="gloss-def">AWS managed state machine service for orchestrating multi-step workflows. Uses Amazon States Language JSON to define sequences, parallel branches, error handlers, and wait states.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">EventBridge</div>
+<div class="gloss-def">Serverless event bus routing events between AWS services, SaaS providers, and custom applications using declarative event patterns with schema registry and replay capability.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Dead Letter Queue</div>
+<div class="gloss-def">Destination (SQS queue or SNS topic) receiving events that a function fails to process after maximum retry attempts, enabling offline inspection and reprocessing without data loss.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Lambda Layer</div>
+<div class="gloss-def">ZIP archive containing shared libraries, custom runtimes, or configuration data, mounted into the function's execution environment at /opt to reduce deployment package sizes.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Edge Function</div>
+<div class="gloss-def">Lightweight function executing at CDN edge nodes geographically close to users, enabling sub-5ms response for auth, routing, A/B testing, and content personalization without origin trips.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Idempotency</div>
+<div class="gloss-def">Property ensuring that executing a function multiple times with the same input produces the same side effects as a single execution — critical given at-least-once delivery semantics in serverless.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Serverless Framework</div>
+<div class="gloss-def">Open-source deployment toolkit translating declarative YAML into cloud provider infrastructure — Lambda functions, API Gateway routes, IAM roles, event sources — across AWS, Azure, and GCP.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">SAM</div>
+<div class="gloss-def">Serverless Application Model — AWS CloudFormation extension with simplified syntax for defining Lambda functions, API Gateway APIs, and DynamoDB tables, with local testing via sam local.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Execution Context</div>
+<div class="gloss-def">The runtime environment reused across warm invocations within the same container. Persists /tmp storage (512 MB), initialized SDK clients, and cached data between requests on the same instance.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Throttling</div>
+<div class="gloss-def">Platform rate limiting applied when invocations exceed concurrency limits. Synchronous calls receive 429 TooManyRequests; async invocations enter a retry queue with exponential backoff up to 6 hours.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Durable Functions</div>
+<div class="gloss-def">Azure Functions extension enabling stateful workflows through checkpointed orchestrator functions that replay deterministically, coordinating activities, timers, and human interaction patterns.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">KEDA</div>
+<div class="gloss-def">Kubernetes Event-Driven Autoscaling — open-source component scaling Kubernetes workloads based on external event sources (Kafka lag, queue depth, HTTP rate), bridging serverless patterns onto K8s.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Destinations</div>
+<div class="gloss-def">Lambda async invocation routing: on-success and on-failure targets (SQS, SNS, Lambda, EventBridge) receiving enriched result records including request/response payloads for observability and error handling.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">SnapStart</div>
+<div class="gloss-def">AWS Lambda feature for Java functions restoring pre-initialized snapshots at invocation time, reducing cold starts from seconds to milliseconds by caching the JVM state post-initialization.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Function URL</div>
+<div class="gloss-def">Dedicated HTTPS endpoint for a Lambda function without API Gateway, supporting IAM or no-auth access, streaming response mode, and built-in CORS configuration for direct web client invocation.</div>
+</div>
+<div class="gloss-item">
+<div class="gloss-term">Workload Identity</div>
+<div class="gloss-def">IAM execution role assumed by the function at runtime, granting least-privilege access to AWS services via temporary STS credentials — eliminating long-lived secrets from serverless environments.</div>
+</div>
+</div>
+</section>
+<script>
+// ─── UTILITIES ────────────────────────────────────────────────────────────
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const rand = (lo = 0, hi = 1) => lo + Math.random() * (hi - lo);
+function noise21(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+  const h = (a,b) => { let n=(a*1619+b*31337)^(a*31337); n=(n>>8)^n; return(n&0xffff)/65535; };
+  return lerp(lerp(h(ix,iy),h(ix+1,iy),ux), lerp(h(ix,iy+1),h(ix+1,iy+1),ux), uy);
+}
+function fbm(x, y, oct=4) {
+  let v=0, a=0.5, f=1;
+  for(let i=0;i<oct;i++){v+=a*noise21(x*f,y*f);a*=0.5;f*=2.1;}
+  return v;
+}
+
+// ─── LAG FILTERS (17 instances) ──────────────────────────────────────────
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+const lagHeroMX      = new LagFilter(0.5, 0.8);
+const lagHeroMY      = new LagFilter(0.5, 0.8);
+const lagHeroPulse   = new LagFilter(0.5, 1.2);
+const lagEventFlow   = new LagFilter(12,  0.6);
+const lagConcurrency = new LagFilter(6,   0.5);
+const lagFanOut      = new LagFilter(3,   0.4);
+const lagRetryDelay  = new LagFilter(1,   0.4);
+const lagColdDur     = new LagFilter(248, 0.7);
+const lagMemAlloc    = new LagFilter(512, 0.5);
+const lagExecTime    = new LagFilter(150, 0.5);
+const lagBurstLimit  = new LagFilter(1000,0.6);
+const lagEdgeMX      = new LagFilter(0.5, 0.9);
+const lagEdgeMY      = new LagFilter(0.5, 0.9);
+const lagEdgeNodes   = new LagFilter(14,  0.5);
+const lagCacheHit    = new LagFilter(72,  0.4);
+const lagErrRate     = new LagFilter(2,   0.5);
+const lagPipeFlow    = new LagFilter(0,   0.3);
+
+// ─── MOUSE TRACKING ──────────────────────────────────────────────────────
+let mouseX = 0.5, mouseY = 0.5;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX / window.innerWidth;
+  mouseY = e.clientY / window.innerHeight;
+});
+
+// ─── SLIDER BINDINGS ─────────────────────────────────────────────────────
+const runtimeNames = ['Node.js','Python','Go','Java','Rust'];
+function bindSlider(id, valId, fmt) {
+  const sl = document.getElementById(id);
+  const vl = document.getElementById(valId);
+  if (!sl || !vl) return;
+  sl.addEventListener('input', () => { vl.textContent = fmt(sl.value); });
+  vl.textContent = fmt(sl.value);
+}
+bindSlider('sl-event-rate','sv-event-rate', v => `${v} evt/s`);
+bindSlider('sl-concurrency','sv-concurrency', v => `${v} inst`);
+bindSlider('sl-fanout','sv-fanout', v => `${v}×`);
+bindSlider('sl-retry','sv-retry', v => `${parseFloat(v).toFixed(1)}s`);
+bindSlider('sl-mem','sv-mem', v => `${v} MB`);
+bindSlider('sl-runtime','sv-runtime', v => runtimeNames[parseInt(v)]);
+bindSlider('sl-pkg','sv-pkg', v => `${v} MB`);
+bindSlider('sl-provisioned','sv-provisioned', v => `${v} inst`);
+bindSlider('sl-exectime','sv-exectime', v => `${v} ms`);
+bindSlider('sl-burst','sv-burst', v => `${v}`);
+bindSlider('sl-timeout','sv-timeout', v => `${v}s`);
+bindSlider('sl-errrate','sv-errrate', v => `${parseFloat(v).toFixed(1)}%`);
+bindSlider('sl-edgenodes','sv-edgenodes', v => v);
+bindSlider('sl-policy','sv-policy', v => ['Latency','Geo','WRR'][parseInt(v)]);
+bindSlider('sl-cache','sv-cache', v => `${v}%`);
+bindSlider('sl-fallback','sv-fallback', v => `${v}%`);
+bindSlider('sl-sources','sv-sources', v => v);
+bindSlider('sl-filter','sv-filter', v => `${v}%`);
+bindSlider('sl-steps','sv-steps', v => v);
+bindSlider('sl-branches','sv-branches', v => v);
+
+function getSlVal(id) {
+  const el = document.getElementById(id);
+  return el ? parseFloat(el.value) : 0;
+}
+
+// ─── HERO: WebGL CLOUD NERVOUS SYSTEM ────────────────────────────────────
+const heroCanvas = document.getElementById('hero-canvas');
+heroCanvas.width = window.innerWidth;
+heroCanvas.height = 440;
+window.addEventListener('resize', () => {
+  heroCanvas.width = window.innerWidth;
+  heroCanvas.height = 440;
+  initHeroGL();
+});
+
+let heroGL, heroProgram, heroUniforms = {};
+
+const heroVS = `
+  attribute vec2 pos;
+  void main() { gl_Position = vec4(pos, 0.0, 1.0); }
+`;
+const heroFS = `
+  precision highp float;
+  uniform vec2 u_res;
+  uniform float u_time;
+  uniform vec2 u_mouse;
+  uniform float u_pulse;
+
+  float hash(vec2 p) {
+    p = fract(p * vec2(127.1, 311.7));
+    p += dot(p, p + 17.5);
+    return fract(p.x * p.y);
+  }
+  float noise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    vec2 u = f*f*(3.0-2.0*f);
+    float a = hash(i), b = hash(i+vec2(1,0));
+    float c = hash(i+vec2(0,1)), d = hash(i+vec2(1,1));
+    return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+  }
+  float fbm(vec2 p) {
+    float v=0.0, a=0.5;
+    for(int i=0;i<5;i++){v+=a*noise(p);a*=0.5;p=p*2.1+vec2(1.7,9.2);}
+    return v;
+  }
+
+  void main() {
+    vec2 uv = gl_FragCoord.xy / u_res;
+    vec2 st = uv * 2.0 - 1.0;
+    st.x *= u_res.x / u_res.y;
+
+    // Animated cloud field
+    vec2 q = vec2(fbm(st + u_time * 0.06), fbm(st + vec2(1.7, 9.2) + u_time * 0.05));
+    vec2 r = vec2(fbm(st + 2.0*q + vec2(1.7,9.2) + 0.15*u_time), fbm(st + 2.0*q + vec2(8.3,2.8) + 0.126*u_time));
+    float f = fbm(st + 2.0*r);
+
+    // Event stream lines
+    float streams = 0.0;
+    for(int i=0;i<8;i++){
+      float fi = float(i);
+      float y = -0.8 + fi*0.22;
+      float xi = u_time*0.3*(0.5+fi*0.12);
+      float sx = fract(st.x*0.3 - xi);
+      float stream = exp(-abs(st.y - y - sin(st.x*3.0+u_time)*0.04)*18.0);
+      float packet = exp(-abs(sx - 0.5)*50.0);
+      streams += stream * packet * 0.3;
+    }
+
+    // Node pulses
+    float nodes = 0.0;
+    float[8] nxs = float[8](-1.0,-0.5,0.0,0.5,1.0,-0.75,0.25,-0.25);
+    float[8] nys = float[8](-0.4,0.3,-0.1,0.4,-0.3,0.0,0.6,-0.6);
+    for(int i=0;i<8;i++){
+      vec2 np = vec2(nxs[i], nys[i]);
+      float d = length(st - np);
+      float phase = u_time*1.2 + float(i)*0.8;
+      float ring = exp(-abs(d - 0.08 - 0.06*sin(phase))*22.0) * 0.4;
+      float core = exp(-d*d*80.0) * 0.8;
+      nodes += ring + core;
+    }
+
+    // Mouse interaction — query glow
+    vec2 mst = u_mouse * 2.0 - 1.0;
+    mst.x *= u_res.x / u_res.y;
+    float mouseDist = length(st - mst);
+    float mouseGlow = exp(-mouseDist*mouseDist*4.0) * u_pulse;
+
+    // Color composition
+    vec3 cloudWhite = vec3(0.9, 0.95, 1.0);
+    vec3 eventCyan  = vec3(0.0, 0.9, 1.0);
+    vec3 deepBlue   = vec3(0.01, 0.04, 0.1);
+    vec3 streamCol  = vec3(0.1, 0.7, 1.0);
+
+    vec3 col = deepBlue;
+    col = mix(col, cloudWhite, f * 0.08);
+    col += eventCyan * streams * 0.6;
+    col += cloudWhite * nodes * 0.15;
+    col += eventCyan * mouseGlow * 0.5;
+
+    // Horizontal scan lines
+    float scan = 0.5 + 0.5*sin(uv.y*u_res.y*0.8);
+    col *= (0.96 + 0.04*scan);
+
+    // Vignette
+    float vig = 1.0 - length(uv - 0.5)*1.4;
+    col *= clamp(vig, 0.0, 1.0);
+
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+function initHeroGL() {
+  if (!heroGL) {
+    heroGL = heroCanvas.getContext('webgl');
+    if (!heroGL) return;
+  }
+  const gl = heroGL;
+  function mkShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    return s;
+  }
+  if (heroProgram) gl.deleteProgram(heroProgram);
+  heroProgram = gl.createProgram();
+  gl.attachShader(heroProgram, mkShader(gl.VERTEX_SHADER, heroVS));
+  gl.attachShader(heroProgram, mkShader(gl.FRAGMENT_SHADER, heroFS));
+  gl.linkProgram(heroProgram); gl.useProgram(heroProgram);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(heroProgram, 'pos');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+  heroUniforms = {
+    res:   gl.getUniformLocation(heroProgram, 'u_res'),
+    time:  gl.getUniformLocation(heroProgram, 'u_time'),
+    mouse: gl.getUniformLocation(heroProgram, 'u_mouse'),
+    pulse: gl.getUniformLocation(heroProgram, 'u_pulse'),
+  };
+}
+initHeroGL();
+
+// ─── EVENT FLOW CANVAS ───────────────────────────────────────────────────
+const efc = document.getElementById('event-flow-canvas');
+const efx = efc.getContext('2d');
+
+const SOURCES = [
+  {label:'HTTP API', color:'#00C880'},
+  {label:'S3 Event', color:'#00E5FF'},
+  {label:'SQS Queue', color:'#80EAFF'},
+  {label:'DynamoDB', color:'#FFB300'},
+  {label:'Scheduler', color:'#C880FF'},
+];
+const DESTS = [
+  {label:'DynamoDB', color:'#FFB300'},
+  {label:'SQS', color:'#80EAFF'},
+  {label:'SNS Topic', color:'#FF6060'},
+  {label:'S3 Bucket', color:'#00C880'},
+];
+
+let efPackets = [];
+function spawnEFPacket() {
+  const src = Math.floor(rand(0, SOURCES.length));
+  const dst = Math.floor(rand(0, DESTS.length));
+  const fanout = Math.round(lagFanOut.value);
+  for (let f = 0; f < fanout && f < DESTS.length; f++) {
+    efPackets.push({
+      src, dst: (dst + f) % DESTS.length,
+      t: 0, speed: rand(0.003, 0.007),
+      color: SOURCES[src].color,
+      phase: Math.random() < 0.15 ? 'retry' : 'normal',
+    });
+  }
+}
+
+// ─── COLD START CANVAS ───────────────────────────────────────────────────
+const csc = document.getElementById('coldstart-canvas');
+const csx = csc.getContext('2d');
+let csAnimT = 0;
+
+// ─── TIMELINE CANVAS ─────────────────────────────────────────────────────
+const tlc = document.getElementById('timeline-canvas');
+const tlx = tlc.getContext('2d');
+let tlInvocations = [];
+let tlT = 0;
+function spawnInvocation() {
+  const isCold = Math.random() < 0.18;
+  const exec = lagExecTime.value;
+  const cold = isCold ? lagColdDur.value : 0;
+  const isErr = Math.random() < lagErrRate.value / 100;
+  tlInvocations.push({
+    x: rand(0.05, 0.92),
+    startT: tlT,
+    coldDur: cold,
+    execDur: exec,
+    isErr,
+    isCold,
+    lane: Math.floor(rand(0, 8)),
+  });
+  if (tlInvocations.length > 60) tlInvocations.splice(0, 10);
+}
+
+// ─── EDGE CANVAS ─────────────────────────────────────────────────────────
+const edc = document.getElementById('edge-canvas');
+const edx = edc.getContext('2d');
+let edgeMouseX = 0.5, edgeMouseY = 0.5;
+edc.addEventListener('mousemove', e => {
+  const r = edc.getBoundingClientRect();
+  edgeMouseX = (e.clientX - r.left) / r.width;
+  edgeMouseY = (e.clientY - r.top) / r.height;
+});
+
+const REGIONS = [
+  {name:'us-east-1', x:0.22, y:0.38, load:0.82, lat:4},
+  {name:'us-west-2', x:0.10, y:0.36, load:0.61, lat:6},
+  {name:'eu-west-1', x:0.47, y:0.28, load:0.74, lat:9},
+  {name:'eu-central-1', x:0.51, y:0.26, load:0.55, lat:11},
+  {name:'ap-southeast-1', x:0.77, y:0.55, load:0.68, lat:14},
+  {name:'ap-northeast-1', x:0.84, y:0.38, load:0.71, lat:16},
+  {name:'ap-south-1', x:0.70, y:0.49, load:0.48, lat:18},
+  {name:'sa-east-1', x:0.30, y:0.72, load:0.39, lat:22},
+  {name:'af-south-1', x:0.52, y:0.68, load:0.28, lat:30},
+  {name:'me-south-1', x:0.61, y:0.42, load:0.33, lat:24},
+  {name:'us-gov-east', x:0.24, y:0.34, load:0.44, lat:5},
+  {name:'ca-central-1', x:0.19, y:0.30, load:0.52, lat:7},
+  {name:'eu-north-1', x:0.50, y:0.18, load:0.40, lat:13},
+  {name:'ap-east-1', x:0.82, y:0.43, load:0.37, lat:19},
+];
+let edgePackets = [];
+function spawnEdgePacket() {
+  const dst = Math.floor(rand(0, REGIONS.length));
+  edgePackets.push({ dst, t: 0, speed: rand(0.008, 0.015) });
+}
+
+// ─── TRIGGER CANVAS ──────────────────────────────────────────────────────
+const trc = document.getElementById('trigger-canvas');
+const trx = trc.getContext('2d');
+
+// ─── STEP FUNCTION CANVAS ────────────────────────────────────────────────
+const sfc = document.getElementById('stepfn-canvas');
+const sfx = sfc.getContext('2d');
+let sfStep = 0, sfT = 0;
+
+// ─── DIST MAP CANVAS ─────────────────────────────────────────────────────
+const dmc = document.getElementById('distmap-canvas');
+const dmx = dmc.getContext('2d');
+
+// ─── REGION TABLE ────────────────────────────────────────────────────────
+const regionData = [
+  {region:'us-east-1', provider:'AWS Lambda', inv:4820, lat:4, cold:'1.8%', status:'healthy'},
+  {region:'us-west-2', provider:'AWS Lambda', inv:2310, lat:6, cold:'2.1%', status:'healthy'},
+  {region:'eu-west-1', provider:'AWS Lambda', inv:3190, lat:9, cold:'1.9%', status:'healthy'},
+  {region:'ap-southeast-1', provider:'AWS Lambda', inv:1840, lat:14, cold:'2.4%', status:'healthy'},
+  {region:'ap-northeast-1', provider:'AWS Lambda', inv:2100, lat:16, cold:'2.2%', status:'degraded'},
+  {region:'eu-central-1', provider:'Azure Func', inv:1290, lat:11, cold:'3.1%', status:'healthy'},
+  {region:'sa-east-1', provider:'Google CR', inv:480, lat:22, cold:'4.2%', status:'healthy'},
+  {region:'af-south-1', provider:'AWS Lambda', inv:210, lat:30, cold:'5.8%', status:'healthy'},
+];
+const tbody = document.getElementById('region-table');
+if (tbody) {
+  regionData.forEach(r => {
+    const tr = document.createElement('tr');
+    const statusBadge = r.status === 'healthy' ? 'badge-cyan' : 'badge-gold';
+    tr.innerHTML = `
+      <td class="mono">${r.region}</td>
+      <td>${r.provider}</td>
+      <td>${(r.inv + Math.floor(rand(-50,50))).toLocaleString()}</td>
+      <td>${r.lat}<span style="color:var(--text2);font-size:9px"> ms</span></td>
+      <td>${r.cold}</td>
+      <td><span class="badge ${statusBadge}">${r.status}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── MAIN ANIMATION LOOP ─────────────────────────────────────────────────
+let lastTime = 0;
+let frameCount = 0;
+let spawnTimer = 0;
+let tlSpawnTimer = 0;
+let edgeSpawnTimer = 0;
+
+function drawEventFlow(dt) {
+  const W = efc.width, H = efc.height;
+  efx.fillStyle = 'rgba(2,4,8,0.18)';
+  efx.fillRect(0, 0, W, H);
+
+  const padX = 80, midX = W * 0.5, srcX = padX, dstX = W - padX;
+  const routerX = midX - 80, fnX = midX + 80;
+
+  const srcSpacing = H / (SOURCES.length + 1);
+  const dstSpacing = H / (DESTS.length + 1);
+
+  // Draw source nodes
+  SOURCES.forEach((s, i) => {
+    const y = srcSpacing * (i + 1);
+    efx.beginPath();
+    efx.arc(srcX, y, 22, 0, Math.PI * 2);
+    efx.strokeStyle = s.color;
+    efx.lineWidth = 1.5;
+    efx.globalAlpha = 0.7;
+    efx.stroke();
+    efx.globalAlpha = 1;
+    efx.fillStyle = s.color;
+    efx.font = '9px Courier New';
+    efx.textAlign = 'center';
+    efx.fillText(s.label, srcX, y + 3);
+  });
+
+  // Router node
+  efx.beginPath();
+  efx.arc(routerX, H/2, 28, 0, Math.PI * 2);
+  efx.strokeStyle = '#00E5FF';
+  efx.lineWidth = 2;
+  efx.globalAlpha = 0.6;
+  efx.stroke();
+  efx.globalAlpha = 1;
+  efx.fillStyle = '#00E5FF';
+  efx.font = '9px Courier New';
+  efx.textAlign = 'center';
+  efx.fillText('ROUTER', routerX, H/2 - 4);
+  efx.fillText('/ BUS', routerX, H/2 + 7);
+
+  // Function nodes
+  const fnCount = Math.round(clamp(lagConcurrency.value, 1, 8));
+  const fnSpacing = H / (fnCount + 1);
+  for (let i = 0; i < fnCount; i++) {
+    const fy = fnSpacing * (i + 1);
+    efx.beginPath();
+    const side = 18;
+    efx.rect(fnX - side, fy - side, side*2, side*2);
+    efx.strokeStyle = '#80EAFF';
+    efx.lineWidth = 1.2;
+    efx.globalAlpha = 0.55;
+    efx.stroke();
+    efx.globalAlpha = 1;
+    efx.fillStyle = '#80EAFF';
+    efx.font = '8px Courier New';
+    efx.fillText('λ', fnX, fy + 3);
+  }
+
+  // Destination nodes
+  DESTS.forEach((d, i) => {
+    const y = dstSpacing * (i + 1);
+    efx.beginPath();
+    const s = 18;
+    efx.moveTo(dstX, y - s);
+    efx.lineTo(dstX + s, y);
+    efx.lineTo(dstX, y + s);
+    efx.lineTo(dstX - s, y);
+    efx.closePath();
+    efx.strokeStyle = d.color;
+    efx.lineWidth = 1.2;
+    efx.globalAlpha = 0.6;
+    efx.stroke();
+    efx.globalAlpha = 1;
+    efx.fillStyle = d.color;
+    efx.font = '9px Courier New';
+    efx.textAlign = 'center';
+    efx.fillText(d.label, dstX, y + 3);
+  });
+
+  // Connector lines
+  efx.globalAlpha = 0.12;
+  efx.strokeStyle = '#00E5FF';
+  efx.lineWidth = 1;
+  SOURCES.forEach((_, i) => {
+    const y = srcSpacing * (i + 1);
+    efx.beginPath(); efx.moveTo(srcX + 22, y); efx.lineTo(routerX - 28, H/2);
+    efx.stroke();
+  });
+  for (let i = 0; i < fnCount; i++) {
+    const fy = fnSpacing * (i + 1);
+    efx.beginPath(); efx.moveTo(routerX + 28, H/2); efx.lineTo(fnX - 18, fy); efx.stroke();
+    DESTS.forEach((_, j) => {
+      const dy = dstSpacing * (j + 1);
+      efx.beginPath(); efx.moveTo(fnX + 18, fy); efx.lineTo(dstX - 18, dy); efx.stroke();
+    });
+  }
+  efx.globalAlpha = 1;
+
+  // Update and draw packets
+  efPackets = efPackets.filter(p => p.t < 1);
+  efPackets.forEach(p => {
+    p.t += p.speed;
+    const srcY = srcSpacing * (p.src + 1);
+    const dstY = dstSpacing * (p.dst + 1);
+    const fnIdx = Math.floor(p.dst % fnCount);
+    const fnY = fnSpacing * (fnIdx + 1);
+
+    let px, py;
+    if (p.t < 0.33) {
+      const lt = p.t / 0.33;
+      px = lerp(srcX + 22, routerX - 28, lt);
+      py = lerp(srcY, H/2, lt);
+    } else if (p.t < 0.66) {
+      const lt = (p.t - 0.33) / 0.33;
+      px = lerp(routerX + 28, fnX - 18, lt);
+      py = lerp(H/2, fnY, lt);
+    } else {
+      const lt = (p.t - 0.66) / 0.34;
+      px = lerp(fnX + 18, dstX - 18, lt);
+      py = lerp(fnY, dstY, lt);
+    }
+
+    efx.beginPath();
+    efx.arc(px, py, p.phase === 'retry' ? 4 : 3, 0, Math.PI * 2);
+    efx.fillStyle = p.phase === 'retry' ? '#FF6060' : p.color;
+    efx.shadowBlur = 8;
+    efx.shadowColor = p.color;
+    efx.fill();
+    efx.shadowBlur = 0;
+  });
+}
+
+function drawColdStart(dt, t) {
+  const W = csc.width, H = csc.height;
+  csx.fillStyle = 'rgba(2,4,8,0.25)';
+  csx.fillRect(0, 0, W, H);
+
+  const mem = lagMemAlloc.value;
+  const pkg = getSlVal('sl-pkg');
+  const provisioned = getSlVal('sl-provisioned');
+  const runtimeIdx = parseInt(getSlVal('sl-runtime'));
+  const runtimes = ['Node.js','Python','Go','Java','Rust'];
+  const runtimeColdBase = [80,120,20,400,15];
+  const pkgFactor = 1 + pkg / 60;
+  const memFactor = 1 - (mem - 128) / 6000;
+
+  const coldInitMs = provisioned > 0 ? 0 : Math.round(runtimeColdBase[runtimeIdx] * pkgFactor * (1 + memFactor * 0.5));
+  const containerMs = provisioned > 0 ? 0 : Math.round(60 + mem * 0.04);
+  const totalColdMs = coldInitMs + containerMs;
+  const warmMs = 4;
+  const execMs = Math.round(lagExecTime.value);
+
+  lagColdDur.update(totalColdMs, dt);
+  const displayedCold = Math.round(lagColdDur.value);
+
+  // Update metrics
+  const mp50 = document.getElementById('m-cold-p50');
+  const minit = document.getElementById('m-init');
+  if (mp50) mp50.innerHTML = `${displayedCold}<span class="metric-unit">ms</span>`;
+  if (minit) minit.innerHTML = `${Math.round(coldInitMs)}<span class="metric-unit">ms</span>`;
+
+  // Draw cold start vs warm start bar comparison
+  const barY = 40, barH = 40;
+  const totalW = W - 200;
+  const maxMs = Math.max(totalColdMs + execMs, 600);
+  const scaleX = totalW / maxMs;
+
+  // Cold start bar
+  csx.fillStyle = 'rgba(0,229,255,0.08)';
+  csx.fillRect(100, barY, totalW, barH);
+
+  const cxContainer = 100;
+  const cxContainerW = containerMs * scaleX;
+  const cxInit = cxContainer + cxContainerW;
+  const cxInitW = coldInitMs * scaleX;
+  const cxExec = cxInit + cxInitW;
+  const cxExecW = execMs * scaleX;
+
+  if (provisioned === 0) {
+    csx.fillStyle = 'rgba(255,200,0,0.3)';
+    csx.fillRect(cxContainer, barY, cxContainerW, barH);
+    csx.fillStyle = 'rgba(255,150,0,0.4)';
+    csx.fillRect(cxInit, barY, cxInitW, barH);
+  }
+  csx.fillStyle = 'rgba(0,229,255,0.5)';
+  csx.fillRect(cxExec, barY, cxExecW, barH);
+
+  // Labels
+  csx.font = '10px Courier New';
+  csx.textAlign = 'right';
+  csx.fillStyle = '#E8F4FF';
+  csx.fillText('COLD', 90, barY + 24);
+
+  if (provisioned === 0 && containerMs > 0) {
+    csx.fillStyle = '#FFC800';
+    csx.textAlign = 'center';
+    if (cxContainerW > 40) csx.fillText('CONTAINER', cxContainer + cxContainerW/2, barY + 16);
+    if (cxContainerW > 40) csx.fillText(`${containerMs}ms`, cxContainer + cxContainerW/2, barY + 30);
+    if (cxInitW > 40) {
+      csx.fillStyle = '#FF9040';
+      csx.fillText('INIT', cxInit + cxInitW/2, barY + 16);
+      csx.fillText(`${coldInitMs}ms`, cxInit + cxInitW/2, barY + 30);
+    }
+  } else if (provisioned > 0) {
+    csx.fillStyle = '#00C880';
+    csx.textAlign = 'center';
+    csx.fillText('PROVISIONED — NO COLD START', 100 + totalW/2, barY + 24);
+  }
+  csx.fillStyle = '#00E5FF';
+  csx.textAlign = 'center';
+  if (cxExecW > 20) csx.fillText(`EXEC ${execMs}ms`, cxExec + cxExecW/2, barY + 24);
+
+  // Warm start bar
+  const warmY = barY + barH + 24;
+  csx.fillStyle = 'rgba(0,229,255,0.08)';
+  csx.fillRect(100, warmY, totalW, barH);
+  const warmExecW = execMs * scaleX;
+  csx.fillStyle = 'rgba(0,200,128,0.5)';
+  csx.fillRect(100 + warmMs * scaleX, warmY, warmExecW, barH);
+  csx.fillStyle = '#E8F4FF';
+  csx.textAlign = 'right';
+  csx.fillText('WARM', 90, warmY + 24);
+  csx.fillStyle = '#00C880';
+  csx.textAlign = 'center';
+  csx.fillText(`REUSE ${warmMs}ms`, 100 + warmMs*scaleX + 20, warmY + 24);
+
+  // Time axis
+  const axisY = warmY + barH + 20;
+  csx.strokeStyle = 'rgba(0,229,255,0.2)';
+  csx.lineWidth = 1;
+  csx.beginPath(); csx.moveTo(100, axisY); csx.lineTo(100 + totalW, axisY); csx.stroke();
+  const tickMs = maxMs < 500 ? 50 : maxMs < 1000 ? 100 : 200;
+  for (let ms = 0; ms <= maxMs; ms += tickMs) {
+    const tx = 100 + ms * scaleX;
+    csx.strokeStyle = 'rgba(0,229,255,0.15)';
+    csx.beginPath(); csx.moveTo(tx, barY); csx.lineTo(tx, axisY + 4); csx.stroke();
+    csx.fillStyle = '#6090B0';
+    csx.font = '9px Courier New';
+    csx.textAlign = 'center';
+    csx.fillText(`${ms}ms`, tx, axisY + 14);
+  }
+
+  // Runtime comparison bars
+  const rcY = axisY + 40;
+  csx.fillStyle = '#6090B0';
+  csx.font = '9px Courier New';
+  csx.textAlign = 'left';
+  csx.fillText('RUNTIME COLD START COMPARISON (128MB, same pkg size)', 100, rcY);
+
+  runtimes.forEach((rt, i) => {
+    const ry = rcY + 20 + i * 24;
+    const ms = runtimeColdBase[i] * pkgFactor;
+    const bw = Math.min(ms * (totalW / (maxMs * 1.5)), totalW * 0.8);
+    csx.fillStyle = runtimeIdx === i ? 'rgba(0,229,255,0.4)' : 'rgba(0,229,255,0.1)';
+    csx.fillRect(180, ry, bw, 16);
+    csx.fillStyle = runtimeIdx === i ? '#00E5FF' : '#6090B0';
+    csx.textAlign = 'right';
+    csx.fillText(rt, 172, ry + 12);
+    csx.textAlign = 'left';
+    csx.fillText(`${Math.round(ms)}ms`, 184 + bw, ry + 12);
+  });
+}
+
+function drawTimeline(dt, t) {
+  const W = tlc.width, H = tlc.height;
+  tlx.fillStyle = 'rgba(2,4,8,0.2)';
+  tlx.fillRect(0, 0, W, H);
+
+  const LANES = 8;
+  const laneH = (H - 60) / LANES;
+  const timeWindow = 8000; // ms
+
+  tlT += dt * 1000;
+
+  // Spawn invocations
+  tlSpawnTimer += dt;
+  const spawnInterval = 1 / (lagEventFlow.value * 0.5);
+  while (tlSpawnTimer > spawnInterval) {
+    spawnInvocation();
+    tlSpawnTimer -= spawnInterval;
+  }
+
+  // Draw lane headers
+  for (let i = 0; i < LANES; i++) {
+    const ly = 40 + i * laneH;
+    tlx.strokeStyle = 'rgba(0,229,255,0.06)';
+    tlx.lineWidth = 1;
+    tlx.beginPath(); tlx.moveTo(0, ly); tlx.lineTo(W, ly); tlx.stroke();
+    tlx.fillStyle = '#304060';
+    tlx.font = '8px Courier New';
+    tlx.textAlign = 'left';
+    tlx.fillText(`λ-${String(i+1).padStart(2,'0')}`, 4, ly + 10);
+  }
+
+  // Time axis
+  const axisY = 24;
+  tlx.strokeStyle = 'rgba(0,229,255,0.15)';
+  tlx.beginPath(); tlx.moveTo(0, axisY); tlx.lineTo(W, axisY); tlx.stroke();
+  for (let i = 0; i <= 8; i++) {
+    const tx = (W / 8) * i;
+    tlx.strokeStyle = 'rgba(0,229,255,0.1)';
+    tlx.beginPath(); tlx.moveTo(tx, 0); tlx.lineTo(tx, H); tlx.stroke();
+    tlx.fillStyle = '#6090B0';
+    tlx.font = '8px Courier New';
+    tlx.textAlign = 'center';
+    tlx.fillText(`-${(8-i)}s`, tx, 16);
+  }
+
+  // Draw invocations
+  tlInvocations = tlInvocations.filter(inv => tlT - inv.startT < timeWindow + inv.coldDur + inv.execDur + 500);
+  tlInvocations.forEach(inv => {
+    const age = tlT - inv.startT;
+    const xEnd = W - (age / timeWindow) * W;
+    if (xEnd > W || xEnd < -200) return;
+    const ly = 40 + inv.lane * laneH + laneH * 0.1;
+    const bH = laneH * 0.8;
+
+    if (inv.isCold && inv.coldDur > 0) {
+      const coldW = (inv.coldDur / timeWindow) * W;
+      tlx.fillStyle = 'rgba(255,180,0,0.25)';
+      tlx.fillRect(xEnd, ly, coldW, bH);
+      tlx.strokeStyle = 'rgba(255,180,0,0.5)';
+      tlx.lineWidth = 1;
+      tlx.strokeRect(xEnd, ly, coldW, bH);
+      tlx.fillStyle = '#FFC800';
+      tlx.font = '7px Courier New';
+      tlx.textAlign = 'center';
+      if (coldW > 20) tlx.fillText('COLD', xEnd + coldW/2, ly + bH/2 + 3);
+    }
+
+    const execX = xEnd + (inv.coldDur / timeWindow) * W;
+    const execW = (inv.execDur / timeWindow) * W;
+    tlx.fillStyle = inv.isErr ? 'rgba(255,60,60,0.4)' : 'rgba(0,229,255,0.35)';
+    tlx.fillRect(execX, ly, Math.max(execW, 2), bH);
+    if (execW > 4) {
+      tlx.strokeStyle = inv.isErr ? 'rgba(255,60,60,0.7)' : 'rgba(0,229,255,0.7)';
+      tlx.lineWidth = 1;
+      tlx.strokeRect(execX, ly, execW, bH);
+    }
+  });
+
+  // Legend
+  const lgx = W - 300, lgy = H - 30;
+  [[' COLD START','#FFC800'], [' EXEC OK','#00E5FF'], [' ERROR','#FF6060']].forEach(([label, color], i) => {
+    tlx.fillStyle = color;
+    tlx.fillRect(lgx + i*100, lgy, 10, 10);
+    tlx.font = '8px Courier New';
+    tlx.textAlign = 'left';
+    tlx.fillStyle = '#6090B0';
+    tlx.fillText(label, lgx + i*100 + 12, lgy + 9);
+  });
+}
+
+function drawEdge(dt, t) {
+  const W = edc.width, H = edc.height;
+  edx.fillStyle = 'rgba(2,4,8,0.2)';
+  edx.fillRect(0, 0, W, H);
+
+  lagEdgeMX.update(edgeMouseX, dt);
+  lagEdgeMY.update(edgeMouseY, dt);
+  lagEdgeNodes.update(getSlVal('sl-edgenodes'), dt);
+  lagCacheHit.update(getSlVal('sl-cache'), dt);
+
+  const numNodes = Math.round(lagEdgeNodes.value);
+  const activeRegions = REGIONS.slice(0, Math.min(numNodes, REGIONS.length));
+
+  // Draw world map outline (simplified)
+  edx.strokeStyle = 'rgba(0,229,255,0.08)';
+  edx.lineWidth = 1;
+  // Americas outline (rough)
+  edx.beginPath();
+  [[0.08,0.15],[0.30,0.12],[0.38,0.20],[0.35,0.35],[0.26,0.50],[0.22,0.65],[0.30,0.85],[0.20,0.88]].forEach(([x,y],i) => {
+    i===0 ? edx.moveTo(x*W, y*H) : edx.lineTo(x*W, y*H);
+  });
+  edx.stroke();
+  // Eurasia outline
+  edx.beginPath();
+  [[0.38,0.10],[0.60,0.08],[0.90,0.12],[0.95,0.25],[0.80,0.30],[0.90,0.45],[0.85,0.60],[0.75,0.65],[0.60,0.55],[0.50,0.65],[0.45,0.55],[0.40,0.45],[0.38,0.30]].forEach(([x,y],i) => {
+    i===0 ? edx.moveTo(x*W, y*H) : edx.lineTo(x*W, y*H);
+  });
+  edx.stroke();
+  // Africa
+  edx.beginPath();
+  [[0.45,0.45],[0.60,0.48],[0.62,0.58],[0.55,0.80],[0.48,0.80],[0.45,0.65],[0.44,0.50]].forEach(([x,y],i) => {
+    i===0 ? edx.moveTo(x*W, y*H) : edx.lineTo(x*W, y*H);
+  });
+  edx.stroke();
+
+  // Query origin at cursor
+  const qx = lagEdgeMX.value * W;
+  const qy = lagEdgeMY.value * H;
+  edx.beginPath();
+  edx.arc(qx, qy, 8, 0, Math.PI * 2);
+  edx.strokeStyle = '#E8F4FF';
+  edx.lineWidth = 2;
+  edx.stroke();
+  edx.beginPath();
+  edx.arc(qx, qy, 3, 0, Math.PI * 2);
+  edx.fillStyle = '#E8F4FF';
+  edx.fill();
+
+  // Find nearest node
+  let nearestIdx = 0, nearestDist = Infinity;
+  activeRegions.forEach((reg, i) => {
+    const rx = reg.x * W, ry = reg.y * H;
+    const d = Math.hypot(qx - rx, qy - ry);
+    if (d < nearestDist) { nearestDist = d; nearestIdx = i; }
+  });
+
+  // Draw routing line to nearest
+  const nr = activeRegions[nearestIdx];
+  if (nr) {
+    const rx = nr.x * W, ry = nr.y * H;
+    edx.beginPath();
+    edx.moveTo(qx, qy);
+    edx.lineTo(rx, ry);
+    edx.strokeStyle = 'rgba(0,229,255,0.5)';
+    edx.lineWidth = 1.5;
+    edx.setLineDash([4, 6]);
+    edx.stroke();
+    edx.setLineDash([]);
+
+    // Latency label
+    const mx = (qx + rx) / 2, my = (qy + ry) / 2;
+    edx.fillStyle = '#00E5FF';
+    edx.font = '9px Courier New';
+    edx.textAlign = 'center';
+    edx.fillText(`${nr.lat}ms`, mx, my - 5);
+  }
+
+  // Draw edge nodes
+  activeRegions.forEach((reg, i) => {
+    const rx = reg.x * W, ry = reg.y * H;
+    const isNearest = i === nearestIdx;
+    const loadColor = reg.load > 0.7 ? '#FF6060' : reg.load > 0.5 ? '#FFB300' : '#00C880';
+    const pulse = Math.sin(t * 2 + i * 0.7) * 0.5 + 0.5;
+
+    if (isNearest) {
+      edx.beginPath();
+      edx.arc(rx, ry, 18 + pulse * 4, 0, Math.PI * 2);
+      edx.strokeStyle = 'rgba(0,229,255,0.2)';
+      edx.lineWidth = 1;
+      edx.stroke();
+    }
+
+    edx.beginPath();
+    edx.arc(rx, ry, 10, 0, Math.PI * 2);
+    edx.fillStyle = isNearest ? 'rgba(0,229,255,0.3)' : 'rgba(0,229,255,0.08)';
+    edx.fill();
+    edx.strokeStyle = isNearest ? '#00E5FF' : loadColor;
+    edx.lineWidth = isNearest ? 2 : 1.2;
+    edx.stroke();
+
+    // Load arc
+    edx.beginPath();
+    edx.arc(rx, ry, 14, -Math.PI/2, -Math.PI/2 + reg.load * Math.PI * 2);
+    edx.strokeStyle = loadColor;
+    edx.lineWidth = 2;
+    edx.globalAlpha = 0.6;
+    edx.stroke();
+    edx.globalAlpha = 1;
+
+    edx.fillStyle = isNearest ? '#E8F4FF' : '#6090B0';
+    edx.font = '7px Courier New';
+    edx.textAlign = 'center';
+    edx.fillText(reg.name.split('-')[0].toUpperCase(), rx, ry + 22);
+  });
+
+  // Cache hit indicator
+  const chit = lagCacheHit.value;
+  edx.fillStyle = '#6090B0';
+  edx.font = '9px Courier New';
+  edx.textAlign = 'left';
+  edx.fillText(`CACHE HIT: ${chit.toFixed(0)}%  |  ORIGIN REQUESTS: ${(100-chit).toFixed(0)}%`, 12, H - 12);
+}
+
+function drawTrigger(dt, t) {
+  const W = trc.width, H = trc.height;
+  trx.fillStyle = 'rgba(2,4,8,0.22)';
+  trx.fillRect(0, 0, W, H);
+
+  const numSources = Math.round(getSlVal('sl-sources'));
+  const filterPct = getSlVal('sl-filter') / 100;
+
+  const srcNames = ['API GW','S3','SQS','DynamoDB','Scheduler','Kinesis','SNS','EventBridge','IoT','CloudWatch'];
+  const srcColors = ['#00C880','#00E5FF','#80EAFF','#FFB300','#C880FF','#FF6060','#FF9040','#40C0FF','#80FF80','#FFC800'];
+
+  const busX = W * 0.5, busY1 = 30, busY2 = H - 30;
+  trx.strokeStyle = 'rgba(0,229,255,0.3)';
+  trx.lineWidth = 2;
+  trx.beginPath(); trx.moveTo(busX, busY1); trx.lineTo(busX, busY2); trx.stroke();
+  trx.fillStyle = '#00E5FF';
+  trx.font = '9px Courier New';
+  trx.textAlign = 'center';
+  trx.fillText('EVENT BUS', busX, busY1 - 8);
+
+  for (let i = 0; i < numSources; i++) {
+    const y = busY1 + (busY2 - busY1) * (i + 1) / (numSources + 1);
+    const srcX = 80;
+    trx.fillStyle = srcColors[i % srcColors.length];
+    trx.font = '9px Courier New';
+    trx.textAlign = 'right';
+    trx.fillText(srcNames[i], srcX - 8, y + 3);
+
+    trx.beginPath();
+    trx.arc(srcX, y, 8, 0, Math.PI * 2);
+    trx.strokeStyle = srcColors[i % srcColors.length];
+    trx.lineWidth = 1.2;
+    trx.globalAlpha = 0.6;
+    trx.stroke();
+    trx.globalAlpha = 1;
+
+    trx.strokeStyle = 'rgba(0,229,255,0.15)';
+    trx.lineWidth = 1;
+    trx.beginPath(); trx.moveTo(srcX + 8, y); trx.lineTo(busX, y); trx.stroke();
+  }
+
+  // Filter node
+  const fltX = busX + 60, fltY = H * 0.5;
+  trx.beginPath();
+  trx.moveTo(fltX, fltY - 20);
+  trx.lineTo(fltX + 16, fltY);
+  trx.lineTo(fltX, fltY + 20);
+  trx.lineTo(fltX - 16, fltY);
+  trx.closePath();
+  trx.strokeStyle = '#FFB300';
+  trx.lineWidth = 1.5;
+  trx.globalAlpha = 0.7;
+  trx.stroke();
+  trx.globalAlpha = 1;
+  trx.fillStyle = '#FFB300';
+  trx.font = '7px Courier New';
+  trx.textAlign = 'center';
+  trx.fillText('FILTER', fltX, fltY + 3);
+  trx.fillText(`${Math.round(filterPct*100)}%`, fltX, fltY + 14);
+
+  trx.strokeStyle = 'rgba(0,229,255,0.2)';
+  trx.beginPath(); trx.moveTo(busX, fltY); trx.lineTo(fltX - 16, fltY); trx.stroke();
+
+  const fnX = W - 80;
+  trx.fillStyle = '#80EAFF';
+  trx.font = '10px Courier New';
+  trx.textAlign = 'center';
+  trx.fillText('λ HANDLER', fnX, fltY + 4);
+  trx.beginPath();
+  trx.rect(fnX - 36, fltY - 16, 72, 32);
+  trx.strokeStyle = '#80EAFF';
+  trx.lineWidth = 1.2;
+  trx.globalAlpha = 0.5;
+  trx.stroke();
+  trx.globalAlpha = 1;
+  trx.strokeStyle = 'rgba(0,229,255,0.2)';
+  trx.beginPath(); trx.moveTo(fltX + 16, fltY); trx.lineTo(fnX - 36, fltY); trx.stroke();
+}
+
+function drawStepFn(dt, t) {
+  const W = sfc.width, H = sfc.height;
+  sfx.fillStyle = 'rgba(2,4,8,0.22)';
+  sfx.fillRect(0, 0, W, H);
+
+  const steps = Math.round(getSlVal('sl-steps'));
+  const branches = Math.round(getSlVal('sl-branches'));
+
+  sfT += dt;
+  if (sfT > 1.5) { sfT = 0; sfStep = (sfStep + 1) % steps; }
+
+  const stepH = (H - 40) / (steps + branches - 1);
+  const stepX = W * 0.5;
+  const colors = ['#00E5FF','#80EAFF','#00C880','#FFB300','#C880FF','#FF9040','#FF6060','#40C0FF','#80FF80','#FFC800'];
+
+  sfx.fillStyle = '#6090B0';
+  sfx.font = '9px Courier New';
+  sfx.textAlign = 'center';
+  sfx.fillText('STEP FUNCTION EXECUTION', W/2, 16);
+
+  let drawY = 36;
+  for (let s = 0; s < steps; s++) {
+    const isParallel = s === Math.floor(steps / 2);
+    const isCurrent = s === sfStep;
+    const color = colors[s % colors.length];
+
+    if (isParallel && branches > 1) {
+      // Draw parallel branches
+      const branchW = (W - 40) / branches;
+      for (let b = 0; b < branches; b++) {
+        const bx = 20 + branchW * b + branchW / 2;
+        sfx.beginPath();
+        sfx.rect(bx - 38, drawY, 76, stepH - 8);
+        sfx.strokeStyle = isCurrent ? '#00E5FF' : colors[(s+b) % colors.length];
+        sfx.lineWidth = isCurrent ? 2 : 1;
+        sfx.globalAlpha = isCurrent ? 0.9 : 0.4;
+        sfx.stroke();
+        sfx.globalAlpha = 1;
+        sfx.fillStyle = sfx.strokeStyle;
+        sfx.font = '8px Courier New';
+        sfx.textAlign = 'center';
+        sfx.fillText(`PARALLEL-${b+1}`, bx, drawY + (stepH-8)/2 + 3);
+      }
+      if (s < steps - 1) {
+        sfx.strokeStyle = 'rgba(0,229,255,0.2)';
+        sfx.lineWidth = 1;
+        sfx.beginPath(); sfx.moveTo(stepX, drawY + stepH - 8); sfx.lineTo(stepX, drawY + stepH); sfx.stroke();
+      }
+      drawY += stepH;
+    } else {
+      sfx.beginPath();
+      sfx.rect(stepX - 80, drawY, 160, stepH - 8);
+      sfx.strokeStyle = isCurrent ? '#00E5FF' : color;
+      sfx.lineWidth = isCurrent ? 2.5 : 1;
+      sfx.globalAlpha = isCurrent ? 1 : 0.45;
+      sfx.stroke();
+      if (isCurrent) {
+        sfx.fillStyle = 'rgba(0,229,255,0.08)';
+        sfx.fillRect(stepX - 80, drawY, 160, stepH - 8);
+      }
+      sfx.globalAlpha = 1;
+      sfx.fillStyle = isCurrent ? '#E8F4FF' : color;
+      sfx.font = '9px Courier New';
+      sfx.textAlign = 'center';
+      const stepNames = ['VALIDATE','TRANSFORM','PARALLEL','STORE','NOTIFY','AUDIT','COMPLETE','RETRY','CLEANUP','FINALIZE'];
+      sfx.fillText(stepNames[s % stepNames.length], stepX, drawY + (stepH-8)/2 + 3);
+
+      if (s < steps - 1) {
+        sfx.strokeStyle = isCurrent ? 'rgba(0,229,255,0.6)' : 'rgba(0,229,255,0.15)';
+        sfx.lineWidth = 1;
+        sfx.beginPath(); sfx.moveTo(stepX, drawY + stepH - 8); sfx.lineTo(stepX, drawY + stepH); sfx.stroke();
+      }
+      drawY += stepH;
+    }
+  }
+}
+
+function drawDistMap(dt, t) {
+  const W = dmc.width, H = dmc.height;
+  dmx.fillStyle = 'rgba(2,4,8,0.18)';
+  dmx.fillRect(0, 0, W, H);
+
+  // World base grid
+  dmx.strokeStyle = 'rgba(0,229,255,0.04)';
+  dmx.lineWidth = 1;
+  for (let x = 0; x < W; x += W/24) {
+    dmx.beginPath(); dmx.moveTo(x, 0); dmx.lineTo(x, H); dmx.stroke();
+  }
+  for (let y = 0; y < H; y += H/12) {
+    dmx.beginPath(); dmx.moveTo(0, y); dmx.lineTo(W, y); dmx.stroke();
+  }
+
+  // Draw active functions as expanding rings
+  const now = performance.now() / 1000;
+  regionData.forEach((reg, i) => {
+    const rinfo = REGIONS.find(r => r.name === reg.region);
+    if (!rinfo) return;
+    const rx = rinfo.x * W, ry = rinfo.y * H;
+    const invNorm = reg.inv / 5000;
+
+    // Load heatmap
+    const gradient = dmx.createRadialGradient(rx, ry, 0, rx, ry, 60 * invNorm + 20);
+    gradient.addColorStop(0, `rgba(0,229,255,${invNorm * 0.3})`);
+    gradient.addColorStop(1, 'rgba(0,229,255,0)');
+    dmx.fillStyle = gradient;
+    dmx.beginPath();
+    dmx.arc(rx, ry, 60 * invNorm + 20, 0, Math.PI * 2);
+    dmx.fill();
+
+    // Pulsing ring
+    const phase = (now * 0.8 + i * 0.4) % 1;
+    const maxR = 40 + invNorm * 30;
+    dmx.beginPath();
+    dmx.arc(rx, ry, phase * maxR, 0, Math.PI * 2);
+    dmx.strokeStyle = `rgba(0,229,255,${(1-phase) * 0.5})`;
+    dmx.lineWidth = 1;
+    dmx.stroke();
+
+    // Region node
+    dmx.beginPath();
+    dmx.arc(rx, ry, 6, 0, Math.PI * 2);
+    dmx.fillStyle = reg.status === 'degraded' ? 'rgba(255,200,0,0.6)' : 'rgba(0,229,255,0.6)';
+    dmx.fill();
+    dmx.strokeStyle = reg.status === 'degraded' ? '#FFB300' : '#00E5FF';
+    dmx.lineWidth = 1.5;
+    dmx.stroke();
+
+    // Invocation counter
+    dmx.fillStyle = '#E8F4FF';
+    dmx.font = '8px Courier New';
+    dmx.textAlign = 'center';
+    dmx.fillText(reg.region, rx, ry + 16);
+    dmx.fillStyle = '#00E5FF';
+    dmx.fillText(`${(reg.inv + Math.round(noise21(i*0.3, now*0.1)*200-100)).toLocaleString()}/s`, rx, ry + 26);
+  });
+
+  // Connection lines between major regions
+  const major = regionData.slice(0, 5);
+  major.forEach((ra, i) => {
+    major.forEach((rb, j) => {
+      if (j <= i) return;
+      const rria = REGIONS.find(r => r.name === ra.region);
+      const rrib = REGIONS.find(r => r.name === rb.region);
+      if (!rria || !rrib) return;
+      dmx.beginPath();
+      dmx.moveTo(rria.x * W, rria.y * H);
+      const cpx = (rria.x + rrib.x) / 2 * W;
+      const cpy = Math.min(rria.y, rrib.y) * H - 30;
+      dmx.quadraticCurveTo(cpx, cpy, rrib.x * W, rrib.y * H);
+      dmx.strokeStyle = 'rgba(0,229,255,0.08)';
+      dmx.lineWidth = 1;
+      dmx.stroke();
+    });
+  });
+
+  // Global stats
+  const totalInv = regionData.reduce((s, r) => s + r.inv, 0);
+  dmx.fillStyle = '#00E5FF';
+  dmx.font = '10px Courier New';
+  dmx.textAlign = 'left';
+  dmx.fillText(`GLOBAL: ${totalInv.toLocaleString()} inv/s  |  REGIONS: ${regionData.length}  |  AVG COLD: 2.4%`, 12, H - 12);
+}
+
+// ─── MAIN RAF LOOP ────────────────────────────────────────────────────────
+function frame(now) {
+  const dt = Math.min((now - lastTime) / 1000, 0.05);
+  lastTime = now;
+  frameCount++;
+
+  // Update lag filters
+  lagHeroMX.update(mouseX, dt);
+  lagHeroMY.update(mouseY, dt);
+  lagHeroPulse.update(0.6 + Math.sin(now/1000) * 0.4, dt);
+  lagEventFlow.update(getSlVal('sl-event-rate'), dt);
+  lagConcurrency.update(getSlVal('sl-concurrency'), dt);
+  lagFanOut.update(getSlVal('sl-fanout'), dt);
+  lagRetryDelay.update(getSlVal('sl-retry'), dt);
+  lagMemAlloc.update(getSlVal('sl-mem'), dt);
+  lagExecTime.update(getSlVal('sl-exectime'), dt);
+  lagBurstLimit.update(getSlVal('sl-burst'), dt);
+  lagErrRate.update(getSlVal('sl-errrate'), dt);
+  lagPipeFlow.update(Math.sin(now/800) * 0.5 + 0.5, dt);
+
+  // ── Hero WebGL
+  if (heroGL && heroProgram) {
+    const gl = heroGL;
+    gl.viewport(0, 0, heroCanvas.width, heroCanvas.height);
+    gl.useProgram(heroProgram);
+    gl.uniform2f(heroUniforms.res, heroCanvas.width, heroCanvas.height);
+    gl.uniform1f(heroUniforms.time, now / 1000);
+    gl.uniform2f(heroUniforms.mouse, lagHeroMX.value, 1 - lagHeroMY.value);
+    gl.uniform1f(heroUniforms.pulse, lagHeroPulse.value);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+
+  // ── Event flow
+  spawnTimer += dt;
+  const efInterval = 1 / lagEventFlow.value;
+  while (spawnTimer > efInterval) {
+    spawnEFPacket();
+    spawnTimer -= efInterval;
+  }
+  drawEventFlow(dt);
+
+  // ── Cold start
+  drawColdStart(dt, now / 1000);
+
+  // ── Timeline
+  drawTimeline(dt, now / 1000);
+
+  // ── Edge
+  edgeSpawnTimer += dt;
+  if (edgeSpawnTimer > 0.2) {
+    spawnEdgePacket();
+    edgeSpawnTimer = 0;
+  }
+  drawEdge(dt, now / 1000);
+
+  // ── Triggers
+  drawTrigger(dt, now / 1000);
+
+  // ── Step function
+  drawStepFn(dt, now / 1000);
+
+  // ── Dist map
+  drawDistMap(dt, now / 1000);
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t => { lastTime = t; requestAnimationFrame(frame); });
+
+// ─── INTERSECTION OBSERVER ────────────────────────────────────────────────
+const revealEls = document.querySelectorAll('.hidden');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+</script>

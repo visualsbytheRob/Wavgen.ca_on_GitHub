@@ -1,0 +1,1422 @@
+---
+layout: world.njk
+title: "WAVGEN — Projection Mapping AV World"
+description: "Immersive av world exploring projection mapping av"
+domain: av
+permalink: /av/projection-mapping-av/
+---
+
+
+
+<!-- SECTION 1: WebGL Hero -->
+<div id="hero-wrap">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<h1>PROJECTION MAPPING</h1>
+<p>ARCHITECTURAL LIGHT / SPATIAL MEDIA / SURFACE TRANSFORMATION</p>
+</div>
+</div>
+<!-- SECTION 2: Resolume Arena Pipeline -->
+<section class="hidden" id="pipeline">
+<div class="section-label">§ 02 — SOFTWARE PIPELINE</div>
+<h2>Resolume Arena Workflow</h2>
+<p class="sub">The canonical projection mapping signal chain — from media ingest through composition, warping, and output to projectors. Each stage transforms the signal toward accurate surface registration.</p>
+<div class="pipeline-row">
+<div class="pipe-stage">
+<div class="ps-name">Media Sources</div>
+<div class="ps-desc">Video files, NDI, Syphon/Spout, generative layers, MIDI/OSC triggers</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Composition</div>
+<div class="ps-desc">Layer blending, effects chain, temporal sync, BPM-locked animation</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Output Transform</div>
+<div class="ps-desc">Advanced output, slice mapping, warp mesh, edge blend zones</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Projector Output</div>
+<div class="ps-desc">HDMI/DP signal to projectors, PJLink control, brightness calibration</div>
+</div>
+</div>
+<div class="pipeline-row">
+<div class="pipe-stage">
+<div class="ps-name">OSC/MIDI In</div>
+<div class="ps-desc">Ableton Link, TouchOSC, lighting desk, sensor data streams</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Parameter Map</div>
+<div class="ps-desc">Effect parameters, clip launchers, layer opacities bound to controllers</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Render Engine</div>
+<div class="ps-desc">GPU-accelerated HAP codec playback, GLSL shader effects, warp compute</div>
+<div class="ps-arrow">›</div>
+</div>
+<div class="pipe-stage">
+<div class="ps-name">Monitor Preview</div>
+<div class="ps-desc">Operator display with surface overlay, warp grid handles, blend indicators</div>
+</div>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">RESOLUME SIGNAL FLOW VISUALIZER</div>
+<canvas height="180" id="pipeline-canvas" width="1020"></canvas>
+</div>
+</section>
+<!-- SECTION 3: MadMapper Surface Assignment -->
+<section class="hidden" id="mapping">
+<div class="section-label">§ 03 — SURFACE MAPPING</div>
+<h2>MadMapper Surface Assignment</h2>
+<p class="sub">MadMapper's quad/mesh/DMX/LED surface workflow — define geometric primitives, assign media rectangles from the source, warp individual surfaces with bezier control points.</p>
+<div class="surface-grid" id="surface-grid"></div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">SURFACE WARP PREVIEW</div>
+<canvas height="280" id="warp-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">MEDIA SOURCE ASSIGNMENT</div>
+<canvas height="280" id="source-canvas" width="480"></canvas>
+</div>
+</div>
+<div class="blend-controls">
+<div class="ctrl-group">
+<label>WARP PARAMETERS</label>
+<div class="ctrl-row"><span>Mesh Subdivisions</span><input id="mesh-sub" max="16" min="2" type="range" value="6"/><span class="val" id="mesh-sub-val">6</span></div>
+<div class="ctrl-row"><span>Bezier Tension</span><input id="bez-tension" max="100" min="0" type="range" value="50"/><span class="val" id="bez-tension-val">0.50</span></div>
+<div class="ctrl-row"><span>Corner Pin X</span><input id="corner-x" max="50" min="-50" type="range" value="0"/><span class="val" id="corner-x-val">0</span></div>
+<div class="ctrl-row"><span>Corner Pin Y</span><input id="corner-y" max="50" min="-50" type="range" value="0"/><span class="val" id="corner-y-val">0</span></div>
+</div>
+<div class="ctrl-group">
+<label>KEYSTONE CORRECTION</label>
+<div class="ctrl-row"><span>Horizontal Key</span><input id="h-key" max="100" min="-100" type="range" value="0"/><span class="val" id="h-key-val">0</span></div>
+<div class="ctrl-row"><span>Vertical Key</span><input id="v-key" max="100" min="-100" type="range" value="0"/><span class="val" id="v-key-val">0</span></div>
+<div class="ctrl-row"><span>Rotation</span><input id="rot-key" max="45" min="-45" type="range" value="0"/><span class="val" id="rot-key-val">0°</span></div>
+<div class="ctrl-row"><span>Zoom</span><input id="zoom-key" max="150" min="50" type="range" value="100"/><span class="val" id="zoom-key-val">1.00</span></div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Homography Math -->
+<section class="hidden" id="homography">
+<div class="section-label">§ 04 — PROJECTION MATHEMATICS</div>
+<h2>Homography &amp; Warping</h2>
+<p class="sub">A homography is a 3×3 projective transformation matrix mapping points in one plane to another. It underpins every quad-based projection mapping system — from pinhole camera models to full 3D mesh warping pipelines.</p>
+<div class="math-display">
+<div class="eq">
+<span class="comment">// Homogeneous point transformation</span><br/>
+      [<span class="var">x'</span>, <span class="var">y'</span>, <span class="var">w'</span>] = <span class="var">H</span> · [<span class="var">x</span>, <span class="var">y</span>, 1]<br/><br/>
+<span class="comment">// 3×3 Homography matrix H (8 degrees of freedom)</span><br/>
+<span class="var">H</span> = | h₀₀  h₀₁  h₀₂ |<br/>
+          | h₁₀  h₁₁  h₁₂ |<br/>
+          | h₂₀  h₂₁   1  |<br/><br/>
+<span class="comment">// Normalized output coordinates</span><br/>
+<span class="var">xₒᵤₜ</span> = x' / w'<br/>
+<span class="var">yₒᵤₜ</span> = y' / w'<br/><br/>
+<span class="comment">// Solved via Direct Linear Transform (DLT) from 4 point correspondences</span><br/>
+<span class="comment">// A · h = 0,  solve with SVD → smallest singular vector</span>
+</div>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">HOMOGRAPHY TRANSFORM DEMO</div>
+<canvas height="300" id="homog-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">CAMERA-PROJECTOR CALIBRATION</div>
+<canvas height="300" id="calib-canvas" width="480"></canvas>
+</div>
+</div>
+<div class="math-display">
+<div class="eq">
+<span class="comment">// Projector model: perspective projection</span><br/>
+<span class="var">P</span> = <span class="var">K</span> · [<span class="var">R</span> | <span class="var">t</span>]<br/><br/>
+<span class="comment">// K = intrinsic matrix (focal length fx, fy; principal point cx, cy)</span><br/>
+<span class="var">K</span> = | fx   0  cx |<br/>
+          |  0  fy  cy |<br/>
+          |  0   0   1 |<br/><br/>
+<span class="comment">// Structured light calibration: project Gray code patterns,</span><br/>
+<span class="comment">// decode pixel-to-projector correspondences, solve PnP</span>
+</div>
+</div>
+</section>
+<!-- SECTION 5: Multi-projector Edge Blending -->
+<section class="hidden" id="blending">
+<div class="section-label">§ 05 — EDGE BLENDING</div>
+<h2>Multi-Projector Blending</h2>
+<p class="sub">Where two projectors overlap, a gamma-corrected falloff curve ensures seamless luminance matching. Black level offset, gamma curve shaping, and color matching are essential for invisible seams.</p>
+<div class="canvas-panel">
+<div class="panel-label">LIVE EDGE BLEND VISUALIZER — MOVE CURSOR OVER CANVAS</div>
+<canvas height="220" id="blend-canvas" width="1020"></canvas>
+</div>
+<div class="blend-controls">
+<div class="ctrl-group">
+<label>BLEND ZONE</label>
+<div class="ctrl-row"><span>Overlap Width</span><input id="overlap-w" max="300" min="50" type="range" value="140"/><span class="val" id="overlap-w-val">140px</span></div>
+<div class="ctrl-row"><span>Gamma Curve</span><input id="blend-gamma" max="30" min="10" type="range" value="22"/><span class="val" id="blend-gamma-val">2.2</span></div>
+<div class="ctrl-row"><span>Black Level</span><input id="black-lv" max="30" min="0" type="range" value="8"/><span class="val" id="black-lv-val">8</span></div>
+<div class="ctrl-row"><span>Blend Softness</span><input id="blend-soft" max="100" min="0" type="range" value="60"/><span class="val" id="blend-soft-val">60%</span></div>
+</div>
+<div class="ctrl-group">
+<label>COLOR MATCHING</label>
+<div class="ctrl-row"><span>R Gain Left</span><input id="r-gain-l" max="120" min="80" type="range" value="100"/><span class="val" id="r-gain-l-val">1.00</span></div>
+<div class="ctrl-row"><span>G Gain Left</span><input id="g-gain-l" max="120" min="80" type="range" value="100"/><span class="val" id="g-gain-l-val">1.00</span></div>
+<div class="ctrl-row"><span>B Gain Left</span><input id="b-gain-l" max="120" min="80" type="range" value="100"/><span class="val" id="b-gain-l-val">1.00</span></div>
+<div class="ctrl-row"><span>Gamma Exp</span><input id="g-exp" max="30" min="15" type="range" value="22"/><span class="val" id="g-exp-val">2.2</span></div>
+</div>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">4-PROJECTOR TILED ARRAY WITH BLEND ZONES</div>
+<canvas height="200" id="array-canvas" width="1020"></canvas>
+</div>
+</section>
+<!-- SECTION 6: Geometry Correction -->
+<section class="hidden" id="geometry">
+<div class="section-label">§ 06 — GEOMETRY CORRECTION</div>
+<h2>Structured Light Calibration</h2>
+<p class="sub">Gray code patterns projected onto surfaces decode pixel-perfect correspondences between projector and camera spaces. The resulting warp mesh corrects for architectural surface irregularities at sub-pixel accuracy.</p>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">GRAY CODE PATTERN SEQUENCE</div>
+<canvas height="220" id="graycode-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">DECODED CORRESPONDENCE MAP</div>
+<canvas height="220" id="correspond-canvas" width="480"></canvas>
+</div>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">WARP MESH CORRECTION GRID</div>
+<canvas height="220" id="warp-mesh-canvas" width="1020"></canvas>
+</div>
+<div style="margin-top:24px;">
+<div class="section-label">CALIBRATION METRICS</div>
+<div class="stat-row">
+<span class="st-label">Reprojection Error</span>
+<div class="st-bar"><div class="st-fill" style="width:92%"></div></div>
+<span class="st-val">0.4 px</span>
+</div>
+<div class="stat-row">
+<span class="st-label">Correspondence Coverage</span>
+<div class="st-bar"><div class="st-fill" style="width:97%"></div></div>
+<span class="st-val">97.2%</span>
+</div>
+<div class="stat-row">
+<span class="st-label">Geometric Distortion</span>
+<div class="st-bar"><div class="st-fill" style="width:78%"></div></div>
+<span class="st-val">-0.3 %</span>
+</div>
+<div class="stat-row">
+<span class="st-label">Color Delta E</span>
+<div class="st-bar"><div class="st-fill" style="width:88%"></div></div>
+<span class="st-val">ΔE 1.2</span>
+</div>
+<div class="stat-row">
+<span class="st-label">Frame Sync Accuracy</span>
+<div class="st-bar"><div class="st-fill" style="width:99%"></div></div>
+<span class="st-val">±0.1 ms</span>
+</div>
+</div>
+</section>
+<!-- SECTION 7: Generative Projection -->
+<section class="hidden" id="generative">
+<div class="section-label">§ 07 — GENERATIVE PROJECTION</div>
+<h2>Real-Time Generative Content</h2>
+<p class="sub">TouchDesigner, VVVV, and Processing drive real-time generative visuals via Spout/Syphon into projection mapping engines. Particle systems, shader fields, and data visualizations are warped onto architectural surfaces live.</p>
+<div class="canvas-panel">
+<div class="panel-label">PARTICLE SYSTEM → SURFACE MAPPED — MOVE CURSOR</div>
+<canvas height="260" id="particle-canvas" width="1020"></canvas>
+</div>
+<div class="two-col">
+<div class="canvas-panel">
+<div class="panel-label">SHADER FIELD (DOMAIN WARPING)</div>
+<canvas height="200" id="shader-canvas" width="480"></canvas>
+</div>
+<div class="canvas-panel">
+<div class="panel-label">OSC PARAMETER STREAM</div>
+<canvas height="200" id="osc-canvas" width="480"></canvas>
+</div>
+</div>
+<div class="blend-controls">
+<div class="ctrl-group">
+<label>PARTICLE PARAMS</label>
+<div class="ctrl-row"><span>Particle Count</span><input id="p-count" max="500" min="50" type="range" value="200"/><span class="val" id="p-count-val">200</span></div>
+<div class="ctrl-row"><span>Life Span</span><input id="p-life" max="200" min="20" type="range" value="80"/><span class="val" id="p-life-val">80</span></div>
+<div class="ctrl-row"><span>Force Field</span><input id="p-force" max="100" min="0" type="range" value="40"/><span class="val" id="p-force-val">0.40</span></div>
+<div class="ctrl-row"><span>Color Shift</span><input id="p-hue" max="360" min="0" type="range" value="300"/><span class="val" id="p-hue-val">300°</span></div>
+</div>
+<div class="ctrl-group">
+<label>SURFACE WARP</label>
+<div class="ctrl-row"><span>Warp Intensity</span><input id="warp-int" max="100" min="0" type="range" value="50"/><span class="val" id="warp-int-val">50%</span></div>
+<div class="ctrl-row"><span>Noise Scale</span><input id="noise-sc" max="200" min="10" type="range" value="60"/><span class="val" id="noise-sc-val">60</span></div>
+<div class="ctrl-row"><span>Time Speed</span><input id="time-sp" max="200" min="10" type="range" value="60"/><span class="val" id="time-sp-val">0.60</span></div>
+<div class="ctrl-row"><span>Blend Mode</span><input id="blend-mode" max="4" min="0" type="range" value="2"/><span class="val" id="blend-mode-val">ADD</span></div>
+</div>
+</div>
+</section>
+<!-- SECTION 8: Artists -->
+<section class="hidden" id="artists">
+<div class="section-label">§ 08 — PRACTITIONERS</div>
+<h2>Artists &amp; Studios</h2>
+<p class="sub">The vanguard of architectural projection — from site-specific light sculpture to real-time generative mapping on stadium-scale facades.</p>
+<div class="artists-grid" id="artists-grid"></div>
+</section>
+<!-- SECTION 9: Glossary -->
+<section class="hidden" id="glossary">
+<div class="section-label">§ 09 — GLOSSARY</div>
+<h2>Projection Mapping Lexicon</h2>
+<p class="sub">Core vocabulary for projection mapping design, calibration, and production engineering.</p>
+<div class="glossary-grid" id="glossary-grid"></div>
+</section>
+<script>
+// ─── Utilities ─────────────────────────────────────────────────────────────
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const rand = (lo = 0, hi = 1) => lo + Math.random() * (hi - lo);
+
+function noise21(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+  const h = (a, b) => {
+    let n = (a * 1619 + b * 31337) ^ (a * 31337);
+    n = (n >> 8) ^ n; return (n & 0xffff) / 65535;
+  };
+  return lerp(lerp(h(ix,iy), h(ix+1,iy), ux), lerp(h(ix,iy+1), h(ix+1,iy+1), ux), uy);
+}
+
+function fbm(x, y, oct = 4) {
+  let v = 0, a = 0.5, f = 1;
+  for (let i = 0; i < oct; i++) { v += a * noise21(x * f, y * f); a *= 0.5; f *= 2.1; }
+  return v;
+}
+
+// ─── LagFilter ─────────────────────────────────────────────────────────────
+class LagFilter {
+  constructor(init, tau) { this.value = init; this.tau = tau; }
+  update(target, dt) {
+    const k = 1 - Math.exp(-dt / this.tau);
+    this.value += k * (target - this.value);
+    return this.value;
+  }
+}
+
+// 17 LagFilter instances
+const lagHeroMX    = new LagFilter(0.5, 0.8);
+const lagHeroMY    = new LagFilter(0.5, 0.8);
+const lagHeroPulse = new LagFilter(0, 0.4);
+const lagWarpX     = new LagFilter(0, 0.3);
+const lagWarpY     = new LagFilter(0, 0.3);
+const lagWarpTens  = new LagFilter(0.5, 0.5);
+const lagBlendW    = new LagFilter(140, 0.6);
+const lagBlendGam  = new LagFilter(2.2, 0.5);
+const lagParticles = new LagFilter(200, 1.0);
+const lagParLife   = new LagFilter(80, 0.5);
+const lagForceF    = new LagFilter(0.4, 0.5);
+const lagNoiseScl  = new LagFilter(60, 0.6);
+const lagTimeSpd   = new LagFilter(0.6, 0.5);
+const lagOscAmp    = new LagFilter(0, 0.3);
+const lagKeyH      = new LagFilter(0, 0.4);
+const lagKeyV      = new LagFilter(0, 0.4);
+const lagGrayCyc   = new LagFilter(0, 0.2);
+
+// ─── IntersectionObserver ──────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersectionRatio >= 0.1) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+// ─── Mouse tracking ────────────────────────────────────────────────────────
+let mouseX = 0.5, mouseY = 0.5;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX / window.innerWidth;
+  mouseY = e.clientY / window.innerHeight;
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 1: WebGL Hero — Projection mapping on architectural surface
+// ═══════════════════════════════════════════════════════════════════════════
+(function initHero() {
+  const wrap = document.getElementById('hero-wrap');
+  const canvas = document.getElementById('hero-canvas');
+  canvas.width = wrap.offsetWidth || window.innerWidth;
+  canvas.height = 440;
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const VS = `
+    attribute vec2 pos;
+    void main() { gl_Position = vec4(pos, 0.0, 1.0); }
+  `;
+  const FS = `
+    precision highp float;
+    uniform vec2 uRes;
+    uniform float uTime;
+    uniform vec2 uMouse;
+
+    vec2 hash2(vec2 p) {
+      p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+      return fract(sin(p)*43758.5453);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p); vec2 f = fract(p);
+      vec2 u = f*f*(3.0-2.0*f);
+      float a = dot(hash2(i), f);
+      float b = dot(hash2(i+vec2(1,0)), f-vec2(1,0));
+      float c = dot(hash2(i+vec2(0,1)), f-vec2(0,1));
+      float d = dot(hash2(i+vec2(1,1)), f-vec2(1,1));
+      return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+    }
+
+    float fbm(vec2 p) {
+      float v=0.0, a=0.5;
+      for(int i=0;i<5;i++){ v+=a*noise(p); a*=0.5; p=p*2.1+vec2(1.3,1.7); }
+      return v;
+    }
+
+    // Architectural building silhouette
+    float buildingMask(vec2 uv) {
+      float h = 0.0;
+      // Main tower
+      if(uv.x > 0.36 && uv.x < 0.64) h = 0.9;
+      // Left wing
+      else if(uv.x > 0.18 && uv.x < 0.38) h = 0.55;
+      // Right wing
+      else if(uv.x > 0.62 && uv.x < 0.82) h = 0.55;
+      // Small left
+      else if(uv.x > 0.06 && uv.x < 0.20) h = 0.35;
+      // Small right
+      else if(uv.x > 0.80 && uv.x < 0.94) h = 0.35;
+      return step(1.0 - h, uv.y) > 0.5 ? 1.0 : 0.0;
+    }
+
+    vec3 projectColor(vec2 uv, float t) {
+      // Domain warped pattern for projection content
+      vec2 wuv = uv;
+      float warp = fbm(uv * 3.0 + t * 0.15);
+      wuv += 0.15 * vec2(cos(warp * 6.28), sin(warp * 6.28));
+
+      // Grid lines (simulating structured light / content)
+      float grid = 0.0;
+      float gx = fract(wuv.x * 12.0 + t * 0.1);
+      float gy = fract(wuv.y * 8.0 + t * 0.07);
+      grid += smoothstep(0.92, 1.0, gx) + smoothstep(0.92, 1.0, gy);
+      grid = clamp(grid, 0.0, 1.0);
+
+      // Color sweep
+      float hue = fbm(uv * 2.0 + uMouse * 0.5 + t * 0.08) * 2.0;
+      vec3 col1 = vec3(1.0, 0.0, 0.8); // magenta
+      vec3 col2 = vec3(0.4, 0.0, 1.0); // violet
+      vec3 col3 = vec3(0.0, 0.8, 1.0); // cyan
+      vec3 content = hue < 1.0 ? mix(col1, col2, hue) : mix(col2, col3, hue - 1.0);
+
+      // Projection beam highlight from below
+      float beamX = abs(uv.x - uMouse.x) * 3.0;
+      float beam = exp(-beamX * beamX * 8.0) * (1.0 - uv.y) * 0.4;
+
+      content = mix(content * 0.3, content, 0.5 + 0.5 * sin(t + uv.y * 5.0));
+      content += vec3(0.8, 0.0, 0.6) * beam;
+      content += vec3(0.9, 0.9, 1.0) * grid * 0.6;
+      return content;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uRes;
+      uv.y = 1.0 - uv.y;
+
+      float sky = 0.0;
+      vec3 bg = mix(vec3(0.01, 0.0, 0.02), vec3(0.05, 0.0, 0.1), uv.y);
+
+      // Stars
+      vec2 grid = floor(uv * 80.0);
+      float star = step(0.98, fract(sin(dot(grid, vec2(127.1, 311.7))) * 43758.5));
+      bg += star * 0.5 * vec3(0.9, 0.8, 1.0);
+
+      float mask = buildingMask(uv);
+
+      vec3 col;
+      if(mask > 0.5) {
+        // Building surface with projected content
+        vec3 proj = projectColor(uv, uTime);
+        // Window grid
+        vec2 winCoord = uv * vec2(20.0, 30.0);
+        vec2 winFrac = fract(winCoord);
+        float winMask = step(0.12, winFrac.x) * step(0.1, winFrac.y) * step(winFrac.x, 0.88) * step(winFrac.y, 0.88);
+        float winLit = noise(floor(winCoord) + vec2(uTime * 0.02)) > 0.5 ? 0.6 : 0.05;
+        vec3 windowCol = vec3(1.0, 0.95, 0.6) * winLit * winMask;
+        col = proj * 0.7 + windowCol * 0.3;
+        // Edge glow
+        float edgeGlow = 0.0;
+        edgeGlow += exp(-abs(uv.x - 0.36) * 40.0) + exp(-abs(uv.x - 0.64) * 40.0);
+        col += vec3(1.0, 0.0, 0.8) * edgeGlow * 0.4;
+      } else {
+        // Sky / surroundings
+        // Projection beams from ground
+        float groundY = 0.0;
+        for(int b = 0; b < 5; b++) {
+          float bx = 0.2 + float(b) * 0.15;
+          float beamW = 0.008;
+          float beamFade = exp(-abs(uv.x - bx) / beamW) * (1.0 - uv.y) * 0.3;
+          col += vec3(1.0, 0.0, 0.8) * beamFade;
+        }
+        col += bg;
+        // Ground reflection
+        if(uv.y > 0.88) {
+          float gnd = (uv.y - 0.88) / 0.12;
+          col = mix(col, vec3(0.3, 0.0, 0.2) * (1.0 - gnd), gnd * 0.7);
+        }
+      }
+
+      // Vignette
+      vec2 c = uv - 0.5; float vig = 1.0 - dot(c,c) * 1.4;
+      gl_FragColor = vec4(col * vig, 1.0);
+    }
+  `;
+
+  function compile(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'pos');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes = gl.getUniformLocation(prog, 'uRes');
+  const uTime = gl.getUniformLocation(prog, 'uTime');
+  const uMouse = gl.getUniformLocation(prog, 'uMouse');
+
+  let t = 0, last = performance.now();
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+    const mx = lagHeroMX.update(mouseX, dt);
+    const my = lagHeroMY.update(mouseY, dt);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  window.addEventListener('resize', () => {
+    canvas.width = wrap.offsetWidth; gl.viewport(0, 0, canvas.width, canvas.height);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 2: Pipeline Canvas
+// ═══════════════════════════════════════════════════════════════════════════
+(function initPipeline() {
+  const canvas = document.getElementById('pipeline-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const stages = ['MEDIA', 'COMP', 'WARP', 'BLEND', 'OUT'];
+  const stageX = stages.map((_, i) => (i + 0.5) * W / stages.length);
+
+  const packets = [];
+  for (let i = 0; i < 12; i++) packets.push({ x: rand(0, W), y: H / 2 + rand(-20, 20), spd: rand(80, 180), alpha: rand(0.4, 1.0) });
+
+  let t = 0, last = performance.now();
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+    ctx.fillStyle = 'rgba(3,1,4,0.25)'; ctx.fillRect(0, 0, W, H);
+
+    // Stage boxes
+    stages.forEach((name, i) => {
+      const x = stageX[i];
+      const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i);
+      ctx.strokeStyle = `rgba(255,0,204,${0.3 + 0.2 * pulse})`;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x - 70, H/2 - 30, 140, 60);
+      ctx.fillStyle = `rgba(255,0,204,${0.1 + 0.05 * pulse})`;
+      ctx.fillRect(x - 70, H/2 - 30, 140, 60);
+      ctx.fillStyle = '#FF00CC'; ctx.font = '10px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(name, x, H/2 + 5);
+      // Arrow
+      if (i < stages.length - 1) {
+        ctx.strokeStyle = 'rgba(255,0,204,0.4)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x + 71, H/2); ctx.lineTo(x + 79, H/2); ctx.stroke();
+        ctx.fillStyle = 'rgba(255,0,204,0.4)';
+        ctx.beginPath(); ctx.moveTo(x + 79, H/2 - 4); ctx.lineTo(x + 87, H/2); ctx.lineTo(x + 79, H/2 + 4); ctx.fill();
+      }
+    });
+
+    // Packets
+    packets.forEach(p => {
+      p.x += p.spd * dt;
+      if (p.x > W + 10) { p.x = -10; p.y = H/2 + rand(-15, 15); p.alpha = rand(0.4, 1.0); }
+      ctx.fillStyle = `rgba(204,68,255,${p.alpha})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = `rgba(204,68,255,${p.alpha * 0.2})`;
+      ctx.fillRect(p.x - 8, p.y - 1, 8, 2);
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 3: MadMapper Surface Grid & Canvases
+// ═══════════════════════════════════════════════════════════════════════════
+(function initMapping() {
+  const surfaces = [
+    { name: 'Main Facade', type: 'QUAD', res: '1920×1080', pts: 4 },
+    { name: 'Side Column L', type: 'QUAD', res: '960×2160', pts: 4 },
+    { name: 'Side Column R', type: 'QUAD', res: '960×2160', pts: 4 },
+    { name: 'Roof Edge', type: 'MESH', res: '3840×480', pts: 16 },
+    { name: 'Entry Arch', type: 'BEZIER', res: '1280×720', pts: 8 },
+    { name: 'Ground Plane', type: 'QUAD', res: '1920×540', pts: 4 },
+  ];
+  const grid = document.getElementById('surface-grid');
+  surfaces.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'surface-card' + (i === 0 ? ' active' : '');
+    const colors = ['#FF00CC','#CC44FF','#FF44AA','#AA00FF','#FF0088','#DD00FF'];
+    card.innerHTML = `
+      <div class="sc-shape">
+        <svg width="60" height="40" viewBox="0 0 60 40">
+          <polygon points="${i===3?'0,35 60,35 55,5 5,5':i===4?'5,35 55,35 50,10 30,2 10,10':i===5?'0,40 60,40 55,30 5,30':'3,37 57,37 52,3 8,3'}"
+            fill="none" stroke="${colors[i]}" stroke-width="1.5" stroke-dasharray="4,2"/>
+          ${i===3?'<line x1="20" y1="35" x2="18" y2="5" stroke="'+colors[i]+'" stroke-width="0.5" stroke-dasharray="2,2"/><line x1="40" y1="35" x2="42" y2="5" stroke="'+colors[i]+'" stroke-width="0.5" stroke-dasharray="2,2"/>':''}
+        </svg>
+      </div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-info">${s.type} · ${s.res} · ${s.pts} pts</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.surface-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    });
+    grid.appendChild(card);
+  });
+
+  // Warp canvas
+  const wc = document.getElementById('warp-canvas');
+  const wctx = wc.getContext('2d');
+  const W = wc.width, H = wc.height;
+
+  // Control points for warp
+  let cpts = [
+    {x: 60, y: 40}, {x: W-60, y: 50}, {x: W-40, y: H-40}, {x: 40, y: H-50}
+  ];
+  let dragging = -1;
+
+  wc.addEventListener('mousedown', e => {
+    const r = wc.getBoundingClientRect();
+    const mx = (e.clientX - r.left) * (W/r.width);
+    const my = (e.clientY - r.top) * (H/r.height);
+    cpts.forEach((p, i) => {
+      if (Math.hypot(p.x - mx, p.y - my) < 14) dragging = i;
+    });
+  });
+  wc.addEventListener('mousemove', e => {
+    if (dragging < 0) return;
+    const r = wc.getBoundingClientRect();
+    cpts[dragging].x = clamp((e.clientX - r.left) * (W/r.width), 10, W-10);
+    cpts[dragging].y = clamp((e.clientY - r.top) * (H/r.height), 10, H-10);
+  });
+  wc.addEventListener('mouseup', () => dragging = -1);
+
+  // Source canvas
+  const sc = document.getElementById('source-canvas');
+  const sctx = sc.getContext('2d');
+
+  let t = 0, last = performance.now();
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+
+    const hk = lagKeyH.update(parseFloat(document.getElementById('h-key').value), dt);
+    const vk = lagKeyV.update(parseFloat(document.getElementById('v-key').value), dt);
+
+    // Warp canvas
+    wctx.fillStyle = '#0a0308'; wctx.fillRect(0, 0, W, H);
+    // Grid inside quad
+    wctx.save();
+    wctx.beginPath();
+    wctx.moveTo(cpts[0].x, cpts[0].y);
+    cpts.forEach(p => wctx.lineTo(p.x, p.y));
+    wctx.closePath(); wctx.clip();
+    // Projected content inside
+    for (let gy = 0; gy < H; gy += 30) {
+      wctx.strokeStyle = `rgba(255,0,204,${0.15 + 0.1 * Math.sin(t + gy * 0.05)})`;
+      wctx.lineWidth = 0.5; wctx.beginPath();
+      wctx.moveTo(0, gy); wctx.lineTo(W, gy); wctx.stroke();
+    }
+    for (let gx = 0; gx < W; gx += 30) {
+      wctx.strokeStyle = `rgba(255,0,204,${0.15 + 0.1 * Math.sin(t * 0.7 + gx * 0.04)})`;
+      wctx.lineWidth = 0.5; wctx.beginPath();
+      wctx.moveTo(gx, 0); wctx.lineTo(gx, H); wctx.stroke();
+    }
+    // Content fill
+    const grd = wctx.createLinearGradient(0, 0, W, H);
+    grd.addColorStop(0, `hsla(${300 + 30*Math.sin(t)},100%,50%,0.15)`);
+    grd.addColorStop(1, `hsla(${260 + 20*Math.cos(t)},100%,50%,0.15)`);
+    wctx.fillStyle = grd; wctx.fillRect(0, 0, W, H);
+    wctx.restore();
+
+    // Quad outline
+    wctx.strokeStyle = '#FF00CC'; wctx.lineWidth = 2;
+    wctx.beginPath();
+    wctx.moveTo(cpts[0].x, cpts[0].y);
+    cpts.forEach(p => wctx.lineTo(p.x, p.y));
+    wctx.closePath(); wctx.stroke();
+
+    // Control points
+    cpts.forEach((p, i) => {
+      wctx.fillStyle = i === dragging ? '#FFFFFF' : '#FF00CC';
+      wctx.beginPath(); wctx.arc(p.x, p.y, 7, 0, Math.PI * 2); wctx.fill();
+      wctx.fillStyle = '#030104'; wctx.beginPath(); wctx.arc(p.x, p.y, 3, 0, Math.PI * 2); wctx.fill();
+    });
+
+    // Labels
+    wctx.fillStyle = '#9080A0'; wctx.font = '9px Courier New';
+    wctx.textAlign = 'center';
+    const labels = ['TL','TR','BR','BL'];
+    cpts.forEach((p, i) => wctx.fillText(labels[i], p.x, p.y - 12));
+
+    // Source canvas
+    sctx.fillStyle = '#0a0308'; sctx.fillRect(0, sc.width, sc.width, sc.height);
+    sctx.fillStyle = '#030104'; sctx.fillRect(0, 0, sc.width, sc.height);
+    // Source rectangle
+    const sw = sc.width, sh = sc.height;
+    const sx = 40, sy = 40, srw = sw - 80, srh = sh - 80;
+    // Animated content in source
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 10; col++) {
+        const bx = sx + col * srw/10, by = sy + row * srh/6;
+        const bw = srw/10 - 2, bh = srh/6 - 2;
+        const v = 0.3 + 0.7 * fbm(col * 0.3 + t * 0.1, row * 0.3 + t * 0.08);
+        sctx.fillStyle = `hsla(${280 + v*80},${70 + v*30}%,${30 + v*40}%,0.8)`;
+        sctx.fillRect(bx, by, bw, bh);
+      }
+    }
+    sctx.strokeStyle = '#FF00CC'; sctx.lineWidth = 2;
+    sctx.strokeRect(sx, sy, srw, srh);
+    // Assignment lines to quad corners
+    const pts2d = [[sx,sy],[sx+srw,sy],[sx+srw,sy+srh],[sx,sy+srh]];
+    sctx.strokeStyle = 'rgba(255,0,204,0.4)'; sctx.lineWidth = 1; sctx.setLineDash([4,4]);
+    const scale = sc.width / W;
+    pts2d.forEach((pt, i) => {
+      sctx.beginPath(); sctx.moveTo(pt[0], pt[1]);
+      sctx.lineTo(cpts[i].x * scale, cpts[i].y * scale * (sc.height/H));
+      sctx.stroke();
+    });
+    sctx.setLineDash([]);
+    sctx.fillStyle = '#FF00CC'; sctx.font = '9px Courier New'; sctx.textAlign = 'center';
+    sctx.fillText('SOURCE MEDIA', sc.width/2, sy - 6);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Sliders
+  [['mesh-sub','mesh-sub-val',v=>v],['bez-tension','bez-tension-val',v=>(v/100).toFixed(2)],
+   ['corner-x','corner-x-val',v=>v],['corner-y','corner-y-val',v=>v],
+   ['h-key','h-key-val',v=>v],['v-key','v-key-val',v=>v],
+   ['rot-key','rot-key-val',v=>v+'°'],['zoom-key','zoom-key-val',v=>(v/100).toFixed(2)]
+  ].forEach(([id, vid, fmt]) => {
+    const el = document.getElementById(id), vl = document.getElementById(vid);
+    if (!el || !vl) return;
+    el.addEventListener('input', () => vl.textContent = fmt(el.value));
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 4: Homography Canvases
+// ═══════════════════════════════════════════════════════════════════════════
+(function initHomography() {
+  const hc = document.getElementById('homog-canvas');
+  const hctx = hc.getContext('2d');
+  const W = hc.width, H = hc.height;
+
+  const cc = document.getElementById('calib-canvas');
+  const cctx = cc.getContext('2d');
+
+  let t = 0, last = performance.now();
+
+  // Source quad (regular)
+  const srcQ = [{x:80,y:60},{x:W/2-60,y:60},{x:W/2-60,y:H-60},{x:80,y:H-60}];
+  // Destination quad (warped perspective)
+  const dstQ = [{x:W/2+20,y:40},{x:W-60,y:70},{x:W-40,y:H-50},{x:W/2+40,y:H-40}];
+
+  function drawQuad(ctx, pts, col, fill) {
+    ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+    pts.forEach(p => ctx.lineTo(p.x, p.y)); ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+  }
+
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+
+    // Homography canvas
+    hctx.fillStyle = '#0a0308'; hctx.fillRect(0, 0, W, H);
+
+    // Animated src content
+    const anim = Math.sin(t * 0.8);
+    const animSrc = srcQ.map((p, i) => ({
+      x: p.x + (i % 2 === 1 ? anim * 8 : 0),
+      y: p.y + (i > 1 ? anim * 6 : 0)
+    }));
+
+    // Fill source with grid
+    hctx.save();
+    hctx.beginPath(); hctx.moveTo(animSrc[0].x, animSrc[0].y);
+    animSrc.forEach(p => hctx.lineTo(p.x, p.y));
+    hctx.closePath(); hctx.clip();
+    for (let gy = 0; gy < H; gy += 20) {
+      hctx.strokeStyle = `rgba(255,0,204,${0.2 + 0.1*Math.sin(t+gy*0.1)})`;
+      hctx.lineWidth = 0.5; hctx.beginPath(); hctx.moveTo(0,gy); hctx.lineTo(W,gy); hctx.stroke();
+    }
+    for (let gx = 0; gx < W/2; gx += 20) {
+      hctx.strokeStyle = `rgba(255,0,204,${0.2 + 0.1*Math.sin(t+gx*0.1)})`;
+      hctx.lineWidth = 0.5; hctx.beginPath(); hctx.moveTo(gx,0); hctx.lineTo(gx,H); hctx.stroke();
+    }
+    hctx.restore();
+    drawQuad(hctx, animSrc, '#FF00CC', null);
+
+    // Arrow
+    hctx.strokeStyle = 'rgba(255,0,204,0.4)'; hctx.lineWidth = 1;
+    hctx.setLineDash([4,4]);
+    hctx.beginPath(); hctx.moveTo(W/2-55, H/2); hctx.lineTo(W/2+15, H/2); hctx.stroke();
+    hctx.setLineDash([]);
+    hctx.fillStyle = '#FF00CC'; hctx.font = '9px Courier New'; hctx.textAlign = 'center';
+    hctx.fillText('H·x', W/2-20, H/2 - 5);
+
+    // Destination quad
+    drawQuad(hctx, dstQ, '#CC44FF', 'rgba(204,68,255,0.05)');
+    // Correspondence lines
+    animSrc.forEach((s, i) => {
+      hctx.strokeStyle = `rgba(255,100,200,0.3)`; hctx.lineWidth = 0.5;
+      hctx.setLineDash([3,3]);
+      hctx.beginPath(); hctx.moveTo(s.x, s.y); hctx.lineTo(dstQ[i].x, dstQ[i].y); hctx.stroke();
+      hctx.setLineDash([]);
+    });
+    ['TL','TR','BR','BL'].forEach((l, i) => {
+      hctx.fillStyle = '#FF00CC'; hctx.beginPath(); hctx.arc(animSrc[i].x, animSrc[i].y, 4, 0, Math.PI*2); hctx.fill();
+      hctx.fillStyle = '#CC44FF'; hctx.beginPath(); hctx.arc(dstQ[i].x, dstQ[i].y, 4, 0, Math.PI*2); hctx.fill();
+    });
+    hctx.fillStyle = '#9080A0'; hctx.font = '9px Courier New';
+    hctx.textAlign = 'left'; hctx.fillText('SOURCE PLANE', animSrc[0].x, animSrc[0].y - 8);
+    hctx.textAlign = 'right'; hctx.fillText('PROJ PLANE', dstQ[0].x, dstQ[0].y - 8);
+
+    // Calibration canvas
+    cctx.fillStyle = '#0a0308'; cctx.fillRect(0, 0, cc.width, cc.height);
+    const cW = cc.width, cH = cc.height;
+    // Gray code stripes (animated)
+    const phase = Math.floor(t * 0.8) % 8;
+    const bits = 8;
+    for (let col = 0; col < cW; col++) {
+      const gc = col * bits / cW;
+      const greyVal = ((gc ^ (gc >> 1)) >> (bits - 1 - phase)) & 1;
+      cctx.fillStyle = greyVal ? `rgba(240,232,255,0.8)` : `rgba(3,1,4,0.8)`;
+      cctx.fillRect(col, 0, 1, cH * 0.45);
+    }
+    for (let row = 0; row < cH * 0.45; row++) {
+      const gc = row * bits / (cH * 0.45);
+      const greyVal = ((gc ^ (gc >> 1)) >> (bits - 1 - phase)) & 1;
+      cctx.fillStyle = `rgba(255,0,204,${greyVal ? 0.4 : 0})`;
+      cctx.fillRect(0, row, cW, 1);
+    }
+    cctx.fillStyle = '#FF00CC'; cctx.font = '9px Courier New'; cctx.textAlign = 'center';
+    cctx.fillText(`GRAY CODE — BIT ${phase} / ${bits-1}`, cW/2, cH * 0.45 + 16);
+
+    // Correspondence map
+    cctx.fillStyle = '#030104'; cctx.fillRect(0, cH*0.52, cW, cH*0.48);
+    for (let cy = 0; cy < 8; cy++) {
+      for (let cx = 0; cx < 12; cx++) {
+        const nx = cx / 12 + Math.sin(t * 0.3 + cy) * 0.02;
+        const ny = cy / 8 + Math.cos(t * 0.25 + cx) * 0.02;
+        const px = 20 + nx * (cW - 40);
+        const py = cH * 0.55 + ny * cH * 0.38;
+        const v = fbm(cx * 0.4, cy * 0.4);
+        cctx.fillStyle = `hsl(${280+v*80},80%,${40+v*40}%)`;
+        cctx.fillRect(px - 4, py - 4, 8, 8);
+      }
+    }
+    cctx.fillStyle = '#FF00CC'; cctx.fillText('DECODED CORRESPONDENCES', cW/2, cH - 8);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 5: Edge Blending
+// ═══════════════════════════════════════════════════════════════════════════
+(function initBlending() {
+  const bc = document.getElementById('blend-canvas');
+  const bctx = bc.getContext('2d');
+  const W = bc.width, H = bc.height;
+
+  let localMX = W / 2;
+  bc.addEventListener('mousemove', e => {
+    const r = bc.getBoundingClientRect();
+    localMX = (e.clientX - r.left) * (W / r.width);
+  });
+
+  // Array canvas
+  const ac = document.getElementById('array-canvas');
+  const actx = ac.getContext('2d');
+  const AW = ac.width, AH = ac.height;
+
+  let t = 0, last = performance.now();
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+
+    const overlapW = lagBlendW.update(parseFloat(document.getElementById('overlap-w').value || 140), dt);
+    const gamma = lagBlendGam.update(parseFloat(document.getElementById('blend-gamma').value || 22) / 10, dt);
+
+    // Blend canvas
+    bctx.fillStyle = '#030104'; bctx.fillRect(0, 0, W, H);
+
+    // Two projector regions
+    const mid = W / 2;
+    const lEnd = mid + overlapW / 2;
+    const rStart = mid - overlapW / 2;
+
+    // Left projector content
+    for (let x = 0; x < lEnd; x++) {
+      const t_blend = x < rStart ? 1.0 : 1.0 - Math.pow((x - rStart) / overlapW, 1 / gamma);
+      const hue = 260 + 40 * Math.sin(t + x * 0.01);
+      const lum = t_blend;
+      bctx.fillStyle = `hsla(${hue},80%,${40 * lum}%,0.9)`;
+      bctx.fillRect(x, 0, 1, H * 0.7);
+    }
+    // Right projector content
+    for (let x = rStart; x < W; x++) {
+      const t_blend = x > lEnd ? 1.0 : Math.pow((x - rStart) / overlapW, 1 / gamma);
+      const hue = 300 + 40 * Math.sin(t * 0.8 + x * 0.01);
+      const lum = t_blend;
+      bctx.fillStyle = `hsla(${hue},80%,${40 * lum}%,0.9)`;
+      bctx.fillRect(x, 0, 1, H * 0.7);
+    }
+
+    // Blend zone indicator
+    bctx.strokeStyle = 'rgba(255,0,204,0.5)'; bctx.lineWidth = 1;
+    bctx.setLineDash([4,4]);
+    [rStart, mid, lEnd].forEach(x => {
+      bctx.beginPath(); bctx.moveTo(x, 0); bctx.lineTo(x, H); bctx.stroke();
+    });
+    bctx.setLineDash([]);
+
+    // Luminance curve
+    bctx.strokeStyle = '#FF00CC'; bctx.lineWidth = 2;
+    bctx.beginPath();
+    for (let x = 0; x < W; x++) {
+      let lum;
+      if (x < rStart) lum = 1.0;
+      else if (x > lEnd) lum = 1.0;
+      else {
+        const tl = (x - rStart) / overlapW;
+        const leftL = 1 - Math.pow(tl, 1 / gamma);
+        const rightL = Math.pow(tl, 1 / gamma);
+        lum = leftL + rightL;
+      }
+      const y = H * 0.8 - lum * H * 0.35;
+      if (x === 0) bctx.moveTo(x, y); else bctx.lineTo(x, y);
+    }
+    bctx.stroke();
+
+    // Labels
+    bctx.fillStyle = '#9080A0'; bctx.font = '9px Courier New'; bctx.textAlign = 'center';
+    bctx.fillText('PROJECTOR A', rStart / 2, H - 8);
+    bctx.fillText('BLEND ZONE', mid, H - 8);
+    bctx.fillText('PROJECTOR B', (lEnd + W) / 2, H - 8);
+    bctx.fillStyle = '#FF00CC';
+    bctx.fillText(`OVERLAP: ${overlapW.toFixed(0)}px`, mid, H * 0.85);
+    bctx.fillText(`γ = ${gamma.toFixed(1)}`, mid, H * 0.92);
+
+    // Cursor readout
+    const cx = localMX;
+    bctx.strokeStyle = 'rgba(255,255,255,0.3)'; bctx.lineWidth = 1;
+    bctx.beginPath(); bctx.moveTo(cx, 0); bctx.lineTo(cx, H * 0.72); bctx.stroke();
+
+    // 4-projector array
+    actx.fillStyle = '#030104'; actx.fillRect(0, 0, AW, AH);
+    const nProj = 4, overlapFrac = 0.12;
+    const projW = AW / (nProj - (nProj - 1) * overlapFrac);
+    for (let p = 0; p < nProj; p++) {
+      const px = p * projW * (1 - overlapFrac);
+      const pw = projW;
+      // Content
+      const grd = actx.createLinearGradient(px, 0, px + pw, 0);
+      grd.addColorStop(0, `hsla(${260 + p * 30},70%,25%,0.9)`);
+      grd.addColorStop(1, `hsla(${280 + p * 30},70%,25%,0.9)`);
+      actx.fillStyle = grd; actx.fillRect(px, 20, pw, AH - 40);
+      // Blend edges
+      if (p > 0) {
+        const blendW = projW * overlapFrac;
+        for (let bx = 0; bx < blendW; bx++) {
+          const ft = bx / blendW;
+          const alpha = Math.pow(ft, 1/gamma) * 0.6;
+          actx.fillStyle = `rgba(255,0,204,${alpha * 0.3})`;
+          actx.fillRect(px + bx, 20, 1, AH - 40);
+        }
+      }
+      actx.strokeStyle = `rgba(255,0,204,${0.4 + 0.2 * Math.sin(t + p)})`; actx.lineWidth = 1;
+      actx.strokeRect(px, 20, pw, AH - 40);
+      actx.fillStyle = '#9080A0'; actx.font = '9px Courier New'; actx.textAlign = 'center';
+      actx.fillText(`PROJ ${p+1}`, px + pw/2, AH - 8);
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Slider display
+  [['overlap-w','overlap-w-val',v=>v+'px'],['blend-gamma','blend-gamma-val',v=>(v/10).toFixed(1)],
+   ['black-lv','black-lv-val',v=>v],['blend-soft','blend-soft-val',v=>v+'%'],
+   ['r-gain-l','r-gain-l-val',v=>(v/100).toFixed(2)],['g-gain-l','g-gain-l-val',v=>(v/100).toFixed(2)],
+   ['b-gain-l','b-gain-l-val',v=>(v/100).toFixed(2)],['g-exp','g-exp-val',v=>(v/10).toFixed(1)]
+  ].forEach(([id,vid,fmt]) => {
+    const el = document.getElementById(id), vl = document.getElementById(vid);
+    if (!el || !vl) return;
+    el.addEventListener('input', () => vl.textContent = fmt(el.value));
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 6: Gray Code & Warp Mesh
+// ═══════════════════════════════════════════════════════════════════════════
+(function initGrayCode() {
+  const gc = document.getElementById('graycode-canvas');
+  const gctx = gc.getContext('2d');
+  const W = gc.width, H = gc.height;
+
+  const co = document.getElementById('correspond-canvas');
+  const coctx = co.getContext('2d');
+
+  const wm = document.getElementById('warp-mesh-canvas');
+  const wmctx = wm.getContext('2d');
+  const WW = wm.width, WH = wm.height;
+
+  let t = 0, last = performance.now();
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+
+    // Gray code canvas — show all 4 pattern bits cycling
+    gctx.fillStyle = '#030104'; gctx.fillRect(0, 0, W, H);
+    const bits = 4;
+    const bitH = H / bits;
+    for (let bit = 0; bit < bits; bit++) {
+      for (let col = 0; col < W; col++) {
+        const gc_val = Math.floor(col * (1 << bits) / W);
+        const grey = gc_val ^ (gc_val >> 1);
+        const active = (grey >> (bits - 1 - bit)) & 1;
+        const pulse = active ? (0.7 + 0.3 * Math.sin(t * 3 + bit)) : 0.05;
+        gctx.fillStyle = `rgba(240,232,255,${pulse})`;
+        gctx.fillRect(col, bit * bitH, 1, bitH - 1);
+      }
+      gctx.fillStyle = '#FF00CC'; gctx.font = '9px Courier New'; gctx.textAlign = 'left';
+      gctx.fillText(`BIT ${bit}`, 4, bit * bitH + bitH / 2 + 4);
+    }
+
+    // Correspondence canvas
+    coctx.fillStyle = '#030104'; coctx.fillRect(0, 0, co.width, co.height);
+    const CW = co.width, CH = co.height;
+    // Mesh of correspondences
+    const cols = 10, rows = 6;
+    for (let r = 0; r <= rows; r++) {
+      for (let c = 0; c <= cols; c++) {
+        const nx = c / cols; const ny = r / rows;
+        // Add distortion based on time
+        const dx = 0.03 * Math.sin(t * 0.5 + r * 0.8);
+        const dy = 0.02 * Math.cos(t * 0.4 + c * 0.6);
+        const sx = (nx + dx) * (CW - 30) + 15;
+        const sy = (ny + dy) * (CH - 30) + 15;
+        // Source point (regular grid)
+        const srcX = nx * (CW - 30) + 15;
+        const srcY = ny * (CH - 30) + 15;
+        coctx.strokeStyle = 'rgba(255,0,204,0.2)'; coctx.lineWidth = 0.5;
+        coctx.beginPath(); coctx.moveTo(srcX, srcY); coctx.lineTo(sx, sy); coctx.stroke();
+        coctx.fillStyle = '#CC44FF';
+        coctx.beginPath(); coctx.arc(sx, sy, 2, 0, Math.PI * 2); coctx.fill();
+      }
+    }
+    coctx.fillStyle = '#FF00CC'; coctx.font = '9px Courier New'; coctx.textAlign = 'center';
+    coctx.fillText('DECODED WARP FIELD', CW / 2, CH - 5);
+
+    // Warp mesh canvas
+    wmctx.fillStyle = '#030104'; wmctx.fillRect(0, 0, WW, WH);
+    const MX = 20, MY = 15, MW = WW - 40, MH = WH - 30;
+    const COLS = 16, ROWS = 8;
+
+    // Draw original grid (dim)
+    wmctx.strokeStyle = 'rgba(144,128,160,0.15)'; wmctx.lineWidth = 0.5;
+    for (let r = 0; r <= ROWS; r++) {
+      wmctx.beginPath();
+      wmctx.moveTo(MX, MY + r * MH / ROWS);
+      wmctx.lineTo(MX + MW, MY + r * MH / ROWS);
+      wmctx.stroke();
+    }
+    for (let c = 0; c <= COLS; c++) {
+      wmctx.beginPath();
+      wmctx.moveTo(MX + c * MW / COLS, MY);
+      wmctx.lineTo(MX + c * MW / COLS, MY + MH);
+      wmctx.stroke();
+    }
+
+    // Warp mesh — distorted grid
+    function warpPt(c, r) {
+      const nx = c / COLS, ny = r / ROWS;
+      const dx = 15 * Math.sin(nx * Math.PI * 1.5 + t * 0.2) * Math.sin(ny * Math.PI);
+      const dy = 10 * Math.cos(ny * Math.PI * 2 + t * 0.15) * Math.sin(nx * Math.PI);
+      return {
+        x: MX + nx * MW + dx,
+        y: MY + ny * MH + dy
+      };
+    }
+
+    wmctx.strokeStyle = '#FF00CC'; wmctx.lineWidth = 1;
+    // Horizontal lines
+    for (let r = 0; r <= ROWS; r++) {
+      wmctx.beginPath();
+      for (let c = 0; c <= COLS; c++) {
+        const p = warpPt(c, r);
+        c === 0 ? wmctx.moveTo(p.x, p.y) : wmctx.lineTo(p.x, p.y);
+      }
+      wmctx.stroke();
+    }
+    // Vertical lines
+    for (let c = 0; c <= COLS; c++) {
+      wmctx.beginPath();
+      for (let r = 0; r <= ROWS; r++) {
+        const p = warpPt(c, r);
+        r === 0 ? wmctx.moveTo(p.x, p.y) : wmctx.lineTo(p.x, p.y);
+      }
+      wmctx.stroke();
+    }
+    // Control points
+    for (let r = 0; r <= ROWS; r += 2) {
+      for (let c = 0; c <= COLS; c += 2) {
+        const p = warpPt(c, r);
+        wmctx.fillStyle = '#FF00CC';
+        wmctx.beginPath(); wmctx.arc(p.x, p.y, 3, 0, Math.PI * 2); wmctx.fill();
+      }
+    }
+    wmctx.fillStyle = '#FF00CC'; wmctx.font = '9px Courier New'; wmctx.textAlign = 'center';
+    wmctx.fillText(`WARP MESH — ${COLS}×${ROWS} CONTROL POINTS`, WW/2, WH - 5);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 7: Generative Projection
+// ═══════════════════════════════════════════════════════════════════════════
+(function initGenerative() {
+  const pc = document.getElementById('particle-canvas');
+  const pctx = pc.getContext('2d');
+  const W = pc.width, H = pc.height;
+
+  const sc = document.getElementById('shader-canvas');
+  const sctx = sc.getContext('2d');
+  const SW = sc.width, SH = sc.height;
+
+  const oc = document.getElementById('osc-canvas');
+  const octx = oc.getContext('2d');
+  const OW = oc.width, OH = oc.height;
+
+  // Architectural surface quad
+  const surfQuad = [
+    {x: 80, y: 30}, {x: W-80, y: 50}, {x: W-60, y: H-30}, {x: 60, y: H-30}
+  ];
+
+  // Particles
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = rand(80, W-80); this.y = rand(30, H-30);
+      this.vx = rand(-1, 1); this.vy = rand(-2, -0.5);
+      this.life = 0; this.maxLife = rand(60, 160);
+      this.hue = rand(280, 340); this.size = rand(1, 4);
+    }
+    update(force, noiseScale, timeSpd) {
+      const nx = noise21(this.x * 0.01 * noiseScale, this.y * 0.01 * noiseScale + performance.now() * 0.0001 * timeSpd);
+      const ny = noise21(this.x * 0.01 * noiseScale + 100, this.y * 0.01 * noiseScale);
+      this.vx += (nx - 0.5) * force * 0.3;
+      this.vy += (ny - 0.5) * force * 0.3 - 0.05;
+      this.vx *= 0.98; this.vy *= 0.98;
+      this.x += this.vx; this.y += this.vy;
+      this.life++;
+      if (this.life > this.maxLife || this.x < 40 || this.x > W-40 || this.y < 20 || this.y > H-20) this.reset();
+    }
+  }
+
+  let particles = [];
+  for (let i = 0; i < 200; i++) particles.push(new Particle());
+
+  let localMX = W/2, localMY = H/2;
+  pc.addEventListener('mousemove', e => {
+    const r = pc.getBoundingClientRect();
+    localMX = (e.clientX - r.left) * (W/r.width);
+    localMY = (e.clientY - r.top) * (H/r.height);
+  });
+
+  const blendModes = ['source-over','lighter','screen','multiply','overlay'];
+  const blendNames = ['OVER','ADD','SCREEN','MULT','OVR'];
+
+  let t = 0, last = performance.now();
+  const oscHistory = Array(OW).fill(null).map(() => [0,0,0,0]);
+
+  function frame(now) {
+    const dt = (now - last) / 1000; last = now; t += dt;
+
+    const pCount = Math.floor(lagParticles.update(parseFloat(document.getElementById('p-count').value||200), dt));
+    const force = lagForceF.update(parseFloat(document.getElementById('p-force').value||40)/100, dt);
+    const noiseScale = lagNoiseScl.update(parseFloat(document.getElementById('noise-sc').value||60), dt);
+    const timeSpd = lagTimeSpd.update(parseFloat(document.getElementById('time-sp').value||60)/100, dt);
+    const pHue = parseFloat(document.getElementById('p-hue').value||300);
+    const bMode = Math.floor(parseFloat(document.getElementById('blend-mode').value||2));
+    document.getElementById('blend-mode-val').textContent = blendNames[clamp(bMode,0,4)];
+    document.getElementById('time-sp-val').textContent = timeSpd.toFixed(2);
+    document.getElementById('p-force-val').textContent = force.toFixed(2);
+
+    // Adjust particle count
+    while (particles.length < pCount) particles.push(new Particle());
+    while (particles.length > pCount) particles.pop();
+
+    // Particle canvas
+    pctx.fillStyle = 'rgba(3,1,4,0.15)'; pctx.fillRect(0, 0, W, H);
+
+    // Draw architectural surface outline
+    pctx.strokeStyle = 'rgba(255,0,204,0.25)'; pctx.lineWidth = 1.5;
+    pctx.setLineDash([6,4]);
+    pctx.beginPath(); pctx.moveTo(surfQuad[0].x, surfQuad[0].y);
+    surfQuad.forEach(p => pctx.lineTo(p.x, p.y));
+    pctx.closePath(); pctx.stroke(); pctx.setLineDash([]);
+    pctx.fillStyle = 'rgba(255,0,204,0.03)'; pctx.fill();
+
+    // Attractor at mouse
+    pctx.fillStyle = 'rgba(255,0,204,0.1)';
+    pctx.beginPath(); pctx.arc(localMX, localMY, 30, 0, Math.PI*2); pctx.fill();
+
+    // Update & draw particles
+    pctx.globalCompositeOperation = blendModes[clamp(bMode,0,4)];
+    particles.forEach(p => {
+      // Mouse attraction
+      const dx = localMX - p.x, dy = localMY - p.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        p.vx += dx / dist * 0.5;
+        p.vy += dy / dist * 0.5;
+      }
+      p.update(force, noiseScale, timeSpd);
+      const alpha = (1 - p.life / p.maxLife) * 0.8;
+      const hue = pHue + p.hue - 300;
+      pctx.fillStyle = `hsla(${hue},100%,65%,${alpha})`;
+      pctx.beginPath(); pctx.arc(p.x, p.y, p.size, 0, Math.PI*2); pctx.fill();
+    });
+    pctx.globalCompositeOperation = 'source-over';
+
+    // Labels
+    pctx.fillStyle = '#FF00CC'; pctx.font = '9px Courier New'; pctx.textAlign = 'center';
+    pctx.fillText(`${particles.length} PARTICLES → SURFACE`, W/2, H-8);
+
+    // Shader canvas
+    const STEP = 4;
+    for (let sy = 0; sy < SH; sy += STEP) {
+      for (let sx = 0; sx < SW; sx += STEP) {
+        const nx = sx / SW, ny = sy / SH;
+        const warp = fbm(nx * 3 + t * 0.1, ny * 3 + t * 0.08) * 0.3;
+        const val = fbm(nx * 2 + warp, ny * 2 + warp + t * 0.05);
+        const hue = 280 + val * 80;
+        const lum = 20 + val * 50;
+        sctx.fillStyle = `hsl(${hue},80%,${lum}%)`;
+        sctx.fillRect(sx, sy, STEP, STEP);
+      }
+    }
+    sctx.fillStyle = '#FF00CC'; sctx.font = '9px Courier New'; sctx.textAlign = 'center';
+    sctx.fillText('DOMAIN WARP SHADER OUTPUT', SW/2, SH-5);
+
+    // OSC canvas
+    octx.fillStyle = '#030104'; octx.fillRect(0, 0, OW, OH);
+    // Shift history
+    oscHistory.shift();
+    oscHistory.push([
+      0.5 + 0.4 * Math.sin(t * 3.1),
+      0.5 + 0.3 * Math.cos(t * 2.3 + 1),
+      0.5 + 0.35 * Math.sin(t * 4.7 + 2),
+      noise21(t * 0.5, 0)
+    ]);
+
+    const oscLabels = ['SPEED','SIZE','HUE','FORCE'];
+    const oscCols = ['#FF00CC','#CC44FF','#FF44AA','#AA00FF'];
+    oscLabels.forEach((lbl, ch) => {
+      octx.strokeStyle = oscCols[ch]; octx.lineWidth = 1;
+      octx.beginPath();
+      const yOff = (ch + 0.5) * OH / 4;
+      const amp = OH / 8 * 0.8;
+      oscHistory.forEach((frame, xi) => {
+        const y = yOff - (frame[ch] - 0.5) * amp * 2;
+        xi === 0 ? octx.moveTo(0, y) : octx.lineTo(xi, y);
+      });
+      octx.stroke();
+      octx.fillStyle = oscCols[ch]; octx.font = '9px Courier New'; octx.textAlign = 'left';
+      octx.fillText(`${lbl}: ${oscHistory[oscHistory.length-1][ch].toFixed(2)}`, 4, yOff - amp - 4);
+      // Baseline
+      octx.strokeStyle = `${oscCols[ch]}30`; octx.lineWidth = 0.5;
+      octx.beginPath(); octx.moveTo(0, yOff); octx.lineTo(OW, yOff); octx.stroke();
+    });
+    octx.fillStyle = '#9080A0'; octx.font = '9px Courier New'; octx.textAlign = 'center';
+    octx.fillText('OSC/MIDI PARAMETER STREAMS', OW/2, OH-5);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Slider displays
+  [['p-count','p-count-val',v=>v],['p-life','p-life-val',v=>v],
+   ['p-hue','p-hue-val',v=>v+'°'],['warp-int','warp-int-val',v=>v+'%'],
+   ['noise-sc','noise-sc-val',v=>v]
+  ].forEach(([id,vid,fmt]) => {
+    const el = document.getElementById(id), vl = document.getElementById(vid);
+    if (!el || !vl) return;
+    el.addEventListener('input', () => vl.textContent = fmt(el.value));
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 8: Artists
+// ═══════════════════════════════════════════════════════════════════════════
+(function initArtists() {
+  const artists = [
+    {
+      name: 'VSquared Labs',
+      role: 'Projection Design / Live Cinema',
+      bio: 'Victoria Bousis & Vanessa Breakstone — creators of large-scale architectural projection for live performance, architecture, and public art worldwide.',
+      geo: 'V2'
+    },
+    {
+      name: 'Joanie Lemercier',
+      role: 'Light & Surface Artist',
+      bio: 'French artist exploring light, perception, and space through architectural projection and large-scale installations with a focus on environmental consciousness.',
+      geo: 'JL'
+    },
+    {
+      name: 'Bot & Dolly',
+      role: 'Robotic Cinema / Projection',
+      bio: 'Pioneers of robotic camera systems and projection mapping combined with motion control — creators of the acclaimed BOX projection short film.',
+      geo: 'BD'
+    },
+    {
+      name: 'Obscura Digital',
+      role: 'Immersive Projection Studio',
+      bio: 'San Francisco studio known for massive-scale projection installations on architectural landmarks, museum facades, and international event stages.',
+      geo: 'OD'
+    },
+    {
+      name: 'AntiVJ',
+      role: 'Visual Label / Projection Art',
+      bio: 'Yannick Jacquet–founded collective pushing projection art through architectural interventions, collaborating with architects and sound artists globally.',
+      geo: 'AJ'
+    },
+    {
+      name: '1024 Architecture',
+      role: 'Architecture & Light Design',
+      bio: 'Paris-based studio Francois Wunschel & Pier Schneider blending architecture, digital art, and projection to transform urban space into responsive environments.',
+      geo: '10'
+    },
+    {
+      name: 'Refik Anadol',
+      role: 'Data Sculpture / Media Art',
+      bio: 'Turkish-American media artist and director using machine intelligence to transform data into monumental architectural projections and immersive environments.',
+      geo: 'RA'
+    },
+    {
+      name: 'Universal Everything',
+      role: 'Moving Image Studio',
+      bio: 'Matt Pyke–led Sheffield studio creating character-driven, generative moving image work for projection mapping, public screens, and gallery installations.',
+      geo: 'UE'
+    }
+  ];
+
+  const shapes = [
+    (s,c)=>`<polygon points="40,5 75,30 62,70 18,70 5,30" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (s,c)=>`<rect x="10" y="10" width="60" height="60" fill="none" stroke="${c}" stroke-width="2" transform="rotate(15 40 40)"/>`,
+    (s,c)=>`<polygon points="40,8 72,40 40,72 8,40" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (s,c)=>`<circle cx="40" cy="40" r="32" fill="none" stroke="${c}" stroke-width="2"/><line x1="40" y1="8" x2="40" y2="72" stroke="${c}" stroke-width="1" stroke-dasharray="4,2"/>`,
+    (s,c)=>`<polygon points="40,5 75,62 5,62" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (s,c)=>`<rect x="12" y="12" width="56" height="56" rx="4" fill="none" stroke="${c}" stroke-width="2"/><rect x="24" y="24" width="32" height="32" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="3,3"/>`,
+    (s,c)=>`<polygon points="40,5 72,22 72,58 40,75 8,58 8,22" fill="none" stroke="${c}" stroke-width="2"/>`,
+    (s,c)=>`<ellipse cx="40" cy="40" rx="35" ry="20" fill="none" stroke="${c}" stroke-width="2"/><ellipse cx="40" cy="40" rx="35" ry="20" fill="none" stroke="${c}" stroke-width="1" stroke-dasharray="3,3" transform="rotate(60 40 40)"/>`
+  ];
+
+  const grid = document.getElementById('artists-grid');
+  artists.forEach((a, i) => {
+    const c = ['#FF00CC','#CC44FF','#FF44AA','#AA00FF','#FF0088','#DD00FF','#BB00FF','#FF22AA'][i];
+    const card = document.createElement('div');
+    card.className = 'artist-card';
+    card.innerHTML = `
+      <svg class="artist-avatar" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        ${shapes[i]('', c)}
+        <text x="40" y="45" text-anchor="middle" font-family="Courier New" font-size="12" fill="${c}" font-weight="bold">${a.geo}</text>
+      </svg>
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-role">${a.role}</div>
+      <div class="artist-bio">${a.bio}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SECTION 9: Glossary
+// ═══════════════════════════════════════════════════════════════════════════
+(function initGlossary() {
+  const terms = [
+    { term: 'Homography', def: 'A 3×3 projective transformation matrix mapping points between two planar views — the mathematical core of all quad-based projection mapping.' },
+    { term: 'Keystone Correction', def: 'Geometric correction of trapezoidal distortion caused by projecting at an oblique angle to a flat surface. Applied via corner pin or full homography warp.' },
+    { term: 'Edge Blending', def: 'Luminance falloff at overlapping projector boundaries using gamma-corrected curves to produce seamless seamless single-image multi-projector displays.' },
+    { term: 'Gray Code', def: 'A binary encoding scheme used in structured light calibration where adjacent codes differ by only one bit — enabling robust pixel-to-projector correspondence decoding.' },
+    { term: 'Warp Mesh', def: 'A grid of control points defining non-linear geometric correction applied to projector output — used to compensate for surface curvature, irregular geometry, and lens distortion.' },
+    { term: 'Structured Light', def: 'Calibration technique projecting known patterns (Gray code stripes) onto surfaces and capturing them with a camera to compute precise spatial correspondences.' },
+    { term: 'DLP Projector', def: 'Digital Light Processing projector using a DMD chip (Digital Micromirror Device) to reflect modulated light — preferred for projection mapping due to high contrast and fast response.' },
+    { term: 'HAP Codec', def: 'GPU-accelerated video codec delivering extremely high frame rate / resolution playback by offloading decompression to the GPU — widely used in Resolume and media server workflows.' },
+    { term: 'NDI', def: 'Network Device Interface — low-latency IP video transport protocol enabling high-quality video sharing between production systems over standard gigabit Ethernet.' },
+    { term: 'Syphon / Spout', def: 'Texture sharing frameworks (macOS/Windows) allowing real-time frame passing between GPU-accelerated applications without memory copies — connects TouchDesigner to mapping engines.' },
+    { term: 'Blend Zone', def: 'The overlapping region between two adjacent projectors where gamma-corrected luminance falloff curves are applied from both projectors to produce seamless brightness.' },
+    { term: 'PJLink', def: 'Open standard protocol for network control of projectors — enabling power, input selection, and status monitoring of multiple projectors from a central media server.' },
+    { term: 'Black Level Offset', def: 'Minimum luminance compensation in edge blend zones to account for the additive light from overlapping projectors — raising the dark floor to match the non-blended areas.' },
+    { term: 'OSC', def: 'Open Sound Control — a UDP-based message protocol for sending real-time control data between performance applications, used to route parameter streams from DAWs and controllers to visual engines.' },
+    { term: 'MadMapper', def: 'macOS/Windows projection mapping software for surface assignment, quad/mesh warping, and projection calibration — widely used for architectural projection and LED mapping.' },
+    { term: 'Resolume Arena', def: 'VJ and projection mapping software supporting multi-projector output, warp mesh geometry, edge blending, and generative visual layering with MIDI/OSC control.' },
+    { term: 'Reprojection Error', def: 'Metric measuring calibration accuracy — the average pixel distance between projected calibration points and their camera-detected positions. Target: < 0.5 px for precision mapping.' },
+    { term: 'Corner Pin', def: 'Four-point perspective warp applied by repositioning the corners of the output image — the simplest form of geometric correction for flat surface projection.' },
+    { term: 'Bezier Surface', def: 'A smooth parametric surface defined by a grid of control points with continuous tangent continuity — used in MadMapper for curved surface projection mapping.' },
+    { term: 'Delta E (ΔE)', def: 'Perceptual color difference metric in CIE Lab color space — used to quantify color matching accuracy between projectors. ΔE < 2.0 is generally considered visually imperceptible.' },
+    { term: 'Throw Ratio', def: 'Ratio of projector throw distance to image width (e.g., 1.5:1 means 1.5m throw for 1m wide image) — critical parameter for architectural site surveys and projector placement planning.' },
+    { term: 'Generative Mapping', def: 'Real-time synthesis of projection content using procedural algorithms, particle systems, or data sources — piped into mapping engines via Syphon/Spout from TouchDesigner, Processing, or VVVV.' }
+  ];
+
+  const grid = document.getElementById('glossary-grid');
+  terms.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'gloss-item hidden';
+    item.innerHTML = `<div class="gloss-term">${t.term}</div><div class="gloss-def">${t.def}</div>`;
+    grid.appendChild(item);
+    observer.observe(item);
+  });
+})();
+
+// ─── Scroll IntersectionObserver re-scan ──────────────────────────────────
+window.addEventListener('load', () => {
+  document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+});
+</script>

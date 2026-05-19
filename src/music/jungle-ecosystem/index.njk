@@ -1,0 +1,1468 @@
+---
+layout: world.njk
+title: "WAVGEN Music World 08: Jungle Ecosystem"
+description: "Immersive music world exploring jungle ecosystem"
+domain: music
+permalink: /music/jungle-ecosystem/
+---
+
+
+
+<div id="hero">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title" id="heroTitle">JUNGLE ECOSYSTEM</div>
+<div class="hero-subtitle" id="heroSubtitle">South London 1992–1996</div>
+<div class="hero-badges" id="heroBadges">
+<div class="badge"><span class="badge-val">160–180</span><span class="badge-lbl">BPM</span></div>
+<div class="badge"><span class="badge-val">20–80Hz</span><span class="badge-lbl">Sub-Bass</span></div>
+<div class="badge"><span class="badge-val">6s</span><span class="badge-lbl">Amen Break</span></div>
+<div class="badge"><span class="badge-val">FM</span><span class="badge-lbl">Pirate Radio</span></div>
+</div>
+<div class="scroll-hint">↓ Scroll to Explore</div>
+</div>
+</div>
+<div id="content">
+<!-- AMEN ARCHAEOLOGY -->
+<div id="amen"></div>
+<section class="fw">
+<div style="padding:0 2rem;">
+<div class="sec-label hidden">Section 02</div>
+<div class="sec-title hidden stagger-1">Amen Archaeology</div>
+<div class="sec-desc hidden stagger-2">A 6-second drum break recorded in 1969 became the backbone of a generation. Trace the Amen break from funk record to jungle cornerstone to global sample ubiquity.</div>
+</div>
+<div class="amen-scroll">
+<div class="amen-track" id="amenTrack"></div>
+</div>
+<div class="bpm-chart-wrap hidden">
+<h3>BPM Evolution — Amen Break by Era</h3>
+<canvas id="bpmChart"></canvas>
+</div>
+</section>
+<div class="divider"></div>
+<!-- BREAK PATTERN WORKSHOP -->
+<section id="breaks">
+<div class="sec-label hidden">Section 03</div>
+<div class="sec-title hidden stagger-1">Break Pattern Workshop</div>
+<div class="sec-desc hidden stagger-2">Drag and reorder 16 drum slices to reconstruct the Amen break. Adjust BPM and swing to feel how producers manipulated the loop. Toggle pitch correction to hear time-stretch artifacts.</div>
+<div class="workshop-grid" id="workshopGrid"></div>
+<div class="workshop-controls">
+<div class="ctrl-grp">
+<label>BPM</label>
+<input id="bpmSlider" max="180" min="100" type="range" value="160"/>
+<output id="bpmOut">160</output>
+</div>
+<div class="ctrl-grp">
+<label>Swing</label>
+<input id="swingSlider" max="30" min="0" type="range" value="8"/>
+<output id="swingOut">8%</output>
+</div>
+<div class="ctrl-grp">
+<label>Pitch Correct</label>
+<button class="toggle-btn active" id="pitchToggle">On</button>
+</div>
+<div class="workshop-btns">
+<button class="btn-p" id="workshopPlay">▶ Play</button>
+<button class="btn-s" id="workshopCompare">Compare Amen</button>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- HARDCORE CONTINUUM -->
+<section class="fw" id="continuum">
+<div style="padding:0 2rem 2rem;">
+<div class="sec-label hidden">Section 04</div>
+<div class="sec-title hidden stagger-1">Hardcore Continuum</div>
+<div class="sec-desc hidden stagger-2">Simon Reynolds' theory traces an unbroken lineage of UK dance music — a single thread of intensity, darkness and sub-bass running from 1989 rave through jungle, drum &amp; bass, garage, grime, and dubstep.</div>
+</div>
+<div class="continuum-scroll">
+<div class="continuum-track" id="continuumTrack"></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- PIRATE RADIO SIMULATOR -->
+<section id="pirate">
+<div class="sec-label hidden">Section 05</div>
+<div class="sec-title hidden stagger-1">Pirate Radio Simulator</div>
+<div class="sec-desc hidden stagger-2">Drag the needle across the FM dial. Between 88–108 MHz, four illegal stations broadcast jungle from South London rooftops. Find the frequencies through the static.</div>
+<div class="pirate-wrap hidden stagger-1">
+<canvas id="pirateCanvas"></canvas>
+<div class="signal-row">
+<div class="signal-bars" id="signalBars"></div>
+<span id="freqDisplay" style="font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;">-- MHz</span>
+</div>
+<div class="station-card" id="stationCard">
+<div class="station-name" id="stationName"></div>
+<div class="station-meta" id="stationMeta"></div>
+<div class="station-story" id="stationStory"></div>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- SUB-BASS ANATOMY -->
+<section id="subbass">
+<div class="sec-label hidden">Section 06</div>
+<div class="sec-title hidden stagger-1">Sub-Bass Anatomy</div>
+<div class="sec-desc hidden stagger-2">Below 80Hz lies the physical territory of jungle — frequencies felt in the chest and stomach before they register as pitch. Explore the full spectrum and sub-bass cross-section of a simulated jungle mix.</div>
+<div class="subbass-wrap hidden stagger-1">
+<canvas id="subCanvas"></canvas>
+<div class="sub-controls">
+<div class="ctrl-grp">
+<label>Sub Boost/Cut (dB)</label>
+<input id="subBoost" max="12" min="-12" type="range" value="0"/>
+<output id="subBoostOut">0 dB</output>
+</div>
+<div class="ctrl-grp">
+<label>HP Filter (Hz)</label>
+<input id="hpFilter" max="200" min="20" type="range" value="30"/>
+<output id="hpOut">30 Hz</output>
+</div>
+<div class="ctrl-grp">
+<label>View Mode</label>
+<button class="toggle-btn active" id="subModeToggle">Feel Mode</button>
+</div>
+<div class="ctrl-grp">
+<label>Sub Tone</label>
+<button class="toggle-btn" id="subPlayToggle">Play Sine</button>
+</div>
+</div>
+</div>
+<div class="edu-cards">
+<div class="edu-card hidden">Sub-bass below 80Hz is felt more than heard at high SPL. At club volume, these frequencies cause physical resonance in the chest cavity — jungle producers exploited this as an emotional and bodily tool.</div>
+<div class="edu-card hidden stagger-1">Jungle mixes sub-bass in mono for maximum speaker compatibility. Stereo bass below 100Hz causes phase cancellation on mono systems, losing the entire low-end — pirate radio demanded mono-safe mixes.</div>
+<div class="edu-card hidden stagger-2">The Reese bass lives at 60–120Hz — the chest-pressure zone. A detuned oscillator pair creates a slow beating frequency that modulates at 1–4Hz, producing the distinctive "breathing" throb of jungle and early drum &amp; bass.</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- LONDON SOCIAL MAP -->
+<section id="map">
+<div class="sec-label hidden">Section 07</div>
+<div class="sec-title hidden stagger-1">London Social Map</div>
+<div class="sec-desc hidden stagger-2">The jungle ecosystem ran on a physical network of pirate transmitters, basement clubs, and independent record shops. Click the markers to explore the geography of the scene.</div>
+<div class="map-wrap hidden stagger-1">
+<canvas id="mapCanvas"></canvas>
+<div class="map-markers" id="mapMarkers"></div>
+<div class="map-popup" id="mapPopup"></div>
+</div>
+<div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+<span style="font-size:0.6rem;color:var(--dim);">
+<span style="color:var(--accent);">●</span> Pirate Radio Transmitter  
+      <span style="color:var(--amber);">●</span> Club / Venue  
+      <span style="color:var(--cyan);">●</span> Record Shop
+    </span>
+</div>
+</section>
+<div class="divider"></div>
+<!-- ARTISTS -->
+<section id="artists">
+<div class="sec-label hidden">Section 08</div>
+<div class="sec-title hidden stagger-1">Key Artists</div>
+<div class="sec-desc hidden stagger-2">Ten architects of the jungle and early drum &amp; bass sound — producers, DJs, and MCs who shaped the ecosystem from inside South London's pirate radio and rave circuit.</div>
+<div class="artists-grid" id="artistsGrid"></div>
+</section>
+<div class="divider"></div>
+<!-- GLOSSARY -->
+<section id="glossary">
+<div class="sec-label hidden">Section 09</div>
+<div class="sec-title hidden stagger-1">Glossary</div>
+<div class="sec-desc hidden stagger-2">Twenty terms that constitute the technical and cultural vocabulary of the jungle ecosystem.</div>
+<div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+<footer>
+  WAVGEN MUSIC WORLD 08 — JUNGLE ECOSYSTEM — SOUTH LONDON 1992–1996<br/>
+<span style="color:var(--accent);">▓</span> WebAudio API · Canvas2D · Vanilla JS · No Dependencies <span style="color:var(--accent);">▓</span>
+</footer>
+</div><!-- /content -->
+<script>
+// ── AUDIO CONTEXT ──────────────────────────────────────────────────
+let AC = null;
+function getAC() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if (AC.state === 'suspended') AC.resume();
+  return AC;
+}
+
+// ── HERO CANVAS ────────────────────────────────────────────────────
+(function initHero() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, rain = [], lastKick = 0, kickFlash = 0;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function mkRain() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: 0.4 + Math.random() * 0.3,
+      vy: 6 + Math.random() * 8,
+      len: 8 + Math.random() * 14,
+      op: 0.15 + Math.random() * 0.55,
+      w: 0.5 + Math.random() * 0.8
+    };
+  }
+  for (let i = 0; i < 300; i++) rain.push(mkRain());
+
+  // City skyline – procedural rectangles
+  const BLDGS = [];
+  (function buildSkyline() {
+    const count = 28;
+    for (let i = 0; i < count; i++) {
+      BLDGS.push({
+        xFrac: i / count + (Math.random() * 0.01),
+        wFrac: 0.025 + Math.random() * 0.04,
+        hFrac: 0.06 + Math.random() * 0.12,
+        windows: Math.random() > 0.5
+      });
+    }
+  })();
+
+  function drawSkyline() {
+    const baseY = H * 0.86;
+    ctx.fillStyle = '#08080f';
+    BLDGS.forEach(b => {
+      const bx = b.xFrac * W;
+      const bw = b.wFrac * W;
+      const bh = b.hFrac * H;
+      ctx.fillRect(bx, baseY - bh, bw, bh + 10);
+      if (b.windows) {
+        ctx.fillStyle = 'rgba(217,119,6,0.18)';
+        for (let wy = baseY - bh + 6; wy < baseY - 4; wy += 10) {
+          for (let wx = bx + 3; wx < bx + bw - 3; wx += 7) {
+            if (Math.random() > 0.45) ctx.fillRect(wx, wy, 3, 4);
+          }
+        }
+        ctx.fillStyle = '#08080f';
+      }
+    });
+  }
+
+  function frame(ts) {
+    requestAnimationFrame(frame);
+    // Phosphor persistence
+    ctx.fillStyle = 'rgba(5,5,8,0.10)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Kick flash every 2–3 seconds
+    if (ts - lastKick > 2000 + Math.random() * 1200) {
+      lastKick = ts;
+      kickFlash = 1;
+    }
+    if (kickFlash > 0) {
+      ctx.fillStyle = `rgba(236,72,153,${kickFlash * 0.08})`;
+      ctx.fillRect(0, 0, W, H);
+      kickFlash = Math.max(0, kickFlash - 0.12);
+    }
+
+    // Rain
+    rain.forEach(r => {
+      ctx.save();
+      ctx.globalAlpha = r.op;
+      ctx.strokeStyle = `rgba(180,220,255,1)`;
+      ctx.lineWidth = r.w;
+      ctx.beginPath();
+      ctx.moveTo(r.x, r.y);
+      ctx.lineTo(r.x + r.vx * (r.len / r.vy), r.y + r.len);
+      ctx.stroke();
+      ctx.restore();
+      r.x += r.vx;
+      r.y += r.vy;
+      if (r.y > H + 20 || r.x > W + 10) {
+        r.x = Math.random() * W;
+        r.y = -20;
+      }
+    });
+
+    // Ground sodium glow
+    const grd = ctx.createLinearGradient(0, H * 0.82, 0, H);
+    grd.addColorStop(0, 'rgba(217,119,6,0)');
+    grd.addColorStop(0.5, 'rgba(217,119,6,0.10)');
+    grd.addColorStop(1, 'rgba(217,119,6,0.22)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, H * 0.82, W, H * 0.18);
+
+    drawSkyline();
+  }
+  requestAnimationFrame(frame);
+
+  // Fade in text
+  setTimeout(() => {
+    document.getElementById('heroTitle').classList.add('show');
+    document.getElementById('heroSubtitle').classList.add('show');
+    document.getElementById('heroBadges').classList.add('show');
+  }, 600);
+})();
+
+// ── AMEN TIMELINE DATA ─────────────────────────────────────────────
+const AMEN_NODES = [
+  { year: 1969, name: '"Amen, Brother" — The Winstons', bpm: 90,
+    desc: 'Gregory Coleman plays a 6-second drum break on a B-side. Nobody notices for 17 years. The break features kick, snare, and hi-hat in a loose, swinging funk groove.' },
+  { year: 1986, name: 'Hip-Hop Discovery', bpm: 95,
+    desc: 'DJ breaks culture begins sampling the Amen on pause-tape systems. The loop appears on early hip-hop tracks and mix tapes, valued for its raw, live feel.' },
+  { year: 1991, name: 'Jungle Pioneers', bpm: 130,
+    desc: 'UK hardcore producers discover the Amen via sample packs and hip-hop imports. It enters the rave ecosystem at slower tempos, layered over piano stabs.' },
+  { year: 1992, name: 'Dark Hardcore / Pitchdown', bpm: 155,
+    desc: 'Producers pitch the Amen down for a heavier, more industrial feel. Combined with ragga vocal samples and sub-bass, it defines the early jungle sound.' },
+  { year: 1993, name: 'Chopped Amen — Goldie / LTJ Bukem', bpm: 165,
+    desc: 'The break is chopped into individual slices and re-sequenced. This "choppage" creates polyrhythmic patterns impossible to play live — jungle\'s defining signature.' },
+  { year: 1994, name: 'Darkcore / Techstep', bpm: 172,
+    desc: 'The Amen is distorted, compressed to saturation, and pitched into industrial territory. Techstep producers strip away warmth, leaving cold mechanical percussion.' },
+  { year: 1995, name: 'Amen Enters Drum & Bass', bpm: 168,
+    desc: 'As jungle bifurcates into DnB, the Amen splits: jazz-influenced liquid DnB uses it cleanly, while techstep pushes into extreme processing.' },
+  { year: 1997, name: '"All Crews" — Ubiquity & Fatigue', bpm: 170,
+    desc: 'The Amen is everywhere in drum & bass. Producers begin to see it as overused. Some deliberately avoid it, others find new ways to destroy and reconstruct it.' },
+  { year: 2004, name: 'Burial — Ghost of the Amen', bpm: 130,
+    desc: 'Burial uses spectral, half-speed Amen fragments buried in reverb and crackle. The break becomes an archaeological artifact — a memory of rave culture.' },
+  { year: 2024, name: 'Global Sample Culture', bpm: 140,
+    desc: 'The Amen appears in film scores, adverts, video games, and AI-generated music worldwide. Gregory Coleman, who played it, died homeless in 2006. Royalties: zero.' }
+];
+const BPM_DATA = AMEN_NODES.map(n => ({year: n.year, bpm: n.bpm}));
+
+function buildAmenTimeline() {
+  const track = document.getElementById('amenTrack');
+  AMEN_NODES.forEach((n, i) => {
+    const node = document.createElement('div');
+    node.className = 'amen-node';
+    node.innerHTML = `
+      <div class="amen-dot"></div>
+      <div class="amen-year">${n.year}</div>
+      <div class="amen-name">${n.name}</div>
+      <div class="amen-desc">${n.desc}</div>
+      <button class="amen-play" data-idx="${i}">▶ Play ${n.bpm} BPM</button>
+    `;
+    track.appendChild(node);
+  });
+
+  let currentAmenStop = null;
+  document.querySelectorAll('.amen-play').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = +btn.dataset.idx;
+      const node = AMEN_NODES[idx];
+      document.querySelectorAll('.amen-play').forEach(b => b.classList.remove('playing'));
+      if (currentAmenStop) { currentAmenStop(); currentAmenStop = null; return; }
+      btn.classList.add('playing');
+      currentAmenStop = playAmenPattern(node.bpm, idx, () => {
+        btn.classList.remove('playing');
+        currentAmenStop = null;
+      });
+    });
+  });
+}
+
+function playAmenPattern(bpm, era, onEnd) {
+  const ac = getAC();
+  const stepSec = 60 / bpm / 2;
+  const bars = 2;
+  const steps = bars * 16;
+  let step = 0;
+  // Pattern: [kick, snare, ghost, hat] per step (16-step loop)
+  const pattern = [
+    [1,0,0,1],[0,0,1,0],[0,0,0,1],[0,0,1,0],
+    [0,1,0,1],[0,0,1,0],[1,0,0,1],[0,0,1,0],
+    [1,0,0,1],[0,0,1,0],[0,1,0,1],[0,0,0,1],
+    [0,0,1,0],[1,0,0,1],[0,0,1,0],[0,1,0,0]
+  ];
+  let stopped = false;
+  const masterGain = ac.createGain();
+  masterGain.gain.value = 0.7;
+  masterGain.connect(ac.destination);
+
+  // Era modifiers
+  const pitchMult = era <= 1 ? 0.9 : era <= 3 ? 1.0 : era <= 5 ? 1.12 : era === 8 ? 0.85 : 1.05;
+  const distAmt = era >= 5 && era <= 6 ? 0.6 : 0;
+  const reverbAmt = era === 8 ? 0.85 : era >= 8 ? 0.4 : 0.1;
+
+  function tick() {
+    if (stopped) return;
+    const t = ac.currentTime;
+    const s = pattern[step % 16];
+
+    if (s[0]) playKick(ac, masterGain, t, pitchMult, distAmt);
+    if (s[1]) playSnare(ac, masterGain, t, pitchMult, distAmt);
+    if (s[2]) playGhost(ac, masterGain, t);
+    if (s[3]) playHat(ac, masterGain, t);
+
+    step++;
+    if (step >= steps) { stopped = true; onEnd(); return; }
+    setTimeout(tick, stepSec * 1000);
+  }
+  tick();
+  return () => { stopped = true; onEnd(); };
+}
+
+function playKick(ac, dest, t, pm=1, dist=0) {
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.frequency.setValueAtTime(120 * pm, t);
+  osc.frequency.exponentialRampToValueAtTime(35, t + 0.08);
+  gain.gain.setValueAtTime(0.9, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+  osc.connect(gain); gain.connect(dest);
+  osc.start(t); osc.stop(t + 0.3);
+}
+function playSnare(ac, dest, t, pm=1, dist=0) {
+  const buf = ac.createBuffer(1, ac.sampleRate * 0.18, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * (1 - i/d.length);
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  const filt = ac.createBiquadFilter();
+  filt.type = 'bandpass';
+  filt.frequency.value = 1800 * pm;
+  filt.Q.value = 0.8;
+  const gain = ac.createGain();
+  gain.gain.setValueAtTime(0.75, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+  src.connect(filt); filt.connect(gain); gain.connect(dest);
+  src.start(t); src.stop(t + 0.2);
+}
+function playGhost(ac, dest, t) {
+  const buf = ac.createBuffer(1, ac.sampleRate * 0.06, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * 0.3 * (1 - i/d.length);
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  const gain = ac.createGain();
+  gain.gain.value = 0.22;
+  src.connect(gain); gain.connect(dest);
+  src.start(t); src.stop(t + 0.07);
+}
+function playHat(ac, dest, t) {
+  const buf = ac.createBuffer(1, ac.sampleRate * 0.06, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * (1 - i/d.length);
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  const filt = ac.createBiquadFilter();
+  filt.type = 'highpass';
+  filt.frequency.value = 7000;
+  const gain = ac.createGain();
+  gain.gain.setValueAtTime(0.4, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+  src.connect(filt); filt.connect(gain); gain.connect(dest);
+  src.start(t); src.stop(t + 0.08);
+}
+
+function drawBpmChart() {
+  const canvas = document.getElementById('bpmChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * dpr;
+  canvas.height = 100 * dpr;
+  ctx.scale(dpr, dpr);
+  const W = canvas.offsetWidth, H = 100;
+  const pts = BPM_DATA;
+  const minBpm = 80, maxBpm = 185;
+  const pad = { l: 40, r: 20, t: 10, b: 20 };
+  const gw = W - pad.l - pad.r, gh = H - pad.t - pad.b;
+
+  ctx.fillStyle = '#0d0d14';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  [100,120,140,160,180].forEach(bpm => {
+    const y = pad.t + gh - (bpm - minBpm) / (maxBpm - minBpm) * gh;
+    ctx.strokeStyle = '#1e1e2e';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.font = `${8 * dpr / dpr}px Courier New`;
+    ctx.fillText(bpm, 2, y + 3);
+  });
+
+  // Line
+  ctx.strokeStyle = '#ec4899';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    const x = pad.l + (i / (pts.length - 1)) * gw;
+    const y = pad.t + gh - (p.bpm - minBpm) / (maxBpm - minBpm) * gh;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Dots
+  pts.forEach((p, i) => {
+    const x = pad.l + (i / (pts.length - 1)) * gw;
+    const y = pad.t + gh - (p.bpm - minBpm) / (maxBpm - minBpm) * gh;
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#d97706';
+    ctx.fill();
+    // Year label
+    ctx.fillStyle = '#64748b';
+    ctx.font = '7px Courier New';
+    ctx.save();
+    ctx.translate(x, H - 4);
+    ctx.rotate(-Math.PI / 4);
+    ctx.fillText(p.year, 0, 0);
+    ctx.restore();
+  });
+}
+
+// ── BREAK PATTERN WORKSHOP ─────────────────────────────────────────
+const ORIGINAL_AMEN = [
+  {label:'Kick',  type:'kick'},  {label:'Ghost', type:'ghost'},
+  {label:'Hat',   type:'hat'},   {label:'Ghost', type:'ghost'},
+  {label:'Snare', type:'snare'}, {label:'Ghost', type:'ghost'},
+  {label:'Hat',   type:'hat'},   {label:'Kick',  type:'kick'},
+  {label:'Ghost', type:'ghost'}, {label:'Kick',  type:'kick'},
+  {label:'Hat',   type:'hat'},   {label:'Ghost', type:'ghost'},
+  {label:'Snare', type:'snare'}, {label:'Hat',   type:'hat'},
+  {label:'Ghost', type:'ghost'}, {label:'Snare', type:'snare'}
+];
+
+let workshopSlices = ORIGINAL_AMEN.map((s,i) => ({...s, id:i}));
+let dragIdx = null, workshopPlaying = false, workshopTimer = null;
+
+function buildWorkshop() {
+  const grid = document.getElementById('workshopGrid');
+
+  function renderGrid() {
+    grid.innerHTML = '';
+    workshopSlices.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.className = `slice-card ${s.type}`;
+      card.draggable = true;
+      card.dataset.idx = i;
+      card.innerHTML = `<div class="slice-num">${String(i+1).padStart(2,'0')}</div><div class="slice-label">${s.label}</div>`;
+      card.addEventListener('dragstart', e => {
+        dragIdx = i;
+        setTimeout(() => card.classList.add('dragging'), 0);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', () => card.classList.remove('dragging'));
+      card.addEventListener('dragover', e => {
+        e.preventDefault();
+        card.classList.add('drag-over');
+      });
+      card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        card.classList.remove('drag-over');
+        if (dragIdx !== null && dragIdx !== i) {
+          const a = workshopSlices[dragIdx];
+          workshopSlices[dragIdx] = workshopSlices[i];
+          workshopSlices[i] = a;
+          dragIdx = null;
+          renderGrid();
+        }
+      });
+      grid.appendChild(card);
+    });
+  }
+  renderGrid();
+
+  const bpmSlider = document.getElementById('bpmSlider');
+  const bpmOut = document.getElementById('bpmOut');
+  const swingSlider = document.getElementById('swingSlider');
+  const swingOut = document.getElementById('swingOut');
+  bpmSlider.addEventListener('input', () => bpmOut.value = bpmSlider.value);
+  swingSlider.addEventListener('input', () => swingOut.value = swingSlider.value + '%');
+
+  const pitchToggle = document.getElementById('pitchToggle');
+  let pitchCorrect = true;
+  pitchToggle.addEventListener('click', () => {
+    pitchCorrect = !pitchCorrect;
+    pitchToggle.textContent = pitchCorrect ? 'On' : 'Off';
+    pitchToggle.classList.toggle('active', pitchCorrect);
+  });
+
+  const playBtn = document.getElementById('workshopPlay');
+  playBtn.addEventListener('click', () => {
+    if (workshopPlaying) {
+      workshopPlaying = false;
+      if (workshopTimer) clearTimeout(workshopTimer);
+      playBtn.textContent = '▶ Play';
+    } else {
+      workshopPlaying = true;
+      playBtn.textContent = '■ Stop';
+      runWorkshop();
+    }
+  });
+
+  document.getElementById('workshopCompare').addEventListener('click', () => {
+    if (workshopPlaying) { workshopPlaying = false; if (workshopTimer) clearTimeout(workshopTimer); }
+    const saved = [...workshopSlices];
+    workshopSlices = ORIGINAL_AMEN.map((s,i) => ({...s, id:i}));
+    renderGrid();
+    workshopPlaying = true;
+    playBtn.textContent = '■ Stop';
+    let bars = 0;
+    function compareLoop() {
+      if (!workshopPlaying || bars >= 4) {
+        workshopPlaying = false;
+        playBtn.textContent = '▶ Play';
+        workshopSlices = saved;
+        renderGrid();
+        return;
+      }
+      bars++;
+      runWorkshopBar(() => workshopTimer = setTimeout(compareLoop, 10));
+    }
+    compareLoop();
+  });
+
+  function runWorkshop() {
+    if (!workshopPlaying) return;
+    runWorkshopBar(() => { if (workshopPlaying) workshopTimer = setTimeout(runWorkshop, 10); });
+  }
+
+  function runWorkshopBar(cb) {
+    const ac = getAC();
+    const bpm = +bpmSlider.value;
+    const swing = +swingSlider.value / 100;
+    const stepSec = 60 / bpm / 2;
+    const dest = ac.destination;
+    workshopSlices.forEach((s, i) => {
+      const swingOffset = (i % 2 === 1) ? stepSec * swing : 0;
+      const t = ac.currentTime + i * stepSec + swingOffset;
+      const pm = pitchCorrect ? 1 : 0.97 + Math.random() * 0.06;
+      if (s.type === 'kick') playKick(ac, dest, t, pm);
+      else if (s.type === 'snare') playSnare(ac, dest, t, pm);
+      else if (s.type === 'hat') playHat(ac, dest, t);
+      else if (s.type === 'ghost') playGhost(ac, dest, t);
+    });
+    const barLen = 16 * stepSec + swing * stepSec * 8;
+    workshopTimer = setTimeout(cb, barLen * 1000);
+  }
+}
+
+// ── HARDCORE CONTINUUM ────────────────────────────────────────────
+const ERAS = [
+  { name:'UK Rave', year:'1989', bpm:130,
+    chars:['Piano stabs & vocal hooks','Ecstatic, communal energy','Smiley face iconography'],
+    artists:'The Prodigy, 808 State, Altern-8',
+    detail:'The birth of the UK rave scene. Warehouse parties and outdoor events drawing thousands. Music was fast but blissful — the darkness had not yet arrived.',
+    shape:'smooth'
+  },
+  { name:'Ardkore', year:'1991', bpm:150,
+    chars:['Pitched-up vocal chops','Maximum chaos energy','Ragga & hip-hop hybrids'],
+    artists:'SL2, Shut Up & Dance, Suburban Base',
+    detail:'Hardcore mutates. Vocal samples are pitched into chipmunk register. Breakbeats fragment and multiply. The music becomes anarchic, unpredictable, exhilarating.',
+    shape:'jagged'
+  },
+  { name:'Jungle', year:'1992', bpm:160,
+    chars:['Amen break dominance','Deep sub-bass pressure','Dark ragga vocal aesthetics'],
+    artists:'Goldie, Shy FX, Rebel MC',
+    detail:'South London and East London become epicentres. The Amen break is pitched down, chopped and weaponised. Sub-bass arrives with chest-destroying force. Pirate radio is the broadcast medium.',
+    shape:'choppy'
+  },
+  { name:'Darkcore / Techstep', year:'1994', bpm:172,
+    chars:['Industrial, cold production','Distorted amens','No warmth, maximum pressure'],
+    artists:'Dillinja, Ed Rush & Optical, No U-Turn',
+    detail:'The scene turns inward. Joy is stripped from the music. Techstep is mechanical, cold, violent. The rave utopia is over and the music knows it.',
+    shape:'spike'
+  },
+  { name:'Drum & Bass', year:'1996', bpm:165,
+    chars:['Jazz & soul influences','Reese bass sophistication','Polished club aesthetic'],
+    artists:'LTJ Bukem, Photek, Grooverider',
+    detail:'DnB splits into two camps: the soulful, jazz-influenced liquid sound of Good Looking Records, and the relentless machine music of techstep. Both share the same BPM, nothing else.',
+    shape:'wave'
+  },
+  { name:'UK Garage', year:'1998', bpm:130,
+    chars:['2-step rhythm structure','Pitched male vocals','Deep house US influence'],
+    artists:'Craig David, MJ Cole, Todd Edwards',
+    detail:'The continuum slows down and gets soulful. US garage house is filtered through UK sensibility. The 2-step rhythm is asymmetric, syncopated, fundamentally different from 4/4.',
+    shape:'smooth'
+  },
+  { name:'Grime', year:'2002', bpm:140,
+    chars:['Angular, abrasive synths','MC-led, street narratives','Dark urban atmospherics'],
+    artists:'Dizzee Rascal, Wiley, Roll Deep',
+    detail:'Grime emerges from East London council estates. MC culture reasserts itself. The music is angular, uncomfortable, confrontational. It sounds like sirens and streetlights.',
+    shape:'angular'
+  },
+  { name:'Dubstep', year:'2006', bpm:140,
+    chars:['Half-time feel at 140 BPM','Sub-bass as lead instrument','Heavy reverb spaciousness'],
+    artists:'Burial, Digital Mystikz, Skream',
+    detail:'The continuum reaches maximum sub-bass depth. Dubstep\'s half-time feel creates physical space — the music breathes. Burial makes the ghost music of the entire continuum.',
+    shape:'sub'
+  }
+];
+
+function buildContinuum() {
+  const track = document.getElementById('continuumTrack');
+  ERAS.forEach((era, i) => {
+    const panel = document.createElement('div');
+    panel.className = 'era-panel';
+    panel.innerHTML = `
+      <canvas class="era-canvas" data-shape="${era.shape}"></canvas>
+      <div class="era-body">
+        <div class="era-name">${era.name} <span style="color:var(--dim);font-size:0.65rem;">${era.year}</span></div>
+        <div class="era-bpm">${era.bpm} BPM</div>
+        <ul class="era-chars">${era.chars.map(c=>`<li>${c}</li>`).join('')}</ul>
+        <div class="era-artists">${era.artists}</div>
+      </div>
+      <div class="era-detail"><p>${era.detail}</p></div>
+    `;
+    panel.addEventListener('click', () => {
+      document.querySelectorAll('.era-panel').forEach(p => p.classList.remove('active'));
+      panel.classList.add('active');
+    });
+    track.appendChild(panel);
+  });
+
+  // Draw waveform canvases
+  document.querySelectorAll('.era-canvas').forEach(c => {
+    const shape = c.dataset.shape;
+    const dpr = window.devicePixelRatio || 1;
+    c.width = c.offsetWidth * dpr || 250 * dpr;
+    c.height = 72 * dpr;
+    const ctx = c.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const W = (c.width / dpr) || 250, H = 72 / dpr * dpr;
+    ctx.fillStyle = '#0d0d14';
+    ctx.fillRect(0, 0, W, 72);
+    drawEraWaveform(ctx, shape, W, 72);
+  });
+}
+
+function drawEraWaveform(ctx, shape, W, H) {
+  const mid = H / 2;
+  ctx.strokeStyle = '#ec4899';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  const pts = 120;
+  for (let i = 0; i <= pts; i++) {
+    const t = i / pts;
+    const x = t * W;
+    let y;
+    switch(shape) {
+      case 'smooth': y = mid + Math.sin(t * Math.PI * 6) * 18; break;
+      case 'jagged': y = mid + (Math.random() * 28 - 14) * Math.sin(t * Math.PI * 10); break;
+      case 'choppy': y = mid + (i%8 < 4 ? 16 : -12) * (0.7 + Math.random() * 0.3); break;
+      case 'spike':  y = mid + (Math.random() > 0.85 ? (Math.random()>0.5?26:-26) : Math.random()*6-3); break;
+      case 'wave':   y = mid + Math.sin(t * Math.PI * 8) * 14 + Math.sin(t * Math.PI * 3) * 6; break;
+      case 'angular':y = mid + (i%12 < 6 ? 18 : -18) * (0.5 + 0.5 * (i%12)/6); break;
+      case 'sub':    y = mid + Math.sin(t * Math.PI * 2.5) * 24; break;
+      default:       y = mid + Math.sin(t * Math.PI * 5) * 16;
+    }
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  // Glow fill under curve
+  ctx.strokeStyle = 'rgba(236,72,153,0.15)';
+  ctx.lineWidth = 8;
+  ctx.stroke();
+}
+
+// ── PIRATE RADIO SIMULATOR ────────────────────────────────────────
+const STATIONS = [
+  { freq: 90.6, name:'Kool FM 90.6', borough:'Hackney', era:'1993–1997',
+    style:'Jungle / Drum & Bass', tone:'pulse',
+    story:'Kool FM broadcast from a tower block in Hackney, pushing jungle to East London. Residents could hear the transmitter humming through the walls. DJs included Brockie, Det, and Hype. Raids were frequent; the crew would be back on air within days.' },
+  { freq: 94.5, name:'Rinse FM 94.5', borough:'Bow, East London', era:'1994–2010',
+    style:'Jungle / Grime / DnB', tone:'pad',
+    story:'Rinse started in a bedroom and became one of the UK\'s most influential pirate stations. It survived into the internet era, eventually winning an Ofcom licence in 2010 — a pirate that became legitimate without losing its identity.' },
+  { freq: 100.3, name:'Don FM 100.3', borough:'Brixton', era:'1992–1995',
+    style:'Ragga-Jungle / Hardcore', tone:'bass',
+    story:'Don FM served South London\'s Brixton and Stockwell communities, mixing ragga-jungle with sound system culture. The station connected the jungle scene to its Jamaican roots, broadcasting from Brixton tower blocks directly to the streets below.' },
+  { freq: 104.8, name:'Lightning FM 104.8', borough:'Tottenham', era:'1991–1996',
+    style:'Hardcore / Early Jungle', tone:'arp',
+    story:'One of the earliest pirate stations to fully commit to jungle, Lightning FM broadcast from North London, bridging Tottenham and Hackney scenes. It was known for all-night raves broadcast live, the transmitter often set up in the same venue as the event.' }
+];
+
+let pirateX = 0.3, isDraggingPirate = false, lastStation = null;
+let pirateNoiseNode = null, pirateStationNode = null;
+
+function buildPirateRadio() {
+  const canvas = document.getElementById('pirateCanvas');
+  const ctx = canvas.getContext('2d');
+  let CW, CH;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    CW = canvas.offsetWidth;
+    CH = 190;
+    canvas.width = CW * dpr;
+    canvas.height = CH * dpr;
+    ctx.scale(dpr, dpr);
+  }
+  resize();
+
+  // Signal bars
+  const barsEl = document.getElementById('signalBars');
+  for (let i = 0; i < 8; i++) {
+    const b = document.createElement('div');
+    b.className = 'signal-bar';
+    b.style.height = `${(i+1) * 3 + 4}px`;
+    barsEl.appendChild(b);
+  }
+
+  function freqFromX(x) { return 88 + (x / CW) * 20; }
+  function xFromFreq(f) { return ((f - 88) / 20) * CW; }
+
+  function getSignal(freq) {
+    let best = 0;
+    STATIONS.forEach(s => {
+      const dist = Math.abs(freq - s.freq);
+      const sig = Math.max(0, 1 - dist / 1.2);
+      if (sig > best) best = sig;
+    });
+    return best;
+  }
+  function getNearestStation(freq) {
+    let nearest = null, bestSig = 0;
+    STATIONS.forEach(s => {
+      const dist = Math.abs(freq - s.freq);
+      const sig = Math.max(0, 1 - dist / 0.5);
+      if (sig > bestSig) { bestSig = sig; nearest = s; }
+    });
+    return bestSig > 0.6 ? nearest : null;
+  }
+
+  // Noise bars buffer
+  let noiseBars = Array.from({length: 80}, () => 0.5);
+
+  function drawDial() {
+    ctx.clearRect(0, 0, CW, CH);
+    ctx.fillStyle = '#0d0d14';
+    ctx.fillRect(0, 0, CW, CH);
+
+    const freq = freqFromX(pirateX * CW);
+    const signal = getSignal(freq);
+
+    // Noise visualization
+    noiseBars = noiseBars.map((v, i) => {
+      if (signal > 0.8) {
+        const t = i / noiseBars.length;
+        return 0.3 + 0.5 * Math.sin(Date.now() * 0.003 + t * 10) + 0.15 * Math.sin(Date.now() * 0.007 + t * 5);
+      }
+      return Math.random() * (1 - signal * 0.7) + signal * (0.3 + 0.3 * Math.sin(Date.now() * 0.003 + i * 0.3));
+    });
+
+    const barW = CW / noiseBars.length;
+    noiseBars.forEach((v, i) => {
+      const h = v * (CH * 0.55);
+      const alpha = 0.4 + signal * 0.5;
+      ctx.fillStyle = signal > 0.7 ? `rgba(236,72,153,${alpha})` : `rgba(100,116,139,${alpha * 0.6})`;
+      ctx.fillRect(i * barW, CH * 0.5 - h / 2, barW - 1, h);
+    });
+
+    // FM dial bar
+    const dialY = CH - 36;
+    const dialH = 4;
+    const grad = ctx.createLinearGradient(0, 0, CW, 0);
+    grad.addColorStop(0, '#1e1e2e');
+    grad.addColorStop(0.5, '#2d2d4e');
+    grad.addColorStop(1, '#1e1e2e');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, dialY, CW, dialH);
+
+    // Station tick marks
+    STATIONS.forEach(s => {
+      const sx = xFromFreq(s.freq);
+      const dist = Math.abs(freqFromX(pirateX * CW) - s.freq);
+      const glow = Math.max(0, 1 - dist / 1.5);
+      ctx.fillStyle = `rgba(236,72,153,${0.3 + glow * 0.6})`;
+      ctx.fillRect(sx - 1, dialY - 6, 2, dialH + 6);
+      if (glow > 0.2) {
+        ctx.fillStyle = `rgba(236,72,153,${glow * 0.7})`;
+        ctx.font = '8px Courier New';
+        ctx.fillText(s.freq.toFixed(1), sx - 12, dialY - 10);
+      }
+    });
+
+    // Frequency ticks
+    for (let f = 88; f <= 108; f += 2) {
+      const fx = xFromFreq(f);
+      ctx.fillStyle = '#1e1e2e';
+      ctx.fillRect(fx, dialY - 3, 1, dialH + 3);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '7px Courier New';
+      ctx.fillText(f, fx - 6, dialY + dialH + 10);
+    }
+
+    // Needle
+    const nx = pirateX * CW;
+    ctx.strokeStyle = signal > 0.7 ? '#ec4899' : '#d97706';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(nx, 10);
+    ctx.lineTo(nx, dialY + dialH);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(nx, dialY - 2, 5, 0, Math.PI * 2);
+    ctx.fillStyle = signal > 0.7 ? '#ec4899' : '#d97706';
+    ctx.fill();
+
+    // Signal bars UI
+    const bars = barsEl.querySelectorAll('.signal-bar');
+    bars.forEach((b, i) => {
+      const threshold = (i + 1) / bars.length;
+      b.style.background = signal >= threshold
+        ? (signal > 0.8 ? 'var(--accent)' : 'var(--amber)')
+        : 'var(--border)';
+    });
+
+    // Frequency display
+    document.getElementById('freqDisplay').textContent = freq.toFixed(1) + ' MHz';
+
+    // Station card
+    const station = getNearestStation(freq);
+    const card = document.getElementById('stationCard');
+    if (station && station !== lastStation) {
+      lastStation = station;
+      document.getElementById('stationName').textContent = station.name;
+      document.getElementById('stationMeta').innerHTML = `
+        <span>Borough: <strong>${station.borough}</strong></span>
+        <span>Era: <strong>${station.era}</strong></span>
+        <span>Style: <strong>${station.style}</strong></span>`;
+      document.getElementById('stationStory').textContent = station.story;
+      card.classList.add('show');
+      playStationAudio(station.tone);
+    } else if (!station) {
+      if (lastStation) { lastStation = null; card.classList.remove('show'); stopStationAudio(); }
+    }
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    isDraggingPirate = true;
+    pirateX = Math.max(0, Math.min(1, e.offsetX / CW));
+  });
+  canvas.addEventListener('mousemove', e => {
+    if (isDraggingPirate) pirateX = Math.max(0, Math.min(1, e.offsetX / CW));
+  });
+  window.addEventListener('mouseup', () => isDraggingPirate = false);
+  canvas.addEventListener('touchstart', e => {
+    isDraggingPirate = true;
+    const r = canvas.getBoundingClientRect();
+    pirateX = Math.max(0, Math.min(1, (e.touches[0].clientX - r.left) / CW));
+  }, {passive:true});
+  canvas.addEventListener('touchmove', e => {
+    if (!isDraggingPirate) return;
+    const r = canvas.getBoundingClientRect();
+    pirateX = Math.max(0, Math.min(1, (e.touches[0].clientX - r.left) / CW));
+  }, {passive:true});
+
+  (function animPirate() {
+    requestAnimationFrame(animPirate);
+    drawDial();
+  })();
+}
+
+function playStationAudio(tone) {
+  const ac = getAC();
+  stopStationAudio();
+  const gain = ac.createGain();
+  gain.gain.setValueAtTime(0, ac.currentTime);
+  gain.gain.linearRampToValueAtTime(0.18, ac.currentTime + 0.5);
+  gain.connect(ac.destination);
+
+  if (tone === 'bass') {
+    const osc = ac.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.value = 55;
+    const filt = ac.createBiquadFilter();
+    filt.type = 'lowpass'; filt.frequency.value = 200;
+    osc.connect(filt); filt.connect(gain);
+    osc.start();
+    pirateStationNode = {stop:()=>{osc.stop();gain.disconnect();}};
+  } else if (tone === 'pad') {
+    const oscs = [220,221.5,219].map(f => {
+      const o = ac.createOscillator();
+      o.type = 'triangle'; o.frequency.value = f;
+      const g = ac.createGain(); g.gain.value = 0.33;
+      o.connect(g); g.connect(gain); o.start(); return o;
+    });
+    pirateStationNode = {stop:()=>{oscs.forEach(o=>o.stop());gain.disconnect();}};
+  } else if (tone === 'pulse') {
+    const osc = ac.createOscillator();
+    osc.type = 'square'; osc.frequency.value = 110;
+    const filt = ac.createBiquadFilter();
+    filt.type = 'bandpass'; filt.frequency.value = 400; filt.Q.value = 2;
+    osc.connect(filt); filt.connect(gain); osc.start();
+    pirateStationNode = {stop:()=>{osc.stop();gain.disconnect();}};
+  } else {
+    const osc = ac.createOscillator();
+    osc.type = 'sine'; osc.frequency.value = 330;
+    const osc2 = ac.createOscillator();
+    osc2.type = 'sine'; osc2.frequency.value = 494;
+    const g2 = ac.createGain(); g2.gain.value = 0.5;
+    osc.connect(gain); osc2.connect(g2); g2.connect(gain);
+    osc.start(); osc2.start();
+    pirateStationNode = {stop:()=>{osc.stop();osc2.stop();gain.disconnect();}};
+  }
+}
+function stopStationAudio() {
+  try { if (pirateStationNode) { pirateStationNode.stop(); pirateStationNode = null; } } catch(e){}
+}
+
+// ── SUB-BASS ANATOMY ──────────────────────────────────────────────
+let subOsc = null, subGainNode = null;
+let subMode = 'feel'; // 'feel' | 'hear'
+let subBoostVal = 0, hpVal = 30;
+let subAnim = 0;
+
+function buildSubBass() {
+  const canvas = document.getElementById('subCanvas');
+  const ctx = canvas.getContext('2d');
+
+  document.getElementById('subBoost').addEventListener('input', e => {
+    subBoostVal = +e.target.value;
+    document.getElementById('subBoostOut').value = (subBoostVal >= 0 ? '+' : '') + subBoostVal + ' dB';
+    if (subGainNode) subGainNode.gain.value = Math.pow(10, subBoostVal / 20) * 0.15;
+  });
+  document.getElementById('hpFilter').addEventListener('input', e => {
+    hpVal = +e.target.value;
+    document.getElementById('hpOut').value = hpVal + ' Hz';
+  });
+
+  const modeBtn = document.getElementById('subModeToggle');
+  modeBtn.addEventListener('click', () => {
+    subMode = subMode === 'feel' ? 'hear' : 'feel';
+    modeBtn.textContent = subMode === 'feel' ? 'Feel Mode' : 'Hear Mode';
+    modeBtn.classList.toggle('active', subMode === 'feel');
+  });
+
+  const playBtn = document.getElementById('subPlayToggle');
+  let subPlaying = false;
+  playBtn.addEventListener('click', () => {
+    subPlaying = !subPlaying;
+    playBtn.textContent = subPlaying ? 'Stop Sine' : 'Play Sine';
+    playBtn.classList.toggle('active', subPlaying);
+    if (subPlaying) {
+      const ac = getAC();
+      subOsc = ac.createOscillator();
+      subGainNode = ac.createGain();
+      const filt = ac.createBiquadFilter();
+      filt.type = 'highpass';
+      filt.frequency.value = hpVal;
+      subOsc.type = 'sine';
+      subOsc.frequency.value = 55 + Math.random() * 10;
+      subGainNode.gain.value = Math.pow(10, subBoostVal / 20) * 0.15;
+      subOsc.connect(filt); filt.connect(subGainNode); subGainNode.connect(ac.destination);
+      subOsc.start();
+    } else {
+      try { if (subOsc) { subOsc.stop(); subOsc = null; } } catch(e){}
+    }
+  });
+
+  function drawSub(ts) {
+    requestAnimationFrame(drawSub);
+    subAnim = ts * 0.001;
+    const dpr = window.devicePixelRatio || 1;
+    if (canvas.width !== canvas.offsetWidth * dpr) {
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = 280 * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    const W = canvas.offsetWidth, H = 280;
+    ctx.fillStyle = 'rgba(5,5,8,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    const half = H / 2;
+
+    if (subMode === 'feel') {
+      // Top half: full spectrum
+      ctx.strokeStyle = 'rgba(100,116,139,0.7)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i <= W; i++) {
+        const t = i / W;
+        const freqHz = 20 + t * 19980;
+        const subRegion = freqHz < 80;
+        const boost = subRegion ? Math.pow(10, subBoostVal / 20) : 1;
+        const hp = freqHz < hpVal ? Math.max(0, freqHz / hpVal) : 1;
+        const amp = hp * boost * (
+          0.6 * Math.exp(-((t - 0.03) * 20) ** 2) +
+          0.4 * Math.exp(-((t - 0.08) * 15) ** 2) +
+          0.25 * Math.exp(-((t - 0.18) * 12) ** 2) +
+          0.2 * (0.5 + 0.5 * Math.sin(subAnim * 2.5 + t * 80)) * Math.exp(-t * 3) +
+          0.1 * Math.random()
+        );
+        const clamp = Math.min(amp, 1.2);
+        const y = (half * 0.9) - clamp * (half * 0.75);
+        i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
+      }
+      ctx.stroke();
+
+      // Sub-bass highlight bar
+      const subX = W * (80 / 20000);
+      ctx.fillStyle = 'rgba(236,72,153,0.07)';
+      ctx.fillRect(0, 0, subX, half);
+      ctx.strokeStyle = 'rgba(236,72,153,0.4)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(subX, 0); ctx.lineTo(subX, half); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(236,72,153,0.7)';
+      ctx.font = '9px Courier New';
+      ctx.fillText('80Hz', subX + 3, 14);
+      ctx.fillText('20Hz', 3, 14);
+      ctx.fillStyle = 'rgba(217,119,6,0.4)';
+      ctx.fillText('FULL SPECTRUM (20Hz–20kHz)', W / 2 - 80, half - 6);
+
+      // Divider
+      ctx.strokeStyle = 'rgba(30,30,46,0.8)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(0, half); ctx.lineTo(W, half); ctx.stroke();
+
+      // Bottom half: sub-bass cross-section (20–80Hz zoomed, large sine)
+      ctx.fillStyle = 'rgba(217,119,6,0.4)';
+      ctx.font = '9px Courier New';
+      ctx.fillText('SUB-BASS CROSS-SECTION (20–80Hz)', W / 2 - 100, half + 14);
+
+      const boost = Math.pow(10, subBoostVal / 20);
+      const subMid = half + (H - half) / 2;
+      const maxAmp = (H - half) / 2 - 10;
+
+      // Glow effect
+      ctx.shadowColor = '#ec4899';
+      ctx.shadowBlur = 12 + subBoostVal * 0.8;
+      ctx.strokeStyle = 'rgba(236,72,153,0.9)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i <= W; i++) {
+        const t = i / W;
+        const cycles = 3.5;
+        const freqAnim = subAnim * 2.2;
+        const amp = boost * Math.min(1.1, 0.7 + 0.3 * Math.sin(subAnim * 0.7));
+        const hp = (20 + t * 60) < hpVal ? Math.max(0.05, (20 + t*60) / hpVal) : 1;
+        const y = subMid + Math.sin(t * Math.PI * 2 * cycles + freqAnim) * maxAmp * amp * hp;
+        i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Reese bass annotation
+      const reeseStart = W * ((60-20)/60);
+      const reeseEnd = W;
+      ctx.fillStyle = 'rgba(6,182,212,0.07)';
+      ctx.fillRect(reeseStart, half + 2, reeseEnd - reeseStart, H - half - 2);
+      ctx.fillStyle = 'rgba(6,182,212,0.6)';
+      ctx.font = '8px Courier New';
+      ctx.fillText('REESE', reeseStart + 4, H - 6);
+
+    } else {
+      // Hear Mode: spectrogram-style
+      const cols = 120;
+      const rows = 40;
+      const cellW = W / cols;
+      const cellH = H / rows;
+      for (let c = 0; c < cols; c++) {
+        for (let r = 0; r < rows; r++) {
+          const freqFrac = r / rows;
+          const freqHz = 20 * Math.pow(1000, freqFrac);
+          const boost = freqHz < 80 ? Math.pow(10, subBoostVal / 20) : 1;
+          const hp = freqHz < hpVal ? Math.max(0, freqHz / hpVal) : 1;
+          const energy = hp * boost * (
+            0.8 * Math.exp(-freqFrac * 8) +
+            0.3 * Math.exp(-((freqFrac - 0.2) * 20) ** 2) +
+            0.15 * Math.sin(subAnim * 3 + c * 0.5) * Math.exp(-freqFrac * 4) +
+            0.05 * Math.random()
+          );
+          const e = Math.min(1, energy);
+          const hue = 280 - e * 200;
+          ctx.fillStyle = `hsla(${hue},80%,${40 + e * 40}%,${0.3 + e * 0.7})`;
+          ctx.fillRect(c * cellW, r * cellH, cellW - 0.5, cellH - 0.5);
+        }
+      }
+      ctx.fillStyle = 'rgba(217,119,6,0.7)';
+      ctx.font = '9px Courier New';
+      ctx.fillText('SPECTROGRAM — time → frequency (log scale)', 8, H - 8);
+    }
+  }
+  requestAnimationFrame(drawSub);
+}
+
+// ── LONDON MAP ────────────────────────────────────────────────────
+const BOROUGHS = [
+  {name:'Hackney', x:0.60, y:0.35, w:0.10, h:0.12, color:'rgba(6,182,212,0.25)'},
+  {name:'Brixton', x:0.48, y:0.60, w:0.09, h:0.10, color:'rgba(236,72,153,0.22)'},
+  {name:'Peckham', x:0.57, y:0.62, w:0.09, h:0.09, color:'rgba(217,119,6,0.22)'},
+  {name:'Tottenham',x:0.56, y:0.18, w:0.11, h:0.12, color:'rgba(16,185,129,0.22)'},
+  {name:'East End', x:0.65, y:0.38, w:0.14, h:0.12, color:'rgba(139,92,246,0.22)'},
+];
+
+const MAP_MARKERS = [
+  // Radio
+  {id:0, type:'radio', x:0.62, y:0.34, label:'Kool FM Transmitter', borough:'Hackney',
+   role:'Pirate Radio', years:'1993–1997', story:'Tower block rooftop transmitter serving East London. Signal reached from Hackney to Stratford. DJs Brockie and Det ran regular jungle sets.'},
+  {id:1, type:'radio', x:0.58, y:0.22, label:'Lightning FM Tower', borough:'Tottenham',
+   role:'Pirate Radio', years:'1991–1996', story:'North London\'s earliest jungle pirate. The tower block antenna broadcast across Tottenham, Hackney and down to Stoke Newington.'},
+  {id:2, type:'radio', x:0.50, y:0.61, label:'Don FM Studio', borough:'Brixton',
+   role:'Pirate Radio', years:'1992–1995', story:'South London\'s ragga-jungle voice. Ran from a flat in Tulse Hill, connecting the sound system community with the emerging jungle scene.'},
+  {id:3, type:'radio', x:0.67, y:0.39, label:'Rinse FM Origin', borough:'Bow',
+   role:'Pirate Radio', years:'1994–2010', story:'Started by Geeneus in a bedroom in Bow. Became the template for pirate-to-legitimate broadcast — still operating as a licensed station today.'},
+  // Clubs
+  {id:4, type:'club', x:0.46, y:0.46, label:'Heaven / Rage', borough:'Charing Cross',
+   role:'Club Venue', years:'1988–1993', story:'Rage at Heaven was the weekly event where jungle\'s early scene crystallised. Grooverider and Fabio held residencies, drawing the most important early jungle crowd in London.'},
+  {id:5, type:'club', x:0.55, y:0.55, label:'Brixton Academy', borough:'Brixton',
+   role:'Club / Live Venue', years:'1992–present', story:'Hosted major jungle events including Desert Storm and Metalheadz showcases. The sound system in the main room was tuned for maximum sub-bass impact.'},
+  {id:6, type:'club', x:0.63, y:0.42, label:'Labyrinth', borough:'Dalston',
+   role:'Club Venue', years:'1993–1997', story:'East London\'s key jungle venue. Small, dark, intense. Held weekly events where many of the scene\'s defining tracks were first played to a crowd.'},
+  {id:7, type:'club', x:0.61, y:0.49, label:'Blue Note', borough:'Hoxton',
+   role:'Club Venue', years:'1993–1999', story:'Goldie\'s Metalheadz Sunday sessions at the Blue Note became the most celebrated regular jungle event in London — a weekly ritual for the scene\'s inner circle.'},
+  // Record shops
+  {id:8, type:'shop', x:0.48, y:0.56, label:'Lucky Spin Records', borough:'Brixton',
+   role:'Record Shop', years:'1992–2001', story:'Brixton Market stall turned record shop. Primary outlet for jungle white labels in South London. Producers would bring dubs directly to the counter.'},
+  {id:9, type:'shop', x:0.52, y:0.48, label:'Black Market Records', borough:'Soho',
+   role:'Record Shop', years:'1988–2008', story:'The definitive London underground dance music shop. Jungle section was small but highly curated — if it was stocked here, it was significant.'},
+  {id:10, type:'shop', x:0.60, y:0.40, label:'Boogie Times', borough:'Hackney',
+   role:'Record Shop / Distribution', years:'1991–2000', story:'East London distributor and retail shop. Connected jungle producers with other shops and mail order customers across the UK.'},
+  {id:11, type:'shop', x:0.58, y:0.60, label:'Peckham Record Centre', borough:'Peckham',
+   role:'Record Shop', years:'1993–2004', story:'South London community shop with strong connections to sound system culture. Stocked ragga-jungle white labels weeks before wider distribution.'},
+];
+
+function buildLondonMap() {
+  const canvas = document.getElementById('mapCanvas');
+  const ctx = canvas.getContext('2d');
+  let CW, CH;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    CW = canvas.offsetWidth;
+    CH = 480;
+    canvas.width = CW * dpr;
+    canvas.height = CH * dpr;
+    ctx.scale(dpr, dpr);
+    drawMap();
+    placeMarkers();
+  }
+
+  function drawMap() {
+    ctx.fillStyle = '#0d0d14';
+    ctx.fillRect(0, 0, CW, CH);
+
+    // Thames rough path
+    ctx.beginPath();
+    ctx.moveTo(0, CH * 0.55);
+    for (let x = 0; x <= CW; x += 20) {
+      const t = x / CW;
+      ctx.lineTo(x, CH * (0.52 + 0.04 * Math.sin(t * Math.PI * 3 + 0.5)));
+    }
+    ctx.strokeStyle = 'rgba(6,182,212,0.25)';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(6,182,212,0.07)';
+    ctx.fill();
+
+    // London boundary circle
+    ctx.beginPath();
+    ctx.arc(CW * 0.52, CH * 0.48, Math.min(CW, CH) * 0.4, 0, Math.PI * 2);
+    ctx.strokeStyle = '#1e1e2e';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Borough rectangles
+    BOROUGHS.forEach(b => {
+      const bx = b.x * CW, by = b.y * CH, bw = b.w * CW, bh = b.h * CH;
+      ctx.fillStyle = b.color;
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.strokeStyle = b.color.replace('0.2', '0.5');
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bx, by, bw, bh);
+      ctx.fillStyle = 'rgba(226,232,240,0.5)';
+      ctx.font = '9px Courier New';
+      ctx.fillText(b.name, bx + 3, by + 11);
+    });
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(30,30,46,0.5)';
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x < CW; x += CW / 8) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, CH); ctx.stroke();
+    }
+    for (let y = 0; y < CH; y += CH / 6) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
+    }
+
+    // Central London label
+    ctx.fillStyle = 'rgba(100,116,139,0.4)';
+    ctx.font = '11px Courier New';
+    ctx.fillText('GREATER LONDON', CW * 0.35, CH * 0.92);
+  }
+
+  function placeMarkers() {
+    const container = document.getElementById('mapMarkers');
+    container.innerHTML = '';
+    const popup = document.getElementById('mapPopup');
+
+    MAP_MARKERS.forEach(m => {
+      const el = document.createElement('div');
+      el.className = `map-marker m-${m.type}`;
+      el.style.left = (m.x * 100) + '%';
+      el.style.top = (m.y * 100) + '%';
+      const icon = m.type === 'radio' ? '📡' : m.type === 'club' ? '🏛' : '🎵';
+      el.innerHTML = `<div class="marker-icon" title="${m.label}">${icon}</div>`;
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        popup.innerHTML = `<h4>${m.label}</h4>
+          <div class="pop-meta">${m.borough} · ${m.years}</div>
+          <div class="pop-meta" style="color:var(--cyan)">${m.role}</div>
+          <p>${m.story}</p>`;
+        // Position popup
+        const px = m.x > 0.7 ? 'right' : 'left';
+        const py = m.y > 0.7 ? 'bottom' : 'top';
+        popup.style.left = px === 'left' ? (m.x * 100 + 3) + '%' : 'auto';
+        popup.style.right = px === 'right' ? ((1 - m.x) * 100 + 3) + '%' : 'auto';
+        popup.style.top = py === 'top' ? (m.y * 100 + 3) + '%' : 'auto';
+        popup.style.bottom = py === 'bottom' ? ((1 - m.y) * 100 + 3) + '%' : 'auto';
+        popup.classList.add('show');
+      });
+      container.appendChild(el);
+    });
+
+    document.getElementById('map').addEventListener('click', () => {
+      popup.classList.remove('show');
+    });
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+}
+
+// ── ARTISTS DATA ──────────────────────────────────────────────────
+const ARTISTS = [
+  { name:'Goldie', tech:'Timestretching pioneer',
+    work:'"Terminator" (1992) / "Timeless" (1995)',
+    quote:'Used stuttered, pitch-shifted Amen breaks and metallic textures to create a new sonic language for drum and bass.' },
+  { name:'LTJ Bukem', tech:'Atmospheric liquid DnB',
+    work:'"Music" (1992) / "Atlantis" (1993)',
+    quote:'Built Good Looking Records into the jazz-influenced counterpoint to techstep — melody and sub-bass coexisting in space.' },
+  { name:'Photek', tech:'Complex polyrhythmic programming',
+    work:'"The Hidden Camera" (1995) / "Modus Operandi" (1997)',
+    quote:'Brought jazz composition principles to drum programming — syncopation so dense it required multiple listens to map.' },
+  { name:'Shy FX', tech:'Ragga-jungle fusion',
+    work:'"Original Nuttah" feat. UK Apache (1994)',
+    quote:'Fused the Amen break with genuine Jamaican sound system aesthetics, creating jungle\'s most recognised crossover record.' },
+  { name:'Dillinja', tech:'Sub-bass engineering',
+    work:'"Deadly Deep Subs" (1994) / "Cybotron" (1996)',
+    quote:'Pushed sub-bass further than anyone — his mixes required specific speaker configurations to reproduce the full frequency range.' },
+  { name:'DJ Krust', tech:'Social commentary through sound',
+    work:'"Warhead" with DJ Suv (1997) / "Soul in Motion" (1997)',
+    quote:'Part of the Full Cycle collective in Bristol, bringing a distinctly non-London perspective to drum and bass production.' },
+  { name:'Andy C', tech:'Mixing precision and selection',
+    work:'"Roll On" (1993) / RAM Records founding',
+    quote:'As much architect as DJ — his label RAM Records documented the transition from jungle to drum and bass across hundreds of releases.' },
+  { name:'General Levy', tech:'MC ragga-jungle vocal style',
+    work:'"Incredible" with M-Beat (1994)',
+    quote:'Brought the MC toasting tradition directly from reggae sound systems into the jungle mainstream, sparking a UK top ten hit.' },
+  { name:'Roni Size', tech:'Live instrumentation in DnB',
+    work:'"Brown Paper Bag" / "New Forms" (1997)',
+    quote:'Reprazent won the Mercury Prize in 1997 — the first and only drum and bass album to do so — by combining live bass, keyboards and drums with programmed breaks.' },
+  { name:'Burial', tech:'Hauntological sample archaeology',
+    work:'"Untrue" (2007) / "Archangel" (2007)',
+    quote:'Made music from the ruins of jungle — half-speed Amen fragments buried in vinyl crackle and rain, summoning the ghost of the early 90s rave scene.' }
+];
+
+function buildArtists() {
+  const grid = document.getElementById('artistsGrid');
+  ARTISTS.forEach((a, i) => {
+    const card = document.createElement('div');
+    card.className = `artist-card hidden stagger-${(i%3)+1}`;
+    card.innerHTML = `
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-tech">${a.tech}</div>
+      <div class="artist-work">${a.work}</div>
+      <div class="artist-quote">${a.quote}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── GLOSSARY DATA ─────────────────────────────────────────────────
+const GLOSSARY = [
+  { term:'Amen Break', def:'A 6-second drum solo from The Winstons\' 1969 B-side, sampled millions of times across jungle, DnB, hip-hop, and electronica.' },
+  { term:'Breakbeat', def:'A drum loop isolated from a funk or soul recording, looped and manipulated as the rhythmic foundation of a track.' },
+  { term:'Jungle', def:'UK electronic music genre (c.1992–1995) combining breakbeat percussion at 160+ BPM with deep sub-bass and ragga/hip-hop vocal samples.' },
+  { term:'Drum and Bass', def:'The evolution of jungle post-1994 — cleaner production, more diverse influences (jazz, soul, funk), and a split between liquid and techstep styles.' },
+  { term:'Pirate Radio', def:'Unlicensed FM broadcast stations operating from tower blocks and rooftops across London, the primary distribution channel for jungle from 1992–2000.' },
+  { term:'Sound System', def:'The Jamaican tradition of community music events built around a powerful PA system and a selector (DJ) and MCs — the cultural ancestor of jungle.' },
+  { term:'Ragga', def:'Digital reggae / dancehall originating in Jamaica in the 1980s. Ragga samples and vocal styles were extensively incorporated into jungle.' },
+  { term:'MC', def:'Master of Ceremonies. The vocalist who performs over DJ sets, using toasting, chatting, and freestyle techniques derived from reggae sound system culture.' },
+  { term:'Resampling', def:'The process of recording audio output back into a sampler for further processing — creating multiple generations of degradation and transformation.' },
+  { term:'Time-stretching', def:'Changing the tempo of a sample without changing its pitch. Early time-stretching algorithms created characteristic metallic artifacts exploited by jungle producers.' },
+  { term:'Reese Bass', def:'A bass sound created by two detuned oscillators (originally from Kevin Saunderson\'s "Just Want Another Chance") — the signature bass of jungle and DnB.' },
+  { term:'Darkstep', def:'A subgenre of techstep DnB characterised by extremely dark, horror-influenced atmospheres and aggressive, distorted percussion.' },
+  { term:'Steppers', def:'A four-on-the-floor reggae rhythm pattern adapted into jungle and DnB — often used alongside the Amen break for textural contrast.' },
+  { term:'Choppage', def:'The technique of slicing a drum break into individual hits and re-sequencing them to create entirely new rhythmic patterns.' },
+  { term:'Sub-bass', def:'Frequencies below 80Hz. In jungle, the sub-bass is typically a long, sustained note that moves independently of the drum break, creating physical vibration at high volume.' },
+  { term:'Hardcore Continuum', def:'Music critic Simon Reynolds\' theory that UK dance music from 1989 rave to 2000s dubstep forms a single unbroken evolutionary lineage.' },
+  { term:'Ardkore', def:'Deliberate misspelling used by the early 1990s UK hardcore scene, distinguishing the UK variant from US house and techno influences.' },
+  { term:'Roll', def:'A rapid repetition of a drum hit (typically snare or hat) used to build tension before a drop, or as a percussive texture throughout a breakdown.' },
+  { term:'Compression Artifacts', def:'Distortion introduced by heavy dynamic compression — jungle producers used extreme compression on drum breaks as a deliberate sonic effect.' },
+  { term:'Half-step', def:'A rhythmic feel where the bass and kick patterns move at half the implied tempo — a technique associated with techstep and dubstep.' }
+];
+
+function buildGlossary() {
+  const grid = document.getElementById('glossaryGrid');
+  GLOSSARY.forEach((g, i) => {
+    const item = document.createElement('div');
+    item.className = `gloss-item hidden stagger-${(i%3)+1}`;
+    item.innerHTML = `<div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div>`;
+    grid.appendChild(item);
+  });
+}
+
+// ── INTERSECTION OBSERVER ─────────────────────────────────────────
+function initObservers() {
+  // Scroll-animate hidden elements
+  const animObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); animObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.hidden').forEach(el => animObs.observe(el));
+
+  // Nav active state
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        document.querySelectorAll('nav a').forEach(a => {
+          a.classList.toggle('active', a.dataset.sec === id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  ['amen','breaks','continuum','pirate','subbass','map','artists','glossary'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) navObs.observe(el);
+  });
+}
+
+// ── BPM CHART RESIZE ──────────────────────────────────────────────
+function initBpmChartResize() {
+  const chartObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { drawBpmChart(); chartObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  const el = document.getElementById('bpmChart');
+  if (el) chartObs.observe(el);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  buildAmenTimeline();
+  buildWorkshop();
+  buildContinuum();
+  buildPirateRadio();
+  buildSubBass();
+  buildLondonMap();
+  buildArtists();
+  buildGlossary();
+  initObservers();
+  initBpmChartResize();
+
+  // Unlock AudioContext on first user interaction
+  document.addEventListener('click', () => getAC(), { once: true });
+  document.addEventListener('keydown', () => getAC(), { once: true });
+
+  // Nav scroll spy for hero
+  const heroNavLink = document.querySelector('nav a[data-sec="hero"]');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY > window.innerHeight * 0.5;
+    if (heroNavLink) heroNavLink.classList.toggle('active', !scrolled);
+  }, { passive: true });
+  if (heroNavLink) heroNavLink.classList.add('active');
+});
+</script>

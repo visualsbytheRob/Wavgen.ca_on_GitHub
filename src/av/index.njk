@@ -1,0 +1,170 @@
+---
+layout: base.njk
+title: AV & Creative Tech
+description: Audiovisual and creative technology including live performance, generative visuals, spatial audio, and interactive installations by Rob McDonald in Toronto.
+footerDescription: Audiovisual & Creative Technology • Toronto, Canada
+footerTagline: Merging sound and vision through technology.
+---
+{#
+This file defines the Audiovisual & Creative Tech landing page for the site.
+- Sets up metadata and layout for the AV section.
+- Contains a hero/intro section and a grid of AV discipline cards.
+- Each card uses the same structure; only the first is commented in detail.
+#}
+
+<!-- Breadcrumb -->
+<nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center space-x-2 text-sm">
+            <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+            <span class="text-gray-400">></span>
+            <span class="text-gray-300">AV & Creative Tech</span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+{% set hero = {
+  title: 'Audiovisual & <span class="text-wavgen-yellow">Creative Tech</span>',
+  subtitle: 'Where Sound Meets Vision',
+  description: 'Exploring the intersection of sound, vision, and technology. From live performance systems and spatial audio to realtime generative graphics and interactive installations — building immersive audiovisual experiences.',
+  gradient: { from: 'from-purple-900', via: 'via-wavgen-dark-purple', to: 'to-indigo-900' },
+  overlayOpacity: 'opacity-30',
+  theme: 'av'
+} %}
+{% include "components/hero.njk" %}
+
+<!-- AV Disciplines Grid -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Live Performance -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/live-performance/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Live Performance</h3>
+                    <p class="text-gray-300 mb-4">Realtime audiovisual performance systems, VJ sets, and live synthesis</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        TouchDesigner • Resolume • MIDI
+                    </div>
+                </div>
+            </div>
+
+            <!-- Realtime Graphics -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/realtime-graphics/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Realtime Graphics</h3>
+                    <p class="text-gray-300 mb-4">GPU-driven generative visuals, shaders, and realtime rendering pipelines</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        GLSL • WebGL • TouchDesigner
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spatial Audio -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/spatial-audio/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Spatial Audio</h3>
+                    <p class="text-gray-300 mb-4">Immersive audio fields, ambisonics, and 3D sound design</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Ambisonics • Binaural • Max/MSP
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Installations -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/interactive-installations/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Interactive Installations</h3>
+                    <p class="text-gray-300 mb-4">Sensor-driven and participatory AV systems for gallery and public space</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Arduino • Kinect • OSC
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projection Mapping -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/projection-mapping-av/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Projection Mapping</h3>
+                    <p class="text-gray-300 mb-4">Architectural projection, surface mapping, and immersive video environments</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        MadMapper • Resolume • Notch
+                    </div>
+                </div>
+            </div>
+
+            <!-- TouchDesigner Signal Flow -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/touchdesigner-signal-flow/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">TouchDesigner</h3>
+                    <p class="text-gray-300 mb-4">Node-based visual programming for realtime interactive media</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        TOPs • CHOPs • SOPs • DATs
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audiovisual Ecosystems -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/audiovisual-ecosystems/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">AV Ecosystems</h3>
+                    <p class="text-gray-300 mb-4">Integrated audiovisual signal flows, routing, and system design</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        OSC • MIDI • Dante • NDI
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generative Universe -->
+            <div class="section-card group cursor-pointer" onclick="window.location.href='/av/generative-universe/'">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.04.034-.078.056-.116A4.002 4.002 0 008.58 6.22a1 1 0 00-1.162 1.618 2 2 0 102.826 2.826A1 1 0 0010 10a4 4 0 002 3.465V14h.001z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Generative Universe</h3>
+                    <p class="text-gray-300 mb-4">Cosmic-scale generative systems — procedural worlds and emergent complexity</p>
+                    <div class="text-sm text-wavgen-yellow">
+                        Procedural • Fractal • Emergent
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

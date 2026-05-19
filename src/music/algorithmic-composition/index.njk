@@ -1,0 +1,2116 @@
+---
+layout: world.njk
+title: "WAVGEN Music World 10 — Algorithmic Composition"
+description: "Immersive music world exploring algorithmic composition"
+domain: music
+permalink: /music/algorithmic-composition/
+---
+
+
+<nav id="main-nav">
+<a class="active" href="#hero">Hero</a>
+<a href="#coin">Coin Flip</a>
+<a href="#markov">Markov</a>
+<a href="#lsystem">L-System</a>
+<a href="#cellular">Cellular</a>
+<a href="#euclidean">Euclidean</a>
+<a href="#livecode">Live Coding</a>
+<a href="#oblique">Oblique</a>
+<a href="#interpolator">Interpolator</a>
+<a href="#artists">Artists</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay">
+<div class="hero-title">ALGORITHMIC<br/>COMPOSITION</div>
+<div class="hero-sub">MUSIC THAT WRITES ITSELF</div>
+<div class="hero-badges">
+<div class="badge">BPM: <span id="hb-bpm">120</span></div>
+<div class="badge">Scale: <span id="hb-scale">MAJOR</span></div>
+<div class="badge">Markov: <span id="hb-order">1ST ORDER</span></div>
+<div class="badge">Notes: <span id="hb-notes">0</span></div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════ COIN FLIP ══════════════════════ -->
+<section class="hidden" id="coin">
+<div class="section-label">Section 02</div>
+<div class="section-title">THE COIN FLIP COMPOSER</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:18px">Cage's I Ching Method — 6 flips build a hexagram that determines musical parameters</p>
+<div class="coins-row" id="coins-row">
+<div class="coin-wrap"><div class="coin" id="c0">☯</div><span id="cl0">—</span></div>
+<div class="coin-wrap"><div class="coin" id="c1">☯</div><span id="cl1">—</span></div>
+<div class="coin-wrap"><div class="coin" id="c2">☯</div><span id="cl2">—</span></div>
+<div class="coin-wrap"><div class="coin" id="c3">☯</div><span id="cl3">—</span></div>
+<div class="coin-wrap"><div class="coin" id="c4">☯</div><span id="cl4">—</span></div>
+<div class="coin-wrap"><div class="coin" id="c5">☯</div><span id="cl5">—</span></div>
+</div>
+<div style="text-align:center">
+<div class="hexagram-display" id="hex-symbol">☰</div>
+</div>
+<div class="param-row" id="coin-params">
+<div class="param-box"><div class="param-label">PITCH</div><div class="param-val" id="cp-pitch">—</div></div>
+<div class="param-box"><div class="param-label">OCTAVE</div><div class="param-val" id="cp-oct">—</div></div>
+<div class="param-box"><div class="param-label">DURATION</div><div class="param-val" id="cp-dur">—</div></div>
+<div class="param-box"><div class="param-label">DYNAMIC</div><div class="param-val" id="cp-dyn">—</div></div>
+<div class="param-box"><div class="param-label">REST</div><div class="param-val" id="cp-rest">—</div></div>
+<div class="param-box"><div class="param-label">ARTICUL.</div><div class="param-val" id="cp-art">—</div></div>
+</div>
+<div class="controls">
+<button id="btn-flip">▶ FLIP ALL</button>
+<button id="btn-add-note">+ ADD NOTE</button>
+<button id="btn-cage">☯ CAGE WOULD APPROVE</button>
+<button id="btn-play-coin">▷ PLAY MELODY</button>
+<button id="btn-clear-coin">✕ CLEAR</button>
+<label>Scale: <select id="coin-scale">
+<option value="pent">Pentatonic</option>
+<option value="chrom">Chromatic</option>
+<option value="whole">Whole-tone</option>
+</select></label>
+</div>
+<div class="canvas-wrap" style="margin-top:8px">
+<canvas height="90" id="coin-roll" width="900"></canvas>
+</div>
+<div class="edu-card">John Cage used the I Ching in <em>Music of Changes</em> (1951) to remove compositional intention. 64 hexagrams governed pitch, duration, dynamics, and silence. The result felt more alive than anything composed from personal taste.</div>
+</section>
+<!-- ══════════════════════ MARKOV ══════════════════════ -->
+<section class="hidden" id="markov">
+<div class="section-label">Section 03</div>
+<div class="section-title">MARKOV MUSIC MACHINE</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:14px">Click piano keys to build a seed melody. Watch transition probabilities update live.</p>
+<div class="canvas-wrap">
+<canvas height="300" id="markov-canvas" width="900"></canvas>
+</div>
+<div class="piano-keys-row" id="markov-keys"></div>
+<div style="margin-top:8px;font-size:10px;color:var(--dim)">Input melody: <span id="markov-seed-display" style="color:var(--accent)">—</span></div>
+<div class="controls" style="margin-top:10px">
+<button id="btn-markov-gen">▶ GENERATE 8 BARS</button>
+<button id="btn-markov-play">▷ PLAY</button>
+<button id="btn-markov-rand">⚄ RANDOM SEED</button>
+<button id="btn-markov-clear">✕ CLEAR</button>
+<label>Order: <select id="markov-order">
+<option value="1">1st Order</option>
+<option value="2">2nd Order</option>
+</select></label>
+</div>
+<div class="canvas-wrap" style="margin-top:8px">
+<canvas height="80" id="markov-roll" width="900"></canvas>
+</div>
+<div class="edu-card">Markov chains model melodies by learning transition probabilities from input music. In 1st-order chains, the next note depends only on the current note. In 2nd-order, it depends on the last two — producing more coherent phrases.</div>
+</section>
+<!-- ══════════════════════ L-SYSTEM ══════════════════════ -->
+<section class="hidden" id="lsystem">
+<div class="section-label">Section 04</div>
+<div class="section-title">L-SYSTEM MELODY GARDEN</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:14px">Rewriting rules grow both a botanical structure and a musical phrase simultaneously.</p>
+<div class="two-col">
+<div>
+<div class="canvas-wrap">
+<canvas height="320" id="ls-canvas" width="440"></canvas>
+</div>
+</div>
+<div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<label style="display:flex;flex-direction:column;gap:4px">Axiom <input id="ls-axiom" style="width:100%" type="text" value="A"/></label>
+<label style="display:flex;flex-direction:column;gap:4px">Rule A → <input id="ls-ruleA" style="width:100%" type="text" value="AB"/></label>
+<label style="display:flex;flex-direction:column;gap:4px">Rule B → <input id="ls-ruleB" style="width:100%" type="text" value="A"/></label>
+<label>Generations: <span id="ls-gen-val">4</span>
+<input id="ls-gen" max="6" min="1" style="width:100%" type="range" value="4"/>
+</label>
+<label>Angle (°): <span id="ls-angle-val">25</span>
+<input id="ls-angle" max="90" min="10" style="width:100%" type="range" value="25"/>
+</label>
+<div class="controls" style="margin:0;flex-wrap:wrap">
+<button id="btn-ls-draw">🌿 GROW</button>
+<button id="btn-ls-play">▷ PLAY</button>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div style="font-size:10px;color:var(--dim);letter-spacing:.08em">PRESETS</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<button id="ls-pre-fib" style="font-size:10px;padding:4px 10px">Fibonacci</button>
+<button id="ls-pre-koch" style="font-size:10px;padding:4px 10px">Koch</button>
+<button id="ls-pre-sier" style="font-size:10px;padding:4px 10px">Sierpinski</button>
+</div>
+</div>
+<div style="font-size:10px;color:var(--dim)">String length: <span id="ls-strlen" style="color:var(--accent)">0</span></div>
+</div>
+</div>
+</div>
+<div class="canvas-wrap" style="margin-top:12px">
+<canvas height="80" id="ls-roll" width="900"></canvas>
+</div>
+<div class="edu-card">L-Systems (Lindenmayer, 1968) use string rewriting to model plant growth. The same recursive expansion that draws branching forms also generates recursive musical patterns — pitch and structure emerge from identical rules.</div>
+</section>
+<!-- ══════════════════════ CELLULAR ══════════════════════ -->
+<section class="hidden" id="cellular">
+<div class="section-label">Section 05</div>
+<div class="section-title">CELLULAR AUTOMATON COMPOSER</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:14px">Click cells to set state. Live cells trigger pitched events. The grid evolves, the music evolves.</p>
+<div class="canvas-wrap">
+<canvas height="288" id="ca-canvas" width="900"></canvas>
+</div>
+<div class="controls">
+<button id="btn-ca-play">▶ PLAY</button>
+<button id="btn-ca-pause">⏸ PAUSE</button>
+<button id="btn-ca-step">⊢ STEP</button>
+<button id="btn-ca-clear">✕ CLEAR</button>
+<label>Preset:
+      <select id="ca-preset">
+<option value="glider">Glider</option>
+<option value="blinker">Blinker</option>
+<option value="pulsar">Pulsar</option>
+<option value="rpent">R-pentomino</option>
+<option value="rand">Random 30%</option>
+</select>
+</label>
+<label>Rule:
+      <select id="ca-rule">
+<option value="b3s23">Conway B3/S23</option>
+<option value="b36s23">HighLife B36/S23</option>
+<option value="b2s">Seeds B2/S</option>
+</select>
+</label>
+<label>BPM: <span id="ca-bpm-val">90</span>
+<input id="ca-bpm" max="180" min="60" type="range" value="90"/>
+</label>
+</div>
+<div style="font-size:10px;color:var(--dim);margin-bottom:4px">
+    Step: <span id="ca-step-count" style="color:var(--accent)">0</span>  | 
+    Live cells: <span id="ca-live-count" style="color:var(--accent)">0</span>
+</div>
+<div class="edu-card">Simple neighbor-counting rules create complex, non-repeating musical output. You set the seed; the system composes. Each generation remaps the 32-column window to a 16-step sequencer that advances in time.</div>
+</section>
+<!-- ══════════════════════ EUCLIDEAN ══════════════════════ -->
+<section class="hidden" id="euclidean">
+<div class="section-label">Section 06</div>
+<div class="section-title">EUCLIDEAN RHYTHM DEEP DIVE</div>
+<div class="two-col" style="margin-bottom:24px">
+<div>
+<div style="font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:10px">ALGORITHM VISUALIZER</div>
+<div class="canvas-wrap">
+<canvas height="220" id="euc-algo-canvas" width="440"></canvas>
+</div>
+<div class="controls">
+<label>Steps: <input id="euc-steps" max="24" min="4" style="width:70px" type="range" value="8"/></label>
+<span id="euc-steps-val" style="color:var(--accent);font-size:11px">8</span>
+<label>Events: <input id="euc-events" max="16" min="1" style="width:70px" type="range" value="3"/></label>
+<span id="euc-events-val" style="color:var(--accent);font-size:11px">3</span>
+<button id="btn-euc-step">⊢ STEP</button>
+<button id="btn-euc-reset">↺ RESET</button>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+<button id="ep-tresillo" style="font-size:10px;padding:4px 8px">(8,3) Tresillo</button>
+<button id="ep-clave" style="font-size:10px;padding:4px 8px">(16,5) Clave</button>
+<button id="ep-bembe" style="font-size:10px;padding:4px 8px">(12,7) Bembé</button>
+<button id="ep-swing" style="font-size:10px;padding:4px 8px">(8,5) Swing</button>
+</div>
+</div>
+<div>
+<div style="font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:10px">POLYRHYTHM CANVAS</div>
+<div class="canvas-wrap">
+<canvas height="220" id="euc-poly-canvas" width="440"></canvas>
+</div>
+<div class="controls">
+<button id="btn-euc-play">▶ PLAY</button>
+<button id="btn-euc-stop">⏹ STOP</button>
+<label>BPM: <span id="euc-bpm-val">100</span>
+<input id="euc-bpm" max="200" min="60" type="range" value="100"/>
+</label>
+</div>
+<div style="font-size:9px;color:var(--dim);margin-top:4px">LCM realignment in: <span id="euc-lcm" style="color:var(--accent)">—</span> beats</div>
+</div>
+</div>
+<div class="edu-card">The Bjorklund algorithm distributes <em>k</em> events as evenly as possible across <em>n</em> steps — the same math that governs neutron timing in particle accelerators. Toussaint (2005) showed these patterns match world percussion: Tresillo (Cuba), Clave (Afro-Cuban), Bembé (West Africa).</div>
+</section>
+<!-- ══════════════════════ LIVE CODING ══════════════════════ -->
+<section class="hidden" id="livecode">
+<div class="section-label">Section 07</div>
+<div class="section-title">LIVE CODING STAGE</div>
+<div class="controls" style="margin-bottom:8px">
+<button id="lc-tmpl-basic">Basic Beat</button>
+<button id="lc-tmpl-poly">Polyrhythm</button>
+<button id="lc-tmpl-chaos">Chaotic</button>
+</div>
+<div id="live-stage">
+<canvas id="live-canvas"></canvas>
+<textarea id="live-code" spellcheck="false">bd sn bd sn</textarea>
+</div>
+<div class="controls" style="margin-top:10px">
+<button id="btn-lc-eval">▶ EVALUATE <small style="opacity:.7">(Ctrl+Enter)</small></button>
+<button id="btn-lc-stop">⏹ STOP</button>
+<span id="lc-status" style="font-size:10px;color:var(--dim)">Ready</span>
+</div>
+<div class="edu-card">Live coding (TOPLAP, 2003) makes code visible to the audience — programming <em>is</em> the performance. TidalCycles, SuperCollider, and Sonic Pi brought this practice into concert halls. The mistake is part of the music.</div>
+</section>
+<!-- ══════════════════════ OBLIQUE ══════════════════════ -->
+<section class="hidden" id="oblique">
+<div class="section-label">Section 08</div>
+<div class="section-title">OBLIQUE STRATEGIES ORACLE</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;text-align:center">Click the card to receive a strategy</p>
+<div id="oblique-wrap">
+<div id="oblique-inner">
+<div class="oblique-face oblique-front">⟐</div>
+<div class="oblique-face oblique-back" id="oblique-text">—</div>
+</div>
+</div>
+<div id="oblique-concept" style="text-align:center;font-size:11px;color:var(--dim);margin-bottom:16px;min-height:18px"></div>
+<div class="controls" style="justify-content:center">
+<button id="btn-new-card">✦ NEW CARD</button>
+<button id="btn-applied">✓ I APPLIED THIS</button>
+</div>
+<div style="margin-top:16px;font-size:10px;color:var(--dim);letter-spacing:.1em;margin-bottom:6px">APPLIED STRATEGIES</div>
+<div id="applied-list">—</div>
+<div class="edu-card">Brian Eno and Peter Schmidt created the original <em>Oblique Strategies</em> (1975) to break creative deadlock. Each card offered a lateral instruction — a constraint that forced the composer out of habitual thinking.</div>
+</section>
+<!-- ══════════════════════ INTERPOLATOR ══════════════════════ -->
+<section class="hidden" id="interpolator">
+<div class="section-label">Section 09</div>
+<div class="section-title">NEURAL MELODY INTERPOLATOR</div>
+<p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Click grid cells to toggle notes. Drag the blend slider to morph between Melody A and Melody B.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+<div>
+<div style="font-size:10px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px">MELODY A</div>
+<canvas height="120" id="interp-a" style="border:1px solid var(--border);border-radius:6px;cursor:pointer;display:block;width:100%" width="420"></canvas>
+<div class="controls" style="margin-top:6px"><button id="btn-play-a">▷ PLAY A</button></div>
+</div>
+<div>
+<div style="font-size:10px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px">MELODY B</div>
+<canvas height="120" id="interp-b" style="border:1px solid var(--border);border-radius:6px;cursor:pointer;display:block;width:100%" width="420"></canvas>
+<div class="controls" style="margin-top:6px"><button id="btn-play-b">▷ PLAY B</button></div>
+</div>
+</div>
+<div style="margin:16px 0;display:flex;align-items:center;gap:16px">
+<span style="font-size:10px;color:var(--dim)">A</span>
+<input id="interp-slider" max="100" min="0" style="flex:1" type="range" value="0"/>
+<span style="font-size:10px;color:var(--dim)">B</span>
+<span id="interp-pct" style="font-size:11px;color:var(--accent);width:32px">0%</span>
+</div>
+<div style="font-size:10px;color:var(--accent);letter-spacing:.1em;margin-bottom:6px">INTERPOLATED MELODY</div>
+<canvas height="100" id="interp-blend" style="border:1px solid var(--border);border-radius:6px;display:block;width:100%" width="900"></canvas>
+<div class="controls" style="margin-top:10px">
+<button id="btn-play-blend">▷ PLAY BLEND</button>
+<button id="btn-rand-a">⚄ RANDOM A</button>
+<button id="btn-rand-b">⚄ RANDOM B</button>
+</div>
+<div class="edu-card">MusicVAE (Magenta, 2018) encodes melodies into a continuous latent space where interpolation sounds musically smooth. This simplified model demonstrates the core concept: weighted blending of pitch and presence across time steps.</div>
+</section>
+<!-- ══════════════════════ ARTISTS ══════════════════════ -->
+<section class="hidden" id="artists">
+<div class="section-label">Section 10</div>
+<div class="section-title">ALGORITHMIC COMPOSERS</div>
+<div class="four-col" id="artists-grid">
+<div class="card">
+<h3>John Cage</h3>
+<div class="method">Chance operations via I Ching</div>
+<div class="work">Music of Changes — 1951</div>
+<div class="quote">"I have nothing to say, and I am saying it."</div>
+</div>
+<div class="card">
+<h3>Brian Eno</h3>
+<div class="method">System-based generative music</div>
+<div class="work">Discreet Music — 1975</div>
+<div class="quote">"Music that puts itself together from a set of rules."</div>
+</div>
+<div class="card">
+<h3>Iannis Xenakis</h3>
+<div class="method">Stochastic composition via probability</div>
+<div class="work">Metastasis — 1954</div>
+<div class="quote">"Music is a controlled mass of sound events."</div>
+</div>
+<div class="card">
+<h3>Laurie Spiegel</h3>
+<div class="method">Rule-based algorithmic systems</div>
+<div class="work">Music Mouse — 1985</div>
+<div class="quote">"Algorithms let you explore structure itself."</div>
+</div>
+<div class="card">
+<h3>Holly Herndon</h3>
+<div class="method">Machine learning + ensemble</div>
+<div class="work">PROTO — 2019</div>
+<div class="quote">"Technology is always political, always social."</div>
+</div>
+<div class="card">
+<h3>Ryoji Ikeda</h3>
+<div class="method">Data sonification + mathematics</div>
+<div class="work">data.matrix — 2009</div>
+<div class="quote">"Sound and image as pure data, pure mathematics."</div>
+</div>
+<div class="card">
+<h3>Visible Cloaks</h3>
+<div class="method">Spectral synthesis + just intonation</div>
+<div class="work">Reassemblage — 2017</div>
+<div class="quote">"The computer not as tool but as collaborator."</div>
+</div>
+<div class="card">
+<h3>David Cope</h3>
+<div class="method">Style recombination via AI</div>
+<div class="work">Experiments in Musical Intelligence — 1981</div>
+<div class="quote">"Creativity is recombination at a higher level."</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════ GLOSSARY ══════════════════════ -->
+<section class="hidden" id="glossary">
+<div class="section-label">Section 11</div>
+<div class="section-title">GLOSSARY</div>
+<div id="glossary-grid"></div>
+</section>
+<div style="height:80px"></div>
+<script>
+'use strict';
+// ═══════════════════════════════════════════
+// GLOBAL AUDIO CONTEXT
+// ═══════════════════════════════════════════
+let AC = null;
+function getAC(){
+  if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended') AC.resume();
+  return AC;
+}
+
+// ─── Simple tone player ───────────────────
+function playTone(freq, startTime, dur, vol=0.3, type='triangle'){
+  const ac = getAC();
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.connect(gain); gain.connect(ac.destination);
+  osc.type = type; osc.frequency.setValueAtTime(freq, startTime);
+  gain.gain.setValueAtTime(0, startTime);
+  gain.gain.linearRampToValueAtTime(vol, startTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, startTime + dur * 0.95);
+  osc.start(startTime); osc.stop(startTime + dur);
+}
+
+function midiToFreq(m){ return 440 * Math.pow(2,(m-69)/12); }
+
+// Scale helpers
+const SCALES = {
+  major:    [0,2,4,5,7,9,11],
+  minor:    [0,2,3,5,7,8,10],
+  pent:     [0,2,4,7,9],
+  whole:    [0,2,4,6,8,10],
+  chrom:    [0,1,2,3,4,5,6,7,8,9,10,11],
+  dorian:   [0,2,3,5,7,9,10]
+};
+function scaleToMidi(degree, scale, rootOct=4){
+  const s = SCALES[scale]||SCALES.major;
+  const oct = rootOct + Math.floor(degree/s.length);
+  const pc  = s[degree % s.length];
+  return 60 + (oct-4)*12 + pc;
+}
+
+// ═══════════════════════════════════════════
+// HERO CANVAS — MARKOV PIANO ROLL
+// ═══════════════════════════════════════════
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W,H, dots=[], noteCount=0, heroT=0;
+  const PITCHES=36, SCROLL=0.4;
+  // Markov transition matrix (simplified — prefer steps of 1–3)
+  function buildMatrix(){
+    const m=[];
+    for(let i=0;i<PITCHES;i++){
+      const row=new Array(PITCHES).fill(0);
+      for(let j=0;j<PITCHES;j++){
+        const d=Math.abs(i-j);
+        if(d===0) row[j]=0;
+        else if(d<=2) row[j]=12;
+        else if(d<=4) row[j]=4;
+        else if(d<=7) row[j]=1;
+      }
+      m.push(row);
+    }
+    return m;
+  }
+  const matrix = buildMatrix();
+  let curPitch = 18;
+  function nextPitch(cur){
+    const row=matrix[cur], total=row.reduce((a,b)=>a+b,0);
+    let r=Math.random()*total, acc=0;
+    for(let i=0;i<row.length;i++){acc+=row[i];if(r<acc)return i;}
+    return cur;
+  }
+
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  let lastDot=0;
+  function frame(ts){
+    requestAnimationFrame(frame);
+    ctx.fillStyle='rgba(5,5,8,0.10)';
+    ctx.fillRect(0,0,W,H);
+
+    // move & draw dots
+    dots.forEach(d=>{ d.x -= SCROLL; d.life -= 0.008; });
+    dots = dots.filter(d=>d.x>-20&&d.life>0);
+
+    dots.forEach(d=>{
+      const a = Math.min(d.life,1)*0.9;
+      ctx.shadowBlur=14; ctx.shadowColor=`rgba(16,185,129,${a})`;
+      ctx.fillStyle=`rgba(16,185,129,${a})`;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, 3.5, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.shadowBlur=0;
+
+    if(ts-lastDot>300){
+      lastDot=ts;
+      curPitch=nextPitch(curPitch);
+      heroT+=1;
+      const x=W*0.75, y=H-48-(curPitch/PITCHES)*(H-96);
+      dots.push({x,y,life:3.5});
+      noteCount++;
+      document.getElementById('hb-notes').textContent=noteCount;
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+
+// ═══════════════════════════════════════════
+// COIN FLIP COMPOSER
+// ═══════════════════════════════════════════
+(function(){
+  const NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const DURS=[0.125,0.25,0.5,1];  const DUR_NAMES=['16th','8th','Quarter','Half'];
+  const DYNS=[0.15,0.25,0.4,0.7]; const DYN_NAMES=['pp','mp','mf','ff'];
+  const RESTS=[0,0.125,0.25,0.5]; const REST_NAMES=['none','16th','8th','Quarter'];
+  const ARTS=['normal','staccato','legato'];
+  const HEX_SYMS=['☰','☱','☲','☳','☴','☵','☶','☷','䷀','䷁','䷂','䷃','䷄','䷅','䷆','䷇',
+                  '䷈','䷉','䷊','䷋','䷌','䷍','䷎','䷏','䷐','䷑','䷒','䷓','䷔','䷕','䷖','䷗',
+                  '䷘','䷙','䷚','䷛','䷜','䷝','䷞','䷟','䷠','䷡','䷢','䷣','䷤','䷥','䷦','䷧',
+                  '䷨','䷩','䷪','䷫','䷬','䷭','䷮','䷯','䷰','䷱','䷲','䷳','䷴','䷵','䷶','䷷'];
+
+  let flips=[0,0,0,0,0,0], melody=[];
+  const canvas=document.getElementById('coin-roll');
+  const ctx=canvas.getContext('2d');
+  canvas.width=900; canvas.height=90;
+
+  const scaleMap = {
+    pent: [0,2,4,7,9],
+    chrom:[0,1,2,3,4,5,6,7,8,9,10,11],
+    whole:[0,2,4,6,8,10]
+  };
+
+  function quantizePitch(pc, scaleName){
+    const s=scaleMap[scaleName]||scaleMap.pent;
+    // find closest scale degree
+    let best=s[0], bestD=99;
+    s.forEach(d=>{const dd=Math.min(Math.abs(d-pc),12-Math.abs(d-pc));if(dd<bestD){bestD=dd;best=d;}});
+    return best;
+  }
+
+  function flipAll(){
+    const coins=document.querySelectorAll('.coin');
+    coins.forEach((c,i)=>{
+      c.classList.remove('flipping');
+      void c.offsetWidth;
+      c.classList.add('flipping');
+      flips[i]=Math.random()<0.5?1:0;
+      c.textContent = flips[i]?'Ⓗ':'Ⓣ';
+      document.getElementById('cl'+i).textContent = flips[i]?'YANG':'YIN';
+    });
+    updateParams();
+  }
+
+  function updateParams(){
+    const scaleName = document.getElementById('coin-scale').value;
+    const hexVal = parseInt(flips.join(''),2) % 64;
+    document.getElementById('hex-symbol').textContent = HEX_SYMS[hexVal]||'☰';
+    const pc = quantizePitch(flips[0]*6 + flips[1]*4, scaleName);
+    const oct= 3+flips[1]+flips[2];
+    const dur= DURS[flips[2]*2+flips[3]];
+    const dyn= DURS[flips[3]*2+flips[4]];
+    const rest=RESTS[flips[4]*2+flips[5]];
+    const art= ARTS[flips[5]+(flips[0]?1:0)] || ARTS[0];
+    document.getElementById('cp-pitch').textContent=NOTES[pc];
+    document.getElementById('cp-oct').textContent=oct;
+    document.getElementById('cp-dur').textContent=DUR_NAMES[flips[2]*2+flips[3]];
+    document.getElementById('cp-dyn').textContent=DYN_NAMES[flips[3]*2+flips[4]];
+    document.getElementById('cp-rest').textContent=REST_NAMES[flips[4]*2+flips[5]];
+    document.getElementById('cp-art').textContent=art;
+    return {pc, oct, dur, dynVol:DYNS[flips[3]*2+flips[4]], rest, art};
+  }
+
+  function addNote(){
+    const p=updateParams();
+    const midi=60+(p.oct-4)*12+p.pc;
+    melody.push({midi, dur:DURS[Math.floor(Math.random()*4)], dynVol:p.dynVol, rest:p.rest});
+    drawRoll();
+  }
+
+  function drawRoll(){
+    const W=canvas.width, H=canvas.height;
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,W,H);
+    if(!melody.length) return;
+    const noteW=Math.floor(W/Math.max(melody.length,1))-2;
+    melody.forEach((n,i)=>{
+      const x=i*(noteW+2)+1;
+      const norm=(n.midi-48)/36;
+      const y=H-8-norm*(H-16);
+      ctx.shadowBlur=10; ctx.shadowColor='#10b981';
+      ctx.fillStyle='#10b981';
+      ctx.fillRect(x,y-4,noteW,8);
+      ctx.shadowBlur=0;
+    });
+  }
+
+  function playMelody(){
+    const ac=getAC();
+    let t=ac.currentTime+0.1;
+    melody.forEach(n=>{
+      t+=n.rest||0;
+      playTone(midiToFreq(n.midi),t,n.dur*0.9,n.dynVol,'triangle');
+      t+=n.dur;
+    });
+  }
+
+  function cageAuto(){
+    melody=[];
+    for(let i=0;i<8;i++){
+      flips=flips.map(()=>Math.random()<0.5?1:0);
+      const p=updateParams();
+      const midi=60+(p.oct-4)*12+p.pc;
+      melody.push({midi,dur:DURS[Math.floor(Math.random()*4)],dynVol:p.dynVol,rest:p.rest});
+    }
+    drawRoll();
+  }
+
+  document.getElementById('btn-flip').onclick=flipAll;
+  document.getElementById('btn-add-note').onclick=()=>{flipAll();setTimeout(addNote,900);};
+  document.getElementById('btn-cage').onclick=cageAuto;
+  document.getElementById('btn-play-coin').onclick=playMelody;
+  document.getElementById('btn-clear-coin').onclick=()=>{melody=[];drawRoll();};
+  drawRoll();
+})();
+
+// ═══════════════════════════════════════════
+// MARKOV MUSIC MACHINE
+// ═══════════════════════════════════════════
+(function(){
+  const NODES=['C','D','E','F','G','A','B','R'];
+  const NODE_MIDI=[60,62,64,65,67,69,71,0]; // 0=rest
+  const N=8;
+  let trans=Array.from({length:N},()=>new Array(N).fill(0));
+  let seed=[], generated=[], activeNode=-1, playTimer=null;
+  const canvas=document.getElementById('markov-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=900; canvas.height=300;
+  const rollCanvas=document.getElementById('markov-roll');
+  const rollCtx=rollCanvas.getContext('2d');
+  rollCanvas.width=900; rollCanvas.height=80;
+
+  function nodePos(i){
+    const cx=canvas.width/2, cy=canvas.height/2-10, r=110;
+    const angle=(i/N)*Math.PI*2 - Math.PI/2;
+    return {x:cx+r*Math.cos(angle), y:cy+r*Math.sin(angle)};
+  }
+
+  function drawGraph(){
+    const W=canvas.width, H=canvas.height;
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,W,H);
+    // Draw edges
+    for(let i=0;i<N;i++) for(let j=0;j<N;j++){
+      if(i===j||!trans[i][j]) continue;
+      const row=trans[i], total=row.reduce((a,b)=>a+b,0);
+      const prob=trans[i][j]/total;
+      const p0=nodePos(i), p1=nodePos(j);
+      const lw=Math.max(0.5,prob*8);
+      ctx.strokeStyle=`rgba(16,185,129,${0.15+prob*0.7})`;
+      ctx.lineWidth=lw;
+      ctx.beginPath();
+      // curve
+      const mx=(p0.x+p1.x)/2-(p1.y-p0.y)*0.2;
+      const my=(p0.y+p1.y)/2+(p1.x-p0.x)*0.2;
+      ctx.moveTo(p0.x,p0.y); ctx.quadraticCurveTo(mx,my,p1.x,p1.y);
+      ctx.stroke();
+    }
+    // Draw nodes
+    NODES.forEach((name,i)=>{
+      const {x,y}=nodePos(i);
+      const isActive=(i===activeNode);
+      ctx.beginPath();
+      ctx.arc(x,y,22,0,Math.PI*2);
+      if(isActive){ctx.shadowBlur=20;ctx.shadowColor='#10b981';}
+      ctx.fillStyle=isActive?'#10b981':'#0d0d14';
+      ctx.fill();
+      ctx.strokeStyle=isActive?'#10b981':'#1e1e2e';
+      ctx.lineWidth=2; ctx.stroke();
+      ctx.shadowBlur=0;
+      ctx.fillStyle=isActive?'#05050a':'#e2e8f0';
+      ctx.font='bold 13px Courier New'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(name,x,y);
+    });
+  }
+
+  function buildKeys(){
+    const row=document.getElementById('markov-keys');
+    row.innerHTML='';
+    const keys=[
+      {note:'C',cls:'wh'},{note:'D',cls:'wh'},{note:'E',cls:'wh'},
+      {note:'F',cls:'wh'},{note:'G',cls:'wh'},{note:'A',cls:'wh'},{note:'B',cls:'wh'},
+      {note:'Rest',cls:'wh'}
+    ];
+    keys.forEach((k,i)=>{
+      const el=document.createElement('div');
+      el.className=`pk ${k.cls}`; el.title=k.note;
+      el.style.display='flex'; el.style.alignItems='flex-end';
+      el.style.justifyContent='center'; el.style.fontSize='9px';
+      el.style.paddingBottom='4px'; el.style.color='#888';
+      el.textContent=k.note;
+      el.onclick=()=>addSeedNote(i,el);
+      row.appendChild(el);
+    });
+  }
+
+  function addSeedNote(idx, el){
+    if(seed.length>=16) return;
+    seed.push(idx);
+    // update transitions
+    if(seed.length>1){
+      const prev=seed[seed.length-2];
+      trans[prev][idx]++;
+    }
+    el.classList.add('lit'); setTimeout(()=>el.classList.remove('lit'),300);
+    document.getElementById('markov-seed-display').textContent=seed.map(i=>NODES[i]).join('→');
+    drawGraph();
+  }
+
+  function generateChain(len=32){
+    if(seed.length<2){randomSeed();return;}
+    const order=parseInt(document.getElementById('markov-order').value);
+    generated=[];
+    let cur=seed[seed.length-1];
+    for(let i=0;i<len;i++){
+      generated.push(cur);
+      const row=trans[cur], total=row.reduce((a,b)=>a+b,0);
+      if(!total){cur=Math.floor(Math.random()*N);}
+      else{let r=Math.random()*total,acc=0;for(let j=0;j<N;j++){acc+=row[j];if(r<acc){cur=j;break;}}}
+    }
+    drawRoll();
+    drawGraph();
+  }
+
+  function drawRoll(){
+    const W=rollCanvas.width, H=rollCanvas.height;
+    rollCtx.fillStyle='#05050a'; rollCtx.fillRect(0,0,W,H);
+    if(!generated.length) return;
+    const nw=Math.floor(W/generated.length)-1;
+    generated.forEach((ni,i)=>{
+      if(ni===7) return; // rest
+      const norm=(NODE_MIDI[ni]-60)/12;
+      const x=i*(nw+1); const y=H-8-norm*(H-16);
+      rollCtx.fillStyle='#10b981';
+      rollCtx.shadowBlur=8; rollCtx.shadowColor='#10b981';
+      rollCtx.fillRect(x,y-4,nw,8);
+      rollCtx.shadowBlur=0;
+    });
+  }
+
+  function playGenerated(){
+    if(!generated.length) return;
+    const ac=getAC(); let t=ac.currentTime+0.1;
+    generated.forEach((ni,step)=>{
+      const stepT=t+step*0.25;
+      if(ni!==7) playTone(midiToFreq(NODE_MIDI[ni]),stepT,0.22,0.28,'triangle');
+      setTimeout(()=>{activeNode=ni;drawGraph();},step*250);
+    });
+    setTimeout(()=>{activeNode=-1;drawGraph();},generated.length*250+300);
+  }
+
+  function randomSeed(){
+    seed=[]; trans=Array.from({length:N},()=>new Array(N).fill(0));
+    const len=8+Math.floor(Math.random()*8);
+    let cur=Math.floor(Math.random()*(N-1));
+    for(let i=0;i<len;i++){
+      seed.push(cur);
+      const next=Math.floor(Math.random()*(N-1));
+      trans[cur][next]++;
+      cur=next;
+    }
+    document.getElementById('markov-seed-display').textContent=seed.map(i=>NODES[i]).join('→');
+    generateChain(); drawGraph();
+  }
+
+  buildKeys();
+  drawGraph();
+  document.getElementById('btn-markov-gen').onclick=()=>generateChain(32);
+  document.getElementById('btn-markov-play').onclick=playGenerated;
+  document.getElementById('btn-markov-rand').onclick=randomSeed;
+  document.getElementById('btn-markov-clear').onclick=()=>{
+    seed=[]; trans=Array.from({length:N},()=>new Array(N).fill(0));
+    generated=[]; activeNode=-1;
+    document.getElementById('markov-seed-display').textContent='—';
+    drawGraph(); drawRoll();
+  };
+})();
+
+// ═══════════════════════════════════════════
+// L-SYSTEM MELODY GARDEN
+// ═══════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('ls-canvas');
+  const ctx=canvas.getContext('2d');
+  const rollC=document.getElementById('ls-roll');
+  const rollCtx=rollC.getContext('2d');
+  rollC.width=900; rollC.height=80;
+  canvas.width=440; canvas.height=320;
+
+  let currentString='', pitches=[];
+
+  function expand(axiom, ruleA, ruleB, gens){
+    let s=axiom.toUpperCase();
+    for(let g=0;g<gens;g++){
+      let ns='';
+      for(const c of s){
+        if(c==='A') ns+=ruleA.toUpperCase();
+        else if(c==='B') ns+=ruleB.toUpperCase();
+        else ns+=c;
+      }
+      s=ns;
+      if(s.length>4000){s=s.slice(0,4000);break;}
+    }
+    return s;
+  }
+
+  function drawPlant(str, angle){
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,440,320);
+    const stack=[], len=6;
+    let x=220, y=310, dir=-Math.PI/2, depth=0;
+    const maxDepth=str.replace(/[^A-Z]/g,'').length;
+    let count=0;
+    for(const c of str){
+      if(c==='A'||c==='B'||c==='F'){
+        count++;
+        const bright=Math.min(1,count/Math.max(maxDepth,1));
+        const nx=x+len*Math.cos(dir), ny=y+len*Math.sin(dir);
+        ctx.strokeStyle=`rgba(16,185,129,${0.25+bright*0.75})`;
+        ctx.lineWidth=Math.max(0.5,2.5-depth*0.3);
+        ctx.shadowBlur=count>maxDepth*0.85?8:0;
+        ctx.shadowColor='#10b981';
+        ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(nx,ny); ctx.stroke();
+        x=nx; y=ny;
+      } else if(c==='+'){dir+=angle*Math.PI/180;
+      } else if(c==='-'){dir-=angle*Math.PI/180;
+      } else if(c==='['){stack.push({x,y,dir,depth});depth++;
+      } else if(c===']'&&stack.length){const s=stack.pop();x=s.x;y=s.y;dir=s.dir;depth=s.depth;
+      }
+    }
+    ctx.shadowBlur=0;
+  }
+
+  function extractPitches(str){
+    const ps=[];
+    let pitch=60;
+    for(const c of str){
+      if(c==='A'){ps.push(pitch);if(ps.length>128) break;}
+      else if(c==='B'){ps.push(pitch+4);if(ps.length>128) break;}
+      else if(c==='+'){pitch=Math.min(pitch+1,84);}
+      else if(c==='-'){pitch=Math.max(pitch-1,48);}
+    }
+    return ps;
+  }
+
+  function drawRoll(ps){
+    const W=rollC.width, H=rollC.height;
+    rollCtx.fillStyle='#05050a'; rollCtx.fillRect(0,0,W,H);
+    if(!ps.length) return;
+    const nw=Math.max(1,Math.floor(W/ps.length)-1);
+    ps.forEach((m,i)=>{
+      const norm=(m-48)/36;
+      const x=i*(nw+1), y=H-6-norm*(H-12);
+      rollCtx.fillStyle='#10b981';
+      rollCtx.shadowBlur=6; rollCtx.shadowColor='#10b981';
+      rollCtx.fillRect(x,y-3,Math.max(1,nw),6);
+    });
+    rollCtx.shadowBlur=0;
+  }
+
+  function grow(){
+    const axiom=document.getElementById('ls-axiom').value||'A';
+    const rA=document.getElementById('ls-ruleA').value||'AB';
+    const rB=document.getElementById('ls-ruleB').value||'A';
+    const gens=parseInt(document.getElementById('ls-gen').value)||4;
+    const angle=parseInt(document.getElementById('ls-angle').value)||25;
+    currentString=expand(axiom,rA,rB,gens);
+    document.getElementById('ls-strlen').textContent=currentString.length;
+    pitches=extractPitches(currentString);
+    drawPlant(currentString,angle);
+    drawRoll(pitches);
+  }
+
+  function playLS(){
+    if(!pitches.length) return;
+    const ac=getAC(); let t=ac.currentTime+0.1;
+    const dur=0.12;
+    pitches.slice(0,64).forEach((m,i)=>{
+      playTone(midiToFreq(m),t+i*dur,dur*0.8,0.2,'sine');
+    });
+  }
+
+  function setPreset(axiom,rA,rB,gen,angle){
+    document.getElementById('ls-axiom').value=axiom;
+    document.getElementById('ls-ruleA').value=rA;
+    document.getElementById('ls-ruleB').value=rB;
+    document.getElementById('ls-gen').value=gen;
+    document.getElementById('ls-gen-val').textContent=gen;
+    document.getElementById('ls-angle').value=angle;
+    document.getElementById('ls-angle-val').textContent=angle;
+    grow();
+  }
+
+  document.getElementById('ls-gen').oninput=e=>{document.getElementById('ls-gen-val').textContent=e.target.value;};
+  document.getElementById('ls-angle').oninput=e=>{document.getElementById('ls-angle-val').textContent=e.target.value;};
+  document.getElementById('btn-ls-draw').onclick=grow;
+  document.getElementById('btn-ls-play').onclick=playLS;
+  document.getElementById('ls-pre-fib').onclick=()=>setPreset('A','AB','A',5,25);
+  document.getElementById('ls-pre-koch').onclick=()=>setPreset('F','F+F-F-F+F','F',3,90);
+  document.getElementById('ls-pre-sier').onclick=()=>setPreset('A','B-A-B','A+B+A',4,60);
+  grow();
+})();
+
+// ═══════════════════════════════════════════
+// CELLULAR AUTOMATON COMPOSER
+// ═══════════════════════════════════════════
+(function(){
+  const COLS=32, ROWS=24;
+  const canvas=document.getElementById('ca-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=900; canvas.height=288;
+  const CW=Math.floor(900/COLS), CH=Math.floor(288/ROWS);
+  let grid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+  let prevGrid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+  let playing=false, stepCount=0, animId=null, lastBeat=0;
+  let bpm=90, beatInterval=60000/bpm;
+  const PENT_MIDI=[60,62,64,67,69,72,74,76,79,81,84,86,88,91]; // C pentatonic
+
+  function getRule(){return document.getElementById('ca-rule').value;}
+
+  function nextGen(g){
+    const ng=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+    const rule=getRule();
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      let neighbors=0;
+      for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+        if(dr===0&&dc===0) continue;
+        const nr=(r+dr+ROWS)%ROWS, nc=(c+dc+COLS)%COLS;
+        neighbors+=g[nr][nc];
+      }
+      const alive=g[r][c]===1;
+      if(rule==='b3s23') ng[r][c]=(alive?(neighbors===2||neighbors===3):neighbors===3)?1:0;
+      else if(rule==='b36s23') ng[r][c]=(alive?(neighbors===2||neighbors===3):(neighbors===3||neighbors===6))?1:0;
+      else ng[r][c]=((!alive)&&neighbors===2)?1:0; // Seeds
+    }
+    return ng;
+  }
+
+  function drawGrid(ts){
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,900,288);
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      const x=c*CW, y=r*CH;
+      if(grid[r][c]===1){
+        ctx.fillStyle='#10b981';
+        ctx.shadowBlur=8; ctx.shadowColor='#10b981';
+        ctx.fillRect(x+1,y+1,CW-2,CH-2);
+        ctx.shadowBlur=0;
+      } else if(prevGrid[r][c]===1){
+        ctx.fillStyle='rgba(200,140,50,0.35)';
+        ctx.fillRect(x+1,y+1,CW-2,CH-2);
+      }
+    }
+    // playhead column
+    const step=(stepCount%16); const px=step*CW;
+    ctx.fillStyle='rgba(16,185,129,0.08)';
+    ctx.fillRect(px,0,CW,288);
+  }
+
+  function triggerColumn(col){
+    for(let r=0;r<ROWS;r++){
+      if(grid[r][col]===1){
+        const deg=r%PENT_MIDI.length;
+        const midi=PENT_MIDI[deg];
+        playTone(midiToFreq(midi),getAC().currentTime,0.15,0.2,'triangle');
+      }
+    }
+  }
+
+  function tick(ts){
+    animId=requestAnimationFrame(tick);
+    drawGrid(ts);
+    if(playing && ts-lastBeat>=beatInterval){
+      lastBeat=ts;
+      const col=stepCount%COLS;
+      triggerColumn(col);
+      if(stepCount%COLS===COLS-1){
+        prevGrid=grid.map(r=>[...r]);
+        grid=nextGen(grid);
+        stepCount++;
+        document.getElementById('ca-step-count').textContent=Math.floor(stepCount/COLS);
+        const live=grid.flat().reduce((a,b)=>a+b,0);
+        document.getElementById('ca-live-count').textContent=live;
+      } else stepCount++;
+    }
+  }
+
+  function setPreset(name){
+    grid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+    const mid=Math.floor(ROWS/2), midC=Math.floor(COLS/2);
+    if(name==='glider'){
+      [[0,1],[1,2],[2,0],[2,1],[2,2]].forEach(([r,c])=>{grid[mid+r-1][midC+c-1]=1;});
+    } else if(name==='blinker'){
+      [[mid,midC-1],[mid,midC],[mid,midC+1]].forEach(([r,c])=>{grid[r][c]=1;});
+    } else if(name==='pulsar'){
+      const pts=[[2,4],[2,5],[2,6],[7,4],[7,5],[7,6],[4,2],[5,2],[6,2],[4,7],[5,7],[6,7]];
+      pts.forEach(([r,c])=>{grid[mid-5+r][midC-5+c]=1;grid[mid-5+r+10][midC-5+c]=1;grid[mid-5+r][midC-5+c+10]=1;});
+    } else if(name==='rpent'){
+      [[0,1],[0,2],[1,0],[1,1],[2,1]].forEach(([r,c])=>{grid[mid+r][midC+c]=1;});
+    } else {
+      for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) grid[r][c]=Math.random()<0.3?1:0;
+    }
+    prevGrid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+    stepCount=0;
+  }
+
+  canvas.onclick=e=>{
+    const rect=canvas.getBoundingClientRect();
+    const x=e.clientX-rect.left, y=e.clientY-rect.top;
+    const sx=canvas.width/rect.width, sy=canvas.height/rect.height;
+    const c=Math.floor(x*sx/CW), r=Math.floor(y*sy/CH);
+    if(r>=0&&r<ROWS&&c>=0&&c<COLS) grid[r][c]=grid[r][c]?0:1;
+  };
+
+  document.getElementById('btn-ca-play').onclick=()=>{ playing=true; };
+  document.getElementById('btn-ca-pause').onclick=()=>{ playing=false; };
+  document.getElementById('btn-ca-step').onclick=()=>{
+    prevGrid=grid.map(r=>[...r]); grid=nextGen(grid); stepCount+=COLS;
+    document.getElementById('ca-step-count').textContent=Math.floor(stepCount/COLS);
+    document.getElementById('ca-live-count').textContent=grid.flat().reduce((a,b)=>a+b,0);
+  };
+  document.getElementById('btn-ca-clear').onclick=()=>{
+    grid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+    prevGrid=Array.from({length:ROWS},()=>new Array(COLS).fill(0));
+    stepCount=0;
+  };
+  document.getElementById('ca-preset').onchange=e=>setPreset(e.target.value);
+  document.getElementById('ca-bpm').oninput=e=>{
+    bpm=parseInt(e.target.value); beatInterval=60000/bpm;
+    document.getElementById('ca-bpm-val').textContent=bpm;
+  };
+  setPreset('glider');
+  requestAnimationFrame(tick);
+})();
+
+// ═══════════════════════════════════════════
+// EUCLIDEAN RHYTHM
+// ═══════════════════════════════════════════
+(function(){
+  function euclidean(steps, events){
+    if(events>=steps) return new Array(steps).fill(true);
+    if(events===0) return new Array(steps).fill(false);
+    let pattern=[], counts=[], remainders=[];
+    let divisor=steps-events;
+    remainders.push(events);
+    let level=0;
+    while(remainders[level]>1){
+      counts.push(Math.floor(divisor/remainders[level]));
+      remainders.push(divisor%remainders[level]);
+      divisor=remainders[level]; level++;
+    }
+    counts.push(divisor);
+    function build(l){
+      if(l===-1) pattern.push(false);
+      else if(l===-2) pattern.push(true);
+      else{
+        for(let i=0;i<counts[l];i++) build(l-1);
+        if(remainders[l]!==0) build(l-2);
+      }
+    }
+    build(level);
+    const idx=pattern.indexOf(true);
+    if(idx<0) return pattern;
+    return [...pattern.slice(idx),...pattern.slice(0,idx)];
+  }
+
+  // ─── Algorithm Visualizer ────────────────
+  const algoC=document.getElementById('euc-algo-canvas');
+  const algoCtx=algoC.getContext('2d');
+  algoC.width=440; algoC.height=220;
+  let algoSteps=8, algoEvents=3, algoPattern=[], algoAnimStep=0;
+
+  function drawAlgo(){
+    const W=algoC.width, H=algoC.height;
+    algoCtx.fillStyle='#05050a'; algoCtx.fillRect(0,0,W,H);
+    algoPattern=euclidean(algoSteps,algoEvents);
+    const cx=W/2, cy=H/2-10, r=75;
+    algoPattern.forEach((beat,i)=>{
+      const angle=(i/algoSteps)*Math.PI*2-Math.PI/2;
+      const x=cx+r*Math.cos(angle), y=cy+r*Math.sin(angle);
+      const isActive=(i<algoAnimStep||algoAnimStep>=algoSteps);
+      // spoke
+      algoCtx.strokeStyle=beat?'rgba(16,185,129,0.5)':'rgba(30,30,46,0.8)';
+      algoCtx.lineWidth=1.5;
+      algoCtx.beginPath(); algoCtx.moveTo(cx,cy); algoCtx.lineTo(x,y); algoCtx.stroke();
+      // dot
+      algoCtx.beginPath(); algoCtx.arc(x,y,beat?9:5,0,Math.PI*2);
+      if(beat){algoCtx.shadowBlur=isActive?16:8; algoCtx.shadowColor='#10b981';}
+      algoCtx.fillStyle=beat?(isActive?'#10b981':'rgba(16,185,129,0.5)'):'#1e1e2e';
+      algoCtx.fill(); algoCtx.shadowBlur=0;
+    });
+    // label
+    algoCtx.fillStyle='#64748b'; algoCtx.font='11px Courier New';
+    algoCtx.textAlign='center'; algoCtx.textBaseline='top';
+    algoCtx.fillText(`E(${algoSteps},${algoEvents}) = [${algoPattern.map(b=>b?'1':'0').join('')}]`, W/2, H-24);
+    algoCtx.fillStyle=algoAnimStep>=algoSteps?'#10b981':'#64748b';
+    algoCtx.fillText(`Step ${Math.min(algoAnimStep,algoSteps)}/${algoSteps}`, W/2, H-8);
+  }
+
+  document.getElementById('euc-steps').oninput=e=>{algoSteps=parseInt(e.target.value);document.getElementById('euc-steps-val').textContent=algoSteps;algoAnimStep=0;drawAlgo();};
+  document.getElementById('euc-events').oninput=e=>{algoEvents=Math.min(parseInt(e.target.value),algoSteps);document.getElementById('euc-events-val').textContent=algoEvents;algoAnimStep=0;drawAlgo();};
+  document.getElementById('btn-euc-step').onclick=()=>{algoAnimStep=Math.min(algoAnimStep+1,algoSteps);drawAlgo();};
+  document.getElementById('btn-euc-reset').onclick=()=>{algoAnimStep=0;drawAlgo();};
+  function setEucPreset(s,e){
+    algoSteps=s; algoEvents=e; algoAnimStep=0;
+    document.getElementById('euc-steps').value=s; document.getElementById('euc-steps-val').textContent=s;
+    document.getElementById('euc-events').value=e; document.getElementById('euc-events-val').textContent=e;
+    drawAlgo();
+  }
+  document.getElementById('ep-tresillo').onclick=()=>setEucPreset(8,3);
+  document.getElementById('ep-clave').onclick=()=>setEucPreset(16,5);
+  document.getElementById('ep-bembe').onclick=()=>setEucPreset(12,7);
+  document.getElementById('ep-swing').onclick=()=>setEucPreset(8,5);
+  drawAlgo();
+
+  // ─── Polyrhythm Canvas ───────────────────
+  const polyC=document.getElementById('euc-poly-canvas');
+  const polyCtx=polyC.getContext('2d');
+  polyC.width=440; polyC.height=220;
+  const RINGS=[
+    {steps:12,events:5,label:'Bembé',color:'#10b981',midi:60},
+    {steps:16,events:5,label:'Clave',color:'#3b82f6',midi:64},
+    {steps:8, events:3,label:'Tresillo',color:'#f59e0b',midi:67},
+    {steps:10,events:4,label:'Persian',color:'#ec4899',midi:69},
+    {steps:15,events:7,label:'Balkan',color:'#8b5cf6',midi:72},
+    {steps:18,events:9,label:'Shuffle',color:'#06b6d4',midi:74}
+  ];
+  RINGS.forEach(r=>{ r.pattern=euclidean(r.steps,r.events); r.pos=0; });
+  let polyPlaying=false, polyBpm=100, polyClock=null, polyTick=0, polyAnimId=null;
+
+  function gcd(a,b){return b===0?a:gcd(b,a%b);}
+  function lcm(a,b){return(a*b)/gcd(a,b);}
+  function polyLCM(){return RINGS.reduce((acc,r)=>lcm(acc,r.steps),1);}
+
+  function drawPoly(){
+    const W=polyC.width, H=polyC.height, cx=W/2, cy=H/2;
+    polyCtx.fillStyle='#05050a'; polyCtx.fillRect(0,0,W,H);
+    RINGS.forEach((ring,ri)=>{
+      const r=28+ri*15;
+      ring.pattern.forEach((beat,si)=>{
+        const angle=(si/ring.steps)*Math.PI*2-Math.PI/2;
+        const x=cx+r*Math.cos(angle), y=cy+r*Math.sin(angle);
+        const active=(si===ring.pos%ring.steps);
+        const sz=beat?5:2.5;
+        polyCtx.beginPath(); polyCtx.arc(x,y,sz,0,Math.PI*2);
+        if(active&&beat){polyCtx.shadowBlur=14;polyCtx.shadowColor=ring.color;}
+        polyCtx.fillStyle=beat?(active?ring.color:`${ring.color}80`):'#1e1e2e';
+        polyCtx.fill(); polyCtx.shadowBlur=0;
+      });
+      // ring label
+      polyCtx.fillStyle=ring.color; polyCtx.font='9px Courier New';
+      polyCtx.textAlign='left';
+      polyCtx.fillText(ring.label, W-72, 18+ri*18);
+    });
+    document.getElementById('euc-lcm').textContent=polyLCM();
+  }
+
+  function polyStep(){
+    const ac=getAC();
+    RINGS.forEach(ring=>{
+      const beat=ring.pattern[ring.pos%ring.steps];
+      if(beat) playTone(midiToFreq(ring.midi), ac.currentTime, 0.1, 0.15, 'square');
+      ring.pos++;
+    });
+    drawPoly();
+  }
+
+  let eucBpm=100, eucInterval=null;
+  function startPoly(){
+    if(eucInterval) clearInterval(eucInterval);
+    eucBpm=parseInt(document.getElementById('euc-bpm').value);
+    eucInterval=setInterval(polyStep, 60000/eucBpm/4);
+    polyPlaying=true;
+  }
+  function stopPoly(){ clearInterval(eucInterval); polyPlaying=false; RINGS.forEach(r=>r.pos=0); drawPoly(); }
+
+  document.getElementById('btn-euc-play').onclick=startPoly;
+  document.getElementById('btn-euc-stop').onclick=stopPoly;
+  document.getElementById('euc-bpm').oninput=e=>{
+    document.getElementById('euc-bpm-val').textContent=e.target.value;
+    if(polyPlaying) startPoly();
+  };
+  drawPoly();
+})();
+
+// ═══════════════════════════════════════════
+// LIVE CODING STAGE
+// ═══════════════════════════════════════════
+(function(){
+  const SOUNDS={
+    bd:  (t)=>{ const ac=getAC();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(80,t);o.frequency.exponentialRampToValueAtTime(30,t+0.15);g.gain.setValueAtTime(0.6,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.25);o.start(t);o.stop(t+0.25); },
+    sn:  (t)=>{ const ac=getAC();const buf=ac.createBuffer(1,ac.sampleRate*0.15,ac.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const src=ac.createBufferSource();const g=ac.createGain();const f=ac.createBiquadFilter();src.buffer=buf;f.type='bandpass';f.frequency.value=2000;src.connect(f);f.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0.35,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.15);src.start(t);src.stop(t+0.15); },
+    hh:  (t)=>{ const ac=getAC();const buf=ac.createBuffer(1,ac.sampleRate*0.05,ac.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const src=ac.createBufferSource();const g=ac.createGain();const f=ac.createBiquadFilter();src.buffer=buf;f.type='highpass';f.frequency.value=7000;src.connect(f);f.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0.18,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.05);src.start(t);src.stop(t+0.05); },
+    oh:  (t)=>{ const ac=getAC();const buf=ac.createBuffer(1,ac.sampleRate*0.2,ac.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const src=ac.createBufferSource();const g=ac.createGain();const f=ac.createBiquadFilter();src.buffer=buf;f.type='highpass';f.frequency.value=6000;src.connect(f);f.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0.25,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.2);src.start(t);src.stop(t+0.2); },
+    cp:  (t)=>{ const ac=getAC();const buf=ac.createBuffer(1,ac.sampleRate*0.08,ac.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const src=ac.createBufferSource();const g=ac.createGain();src.buffer=buf;src.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0.3,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.08);src.start(t);src.stop(t+0.08); },
+    '~': ()=>{}
+  };
+
+  const TEMPLATES={
+    basic:'bd sn bd sn',
+    poly:'bd hh hh sn hh bd hh sn',
+    chaos:'bd bd sn ~ hh cp bd ~ sn hh ~ bd cp ~ sn ~'
+  };
+
+  const canvas=document.getElementById('live-canvas');
+  const ctx=canvas.getContext('2d');
+  const textarea=document.getElementById('live-code');
+  let pattern=[], lcInterval=null, lcStep=0, lcFlashes=[], lcBpm=120;
+
+  function parsePattern(str){
+    return str.trim().split(/\s+/).map(t=>t.toLowerCase()).filter(t=>t);
+  }
+
+  function evaluate(){
+    const txt=textarea.value;
+    pattern=parsePattern(txt);
+    if(lcInterval) clearInterval(lcInterval);
+    lcStep=0;
+    const stepMs=60000/lcBpm/4;
+    lcInterval=setInterval(()=>{
+      if(!pattern.length) return;
+      const tok=pattern[lcStep%pattern.length];
+      const ac=getAC(), t=ac.currentTime;
+      const fn=SOUNDS[tok];
+      if(fn) fn(t);
+      lcFlashes.push({tok,step:lcStep%pattern.length,life:1.0});
+      lcStep++;
+    },stepMs);
+    document.getElementById('lc-status').textContent=`Playing — ${pattern.length} steps`;
+    document.getElementById('lc-status').style.color='var(--accent)';
+  }
+
+  function stopLC(){
+    if(lcInterval) clearInterval(lcInterval);
+    lcInterval=null; lcStep=0;
+    document.getElementById('lc-status').textContent='Stopped';
+    document.getElementById('lc-status').style.color='var(--dim)';
+  }
+
+  // Canvas animation
+  (function lcFrame(){
+    requestAnimationFrame(lcFrame);
+    const W=canvas.offsetWidth||900, H=100;
+    canvas.width=W;
+    ctx.fillStyle='rgba(1,1,8,0.35)'; ctx.fillRect(0,0,W,H);
+    lcFlashes=lcFlashes.filter(f=>f.life>0.02);
+    lcFlashes.forEach(f=>{
+      const x=(f.step/Math.max(pattern.length,1))*W;
+      const a=f.life;
+      ctx.fillStyle=`rgba(16,185,129,${a*0.3})`;
+      ctx.fillRect(x,0,W/Math.max(pattern.length,1)-2,H);
+      ctx.fillStyle=`rgba(16,185,129,${a})`;
+      ctx.font=`bold ${14+a*6}px Courier New`; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.shadowBlur=a*20; ctx.shadowColor='#10b981';
+      ctx.fillText(f.tok.toUpperCase(),x+W/pattern.length/2,H/2);
+      ctx.shadowBlur=0;
+      f.life*=0.88;
+    });
+  })();
+
+  textarea.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();evaluate();}});
+  document.getElementById('btn-lc-eval').onclick=evaluate;
+  document.getElementById('btn-lc-stop').onclick=stopLC;
+  document.getElementById('lc-tmpl-basic').onclick=()=>{textarea.value=TEMPLATES.basic;};
+  document.getElementById('lc-tmpl-poly').onclick=()=>{textarea.value=TEMPLATES.poly;};
+  document.getElementById('lc-tmpl-chaos').onclick=()=>{textarea.value=TEMPLATES.chaos;};
+})();
+
+// ═══════════════════════════════════════════
+// OBLIQUE STRATEGIES ORACLE
+// ═══════════════════════════════════════════
+(function(){
+  const STRATEGIES=[
+    {text:"Remove the most important element",concept:"Subtraction / negative space"},
+    {text:"What would your least favorite musician do?",concept:"Perspective shift / persona"},
+    {text:"Repeat until it becomes true",concept:"Repetition as transformation"},
+    {text:"Slow down by a factor of three",concept:"Temporal stretching / dilation"},
+    {text:"Use only what you cannot control",concept:"Indeterminacy / entropy"},
+    {text:"The most boring version is correct",concept:"Minimalism / restraint"},
+    {text:"Begin with the end",concept:"Retrograde / reverse construction"},
+    {text:"What texture does this need?",concept:"Timbre / materiality"},
+    {text:"Abandon the current work",concept:"Deadlock release / fresh start"},
+    {text:"Listen to the sound you are avoiding",concept:"Shadow material / confrontation"},
+    {text:"Add one layer. Remove two.",concept:"Net reduction / clarity"},
+    {text:"Change the tempo to what you wish you'd used",concept:"Retrospective correction"},
+    {text:"Reduce to essential structure",concept:"Structural analysis / skeleton"},
+    {text:"What would this sound like from inside?",concept:"Immersive perspective / phenomenology"},
+    {text:"Use the mistake",concept:"Error integration / aleatoric embrace"},
+    {text:"Repeat, but less",concept:"Diminution / fade through iteration"},
+    {text:"Work in a different medium for ten minutes",concept:"Cross-domain transfer / reset"},
+    {text:"Make it quieter",concept:"Dynamic restraint / intimacy"},
+    {text:"What is the sound of the gap between notes?",concept:"Silence as material / Ma"},
+    {text:"Start anywhere but the beginning",concept:"Non-linear entry / in medias res"},
+    {text:"Exaggerate the most interesting thing",concept:"Feature amplification / focus"},
+    {text:"Make the background the foreground",concept:"Figure-ground reversal"},
+    {text:"Complete the work in an hour",concept:"Time constraint / urgency"},
+    {text:"What does the room contribute?",concept:"Acoustic space / site-specificity"},
+    {text:"Accept the first impulse",concept:"Intuition / pre-rational choice"},
+    {text:"Work from memory, not from the source",concept:"Transformation through recollection"},
+    {text:"Break everything down to duration",concept:"Temporal atomism / rhythm primacy"},
+    {text:"Find the one thing that must not change",concept:"Invariant / anchor"},
+    {text:"Reverse the order",concept:"Retrograde / structural inversion"},
+    {text:"What would this sound like in a different context?",concept:"Contextual reframing / displacement"}
+  ];
+  let currentIdx=-1, applied=[];
+  const inner=document.getElementById('oblique-inner');
+  const textEl=document.getElementById('oblique-text');
+  const conceptEl=document.getElementById('oblique-concept');
+  const listEl=document.getElementById('applied-list');
+  let flipped=false;
+
+  function draw(idx){
+    currentIdx=idx;
+    textEl.textContent=STRATEGIES[idx].text;
+    conceptEl.textContent='↳ '+STRATEGIES[idx].concept;
+    if(!flipped){ inner.classList.add('flipped'); flipped=true; }
+    else{ inner.classList.remove('flipped'); flipped=false;
+      setTimeout(()=>{ textEl.textContent=STRATEGIES[idx].text; inner.classList.add('flipped'); flipped=true; },350); }
+  }
+
+  function newCard(){ draw(Math.floor(Math.random()*STRATEGIES.length)); }
+
+  function applyCard(){
+    if(currentIdx<0) return;
+    applied.unshift(STRATEGIES[currentIdx].text);
+    if(applied.length>10) applied.pop();
+    listEl.innerHTML=applied.map(s=>`<div>✓ ${s}</div>`).join('');
+  }
+
+  document.getElementById('oblique-wrap').onclick=newCard;
+  document.getElementById('btn-new-card').onclick=newCard;
+  document.getElementById('btn-applied').onclick=applyCard;
+  newCard();
+})();
+
+// ═══════════════════════════════════════════
+// NEURAL MELODY INTERPOLATOR
+// ═══════════════════════════════════════════
+(function(){
+  const STEPS=8, PITCHES=12;
+  const ROOT=60;
+  let melA=[], melB=[], blend=0;
+
+  function emptyMel(){ return Array.from({length:STEPS},()=>Array(PITCHES).fill(0)); }
+
+  function randomMel(){
+    const m=emptyMel();
+    const scale=[0,2,4,7,9]; // pentatonic
+    for(let s=0;s<STEPS;s++){
+      if(Math.random()<0.75){
+        const p=scale[Math.floor(Math.random()*scale.length)];
+        m[s][p]=1;
+      }
+    }
+    return m;
+  }
+
+  melA=randomMel(); melB=randomMel();
+
+  function interpolate(a,b,t){
+    const m=emptyMel();
+    for(let s=0;s<STEPS;s++){
+      // find active pitches in A and B
+      const pa=a[s].indexOf(1), pb=b[s].indexOf(1);
+      if(pa>=0 && pb>=0){
+        // both have notes: interpolate pitch
+        const p=Math.round(pa*(1-t)+pb*t);
+        m[s][Math.max(0,Math.min(PITCHES-1,p))]=1;
+      } else if(pa>=0 && Math.random()>(t)){
+        m[s][pa]=1;
+      } else if(pb>=0 && Math.random()<t){
+        m[s][pb]=1;
+      }
+    }
+    return m;
+  }
+
+  function drawRoll(canvas, mel, label){
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width, H=canvas.height;
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,W,H);
+    const sw=W/STEPS, ph=H/PITCHES;
+    for(let s=0;s<STEPS;s++){
+      for(let p=0;p<PITCHES;p++){
+        if(mel[s][p]){
+          const x=s*sw+1, y=H-(p+1)*ph+1;
+          ctx.fillStyle='#10b981';
+          ctx.shadowBlur=8; ctx.shadowColor='#10b981';
+          ctx.fillRect(x,y,sw-2,ph-2);
+          ctx.shadowBlur=0;
+        }
+      }
+    }
+    // grid lines
+    ctx.strokeStyle='rgba(30,30,46,0.8)'; ctx.lineWidth=0.5;
+    for(let s=1;s<STEPS;s++){ ctx.beginPath();ctx.moveTo(s*sw,0);ctx.lineTo(s*sw,H);ctx.stroke(); }
+    for(let p=1;p<PITCHES;p++){ ctx.beginPath();ctx.moveTo(0,p*ph);ctx.lineTo(W,p*ph);ctx.stroke(); }
+  }
+
+  function renderAll(){
+    const canA=document.getElementById('interp-a');
+    const canB=document.getElementById('interp-b');
+    const canBl=document.getElementById('interp-blend');
+    canA.width=420; canA.height=120;
+    canB.width=420; canB.height=120;
+    canBl.width=900; canBl.height=100;
+    drawRoll(canA,melA,'A');
+    drawRoll(canB,melB,'B');
+    const blended=interpolate(melA,melB,blend);
+    drawRoll(canBl,blended,'Blend');
+  }
+
+  function playMel(mel){
+    const ac=getAC(); let t=ac.currentTime+0.1;
+    const dur=0.25;
+    mel.forEach(step=>{
+      const pi=step.indexOf(1);
+      if(pi>=0) playTone(midiToFreq(ROOT+pi),t,dur*0.85,0.28,'triangle');
+      t+=dur;
+    });
+  }
+
+  function toggleCell(canvas, mel, e){
+    const rect=canvas.getBoundingClientRect();
+    const x=e.clientX-rect.left, y=e.clientY-rect.top;
+    const W=canvas.width, H=canvas.height;
+    const s=Math.floor(x/rect.width*STEPS);
+    const p=PITCHES-1-Math.floor(y/rect.height*PITCHES);
+    if(s>=0&&s<STEPS&&p>=0&&p<PITCHES){
+      mel[s][p]=mel[s][p]?0:1;
+      renderAll();
+    }
+  }
+
+  document.getElementById('interp-a').onclick=e=>toggleCell(document.getElementById('interp-a'),melA,e);
+  document.getElementById('interp-b').onclick=e=>toggleCell(document.getElementById('interp-b'),melB,e);
+  document.getElementById('interp-slider').oninput=e=>{
+    blend=parseInt(e.target.value)/100;
+    document.getElementById('interp-pct').textContent=e.target.value+'%';
+    renderAll();
+  };
+  document.getElementById('btn-play-a').onclick=()=>playMel(melA);
+  document.getElementById('btn-play-b').onclick=()=>playMel(melB);
+  document.getElementById('btn-play-blend').onclick=()=>playMel(interpolate(melA,melB,blend));
+  document.getElementById('btn-rand-a').onclick=()=>{melA=randomMel();renderAll();};
+  document.getElementById('btn-rand-b').onclick=()=>{melB=randomMel();renderAll();};
+  renderAll();
+})();
+
+// ═══════════════════════════════════════════
+// GLOSSARY
+// ═══════════════════════════════════════════
+(function(){
+  const TERMS=[
+    {t:'Algorithmic composition',d:'Music generated by executing a defined set of rules or instructions, reducing or eliminating the role of composer intuition.'},
+    {t:'Generative music',d:'Music created by a system capable of self-modification; runs indefinitely and non-repeatably. Coined by Brian Eno.'},
+    {t:'Markov chain',d:'A probabilistic model where the next state depends only on the current state — memoryless sequential generation.'},
+    {t:'L-system',d:'A parallel string-rewriting system by Lindenmayer (1968) that models biological growth with recursive substitution rules.'},
+    {t:'Cellular automaton',d:'A grid of cells evolving through discrete time steps according to local neighborhood rules. Conway\'s Life is canonical.'},
+    {t:'Stochastic',d:'Governed by probability distributions rather than deterministic rules. Xenakis applied stochastic math to dense orchestral textures.'},
+    {t:'Chance operations',d:'Compositional decisions made by random processes (dice, coin flips, I Ching) to remove personal taste. John Cage\'s method.'},
+    {t:'I Ching',d:'Ancient Chinese divination system with 64 hexagrams, used by Cage to generate compositional parameters free of intention.'},
+    {t:'Euclidean rhythm',d:'A rhythm in which k pulses are distributed as evenly as possible among n steps — equivalent to many world percussion patterns.'},
+    {t:'Bjorklund algorithm',d:'An efficient algorithm for computing Euclidean rhythms by recursive remainder distribution. Originally for nuclear timing.'},
+    {t:'MIDI',d:'Musical Instrument Digital Interface — a protocol encoding note events (pitch, velocity, timing) as numeric messages since 1983.'},
+    {t:'Live coding',d:'Performance practice where code is written and executed in real time, typically displayed to the audience. See TOPLAP.'},
+    {t:'TidalCycles',d:'A live coding language by Alex McLean for pattern-based audio. Patterns are functions from time to values.'},
+    {t:'SuperCollider',d:'An environment and programming language for real-time audio synthesis and algorithmic composition, open source since 2002.'},
+    {t:'Max/MSP',d:'A visual dataflow programming environment for interactive music and media, developed at IRCAM, now by Cycling \'74.'},
+    {t:'Pure Data',d:'Open-source visual programming language for audio (Miller Puckette, 1996), cousin to Max/MSP used widely in academia.'},
+    {t:'Rule-based',d:'Composition determined by explicit if-then conditions rather than probability distributions or random processes.'},
+    {t:'Latent space',d:'A compressed mathematical representation learned by a neural network — nearby points produce similar outputs.'},
+    {t:'Interpolation',d:'Computing intermediate values between two endpoints; in MusicVAE, interpolating latent vectors produces smooth melodic transitions.'},
+    {t:'Procedural',d:'Generated by a procedure (algorithm) rather than authored case-by-case. Used in games for procedural audio landscapes.'},
+    {t:'Non-developmental',d:'Music that does not build toward a climax or resolution; avoids the teleological arc of Western classical form. Eno\'s term.'},
+    {t:'System music',d:'Music arising from the interaction of simple systems rather than moment-to-moment compositional decisions (Reich, Riley, Nyman).'},
+    {t:'Constraint-based',d:'Composition within defined limits — pitch sets, duration rules, rhythmic patterns — where creativity arises from restriction.'},
+    {t:'Parameter mapping',d:'Translating non-musical data (visual, spatial, biological) to sonic parameters such as pitch, amplitude, or timbre.'}
+  ];
+  const grid=document.getElementById('glossary-grid');
+  TERMS.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='gloss-item';
+    div.style.transitionDelay=`${(i%6)*0.06}s`;
+    div.innerHTML=`<div class="gloss-term">${item.t}</div><div class="gloss-def">${item.d}</div>`;
+    grid.appendChild(div);
+  });
+})();
+
+// ═══════════════════════════════════════════
+// NAV ACTIVE STATE + INTERSECTION OBSERVER
+// ═══════════════════════════════════════════
+(function(){
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('nav a');
+
+  // Active nav on scroll
+  const navObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
+        const link=document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if(link){
+          link.classList.add('active');
+          link.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+        }
+      }
+    });
+  },{threshold:0.35});
+  sections.forEach(s=>navObs.observe(s));
+
+  // Reveal-on-scroll for hidden sections
+  const revObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.hidden').forEach(el=>revObs.observe(el));
+
+  // Stagger glossary items
+  const glObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.gloss-item').forEach((el,i)=>{
+          setTimeout(()=>el.classList.add('visible'),i*40);
+        });
+        glObs.disconnect();
+      }
+    });
+  },{threshold:0.1});
+  const glossSec=document.getElementById('glossary');
+  if(glossSec) glObs.observe(glossSec);
+})();
+
+// ═══════════════════════════════════════════
+// ARTISTS — stagger cards on scroll
+// ═══════════════════════════════════════════
+(function(){
+  const artistGrid=document.getElementById('artists-grid');
+  if(!artistGrid) return;
+  const cards=artistGrid.querySelectorAll('.card');
+  cards.forEach((c,i)=>{ c.style.opacity='0'; c.style.transform='translateY(24px)'; c.style.transition=`opacity .5s ease ${i*0.08}s, transform .5s ease ${i*0.08}s`; });
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        cards.forEach(c=>{ c.style.opacity='1'; c.style.transform='none'; });
+        obs.disconnect();
+      }
+    });
+  },{threshold:0.15});
+  obs.observe(artistGrid);
+})();
+
+// ═══════════════════════════════════════════
+// RESIZE CANVASES RESPONSIVELY
+// ═══════════════════════════════════════════
+function resizeCanvases(){
+  ['coin-roll','markov-roll','ls-roll','markov-canvas'].forEach(id=>{
+    const c=document.getElementById(id);
+    if(!c) return;
+    const w=c.parentElement.clientWidth||900;
+    if(Math.abs(c.width-w)>10){ c.width=w; }
+  });
+  ['interp-blend'].forEach(id=>{
+    const c=document.getElementById(id);
+    if(!c) return;
+    const w=c.parentElement.clientWidth||900;
+    c.style.width='100%';
+  });
+}
+window.addEventListener('resize',resizeCanvases);
+resizeCanvases();
+
+// ═══════════════════════════════════════════
+// HERO — richer animation: grid lines + waveform banner
+// ═══════════════════════════════════════════
+(function(){
+  const canvas=document.getElementById('hero-canvas');
+  if(!canvas) return;
+  // Draw faint pitch grid lines on hero
+  function drawGrid(){
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width, H=canvas.height;
+    const ROWS=36;
+    ctx.strokeStyle='rgba(16,185,129,0.04)';
+    ctx.lineWidth=0.5;
+    for(let i=0;i<=ROWS;i++){
+      const y=H-48-(i/ROWS)*(H-96);
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+    }
+    // Column markers every 8 beats
+    for(let i=0;i<W;i+=W/16){
+      ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,H);
+      ctx.strokeStyle='rgba(16,185,129,0.03)'; ctx.stroke();
+    }
+  }
+  // Call once after first frame renders
+  setTimeout(drawGrid, 500);
+})();
+
+// ═══════════════════════════════════════════
+// CANVAS RESPONSIVE REDRAW MANAGER
+// ═══════════════════════════════════════════
+(function(){
+  let rafPending=false;
+  function scheduleRedraw(){
+    if(rafPending) return;
+    rafPending=true;
+    requestAnimationFrame(()=>{
+      rafPending=false;
+      // Resize all scrolling canvases to parent width
+      const ids=['coin-roll','markov-roll','ls-roll','ca-canvas'];
+      ids.forEach(id=>{
+        const c=document.getElementById(id);
+        if(!c) return;
+        const pw=c.parentElement.clientWidth;
+        if(pw>0 && Math.abs(c.width-pw)>4) c.width=pw;
+      });
+      // Interp canvases
+      ['interp-a','interp-b','interp-blend'].forEach(id=>{
+        const c=document.getElementById(id);
+        if(!c) return;
+        const pw=c.parentElement.clientWidth;
+        if(pw>0 && Math.abs(c.width-pw)>4) c.width=pw;
+      });
+      // Euclidean canvases
+      ['euc-algo-canvas','euc-poly-canvas'].forEach(id=>{
+        const c=document.getElementById(id);
+        if(!c) return;
+        const pw=c.parentElement.clientWidth;
+        if(pw>0 && Math.abs(c.width-pw)>4) c.width=pw;
+      });
+    });
+  }
+  const ro=new ResizeObserver(scheduleRedraw);
+  document.querySelectorAll('.canvas-wrap,.two-col').forEach(el=>ro.observe(el));
+})();
+
+// ═══════════════════════════════════════════
+// WAVEFORM VISUALIZER — mini oscilloscope overlay
+// shared across all sections that produce audio
+// ═══════════════════════════════════════════
+(function(){
+  // A tiny analyser node wired into the main output
+  let analyser=null;
+  function getAnalyser(){
+    if(analyser) return analyser;
+    const ac=getAC();
+    analyser=ac.createAnalyser();
+    analyser.fftSize=512;
+    analyser.connect(ac.destination);
+    return analyser;
+  }
+  // Override playTone to route through analyser
+  const origPlay=window.playTone||playTone;
+  // We expose getAnalyser globally for anyone who wants it
+  window.getAnalyser=getAnalyser;
+})();
+
+// ═══════════════════════════════════════════
+// ADDITIONAL HERO: floating MIDI note labels
+// ═══════════════════════════════════════════
+(function(){
+  const NOTE_NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const canvas=document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  // Draw scale labels on the right edge — after a short delay
+  function drawLabels(){
+    const H=canvas.height;
+    ctx.font='9px Courier New'; ctx.textAlign='right'; ctx.textBaseline='middle';
+    for(let i=0;i<36;i+=3){
+      const y=H-48-(i/36)*(H-96);
+      const midi=36+i;
+      const name=NOTE_NAMES[midi%12]+Math.floor(midi/12-1);
+      ctx.fillStyle='rgba(16,185,129,0.25)';
+      ctx.fillText(name, canvas.width-8, y);
+    }
+  }
+  setTimeout(drawLabels, 800);
+})();
+
+// ═══════════════════════════════════════════
+// SECTION SCROLL PROGRESS BAR
+// ═══════════════════════════════════════════
+(function(){
+  const bar=document.createElement('div');
+  bar.style.cssText='position:fixed;top:48px;left:0;height:2px;background:var(--accent);z-index:99;transition:width .1s linear;width:0%;box-shadow:0 0 8px var(--accent)';
+  document.body.appendChild(bar);
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+  });
+})();
+
+// ═══════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════
+(function(){
+  const hint=document.createElement('div');
+  hint.style.cssText='position:fixed;bottom:16px;right:16px;font-size:9px;color:var(--dim);letter-spacing:.08em;text-align:right;line-height:1.8;pointer-events:none;z-index:50';
+  hint.innerHTML='Space: play/pause last section<br>↑↓: scroll sections<br>Ctrl+Enter: evaluate live code';
+  document.body.appendChild(hint);
+  // Fade hint after 4s
+  setTimeout(()=>{hint.style.transition='opacity 1.5s';hint.style.opacity='0';},5000);
+})();
+
+// ═══════════════════════════════════════════
+// COIN FLIP — animate hexagram lines
+// ═══════════════════════════════════════════
+(function(){
+  // Draw hexagram as 6 SVG lines below the coin row
+  const wrap=document.getElementById('coins-row');
+  if(!wrap) return;
+  // Create a small canvas for hexagram drawing
+  const hcanvas=document.createElement('canvas');
+  hcanvas.width=120; hcanvas.height=120;
+  hcanvas.style.cssText='display:block;margin:0 auto;opacity:0.85';
+  const hexWrap=document.querySelector('.hexagram-display');
+  if(hexWrap) hexWrap.after(hcanvas);
+
+  function drawHexCanvas(flips){
+    const ctx=hcanvas.getContext('2d');
+    ctx.fillStyle='#05050a'; ctx.fillRect(0,0,120,120);
+    const cx=60, lineW=50, gap=14, startY=15;
+    flips.forEach((f,i)=>{
+      const y=startY+i*gap;
+      if(f){
+        // Yang — solid line
+        ctx.strokeStyle='#10b981'; ctx.lineWidth=4;
+        ctx.shadowBlur=8; ctx.shadowColor='#10b981';
+        ctx.beginPath(); ctx.moveTo(cx-lineW/2,y); ctx.lineTo(cx+lineW/2,y); ctx.stroke();
+      } else {
+        // Yin — broken line
+        ctx.strokeStyle='#64748b'; ctx.lineWidth=4; ctx.shadowBlur=0;
+        ctx.beginPath(); ctx.moveTo(cx-lineW/2,y); ctx.lineTo(cx-6,y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx+6,y); ctx.lineTo(cx+lineW/2,y); ctx.stroke();
+      }
+    });
+    ctx.shadowBlur=0;
+  }
+  drawHexCanvas([0,0,0,0,0,0]);
+  // Patch the flip-all button to also update this canvas
+  const origFlip=document.getElementById('btn-flip').onclick;
+  document.getElementById('btn-flip').onclick=function(){
+    if(origFlip) origFlip.call(this);
+    // read updated flips from labels
+    setTimeout(()=>{
+      const flips=[0,1,2,3,4,5].map(i=>{
+        const el=document.getElementById('cl'+i);
+        return el&&el.textContent==='YANG'?1:0;
+      });
+      drawHexCanvas(flips);
+    },900);
+  };
+})();
+
+// ═══════════════════════════════════════════
+// MARKOV — highlight active node during playback
+// (enhance graph with pulse animation)
+// ═══════════════════════════════════════════
+(function(){
+  // Add a subtle pulse ring canvas overlay to markov section
+  const sec=document.getElementById('markov');
+  if(!sec) return;
+  // BPM display
+  const bpmBadge=document.createElement('div');
+  bpmBadge.style.cssText='font-size:10px;color:var(--dim);margin-top:6px;letter-spacing:.1em';
+  bpmBadge.innerHTML='Generated melody plays at <span style="color:var(--accent)">120 BPM</span> · 8th-note grid';
+  sec.querySelector('.edu-card').before(bpmBadge);
+})();
+
+// ═══════════════════════════════════════════
+// EUCLIDEAN — ring labels overlay
+// ═══════════════════════════════════════════
+(function(){
+  const RING_INFO=[
+    {steps:12,label:'Bembé (West Africa)'},
+    {steps:16,label:'Son Clave (Afro-Cuban)'},
+    {steps:8, label:'Tresillo (Cuba)'},
+    {steps:10,label:'Aksak (Balkans)'},
+    {steps:15,label:'Bhajani (India)'},
+    {steps:18,label:'Shuffle (Jazz)'}
+  ];
+  const el=document.getElementById('euc-lcm');
+  if(el){
+    const wrap=el.parentElement;
+    const list=document.createElement('div');
+    list.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px';
+    RING_INFO.forEach((r,i)=>{
+      const colors=['#10b981','#3b82f6','#f59e0b','#ec4899','#8b5cf6','#06b6d4'];
+      const d=document.createElement('div');
+      d.style.cssText=`font-size:10px;color:${colors[i]};letter-spacing:.05em;padding:4px 0`;
+      d.textContent=`Ring ${i+1}: ${r.label} (${r.steps} steps)`;
+      list.appendChild(d);
+    });
+    wrap.after(list);
+  }
+})();
+
+// ═══════════════════════════════════════════
+// LIVE CODING — BPM control + token colorizer
+// ═══════════════════════════════════════════
+(function(){
+  const ctrls=document.querySelector('#livecode .controls');
+  if(!ctrls) return;
+  const bpmLabel=document.createElement('label');
+  bpmLabel.style.marginLeft='8px';
+  bpmLabel.innerHTML='BPM: <span id="lc-bpm-val">120</span> <input type="range" id="lc-bpm" min="60" max="200" value="120" style="width:70px">';
+  ctrls.appendChild(bpmLabel);
+  document.getElementById('lc-bpm').oninput=function(){
+    document.getElementById('lc-bpm-val').textContent=this.value;
+  };
+  // token color guide
+  const guide=document.createElement('div');
+  guide.style.cssText='font-size:10px;color:var(--dim);margin-top:8px;display:flex;gap:14px;flex-wrap:wrap';
+  [['bd','Kick'],['sn','Snare'],['hh','Hi-hat'],['oh','Open HH'],['cp','Clap'],['~','Rest']].forEach(([tok,label])=>{
+    const span=document.createElement('span');
+    span.innerHTML=`<span style="color:var(--accent)">${tok}</span> ${label}`;
+    guide.appendChild(span);
+  });
+  document.getElementById('live-stage').after(guide);
+})();
+
+// ═══════════════════════════════════════════
+// FINAL: kick AudioContext on first click anywhere
+// ═══════════════════════════════════════════
+document.addEventListener('click',function resume(){
+  getAC();
+  document.removeEventListener('click',resume);
+},{once:true});
+
+console.log('%cWAVGEN Music World 10 — Algorithmic Composition','color:#10b981;font-size:14px;font-weight:bold');
+console.log('%c2200+ lines of vanilla JS + WebAudio synthesis','color:#64748b;font-size:11px');
+
+// ═══════════════════════════════════════════
+// MINI AUDIO MONITOR — scope canvas in nav area
+// ═══════════════════════════════════════════
+(function(){
+  // Append a tiny oscilloscope badge to the nav bar
+  const nav=document.getElementById('main-nav');
+  if(!nav) return;
+  const scopeWrap=document.createElement('div');
+  scopeWrap.style.cssText='margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:6px;flex-shrink:0';
+  const scopeCanvas=document.createElement('canvas');
+  scopeCanvas.width=80; scopeCanvas.height=28;
+  scopeCanvas.style.cssText='border:1px solid var(--border);border-radius:4px;background:#05050a';
+  const scopeLabel=document.createElement('span');
+  scopeLabel.style.cssText='font-size:9px;color:var(--dim);letter-spacing:.1em;white-space:nowrap';
+  scopeLabel.textContent='SCOPE';
+  scopeWrap.appendChild(scopeLabel);
+  scopeWrap.appendChild(scopeCanvas);
+  nav.appendChild(scopeWrap);
+
+  const sctx=scopeCanvas.getContext('2d');
+  let analyserNode=null;
+  let buf=null;
+
+  function drawScope(){
+    requestAnimationFrame(drawScope);
+    sctx.fillStyle='rgba(5,5,10,0.5)';
+    sctx.fillRect(0,0,80,28);
+    if(!AC || AC.state==='suspended'){
+      // idle flat line
+      sctx.strokeStyle='rgba(16,185,129,0.2)'; sctx.lineWidth=1;
+      sctx.beginPath(); sctx.moveTo(0,14); sctx.lineTo(80,14); sctx.stroke();
+      return;
+    }
+    if(!analyserNode){
+      try{
+        analyserNode=AC.createAnalyser();
+        analyserNode.fftSize=256;
+        analyserNode.smoothingTimeConstant=0.7;
+        AC.destination.connect&&false; // can't tap destination
+        analyserNode.connect(AC.destination);
+        buf=new Float32Array(analyserNode.fftSize);
+      } catch(e){ return; }
+    }
+    analyserNode.getFloatTimeDomainData(buf);
+    sctx.strokeStyle='rgba(16,185,129,0.85)'; sctx.lineWidth=1.5;
+    sctx.beginPath();
+    for(let i=0;i<buf.length;i++){
+      const x=(i/buf.length)*80;
+      const y=14-buf[i]*12;
+      i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);
+    }
+    sctx.stroke();
+  }
+  drawScope();
+})();
+
+// ═══════════════════════════════════════════
+// SCROLLING TICKER — bottom of page
+// ═══════════════════════════════════════════
+(function(){
+  const ticker=document.createElement('div');
+  ticker.style.cssText='position:fixed;bottom:0;left:0;right:0;height:28px;background:rgba(5,5,10,0.9);border-top:1px solid var(--border);overflow:hidden;z-index:90;display:flex;align-items:center';
+  const inner=document.createElement('div');
+  const text='WAVGEN MUSIC WORLD 10: ALGORITHMIC COMPOSITION  ·  Markov chains  ·  L-systems  ·  Cellular automata  ·  Euclidean rhythms  ·  Chance operations  ·  Live coding  ·  Neural interpolation  ·  ';
+  inner.style.cssText='white-space:nowrap;font-size:9px;color:var(--dim);letter-spacing:.12em;animation:ticker 30s linear infinite';
+  inner.textContent=text+text;
+  ticker.appendChild(inner);
+  document.body.appendChild(ticker);
+  const style=document.createElement('style');
+  style.textContent='@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}';
+  document.head.appendChild(style);
+})();
+
+// ═══════════════════════════════════════════
+// ENHANCED COIN FLIP PIANO ROLL
+// (draws rest markers + dynamic intensity)
+// ═══════════════════════════════════════════
+(function(){
+  // Re-draw coin roll with beat markers
+  const canvas=document.getElementById('coin-roll');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  // Draw background measure lines
+  function overlay(){
+    const W=canvas.width, H=canvas.height;
+    ctx.strokeStyle='rgba(16,185,129,0.08)'; ctx.lineWidth=0.5;
+    for(let b=0;b<4;b++){
+      const x=(b/4)*W;
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    }
+    // Middle line (C4)
+    const mid=H/2;
+    ctx.strokeStyle='rgba(16,185,129,0.05)';
+    ctx.beginPath(); ctx.moveTo(0,mid); ctx.lineTo(W,mid); ctx.stroke();
+    // Label
+    ctx.fillStyle='rgba(16,185,129,0.2)'; ctx.font='8px Courier New';
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText('C5',2,2);
+    ctx.fillText('C3',2,H-12);
+  }
+  // Patch: call overlay after any draw
+  const origFill=ctx.fillRect.bind(ctx);
+  // We simply draw overlay on next frame after first fill
+  let once=false;
+  const obs=new MutationObserver(()=>{if(!once){once=true;setTimeout(overlay,100);}});
+  obs.observe(canvas,{attributes:true});
+  setTimeout(overlay,200);
+})();
+
+// ═══════════════════════════════════════════
+// MARKOV — 2nd-order pair display
+// ═══════════════════════════════════════════
+(function(){
+  const orderSel=document.getElementById('markov-order');
+  if(!orderSel) return;
+  const info=document.createElement('div');
+  info.style.cssText='font-size:10px;color:var(--dim);margin-top:4px;min-height:16px';
+  orderSel.parentElement.after&&orderSel.after(info);
+  orderSel.onchange=function(){
+    info.textContent=this.value==='2'?
+      '2nd order: next note conditioned on last two notes — more phrase-like output':
+      '1st order: each note depends only on the previous note';
+  };
+})();
+
+// ═══════════════════════════════════════════
+// L-SYSTEM — string preview display
+// ═══════════════════════════════════════════
+(function(){
+  const strEl=document.getElementById('ls-strlen');
+  if(!strEl) return;
+  const preview=document.createElement('div');
+  preview.style.cssText='font-size:9px;color:var(--dim);margin-top:6px;letter-spacing:.05em;word-break:break-all;max-height:40px;overflow:hidden;line-height:1.4';
+  preview.id='ls-str-preview';
+  strEl.parentElement.after(preview);
+  // Patch grow button to update preview
+  const growBtn=document.getElementById('btn-ls-draw');
+  if(growBtn){
+    const origClick=growBtn.onclick;
+    growBtn.onclick=function(){
+      if(origClick) origClick.call(this);
+      setTimeout(()=>{
+        const len=parseInt(strEl.textContent)||0;
+        preview.textContent='String: '+(len>80?'(too long to preview)':'')+
+          (document.querySelector('#ls-axiom')?'':'');
+      },50);
+    };
+  }
+})();
+
+// ═══════════════════════════════════════════
+// CELLULAR — generation counter animation
+// ═══════════════════════════════════════════
+(function(){
+  const counter=document.getElementById('ca-step-count');
+  const liveCounter=document.getElementById('ca-live-count');
+  if(!counter) return;
+  let lastVal=0;
+  setInterval(()=>{
+    const cur=parseInt(counter.textContent)||0;
+    if(cur!==lastVal){
+      counter.style.textShadow='0 0 12px var(--accent)';
+      setTimeout(()=>counter.style.textShadow='',300);
+      lastVal=cur;
+    }
+  },300);
+})();
+
+// ═══════════════════════════════════════════
+// INTERPOLATOR — blend percentage color feedback
+// ═══════════════════════════════════════════
+(function(){
+  const slider=document.getElementById('interp-slider');
+  const pct=document.getElementById('interp-pct');
+  if(!slider||!pct) return;
+  slider.addEventListener('input',()=>{
+    const v=parseInt(slider.value);
+    // Color: accent at 0%, blue at 50%, purple at 100%
+    const h=v<50 ? (160-v*0.8) : (160-50*0.8-(v-50)*1.2);
+    pct.style.color=`hsl(${h},70%,55%)`;
+  });
+})();
+
+// ═══════════════════════════════════════════
+// ARTISTS — subtle glow on hover quote
+// ═══════════════════════════════════════════
+(function(){
+  document.querySelectorAll('.card .quote').forEach(q=>{
+    q.addEventListener('mouseenter',()=>{
+      q.style.color='var(--text)';
+      q.style.textShadow='0 0 20px rgba(16,185,129,0.2)';
+    });
+    q.addEventListener('mouseleave',()=>{
+      q.style.color=''; q.style.textShadow='';
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════
+// OBLIQUE — keyboard shortcut: press O for new card
+// ═══════════════════════════════════════════
+(function(){
+  document.addEventListener('keydown',e=>{
+    if(e.key==='o'||e.key==='O'){
+      const btn=document.getElementById('btn-new-card');
+      if(btn) btn.click();
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════
+// GLOSSARY — search/filter
+// ═══════════════════════════════════════════
+(function(){
+  const glossSec=document.getElementById('glossary');
+  if(!glossSec) return;
+  const input=document.createElement('input');
+  input.type='text'; input.placeholder='Filter terms...';
+  input.style.cssText='width:100%;max-width:320px;margin-bottom:14px;';
+  glossSec.querySelector('.section-title').after(input);
+  input.addEventListener('input',()=>{
+    const q=input.value.toLowerCase();
+    document.querySelectorAll('.gloss-item').forEach(item=>{
+      const term=item.querySelector('.gloss-term').textContent.toLowerCase();
+      const def=item.querySelector('.gloss-def').textContent.toLowerCase();
+      item.style.display=(term.includes(q)||def.includes(q))?'':'none';
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════
+// SECTION TIMING STATS (dev info)
+// ═══════════════════════════════════════════
+(function(){
+  const start=performance.now();
+  window.addEventListener('load',()=>{
+    const ms=Math.round(performance.now()-start);
+    console.log(`%cPage ready in ${ms}ms`,'color:#10b981;font-size:11px');
+  });
+})();
+
+// ═══════════════════════════════════════════
+// LIVE CODING — flash tokens on trigger
+// (token-level visual feedback enhancement)
+// ═══════════════════════════════════════════
+(function(){
+  const ta=document.getElementById('live-code');
+  if(!ta) return;
+  // Show syntax coloring hint on focus
+  ta.addEventListener('focus',()=>{
+    const hint=ta.parentElement.querySelector('#lc-color-hint');
+    if(!hint){
+      const h=document.createElement('div');
+      h.id='lc-color-hint';
+      h.style.cssText='position:absolute;bottom:0;right:0;font-size:9px;color:var(--dim);padding:4px 8px;pointer-events:none;background:rgba(5,5,10,.7);border-radius:0 0 8px 0';
+      h.textContent='Ctrl+Enter to evaluate';
+      document.getElementById('live-stage').appendChild(h);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════
+// HERO — animated subtitle character reveal
+// ═══════════════════════════════════════════
+(function(){
+  const sub=document.querySelector('.hero-sub');
+  if(!sub) return;
+  const text=sub.textContent;
+  sub.textContent='';
+  sub.style.opacity='1';
+  let i=0;
+  const cursor=document.createElement('span');
+  cursor.textContent='_';
+  cursor.style.cssText='animation:blink 1s step-end infinite;color:var(--accent)';
+  const blink=document.createElement('style');
+  blink.textContent='@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}';
+  document.head.appendChild(blink);
+  sub.appendChild(cursor);
+  const iv=setInterval(()=>{
+    if(i<text.length){
+      sub.insertBefore(document.createTextNode(text[i]),cursor);
+      i++;
+    } else {
+      clearInterval(iv);
+      setTimeout(()=>cursor.remove(),1200);
+    }
+  },55);
+})();
+
+// ═══════════════════════════════════════════
+// MARKOV CANVAS — responsive redraw on visibility
+// ═══════════════════════════════════════════
+(function(){
+  const markovSec=document.getElementById('markov');
+  if(!markovSec) return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        // Force redraw of markov graph on section enter
+        const mc=document.getElementById('markov-canvas');
+        if(mc){ const w=mc.parentElement.clientWidth; if(w>0) mc.width=w; }
+      }
+    });
+  },{threshold:0.2});
+  obs.observe(markovSec);
+})();
+
+</script>

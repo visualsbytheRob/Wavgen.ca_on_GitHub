@@ -1,0 +1,1784 @@
+---
+layout: world.njk
+title: "Immersive Transition Cinema — The Space Between Frames"
+description: "Immersive video world exploring immersive transition cinema"
+domain: video
+permalink: /video/immersive-transition-cinema/
+---
+
+
+<nav id="nav">
+<div class="nav-brand">WAVGEN — Transition Cinema</div>
+<div class="nav-links">
+<a href="#s1">Hero</a><a href="#s2">Museum</a><a href="#s3">Rhythm</a>
+<a href="#s4">Montage</a><a href="#s5">Pacing</a><a href="#s6">Builder</a>
+<a href="#s7">Techniques</a><a href="#s8">History</a><a href="#s9">Glossary</a>
+</div>
+</nav>
+<!-- S1: HERO -->
+<section class="section" id="s1">
+<div class="section-label">Section 01 — Cinematic Sequence</div>
+<h1 class="hero-title">IMMERSIVE TRANSITION CINEMA</h1>
+<p class="hero-quote">"The cut is not an interruption. It is the thought itself."</p>
+<div class="badge-row">
+<span class="badge" id="hBadgeCutType">Cut Type: Fade</span>
+<span class="badge" id="hBadgeRate">Frame Rate: 24fps</span>
+<span class="badge" id="hBadgeDur">Duration: —</span>
+<span class="badge" id="hBadgeRhythm">Rhythm: Auto</span>
+</div>
+<div class="hero-canvas-wrap" style="margin-top:1.2rem;">
+<canvas height="420" id="heroCanvas" width="800"></canvas>
+</div>
+<div class="hero-controls">
+<button class="btn" id="heroPauseBtn">⏸ Pause</button>
+<div class="hero-phase-info" id="heroPhaseInfo">Phase 1 of 6 — Fade In</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- S2: MUSEUM -->
+<section class="section" id="s2">
+<div class="section-label">Section 02 — Taxonomy</div>
+<h2 class="section-title">Transition Type Museum</h2>
+<p class="section-sub">Eight fundamental transition techniques. Click any canvas to trigger its animation.</p>
+<div class="museum-grid" id="museumGrid"></div>
+<div class="edu-card">
+<strong>Pro tip:</strong> The transition you choose is an editorial statement. A hard cut asserts confidence. A dissolve expresses passage or memory. The wipe is theatrical — it acknowledges the screen as a stage. Match cuts are the closest cinema comes to pure metaphor.
+  </div>
+</section>
+<div class="divider"></div>
+<!-- S3: RHYTHM -->
+<section class="section" id="s3">
+<div class="section-label">Section 03 — Tempo</div>
+<h2 class="section-title">Rhythmic Editing Lab</h2>
+<p class="section-sub">Set the BPM and pattern to sculpt the emotional pace of a cut sequence.</p>
+<div class="rhythm-controls">
+<div>
+<label>BPM: <strong id="bpmVal">80</strong></label><br/>
+<input id="bpmSlider" max="180" min="40" style="margin-top:6px;" type="range" value="80"/>
+</div>
+<div>
+<label>Pattern</label><br/>
+<select id="patternSel" style="margin-top:6px; width:100%;">
+<option value="constant">Constant (Equal Cuts)</option>
+<option value="accelerating">Accelerating (Faster)</option>
+<option value="decelerating">Decelerating (Slower)</option>
+<option value="alternating">Alternating (Fast-Slow)</option>
+<option value="syncopated">Syncopated (Off-beat)</option>
+</select>
+</div>
+</div>
+<canvas height="300" id="rhythmCanvas" style="width:100%;" width="700"></canvas>
+<div class="rhythm-stats-row">
+<div class="rhythm-stat">Cuts/Min <span id="cpmVal">80</span></div>
+<div class="rhythm-stat">Interval <span id="intervalVal">0.75s</span></div>
+<div class="rhythm-stat">Scene <span id="sceneVal">1</span></div>
+<div class="rhythm-stat">Pattern <span id="patternVal">Constant</span></div>
+</div>
+<div class="edu-card">
+<strong>Eisenstein</strong> proved that rhythm creates emotion. Fast cuts = anxiety. Slow cuts = contemplation. The <strong>spacing between cuts IS the feeling</strong>. Syncopated patterns — like jazz — create surprise and tension by hitting off the expected beat.
+  </div>
+</section>
+<div class="divider"></div>
+<!-- S4: MONTAGE -->
+<section class="section" id="s4">
+<div class="section-label">Section 04 — Theory</div>
+<h2 class="section-title">Montage Theory Lab</h2>
+<p class="section-sub">Three interactive demonstrations of foundational montage principles.</p>
+<div class="montage-grid">
+<div class="montage-panel">
+<div class="montage-title">Kuleshov Effect</div>
+<canvas height="220" id="kuleshovCanvas" style="width:100%;" width="300"></canvas>
+<div style="display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap;">
+<button class="btn" id="kBtn0">Soup</button>
+<button class="btn" id="kBtn1">Coffin</button>
+<button class="btn" id="kBtn2">Child</button>
+<button class="btn" id="kBtn3">Pool</button>
+</div>
+<div class="montage-meaning" id="kuleshovMeaning">Click an object to test the effect...</div>
+</div>
+<div class="montage-panel">
+<div class="montage-title">Eisenstein Collision</div>
+<canvas height="220" id="eisensteinCanvas" style="width:100%;" width="300"></canvas>
+<div class="montage-btns">
+<button class="btn active" id="eBtn0">Eye+Skull</button>
+<button class="btn" id="eBtn1">Bull+Factory</button>
+<button class="btn" id="eBtn2">Heaven+Earth</button>
+</div>
+<div class="montage-meaning" id="eisensteinMeaning">= Mortality</div>
+</div>
+<div class="montage-panel">
+<div class="montage-title">Soviet vs. Hollywood</div>
+<canvas height="220" id="sovHollCanvas" style="width:100%;" width="300"></canvas>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:8px;">
+<button class="btn active" id="sovBtn">Soviet</button>
+<button class="btn" id="hollBtn">Hollywood</button>
+</div>
+<div class="montage-meaning" id="sovHollMeaning">Abstract collision montage</div>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- S5: PACING -->
+<section class="section" id="s5">
+<div class="section-label">Section 05 — Structure</div>
+<h2 class="section-title">Pacing Architecture</h2>
+<p class="section-sub">Shot-length timelines of landmark films. Each bar = one scene, height = duration.</p>
+<div class="pacing-controls">
+<select id="filmSel">
+<option value="godfather">The Godfather (1972)</option>
+<option value="madmax">Mad Max: Fury Road (2015)</option>
+<option value="2001">2001: A Space Odyssey (1968)</option>
+<option value="dunkirk">Dunkirk (2017)</option>
+<option value="breathless">Breathless (1960)</option>
+</select>
+<button class="btn" id="drawModeBtn">✏ Draw Your Own</button>
+<button class="btn" id="clearDrawBtn" style="display:none;">✕ Clear Drawing</button>
+</div>
+<canvas height="260" id="pacingCanvas" style="width:100%; cursor:default;" width="700"></canvas>
+<div class="pacing-stats">
+<div class="pacing-stat"><span class="pacing-stat-val" id="pAvgLen">—</span><span class="pacing-stat-lbl">Avg Shot (s)</span></div>
+<div class="pacing-stat"><span class="pacing-stat-val" id="pTotalCuts">—</span><span class="pacing-stat-lbl">Total Cuts</span></div>
+<div class="pacing-stat"><span class="pacing-stat-val" id="pCPM">—</span><span class="pacing-stat-lbl">Cuts / Min</span></div>
+<div class="pacing-stat"><span class="pacing-stat-val" id="pScore">—</span><span class="pacing-stat-lbl">Pacing Score</span></div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- S6: SEQUENCE BUILDER -->
+<section class="section" id="s6">
+<div class="section-label">Section 06 — Composition</div>
+<h2 class="section-title">Spatial Sequence Builder</h2>
+<p class="section-sub">Assign scenes to slots, then play the sequence. The system selects transitions based on content contrast.</p>
+<div class="sb-layout">
+<div>
+<div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Scene Palette</div>
+<div class="sb-palette" id="sbPalette"></div>
+</div>
+<div>
+<div class="sb-grid" id="sbGrid"></div>
+<div class="sb-actions">
+<button class="btn btn-primary" id="sbPlayBtn">▶ Play Sequence</button>
+<button class="btn" id="sbClearBtn">✕ Clear All</button>
+</div>
+<div class="arc-panel" id="arcPanel"></div>
+</div>
+</div>
+<canvas height="300" id="sbPlayCanvas" style="width:100%;display:none;margin-top:12px;" width="640"></canvas>
+</section>
+<div class="divider"></div>
+<!-- S7: IMMERSIVE TECHNIQUES -->
+<section class="section" id="s7">
+<div class="section-label">Section 07 — Advanced</div>
+<h2 class="section-title">Immersive Transition Techniques</h2>
+<p class="section-sub">Three cinematic devices that create transitions through motion, time, and memory.</p>
+<div class="immersive-grid">
+<div class="immersive-panel">
+<div class="immersive-label">Point-of-View Transition</div>
+<canvas height="240" id="povCanvas" style="width:100%;" width="400"></canvas>
+<div class="immersive-controls">
+<label>Looking → Opening → Inside</label>
+<input id="povSlider" max="100" min="0" style="margin-top:4px;" type="range" value="0"/>
+</div>
+<div class="film-ref">Door handle → hallway — anticipation through approach</div>
+</div>
+<div class="immersive-panel">
+<div class="immersive-label">Time-Lapse Dissolve</div>
+<canvas height="240" id="timelapsCanvas" style="width:100%;" width="400"></canvas>
+<div class="immersive-controls">
+<label>Time Speed: <strong id="tlSpeedVal">1×</strong></label>
+<input id="tlSlider" max="1000" min="1" style="margin-top:4px;" type="range" value="1"/>
+</div>
+<div class="film-ref">The scene dissolves through time — no cut required</div>
+</div>
+<div class="immersive-panel">
+<div class="immersive-label">Memory Flash</div>
+<canvas height="240" id="memCanvas" style="width:100%;" width="400"></canvas>
+<div class="immersive-controls" style="margin-bottom:6px;">
+<label>Flash Intensity: <strong id="memIntensityVal">50</strong></label>
+<input id="memIntensitySlider" max="100" min="10" style="margin-top:4px;" type="range" value="50"/>
+</div>
+<button class="btn btn-primary" id="memTriggerBtn" style="width:100%;margin-top:4px;">⚡ Trigger Memory</button>
+<div class="film-ref">Ref: Diving Bell, Requiem for a Dream</div>
+</div>
+</div>
+</section>
+<div class="divider"></div>
+<!-- S8: HISTORY -->
+<section class="section" id="s8">
+<div class="section-label">Section 08 — Lineage</div>
+<h2 class="section-title">Transition History &amp; Artists</h2>
+<p class="section-sub">From Méliès to Mad Max — the arc of cinematic editing, 1895–2024.</p>
+<div class="timeline-scroll"><div class="timeline-track" id="timelineTrack"></div></div>
+<h3 style="font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-top:2.5rem;margin-bottom:0;">Master Editors &amp; Directors</h3>
+<div class="artists-grid" id="artistsGrid"></div>
+</section>
+<div class="divider"></div>
+<!-- S9: GLOSSARY -->
+<section class="section" id="s9">
+<div class="section-label">Section 09 — Reference</div>
+<h2 class="section-title">Glossary of Editing Terms</h2>
+<p class="section-sub">22 essential terms every editor and director should know.</p>
+<div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+<div class="divider"></div>
+<footer>
+<span>WAVGEN IMMERSIVE TRANSITION CINEMA</span> — App 08 of the Video Universe — The Waveform Generation — wavgen.ca
+</footer>
+<script>
+'use strict';
+
+// ── SYSTEM: LagFilter ──
+class LagFilter {
+  constructor(factor = 0.08) { this.val = 0; this.factor = factor; }
+  update(target) { this.val += (target - this.val) * this.factor; return this.val; }
+  set(v) { this.val = v; return v; }
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── INTERSECTION OBSERVER (scroll-reveal) ──
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.section').forEach(s => revealObs.observe(s));
+
+// ── UTILITY ──
+function hsl(h, s, l) { return `hsl(${h},${s}%,${l}%)`; }
+function lerp(a, b, t) { return a + (b - a) * t; }
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function rand(a, b) { return a + Math.random() * (b - a); }
+
+// ════════════════════════════════════════════════
+// SYSTEM: TransitionSequencer — HERO CANVAS
+// ════════════════════════════════════════════════
+(function heroInit() {
+  const cv = document.getElementById('heroCanvas');
+  const ctx = cv.getContext('2d');
+  const W = 800, H = 420;
+  let paused = false;
+  let phase = 0;        // 0-5
+  let phaseT = 0;       // 0..1 normalized progress within phase
+  let lastTS = 0;
+  let phaseStart = 0;
+  const PHASE_DUR = [2800, 1200, 2600, 1400, 1800, 1000]; // ms per phase
+  const phosphorTrail = [];
+
+  const phases = [
+    { name: 'Fade In', cutType: 'Fade In', rhythm: 'Slow dissolve' },
+    { name: 'Hard Cut — Flash', cutType: 'Hard Cut', rhythm: 'Instant' },
+    { name: 'Cross-Dissolve', cutType: 'Dissolve', rhythm: 'Gradual blend' },
+    { name: 'Smash Cut', cutType: 'Smash Cut', rhythm: 'Percussive' },
+    { name: 'Whip Pan', cutType: 'Whip Pan', rhythm: 'Kinetic blur' },
+    { name: 'Return to Black', cutType: 'Fade Out', rhythm: 'Slow dissolve' }
+  ];
+
+  // Scene painters
+  function drawLandscape(ctx, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    // sky
+    let g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#1a1a2e'); g.addColorStop(1, '#2d2d3a');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // hills
+    ctx.fillStyle = '#3a3a4a';
+    ctx.beginPath(); ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 40) {
+      ctx.lineTo(x, H - 80 - Math.sin(x * 0.015) * 50 - Math.cos(x * 0.008) * 30);
+    }
+    ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+    // highlight
+    ctx.fillStyle = '#4a5568';
+    ctx.beginPath(); ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 30) {
+      ctx.lineTo(x, H - 40 - Math.sin(x * 0.02 + 1) * 25);
+    }
+    ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+    // stars
+    ctx.fillStyle = 'rgba(148,163,184,0.6)';
+    for (let i = 0; i < 60; i++) {
+      let sx = (i * 137.5 % W), sy = (i * 73.1 % (H * 0.55));
+      let ss = 0.5 + Math.sin(i * 0.7 + Date.now() * 0.001) * 0.3;
+      ctx.beginPath(); ctx.arc(sx, sy, ss, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawNoir(ctx, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#080810'; ctx.fillRect(0, 0, W, H);
+    // brick walls
+    for (let row = 0; row < 12; row++) {
+      for (let col = 0; col < 16; col++) {
+        let ox = (row % 2) * 25;
+        ctx.fillStyle = row % 2 === 0 ? '#1a1018' : '#1e141c';
+        ctx.fillRect(col * 50 + ox, row * 32 + 20, 46, 28);
+      }
+    }
+    // rain streaks
+    ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 0.8;
+    for (let i = 0; i < 40; i++) {
+      let rx = (i * 97 % W), ry = ((i * 53 + Date.now() * 0.15) % H);
+      ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 2, ry + 15); ctx.stroke();
+    }
+    // lamp glow
+    ctx.fillStyle = 'rgba(255,220,100,0.06)';
+    ctx.beginPath(); ctx.arc(W * 0.7, 60, 90, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,220,100,0.8)';
+    ctx.beginPath(); ctx.arc(W * 0.7, 50, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawMarket(ctx, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    let g2 = ctx.createLinearGradient(0, 0, 0, H);
+    g2.addColorStop(0, '#87ceeb'); g2.addColorStop(0.6, '#ffe4b5'); g2.addColorStop(1, '#d4b896');
+    ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+    // stalls
+    const colors = ['#e74c3c','#f39c12','#2ecc71','#3498db','#9b59b6'];
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = colors[i];
+      ctx.fillRect(i * 160 + 20, H - 160, 130, 140);
+      ctx.fillStyle = 'rgba(0,0,0,0.2)';
+      ctx.fillRect(i * 160 + 20, H - 170, 130, 20);
+      ctx.fillStyle = colors[i];
+      ctx.fillRect(i * 160 + 10, H - 175, 150, 15);
+    }
+    // crowd dots
+    ctx.fillStyle = 'rgba(60,40,30,0.5)';
+    for (let i = 0; i < 20; i++) {
+      ctx.beginPath(); ctx.arc(i * 41 % W, H - 30 + (i % 3) * 8, 8, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawMachinery(ctx, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, W, H);
+    // pipes
+    ctx.strokeStyle = '#2a2a3a'; ctx.lineWidth = 18;
+    for (let i = 0; i < 8; i++) {
+      ctx.beginPath(); ctx.moveTo(i * 110, 0); ctx.lineTo(i * 110 + 30, H); ctx.stroke();
+    }
+    // gears
+    const gearAngle = Date.now() * 0.002;
+    [[200, 160, 60], [400, 250, 45], [620, 130, 35]].forEach(([gx, gy, gr], gi) => {
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate(gearAngle * (gi % 2 === 0 ? 1 : -1));
+      ctx.strokeStyle = '#3a3a5a'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.arc(0, 0, gr, 0, Math.PI * 2); ctx.stroke();
+      for (let t = 0; t < 10; t++) {
+        let ta = (t / 10) * Math.PI * 2;
+        ctx.beginPath(); ctx.moveTo(Math.cos(ta) * gr, Math.sin(ta) * gr);
+        ctx.lineTo(Math.cos(ta) * (gr + 12), Math.sin(ta) * (gr + 12)); ctx.stroke();
+      }
+      ctx.restore();
+    });
+    // sparks
+    ctx.fillStyle = 'rgba(255,160,0,0.7)';
+    for (let i = 0; i < 12; i++) {
+      let spx = 350 + Math.sin(Date.now() * 0.003 + i) * 80;
+      let spy = 200 + Math.cos(Date.now() * 0.002 + i * 2) * 60;
+      ctx.beginPath(); ctx.arc(spx, spy, rand(1, 3), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Phosphor glow overlay
+  function drawPhosphor(ctx, intensity) {
+    if (intensity < 0.01) return;
+    ctx.save();
+    ctx.globalAlpha = intensity * 0.35;
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+
+  // Phase label
+  function drawLabel(ctx, text) {
+    ctx.save();
+    ctx.font = '11px "Segoe UI", monospace';
+    ctx.fillStyle = 'rgba(148,163,184,0.85)';
+    ctx.fillText('[ ' + text.toUpperCase() + ' ]', 16, 30);
+    ctx.restore();
+  }
+
+  // Progress bar at bottom
+  function drawProgress(ctx, t) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(30,30,46,0.6)';
+    ctx.fillRect(0, H - 4, W, 4);
+    ctx.fillStyle = '#6366f1';
+    ctx.fillRect(0, H - 4, W * t, 4);
+    ctx.restore();
+  }
+
+  let whipOff = 0;
+  let whipLag = new LagFilter(0.12);
+
+  function render(ts) {
+    if (!paused) {
+      let elapsed = ts - phaseStart;
+      phaseT = clamp(elapsed / PHASE_DUR[phase], 0, 1);
+      if (phaseT >= 1) {
+        phase = (phase + 1) % 6;
+        phaseStart = ts;
+        phaseT = 0;
+        whipOff = 0;
+      }
+    }
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#050508'; ctx.fillRect(0, 0, W, H);
+
+    const p = phase, t = phaseT;
+
+    if (p === 0) {
+      // Phase 1: fade in landscape
+      drawLandscape(ctx, t);
+      drawPhosphor(ctx, 1 - t);
+      drawLabel(ctx, 'Fade In — Silver Landscape');
+    } else if (p === 1) {
+      // Phase 2: hard cut — flash to white then noir
+      if (t < 0.15) {
+        let fl = t / 0.15;
+        drawLandscape(ctx, 1);
+        ctx.fillStyle = `rgba(255,255,255,${fl})`; ctx.fillRect(0, 0, W, H);
+      } else {
+        let nr = clamp((t - 0.15) / 0.3, 0, 1);
+        drawNoir(ctx, nr);
+        drawPhosphor(ctx, 1 - nr);
+      }
+      drawLabel(ctx, 'Hard Cut — Instant Flash');
+    } else if (p === 2) {
+      // Phase 3: dissolve from noir to market
+      drawNoir(ctx, 1 - t);
+      drawMarket(ctx, t);
+      drawLabel(ctx, 'Cross-Dissolve — Opacity Blend');
+    } else if (p === 3) {
+      // Phase 4: smash cut — black, electric flash, machinery
+      if (t < 0.1) {
+        ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+      } else if (t < 0.25) {
+        let fl = (t - 0.1) / 0.15;
+        ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+        // jagged electric lines
+        ctx.strokeStyle = `rgba(200,220,255,${fl * 0.9})`;
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 8; i++) {
+          ctx.beginPath();
+          let x = rand(50, W - 50), y = 0;
+          ctx.moveTo(x, y);
+          while (y < H) { x += rand(-40, 40); y += rand(20, 50); ctx.lineTo(x, y); }
+          ctx.stroke();
+        }
+        ctx.fillStyle = `rgba(255,255,255,${fl * 0.6})`; ctx.fillRect(0, 0, W, H);
+      } else {
+        let mk = clamp((t - 0.25) / 0.4, 0, 1);
+        drawMachinery(ctx, mk);
+        drawPhosphor(ctx, 1 - mk);
+      }
+      drawLabel(ctx, 'Smash Cut — Percussive Transition');
+    } else if (p === 4) {
+      // Phase 5: whip pan — horizontal motion blur
+      drawMachinery(ctx, 1);
+      let targetOff = t * W * 1.4;
+      whipOff = whipLag.update(targetOff);
+      // draw market shifted
+      ctx.save();
+      ctx.translate(whipOff, 0);
+      drawMarket(ctx, 1);
+      ctx.restore();
+      // motion blur strips
+      for (let i = 0; i < 20; i++) {
+        let bx = (i / 20) * W - whipOff * 0.5;
+        let bw = 60;
+        let ba = 0.1 * (1 - Math.abs(i - 10) / 10);
+        ctx.fillStyle = `rgba(148,163,184,${ba})`;
+        ctx.fillRect(bx, 0, bw, H);
+      }
+      drawLabel(ctx, 'Whip Pan — Kinetic Motion Blur');
+    } else if (p === 5) {
+      // Phase 6: return to black
+      drawMarket(ctx, 1 - t);
+      drawPhosphor(ctx, t * 0.5);
+      drawLabel(ctx, 'Fade Out — Return to Black');
+    }
+
+    drawProgress(ctx, t);
+    lastTS = ts;
+    requestAnimationFrame(render);
+  }
+
+  phaseStart = performance.now();
+  requestAnimationFrame(ts => { phaseStart = ts; render(ts); });
+
+  document.getElementById('heroPauseBtn').addEventListener('click', function() {
+    paused = !paused;
+    if (!paused) phaseStart = performance.now() - phaseT * PHASE_DUR[phase];
+    this.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  });
+
+  // Update badges
+  setInterval(() => {
+    const ph = phases[phase];
+    document.getElementById('hBadgeCutType').textContent = 'Cut Type: ' + ph.cutType;
+    document.getElementById('hBadgeRate').textContent = 'Frame Rate: 24fps';
+    document.getElementById('hBadgeDur').textContent = 'Duration: ' + (PHASE_DUR[phase] / 1000).toFixed(1) + 's';
+    document.getElementById('hBadgeRhythm').textContent = 'Rhythm: ' + ph.rhythm;
+    document.getElementById('heroPhaseInfo').textContent = 'Phase ' + (phase + 1) + ' of 6 — ' + ph.name;
+  }, 200);
+})();
+
+
+// ════════════════════════════════════════════════
+// SECTION 2: Transition Type Museum
+// ════════════════════════════════════════════════
+(function museumInit() {
+  const transitions = [
+    { name: 'Hard Cut', ref: 'Hitchcock — instant reality shift', fn: hardCutDemo },
+    { name: 'Dissolve', ref: 'Citizen Kane — memory & time', fn: dissolveDemo },
+    { name: 'Wipe', ref: 'Star Wars — Lucas homage to serials', fn: wipeDemo },
+    { name: 'Match Cut', ref: '2001 — bone → satellite, Kubrick', fn: matchCutDemo },
+    { name: 'J-Cut', ref: 'The Godfather — audio precedes video', fn: jCutDemo },
+    { name: 'L-Cut', ref: 'Apocalypse Now — video leads audio', fn: lCutDemo },
+    { name: 'Smash Cut', ref: 'Fight Club — quiet to chaos', fn: smashCutDemo },
+    { name: 'Morph Dissolve', ref: 'Black or White — MJ organic morph', fn: morphDemo }
+  ];
+
+  const grid = document.getElementById('museumGrid');
+  const SIZE_W = 240, SIZE_H = 150;
+
+  transitions.forEach((tr, i) => {
+    const item = document.createElement('div');
+    item.className = 'museum-item';
+    const wrap = document.createElement('div');
+    wrap.className = 'museum-canvas-wrap';
+    const cv = document.createElement('canvas');
+    cv.width = SIZE_W; cv.height = SIZE_H;
+    cv.style.width = '100%';
+    wrap.appendChild(cv);
+    item.appendChild(wrap);
+    const lbl = document.createElement('div');
+    lbl.className = 'museum-label'; lbl.textContent = tr.name;
+    const ref = document.createElement('div');
+    ref.className = 'museum-ref'; ref.textContent = tr.ref;
+    item.appendChild(lbl); item.appendChild(ref);
+    grid.appendChild(item);
+
+    let animState = { t: 0, playing: false, dir: 1 };
+    let animId = null;
+
+    // Draw idle state
+    tr.fn(cv.getContext('2d'), SIZE_W, SIZE_H, 0);
+
+    wrap.addEventListener('click', () => {
+      if (animId) cancelAnimationFrame(animId);
+      animState.t = 0; animState.playing = true;
+      const start = performance.now();
+      function step(ts) {
+        const elapsed = ts - start;
+        animState.t = clamp(elapsed / 1200, 0, 1);
+        tr.fn(cv.getContext('2d'), SIZE_W, SIZE_H, animState.t);
+        if (animState.t < 1) animId = requestAnimationFrame(step);
+        else { setTimeout(() => tr.fn(cv.getContext('2d'), SIZE_W, SIZE_H, 0), 1200); }
+      }
+      animId = requestAnimationFrame(step);
+    });
+
+    // Auto-animate gently
+    (function autoAnim() {
+      let t = 0, dir = 1;
+      function step() {
+        if (!animState.playing) {
+          t += dir * 0.003;
+          if (t > 1) { t = 1; dir = -1; }
+          if (t < 0) { t = 0; dir = 1; }
+          tr.fn(cv.getContext('2d'), SIZE_W, SIZE_H, t);
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    })();
+  });
+
+  // ── Scene A: warm amber boxes
+  function sceneA(ctx, W, H, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    let g = ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#1a120a'); g.addColorStop(1,'#2d1e0f');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#c87941';
+    for(let i=0;i<3;i++) ctx.fillRect(30+i*60,20+i*20,40,H-40-i*30);
+    ctx.restore();
+  }
+  // ── Scene B: cool blue grid
+  function sceneB(ctx, W, H, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#060c18'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle = '#1e3a5f'; ctx.lineWidth = 1;
+    for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.fillStyle = '#2563eb';
+    ctx.fillRect(W/2-30,H/2-30,60,60);
+    ctx.restore();
+  }
+
+  function hardCutDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    if (t < 0.5) sceneA(ctx, W, H, 1); else sceneB(ctx, W, H, 1);
+    if (Math.abs(t - 0.5) < 0.04) { ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.fillRect(0,0,W,H); }
+  }
+
+  function dissolveDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    sceneA(ctx, W, H, 1-t); sceneB(ctx, W, H, t);
+  }
+
+  function wipeDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    sceneA(ctx, W, H, 1);
+    ctx.save(); ctx.beginPath(); ctx.rect(0,0,W*t,H); ctx.clip();
+    sceneB(ctx, W, H, 1);
+    ctx.restore();
+    // wipe edge line
+    ctx.strokeStyle='rgba(148,163,184,0.8)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(W*t,0); ctx.lineTo(W*t,H); ctx.stroke();
+  }
+
+  function matchCutDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    if (t < 0.5) {
+      sceneA(ctx,W,H,1);
+      // bone shape
+      ctx.fillStyle='#e2e8f0';
+      let cx=W/2, cy=H/2, r = lerp(15, H*0.45, t*2);
+      ctx.beginPath(); ctx.ellipse(cx,cy,r*0.3,r,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx,cy-r,r*0.35,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx,cy+r,r*0.35,0,Math.PI*2); ctx.fill();
+    } else {
+      sceneB(ctx,W,H,1);
+      // clock face (circle → satellite dish)
+      let cx=W/2, cy=H/2, r = lerp(H*0.45, 40, (t-0.5)*2);
+      ctx.strokeStyle='#94a3b8'; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+      // clock hands
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,cy-r*0.6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+r*0.4,cy); ctx.stroke();
+    }
+  }
+
+  function jCutDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    // two horizontal strips: audio (top) and video (bottom)
+    sceneA(ctx, W, H/2, 1);
+    ctx.save(); ctx.translate(0, H/2); sceneB(ctx, W, H/2, 1); ctx.restore();
+    // J: audio bar leads
+    let audioX = t * W, videoX = clamp(t * W - 40, 0, W);
+    ctx.fillStyle='rgba(99,102,241,0.7)';
+    ctx.fillRect(0, 0, audioX, H/2);
+    ctx.fillStyle='rgba(148,163,184,0.5)';
+    ctx.fillRect(0, H/2, videoX, H/2);
+    ctx.strokeStyle='rgba(99,102,241,0.9)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='9px monospace';
+    ctx.fillText('AUDIO',4,14); ctx.fillText('VIDEO',4,H/2+14);
+  }
+
+  function lCutDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    sceneA(ctx,W,H/2,1);
+    ctx.save(); ctx.translate(0,H/2); sceneB(ctx,W,H/2,1); ctx.restore();
+    // L: video leads
+    let videoX = t * W, audioX = clamp(t * W - 40, 0, W);
+    ctx.fillStyle='rgba(148,163,184,0.5)';
+    ctx.fillRect(0,0,videoX,H/2);
+    ctx.fillStyle='rgba(99,102,241,0.7)';
+    ctx.fillRect(0,H/2,audioX,H/2);
+    ctx.strokeStyle='rgba(148,163,184,0.9)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='9px monospace';
+    ctx.fillText('VIDEO',4,14); ctx.fillText('AUDIO',4,H/2+14);
+  }
+
+  function smashCutDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    if (t < 0.45) {
+      // quiet: gentle gradient
+      ctx.fillStyle='#0a0a14'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='rgba(148,163,184,0.15)';
+      ctx.beginPath(); ctx.arc(W/2,H/2,40,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(148,163,184,0.4)'; ctx.font='10px monospace';
+      ctx.textAlign='center'; ctx.fillText('QUIET',W/2,H/2+4); ctx.textAlign='left';
+    } else if (t < 0.5) {
+      ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+    } else {
+      sceneA(ctx,W,H,1);
+      // chaos lines
+      ctx.strokeStyle='rgba(255,80,0,'+(t-0.5)*2+')'; ctx.lineWidth=3;
+      for(let i=0;i<12;i++){
+        ctx.beginPath();
+        ctx.moveTo(rand(0,W),rand(0,H));
+        ctx.lineTo(rand(0,W),rand(0,H));
+        ctx.stroke();
+      }
+      ctx.fillStyle='rgba(255,100,0,0.3)'; ctx.fillRect(0,0,W,H);
+    }
+  }
+
+  function morphDemo(ctx, W, H, t) {
+    ctx.clearRect(0,0,W,H);
+    sceneA(ctx,W,H,1-t*0.7); sceneB(ctx,W,H,t*0.7);
+    // morphing blob
+    const cx=W/2, cy=H/2;
+    ctx.fillStyle=`rgba(${lerp(200,37,t)},${lerp(120,99,t)},${lerp(60,241,t)},0.6)`;
+    ctx.beginPath();
+    for(let a=0; a<=Math.PI*2; a+=0.1) {
+      let r = 30 + Math.sin(a*3 + t*Math.PI*4)*20*(1-t) + Math.cos(a*2)*15*t;
+      let x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r;
+      a===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.closePath(); ctx.fill();
+  }
+})();
+
+// ════════════════════════════════════════════════
+// SYSTEM: RhythmicEditingEngine
+// ════════════════════════════════════════════════
+(function rhythmInit() {
+  const cv = document.getElementById('rhythmCanvas');
+  const ctx = cv.getContext('2d');
+  const W = 700, H = 300;
+  const SCENE_COLORS = ['#6366f1','#94a3b8','#c084fc','#38bdf8','#f472b6','#fb923c'];
+  let bpm = 80, pattern = 'constant', currentScene = 0;
+  let lastCutTime = 0, playhead = 0;
+  let cuts = []; // [{x, color}]
+  let activeLag = new LagFilter(0.15);
+  let flashAlpha = 0;
+
+  document.getElementById('bpmSlider').addEventListener('input', function() {
+    bpm = +this.value;
+    document.getElementById('bpmVal').textContent = bpm;
+    document.getElementById('cpmVal').textContent = bpm;
+    document.getElementById('intervalVal').textContent = (60/bpm).toFixed(2)+'s';
+  });
+  document.getElementById('patternSel').addEventListener('change', function() {
+    pattern = this.value;
+    document.getElementById('patternVal').textContent = this.options[this.selectedIndex].text.split('(')[0].trim();
+    cuts = [];
+  });
+
+  function getInterval(progress) {
+    // progress: 0..1 within a bar cycle
+    const base = 60000 / bpm;
+    switch(pattern) {
+      case 'constant': return base;
+      case 'accelerating': return base * (1 - progress * 0.7 + 0.05);
+      case 'decelerating': return base * (0.3 + progress * 0.7);
+      case 'alternating': return progress < 0.5 ? base * 0.4 : base * 1.6;
+      case 'syncopated': {
+        const beats = [0.1,0.3,0.45,0.7,0.85,1.0];
+        return base * (beats[Math.floor(progress * 6) % 6]);
+      }
+      default: return base;
+    }
+  }
+
+  let lastTS = 0, cycleStart = 0;
+  function render(ts) {
+    const dt = ts - lastTS; lastTS = ts;
+    const barDuration = 4 * (60000 / bpm);
+    if (!cycleStart) cycleStart = ts;
+    const cycleT = ((ts - cycleStart) % barDuration) / barDuration;
+    playhead = cycleT * W;
+
+    // Cut timing
+    const interval = getInterval(cycleT);
+    if (ts - lastCutTime > interval) {
+      lastCutTime = ts;
+      currentScene = (currentScene + 1) % SCENE_COLORS.length;
+      cuts.push({ x: playhead, color: SCENE_COLORS[currentScene], ts });
+      if (cuts.length > 60) cuts.shift();
+      flashAlpha = 1;
+      document.getElementById('sceneVal').textContent = currentScene + 1;
+    }
+    flashAlpha = Math.max(0, flashAlpha - dt * 0.006);
+
+    // ── DRAW ──
+    ctx.fillStyle = '#0d0d14'; ctx.fillRect(0, 0, W, H);
+
+    // Active scene fill (top 60%)
+    let targetColor = SCENE_COLORS[currentScene];
+    ctx.fillStyle = targetColor;
+    ctx.globalAlpha = 0.12 + flashAlpha * 0.25;
+    ctx.fillRect(0, 0, W, H * 0.65);
+    ctx.globalAlpha = 1;
+
+    // Scene label
+    ctx.fillStyle = targetColor;
+    ctx.globalAlpha = 0.85;
+    ctx.font = 'bold 28px "Segoe UI"';
+    ctx.textAlign = 'center';
+    ctx.fillText('SCENE ' + (currentScene + 1), W/2, H * 0.35);
+    ctx.globalAlpha = 1; ctx.textAlign = 'left';
+
+    // Timeline strip
+    const STRIP_Y = H * 0.68, STRIP_H = 40;
+    ctx.fillStyle = '#1e1e2e'; ctx.fillRect(0, STRIP_Y, W, STRIP_H);
+
+    // Past cuts
+    cuts.forEach((c) => {
+      ctx.fillStyle = c.color;
+      ctx.globalAlpha = 0.7;
+      ctx.fillRect(c.x - 2, STRIP_Y, 4, STRIP_H);
+    });
+    ctx.globalAlpha = 1;
+
+    // Beat grid
+    const beatsPerBar = 4;
+    for (let b = 0; b < beatsPerBar; b++) {
+      let bx = (b / beatsPerBar) * W;
+      ctx.strokeStyle = 'rgba(148,163,184,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(bx, STRIP_Y); ctx.lineTo(bx, STRIP_Y + STRIP_H); ctx.stroke();
+    }
+
+    // Playhead
+    ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(playhead, STRIP_Y - 5); ctx.lineTo(playhead, STRIP_Y + STRIP_H + 5); ctx.stroke();
+    ctx.fillStyle = '#6366f1';
+    ctx.beginPath(); ctx.moveTo(playhead - 5, STRIP_Y - 5); ctx.lineTo(playhead + 5, STRIP_Y - 5); ctx.lineTo(playhead, STRIP_Y + 2); ctx.closePath(); ctx.fill();
+
+    // BPM indicator dots
+    for (let b = 0; b < beatsPerBar; b++) {
+      let bx = ((b + 0.5) / beatsPerBar) * W;
+      let active = Math.floor(cycleT * beatsPerBar) === b;
+      ctx.beginPath(); ctx.arc(bx, STRIP_Y + STRIP_H + 16, active ? 6 : 3, 0, Math.PI * 2);
+      ctx.fillStyle = active ? '#6366f1' : '#1e1e2e';
+      ctx.fill();
+      ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Pattern visualization bars (bottom)
+    const BAR_Y = H - 50;
+    for (let i = 0; i < 32; i++) {
+      let prog = i / 32;
+      let iv = getInterval(prog);
+      let baseIv = 60000 / bpm;
+      let barH = clamp((baseIv / iv) * 20, 4, 36);
+      ctx.fillStyle = i % 2 === 0 ? '#94a3b8' : '#6366f1';
+      ctx.globalAlpha = 0.5;
+      ctx.fillRect(i * (W/32) + 1, BAR_Y + (36 - barH), W/32 - 2, barH);
+    }
+    ctx.globalAlpha = 1;
+
+    // Flash overlay
+    if (flashAlpha > 0) {
+      ctx.fillStyle = `rgba(255,255,255,${flashAlpha * 0.18})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(ts => { lastTS = ts; cycleStart = ts; render(ts); });
+})();
+
+
+// ════════════════════════════════════════════════
+// SYSTEM: KuleshovEffect + EisensteinCollision + SovHollywood
+// ════════════════════════════════════════════════
+(function montageInit() {
+  // ── Kuleshov ──
+  const kCv = document.getElementById('kuleshovCanvas');
+  const kCtx = kCv.getContext('2d');
+  const KW = 300, KH = 220;
+  const kObjects = ['Soup', 'Coffin', 'Child', 'Pool'];
+  const kMeanings = ['Hunger', 'Grief', 'Joy', 'Desire'];
+  const kColors = ['#c87941','#2d1e2e','#4ade80','#38bdf8'];
+  let kState = 'face', kFaceTimer = 0, kObjIdx = -1, kFlash = 0, kPhase = 'idle';
+
+  function drawKFace(ctx, W, H, emotion) {
+    ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,W,H);
+    // face oval
+    ctx.fillStyle = '#c8a882';
+    ctx.beginPath(); ctx.ellipse(W/2, H*0.45, 55, 70, 0, 0, Math.PI*2); ctx.fill();
+    // eyes
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath(); ctx.ellipse(W/2-18, H*0.35, 8, 9, 0, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(W/2+18, H*0.35, 8, 9, 0, 0, Math.PI*2); ctx.fill();
+    // pupil
+    ctx.fillStyle = '#2d1a0a';
+    ctx.beginPath(); ctx.arc(W/2-18, H*0.35, 3, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W/2+18, H*0.35, 3, 0, Math.PI*2); ctx.fill();
+    // nose
+    ctx.strokeStyle = '#a07050'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(W/2,H*0.38); ctx.quadraticCurveTo(W/2+8,H*0.48,W/2,H*0.5); ctx.stroke();
+    // mouth (neutral)
+    ctx.strokeStyle = '#7a4a30'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W/2-16, H*0.57); ctx.quadraticCurveTo(W/2, H*0.585, W/2+16, H*0.57);
+    ctx.stroke();
+    // label
+    ctx.fillStyle = 'rgba(148,163,184,0.5)'; ctx.font = '10px monospace';
+    ctx.textAlign = 'center'; ctx.fillText('— NEUTRAL EXPRESSION —', W/2, H-8); ctx.textAlign='left';
+  }
+
+  function drawKObject(ctx, W, H, idx) {
+    ctx.fillStyle = kColors[idx]; ctx.globalAlpha = 0.15; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    ctx.fillStyle = kColors[idx];
+    ctx.font = 'bold 42px serif'; ctx.textAlign='center';
+    const glyphs = ['🍲','⚰️','🧒','🏊'];
+    ctx.fillText(glyphs[idx], W/2, H/2+16);
+    ctx.font = '12px "Segoe UI"'; ctx.fillStyle = '#e2e8f0';
+    ctx.fillText(kObjects[idx], W/2, H*0.8);
+    ctx.textAlign='left';
+  }
+
+  function kuleshovAnimate() {
+    if (kPhase === 'idle') return;
+    const now = performance.now();
+    if (kPhase === 'showObj') {
+      if (now - kFaceTimer > 900) { kPhase = 'showFace'; kFaceTimer = now; }
+    } else if (kPhase === 'showFace') {
+      if (now - kFaceTimer > 700) kPhase = 'idle';
+    }
+    kCtx.clearRect(0,0,KW,KH);
+    if (kPhase === 'showObj') drawKObject(kCtx, KW, KH, kObjIdx);
+    else drawKFace(kCtx, KW, KH);
+  }
+
+  drawKFace(kCtx, KW, KH);
+  kObjects.forEach((_, i) => {
+    document.getElementById('kBtn'+i).addEventListener('click', () => {
+      kObjIdx = i; kPhase='showObj'; kFaceTimer = performance.now();
+      document.getElementById('kuleshovMeaning').textContent = '"' + kMeanings[i] + '" — same face, different meaning';
+    });
+  });
+  setInterval(kuleshovAnimate, 100);
+
+  // ── Eisenstein Collision ──
+  const eCv = document.getElementById('eisensteinCanvas');
+  const eCtx = eCv.getContext('2d');
+  const EW = 300, EH = 220;
+  const eModes = [
+    { a:'Eye', b:'Skull', meaning:'= Mortality', ca:'#4ade80', cb:'#f87171' },
+    { a:'Bull', b:'Factory', meaning:'= Exploitation', ca:'#fb923c', cb:'#94a3b8' },
+    { a:'Heaven', b:'Earth', meaning:'= Conflict', ca:'#38bdf8', cb:'#a16207' }
+  ];
+  let eMode = 0, eFlip = false;
+  setInterval(() => { eFlip = !eFlip; }, 600);
+
+  function drawEScene(ctx, W, H, label, color, flip) {
+    ctx.fillStyle = flip ? '#0a0a14' : '#14100a'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = color; ctx.globalAlpha = 0.7;
+    ctx.font = 'bold 44px serif'; ctx.textAlign='center';
+    if (label==='Eye') { ctx.fillText('👁', W/2, H/2+16); }
+    else if (label==='Skull') { ctx.fillText('💀', W/2, H/2+16); }
+    else if (label==='Bull') { ctx.fillText('🐂', W/2, H/2+16); }
+    else if (label==='Factory') { ctx.fillText('🏭', W/2, H/2+16); }
+    else if (label==='Heaven') { ctx.fillText('☁️', W/2, H/2+16); }
+    else if (label==='Earth') { ctx.fillText('🌑', W/2, H/2+16); }
+    ctx.globalAlpha=1;
+    ctx.fillStyle='rgba(148,163,184,0.6)'; ctx.font='10px monospace';
+    ctx.fillText(label.toUpperCase(), W/2, H-10); ctx.textAlign='left';
+  }
+
+  function renderEisenstein() {
+    const m = eModes[eMode];
+    const half = EW/2;
+    eCtx.save(); eCtx.beginPath(); eCtx.rect(0,0,half,EH); eCtx.clip();
+    drawEScene(eCtx,EW,EH, eFlip?m.a:m.b, eFlip?m.ca:m.cb, eFlip);
+    eCtx.restore();
+    eCtx.save(); eCtx.beginPath(); eCtx.rect(half,0,half,EH); eCtx.clip();
+    eCtx.translate(half,0); drawEScene(eCtx,EW,EH, eFlip?m.b:m.a, eFlip?m.cb:m.ca, !eFlip); eCtx.restore();
+    // divider
+    eCtx.strokeStyle='rgba(148,163,184,0.3)'; eCtx.lineWidth=1;
+    eCtx.beginPath(); eCtx.moveTo(half,0); eCtx.lineTo(half,EH); eCtx.stroke();
+  }
+  setInterval(renderEisenstein, 60);
+
+  ['eBtn0','eBtn1','eBtn2'].forEach((id, i) => {
+    document.getElementById(id).addEventListener('click', () => {
+      eMode = i;
+      document.getElementById('eisensteinMeaning').textContent = eModes[i].meaning;
+      document.querySelectorAll('#s4 .montage-panel:nth-child(2) .btn').forEach((b,j) => b.classList.toggle('active', j===i));
+    });
+  });
+
+  // ── Soviet vs Hollywood ──
+  const shCv = document.getElementById('sovHollCanvas');
+  const shCtx = shCv.getContext('2d');
+  const SHW = 300, SHH = 220;
+  let shMode = 'soviet', shT = 0;
+
+  document.getElementById('sovBtn').addEventListener('click', () => {
+    shMode='soviet'; shT=0;
+    document.getElementById('sovBtn').classList.add('active');
+    document.getElementById('hollBtn').classList.remove('active');
+    document.getElementById('sovHollMeaning').textContent = 'Abstract collision montage';
+  });
+  document.getElementById('hollBtn').addEventListener('click', () => {
+    shMode='hollywood'; shT=0;
+    document.getElementById('hollBtn').classList.add('active');
+    document.getElementById('sovBtn').classList.remove('active');
+    document.getElementById('sovHollMeaning').textContent = 'Invisible continuity editing';
+  });
+
+  function drawSoviet(ctx, W, H, t) {
+    const colors=['#e74c3c','#f39c12','#27ae60','#2980b9','#8e44ad','#e67e22'];
+    ctx.fillStyle='#050508'; ctx.fillRect(0,0,W,H);
+    // colliding abstract shapes
+    let ci = Math.floor(t * 12) % colors.length;
+    ctx.fillStyle = colors[ci]; ctx.globalAlpha=0.6;
+    ctx.beginPath(); ctx.arc(W*0.3+Math.sin(t*8)*30, H*0.4+Math.cos(t*7)*20, 35, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = colors[(ci+2)%6]; ctx.globalAlpha=0.6;
+    ctx.fillRect(W*0.5+Math.cos(t*6)*30, H*0.3+Math.sin(t*5)*25, 60, 45);
+    ctx.globalAlpha=1;
+    // flash cuts
+    if (Math.sin(t * 20) > 0.8) { ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fillRect(0,0,W,H); }
+    ctx.fillStyle='rgba(148,163,184,0.6)'; ctx.font='9px monospace'; ctx.textAlign='center';
+    ctx.fillText('SOVIET MONTAGE',W/2,H-8); ctx.textAlign='left';
+  }
+
+  function drawHollywood(ctx, W, H, t) {
+    ctx.fillStyle='#0d0d14'; ctx.fillRect(0,0,W,H);
+    // two persons conversation (180° rule respected)
+    const pa = {x: W*0.28, y: H*0.55}, pb = {x: W*0.72, y: H*0.55};
+    // background
+    ctx.fillStyle='#161624'; ctx.fillRect(0,H*0.4,W,H*0.6);
+    // person A
+    ctx.fillStyle='#c8a882';
+    ctx.beginPath(); ctx.ellipse(pa.x,pa.y-30,18,22,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#3a2a1a';
+    ctx.beginPath(); ctx.ellipse(pa.x,pa.y+18,20,28,-0.1,0,Math.PI*2); ctx.fill();
+    // person B
+    ctx.fillStyle='#e0c4a8';
+    ctx.beginPath(); ctx.ellipse(pb.x,pb.y-30,18,22,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#1a2a3a';
+    ctx.beginPath(); ctx.ellipse(pb.x,pb.y+18,20,28,0.1,0,Math.PI*2); ctx.fill();
+    // active speaker highlight
+    let spkA = Math.sin(t*3) > 0;
+    ctx.strokeStyle = spkA ? '#6366f1' : '#94a3b8';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(spkA ? pa.x : pb.x, spkA ? pa.y-30 : pb.y-30, 22, 26, 0, 0, Math.PI*2); ctx.stroke();
+    // 180° rule axis
+    ctx.strokeStyle='rgba(99,102,241,0.25)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(148,163,184,0.5)'; ctx.font='8px monospace'; ctx.textAlign='center';
+    ctx.fillText('180° RULE AXIS',W/2+2,12);
+    ctx.fillText('HOLLYWOOD CONTINUITY',W/2,H-8); ctx.textAlign='left';
+  }
+
+  let shLastT = 0;
+  function renderSH(ts) {
+    const dt = (ts - shLastT) * 0.001; shLastT = ts;
+    shT += dt * 0.5;
+    shCtx.clearRect(0,0,SHW,SHH);
+    if (shMode==='soviet') drawSoviet(shCtx,SHW,SHH,shT);
+    else drawHollywood(shCtx,SHW,SHH,shT);
+    requestAnimationFrame(renderSH);
+  }
+  requestAnimationFrame(ts => { shLastT=ts; renderSH(ts); });
+})();
+
+
+// ════════════════════════════════════════════════
+// SYSTEM: PacingTimeline
+// ════════════════════════════════════════════════
+(function pacingInit() {
+  const cv = document.getElementById('pacingCanvas');
+  const ctx = cv.getContext('2d');
+  const W = 700, H = 260;
+  let drawMode = false, userBars = [], isDragging = false;
+
+  const filmData = {
+    godfather: {
+      label:'The Godfather — Long, Deliberate, Operatic',
+      bars: [9,14,8,11,16,7,13,10,18,6,12,15,8,11,9,14,7,16,10,12,8,11,6,13,9],
+      color:'#94a3b8', accent:'#6366f1'
+    },
+    madmax: {
+      label:'Mad Max: Fury Road — Relentless, Percussive',
+      bars:[1,2,1,1,2,1,3,1,2,1,1,2,1,1,3,2,1,1,2,1,1,1,2,3,1,2,1,1,2,1,1,1,2,1,2,1,1,1,3,2,1,1,1,2],
+      color:'#fb923c', accent:'#f97316'
+    },
+    '2001': {
+      label:'2001: A Space Odyssey — Extreme Variation',
+      bars:[25,3,18,1,30,2,8,40,1,15,3,22,1,12,35,2,8,1,28,4,16,50,1,9,3],
+      color:'#38bdf8', accent:'#0ea5e9'
+    },
+    dunkirk: {
+      label:'Dunkirk — Three Parallel Timelines',
+      bars: null, // special rendering
+      color:'#c084fc', accent:'#a855f7'
+    },
+    breathless: {
+      label:"Breathless (Godard) — Jump Cuts, Erratic",
+      bars:[4,2,6,1,8,2,3,7,1,4,2,9,1,5,3,6,2,1,7,4,2,8,1,3,5,2,6,1,4,7,2,1,5,3],
+      color:'#4ade80', accent:'#22c55e'
+    }
+  };
+
+  function computeStats(bars) {
+    if (!bars || !bars.length) return;
+    const avg = bars.reduce((a,b)=>a+b,0)/bars.length;
+    const total = bars.length;
+    const filmMin = 90; // assume 90min film
+    const cpm = (total / filmMin).toFixed(1);
+    const score = avg < 3 ? 'Intense' : avg < 7 ? 'Dynamic' : avg < 12 ? 'Moderate' : 'Contemplative';
+    document.getElementById('pAvgLen').textContent = avg.toFixed(1);
+    document.getElementById('pTotalCuts').textContent = total;
+    document.getElementById('pCPM').textContent = cpm;
+    document.getElementById('pScore').textContent = score;
+  }
+
+  function drawFilm(key) {
+    const fd = filmData[key];
+    ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,W,H);
+    const PAD = 30, BOTT = 40;
+    const drawH = H - PAD - BOTT;
+
+    if (key === 'dunkirk') {
+      // Three timeline strips
+      const strips = [
+        {label:'Land (1 Week)', color:'#c084fc', bars:[5,8,6,9,4,7,11,5,8,6,10,4,7,6]},
+        {label:'Sea (1 Day)', color:'#38bdf8', bars:[3,5,4,6,3,4,7,5,3,6,4,5,3,4,5,3]},
+        {label:'Air (1 Hour)', color:'#4ade80', bars:[2,1,3,2,1,2,3,1,2,1,3,2,1,2,1,2,3,1,2,1]}
+      ];
+      const sh = (drawH - 20) / 3;
+      strips.forEach((st, si) => {
+        const sy = PAD + si * (sh + 10);
+        const maxB = Math.max(...st.bars);
+        const bw = (W - 60) / st.bars.length;
+        ctx.fillStyle = st.color; ctx.globalAlpha=0.1;
+        ctx.fillRect(30, sy, W-60, sh); ctx.globalAlpha=1;
+        st.bars.forEach((b, bi) => {
+          const bh = (b/maxB) * (sh*0.85);
+          ctx.fillStyle = st.color; ctx.globalAlpha=0.7;
+          ctx.fillRect(30 + bi*bw + 1, sy+sh-bh, bw-2, bh);
+          ctx.globalAlpha=1;
+        });
+        ctx.fillStyle=st.color; ctx.font='9px monospace';
+        ctx.fillText(st.label, 32, sy+12);
+      });
+      computeStats(strips[0].bars.concat(strips[1].bars, strips[2].bars));
+    } else {
+      const bars = fd.bars;
+      const maxB = Math.max(...bars);
+      const bw = Math.max(2, (W - 60) / bars.length);
+      bars.forEach((b, i) => {
+        const bh = (b/maxB)*drawH;
+        const x = 30 + i*bw, y = PAD + drawH - bh;
+        const hue = lerp(0,60,b/maxB);
+        ctx.fillStyle = fd.color; ctx.globalAlpha = 0.3 + (b/maxB)*0.5;
+        ctx.fillRect(x, y, Math.max(1, bw-1), bh);
+        ctx.globalAlpha=1;
+      });
+      // average line
+      const avgB = fd.bars.reduce((a,b)=>a+b,0)/fd.bars.length;
+      const avgY = PAD + drawH - (avgB/maxB)*drawH;
+      ctx.strokeStyle = fd.accent; ctx.lineWidth=1; ctx.setLineDash([6,3]);
+      ctx.beginPath(); ctx.moveTo(30,avgY); ctx.lineTo(W-30,avgY); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle=fd.accent; ctx.font='9px monospace';
+      ctx.fillText('avg: '+avgB.toFixed(1)+'s', W-80, avgY-4);
+      computeStats(bars);
+    }
+
+    // X-axis
+    ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(30,PAD+drawH); ctx.lineTo(W-30,PAD+drawH); ctx.stroke();
+    // Label
+    ctx.fillStyle='rgba(148,163,184,0.5)'; ctx.font='10px monospace'; ctx.textAlign='center';
+    ctx.fillText(fd.label, W/2, H-6); ctx.textAlign='left';
+  }
+
+  function drawUserBars() {
+    ctx.fillStyle = '#0d0d14'; ctx.fillRect(0,0,W,H);
+    const PAD=30,BOTT=40,drawH=H-PAD-BOTT;
+    if (!userBars.length) {
+      ctx.fillStyle='rgba(148,163,184,0.2)'; ctx.font='13px "Segoe UI"'; ctx.textAlign='center';
+      ctx.fillText('Click and drag to draw your pacing profile', W/2, H/2); ctx.textAlign='left';
+      return;
+    }
+    const maxB = Math.max(...userBars, 1);
+    const bw = (W-60)/Math.max(userBars.length,1);
+    userBars.forEach((b,i)=>{
+      const bh=(b/maxB)*drawH;
+      ctx.fillStyle='#6366f1'; ctx.globalAlpha=0.7;
+      ctx.fillRect(30+i*bw+1,PAD+drawH-bh,Math.max(1,bw-2),bh);
+      ctx.globalAlpha=1;
+    });
+    ctx.strokeStyle='rgba(148,163,184,0.2)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(30,PAD+drawH); ctx.lineTo(W-30,PAD+drawH); ctx.stroke();
+    computeStats(userBars);
+  }
+
+  let currentFilm = 'godfather';
+  drawFilm(currentFilm);
+
+  document.getElementById('filmSel').addEventListener('change', function() {
+    currentFilm = this.value; drawMode = false;
+    document.getElementById('drawModeBtn').classList.remove('active');
+    document.getElementById('clearDrawBtn').style.display='none';
+    cv.style.cursor='default'; drawFilm(currentFilm);
+  });
+
+  document.getElementById('drawModeBtn').addEventListener('click', function() {
+    drawMode = !drawMode;
+    this.classList.toggle('active', drawMode);
+    document.getElementById('clearDrawBtn').style.display = drawMode ? 'inline-flex' : 'none';
+    cv.style.cursor = drawMode ? 'crosshair' : 'default';
+    if (drawMode) { userBars=[]; drawUserBars(); }
+    else drawFilm(currentFilm);
+  });
+
+  document.getElementById('clearDrawBtn').addEventListener('click', ()=>{ userBars=[]; drawUserBars(); });
+
+  function getCanvasPos(e) {
+    const rect = cv.getBoundingClientRect();
+    const scaleX = W / rect.width, scaleY = H / rect.height;
+    return { x:(e.clientX-rect.left)*scaleX, y:(e.clientY-rect.top)*scaleY };
+  }
+
+  cv.addEventListener('mousedown', e => { if (!drawMode) return; isDragging=true; });
+  cv.addEventListener('mousemove', e => {
+    if (!drawMode || !isDragging) return;
+    const {x,y} = getCanvasPos(e);
+    const PAD=30,BOTT=40,drawH=H-PAD-BOTT;
+    const barVal = clamp((1-(y-PAD)/drawH)*15,0.5,15);
+    userBars.push(barVal); if(userBars.length>60)userBars.shift();
+    drawUserBars();
+  });
+  cv.addEventListener('mouseup', ()=>{ isDragging=false; });
+  cv.addEventListener('mouseleave', ()=>{ isDragging=false; });
+})();
+
+// ════════════════════════════════════════════════
+// SYSTEM: SpatialSequenceBuilder
+// ════════════════════════════════════════════════
+(function sbInit() {
+  const scenes = [
+    {name:'Exterior Day', color:'#38bdf8', type:'bright', emoji:'☀️'},
+    {name:'Interior Night', color:'#1e1e3e', type:'dark', emoji:'🌙'},
+    {name:'Close-Up Face', color:'#c8a882', type:'intimate', emoji:'👤'},
+    {name:'Wide Establishing', color:'#4ade80', type:'wide', emoji:'🏔'},
+    {name:'Action Shot', color:'#fb923c', type:'intense', emoji:'⚡'},
+    {name:'Reaction Shot', color:'#c084fc', type:'intimate', emoji:'😯'},
+    {name:'Cutaway', color:'#94a3b8', type:'neutral', emoji:'✂️'},
+    {name:'Insert Shot', color:'#f472b6', type:'detail', emoji:'🔍'}
+  ];
+  const arcMeanings = {
+    bright:'open', dark:'tension', intimate:'emotion', wide:'context',
+    intense:'climax', neutral:'breath', detail:'focus'
+  };
+
+  const palette = document.getElementById('sbPalette');
+  const grid = document.getElementById('sbGrid');
+  let selectedScene = null;
+  let slots = Array(6).fill(null);
+  const sbPlayCv = document.getElementById('sbPlayCanvas');
+  const sbPlayCtx = sbPlayCv.getContext('2d');
+  const SPW=640,SPH=300;
+
+  scenes.forEach((sc,i)=>{
+    const btn = document.createElement('button');
+    btn.className='sb-scene-btn';
+    btn.textContent = sc.emoji+' '+sc.name;
+    btn.style.borderLeftColor = sc.color;
+    btn.style.borderLeftWidth = '3px';
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.sb-scene-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected'); selectedScene=i;
+    });
+    palette.appendChild(btn);
+  });
+
+  for(let i=0;i<6;i++){
+    const slot = document.createElement('div');
+    slot.className='sb-frame-slot';
+    slot.dataset.idx=i;
+    slot.textContent='EMPTY';
+    slot.addEventListener('click',()=>{
+      if(selectedScene===null){if(slots[i]!==null){slots[i]=null;renderSlots();}return;}
+      slots[i]=selectedScene; renderSlots();
+    });
+    grid.appendChild(slot);
+  }
+
+  function renderSlots(){
+    document.querySelectorAll('.sb-frame-slot').forEach((sl,i)=>{
+      sl.innerHTML='';
+      if(slots[i]!==null){
+        const sc=scenes[slots[i]];
+        sl.className='sb-frame-slot filled';
+        sl.style.background=sc.color+'22';
+        sl.style.borderColor=sc.color+'88';
+        const label=document.createElement('div');
+        label.style.cssText='font-size:20px;display:block;';
+        label.textContent=sc.emoji;
+        const name=document.createElement('div');
+        name.style.cssText='font-size:9px;color:#e2e8f0;margin-top:4px;text-align:center;padding:0 4px;';
+        name.textContent=sc.name;
+        sl.appendChild(label); sl.appendChild(name);
+      } else {
+        sl.className='sb-frame-slot';
+        sl.style.background=''; sl.style.borderColor='';
+        sl.textContent='EMPTY';
+      }
+    });
+  }
+
+  document.getElementById('sbClearBtn').addEventListener('click',()=>{
+    slots=Array(6).fill(null); renderSlots();
+    document.getElementById('arcPanel').classList.remove('visible');
+    sbPlayCv.style.display='none';
+    document.querySelectorAll('.sb-scene-btn').forEach(b=>b.classList.remove('selected'));
+    selectedScene=null;
+  });
+
+  document.getElementById('sbPlayBtn').addEventListener('click',()=>{
+    const filled=slots.filter(s=>s!==null);
+    if(filled.length<2){alert('Fill at least 2 slots to play.'); return;}
+    sbPlayCv.style.display='block';
+    playSequence();
+  });
+
+  function getTransition(a, b) {
+    if(a===null||b===null) return 'cut';
+    const ta=scenes[a].type, tb=scenes[b].type;
+    if(ta===tb) return 'dissolve';
+    if((ta==='intense'||tb==='intense')) return 'cut';
+    return 'dissolve';
+  }
+
+  function playSequence(){
+    const order = slots.map((s,i)=>({s,i})).filter(x=>x.s!==null);
+    let idx=0, transition=0, transitionT=0;
+    let startT=null;
+
+    function drawFrame(sceneIdx, alpha=1){
+      const sc=scenes[sceneIdx];
+      sbPlayCtx.save();
+      sbPlayCtx.globalAlpha=alpha;
+      sbPlayCtx.fillStyle=sc.color+'22'; sbPlayCtx.fillRect(0,0,SPW,SPH);
+      // gradient bg
+      let g=sbPlayCtx.createLinearGradient(0,0,0,SPH);
+      g.addColorStop(0,sc.color+'33'); g.addColorStop(1,'#0d0d1499');
+      sbPlayCtx.fillStyle=g; sbPlayCtx.fillRect(0,0,SPW,SPH);
+      sbPlayCtx.font='64px serif'; sbPlayCtx.textAlign='center';
+      sbPlayCtx.fillStyle=sc.color;
+      sbPlayCtx.fillText(sc.emoji, SPW/2, SPH/2+24);
+      sbPlayCtx.font='bold 16px "Segoe UI"'; sbPlayCtx.fillStyle='#e2e8f0';
+      sbPlayCtx.fillText(sc.name, SPW/2, SPH*0.82);
+      sbPlayCtx.font='10px monospace'; sbPlayCtx.fillStyle='rgba(148,163,184,0.6)';
+      sbPlayCtx.fillText('SLOT '+(order[idx]?order[idx].i+1:'?')+' / '+order.length, SPW/2, SPH-12);
+      sbPlayCtx.textAlign='left'; sbPlayCtx.restore();
+    }
+
+    function step(ts){
+      if(!startT) startT=ts;
+      const elapsed=ts-startT;
+      sbPlayCtx.fillStyle='#050508'; sbPlayCtx.fillRect(0,0,SPW,SPH);
+      const HOLD=500, TRANS=300;
+      const cycleT=(elapsed % (HOLD+TRANS));
+      const curScene=order[idx%order.length].s;
+      const nextScene=order[(idx+1)%order.length].s;
+      const tr=getTransition(curScene,nextScene);
+      if(cycleT < HOLD){
+        drawFrame(curScene,1);
+      } else {
+        const tt=(cycleT-HOLD)/TRANS;
+        if(tr==='dissolve'){drawFrame(curScene,1-tt); drawFrame(nextScene,tt);}
+        else { drawFrame(tt<0.5?curScene:nextScene,1); if(tt<0.08||tt>0.92){sbPlayCtx.fillStyle='rgba(255,255,255,0.8)';sbPlayCtx.fillRect(0,0,SPW,SPH);} }
+        if(cycleT>=HOLD+TRANS-10) { idx=(idx+1)%order.length; startT=ts; }
+      }
+      // Progress bar
+      const totCycles=order.length; const prog=(idx+cycleT/(HOLD+TRANS))/totCycles;
+      sbPlayCtx.fillStyle='rgba(30,30,46,0.7)'; sbPlayCtx.fillRect(0,SPH-3,SPW,3);
+      sbPlayCtx.fillStyle='#6366f1'; sbPlayCtx.fillRect(0,SPH-3,SPW*Math.min(prog,1),3);
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+
+    // Arc analysis
+    const arc=order.map(x=>arcMeanings[scenes[x.s].type]||'neutral');
+    const arcPanel=document.getElementById('arcPanel');
+    arcPanel.classList.add('visible');
+    arcPanel.innerHTML='<strong style="color:var(--accent2)">Arc Analysis:</strong> '+
+      arc.map((a,i)=>`<span style="color:var(--accent)">${a}</span>`).join(' → ')+
+      '<br><em style="color:var(--dim)">Emotional trajectory based on scene-type rules</em>';
+  }
+})();
+
+
+// ════════════════════════════════════════════════
+// SECTION 7: Immersive Transition Techniques
+// ════════════════════════════════════════════════
+(function immersiveInit() {
+
+  // ── POV Transition ──
+  const povCv = document.getElementById('povCanvas');
+  const povCtx = povCv.getContext('2d');
+  const PW=400, PH=240;
+  let povVal=0;
+
+  function drawPOV(t) {
+    povCtx.fillStyle='#0a0a14'; povCtx.fillRect(0,0,PW,PH);
+    if (t < 0.5) {
+      // Looking at door
+      const prog=t*2;
+      // Wall
+      povCtx.fillStyle='#1a1228'; povCtx.fillRect(0,0,PW,PH);
+      // Door frame
+      const dw=lerp(120,PW*0.95,prog), dh=lerp(160,PH*0.95,prog);
+      const dx=(PW-dw)/2, dy=PH-dh-lerp(20,0,prog);
+      // Door surround
+      povCtx.fillStyle='#2a2040'; povCtx.fillRect(dx-8,dy-8,dw+16,dh+8+16);
+      // Door panel
+      const doorSwing=prog*0.1; // slight
+      povCtx.save(); povCtx.translate(dx+dw/2,dy);
+      const sw=Math.cos(doorSwing)*dw/2;
+      povCtx.fillStyle='#3a2d5e';
+      povCtx.fillRect(-sw,-8,sw*2,dh+8);
+      // door panels
+      povCtx.fillStyle='#2d2050';
+      povCtx.fillRect(-sw*0.8,dh*0.05,sw*0.75,dh*0.4);
+      povCtx.fillRect(-sw*0.8,dh*0.55,sw*0.75,dh*0.38);
+      povCtx.fillRect(sw*0.05,dh*0.05,sw*0.75,dh*0.4);
+      povCtx.fillRect(sw*0.05,dh*0.55,sw*0.75,dh*0.38);
+      // handle
+      const scaleMult=lerp(1,2.5,prog);
+      povCtx.fillStyle='#c0a840'; povCtx.globalAlpha=0.9;
+      povCtx.beginPath(); povCtx.ellipse(sw*0.6,dh*0.45,10*scaleMult,7*scaleMult,0,0,Math.PI*2); povCtx.fill();
+      povCtx.globalAlpha=1;
+      povCtx.restore();
+      // vignette
+      let vig=povCtx.createRadialGradient(PW/2,PH/2,40,PW/2,PH/2,PW*0.7);
+      vig.addColorStop(0,'transparent'); vig.addColorStop(1,'rgba(0,0,0,0.6)');
+      povCtx.fillStyle=vig; povCtx.fillRect(0,0,PW,PH);
+    } else {
+      // Opening door — interior revealed
+      const prog=(t-0.5)*2;
+      // Interior room
+      let g=povCtx.createLinearGradient(0,0,0,PH);
+      g.addColorStop(0,'#1a1428'); g.addColorStop(1,'#0a0814');
+      povCtx.fillStyle=g; povCtx.fillRect(0,0,PW,PH);
+      // floor
+      povCtx.fillStyle='#2a1e14'; povCtx.fillRect(0,PH*0.65,PW,PH*0.35);
+      // window with light
+      const winAlpha=prog;
+      povCtx.fillStyle=`rgba(220,200,140,${winAlpha*0.3})`; povCtx.fillRect(PW*0.3,PH*0.15,PW*0.4,PH*0.35);
+      // light rays
+      povCtx.save();
+      for(let r=0;r<5;r++){
+        let ra=(-0.3+r*0.15)*Math.PI;
+        let rg=povCtx.createLinearGradient(PW*0.5,PH*0.32,PW*0.5+Math.cos(ra)*200,PH*0.32+Math.sin(ra)*150);
+        rg.addColorStop(0,`rgba(220,200,140,${winAlpha*0.25})`); rg.addColorStop(1,'transparent');
+        povCtx.fillStyle=rg;
+        povCtx.beginPath(); povCtx.moveTo(PW*0.5,PH*0.32); povCtx.lineTo(PW*0.5+Math.cos(ra-0.05)*200,PH*0.32+Math.sin(ra-0.05)*150); povCtx.lineTo(PW*0.5+Math.cos(ra+0.05)*200,PH*0.32+Math.sin(ra+0.05)*150); povCtx.closePath(); povCtx.fill();
+      }
+      povCtx.restore();
+      // furniture silhouette
+      povCtx.fillStyle='rgba(20,15,30,0.8)';
+      povCtx.fillRect(PW*0.1,PH*0.5,PW*0.2,PH*0.15);
+      povCtx.fillRect(PW*0.65,PH*0.45,PW*0.25,PH*0.2);
+      // door edge (opening)
+      const edgeX=PW*(1-prog*0.9);
+      povCtx.fillStyle='#2d2050'; povCtx.fillRect(edgeX-20,0,20,PH);
+    }
+    // label
+    const phase=t<0.33?'Looking':t<0.66?'Opening':'Inside';
+    povCtx.fillStyle='rgba(148,163,184,0.6)'; povCtx.font='10px monospace';
+    povCtx.fillText('[ '+phase.toUpperCase()+' ]',8,20);
+  }
+
+  document.getElementById('povSlider').addEventListener('input',function(){
+    povVal=this.value/100; drawPOV(povVal);
+  });
+  drawPOV(0);
+
+  // ── Time-Lapse Dissolve ──
+  const tlCv = document.getElementById('timelapsCanvas');
+  const tlCtx = tlCv.getContext('2d');
+  const TW=400, TH=240;
+  let tlSpeed=1, tlTime=0, tlLastTS=0;
+
+  document.getElementById('tlSlider').addEventListener('input',function(){
+    tlSpeed=+this.value;
+    const label=tlSpeed<10?tlSpeed+'×':tlSpeed<100?Math.round(tlSpeed)+'×':Math.round(tlSpeed)+'×';
+    document.getElementById('tlSpeedVal').textContent=label;
+  });
+
+  function drawTimelapse(ts) {
+    const dt=(ts-tlLastTS)*0.001; tlLastTS=ts;
+    tlTime=(tlTime+dt*tlSpeed*0.00005)%1;
+
+    // Sky color transitions: dawn→noon→sunset→night
+    const t=tlTime;
+    let skyColor, groundColor, sunY, sunColor, sunAlpha;
+    if(t<0.25){ // dawn
+      const p=t/0.25;
+      skyColor=`hsl(${lerp(220,180,p)},${lerp(40,60,p)}%,${lerp(8,50,p)}%)`;
+      sunY=TH*0.9-p*TH*0.6; sunColor='#ffcc44'; sunAlpha=p;
+    } else if(t<0.5){ // noon
+      const p=(t-0.25)/0.25;
+      skyColor=`hsl(${lerp(180,200,p)},${lerp(60,70,p)}%,${lerp(50,65,p)}%)`;
+      sunY=TH*0.3-p*TH*0.15; sunColor='#ffffaa'; sunAlpha=1;
+    } else if(t<0.75){ // sunset
+      const p=(t-0.5)/0.25;
+      skyColor=`hsl(${lerp(200,20,p)},${lerp(70,80,p)}%,${lerp(65,40,p)}%)`;
+      sunY=TH*0.15+p*TH*0.6; sunColor=`hsl(${lerp(60,20,p)},90%,60%)`;
+      sunAlpha=1-p*0.3;
+    } else { // night
+      const p=(t-0.75)/0.25;
+      skyColor=`hsl(${lerp(20,220,p)},${lerp(80,40,p)}%,${lerp(40,8,p)}%)`;
+      sunY=TH*0.75+p*TH*0.2; sunColor='#c0c0ff'; sunAlpha=p;
+    }
+
+    // BG
+    let g=tlCtx.createLinearGradient(0,0,0,TH);
+    g.addColorStop(0,skyColor); g.addColorStop(0.65,'#1a1228');
+    tlCtx.fillStyle=g; tlCtx.fillRect(0,0,TW,TH);
+
+    // Clouds (streak at speed)
+    if(tlSpeed>50){
+      for(let c=0;c<5;c++){
+        const cx=((tlTime*TW*8+c*TW*0.2)%TW);
+        tlCtx.fillStyle='rgba(255,255,255,0.12)';
+        tlCtx.beginPath(); tlCtx.ellipse(cx,TH*0.2+c*18,50,14,0,0,Math.PI*2); tlCtx.fill();
+      }
+    } else {
+      for(let c=0;c<3;c++){
+        const cx=(tlTime*TW*0.1+c*TW*0.35)%TW;
+        tlCtx.fillStyle='rgba(255,255,255,0.15)';
+        tlCtx.beginPath(); tlCtx.ellipse(cx,TH*0.15+c*20,60,18,0,0,Math.PI*2); tlCtx.fill();
+      }
+    }
+
+    // Sun/moon
+    tlCtx.fillStyle=sunColor; tlCtx.globalAlpha=sunAlpha;
+    tlCtx.beginPath(); tlCtx.arc(TW*0.7,sunY,t>0.75?10:16,0,Math.PI*2); tlCtx.fill();
+    if(t>0.5&&t<0.75){ // sunset glow
+      let glow=tlCtx.createRadialGradient(TW*0.7,sunY,5,TW*0.7,sunY,60);
+      glow.addColorStop(0,sunColor+'99'); glow.addColorStop(1,'transparent');
+      tlCtx.fillStyle=glow; tlCtx.beginPath(); tlCtx.arc(TW*0.7,sunY,60,0,Math.PI*2); tlCtx.fill();
+    }
+    tlCtx.globalAlpha=1;
+
+    // Building silhouette
+    tlCtx.fillStyle='#050508';
+    tlCtx.fillRect(TW*0.1,TH*0.5,TW*0.12,TH*0.5);
+    tlCtx.fillRect(TW*0.25,TH*0.38,TW*0.08,TH*0.62);
+    tlCtx.fillRect(TW*0.36,TH*0.45,TW*0.15,TH*0.55);
+    tlCtx.fillRect(TW*0.55,TH*0.4,TW*0.1,TH*0.6);
+    tlCtx.fillRect(TW*0.68,TH*0.52,TW*0.2,TH*0.48);
+
+    // Stars at night
+    if(t>0.7||t<0.1){
+      const starAlpha=t>0.75?(t-0.75)/0.25:Math.min(1,t<0.05?t/0.05:1);
+      tlCtx.fillStyle=`rgba(148,163,184,${starAlpha})`;
+      for(let i=0;i<40;i++){
+        let sx=i*137.5%TW, sy=i*73.1%(TH*0.5);
+        tlCtx.beginPath(); tlCtx.arc(sx,sy,0.8+Math.sin(i*0.7+ts*0.001)*0.3,0,Math.PI*2); tlCtx.fill();
+      }
+    }
+
+    // Time indicator
+    const hours=['12am','3am','6am','9am','12pm','3pm','6pm','9pm'];
+    const hIdx=Math.floor(t*8);
+    tlCtx.fillStyle='rgba(148,163,184,0.7)'; tlCtx.font='10px monospace';
+    tlCtx.fillText('[ '+hours[hIdx]+' ]',8,20);
+    requestAnimationFrame(drawTimelapse);
+  }
+  requestAnimationFrame(ts=>{tlLastTS=ts; drawTimelapse(ts);});
+
+  // ── Memory Flash ──
+  const memCv=document.getElementById('memCanvas');
+  const memCtx=memCv.getContext('2d');
+  const MW=400, MH=240;
+  let memFlashing=false, memFlashStart=0, memIntensity=50;
+
+  document.getElementById('memIntensitySlider').addEventListener('input',function(){
+    memIntensity=+this.value;
+    document.getElementById('memIntensityVal').textContent=memIntensity;
+  });
+
+  function drawPresent(ctx,W,H,alpha=1){
+    ctx.save(); ctx.globalAlpha=alpha;
+    ctx.fillStyle='#0a0a14'; ctx.fillRect(0,0,W,H);
+    // simple room
+    ctx.strokeStyle='#1e1e2e'; ctx.lineWidth=2;
+    ctx.strokeRect(W*0.1,H*0.1,W*0.8,H*0.8);
+    // chair
+    ctx.fillStyle='#2a2040';
+    ctx.fillRect(W*0.35,H*0.5,W*0.3,H*0.3);
+    ctx.fillRect(W*0.35,H*0.35,W*0.3,H*0.17);
+    // window
+    ctx.strokeStyle='#2a2a4a'; ctx.lineWidth=1;
+    ctx.strokeRect(W*0.6,H*0.15,W*0.22,H*0.25);
+    ctx.fillStyle='rgba(100,120,180,0.08)'; ctx.fillRect(W*0.6,H*0.15,W*0.22,H*0.25);
+    ctx.fillStyle='rgba(148,163,184,0.4)'; ctx.font='9px monospace';
+    ctx.fillText('PRESENT', 8, 18);
+    ctx.restore();
+  }
+
+  function drawMemory(ctx,W,H,alpha=1){
+    ctx.save(); ctx.globalAlpha=alpha;
+    let g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#2d1a0a'); g.addColorStop(1,'#1a0d05');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    // warm sepia tones
+    ctx.fillStyle='rgba(200,120,40,0.15)'; ctx.fillRect(0,0,W,H);
+    // figures
+    ctx.fillStyle='#c8a060';
+    ctx.beginPath(); ctx.ellipse(W*0.35,H*0.4,18,22,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(W*0.6,H*0.38,16,20,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#8a5028';
+    ctx.fillRect(W*0.24,H*0.55,28,H*0.35);
+    ctx.fillRect(W*0.5,H*0.53,24,H*0.35);
+    // sepia frame
+    ctx.strokeStyle='rgba(200,150,60,0.4)'; ctx.lineWidth=3;
+    ctx.strokeRect(4,4,W-8,H-8);
+    // grain
+    ctx.fillStyle='rgba(200,150,60,0.04)';
+    for(let i=0;i<200;i++){
+      ctx.fillRect(Math.random()*W,Math.random()*H,1,1);
+    }
+    ctx.fillStyle='rgba(200,120,40,0.6)'; ctx.font='9px monospace';
+    ctx.fillText('MEMORY', 8, 18);
+    ctx.restore();
+  }
+
+  function renderMem() {
+    if (!memFlashing) { drawPresent(memCtx,MW,MH); return; }
+    const elapsed = performance.now() - memFlashStart;
+    const dur = 2000 * (memIntensity/50);
+    const t = clamp(elapsed/dur,0,1);
+    memCtx.fillStyle='#050508'; memCtx.fillRect(0,0,MW,MH);
+    // 3 flashes → memory → 3 flashes → present
+    const flashPhase = Math.sin(t * Math.PI * 6);
+    if (t < 0.25) { // flash in
+      if (flashPhase > 0.5) { memCtx.fillStyle='rgba(255,255,255,0.9)'; memCtx.fillRect(0,0,MW,MH); }
+      else drawPresent(memCtx,MW,MH);
+    } else if (t < 0.65) { // memory
+      drawMemory(memCtx,MW,MH);
+      const scanAlpha = (t-0.25)/0.4 * 0.3;
+      for(let row=0;row<MH;row+=3){
+        memCtx.fillStyle=`rgba(0,0,0,${scanAlpha})`;
+        memCtx.fillRect(0,row,MW,1.5);
+      }
+    } else { // flash out
+      if (flashPhase > 0.5) { memCtx.fillStyle='rgba(255,255,255,0.85)'; memCtx.fillRect(0,0,MW,MH); }
+      else { drawPresent(memCtx,MW,MH,(t-0.65)/0.35); drawMemory(memCtx,MW,MH,1-(t-0.65)/0.35); }
+    }
+    if (t >= 1) { memFlashing=false; drawPresent(memCtx,MW,MH); }
+    else requestAnimationFrame(renderMem);
+  }
+
+  document.getElementById('memTriggerBtn').addEventListener('click',()=>{
+    memFlashing=true; memFlashStart=performance.now(); requestAnimationFrame(renderMem);
+  });
+  drawPresent(memCtx,MW,MH);
+})();
+
+
+// ════════════════════════════════════════════════
+// SECTION 8: History Timeline + Artist Cards
+// ════════════════════════════════════════════════
+(function historyInit() {
+  const events = [
+    { year:'1895', title:"Méliès", desc:"First in-camera dissolve & stop-trick substitution" },
+    { year:'1903', title:"Edwin Porter", desc:"First narrative cutting — The Great Train Robbery" },
+    { year:'1916', title:"D.W. Griffith", desc:"Parallel editing & cross-cutting systematized" },
+    { year:'1925', title:"Eisenstein", desc:"Battleship Potemkin — montage theory born" },
+    { year:'1927', title:"Kuleshov Effect", desc:"Published rules of juxtapositional meaning" },
+    { year:'1941', title:"Citizen Kane", desc:"Deep focus + innovative time-dissolves (Welles)" },
+    { year:'1960', title:"Godard", desc:"Jump cut as artistic statement — Breathless" },
+    { year:'1968', title:"Kubrick", desc:"Bone → satellite — greatest match cut in history" },
+    { year:'1979', title:"Apocalypse Now", desc:"Walter Murch — sound design as editorial architecture" },
+    { year:'1991', title:"Thelma Schoonmaker", desc:"Cape Fear — rhythm as character" },
+    { year:'1994', title:"Pulp Fiction", desc:"Tarantino non-linear narrative structure" },
+    { year:'2000', title:"Memento", desc:"Reverse chronology as cognitive experience" },
+    { year:'2015', title:"Mad Max: Fury Road", desc:"Shot-length analysis landmark — avg 2.1s" },
+    { year:'2024', title:"AI Editing", desc:"Algorithm-assisted cut timing enters mainstream" }
+  ];
+
+  const track = document.getElementById('timelineTrack');
+  events.forEach(ev => {
+    const div = document.createElement('div');
+    div.className = 'timeline-event';
+    div.innerHTML = `
+      <div class="t-dot"></div>
+      <div class="t-year">${ev.year}</div>
+      <div class="t-title">${ev.title}</div>
+      <div class="t-desc">${ev.desc}</div>
+    `;
+    track.appendChild(div);
+  });
+
+  const artists = [
+    { name:'Walter Murch', work:'Apocalypse Now · The English Patient', note:'Coined the "Rule of Six" — six criteria for every edit decision. Sound designer turned editor.' },
+    { name:'Thelma Schoonmaker', work:'Raging Bull · Goodfellas · The Irishman', note:"Scorsese's lifelong collaborator. Three Academy Awards. Master of rhythm-driven violence." },
+    { name:'Sergei Eisenstein', work:'Battleship Potemkin · October', note:'Father of montage theory. Proved images collide to create new meaning beyond their sum.' },
+    { name:'Jean-Luc Godard', work:'Breathless · Band of Outsiders', note:'Invented the jump cut as aesthetic choice, liberating film from seamless illusion.' },
+    { name:'Sally Menke', work:'Pulp Fiction · Inglourious Basterds', note:"Tarantino's editor for 20 years. Shaped the rhythm of his non-linear, anachronistic style." },
+    { name:'Paul Hirsch', work:'Star Wars · Ferris Bueller', note:'Cut the original Star Wars — transformed Lucas\'s rough footage into a mythic adventure.' },
+    { name:'Anne Coates', work:'Lawrence of Arabia · Out of Sight', note:'Famous for the match cut: prison to desert — the most daring temporal ellipsis in cinema.' },
+    { name:'Dede Allen', work:'Bonnie and Clyde · Dog Day Afternoon', note:'Defined 1960s American cinema rhythm. Jump cuts and overlapping dialogue as grammar.' }
+  ];
+
+  const grid = document.getElementById('artistsGrid');
+  artists.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'artist-card';
+    card.innerHTML = `
+      <div class="artist-name">${a.name}</div>
+      <div class="artist-work">${a.work}</div>
+      <div class="artist-note">${a.note}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ════════════════════════════════════════════════
+// SECTION 9: Glossary
+// ════════════════════════════════════════════════
+(function glossaryInit() {
+  const terms = [
+    { term:'Accelerated Montage', def:'A sequence where cut frequency increases to build tension, as in Eisenstein\'s Odessa Steps sequence.' },
+    { term:'B-Roll', def:'Supplementary footage cut away from the main action. Provides context, covers edits, and adds visual texture.' },
+    { term:'Continuity Editing', def:'The Hollywood system of invisible cuts that preserves spatial and temporal coherence across shots.' },
+    { term:'Cross-Cutting', def:'Alternating between two simultaneous scenes in different locations, implying narrative parallel.' },
+    { term:'Cut', def:'The instantaneous transition from one shot to another. The fundamental unit of film editing.' },
+    { term:'Cutaway', def:'A brief shot away from the main action — to an object, reaction, or related scene — before returning.' },
+    { term:'Dissolve', def:'A gradual transition where one image fades out as the next fades in, implying time passage or association.' },
+    { term:'Diegetic Sound', def:"Sound that exists within the film's world (heard by characters), as opposed to score or narration." },
+    { term:'Fade', def:'A transition from or to a solid color (usually black). Fade to black = finality. Fade in = beginning.' },
+    { term:'Hard Cut', def:'An abrupt, immediate cut between shots. Asserts energy, surprise, or decisiveness.' },
+    { term:'Insert Shot', def:'A close-up of an object or detail cut into a scene to draw attention or provide information.' },
+    { term:'J-Cut', def:'Audio from the next scene begins before the image cuts, creating audio-visual overlap that pulls the viewer forward.' },
+    { term:'Jump Cut', def:'A cut between two shots of the same subject from slightly different angles or times, creating a jarring discontinuity.' },
+    { term:'L-Cut', def:"The image cuts to the next scene before the audio does, allowing one scene's sound to extend over the next." },
+    { term:'Match Cut', def:'A cut that joins two shots with a visual or conceptual match — shape, movement, or subject — bridging space and time.' },
+    { term:'Montage', def:'A filmmaking technique using a series of short cuts to condense space, time, or meaning into a concentrated sequence.' },
+    { term:'Non-Linear Editing', def:'Digital editing where footage can be assembled in any order, non-destructively, on a timeline.' },
+    { term:'Parallel Editing', def:'Intercutting between two or more storylines occurring in different places, often with a convergence implied.' },
+    { term:'Point of View (POV)', def:"A shot representing a character's optical viewpoint — what they see, with their physical perspective." },
+    { term:'Reaction Shot', def:"A shot of a character's response to a previous action, event, or line of dialogue." },
+    { term:'Smash Cut', def:'A jarring, percussive cut from a quiet or tense moment directly to a loud or violent one.' },
+    { term:'Wipe', def:'A transitional effect where a line or shape moves across the frame, replacing one shot with another.' }
+  ];
+
+  const grid = document.getElementById('glossaryGrid');
+  terms.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'glossary-item';
+    item.innerHTML = `<div class="glossary-term">${t.term}</div><div class="glossary-def">${t.def}</div>`;
+    grid.appendChild(item);
+  });
+})();
+
+// ── END OF SCRIPT ──
+</script>

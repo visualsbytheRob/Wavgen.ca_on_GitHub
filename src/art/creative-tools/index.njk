@@ -1,0 +1,988 @@
+---
+layout: world.njk
+title: "Creative Tools Convergence — WAVGEN"
+description: "Immersive art world exploring creative tools"
+domain: art
+permalink: /art/creative-tools/
+---
+
+
+<!-- ── JUMP NAV ── -->
+<nav id="jump-nav">
+<span class="logo">WAVGEN</span>
+<a class="active" href="#hero">Hero</a>
+<a href="#node-graph">Node Graph</a>
+<a href="#pipelines">Pipelines</a>
+<a href="#tool-dives">Tools</a>
+<a href="#matrix">Matrix</a>
+<a href="#repo-bridges">Bridges</a>
+<a href="#glossary">Glossary</a>
+</nav>
+<!-- ── SECTION 1: HERO ── -->
+<section id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-content">
+<p class="hero-eyebrow">WAVGEN · Creative Tools Platform</p>
+<h1 class="hero-title"><span class="glow">CREATIVE TOOLS</span><br/>CONVERGENCE</h1>
+<p class="hero-sub">Where p5.js, TouchDesigner, WebGL/GLSL, Max/MSP, Processing, and openFrameworks meet, merge, and amplify each other.</p>
+<div class="hero-tags">
+<span class="hero-tag active">p5.js</span>
+<span class="hero-tag active">TouchDesigner</span>
+<span class="hero-tag active">WebGL / GLSL</span>
+<span class="hero-tag active">Max/MSP</span>
+<span class="hero-tag active">Processing</span>
+<span class="hero-tag active">openFrameworks</span>
+<span class="hero-tag">Node Graph</span>
+<span class="hero-tag">Signal Flow</span>
+<span class="hero-tag">GPU Pipeline</span>
+</div>
+</div>
+</section>
+<!-- ── SECTION 2: NODE GRAPH ── -->
+<section id="node-graph" style="padding-top:6rem">
+<p class="section-label reveal">Cross-Tool Visualization</p>
+<h2 class="section-title reveal reveal-delay-1">Cross-Tool <span>Node Graph</span></h2>
+<p class="section-desc reveal reveal-delay-2">Six creative coding environments modelled as a live node graph. Animated signal flows represent data bridges, OSC channels, shader pipelines, and API connections. Click any node to explore its capabilities and bridges.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<div class="reveal" id="node-graph-wrap">
+<canvas id="node-canvas"></canvas>
+<div class="node-detail-panel" id="ndp">
+<div class="ndp-header">
+<div class="ndp-icon" id="ndp-icon"></div>
+<div><div class="ndp-name" id="ndp-name"></div><div class="ndp-type" id="ndp-type"></div></div>
+</div>
+<p class="ndp-desc" id="ndp-desc"></p>
+<div class="ndp-tags" id="ndp-tags"></div>
+<div class="ndp-bridges">
+<h4>Bridges &amp; Connections</h4>
+<div class="bridge-list" id="ndp-bridges"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ── SECTION 3: PIPELINES ── -->
+<section id="pipelines">
+<p class="section-label reveal">Creative Workflows</p>
+<h2 class="section-title reveal reveal-delay-1">Pipeline <span>Explorer</span></h2>
+<p class="section-desc reveal reveal-delay-2">Four end-to-end creative production pipelines showing how tools connect in sequence — from concept to output.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<div class="pipelines-grid reveal">
+<div class="pipeline-card">
+<div class="pipeline-header">
+<div class="pipeline-num">Pipeline 01</div>
+<div class="pipeline-name">Generative Visual Pipeline</div>
+</div>
+<div class="pipeline-body">
+<div class="pipeline-flow">
+<span class="pipe-node primary">p5.js sketch</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node primary">WebGL render</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">TD import</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">output</span>
+</div>
+<div class="pipeline-canvas"><div class="pipe-bar" id="pipe-bar-0" style="width:85%"></div></div>
+<p class="pipeline-desc">Sketch generative forms in p5.js, route geometry to a WebGL fragment shader for GPU post-processing, then pull the rendered texture into TouchDesigner for projection or video output.</p>
+</div>
+</div>
+<div class="pipeline-card">
+<div class="pipeline-header">
+<div class="pipeline-num">Pipeline 02</div>
+<div class="pipeline-name">Audio-Reactive Pipeline</div>
+</div>
+<div class="pipeline-body">
+<div class="pipeline-flow">
+<span class="pipe-node primary">Max/MSP audio</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node primary">OSC</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">TD / p5.js</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">visual</span>
+</div>
+<div class="pipeline-canvas"><div class="pipe-bar" id="pipe-bar-1" style="width:72%"></div></div>
+<p class="pipeline-desc">Max/MSP analyses or generates audio in real-time. Analysis data (amplitude, spectrum, beat) streams via OSC to TouchDesigner or p5.js, driving generative visuals in sync with sound.</p>
+</div>
+</div>
+<div class="pipeline-card">
+<div class="pipeline-header">
+<div class="pipeline-num">Pipeline 03</div>
+<div class="pipeline-name">AI-Assisted Pipeline</div>
+</div>
+<div class="pipeline-body">
+<div class="pipeline-flow">
+<span class="pipe-node primary">Python / ML</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">image output</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node primary">TD texture</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">WebGL post</span>
+</div>
+<div class="pipeline-canvas"><div class="pipe-bar" id="pipe-bar-2" style="width:63%"></div></div>
+<p class="pipeline-desc">Python ML models (StyleGAN, diffusion, NeRF) generate image or video frames. TouchDesigner ingests as live texture. WebGL post-processing (GLSL shaders) applies real-time stylization.</p>
+</div>
+</div>
+<div class="pipeline-card">
+<div class="pipeline-header">
+<div class="pipeline-num">Pipeline 04</div>
+<div class="pipeline-name">Live Performance Pipeline</div>
+</div>
+<div class="pipeline-body">
+<div class="pipeline-flow">
+<span class="pipe-node primary">Max/MSP</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node primary">OSC</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">TD network</span>
+<span class="pipe-arrow">→</span>
+<span class="pipe-node">projection</span>
+</div>
+<div class="pipeline-canvas"><div class="pipe-bar" id="pipe-bar-3" style="width:90%"></div></div>
+<p class="pipeline-desc">Performer triggers Max/MSP patches live. OSC messages stream over network to TouchDesigner across multiple machines. Output feeds multi-channel projection mapping in real-time.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ── SECTION 4: TOOL DIVES ── -->
+<section id="tool-dives">
+<p class="section-label reveal">Artist Tool Cards</p>
+<h2 class="section-title reveal reveal-delay-1">Tool <span>Deep Dives</span></h2>
+<p class="section-desc reveal reveal-delay-2">Eight tools at the intersection of creative code, visual performance, and generative production. Each shapes how artists program the unseen.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<div class="tools-grid reveal" id="tools-grid">
+<!-- injected by JS -->
+</div>
+</section>
+<!-- ── SECTION 5: MATRIX ── -->
+<section id="matrix">
+<p class="section-label reveal">Compatibility Overview</p>
+<h2 class="section-title reveal reveal-delay-1">Interoperability <span>Matrix</span></h2>
+<p class="section-desc reveal reveal-delay-2">Compatibility scores between the six core tools. Hover cells to see bridge details. Brightness = integration depth.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<canvas class="reveal" id="matrix-canvas"></canvas>
+<div class="matrix-legend reveal">
+<div class="ml-item"><div class="ml-dot" style="background:#00BCD4"></div>Native bridge</div>
+<div class="ml-item"><div class="ml-dot" style="background:#FF8F00"></div>OSC / MIDI</div>
+<div class="ml-item"><div class="ml-dot" style="background:#4A5568"></div>Indirect</div>
+<div class="ml-item"><div class="ml-dot" style="background:#1a2535"></div>Minimal</div>
+</div>
+<p id="matrix-tooltip" style="text-align:center;color:var(--text-dim);font-size:0.85rem;margin-top:1rem;min-height:1.4em"></p>
+</section>
+<!-- ── SECTION 6: REPO BRIDGES ── -->
+<section id="repo-bridges">
+<p class="section-label reveal">Open Source Connective Tissue</p>
+<h2 class="section-title reveal reveal-delay-1">Repo <span>Bridges</span></h2>
+<p class="section-desc reveal reveal-delay-2">Repositories that form the connective tissue between creative tools — OSC pipelines, shader ports, ML inference layers, and GPU data bridges.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<div class="repo-grid reveal" id="repo-grid">
+<!-- injected by JS -->
+</div>
+</section>
+<!-- ── SECTION 7: GLOSSARY ── -->
+<section id="glossary">
+<p class="section-label reveal">Reference</p>
+<h2 class="section-title reveal reveal-delay-1">Creative Tools <span>Glossary</span></h2>
+<p class="section-desc reveal reveal-delay-2">22 terms spanning node-based programming, GPU pipelines, signal protocols, and creative coding paradigms.</p>
+<div class="divider reveal reveal-delay-3"></div>
+<div class="glossary-grid reveal" id="glossary-grid">
+<!-- injected by JS -->
+</div>
+</section>
+<!-- ═══════════════════════════════════════════ SCRIPTS ═══════════════════════════════════════════ -->
+<script>
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  LAG FILTER — 17 instances                                       ║
+// ╚══════════════════════════════════════════════════════════════════╝
+class LagFilter {
+  constructor(tau = 0.25) { this.value = 0; this.tau = tau; }
+  update(target, dt) {
+    this.value += (1 - Math.exp(-dt / this.tau)) * (target - this.value);
+    return this.value;
+  }
+  set(v) { this.value = v; return v; }
+}
+
+const lagHMX          = new LagFilter(0.12);
+const lagHMY          = new LagFilter(0.12);
+const lagHPulse       = new LagFilter(0.80);
+const lagNodePosX     = new LagFilter(0.20);
+const lagNodePosY     = new LagFilter(0.20);
+const lagNodeScale    = new LagFilter(0.15);
+const lagPipeFlow     = new LagFilter(0.50);
+const lagPipeSpeed    = new LagFilter(0.40);
+const lagMatrixHover  = new LagFilter(0.10);
+const lagToolDetail   = new LagFilter(0.20);
+const lagBridgeAnim   = new LagFilter(0.60);
+const lagSignalDensity= new LagFilter(0.30);
+const lagGlowPulse    = new LagFilter(1.00);
+const lagConnectionArc= new LagFilter(0.25);
+const lagRepoSlide    = new LagFilter(0.35);
+const lagGlossaryScroll=new LagFilter(0.40);
+const lagPanelReveal  = new LagFilter(0.20);
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  DATA                                                            ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const TOOLS = [
+  {
+    id: 'p5js', name: 'p5.js', type: 'JS · Canvas', color: '#ED225D',
+    emoji: '🎨', lang: 'JavaScript',
+    desc: 'Friendly, accessible creative coding library for the browser. Reimagines Processing for the web with a simple draw-loop API and p5.sound, p5.dom extensions.',
+    caps: ['Canvas2D', 'WebGL mode', 'DOM integration', 'p5.sound', 'MIDI', 'Live coding'],
+    bridges: ['Processing (API mirror)', 'WebGL via p5.WEBGL', 'OSC via osc-web', 'TouchDesigner via Spout'],
+    detail: 'JavaScript/Canvas, generative art, browser-native. Designed as the web-native successor to Processing.'
+  },
+  {
+    id: 'td', name: 'TouchDesigner', type: 'Node-Based · GPU', color: '#00BCD4',
+    emoji: '⬡', lang: 'Python / GLSL',
+    desc: 'Node-based visual programming environment for real-time interactive multimedia content. Used globally for projection mapping, live performance, and installations.',
+    caps: ['GLSL TOP', 'Python scripting', 'OSC/MIDI', 'Spout/NDI', 'GPU compute', 'Projection mapping'],
+    bridges: ['Max/MSP via OSC', 'WebGL via Spout', 'openFrameworks via Syphon/NDI', 'p5.js via WebRTC'],
+    detail: 'Node-based, realtime, GPU. Professional-grade multimedia server with deep GLSL integration.'
+  },
+  {
+    id: 'webgl', name: 'WebGL / GLSL', type: 'Shader · GPU Direct', color: '#7C3AED',
+    emoji: '◈', lang: 'GLSL',
+    desc: 'Browser-native GPU programming. Vertex and fragment shaders run directly on the GPU, enabling particle systems, raymarching, fluid sims, and post-processing in the browser.',
+    caps: ['Fragment shaders', 'Vertex shaders', 'Compute via GPGPU', 'Raymarching', 'Feedback loops', 'Three.js'],
+    bridges: ['p5.js (WEBGL mode)', 'TouchDesigner GLSL TOP', 'Shader Park bridge', 'openFrameworks (OpenGL)'],
+    detail: 'Shader programming, GPU direct. The universal GPU language: ports across TD, oF, Processing, and browser.'
+  },
+  {
+    id: 'maxmsp', name: 'Max/MSP', type: 'Visual · Audio Patching', color: '#FF8F00',
+    emoji: '◉', lang: 'Max patching',
+    desc: 'Visual dataflow programming language for music and multimedia. Pioneered the patch-based paradigm adopted by all modern node environments. Jitter extension for video.',
+    caps: ['Audio DSP', 'MIDI/OSC', 'Jitter (video/GL)', 'Node for Max', 'Gen~ (C code)', 'RNBO export'],
+    bridges: ['TouchDesigner via OSC', 'p5.js via osc-web', 'Processing via OSC', 'Ableton Link'],
+    detail: 'Visual audio programming, patching paradigm. The original node-based environment for live audio-visual performance.'
+  },
+  {
+    id: 'processing', name: 'Processing', type: 'Java · Visualization', color: '#0064C8',
+    emoji: '⬟', lang: 'Java',
+    desc: 'Software sketchbook and programming language for visual arts. The ancestor of p5.js, used in education and fine art. PGraphics, PShape, and P3D make it versatile.',
+    caps: ['2D/3D graphics', 'OpenGL (P3D)', 'Serial/OSC', 'Video library', 'Sound library', 'Python mode'],
+    bridges: ['p5.js (JavaScript port)', 'openFrameworks (C++ sibling)', 'TouchDesigner via OSC', 'Arduino via Serial'],
+    detail: 'Java-based, education-oriented, visualization-focused. Foundation of the creative coding canon.'
+  },
+  {
+    id: 'of', name: 'openFrameworks', type: 'C++ · Performance', color: '#4CAF50',
+    emoji: '◎', lang: 'C++',
+    desc: 'Open-source C++ toolkit for creative coding. Provides a consistent abstraction layer over OpenGL, audio, video, and hardware I/O — designed for performance-critical installations.',
+    caps: ['OpenGL/GLSL', 'ofxAddons ecosystem', 'Real-time audio', 'Computer vision', 'Hardware I/O', 'GPU compute'],
+    bridges: ['Processing (conceptual sibling)', 'TouchDesigner via Syphon/NDI', 'WebGL (shared GLSL)', 'Max/MSP via OSC'],
+    detail: 'C++ performance-first creative toolkit. Shares OpenGL fundamentals with WebGL/GLSL enabling shader portability.'
+  },
+  {
+    id: 'shaderpark', name: 'Shader Park', type: 'JS → GLSL · SDF', color: '#FF6B6B',
+    emoji: '◈', lang: 'JavaScript → GLSL',
+    desc: 'Domain-specific language that compiles JavaScript into GLSL shaders. Write sculptural SDF geometry in JS, get live GLSL. Bridges browser creative coding and GPU programming.',
+    caps: ['SDF sculpting', 'JS → GLSL compile', 'Three.js integration', 'TD integration', 'Live coding', 'WebXR'],
+    bridges: ['WebGL (compiled target)', 'TouchDesigner (shader-park-td)', 'p5.js (community port)', 'Three.js native'],
+    detail: 'Compiles JS to GLSL shaders. Bridges the worlds of creative JS coding and raw GPU programming with SDF sculpture.'
+  },
+  {
+    id: 'comfyui', name: 'ComfyUI', type: 'Node · AI Diffusion', color: '#8B5CF6',
+    emoji: '⬡', lang: 'Python nodes',
+    desc: 'Modular node-based UI for Stable Diffusion and generative AI pipelines. Its node graph paradigm mirrors TouchDesigner and Max/MSP, making AI workflows composable and visual.',
+    caps: ['Stable Diffusion', 'ControlNet', 'Video generation', 'Custom nodes', 'API export', 'ONNX/TensorRT'],
+    bridges: ['TouchDesigner (texture out)', 'Python ML models', 'Real-ESRGAN upscaling', 'FramePack (video)'],
+    detail: 'AI diffusion pipeline as node graph. The TD/Max paradigm applied to generative AI — composes models visually.'
+  }
+];
+
+const REPOS = [
+  { icon: '⬡', name: 'shader-park/shader-park-touchdesigner', bridge: 'Shader Park JS→GLSL in TD', tag: 'WebGL ↔ TD' },
+  { icon: '◉', name: 'automata/osc-web', bridge: 'OSC over WebSocket bridge for browser apps', tag: 'Max/MSP ↔ p5.js' },
+  { icon: '◈', name: 'DBraun/ChucKDesigner', bridge: 'ChucK music language running inside TouchDesigner', tag: 'Audio ↔ TD' },
+  { icon: '⬟', name: 'DBraun/TD-Faust', bridge: 'FAUST DSP audio synthesis compiled inside TD', tag: 'DSP ↔ TD' },
+  { icon: '◎', name: 't3kt/raytk', bridge: 'Raymarching / SDF shader toolkit for TouchDesigner', tag: 'GLSL ↔ TD' },
+  { icon: '◉', name: 'automata/node-osc', bridge: 'OSC protocol library for Node.js applications', tag: 'Max/MSP ↔ Web' },
+  { icon: '⬡', name: 'ashima/webgl-noise', bridge: 'Procedural noise functions in GLSL — universal across tools', tag: 'GLSL Universal' },
+  { icon: '◈', name: 'DBraun/PyTorchTOP', bridge: 'GPU PyTorch inference running inside TD as a TOP', tag: 'ML ↔ TD' },
+  { icon: '◎', name: 'ancillarymagnet/touchfluids', bridge: 'Navier-Stokes fluid simulation via GLSL in TD', tag: 'GLSL ↔ TD' },
+  { icon: '⬡', name: 'shader-park/shader-park-core', bridge: 'JavaScript → GLSL compiler core engine', tag: 'JS ↔ GLSL' },
+  { icon: '⬟', name: 'diwi/PixelFlow', bridge: 'Processing + GLSL GPU compute library', tag: 'Processing ↔ GLSL' },
+  { icon: '◉', name: 'trafalmejo/OSCAR', bridge: 'OSC GUI controller for AV systems', tag: 'OSC Bridge' },
+  { icon: '◎', name: 'hrtlacek/TDraymarchToolkit', bridge: 'Raymarching toolkit ported to TouchDesigner', tag: 'GLSL ↔ TD' },
+  { icon: '⬡', name: 'jamieowen/glsl-blend', bridge: 'Photoshop blend modes as GLSL functions', tag: 'GLSL Universal' },
+  { icon: '⬟', name: 'AmnonOwed/OF_GenerativeTypography', bridge: 'Generative typography in openFrameworks', tag: 'oF Creative' },
+  { icon: '◈', name: 'tdneuron/TDNeuron', bridge: 'Deep learning framework built inside TouchDesigner', tag: 'ML ↔ TD' },
+  { icon: '◉', name: 'DBraun/DawDreamer', bridge: 'Python DAW connecting audio, FAUST, and TD pipelines', tag: 'Audio ↔ Python ↔ TD' },
+  { icon: '◎', name: 'kamindustries/td-scope', bridge: 'Oscilloscope component for audio visualization in TD', tag: 'Audio ↔ TD' },
+  { icon: '⬡', name: 'PavelDoGreat/WebGL-Fluid-Simulation', bridge: 'WebGL fluid sim portable to TD GLSL TOP', tag: 'WebGL ↔ TD' },
+  { icon: '⬟', name: 'electricsquare/raymarching-workshop', bridge: 'Raymarching intro bridging GLSL to TD and oF', tag: 'GLSL Tutorial' }
+];
+
+const GLOSSARY = [
+  { term: 'Node Graph', def: 'A visual programming paradigm where operations are represented as nodes connected by wires carrying data. Used in TD, Max/MSP, and ComfyUI.' },
+  { term: 'Patch Bay', def: 'Physical or virtual matrix for routing signals between modules. Max/MSP and Eurorack patch cables are the canonical example.' },
+  { term: 'Signal Flow', def: 'The directed path data takes through a system, from source to destination. In audio: sound → FX → mixer → output.' },
+  { term: 'Data Flow Programming', def: 'Execution model where operations fire when all their input data is available, enabling implicit parallelism. Used by TD and Max.' },
+  { term: 'GPU Pipeline', def: 'The sequence of programmable and fixed-function stages the GPU executes: vertex → rasterize → fragment → output. WebGL exposes vertex and fragment stages.' },
+  { term: 'Shader', def: 'A GPU program that runs in parallel on many data elements (vertices or pixels). Written in GLSL, HLSL, or MSL depending on the platform.' },
+  { term: 'Vertex Shader', def: 'Runs once per vertex. Transforms 3D positions to screen space, passes data (UVs, normals, color) to the fragment stage.' },
+  { term: 'Fragment Shader', def: 'Runs once per screen pixel covered by a primitive. Computes final colour. The primary tool for generative visual work in GLSL.' },
+  { term: 'OSC', def: 'Open Sound Control. UDP-based message protocol for real-time audio/visual systems. Enables Max/MSP ↔ TD ↔ p5.js communication over a network.' },
+  { term: 'MIDI', def: 'Musical Instrument Digital Interface. Low-latency binary protocol for note, control, and clock messages. Universal hardware bridge for all creative tools.' },
+  { term: 'Texture', def: 'GPU-side 2D (or 3D) data array. Carries RGBA image data but can hold any float data for GPGPU. The fundamental way TD and GLSL exchange images.' },
+  { term: 'Framebuffer', def: 'Off-screen render target on the GPU. Render-to-texture enables feedback loops and multi-pass effects. Known as Render Target in TD (TOP chain).' },
+  { term: 'Instancing', def: 'Rendering many copies of a geometry in a single GPU draw call, each with per-instance data (position, color). Essential for particle systems at scale.' },
+  { term: 'Generative Art', def: 'Art produced by an autonomous system following a rule set. Encompasses algorithmic, procedural, and parametric art made with code.' },
+  { term: 'Procedural', def: 'Content generated by algorithm rather than authored by hand. Procedural textures (noise), procedural geometry (SDF), and procedural animation.' },
+  { term: 'Reactive System', def: 'A system whose state is defined as a function of its inputs, updating automatically when inputs change. p5.js draw-loop and TD are reactive.' },
+  { term: 'Feedback Loop', def: 'Routing a system\'s output back as its input. In visuals: previous frame as texture input creates trails, echoes, and emergent behaviour.' },
+  { term: 'Creative Coding', def: 'The practice of writing code as an expressive, artistic, or exploratory act rather than purely to solve a defined problem.' },
+  { term: 'Live Coding', def: 'Performing by writing and modifying code in real-time in front of an audience. Embraced by Algorave culture using tools like TidalCycles and RNBO.' },
+  { term: 'Interoperability', def: 'The ability of two systems to exchange and make use of each other\'s data. In creative tools: OSC, Syphon, Spout, NDI, and WebSockets enable this.' },
+  { term: 'Bridge', def: 'Software that translates between two different systems\' data formats or protocols. ChucKDesigner bridges ChucK audio language into TouchDesigner.' },
+  { term: 'Pipeline', def: 'An end-to-end sequence of processing stages. In creative work: generative algorithm → GPU render → compositor → output display.' }
+];
+
+// Compatibility matrix data [p5,TD,WebGL,Max,Processing,oF]
+const COMPAT = [
+  [10,  5,  9,  6,  9,  4],  // p5.js
+  [ 5, 10,  8,  9,  5,  7],  // TouchDesigner
+  [ 9,  8, 10,  5,  7,  9],  // WebGL/GLSL
+  [ 6,  9,  5, 10,  6,  6],  // Max/MSP
+  [ 9,  5,  7,  6, 10,  8],  // Processing
+  [ 4,  7,  9,  6,  8, 10],  // openFrameworks
+];
+const COMPAT_LABELS = ['p5.js','TouchDesigner','WebGL/GLSL','Max/MSP','Processing','openFrameworks'];
+const COMPAT_NOTE = [
+  ['Same project','OSC','WEBGL mode','osc-web','API mirror','OpenGL shared'],
+  ['OSC','Same','GLSL TOP','OSC CHOP','OSC','Syphon/NDI'],
+  ['WEBGL mode','GLSL TOP','Same','Jitter/GL','P3D/GLSL','OpenGL shared'],
+  ['osc-web','OSC CHOP','Jitter','Same','OSC','OSC'],
+  ['API mirror','OSC','P3D/GLSL','OSC','Same','Conceptual sibling'],
+  ['OpenGL shared','Syphon/NDI','OpenGL shared','OSC','Conceptual sibling','Same']
+];
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  WEBGL HERO — GLSL FRAGMENT SHADER                               ║
+// ╚══════════════════════════════════════════════════════════════════╝
+(function initHero() {
+  const canvas = document.getElementById('hero-canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const VS = `
+    attribute vec2 a_position;
+    void main(){ gl_Position = vec4(a_position, 0.0, 1.0); }
+  `;
+  const FS = `
+    precision mediump float;
+    uniform float u_time;
+    uniform vec2  u_resolution;
+    uniform vec2  u_mouse;
+
+    #define PI 3.14159265358979
+    #define TAU 6.28318530717958
+    #define N 6
+
+    float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+
+    float noise(vec2 p){
+      vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),
+                 mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+    }
+
+    // SDF: rounded rect
+    float sdBox(vec2 p,vec2 b,float r){
+      vec2 q=abs(p)-b+r; return length(max(q,0.0))+min(max(q.x,q.y),0.0)-r;
+    }
+
+    // Tool node positions (6 on a circle + center pulse)
+    vec2 toolPos(int i, float t){
+      float a = float(i)*TAU/float(N) - PI*0.5 + t*0.04;
+      float r = 0.30;
+      return vec2(cos(a)*r, sin(a)*r);
+    }
+
+    // Animated cable between two points
+    float cable(vec2 uv, vec2 a, vec2 b, float phase, float t){
+      vec2 dir = b-a;
+      float len = length(dir);
+      vec2 n = normalize(dir);
+      vec2 perp = vec2(-n.y, n.x);
+      vec2 lp = uv - a;
+      float proj = dot(lp, n);
+      float t2 = clamp(proj/len, 0.0, 1.0);
+      float sag = sin(t2 * PI) * 0.03;
+      float d = length(lp - n*proj - perp*sag) - 0.003;
+      float signal = exp(-d*d * 800.0);
+      // animated pulse
+      float wave = fract(t2 - t*0.6 + phase);
+      float pulse = exp(-pow(wave-0.5,2.0)*25.0) * exp(-d*80.0) * 2.5;
+      return signal * 0.3 + pulse;
+    }
+
+    void main(){
+      vec2 uv = (gl_FragCoord.xy - u_resolution*0.5) / min(u_resolution.x, u_resolution.y);
+      float t = u_time;
+      vec2 mouse = (u_mouse - 0.5) * vec2(u_resolution.x/u_resolution.y, 1.0);
+      mouse *= 0.5;
+
+      // Background: dark grid
+      vec2 grid = fract(uv * 14.0);
+      float gridLine = smoothstep(0.97,1.0,max(grid.x,grid.y)) * 0.08;
+      vec3 col = vec3(0.04, 0.06, 0.08) + gridLine;
+
+      // Subtle noise background
+      float n = noise(uv*4.0 + t*0.1);
+      col += vec3(0.0,0.03,0.04)*n;
+
+      // Define 6 tool colors
+      vec3 tColors[6];
+      tColors[0] = vec3(0.93,0.13,0.36); // p5.js
+      tColors[1] = vec3(0.0,0.74,0.83);  // TD
+      tColors[2] = vec3(0.49,0.23,0.93); // WebGL
+      tColors[3] = vec3(1.0,0.56,0.0);   // Max/MSP
+      tColors[4] = vec3(0.0,0.39,0.78);  // Processing
+      tColors[5] = vec3(0.30,0.69,0.31); // oF
+
+      // Draw cables between connected tools
+      // Connections: 0-1, 0-2, 0-4, 1-2, 1-3, 2-5, 3-4, 3-1, 4-5, 5-2
+      vec2 positions[6];
+      for(int i=0; i<N; i++) positions[i] = toolPos(i, t);
+
+      int ca[10]; int cb[10];
+      ca[0]=0; cb[0]=1;
+      ca[1]=0; cb[1]=2;
+      ca[2]=0; cb[2]=4;
+      ca[3]=1; cb[3]=2;
+      ca[4]=1; cb[4]=3;
+      ca[5]=2; cb[5]=5;
+      ca[6]=3; cb[6]=4;
+      ca[7]=3; cb[7]=1;
+      ca[8]=4; cb[8]=5;
+      ca[9]=5; cb[9]=2;
+
+      for(int k=0; k<10; k++){
+        vec2 pa = positions[ca[k]];
+        vec2 pb = positions[cb[k]];
+        vec3 cblColor = mix(tColors[ca[k]], tColors[cb[k]], 0.5);
+        float sig = cable(uv, pa, pb, float(k)*0.37, t);
+        col += cblColor * sig * 0.8;
+      }
+
+      // Draw tool nodes
+      for(int i=0; i<N; i++){
+        vec2 pos = positions[i];
+        float pulse = 0.5 + 0.5*sin(t*2.0 + float(i)*1.05);
+        float d = sdBox(uv-pos, vec2(0.028,0.028), 0.006);
+        float ring = smoothstep(0.008, 0.0, abs(d) - 0.003);
+        float inner = smoothstep(0.0, -0.012, d);
+        float glow = exp(-max(d,0.0)*90.0) * (0.4 + 0.4*pulse);
+        col += tColors[i] * (ring*0.9 + inner*0.6 + glow);
+        // number label glow halo
+        col += tColors[i] * exp(-length(uv-pos)*30.0) * 0.15 * pulse;
+      }
+
+      // Center hub
+      float hubD = length(uv) - 0.022;
+      float hubRing = smoothstep(0.004,0.0,abs(hubD));
+      float hubGlow = exp(-max(hubD,0.0)*60.0)*0.6;
+      float hubPulse = 0.5 + 0.5*sin(t*3.0);
+      col += vec3(0.0,0.74,0.83) * (hubRing*0.9 + hubGlow) * (0.6+0.4*hubPulse);
+
+      // Radial sweep from mouse
+      float mouseDist = length(uv - mouse);
+      col += vec3(0.0,0.18,0.22) * exp(-mouseDist*4.0) * 0.3;
+
+      // Vignette
+      col *= 1.0 - smoothstep(0.5, 0.95, length(uv));
+
+      // Tone map
+      col = col / (col + 0.6);
+      col = pow(col, vec3(0.9));
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  function compileShader(src, type) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(VS, gl.VERTEX_SHADER));
+  gl.attachShader(prog, compileShader(FS, gl.FRAGMENT_SHADER));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uTime  = gl.getUniformLocation(prog, 'u_time');
+  const uRes   = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  let mx = 0.5, my = 0.5;
+  document.addEventListener('mousemove', e => { mx = e.clientX/window.innerWidth; my = 1 - e.clientY/window.innerHeight; });
+
+  let prevT = 0;
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  function render(ts) {
+    const t = ts * 0.001;
+    const dt = Math.min(t - prevT, 0.05); prevT = t;
+    const lmx = lagHMX.update(mx, dt);
+    const lmy = lagHMY.update(my, dt);
+    lagHPulse.update(0.5 + 0.5*Math.sin(t*2.0), dt);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform2f(uMouse, lmx, lmy);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+})();
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  CANVAS2D NODE GRAPH                                             ║
+// ╚══════════════════════════════════════════════════════════════════╝
+(function initNodeGraph() {
+  const canvas = document.getElementById('node-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = () => canvas.offsetWidth;
+  const H = () => canvas.offsetHeight;
+
+  const TOOL_COLORS = ['#ED225D','#00BCD4','#7C3AED','#FF8F00','#0064C8','#4CAF50'];
+  const CONNECTIONS = [[0,1],[0,2],[0,4],[1,2],[1,3],[2,5],[3,4],[3,1],[4,5],[5,2]];
+
+  let hoveredNode = -1, selectedNode = -1;
+  let particles = [];
+  let prevT = 0;
+  let lagVals = { posX: 0, posY: 0, scale: 1 };
+
+  function getNodePos(i, w, h) {
+    const cx = w * 0.5, cy = h * 0.5;
+    const r = Math.min(w, h) * 0.36;
+    const angle = (i / 6) * Math.PI * 2 - Math.PI / 2;
+    return { x: cx + Math.cos(angle)*r, y: cy + Math.sin(angle)*r };
+  }
+
+  function resize() {
+    canvas.width = canvas.offsetWidth * devicePixelRatio;
+    canvas.height = canvas.offsetHeight * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  // Spawn particles along connections
+  function spawnParticle(connIdx) {
+    const [a, b] = CONNECTIONS[connIdx];
+    particles.push({ conn: connIdx, t: 0, speed: 0.004 + Math.random()*0.006 });
+  }
+  setInterval(() => {
+    CONNECTIONS.forEach((_, i) => { if (Math.random() < 0.3) spawnParticle(i); });
+  }, 400);
+
+  function draw(ts) {
+    const t = ts * 0.001;
+    const dt = Math.min(t - prevT, 0.05); prevT = t;
+    const w = W(), h = H();
+    ctx.clearRect(0, 0, w, h);
+
+    lagSignalDensity.update(particles.length / 40, dt);
+    lagGlowPulse.update(0.5 + 0.5*Math.sin(t*2.5), dt);
+    lagBridgeAnim.update(t * 0.1, dt);
+
+    // Background subtle grid
+    ctx.strokeStyle = 'rgba(74,85,104,0.12)';
+    ctx.lineWidth = 0.5;
+    const gs = 36;
+    for (let x = 0; x < w; x += gs) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+    for (let y = 0; y < h; y += gs) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+
+    const positions = TOOLS.slice(0,6).map((_,i) => getNodePos(i, w, h));
+
+    // Draw connections
+    CONNECTIONS.forEach(([a,b], idx) => {
+      const pa = positions[a], pb = positions[b];
+      const grad = ctx.createLinearGradient(pa.x,pa.y,pb.x,pb.y);
+      grad.addColorStop(0, TOOL_COLORS[a] + '44');
+      grad.addColorStop(1, TOOL_COLORS[b] + '44');
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = selectedNode>=0 && (selectedNode===a||selectedNode===b) ? 2 : 1;
+      ctx.stroke();
+    });
+
+    // Draw particles
+    particles = particles.filter(p => p.t <= 1);
+    particles.forEach(p => {
+      p.t += p.speed;
+      const [a,b] = CONNECTIONS[p.conn];
+      const pa = positions[a], pb = positions[b];
+      const x = pa.x + (pb.x-pa.x)*p.t;
+      const y = pa.y + (pb.y-pa.y)*p.t;
+      const fade = Math.sin(p.t * Math.PI);
+      const c1 = TOOL_COLORS[a], c2 = TOOL_COLORS[b];
+      const col = p.t < 0.5 ? c1 : c2;
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, Math.PI*2);
+      ctx.fillStyle = col + Math.floor(fade*220).toString(16).padStart(2,'0');
+      ctx.fill();
+      // glow
+      const grd = ctx.createRadialGradient(x,y,0,x,y,10);
+      grd.addColorStop(0, col + '55');
+      grd.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(x,y,10,0,Math.PI*2);
+      ctx.fillStyle = grd; ctx.fill();
+    });
+
+    // Draw center hub
+    const cx = w*0.5, cy = h*0.5;
+    const hubPulse = lagGlowPulse.value;
+    const hubR = 14 + hubPulse*3;
+    const hubGrd = ctx.createRadialGradient(cx,cy,0,cx,cy,hubR*3);
+    hubGrd.addColorStop(0, '#00BCD455');
+    hubGrd.addColorStop(1, 'transparent');
+    ctx.beginPath(); ctx.arc(cx,cy,hubR*3,0,Math.PI*2);
+    ctx.fillStyle = hubGrd; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,hubR,0,Math.PI*2);
+    ctx.strokeStyle = '#00BCD4'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = 'rgba(0,188,212,0.15)'; ctx.fill();
+    ctx.fillStyle = '#00BCD4';
+    ctx.font = 'bold 8px Inter, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('HUB', cx, cy);
+
+    // Draw tool nodes
+    positions.forEach((pos, i) => {
+      const isHov = hoveredNode === i;
+      const isSel = selectedNode === i;
+      const r = isSel ? 28 : isHov ? 26 : 22;
+
+      // Glow
+      const g = ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,r*2.5);
+      g.addColorStop(0, TOOL_COLORS[i] + (isSel?'60':'35'));
+      g.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(pos.x,pos.y,r*2.5,0,Math.PI*2);
+      ctx.fillStyle = g; ctx.fill();
+
+      // Hexagon shape
+      ctx.beginPath();
+      for (let k=0; k<6; k++) {
+        const a = k*Math.PI/3 - Math.PI/6;
+        const px = pos.x + Math.cos(a)*r, py = pos.y + Math.sin(a)*r;
+        k===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+      }
+      ctx.closePath();
+      ctx.fillStyle = isSel ? TOOL_COLORS[i]+'40' : 'rgba(13,21,32,0.85)';
+      ctx.fill();
+      ctx.strokeStyle = TOOL_COLORS[i];
+      ctx.lineWidth = isSel ? 2.5 : isHov ? 2 : 1.5;
+      ctx.stroke();
+
+      // Label
+      const shortNames = ['p5.js','TD','GLSL','Max','Proc.','oF'];
+      ctx.fillStyle = isSel ? TOOL_COLORS[i] : '#E2E8F0';
+      ctx.font = `${isSel?'bold ':''}${Math.round(r*0.45)}px Inter, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(shortNames[i], pos.x, pos.y);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  function getHoveredNode(mx, my) {
+    const w = W(), h = H();
+    const positions = TOOLS.slice(0,6).map((_,i) => getNodePos(i, w, h));
+    for (let i=0; i<6; i++) {
+      if (Math.hypot(mx-positions[i].x, my-positions[i].y) < 32) return i;
+    }
+    return -1;
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    hoveredNode = getHoveredNode(mx, my);
+    canvas.style.cursor = hoveredNode >= 0 ? 'pointer' : 'default';
+  });
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    const hit = getHoveredNode(mx, my);
+    if (hit < 0) { selectedNode = -1; document.getElementById('ndp').classList.remove('visible'); return; }
+    selectedNode = hit;
+    showDetail(TOOLS[hit]);
+  });
+
+  function showDetail(tool) {
+    const ndp = document.getElementById('ndp');
+    document.getElementById('ndp-icon').textContent = tool.emoji;
+    document.getElementById('ndp-icon').style.background = tool.color + '33';
+    document.getElementById('ndp-icon').style.border = `1px solid ${tool.color}66`;
+    document.getElementById('ndp-name').textContent = tool.name;
+    document.getElementById('ndp-type').textContent = tool.type;
+    document.getElementById('ndp-desc').textContent = tool.desc;
+    document.getElementById('ndp-tags').innerHTML = tool.caps.map(c => `<span class="ndp-tag">${c}</span>`).join('');
+    document.getElementById('ndp-bridges').innerHTML = tool.bridges.map(b => `<span class="bridge-pill">${b}</span>`).join('');
+    ndp.classList.add('visible');
+    lagPanelReveal.set(0); lagPanelReveal.update(1, 0.01);
+  }
+})();
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  TOOL CARDS                                                      ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const AVATAR_COLORS = ['#ED225D','#00BCD4','#7C3AED','#FF8F00','#0064C8','#4CAF50','#FF6B6B','#8B5CF6'];
+
+function makeAvatar(tool, color) {
+  const size = 52;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+    <rect width="52" height="52" rx="10" fill="${color}22"/>
+    <rect x="2" y="2" width="48" height="48" rx="9" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.5"/>
+    <text x="26" y="32" font-family="monospace" font-size="20" fill="${color}" text-anchor="middle" font-weight="bold">${tool.emoji}</text>
+  </svg>`;
+}
+
+document.getElementById('tools-grid').innerHTML = TOOLS.map((t,i) => `
+  <div class="tool-card reveal reveal-delay-${(i%3)+1}">
+    <div class="tool-card-top">
+      <div class="tool-avatar">${makeAvatar(t, AVATAR_COLORS[i])}</div>
+      <div>
+        <div class="tool-name">${t.name}</div>
+        <div class="tool-type">${t.type}</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p class="tool-desc">${t.desc}</p>
+      <div class="tool-caps">${t.caps.map(c=>`<span class="tool-cap">${c}</span>`).join('')}</div>
+    </div>
+  </div>
+`).join('');
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  INTEROPERABILITY MATRIX                                         ║
+// ╚══════════════════════════════════════════════════════════════════╝
+(function initMatrix() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  const CELL = 72, PAD_L = 110, PAD_T = 90, N = 6;
+  const W_TOTAL = PAD_L + CELL*N + 20;
+  const H_TOTAL = PAD_T + CELL*N + 20;
+  canvas.width  = W_TOTAL * devicePixelRatio;
+  canvas.height = H_TOTAL * devicePixelRatio;
+  canvas.style.width  = W_TOTAL + 'px';
+  canvas.style.height = H_TOTAL + 'px';
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  const TOOL_COLORS_M = ['#ED225D','#00BCD4','#7C3AED','#FF8F00','#0064C8','#4CAF50'];
+  let hoverCell = null;
+  let prevT = 0;
+  const lagHover = lagMatrixHover;
+
+  function draw(ts) {
+    const t = ts * 0.001;
+    const dt = Math.min(t - prevT, 0.05); prevT = t;
+    lagHover.update(hoverCell ? 1 : 0, dt);
+    ctx.clearRect(0,0,W_TOTAL,H_TOTAL);
+
+    // Background
+    ctx.fillStyle = '#0d1520';
+    ctx.fillRect(0,0,W_TOTAL,H_TOTAL);
+
+    // Column headers
+    COMPAT_LABELS.forEach((lbl,j) => {
+      const x = PAD_L + j*CELL + CELL/2;
+      ctx.save();
+      ctx.translate(x, PAD_T - 10);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle = TOOL_COLORS_M[j];
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(lbl, 0, 0);
+      ctx.restore();
+    });
+
+    // Row labels
+    COMPAT_LABELS.forEach((lbl,i) => {
+      const y = PAD_T + i*CELL + CELL/2;
+      ctx.fillStyle = TOOL_COLORS_M[i];
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(lbl, PAD_L - 10, y);
+    });
+
+    // Cells
+    for (let i=0; i<N; i++) {
+      for (let j=0; j<N; j++) {
+        const cx = PAD_L + j*CELL, cy = PAD_T + i*CELL;
+        const score = COMPAT[i][j];
+        const isHov = hoverCell && hoverCell[0]===i && hoverCell[1]===j;
+        const isDiag = i===j;
+
+        let fillColor;
+        if (isDiag) {
+          fillColor = TOOL_COLORS_M[i] + '55';
+        } else if (score >= 8) {
+          fillColor = `rgba(0,188,212,${0.1 + score*0.05})`;
+        } else if (score >= 6) {
+          fillColor = `rgba(255,143,0,${0.08 + score*0.03})`;
+        } else if (score >= 4) {
+          fillColor = `rgba(74,85,104,${0.2 + score*0.03})`;
+        } else {
+          fillColor = 'rgba(26,37,53,0.5)';
+        }
+
+        ctx.fillStyle = isHov ? (fillColor.replace(/[\d.]+\)$/, '0.6)')) : fillColor;
+        ctx.fillRect(cx+1, cy+1, CELL-2, CELL-2);
+
+        if (isDiag) {
+          ctx.strokeStyle = TOOL_COLORS_M[i] + '99';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(cx+2, cy+2, CELL-4, CELL-4);
+        }
+
+        // Score text
+        ctx.fillStyle = isDiag ? TOOL_COLORS_M[i] : (score>=6 ? '#E2E8F0' : '#4A5568');
+        ctx.font = isDiag ? 'bold 11px Inter, sans-serif' : '11px Inter, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(isDiag ? '★' : score.toString(), cx+CELL/2, cy+CELL/2);
+
+        // Hover highlight
+        if (isHov) {
+          ctx.strokeStyle = score>=8 ? '#00BCD4' : '#FF8F00';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(cx+1, cy+1, CELL-2, CELL-2);
+        }
+      }
+    }
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(74,85,104,0.3)';
+    ctx.lineWidth = 0.5;
+    for (let i=0; i<=N; i++) {
+      ctx.beginPath();
+      ctx.moveTo(PAD_L+i*CELL, PAD_T); ctx.lineTo(PAD_L+i*CELL, PAD_T+N*CELL); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(PAD_L, PAD_T+i*CELL); ctx.lineTo(PAD_L+N*CELL, PAD_T+i*CELL); ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    const j = Math.floor((mx - PAD_L) / CELL);
+    const i = Math.floor((my - PAD_T) / CELL);
+    if (i>=0&&i<N&&j>=0&&j<N) {
+      hoverCell = [i,j];
+      const score = COMPAT[i][j];
+      const note = COMPAT_NOTE[i][j];
+      document.getElementById('matrix-tooltip').textContent =
+        `${COMPAT_LABELS[i]} ↔ ${COMPAT_LABELS[j]} — Score: ${score}/10 — Bridge: ${note}`;
+    } else {
+      hoverCell = null;
+      document.getElementById('matrix-tooltip').textContent = '';
+    }
+  });
+})();
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  REPO BRIDGES                                                    ║
+// ╚══════════════════════════════════════════════════════════════════╝
+document.getElementById('repo-grid').innerHTML = REPOS.map((r,i) => `
+  <div class="repo-card reveal reveal-delay-${(i%3)+1}">
+    <div class="repo-icon">${r.icon}</div>
+    <div class="repo-info">
+      <div class="repo-name">${r.name}</div>
+      <div class="repo-bridge">${r.bridge}</div>
+      <div class="repo-tag">${r.tag}</div>
+    </div>
+  </div>
+`).join('');
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  GLOSSARY                                                        ║
+// ╚══════════════════════════════════════════════════════════════════╝
+document.getElementById('glossary-grid').innerHTML = GLOSSARY.map((g,i) => `
+  <div class="gloss-item reveal reveal-delay-${(i%4)+1}">
+    <div class="gloss-term">${g.term}</div>
+    <div class="gloss-def">${g.def}</div>
+  </div>
+`).join('');
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  PIPELINE BAR ANIMATIONS (lag driven)                           ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const PIPE_TARGETS = [85, 72, 63, 90];
+const pipeWidths = PIPE_TARGETS.map(() => 0);
+let prevPipeT = 0;
+function animatePipes(ts) {
+  const t = ts * 0.001;
+  const dt = Math.min(t - prevPipeT, 0.05); prevPipeT = t;
+  const lf = lagPipeFlow.update(1, dt);
+  lagPipeSpeed.update(0.5 + 0.5*Math.sin(t), dt);
+  PIPE_TARGETS.forEach((target, i) => {
+    pipeWidths[i] += (1 - Math.exp(-dt / 0.8)) * (target - pipeWidths[i]);
+    const el = document.getElementById('pipe-bar-'+i);
+    if (el) el.style.width = pipeWidths[i].toFixed(1) + '%';
+  });
+  requestAnimationFrame(animatePipes);
+}
+requestAnimationFrame(animatePipes);
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  INTERSECTION OBSERVER — SCROLL REVEAL                          ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      lagPanelReveal.update(1, 0.05);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  JUMP NAV ACTIVE STATE + SCROLL LAG                             ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('#jump-nav a');
+let prevScrollT = 0;
+
+function updateNav(ts) {
+  const t = ts * 0.001;
+  const dt = Math.min(t - prevScrollT, 0.05); prevScrollT = t;
+  lagGlossaryScroll.update(window.scrollY / document.body.scrollHeight, dt);
+  lagRepoSlide.update(window.scrollY / 1000, dt);
+  lagConnectionArc.update(0.5 + 0.5*Math.sin(t*0.3), dt);
+  lagNodeScale.update(1, dt);
+  lagToolDetail.update(1, dt);
+
+  let active = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) active = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+active);
+  });
+  requestAnimationFrame(updateNav);
+}
+requestAnimationFrame(updateNav);
+</script>

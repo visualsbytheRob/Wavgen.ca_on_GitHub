@@ -1,0 +1,1368 @@
+---
+layout: world.njk
+title: "WAVEFORM PLAYGROUND — WAVGEN"
+description: "Immersive music world exploring waveform playground"
+domain: music
+permalink: /music/waveform-playground/
+---
+
+
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<nav>
+<span class="nav-logo">WAVGEN</span>
+<ul class="nav-links">
+<li><a href="#s01">01</a></li>
+<li><a href="#s02">02</a></li>
+<li><a href="#s03">03</a></li>
+<li><a href="#s04">04</a></li>
+<li><a href="#s05">05</a></li>
+<li><a href="#s06">06</a></li>
+<li><a href="#s07">07</a></li>
+<li><a href="#s08">08</a></li>
+</ul>
+<a class="nav-back" href="../index.html">↑ All Worlds</a>
+</nav>
+<!-- ═══════════════════════════════════════════
+     S01  HERO
+═══════════════════════════════════════════ -->
+<section id="s01" style="padding:0;position:relative;min-height:100vh;">
+<canvas id="hero-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;"></canvas>
+<div style="position:relative;z-index:3;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 60px;">
+<div class="hidden stagger-1" style="font-family:monospace;font-size:11px;letter-spacing:0.3em;color:var(--green);opacity:0.7;margin-bottom:28px;">
+      WAVGEN MUSIC WORLD 02
+    </div>
+<h1 class="hidden stagger-2" style="font-size:clamp(44px,9vw,80px);font-weight:900;text-transform:uppercase;letter-spacing:0.04em;line-height:0.93;margin-bottom:28px;color:var(--green);
+               text-shadow:0 0 40px rgba(34,197,94,0.55),0 0 80px rgba(34,197,94,0.2),0 0 120px rgba(34,197,94,0.1);">
+      WAVEFORM<br/>PLAYGROUND
+    </h1>
+<p class="hidden stagger-3" style="font-size:20px;color:var(--text-dim);font-style:italic;margin-bottom:52px;max-width:480px;">
+      The shape of sound, made visible.
+    </p>
+<div class="hidden stagger-4 btn-row" id="hero-wave-btns" style="justify-content:center;margin-bottom:40px;">
+<button class="btn active" id="hero-btn-sine" onclick="setHeroWave('sine')">SINE</button>
+<button class="btn" id="hero-btn-saw" onclick="setHeroWave('saw')">SAW</button>
+<button class="btn" id="hero-btn-square" onclick="setHeroWave('square')">SQUARE</button>
+<button class="btn" id="hero-btn-noise" onclick="setHeroWave('noise')">NOISE</button>
+</div>
+<div class="hidden stagger-5" style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
+                display:flex;flex-direction:column;align-items:center;gap:10px;">
+<span style="font-family:monospace;font-size:10px;letter-spacing:0.25em;color:var(--text-dim);">SCROLL</span>
+<svg fill="none" height="26" viewbox="0 0 16 26" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect height="24" rx="7" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" width="14" x="1" y="1"></rect>
+<rect fill="rgba(34,197,94,0.75)" height="6" rx="1.5" width="3" x="6.5" y="4.5"></rect>
+</svg>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S02  WAVEFORM LAB
+═══════════════════════════════════════════ -->
+<section id="s02">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">02 / WAVEFORM LAB</div>
+<h2>Waveform Lab</h2>
+<p class="section-thesis">What a waveform is determines what a sound contains.</p>
+</div>
+<div class="two-panel hidden stagger-2">
+<!-- LEFT: oscilloscope canvas + controls -->
+<div>
+<div class="canvas-wrap">
+<canvas height="200" id="wl-canvas" style="width:100%;height:200px;" width="540"></canvas>
+</div>
+<div class="controls mt-16">
+<div class="control-row">
+<span class="control-label">Morph</span>
+<input id="wl-morph" max="3" min="0" oninput="wlMorphChange(this.value)" step="0.01" type="range" value="0"/>
+<span class="control-value" id="wl-morph-val">SINE</span>
+</div>
+<div class="control-row">
+<span class="control-label">Frequency</span>
+<input id="wl-freq" max="880" min="55" oninput="wlFreqChange(this.value)" step="1" type="range" value="220"/>
+<span class="control-value" id="wl-freq-val">220 Hz</span>
+</div>
+<div class="control-row">
+<span class="control-label">Amplitude</span>
+<input id="wl-amp" max="1.0" min="0.1" oninput="wlAmpChange(this.value)" step="0.01" type="range" value="0.7"/>
+<span class="control-value" id="wl-amp-val">0.70</span>
+</div>
+</div>
+<div class="btn-row mt-16">
+<button class="btn" id="wl-play-btn" onclick="wlTogglePlay()">▶ PLAY</button>
+<button class="btn" id="wl-freeze-btn" onclick="wlToggleFreeze()">FREEZE</button>
+</div>
+</div>
+<!-- RIGHT: harmonic ladder -->
+<div>
+<h4 style="margin-bottom:12px;">Harmonic Content</h4>
+<div class="harmonic-ladder" id="harmonic-ladder">
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-1" style="height:90%;"></div><div class="harmonic-label">Fund.</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-2" style="height:2px;"></div><div class="harmonic-label">2nd</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-3" style="height:2px;"></div><div class="harmonic-label">3rd</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-4" style="height:2px;"></div><div class="harmonic-label">4th</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-5" style="height:2px;"></div><div class="harmonic-label">5th</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-6" style="height:2px;"></div><div class="harmonic-label">6th</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-7" style="height:2px;"></div><div class="harmonic-label">7th</div></div>
+<div class="harmonic-bar-wrap"><div class="harmonic-bar" id="hb-8" style="height:2px;"></div><div class="harmonic-label">8th</div></div>
+</div>
+<div class="note-text">
+        The harmonic series: integer multiples of the fundamental frequency. Sine waves contain only the fundamental. Sawtooth waves contain all harmonics. Square and triangle waves contain only odd harmonics — each with its own amplitude envelope that sculpts the timbre.
+      </div>
+<div class="mt-16 info-text" style="font-size:13px;">
+<span class="highlight">Morph slider</span> interpolates continuously:
+        Sine → Triangle → Sawtooth → Square. Watch the harmonic bars fill as complex waveforms emerge from pure ones.
+      </div>
+</div>
+</div>
+<!-- PWM SECTION -->
+<div class="card hidden stagger-3 mt-32">
+<h3>Pulse Width Modulation</h3>
+<p class="info-text" style="margin-bottom:20px;">
+      A <span class="highlight">pulse wave</span> is a square wave with an adjustable duty cycle — the ratio of high time to total cycle time.
+      Narrow pulses sound thin and nasal; wide pulses become full and hollow. Modulating the pulse width
+      continuously creates a <span class="amber-text">chorusing, animated timbre</span> — a defining sound of classic analog synthesis,
+      heard on the Roland Juno-6, Oberheim OB-Xa, and countless others.
+    </p>
+<div class="two-panel" style="gap:24px;">
+<div>
+<div class="canvas-wrap">
+<canvas height="120" id="pwm-canvas" style="width:100%;height:120px;" width="500"></canvas>
+</div>
+<div class="control-row mt-16">
+<span class="control-label">Pulse Width</span>
+<input id="pwm-slider" max="90" min="10" oninput="drawPWM();document.getElementById('pwm-val').textContent=this.value+'%'" step="1" type="range" value="50"/>
+<span class="control-value" id="pwm-val">50%</span>
+</div>
+<div class="btn-row mt-16">
+<button class="btn btn-sm" id="pwm-play-btn" onclick="pwmTogglePlay()">▶ PLAY PWM</button>
+<button class="btn btn-sm btn-amber" onclick="startPWMSweep()">AUTO SWEEP</button>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;justify-content:center;gap:16px;">
+<div>
+<h4>Duty Cycle = <span id="pwm-pct" style="color:var(--amber);">50%</span></h4>
+<p class="info-text" style="font-size:13px;">At 50%, the pulse wave is a perfect square wave with strong odd harmonics. As the duty cycle narrows, even harmonics re-emerge and the sound brightens. At extremes (10% or 90%), the thin pulse has a distinctive buzzy edge used in classic bass lines.</p>
+</div>
+<div class="note-text">
+          PWM on the Minimoog: manually sweeping the pulse width while holding a note. PWM LFO on the Juno-6: automatic chorus-like shimmer without a dedicated chorus unit.
+        </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S03  INTERFERENCE — BEATING + LISSAJOUS
+═══════════════════════════════════════════ -->
+<section id="s03">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">03 / INTERFERENCE</div>
+<h2>Interference</h2>
+<p class="section-thesis">Two oscillators: alignment, beating, and chaos.</p>
+</div>
+<!-- BEATING LAB -->
+<div class="card hidden stagger-2 mb-24">
+<h3>Oscillator Beating Lab</h3>
+<p class="info-text mb-24">When two oscillators are near but not at the same frequency, they periodically reinforce and cancel — creating a rhythmic amplitude pulse called <span class="highlight">beating</span>. The beat frequency equals the absolute difference between the two pitches.</p>
+<div class="two-panel" style="gap:24px;align-items:start;">
+<div>
+<div class="canvas-wrap">
+<canvas height="160" id="beat-canvas" style="width:100%;height:160px;" width="540"></canvas>
+</div>
+<div class="controls mt-16">
+<div class="control-row">
+<span class="control-label">Osc A (fixed)</span>
+<input id="beat-freqA" max="880" min="110" oninput="beatFreqAChange(this.value)" step="1" type="range" value="440"/>
+<span class="control-value" id="beat-freqA-val">440 Hz</span>
+</div>
+<div class="control-row">
+<span class="control-label">Osc B Detune</span>
+<input id="beat-detune" max="50" min="-50" oninput="beatDetuneChange(this.value)" step="0.5" type="range" value="0"/>
+<span class="control-value" id="beat-detune-val">0 ¢</span>
+</div>
+</div>
+<div class="btn-row mt-16">
+<button class="btn" id="beat-play-btn" onclick="beatTogglePlay()">▶ PLAY BOTH</button>
+<button class="btn btn-sm" onclick="beatDetuneChange(5);document.getElementById('beat-detune').value=5;">+5¢ DEMO</button>
+<button class="btn btn-sm" onclick="beatDetuneChange(17);document.getElementById('beat-detune').value=17;">+17¢ FAST</button>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:20px;">
+<div class="beat-display" id="beat-freq-display">0.0</div>
+<div class="beat-label">BEATS / SECOND</div>
+<div class="note-text mt-16">
+          At 0–4 beats/sec: a slow, organic tremolo. At 5–15: a rough, vocal wobble. At 16–30: perceived as a low-pitched buzz. Above 30: the two tones fuse perceptually into a new timbre. This is how tuning a piano works — tighten until the beating stops.
+        </div>
+</div>
+</div>
+</div>
+<!-- LISSAJOUS -->
+<div class="card hidden stagger-3">
+<h3>Lissajous Artist</h3>
+<p class="info-text mb-24">Feed two oscillators into the X and Y axes of an oscilloscope. When their frequency ratio is a simple integer, the trace locks into a stable geometric form. Fractional ratios produce slowly rotating, never-quite-repeating figures.</p>
+<div class="two-panel" style="gap:32px;">
+<div>
+<div class="canvas-wrap" style="aspect-ratio:1;max-width:380px;">
+<canvas height="380" id="liss-canvas" style="width:100%;height:100%;" width="380"></canvas>
+</div>
+<div style="margin-top:12px;text-align:center;">
+<div style="font-family:monospace;font-size:10px;color:var(--text-dim);letter-spacing:0.15em;">
+            X: <span id="liss-xf-disp" style="color:var(--green);">3</span> :
+            Y: <span id="liss-yf-disp" style="color:var(--green);">2</span>
+             |  Phase: <span id="liss-ph-disp" style="color:var(--amber);">90°</span>
+</div>
+</div>
+</div>
+<div>
+<div class="controls mb-24">
+<div class="control-row">
+<span class="control-label">X Frequency</span>
+<input id="liss-xfreq" max="8" min="1" oninput="lissUpdate()" step="1" type="range" value="3"/>
+<span class="control-value" id="liss-xf-val">3</span>
+</div>
+<div class="control-row">
+<span class="control-label">Y Frequency</span>
+<input id="liss-yfreq" max="8" min="1" oninput="lissUpdate()" step="1" type="range" value="2"/>
+<span class="control-value" id="liss-yf-val">2</span>
+</div>
+<div class="control-row">
+<span class="control-label">Phase Offset</span>
+<input id="liss-phase" max="360" min="0" oninput="lissUpdate()" step="1" type="range" value="90"/>
+<span class="control-value" id="liss-ph-val">90°</span>
+</div>
+</div>
+<h4 style="margin-bottom:10px;">Presets</h4>
+<div class="btn-row" id="liss-presets" style="flex-wrap:wrap;gap:6px;">
+<button class="btn btn-sm" onclick="setLiss(1,1,90)">Circle</button>
+<button class="btn btn-sm" onclick="setLiss(1,2,0)">Figure-8</button>
+<button class="btn btn-sm active" onclick="setLiss(3,2,90)">Trefoil</button>
+<button class="btn btn-sm" onclick="setLiss(3,4,0)">Star</button>
+<button class="btn btn-sm" onclick="setLiss(3,5,90)">Butterfly</button>
+<button class="btn btn-sm" onclick="setLiss(4,5,0)">Pentagon</button>
+</div>
+<div class="note-text mt-16">
+<strong style="color:var(--green);">Oscilloscope X-Y mode:</strong> two signals fed to horizontal and vertical deflection plates produce geometric forms when their frequency ratio is rational. Jerobeam Fenderson composes music specifically engineered to trace visual sculptures on an oscilloscope screen.
+        </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S04  FM SYNTHESIS
+═══════════════════════════════════════════ -->
+<section id="s04">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">04 / FM SYNTHESIS</div>
+<h2>FM Synthesis</h2>
+<p class="section-thesis">One oscillator modulates another. The ratio determines everything.</p>
+</div>
+<div class="two-panel hidden stagger-2" style="align-items:start;gap:40px;">
+<!-- LEFT: explanation -->
+<div>
+<h3>Frequency Modulation</h3>
+<p class="info-text mt-16">
+        In <span class="highlight">FM synthesis</span>, a <em>modulator</em> oscillator varies the frequency of a <em>carrier</em> oscillator many times per second. The resulting spectrum is rich with <span class="amber-text">sidebands</span> — frequency components above and below the carrier — whose number and amplitude are controlled by the <span class="highlight">modulation index</span>.
+      </p>
+<p class="info-text mt-16">
+        The <strong>carrier:modulator frequency ratio</strong> determines the spectral character. Integer ratios (1:1, 1:2, 1:3) produce <span class="highlight">harmonic</span> timbres — bell-like, piano-like, organ-like. Non-integer ratios produce <span class="amber-text">inharmonic</span> spectra: metallic clang, gongs, industrial textures.
+      </p>
+<p class="info-text mt-16">
+        Yamaha's DX7 (1983) brought FM synthesis to the mainstream. Its six operators, configurable in 32 algorithms, sold over 200,000 units — making the electric piano patch (<span class="highlight">ratio 1:1, index 3.5</span>) one of the most-heard sounds of the 1980s.
+      </p>
+<div class="note-text mt-16">
+<strong style="color:var(--green);">Formula:</strong> output = sin(2π·f_c·t + I·sin(2π·f_m·t)) where f_c = carrier freq, f_m = modulator freq, I = modulation index. As I increases, sidebands multiply exponentially.
+      </div>
+<div style="margin-top:24px;">
+<h4 style="margin-bottom:12px;">Named Presets — click to play</h4>
+<div class="btn-row" style="flex-direction:column;gap:8px;align-items:flex-start;">
+<button class="btn btn-sm" onclick="playFMPreset(220,1,3.5,'DX7 Electric Piano')">DX7 Electric Piano — ratio 1:1, index 3.5</button>
+<button class="btn btn-sm btn-amber" onclick="playFMPreset(280,3.5,5,'Bell')">Bell — ratio 1:3.5, index 5</button>
+<button class="btn btn-sm" onclick="playFMPreset(55,2,8,'Bass')">Synth Bass — ratio 2:1, index 8</button>
+<button class="btn btn-sm btn-amber" onclick="playFMPreset(440,4,2,'Marimba')">Marimba — ratio 1:4, index 2</button>
+</div>
+</div>
+</div>
+<!-- RIGHT: FM grid -->
+<div>
+<h4 style="margin-bottom:8px;">Ratio × Index Map — click any cell</h4>
+<div style="font-family:monospace;font-size:10px;color:var(--text-dim);margin-bottom:12px;display:flex;justify-content:space-between;padding:0 4px;">
+<span>← Mod Index 0 ————————————— 10 →</span>
+</div>
+<div style="display:flex;gap:8px;align-items:center;">
+<div style="font-family:monospace;font-size:10px;color:var(--text-dim);writing-mode:vertical-lr;transform:rotate(180deg);letter-spacing:0.1em;white-space:nowrap;">
+          ← Ratio 1:1 ——— 1:6 →
+        </div>
+<canvas class="fm-grid-canvas" height="360" id="fm-grid-canvas" onclick="fmGridClick(event)" style="width:400px;height:360px;border-radius:6px;" width="400"></canvas>
+</div>
+<div style="margin-top:10px;display:flex;gap:16px;font-family:monospace;font-size:10px;">
+<span style="color:var(--green);">■ Harmonic (integer ratio)</span>
+<span style="color:var(--amber);">■ Near-harmonic</span>
+<span style="color:#f97316;">■ Inharmonic</span>
+</div>
+<!-- Mini spectrum display -->
+<div style="margin-top:20px;">
+<h4 style="margin-bottom:8px;">Sideband Spectrum — last played</h4>
+<div class="spectrum-wrap" id="fm-spectrum">
+<div class="spectrum-bar" id="fsb-0" style="height:90%;"></div>
+<div class="spectrum-bar" id="fsb-1" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-2" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-3" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-4" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-5" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-6" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-7" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-8" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-9" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-10" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-11" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-12" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-13" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-14" style="height:2px;"></div>
+<div class="spectrum-bar" id="fsb-15" style="height:2px;"></div>
+</div>
+<div id="fm-last-played" style="font-family:monospace;font-size:10px;color:var(--text-dim);margin-top:4px;text-align:center;">
+          — select a cell or preset to play —
+        </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S05  PHYSICAL MODELING
+═══════════════════════════════════════════ -->
+<section id="s05">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">05 / PHYSICAL MODELING</div>
+<h2>Physical Modeling</h2>
+<p class="section-thesis">Simulate the physics of vibration.</p>
+</div>
+<div class="card hidden stagger-2 mb-24">
+<h3>The Plucked String</h3>
+<p class="info-text mb-24">Click anywhere on the string to pluck it at that position. The pluck point shapes the initial harmonic balance — plucking at the center emphasises odd harmonics; plucking near the bridge adds brightness by exciting higher partials. Material determines the decay envelope and filter character.</p>
+<div class="canvas-wrap mb-24" style="cursor:crosshair;">
+<canvas height="120" id="string-canvas" onclick="pluckString(event)" style="width:100%;height:120px;" width="700"></canvas>
+</div>
+<div class="two-panel" style="gap:32px;">
+<div class="controls">
+<div class="control-row">
+<span class="control-label">Material</span>
+<div class="btn-row" id="string-material-btns">
+<button class="btn btn-sm active" onclick="setStringMaterial('nylon',this)">Nylon</button>
+<button class="btn btn-sm" onclick="setStringMaterial('steel',this)">Steel</button>
+<button class="btn btn-sm" onclick="setStringMaterial('glass',this)">Glass</button>
+<button class="btn btn-sm" onclick="setStringMaterial('crystal',this)">Crystal</button>
+</div>
+</div>
+<div class="control-row">
+<span class="control-label">Tension</span>
+<input id="string-tension" max="3.0" min="0.3" oninput="document.getElementById('string-tension-val').textContent=parseFloat(this.value).toFixed(2)" step="0.05" type="range" value="1.0"/>
+<span class="control-value" id="string-tension-val">1.00</span>
+</div>
+<div class="control-row">
+<span class="control-label">Pluck Position</span>
+<input id="string-pluck" max="0.99" min="0.01" oninput="document.getElementById('string-pluck-val').textContent=Math.round(this.value*100)+'%'" step="0.01" type="range" value="0.3"/>
+<span class="control-value" id="string-pluck-val">30%</span>
+</div>
+<div class="btn-row">
+<button class="btn" onclick="pluckStringAuto()">▶ PLUCK</button>
+<button class="btn" id="bow-btn" onclick="toggleBow()">BOW MODE</button>
+</div>
+</div>
+<div>
+<div class="note-text">
+<strong style="color:var(--green);">Karplus-Strong algorithm (1983):</strong> a short noise burst fed into a delay line with a one-pole lowpass filter in the feedback path. The delay length sets pitch; the filter averages adjacent samples, simulating the energy loss of a real string. Remarkable acoustic realism with minimal computation — still used in modern physical modeling engines.
+        </div>
+<div class="info-text mt-16" style="font-size:13px;">
+          String materials: <span class="highlight">Nylon</span> — warm, fast decay, rolled-off highs.
+          <span class="highlight">Steel</span> — bright sustain, strong attack.
+          <span class="amber-text">Glass</span> — fragile, bell-like overtones.
+          <span class="amber-text">Crystal</span> — long sustain, ethereal shimmer.
+        </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S06  HISTORY TIMELINE
+═══════════════════════════════════════════ -->
+<section id="s06" style="min-height:auto;padding-bottom:80px;">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">06 / HISTORY</div>
+<h2>A Century of Synthesis</h2>
+<p class="section-thesis">Every waveform solved a problem.</p>
+</div>
+<div class="hidden stagger-2">
+<div class="timeline-scroll">
+<div class="timeline-track">
+<div class="timeline-line-h"></div>
+<!-- 1: Theremin -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">1919</div>
+<div class="tl-name">Theremin</div>
+<div class="tl-desc">First electronic instrument. Continuous sine waves shaped by hand proximity.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 2: Hammond Organ -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">1935</div>
+<div class="tl-name">Hammond Organ</div>
+<div class="tl-desc">Additive synthesis via spinning tonewheels. Drawbars mix harmonics live.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 3: RCA Mark II -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">1955</div>
+<div class="tl-name">RCA Mark II</div>
+<div class="tl-desc">First programmable electronic music synthesizer. Punch-card composition.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 4: Buchla 100 -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">1963</div>
+<div class="tl-name">Buchla 100</div>
+<div class="tl-desc">West Coast synthesis. Touch plates, complex oscillators. No keyboard.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 5: Moog Modular -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">1964</div>
+<div class="tl-name">Moog Modular</div>
+<div class="tl-desc">Subtractive synthesis with voltage control. Standardized the patch-cable paradigm.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 6: Minimoog -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">1970</div>
+<div class="tl-name">Minimoog</div>
+<div class="tl-desc">Portability brings synthesis to performance. Three oscillators, filter, EG.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 7: PPG Wave -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">1979</div>
+<div class="tl-name">PPG Wave</div>
+<div class="tl-desc">Wavetable synthesis invented by Wolfgang Palm. Scanning stored waveforms mid-note.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 8: Yamaha DX7 -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">1983</div>
+<div class="tl-name">Yamaha DX7</div>
+<div class="tl-desc">FM synthesis goes mainstream. Six operators, 32 algorithms, 200,000 units sold.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 9: Roland D-50 -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">1987</div>
+<div class="tl-name">Roland D-50</div>
+<div class="tl-desc">LA synthesis fuses PCM samples with digital synthesis for natural attacks.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 10: Access Virus -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">1997</div>
+<div class="tl-name">Access Virus</div>
+<div class="tl-desc">Virtual analog synthesis — analog circuits emulated in DSP with zero maintenance.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 11: Mutable Plaits -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">2018</div>
+<div class="tl-name">Mutable Plaits</div>
+<div class="tl-desc">Macro-oscillator: 16 synthesis algorithms in one Eurorack module. Open-source.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 12: RAVE/DDSP -->
+<div class="timeline-node">
+<div class="timeline-below">
+<div class="tl-year">2020</div>
+<div class="tl-name">RAVE / DDSP</div>
+<div class="tl-desc">Neural audio synthesis. Differentiable signal processing meets deep learning.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+<!-- 13: Suno/Udio -->
+<div class="timeline-node">
+<div class="timeline-above">
+<div class="tl-year">2024</div>
+<div class="tl-name">Suno / Udio</div>
+<div class="tl-desc">Diffusion-based music generation. The waveform becomes latent space.</div>
+</div>
+<div class="timeline-dot"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S07  ARTISTS
+═══════════════════════════════════════════ -->
+<section id="s07">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">07 / ARTISTS</div>
+<h2>Artists</h2>
+<p class="section-thesis">Who shaped sound with waveforms.</p>
+</div>
+<div class="grid-2 hidden stagger-2" style="grid-template-columns:repeat(4,1fr);gap:20px;">
+<div class="card">
+<h4>Wendy Carlos</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+<em>Switched-On Bach</em> (1968) — first platinum classical-crossover synthesizer album. Meticulously programmed Moog sequences proved synthesis could achieve orchestral nuance and expression.
+      </p>
+</div>
+<div class="card">
+<h4>Bob Moog</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        Inventor of the Moog synthesizer. Brought the theremin's expressiveness into a fully controllable, voltage-controlled instrument paradigm that defined electronic music for decades.
+      </p>
+</div>
+<div class="card">
+<h4>Don Buchla</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        West Coast synthesis philosophy: touch-plate interfaces, complex oscillators, and a belief that synthesis should be gesture and exploration rather than keyboard and note.
+      </p>
+</div>
+<div class="card">
+<h4>Oskar Sala</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        Mixtur-Trautonium master. Created the bird attack sounds for Hitchcock's <em>The Birds</em> (1963) using subharmonic synthesis — frequencies below the fundamental shaping terror.
+      </p>
+</div>
+<div class="card">
+<h4>Jerobeam Fenderson</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        Contemporary oscilloscope music. Composes audio specifically engineered to produce geometric Lissajous figures on a vector display — music as 3D sculpture traced in light.
+      </p>
+</div>
+<div class="card">
+<h4>Caterina Barbieri</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        Minimalist Eurorack composer. Sequenced modular patterns used as pure waveform exploration — hypnotic lattices of pitch and timbre that blur the boundary between music and mathematics.
+      </p>
+</div>
+<div class="card">
+<h4>Ryoji Ikeda</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+<em>Test Pattern</em> series maps mathematical data structures onto sine tones at precise frequencies. Sound as data visualisation. Microseconds of silence between signals are part of the composition.
+      </p>
+</div>
+<div class="card">
+<h4>Alva Noto</h4>
+<p class="info-text" style="font-size:13px;margin-top:8px;">
+        Carsten Nicolai treats digital synthesis artifacts — glitch, noise, clicks, aliasing — as primary aesthetic material. The errors of the waveform become the subject of the composition.
+      </p>
+</div>
+</div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════════
+     S08  CHEAT SHEET
+═══════════════════════════════════════════ -->
+<section id="s08" style="min-height:auto;">
+<div class="section-inner">
+<div class="section-header hidden stagger-1">
+<div class="section-number">08 / CHEAT SHEET</div>
+<h2>Cheat Sheet</h2>
+<p class="section-thesis">24 terms. Keep them close.</p>
+</div>
+<div class="grid-4 hidden stagger-2">
+<div class="term-card">
+<div class="term-name">Sine Wave</div>
+<div class="term-def">The purest waveform — a single frequency with no harmonics. The building block of all periodic sound via Fourier synthesis.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Triangle Wave</div>
+<div class="term-def">Contains only odd harmonics, diminishing as 1/n². Softer than a square wave; sounds hollow and flute-like at low frequencies.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Sawtooth Wave</div>
+<div class="term-def">Contains all integer harmonics at 1/n amplitude. The richest standard waveform — ideal as a starting point for subtractive synthesis.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Square Wave</div>
+<div class="term-def">Contains only odd harmonics at 1/n amplitude. Sounds hollow and reedy. A 50% duty-cycle pulse wave.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Pulse Width</div>
+<div class="term-def">The ratio of high time to total period in a pulse wave. Deviating from 50% introduces even harmonics and changes timbre dramatically.</div>
+</div>
+<div class="term-card">
+<div class="term-name">White Noise</div>
+<div class="term-def">Equal energy per frequency — all frequencies simultaneously with random phase. Useful for percussive attacks and wind/sea textures.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Harmonic</div>
+<div class="term-def">A frequency component that is an integer multiple of the fundamental. Harmonics above the first are also called overtones.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Overtone</div>
+<div class="term-def">Any partial above the fundamental. Harmonic overtones are integer multiples; inharmonic overtones are not. Bells and strings differ here.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Fundamental</div>
+<div class="term-def">The lowest, usually dominant frequency in a tone. Determines the perceived pitch. All harmonics are integer multiples of this frequency.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Timbre</div>
+<div class="term-def">The perceptual quality of sound that distinguishes instruments at the same pitch and loudness. Determined by harmonic content and envelope shape.</div>
+</div>
+<div class="term-card">
+<div class="term-name">VCO</div>
+<div class="term-def">Voltage-Controlled Oscillator. Analog circuit whose output frequency is proportional to an input voltage. The heart of subtractive synthesis.</div>
+</div>
+<div class="term-card">
+<div class="term-name">DCO</div>
+<div class="term-def">Digitally-Controlled Oscillator. Uses digital clock division for rock-solid tuning stability while retaining analog waveform generation.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Wavetable</div>
+<div class="term-def">A stored single-cycle waveform. Scanning through a table of waveforms during playback creates evolving, animated timbres impossible with static oscillators.</div>
+</div>
+<div class="term-card">
+<div class="term-name">FM Synthesis</div>
+<div class="term-def">Frequency Modulation synthesis. A modulator oscillator varies a carrier's frequency at audio rate, creating complex sideband spectra from simple sine waves.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Carrier</div>
+<div class="term-def">In FM synthesis, the oscillator whose frequency is modulated. Its base frequency determines the perceived pitch of the output tone.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Modulator</div>
+<div class="term-def">In FM synthesis, the oscillator that modulates the carrier's frequency. Its ratio to the carrier and its amplitude (index) shape the spectrum.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Modulation Index</div>
+<div class="term-def">In FM, the peak frequency deviation divided by the modulating frequency. Higher index = more sidebands = richer, denser spectrum.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Sideband</div>
+<div class="term-def">Spectral components created by FM modulation, appearing at carrier ± (n × modulator) frequencies. Their relative amplitudes follow Bessel functions.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Aliasing</div>
+<div class="term-def">Artifacts that appear when a signal contains frequencies above the Nyquist limit. In synthesis, deliberate aliasing can create lo-fi texture effects.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Nyquist</div>
+<div class="term-def">The maximum representable frequency in a digital system — half the sample rate. At 44.1 kHz, the Nyquist limit is 22.05 kHz.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Karplus-Strong</div>
+<div class="term-def">Physical modeling algorithm: a noise burst through a delay line with a lowpass filter in feedback. Simulates a plucked string with minimal computation.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Physical Modeling</div>
+<div class="term-def">Synthesis that simulates the physics of a vibrating body — string, tube, membrane — rather than recording or approximating its sound with oscillators.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Oscillator Sync</div>
+<div class="term-def">Forcing a slave oscillator to restart its cycle whenever the master completes one. Creates harsh, cutting timbres where the slave frequency sweeps against the locked reset.</div>
+</div>
+<div class="term-card">
+<div class="term-name">Ring Modulation</div>
+<div class="term-def">Multiplying two audio signals together. Produces sum and difference frequencies — no carrier fundamentals survive. Extreme, metallic, robotic timbres result.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer>
+<div style="font-size:14px;font-weight:700;letter-spacing:0.15em;color:var(--green);">WAVGEN — WAVEFORM PLAYGROUND</div>
+<div style="font-size:11px;margin-top:8px;color:var(--text-dim);">The shape of sound, made visible.</div>
+<div class="footer-nav">
+<a href="signal_flow.html">← signal_flow.html</a>
+<a href="../index.html">↑ All Worlds</a>
+<a href="granular_synthesis.html">granular_synthesis.html →</a>
+</div>
+</footer>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   AUDIO CONTEXT
+═══════════════════════════════════════════════════════════ */
+let audioCtx = null;
+function getAC() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function masterGainNode(ac, vol, attack, decay) {
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0, ac.currentTime);
+  g.gain.linearRampToValueAtTime(vol, ac.currentTime + attack);
+  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + attack + decay);
+  g.connect(ac.destination);
+  return g;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO CANVAS
+═══════════════════════════════════════════════════════════ */
+const heroCanvas = document.getElementById('hero-canvas');
+const heroCtx    = heroCanvas.getContext('2d');
+let heroWave     = 'sine';
+let heroPhase    = 0;
+
+function resizeHero() {
+  heroCanvas.width  = window.innerWidth;
+  heroCanvas.height = window.innerHeight;
+}
+resizeHero();
+window.addEventListener('resize', resizeHero);
+
+function sampleWave(type, phi) {
+  const t = ((phi % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+  const n = t / (Math.PI*2);
+  switch (type) {
+    case 'sine':   return Math.sin(phi);
+    case 'saw':    return 2*(n - Math.floor(n+0.5));
+    case 'square': return Math.sin(phi) >= 0 ? 1 : -1;
+    case 'noise':  return Math.sin(phi*7.1)*Math.sin(phi*3.3+1.2)*Math.sin(phi*1.7+2.4);
+    default:       return Math.sin(phi);
+  }
+}
+
+const HERO_WAVES  = ['sine','saw','square','noise'];
+const HERO_FREQS  = [1.4, 1.1, 0.85, 0.6];
+const HERO_OFFS   = [-0.28, -0.09, 0.09, 0.28];
+
+function drawHero() {
+  const w = heroCanvas.width, h = heroCanvas.height;
+  heroCtx.fillStyle = 'rgba(5,5,8,0.07)';
+  heroCtx.fillRect(0, 0, w, h);
+
+  HERO_WAVES.forEach((type, i) => {
+    const active = type === heroWave;
+    heroCtx.beginPath();
+    heroCtx.strokeStyle = active ? '#22c55e' : 'rgba(34,197,94,0.22)';
+    heroCtx.lineWidth   = active ? 2 : 1;
+    if (active) { heroCtx.shadowColor = '#22c55e'; heroCtx.shadowBlur = 8; }
+    else        { heroCtx.shadowBlur  = 0; }
+
+    const cy  = h * (0.5 + HERO_OFFS[i]);
+    const amp = h * 0.075;
+    const frq = HERO_FREQS[i];
+    for (let x = 0; x <= w; x++) {
+      const phi = heroPhase * frq + (x / w) * Math.PI * 8;
+      const y   = cy + sampleWave(type, phi) * amp;
+      x === 0 ? heroCtx.moveTo(x, y) : heroCtx.lineTo(x, y);
+    }
+    heroCtx.stroke();
+  });
+  heroCtx.shadowBlur = 0;
+  heroPhase += 0.018;
+  requestAnimationFrame(drawHero);
+}
+drawHero();
+
+function setHeroWave(t) {
+  heroWave = t;
+  document.querySelectorAll('#hero-wave-btns .btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('hero-btn-' + t).classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTERSECTION OBSERVER — scroll animations + nav active
+═══════════════════════════════════════════════════════════ */
+const hiddenEls = document.querySelectorAll('.hidden');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }});
+}, { threshold: 0.12 });
+hiddenEls.forEach(el => revealObs.observe(el));
+
+const sections  = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
+const navObs    = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector('.nav-links a[href="#' + e.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => navObs.observe(s));
+
+/* ═══════════════════════════════════════════════════════════
+   WAVEFORM LAB
+═══════════════════════════════════════════════════════════ */
+let wlMorph = 0, wlFreq = 220, wlAmp = 0.7;
+let wlFrozen = false, wlPhase = 0, wlPlaying = false;
+let wlOsc = null, wlGain = null;
+const wlCanvas = document.getElementById('wl-canvas');
+const wlCtx    = wlCanvas.getContext('2d');
+
+const HARMONIC_DATA = {
+  sine:     [1, 0,    0,    0,    0,    0,    0,    0   ],
+  triangle: [1, 0,    0.111,0,    0.04, 0,    0.02, 0   ],
+  saw:      [1, 0.5,  0.333,0.25, 0.2,  0.167,0.143,0.125],
+  square:   [1, 0,    0.333,0,    0.2,  0,    0.143,0   ]
+};
+const WSHAPES = ['sine','triangle','saw','square'];
+
+function morphHarmonics(m) {
+  const lo = Math.floor(m), hi = Math.min(lo+1, 3), f = m - lo;
+  const a = HARMONIC_DATA[WSHAPES[lo]], b = HARMONIC_DATA[WSHAPES[hi]];
+  return a.map((v,i) => v*(1-f) + b[i]*f);
+}
+
+function morphWaveValue(m, phi) {
+  const lo = Math.floor(m), hi = Math.min(lo+1, 3), f = m - lo;
+  return sampleWave(WSHAPES[lo], phi)*(1-f) + sampleWave(WSHAPES[hi], phi)*f;
+}
+
+function drawWL() {
+  if (wlFrozen) { requestAnimationFrame(drawWL); return; }
+  const w = wlCanvas.width, h = wlCanvas.height;
+  wlCtx.fillStyle = 'rgba(6,6,16,0.18)';
+  wlCtx.fillRect(0, 0, w, h);
+
+  // Center line
+  wlCtx.beginPath();
+  wlCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+  wlCtx.lineWidth = 1;
+  wlCtx.moveTo(0, h/2); wlCtx.lineTo(w, h/2);
+  wlCtx.stroke();
+
+  wlCtx.beginPath();
+  wlCtx.strokeStyle = '#22c55e';
+  wlCtx.lineWidth = 2;
+  wlCtx.shadowColor = '#22c55e'; wlCtx.shadowBlur = 6;
+  const cycles = 3;
+  for (let x = 0; x <= w; x++) {
+    const phi = (x / w) * cycles * Math.PI * 2 + wlPhase;
+    const y   = h/2 - morphWaveValue(wlMorph, phi) * (h * 0.42) * wlAmp;
+    x === 0 ? wlCtx.moveTo(x, y) : wlCtx.lineTo(x, y);
+  }
+  wlCtx.stroke();
+  wlCtx.shadowBlur = 0;
+  wlPhase += 0.06;
+
+  // Update harmonic bars
+  const harms = morphHarmonics(wlMorph);
+  harms.forEach((v, i) => {
+    const bar = document.getElementById('hb-' + (i+1));
+    if (bar) bar.style.height = Math.max(v * 100, 2) + '%';
+  });
+
+  requestAnimationFrame(drawWL);
+}
+drawWL();
+
+function wlMorphChange(v) {
+  wlMorph = parseFloat(v);
+  const names = ['SINE','TRIANGLE','SAW','SQUARE'];
+  const lo = Math.floor(wlMorph), hi = Math.min(lo+1,3), f = wlMorph-lo;
+  const label = f < 0.05 ? names[lo] : f > 0.95 ? names[hi] : names[lo]+' → '+names[hi];
+  document.getElementById('wl-morph-val').textContent = label;
+  if (wlOsc) updateWLOsc();
+}
+function wlFreqChange(v) {
+  wlFreq = parseFloat(v);
+  document.getElementById('wl-freq-val').textContent = v + ' Hz';
+  if (wlOsc) updateWLOsc();
+}
+function wlAmpChange(v) {
+  wlAmp = parseFloat(v);
+  document.getElementById('wl-amp-val').textContent = parseFloat(v).toFixed(2);
+  if (wlGain) wlGain.gain.setTargetAtTime(wlAmp * 0.3, getAC().currentTime, 0.01);
+}
+function updateWLOsc() {
+  if (!wlOsc) return;
+  wlOsc.frequency.setTargetAtTime(wlFreq, getAC().currentTime, 0.01);
+  const types = ['sine','triangle','sawtooth','square'];
+  const lo = Math.floor(wlMorph);
+  wlOsc.type = types[lo];
+}
+function wlTogglePlay() {
+  const ac = getAC(), btn = document.getElementById('wl-play-btn');
+  if (wlPlaying) {
+    if (wlOsc) { wlOsc.stop(); wlOsc = null; }
+    wlPlaying = false; btn.textContent = '▶ PLAY'; btn.classList.remove('active');
+  } else {
+    wlOsc  = ac.createOscillator();
+    wlGain = ac.createGain();
+    const types = ['sine','triangle','sawtooth','square'];
+    wlOsc.type = types[Math.floor(wlMorph)];
+    wlOsc.frequency.value = wlFreq;
+    wlGain.gain.value = wlAmp * 0.3;
+    wlOsc.connect(wlGain); wlGain.connect(ac.destination);
+    wlOsc.start();
+    wlPlaying = true; btn.textContent = '■ STOP'; btn.classList.add('active');
+  }
+}
+function wlToggleFreeze() {
+  wlFrozen = !wlFrozen;
+  const btn = document.getElementById('wl-freeze-btn');
+  btn.classList.toggle('active', wlFrozen);
+  btn.textContent = wlFrozen ? 'UNFREEZE' : 'FREEZE';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PWM CANVAS
+═══════════════════════════════════════════════════════════ */
+const pwmCanvas = document.getElementById('pwm-canvas');
+const pwmCtx    = pwmCanvas.getContext('2d');
+let pwmSweepId  = null, pwmSweepDir = 1, pwmOsc = null, pwmGainNode = null, pwmPlaying = false;
+
+function drawPWM() {
+  const w = pwmCanvas.width, h = pwmCanvas.height;
+  const duty = parseFloat(document.getElementById('pwm-slider').value) / 100;
+  document.getElementById('pwm-pct').textContent = Math.round(duty*100) + '%';
+  pwmCtx.fillStyle = '#060610';
+  pwmCtx.fillRect(0, 0, w, h);
+
+  pwmCtx.strokeStyle = '#22c55e'; pwmCtx.lineWidth = 2;
+  pwmCtx.shadowColor = '#22c55e'; pwmCtx.shadowBlur = 5;
+  pwmCtx.beginPath();
+
+  const cycles = 3, cw = w / cycles;
+  const cy = h/2, amp = h * 0.36;
+
+  pwmCtx.moveTo(0, cy - amp);
+  for (let c = 0; c < cycles; c++) {
+    const x0 = c * cw, xM = x0 + cw * duty, x1 = (c+1) * cw;
+    pwmCtx.lineTo(xM, cy - amp);
+    pwmCtx.lineTo(xM, cy + amp);
+    pwmCtx.lineTo(x1 - 0.5, cy + amp);
+    pwmCtx.lineTo(x1, cy - amp);
+  }
+  pwmCtx.stroke();
+  pwmCtx.shadowBlur = 0;
+
+  if (pwmOsc) {
+    const ac = getAC();
+    const period = 1 / 440;
+    // Approximate PWM with detune: not ideal but audible difference
+    pwmOsc.detune.setTargetAtTime((duty - 0.5) * 100, ac.currentTime, 0.05);
+  }
+}
+drawPWM();
+
+function pwmTogglePlay() {
+  const ac = getAC(), btn = document.getElementById('pwm-play-btn');
+  if (pwmPlaying) {
+    if (pwmOsc) { pwmOsc.stop(); pwmOsc = null; }
+    pwmPlaying = false; btn.textContent = '▶ PLAY PWM'; btn.classList.remove('active');
+  } else {
+    pwmOsc = ac.createOscillator(); pwmGainNode = ac.createGain();
+    pwmOsc.type = 'square'; pwmOsc.frequency.value = 220;
+    pwmGainNode.gain.value = 0.25;
+    pwmOsc.connect(pwmGainNode); pwmGainNode.connect(ac.destination);
+    pwmOsc.start();
+    pwmPlaying = true; btn.textContent = '■ STOP PWM'; btn.classList.add('active');
+  }
+}
+function startPWMSweep() {
+  if (pwmSweepId) { clearInterval(pwmSweepId); pwmSweepId = null; return; }
+  pwmSweepId = setInterval(() => {
+    const sl = document.getElementById('pwm-slider');
+    let v = parseFloat(sl.value) + pwmSweepDir * 1.2;
+    if (v >= 90) { v = 90; pwmSweepDir = -1; }
+    if (v <= 10) { v = 10; pwmSweepDir =  1; }
+    sl.value = v;
+    document.getElementById('pwm-val').textContent = Math.round(v) + '%';
+    drawPWM();
+  }, 50);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BEATING LAB
+═══════════════════════════════════════════════════════════ */
+const beatCanvas = document.getElementById('beat-canvas');
+const beatCtx    = beatCanvas.getContext('2d');
+let beatFreqA = 440, beatDetuneCents = 0, beatPlaying = false;
+let beatOscA = null, beatOscB = null, beatGain = null;
+let beatPhase = 0;
+
+function beatFreqB() { return beatFreqA * Math.pow(2, beatDetuneCents / 1200); }
+
+function drawBeat() {
+  const w = beatCanvas.width, h = beatCanvas.height;
+  beatCtx.fillStyle = 'rgba(6,6,16,0.15)';
+  beatCtx.fillRect(0, 0, w, h);
+
+  const fA = beatFreqA, fB = beatFreqB(), beatF = Math.abs(fA - fB);
+  const cycles = 4, cy = h/2, amp = h * 0.38;
+
+  // Osc A (dim)
+  beatCtx.beginPath(); beatCtx.strokeStyle = 'rgba(34,197,94,0.28)'; beatCtx.lineWidth = 1;
+  for (let x = 0; x <= w; x++) {
+    const phi = beatPhase * (fA/440) + (x/w) * cycles * Math.PI * 2;
+    const y = cy*0.5 + Math.sin(phi) * amp * 0.35;
+    x===0 ? beatCtx.moveTo(x,y) : beatCtx.lineTo(x,y);
+  }
+  beatCtx.stroke();
+
+  // Osc B (dim)
+  beatCtx.beginPath(); beatCtx.strokeStyle = 'rgba(245,158,11,0.28)'; beatCtx.lineWidth = 1;
+  for (let x = 0; x <= w; x++) {
+    const phi = beatPhase * (fB/440) + (x/w) * cycles * Math.PI * 2;
+    const y = cy*1.5 + Math.sin(phi) * amp * 0.35;
+    x===0 ? beatCtx.moveTo(x,y) : beatCtx.lineTo(x,y);
+  }
+  beatCtx.stroke();
+
+  // Combined sum with amplitude envelope
+  beatCtx.beginPath(); beatCtx.strokeStyle = '#22c55e'; beatCtx.lineWidth = 2;
+  beatCtx.shadowColor = '#22c55e'; beatCtx.shadowBlur = 6;
+  for (let x = 0; x <= w; x++) {
+    const tNorm = x / w;
+    const phiA = beatPhase*(fA/440) + tNorm*cycles*Math.PI*2;
+    const phiB = beatPhase*(fB/440) + tNorm*cycles*Math.PI*2;
+    const sum  = (Math.sin(phiA) + Math.sin(phiB)) * 0.5;
+    const y    = cy + sum * amp;
+    x===0 ? beatCtx.moveTo(x,y) : beatCtx.lineTo(x,y);
+  }
+  beatCtx.stroke(); beatCtx.shadowBlur = 0;
+
+  beatPhase += 0.04;
+
+  // Update beat display
+  document.getElementById('beat-freq-display').textContent = beatF.toFixed(1);
+  requestAnimationFrame(drawBeat);
+}
+drawBeat();
+
+function beatFreqAChange(v) {
+  beatFreqA = parseFloat(v);
+  document.getElementById('beat-freqA-val').textContent = v + ' Hz';
+  if (beatOscA) beatOscA.frequency.setTargetAtTime(beatFreqA, getAC().currentTime, 0.02);
+  if (beatOscB) beatOscB.frequency.setTargetAtTime(beatFreqB(), getAC().currentTime, 0.02);
+}
+function beatDetuneChange(v) {
+  beatDetuneCents = parseFloat(v);
+  document.getElementById('beat-detune-val').textContent = (v >= 0 ? '+' : '') + parseFloat(v).toFixed(1) + ' ¢';
+  if (beatOscB) beatOscB.frequency.setTargetAtTime(beatFreqB(), getAC().currentTime, 0.02);
+}
+function beatTogglePlay() {
+  const ac = getAC(), btn = document.getElementById('beat-play-btn');
+  if (beatPlaying) {
+    if (beatOscA) { beatOscA.stop(); beatOscA = null; }
+    if (beatOscB) { beatOscB.stop(); beatOscB = null; }
+    beatPlaying = false; btn.textContent = '▶ PLAY BOTH'; btn.classList.remove('active');
+  } else {
+    beatGain = ac.createGain(); beatGain.gain.value = 0.18; beatGain.connect(ac.destination);
+    beatOscA = ac.createOscillator(); beatOscA.frequency.value = beatFreqA; beatOscA.connect(beatGain); beatOscA.start();
+    beatOscB = ac.createOscillator(); beatOscB.frequency.value = beatFreqB(); beatOscB.connect(beatGain); beatOscB.start();
+    beatPlaying = true; btn.textContent = '■ STOP'; btn.classList.add('active');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LISSAJOUS
+═══════════════════════════════════════════════════════════ */
+const lissCanvas = document.getElementById('liss-canvas');
+const lissCtx    = lissCanvas.getContext('2d');
+let lissXF = 3, lissYF = 2, lissPhOff = Math.PI/2, lissT = 0;
+
+function lissUpdate() {
+  lissXF    = parseInt(document.getElementById('liss-xfreq').value);
+  lissYF    = parseInt(document.getElementById('liss-yfreq').value);
+  const deg = parseInt(document.getElementById('liss-phase').value);
+  lissPhOff = deg * Math.PI / 180;
+  document.getElementById('liss-xf-val').textContent  = lissXF;
+  document.getElementById('liss-yf-val').textContent  = lissYF;
+  document.getElementById('liss-ph-val').textContent  = deg + '°';
+  document.getElementById('liss-xf-disp').textContent = lissXF;
+  document.getElementById('liss-yf-disp').textContent = lissYF;
+  document.getElementById('liss-ph-disp').textContent = deg + '°';
+}
+
+function setLiss(x, y, deg) {
+  document.getElementById('liss-xfreq').value = x;
+  document.getElementById('liss-yfreq').value = y;
+  document.getElementById('liss-phase').value = deg;
+  lissUpdate();
+}
+
+function drawLiss() {
+  const w = lissCanvas.width, h = lissCanvas.height;
+  lissCtx.fillStyle = 'rgba(6,6,16,0.045)';
+  lissCtx.fillRect(0, 0, w, h);
+
+  const steps = 800, pad = 20;
+  lissCtx.beginPath();
+  lissCtx.strokeStyle = '#22c55e'; lissCtx.lineWidth = 1.4;
+  lissCtx.shadowColor = '#22c55e'; lissCtx.shadowBlur = 4;
+  for (let i = 0; i <= steps; i++) {
+    const t = lissT + (i / steps) * Math.PI * 2;
+    const x = pad + (Math.sin(t * lissXF + lissPhOff) + 1) / 2 * (w - pad*2);
+    const y = pad + (Math.sin(t * lissYF)              + 1) / 2 * (h - pad*2);
+    i === 0 ? lissCtx.moveTo(x, y) : lissCtx.lineTo(x, y);
+  }
+  lissCtx.stroke(); lissCtx.shadowBlur = 0;
+  lissT += 0.005;
+  requestAnimationFrame(drawLiss);
+}
+drawLiss();
+
+/* ═══════════════════════════════════════════════════════════
+   FM SYNTHESIS — GRID + AUDIO
+═══════════════════════════════════════════════════════════ */
+const fmGC  = document.getElementById('fm-grid-canvas');
+const fmCtx = fmGC.getContext('2d');
+
+const FM_RATIOS  = [1, 1.5, 2, 2.5, 3, 3.5, 4, 6];
+const FM_INDICES = [0, 1,   2, 3,   4,  5,  7, 10];
+const PRESETS = [
+  { row: 0, col: 3, label: 'DX7' },
+  { row: 5, col: 5, label: 'Bell' },
+  { row: 2, col: 6, label: 'Bass' },
+  { row: 6, col: 2, label: 'Marimba' }
+];
+
+function fmCellColor(ratio, idx) {
+  const isInt = Math.abs(ratio - Math.round(ratio)) < 0.05;
+  const isNear = Math.abs(ratio - Math.round(ratio)) < 0.55;
+  if (isInt)  return ['rgba(34,197,94,', '#22c55e'];
+  if (isNear) return ['rgba(245,158,11,', '#f59e0b'];
+  return         ['rgba(249,115,22,', '#f97316'];
+}
+
+function drawFMGrid() {
+  const w = fmGC.width, h = fmGC.height;
+  const cw = w / 8, ch = h / 8;
+  fmCtx.clearRect(0, 0, w, h);
+
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const ratio = FM_RATIOS[7 - row];
+      const idx   = FM_INDICES[col];
+      const [colBase] = fmCellColor(ratio, idx);
+      const alpha = 0.12 + (idx / 10) * 0.25 + (ratio <= 4 ? 0.05 : 0);
+      fmCtx.fillStyle = colBase + alpha + ')';
+      fmCtx.fillRect(col*cw + 1, row*ch + 1, cw-2, ch-2);
+      fmCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+      fmCtx.strokeRect(col*cw + 1, row*ch + 1, cw-2, ch-2);
+
+      // Axis labels
+      if (col === 0) {
+        fmCtx.fillStyle = 'rgba(34,197,94,0.7)';
+        fmCtx.font = '10px monospace';
+        fmCtx.fillText('1:' + ratio, col*cw + 4, row*ch + 14);
+      }
+      if (row === 7) {
+        fmCtx.fillStyle = 'rgba(148,163,184,0.6)';
+        fmCtx.font = '10px monospace';
+        fmCtx.fillText(idx, col*cw + cw/2 - 4, row*ch + ch - 4);
+      }
+    }
+  }
+
+  // Named preset dots
+  PRESETS.forEach(p => {
+    const cx = p.col * cw + cw/2, cy = p.row * ch + ch/2;
+    fmCtx.beginPath();
+    fmCtx.arc(cx, cy, 4, 0, Math.PI*2);
+    fmCtx.fillStyle = '#fff';
+    fmCtx.fill();
+    fmCtx.fillStyle = 'rgba(255,255,255,0.85)';
+    fmCtx.font = 'bold 9px monospace';
+    fmCtx.fillText(p.label, cx + 6, cy + 3);
+  });
+}
+drawFMGrid();
+
+function fmGridClick(e) {
+  const rect = fmGC.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (fmGC.width  / rect.width);
+  const y = (e.clientY - rect.top)  * (fmGC.height / rect.height);
+  const col = Math.min(7, Math.floor(x / (fmGC.width  / 8)));
+  const row = Math.min(7, Math.floor(y / (fmGC.height / 8)));
+  const ratio = FM_RATIOS[7 - row];
+  const idx   = FM_INDICES[col];
+  playFM(220, ratio, idx, 1.8);
+  document.getElementById('fm-last-played').textContent =
+    'Playing: carrier 220 Hz · ratio 1:' + ratio + ' · index ' + idx;
+  updateFMSpectrum(idx);
+
+  // Flash cell
+  const cw = fmGC.width/8, ch = fmGC.height/8;
+  fmCtx.fillStyle = 'rgba(34,197,94,0.45)';
+  fmCtx.fillRect(col*cw+1, row*ch+1, cw-2, ch-2);
+  setTimeout(drawFMGrid, 300);
+}
+
+function playFM(carrierF, ratio, modIndex, dur) {
+  const ac = getAC();
+  const modF   = carrierF * ratio;
+  const modDep = modIndex * carrierF;
+  const mod    = ac.createOscillator();
+  const modG   = ac.createGain();
+  const car    = ac.createOscillator();
+  const outG   = ac.createGain();
+  mod.frequency.value = modF;
+  modG.gain.value     = modDep;
+  car.frequency.value = carrierF;
+  outG.gain.setValueAtTime(0.28, ac.currentTime);
+  outG.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+  mod.connect(modG); modG.connect(car.frequency);
+  car.connect(outG); outG.connect(ac.destination);
+  mod.start(); car.start();
+  mod.stop(ac.currentTime + dur); car.stop(ac.currentTime + dur);
+}
+
+function playFMPreset(carrierF, ratio, idx, label) {
+  playFM(carrierF, ratio, idx, 2.2);
+  document.getElementById('fm-last-played').textContent = 'Playing: ' + label;
+  updateFMSpectrum(idx);
+}
+
+function updateFMSpectrum(modIndex) {
+  // Approximate Bessel function magnitudes for FM sidebands
+  const J = [1];
+  let prev1 = 1, prev2 = 0;
+  for (let n = 1; n <= 15; n++) {
+    const jn = (2*(n-1)/Math.max(modIndex,0.01)) * prev1 - prev2;
+    J.push(Math.abs(jn));
+    prev2 = prev1; prev1 = jn;
+  }
+  const mx = Math.max(...J, 0.001);
+  for (let i = 0; i < 16; i++) {
+    const bar = document.getElementById('fsb-' + i);
+    if (bar) bar.style.height = Math.max((J[i]/mx)*95, 2) + '%';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PHYSICAL MODELING — PLUCKED STRING
+═══════════════════════════════════════════════════════════ */
+const strCanvas = document.getElementById('string-canvas');
+const strCtx    = strCanvas.getContext('2d');
+let strMaterial = 'nylon', strAmplitude = 0, strPhase2 = 0;
+let strDecay = 0, strHarmonics = [1, 0.5, 0.25, 0.12], strBowing = false, strBowId = null;
+
+const MAT = {
+  nylon:   { decay: 0.015, cutoff: 1800, color: '#22c55e', q: 40 },
+  steel:   { decay: 0.007, cutoff: 5000, color: '#7dd3fc', q: 80 },
+  glass:   { decay: 0.012, cutoff: 7500, color: '#c4b5fd', q: 120 },
+  crystal: { decay: 0.004, cutoff: 12000,color: '#fde68a', q: 160 }
+};
+
+function drawString() {
+  const w = strCanvas.width, h = strCanvas.height;
+  strCtx.fillStyle = '#060610';
+  strCtx.fillRect(0, 0, w, h);
+
+  // Bridge endpoints
+  strCtx.beginPath();
+  strCtx.strokeStyle = 'rgba(34,197,94,0.15)'; strCtx.lineWidth = 1;
+  strCtx.moveTo(10, h/2); strCtx.lineTo(w-10, h/2);
+  strCtx.stroke();
+
+  if (strAmplitude > 0.001) {
+    const m = MAT[strMaterial];
+    strCtx.beginPath();
+    strCtx.strokeStyle = m.color; strCtx.lineWidth = 2;
+    strCtx.shadowColor = m.color; strCtx.shadowBlur = 10;
+    for (let x = 10; x <= w-10; x++) {
+      const t = (x - 10) / (w - 20);
+      let y = h/2;
+      strHarmonics.forEach((amp, i) => {
+        y += Math.sin((i+1) * Math.PI * t) * Math.cos(strPhase2 * (i+1) * 2.5) * amp * strAmplitude * h * 0.35;
+      });
+      x === 10 ? strCtx.moveTo(x, y) : strCtx.lineTo(x, y);
+    }
+    strCtx.stroke(); strCtx.shadowBlur = 0;
+    strAmplitude *= (1 - MAT[strMaterial].decay);
+  }
+  strPhase2 += 0.05;
+  requestAnimationFrame(drawString);
+}
+drawString();
+
+function pluckString(e) {
+  const rect = strCanvas.getBoundingClientRect();
+  const pos  = (e.clientX - rect.left) / rect.width;
+  const m    = MAT[strMaterial];
+  strAmplitude = 1.0;
+  // Emphasize harmonics based on pluck position
+  strHarmonics = [1, 0.5, 0.25, 0.12].map((v, i) =>
+    v * Math.abs(Math.sin((i+1) * Math.PI * pos)));
+  strHarmonics[0] = Math.max(strHarmonics[0], 0.3);
+
+  // Audio
+  const ac   = getAC();
+  const tension = parseFloat(document.getElementById('string-tension').value);
+  const baseF   = 110 * tension;
+  const buf     = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.05), ac.sampleRate);
+  const data    = buf.getChannelData(0);
+  for (let i = 0; i < data.length; i++) {
+    data[i] = (Math.random()*2-1) * Math.exp(-i / (data.length*0.15));
+  }
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  const filt = ac.createBiquadFilter();
+  filt.type = 'lowpass'; filt.frequency.value = m.cutoff; filt.Q.value = m.q;
+  const env = ac.createGain();
+  env.gain.setValueAtTime(0.5, ac.currentTime);
+  env.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 2.5 / tension);
+  src.connect(filt); filt.connect(env); env.connect(ac.destination);
+  src.start();
+}
+
+function pluckStringAuto() {
+  pluckString({ clientX: strCanvas.getBoundingClientRect().left + strCanvas.offsetWidth * 0.3,
+                clientY: strCanvas.getBoundingClientRect().top });
+}
+
+function setStringMaterial(mat, btn) {
+  strMaterial = mat;
+  document.querySelectorAll('#string-material-btns .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleBow() {
+  strBowing = !strBowing;
+  const btn = document.getElementById('bow-btn');
+  btn.classList.toggle('active', strBowing);
+  btn.textContent = strBowing ? '■ STOP BOW' : 'BOW MODE';
+  if (strBowing) {
+    strBowId = setInterval(() => {
+      strAmplitude = Math.min(strAmplitude + 0.02, 0.8);
+    }, 50);
+  } else {
+    if (strBowId) clearInterval(strBowId);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT — trigger hero entrance immediately
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('#s01 .hidden').forEach(el => {
+  setTimeout(() => el.classList.add('visible'), 100);
+});
+
+</script>
