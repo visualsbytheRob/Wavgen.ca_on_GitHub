@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive root world exploring wavgen nexus">
+    <meta property="og:title" content="Wavgen Nexus — WAVGEN">
+    <meta property="og:description" content="Immersive root world exploring wavgen nexus">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#00E5FF">
+    <link rel="canonical" href="https://wavgen.ca/wavgen_nexus.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVGEN NEXUS — Master Hub</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020408;--cyan:#00E5FF;--gold:#D4AF37;--dark:#0A0F1A;
+  --music:#00E5FF;--video:#D4AF37;--art:#FF6B9D;--av:#9B59B6;--data:#2ECC71;--code:#E74C3C;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:#cce8ff;font-family:'Courier New',Courier,monospace;overflow-x:hidden}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:52px;
+  background:rgba(2,4,8,0.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,229,255,0.15);
+}
+.nav-logo{color:var(--cyan);font-size:1.1rem;font-weight:700;letter-spacing:.2em;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:1.6rem}
+.nav-links a{
+  color:rgba(204,232,255,0.6);font-size:0.72rem;letter-spacing:.12em;
+  text-decoration:none;text-transform:uppercase;transition:color .2s;
+}
+.nav-links a:hover{color:var(--cyan)}
+.nav-count{color:rgba(0,229,255,0.4);font-size:0.68rem;letter-spacing:.1em}
+
+/* ─── SECTIONS ─── */
+section{min-height:100vh;position:relative;overflow:hidden}
+.section-inner{max-width:1400px;margin:0 auto;padding:0 2rem}
+
+/* ─── HERO ─── */
+#hero{display:flex;align-items:center;justify-content:center}
+#webgl-canvas{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+}
+.hero-content{
+  position:relative;z-index:2;text-align:center;pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:.7rem;letter-spacing:.35em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:1.2rem;opacity:.8;
+}
+.hero-title{
+  font-size:clamp(3rem,8vw,7rem);font-weight:900;
+  letter-spacing:.15em;line-height:1;
+  background:linear-gradient(135deg,var(--cyan) 0%,#7ef8ff 40%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:none;
+}
+.hero-sub{
+  font-size:clamp(.85rem,1.5vw,1.1rem);letter-spacing:.2em;
+  color:rgba(0,229,255,0.6);margin-top:1rem;text-transform:uppercase;
+}
+.hero-divider{
+  width:180px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--gold),transparent);
+  margin:1.8rem auto;
+}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:1rem}
+.stat{text-align:center}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--cyan);display:block}
+.stat-label{font-size:.65rem;letter-spacing:.15em;color:rgba(204,232,255,0.4);text-transform:uppercase}
+.hero-cta{
+  margin-top:2.5rem;display:inline-block;pointer-events:all;
+  padding:.7rem 2rem;border:1px solid var(--cyan);color:var(--cyan);
+  text-decoration:none;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.hero-cta::before{
+  content:'';position:absolute;inset:0;
+  background:var(--cyan);transform:translateX(-100%);transition:transform .3s;z-index:-1;
+}
+.hero-cta:hover::before{transform:translateX(0)}
+.hero-cta:hover{color:var(--bg)}
+.scroll-indicator{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(0,229,255,0.3);font-size:.6rem;letter-spacing:.1em;
+}
+.scroll-line{width:1px;height:40px;background:linear-gradient(180deg,var(--cyan),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ─── CONSTELLATION ─── */
+#constellation{background:linear-gradient(180deg,var(--bg) 0%,#030810 100%);padding-top:80px}
+.section-header{text-align:center;padding:3rem 0 1.5rem}
+.section-label{font-size:.65rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:.7rem}
+.section-title{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;letter-spacing:.08em;color:#e8f4ff}
+.section-title span{color:var(--cyan)}
+.section-desc{font-size:.8rem;color:rgba(204,232,255,0.45);letter-spacing:.08em;margin-top:.6rem;max-width:500px;margin-inline:auto}
+#const-canvas{display:block;width:100%;cursor:crosshair}
+.const-controls{
+  display:flex;align-items:center;justify-content:center;gap:2rem;
+  padding:1rem 0;flex-wrap:wrap;
+}
+.legend-item{display:flex;align-items:center;gap:.5rem;font-size:.65rem;letter-spacing:.1em;color:rgba(204,232,255,0.5);text-transform:uppercase;cursor:pointer}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+
+/* ─── WORLD PANEL ─── */
+.world-panel{
+  position:fixed;top:0;right:0;width:320px;height:100vh;z-index:900;
+  background:rgba(2,4,8,0.96);border-left:1px solid rgba(0,229,255,0.2);
+  backdrop-filter:blur(20px);display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);
+  overflow-y:auto;
+}
+.world-panel.open{transform:translateX(0)}
+.panel-close{
+  position:absolute;top:1rem;right:1rem;background:none;border:none;
+  color:rgba(0,229,255,0.5);font-size:1.2rem;cursor:pointer;padding:.3rem;
+  transition:color .2s;
+}
+.panel-close:hover{color:var(--cyan)}
+.panel-domain-bar{height:3px;background:var(--cyan);transition:background .3s}
+.panel-body{padding:2rem 1.5rem 1.5rem}
+.panel-domain-badge{
+  display:inline-block;padding:.2rem .7rem;
+  border:1px solid currentColor;font-size:.6rem;letter-spacing:.15em;
+  text-transform:uppercase;margin-bottom:1rem;border-radius:2px;
+}
+.panel-title{font-size:1.2rem;font-weight:700;color:#e8f4ff;line-height:1.2;margin-bottom:.8rem;letter-spacing:.05em}
+.panel-desc{font-size:.75rem;color:rgba(204,232,255,0.55);line-height:1.7;margin-bottom:1.5rem}
+.panel-enter{
+  display:block;text-align:center;padding:.65rem 1.2rem;
+  background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(0,229,255,0.05));
+  border:1px solid rgba(0,229,255,0.3);color:var(--cyan);
+  text-decoration:none;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  transition:all .25s;margin-bottom:1.5rem;
+}
+.panel-enter:hover{background:rgba(0,229,255,0.15);border-color:var(--cyan)}
+.panel-related-title{font-size:.6rem;letter-spacing:.15em;color:rgba(204,232,255,0.3);text-transform:uppercase;margin-bottom:.7rem}
+.related-list{display:flex;flex-direction:column;gap:.4rem}
+.related-item{
+  padding:.4rem .7rem;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);font-size:.68rem;
+  color:rgba(204,232,255,0.5);cursor:pointer;transition:all .2s;
+  text-decoration:none;display:block;
+}
+.related-item:hover{background:rgba(0,229,255,0.06);border-color:rgba(0,229,255,0.2);color:var(--cyan)}
+
+/* ─── DOMAIN PORTALS ─── */
+#portals{background:var(--bg);padding:80px 0}
+.portals-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:1.5px;margin-top:2.5rem;
+}
+.portal-card{
+  background:rgba(5,10,20,0.8);border:1px solid rgba(255,255,255,0.06);
+  padding:2rem;position:relative;overflow:hidden;cursor:pointer;
+  transition:border-color .3s,transform .3s;
+}
+.portal-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--domain-color);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.portal-card:hover::before{transform:scaleX(1)}
+.portal-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
+.portal-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,0.04),transparent 70%);
+  pointer-events:none;
+}
+.portal-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.portal-domain{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--domain-color);margin-bottom:.4rem}
+.portal-name{font-size:1.3rem;font-weight:700;color:#e8f4ff;margin-bottom:.6rem;letter-spacing:.04em}
+.portal-count{font-size:.65rem;color:rgba(204,232,255,0.3);margin-bottom:1rem}
+.portal-worlds{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1.2rem}
+.portal-world-link{
+  font-size:.7rem;color:rgba(204,232,255,0.45);text-decoration:none;
+  padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:color .2s;display:flex;align-items:center;gap:.4rem;
+}
+.portal-world-link::before{content:'›';color:var(--domain-color);opacity:.6}
+.portal-world-link:hover{color:var(--cyan)}
+.portal-explore{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--domain-color);opacity:.6;
+}
+
+/* ─── BRIDGES ─── */
+#bridges{background:linear-gradient(180deg,#030810 0%,var(--bg) 100%);padding:80px 0;min-height:80vh}
+.bridge-grid{
+  display:grid;grid-template-columns:1fr;gap:0;margin-top:2rem;
+}
+.bridge-row{
+  display:flex;align-items:center;padding:1.2rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.bridge-from,.bridge-to{
+  flex:0 0 200px;font-size:.72rem;letter-spacing:.08em;
+  padding:.4rem .8rem;border-radius:2px;text-align:center;
+}
+.bridge-from{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan)}
+.bridge-to{background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.2);color:var(--gold)}
+.bridge-middle{
+  flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+  padding:0 1rem;
+}
+.bridge-line{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,rgba(0,229,255,0.3),rgba(212,175,55,0.3));
+}
+.bridge-label{
+  position:relative;background:var(--bg);padding:.2rem .6rem;
+  font-size:.6rem;letter-spacing:.1em;color:rgba(204,232,255,0.4);
+  border:1px solid rgba(255,255,255,0.06);text-transform:uppercase;white-space:nowrap;
+}
+
+/* ─── REPO INTELLIGENCE ─── */
+#repos{background:var(--bg);padding:80px 0;min-height:70vh}
+.repo-preview{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;
+  margin-top:2.5rem;
+}
+.repo-tier{border:1px solid rgba(255,255,255,0.06);padding:1.5rem;background:rgba(5,10,18,0.6)}
+.tier-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.tier-title{font-size:1rem;font-weight:700;color:#e8f4ff;margin-bottom:1rem}
+.repo-list{display:flex;flex-direction:column;gap:.4rem}
+.repo-item{
+  font-size:.68rem;color:rgba(204,232,255,0.45);padding:.3rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  display:flex;align-items:center;gap:.5rem;
+}
+.repo-item::before{content:'⬡';font-size:.55rem;color:var(--cyan);opacity:.5}
+.repo-cta{
+  margin-top:2rem;text-align:center;
+  display:block;padding:.8rem 2rem;
+  border:1px solid rgba(212,175,55,0.3);color:var(--gold);
+  text-decoration:none;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  transition:all .3s;max-width:360px;margin-inline:auto;
+}
+.repo-cta:hover{background:rgba(212,175,55,0.08);border-color:var(--gold)}
+
+/* ─── FUTURE EXPANSION ─── */
+#expansion{background:linear-gradient(180deg,var(--bg),#050c14);padding:80px 0;min-height:70vh}
+.expansion-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;margin-top:2.5rem;
+}
+.expansion-zone{
+  border:1px dashed rgba(255,255,255,0.1);padding:1.5rem;
+  background:rgba(5,10,18,0.3);text-align:center;
+  transition:border-color .3s,background .3s;cursor:default;
+}
+.expansion-zone:hover{border-color:rgba(0,229,255,0.2);background:rgba(0,229,255,0.03)}
+.exp-icon{font-size:1.5rem;margin-bottom:.7rem;display:block;opacity:.5}
+.exp-name{font-size:.75rem;letter-spacing:.1em;color:rgba(204,232,255,0.4);text-transform:uppercase}
+.exp-status{font-size:.6rem;color:rgba(204,232,255,0.2);margin-top:.4rem;letter-spacing:.08em}
+
+/* ─── SCROLL REVEAL ─── */
+.hidden{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.visible{opacity:1;transform:translateY(0)}
+.hidden-left{opacity:0;transform:translateX(-30px);transition:opacity .7s ease,transform .7s ease}
+.hidden-right{opacity:0;transform:translateX(30px);transition:opacity .7s ease,transform .7s ease}
+
+/* ─── FOOTER ─── */
+footer{
+  padding:2rem;text-align:center;
+  border-top:1px solid rgba(0,229,255,0.08);
+  font-size:.65rem;letter-spacing:.1em;color:rgba(204,232,255,0.2);
+}
+footer span{color:var(--cyan)}
+</style>
+</head>
+<body class="domain-root">
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<nav>
+  <a class="nav-logo" href="#">WAV<span>GEN</span> NEXUS</a>
+  <div class="nav-links">
+    <a href="#constellation">Constellation</a>
+    <a href="#portals">Portals</a>
+    <a href="#bridges">Bridges</a>
+    <a href="#repos">Repos</a>
+    <a href="#expansion">Future</a>
+  </div>
+  <span class="nav-count">94 Worlds · 5 Domains</span>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — WEBGL HERO
+════════════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="webgl-canvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow">wavgen.ca · immersive universe</p>
+    <h1 class="hero-title">WAVGEN<br>NEXUS</h1>
+    <p class="hero-sub">The Central Nervous System</p>
+    <div class="hero-divider"></div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num" id="stat-worlds">94</span><span class="stat-label">Worlds</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Domains</span></div>
+      <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Connections</span></div>
+    </div>
+    <a href="#constellation" class="hero-cta">Enter the Universe</a>
+  </div>
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — CONSTELLATION MAP
+════════════════════════════════════════════ -->
+<section id="constellation">
+  <div class="section-inner">
+    <div class="section-header hidden">
+      <span class="section-label">Section 02</span>
+      <h2 class="section-title">Universe <span>Constellation</span></h2>
+      <p class="section-desc">All worlds mapped as glowing nodes. Click any node to open its portal.</p>
+    </div>
+  </div>
+  <canvas id="const-canvas"></canvas>
+  <div class="section-inner">
+    <div class="const-controls hidden">
+      <div class="legend-item" data-domain="music"><div class="legend-dot" style="background:var(--music)"></div>Music</div>
+      <div class="legend-item" data-domain="video"><div class="legend-dot" style="background:var(--video)"></div>Video</div>
+      <div class="legend-item" data-domain="art"><div class="legend-dot" style="background:var(--art)"></div>Art</div>
+      <div class="legend-item" data-domain="av"><div class="legend-dot" style="background:var(--av)"></div>AV</div>
+      <div class="legend-item" data-domain="data"><div class="legend-dot" style="background:var(--data)"></div>Data</div>
+    </div>
+  </div>
+</section>
+
+<!-- World Info Panel (fixed overlay) -->
+<div class="world-panel" id="world-panel">
+  <button class="panel-close" id="panel-close">✕</button>
+  <div class="panel-domain-bar" id="panel-bar"></div>
+  <div class="panel-body">
+    <span class="panel-domain-badge" id="panel-badge"></span>
+    <h3 class="panel-title" id="panel-title"></h3>
+    <p class="panel-desc" id="panel-desc"></p>
+    <a class="panel-enter" id="panel-enter" href="#" target="_blank">Enter World →</a>
+    <p class="panel-related-title">Related Worlds</p>
+    <div class="related-list" id="panel-related"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — DOMAIN PORTALS
+════════════════════════════════════════════ -->
+<section id="portals">
+  <div class="section-inner">
+    <div class="section-header hidden">
+      <span class="section-label">Section 03</span>
+      <h2 class="section-title">Domain <span>Portals</span></h2>
+      <p class="section-desc">Six creative realms, each containing multitudes.</p>
+    </div>
+    <div class="portals-grid" id="portals-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — CROSS-DOMAIN BRIDGES
+════════════════════════════════════════════ -->
+<section id="bridges">
+  <div class="section-inner">
+    <div class="section-header hidden">
+      <span class="section-label">Section 04</span>
+      <h2 class="section-title">Cross-Domain <span>Bridges</span></h2>
+      <p class="section-desc">Semantic connections — how domains feed, inspire, and transform each other.</p>
+    </div>
+    <div class="bridge-grid hidden" id="bridge-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — REPO INTELLIGENCE
+════════════════════════════════════════════ -->
+<section id="repos">
+  <div class="section-inner">
+    <div class="section-header hidden">
+      <span class="section-label">Section 05</span>
+      <h2 class="section-title">Repo <span>Intelligence</span></h2>
+      <p class="section-desc">The open-source constellation powering the WAVGEN universe.</p>
+    </div>
+    <div class="repo-preview hidden" id="repo-preview"></div>
+    <a href="repo_constellation_world.html" class="repo-cta hidden">Explore Full Repo Constellation →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — FUTURE EXPANSION
+════════════════════════════════════════════ -->
+<section id="expansion">
+  <div class="section-inner">
+    <div class="section-header hidden">
+      <span class="section-label">Section 06</span>
+      <h2 class="section-title">Future <span>Expansion</span></h2>
+      <p class="section-desc">Zones reserved for worlds yet to be born.</p>
+    </div>
+    <div class="expansion-grid hidden" id="expansion-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <span>WAVGEN</span> · wavgen.ca · The Immersive Universe · All worlds connected
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════
+// LAG FILTER — 17 instances
+// ═══════════════════════════════════════════
+class LagFilter {
+  constructor(initial, tau) { this.value = initial; this.target = initial; this.tau = tau; }
+  update(dt) { this.value += (1 - Math.exp(-dt / this.tau)) * (this.target - this.value); }
+}
+
+const lagHMX         = new LagFilter(0.5, 0.12);  // hero mouse X
+const lagHMY         = new LagFilter(0.5, 0.12);  // hero mouse Y
+const lagHPulse      = new LagFilter(0.0, 0.80);  // hero pulse intensity
+const lagConstellZoom= new LagFilter(1.0, 0.30);  // constellation zoom
+const lagConstellPan = new LagFilter(0.0, 0.25);  // constellation pan
+const lagNodeHover   = new LagFilter(0.0, 0.18);  // node hover glow
+const lagPanelSlide  = new LagFilter(0.0, 0.22);  // info panel slide
+const lagDomainFlow  = new LagFilter(0.0, 0.50);  // domain card flow
+const lagBridgeAnim  = new LagFilter(0.0, 0.40);  // bridge pulse
+const lagPortalGlow  = new LagFilter(0.0, 0.28);  // portal card glow
+const lagRepoPulse   = new LagFilter(0.0, 0.60);  // repo section pulse
+const lagExpansionAnim=new LagFilter(0.0, 0.35);  // expansion zone
+const lagSignalFlow  = new LagFilter(0.0, 0.18);  // signal flow pulse
+const lagCosmicDrift = new LagFilter(0.0, 1.50);  // slow cosmic drift
+const lagStarField   = new LagFilter(0.0, 0.80);  // star field brightness
+const lagNeuralPulse = new LagFilter(0.0, 0.40);  // neural node pulse
+const lagCrossLink   = new LagFilter(0.0, 0.28);  // cross-domain link
+
+const allLags = [
+  lagHMX,lagHMY,lagHPulse,lagConstellZoom,lagConstellPan,
+  lagNodeHover,lagPanelSlide,lagDomainFlow,lagBridgeAnim,
+  lagPortalGlow,lagRepoPulse,lagExpansionAnim,lagSignalFlow,
+  lagCosmicDrift,lagStarField,lagNeuralPulse,lagCrossLink
+];
+
+// ═══════════════════════════════════════════
+// WORLD DATA
+// ═══════════════════════════════════════════
+const DOMAIN_COLORS = {
+  music:'#00E5FF', video:'#D4AF37', art:'#FF6B9D', av:'#9B59B6', data:'#2ECC71'
+};
+
+// cx/cy = fractional canvas coordinates 0..1
+const WORLDS = [
+  // ── MUSIC ──────────────────────────────────
+  {id:'signal_flow',          name:'Signal Flow',           domain:'music', cx:.10,cy:.42,
+   path:'Music/signal_flow.html',
+   desc:'The path of audio through a system — from oscillator to output. Master the architecture of sound.',
+   related:['waveform_playground','modular_patch_lab','daw_workflows_world']},
+  {id:'waveform_playground',  name:'Waveform Playground',   domain:'music', cx:.17,cy:.34,
+   path:'Music/waveform_playground.html',
+   desc:'Interactive oscilloscope and waveform laboratory. Shape sine, saw, square, and noise in real time.',
+   related:['signal_flow','granular_synthesis','reverb_lab']},
+  {id:'granular_synthesis',   name:'Granular Synthesis',    domain:'music', cx:.23,cy:.44,
+   path:'Music/granular_synthesis.html',
+   desc:'Sound sliced into microscopic grains, scattered through time and pitch. Textures from the atomic.',
+   related:['ambient_systems','spectral_processing','sound_design_world']},
+  {id:'ambient_systems',      name:'Ambient Systems',       domain:'music', cx:.09,cy:.55,
+   path:'Music/ambient_systems.html',
+   desc:'Generative atmospheric soundscapes. Evolving drones, shifting pads, and infinite textures.',
+   related:['granular_synthesis','generative_music','reverb_lab']},
+  {id:'reverb_lab',           name:'Reverb Lab',            domain:'music', cx:.20,cy:.57,
+   path:'Music/reverb_lab.html',
+   desc:'Space, reflection, and decay. Convolution, algorithmic, plate, spring — all modes of reverberation.',
+   related:['ambient_systems','delay_echo','mixing_mastering']},
+  {id:'modular_patch_lab',    name:'Modular Patch Lab',     domain:'music', cx:.14,cy:.64,
+   path:'Music/modular_patch_lab.html',
+   desc:'Virtual modular synthesis. Patch cables in the browser. Control voltage meets JavaScript.',
+   related:['signal_flow','max_msp_world','touchdesigner_audio_world']},
+  {id:'composition_music_world',name:'Composition',         domain:'music', cx:.26,cy:.52,
+   path:'Music/composition_music_world.html',
+   desc:'Musical structure, theory, and AI-assisted composition. From motif to symphony.',
+   related:['music_theory_world','ableton_world','daw_workflows_world']},
+  {id:'daw_workflows_world',  name:'DAW Workflows',         domain:'music', cx:.27,cy:.40,
+   path:'Music/daw_workflows_world.html',
+   desc:'Digital audio workstation mastery. Routing, mixing, automation, and production pipelines.',
+   related:['ableton_world','composition_music_world','mixing_mastering']},
+  {id:'touchdesigner_audio_world',name:'TD Audio',          domain:'music', cx:.30,cy:.62,
+   path:'Music/touchdesigner_audio_world.html',
+   desc:'Audio synthesis and analysis inside TouchDesigner. ChucK, FAUST, and OSC integration.',
+   related:['modular_patch_lab','touchdesigner_signal_flow','spectral_processing']},
+  {id:'ableton_world',        name:'Ableton',               domain:'music', cx:.33,cy:.46,
+   path:'Music/ableton_world.html',
+   desc:'Ableton Live as creative instrument. Session view, Max for Live, and AI music plugins.',
+   related:['daw_workflows_world','composition_music_world','midi_world']},
+  {id:'sound_design_world',   name:'Sound Design',          domain:'music', cx:.20,cy:.68,
+   path:'Music/sound_design_world.html',
+   desc:'Sculpting new timbres from scratch. Synthesis, sampling, layering, and the art of the ear.',
+   related:['granular_synthesis','modular_patch_lab','sampling_lab']},
+
+  // ── VIDEO ──────────────────────────────────
+  {id:'editing_timeline_world',name:'Editing Timeline',     domain:'video', cx:.63,cy:.30,
+   path:'Video/editing_timeline_world.html',
+   desc:'Non-linear video editing. Cuts, transitions, rhythm, and storytelling through temporal structure.',
+   related:['color_science_lab','cinematography_world','davinci_resolve_world']},
+  {id:'color_science_lab',    name:'Color Science',         domain:'video', cx:.72,cy:.23,
+   path:'Video/color_science_lab.html',
+   desc:'Color grading, LUT design, and the physics of light. Craft the emotional palette of moving image.',
+   related:['editing_timeline_world','cinematography_world','davinci_resolve_world']},
+  {id:'cinematography_world', name:'Cinematography',        domain:'video', cx:.79,cy:.32,
+   path:'Video/cinematography_world.html',
+   desc:'Visual storytelling through lens choice, movement, and light. Camera as authorial instrument.',
+   related:['editing_timeline_world','color_science_lab','vfx_compositing_world']},
+  {id:'realtime_visuals_world',name:'Realtime Visuals',     domain:'video', cx:.67,cy:.42,
+   path:'Video/realtime_visuals_world.html',
+   desc:'Live rendering at frame rate. GPU-driven scenes that respond to music, data, and interaction.',
+   related:['vj_performance_environment','shader_art_world','realtime_graphics_world']},
+  {id:'vfx_compositing_world',name:'VFX Compositing',       domain:'video', cx:.76,cy:.44,
+   path:'Video/vfx_compositing_world.html',
+   desc:'Layers, mattes, and reality augmentation. The invisible art of visual effects.',
+   related:['cinematography_world','color_science_lab','ai_video_world']},
+  {id:'ai_video_world',       name:'AI Video',              domain:'video', cx:.83,cy:.24,
+   path:'Video/ai_video_world.html',
+   desc:'AI-powered video generation, motion transfer, and upscaling. FramePack, Mochi, and beyond.',
+   related:['diffusion_models_world','vfx_compositing_world','generative_ai']},
+
+  // ── ART ────────────────────────────────────
+  {id:'shader_art_world',     name:'Shader Art',            domain:'art',   cx:.22,cy:.71,
+   path:'Art/shader_art_world.html',
+   desc:'GLSL fragment shaders as paintbrush. Raymarching, SDFs, domain warping, and pure math beauty.',
+   related:['webgl_world','particle_systems_world','creative_coding_canvas']},
+  {id:'particle_systems_world',name:'Particle Systems',     domain:'art',   cx:.31,cy:.79,
+   path:'Art/particle_systems_world.html',
+   desc:'Physics-driven particle art. Attractors, fields, flocking, and emergent visual complexity.',
+   related:['shader_art_world','generative_art_world','creative_coding_canvas']},
+  {id:'creative_coding_canvas',name:'Creative Coding',      domain:'art',   cx:.38,cy:.72,
+   path:'Art/creative_coding_canvas.html',
+   desc:'Code as creative medium. p5.js, Processing, openFrameworks — the algorithmic canvas.',
+   related:['shader_art_world','generative_art_world','webgl_world']},
+  {id:'generative_art_world', name:'Generative Art',        domain:'art',   cx:.25,cy:.83,
+   path:'Art/generative_art_world.html',
+   desc:'Algorithmically generated imagery. Systems, rules, and emergence as artistic method.',
+   related:['particle_systems_world','creative_coding_canvas','procedural_systems']},
+  {id:'diffusion_models_world',name:'Diffusion Models',     domain:'art',   cx:.39,cy:.83,
+   path:'Art/diffusion_models_world.html',
+   desc:'Stable Diffusion, SDXL, and ControlNet. Latent space navigation as artistic practice.',
+   related:['ai_art_world','generative_art_world','ai_video_world']},
+  {id:'webgl_world',          name:'WebGL',                 domain:'art',   cx:.14,cy:.76,
+   path:'Art/webgl_world.html',
+   desc:'Browser-based 3D graphics. WebGL pipelines, Shader Park, and GPU rendering in the open web.',
+   related:['shader_art_world','creative_coding_canvas','realtime_graphics_world']},
+
+  // ── AV ─────────────────────────────────────
+  {id:'projection_mapping_studio',name:'Projection Mapping',domain:'av',   cx:.41,cy:.14,
+   path:'Video/projection_mapping_studio.html',
+   desc:'Spatial light projection. Mapping visuals onto architecture, sculpture, and moving forms.',
+   related:['vj_performance_environment','audiovisual_ecosystems_world','live_performance_world']},
+  {id:'vj_performance_environment',name:'VJ Performance',   domain:'av',   cx:.49,cy:.10,
+   path:'Video/vj_performance_environment.html',
+   desc:'Real-time visual performance. Loops, triggers, and live visual mixing for the dancefloor.',
+   related:['projection_mapping_studio','live_performance_world','realtime_visuals_world']},
+  {id:'audiovisual_ecosystems_world',name:'AV Ecosystems',  domain:'av',   cx:.57,cy:.16,
+   path:'AV/audiovisual_ecosystems_world.html',
+   desc:'Integrated audio-visual systems. How sound and image coexist, react, and breathe together.',
+   related:['touchdesigner_signal_flow','live_performance_world','spatial_audio_world']},
+  {id:'touchdesigner_signal_flow',name:'TD Signal Flow',    domain:'av',   cx:.52,cy:.27,
+   path:'AV/touchdesigner_signal_flow.html',
+   desc:'TouchDesigner patching from fundamentals to complex networks. The canvas of realtime creation.',
+   related:['touchdesigner_audio_world','audiovisual_ecosystems_world','realtime_graphics_world']},
+  {id:'live_performance_world',name:'Live Performance',     domain:'av',   cx:.62,cy:.25,
+   path:'AV/live_performance_world.html',
+   desc:'Realtime AV performance systems. Nodeo, TouchDesigner, and the art of live creation.',
+   related:['vj_performance_environment','audiovisual_ecosystems_world','projection_mapping_studio']},
+  {id:'realtime_graphics_world',name:'Realtime Graphics',   domain:'av',   cx:.44,cy:.24,
+   path:'AV/realtime_graphics_world.html',
+   desc:'GPU-accelerated rendering in real time. TouchDesigner, Unreal, and custom OpenGL pipelines.',
+   related:['shader_art_world','touchdesigner_signal_flow','unreal_engine_world']},
+  {id:'spatial_audio_world',  name:'Spatial Audio',         domain:'av',   cx:.58,cy:.32,
+   path:'AV/spatial_audio_world.html',
+   desc:'3D audio, ambisonics, and immersive sound design. Space as a sonic material.',
+   related:['audiovisual_ecosystems_world','reverb_lab','live_performance_world']},
+
+  // ── DATA ───────────────────────────────────
+  {id:'serverless_world',     name:'Serverless',            domain:'data',  cx:.77,cy:.62,
+   path:'Data/serverless_world.html',
+   desc:'Cloud functions, edge computing, and event-driven architectures. Scalable without servers.',
+   related:['distributed_systems_world','api_design_world','automation']},
+  {id:'distributed_systems_world',name:'Distributed Systems',domain:'data',cx:.86,cy:.57,
+   path:'Data/distributed_systems_world.html',
+   desc:'Kafka, Spark, and the art of resilient large-scale systems. Data in motion.',
+   related:['serverless_world','big_data','cloud_computing']},
+  {id:'ai_agents_world',      name:'AI Agents',             domain:'data',  cx:.89,cy:.70,
+   path:'Data/ai_agents_world.html',
+   desc:'Autonomous AI agent systems. MCP servers, n8n orchestration, and agentic workflows.',
+   related:['rag_systems_world','generative_ai','ml_predictive_ai']},
+  {id:'rag_systems_world',    name:'RAG Systems',           domain:'data',  cx:.78,cy:.75,
+   path:'Data/rag_systems_world.html',
+   desc:'Retrieval-augmented generation. Chroma, RAGFlow, and knowledge-connected AI.',
+   related:['ai_agents_world','generative_ai','distributed_systems_world']},
+  {id:'generative_ai',        name:'Generative AI',         domain:'data',  cx:.87,cy:.80,
+   path:'Data/generative_ai.html',
+   desc:'AI-driven content generation across modalities. Language, image, audio, and video.',
+   related:['ai_agents_world','rag_systems_world','diffusion_models_world']},
+  {id:'ml_predictive_ai',     name:'ML / Predictive AI',    domain:'data',  cx:.72,cy:.71,
+   path:'Data/ml_predictive_ai.html',
+   desc:'Machine learning pipelines, predictive models, and neural networks in production.',
+   related:['generative_ai','ai_agents_world','distributed_systems_world']},
+];
+
+// Within-cluster connections
+const CONNECTIONS = [
+  // Music internal
+  ['signal_flow','waveform_playground'],['signal_flow','modular_patch_lab'],
+  ['waveform_playground','granular_synthesis'],['granular_synthesis','ambient_systems'],
+  ['ambient_systems','reverb_lab'],['reverb_lab','sound_design_world'],
+  ['modular_patch_lab','touchdesigner_audio_world'],['composition_music_world','daw_workflows_world'],
+  ['daw_workflows_world','ableton_world'],['ableton_world','composition_music_world'],
+  // Video internal
+  ['editing_timeline_world','color_science_lab'],['color_science_lab','cinematography_world'],
+  ['cinematography_world','vfx_compositing_world'],['vfx_compositing_world','ai_video_world'],
+  ['realtime_visuals_world','vfx_compositing_world'],['editing_timeline_world','realtime_visuals_world'],
+  // Art internal
+  ['shader_art_world','particle_systems_world'],['shader_art_world','creative_coding_canvas'],
+  ['particle_systems_world','generative_art_world'],['creative_coding_canvas','generative_art_world'],
+  ['generative_art_world','diffusion_models_world'],['webgl_world','shader_art_world'],
+  // AV internal
+  ['projection_mapping_studio','vj_performance_environment'],
+  ['vj_performance_environment','audiovisual_ecosystems_world'],
+  ['audiovisual_ecosystems_world','touchdesigner_signal_flow'],
+  ['touchdesigner_signal_flow','live_performance_world'],
+  ['live_performance_world','realtime_graphics_world'],
+  ['spatial_audio_world','audiovisual_ecosystems_world'],
+  // Data internal
+  ['serverless_world','distributed_systems_world'],['distributed_systems_world','ai_agents_world'],
+  ['ai_agents_world','rag_systems_world'],['rag_systems_world','generative_ai'],
+  ['generative_ai','ml_predictive_ai'],['ml_predictive_ai','ai_agents_world'],
+  // Cross-domain bridges
+  ['touchdesigner_audio_world','touchdesigner_signal_flow'],
+  ['realtime_visuals_world','live_performance_world'],
+  ['shader_art_world','realtime_graphics_world'],
+  ['diffusion_models_world','generative_ai'],
+  ['ai_video_world','ml_predictive_ai'],
+  ['daw_workflows_world','serverless_world'],
+  ['projection_mapping_studio','shader_art_world'],
+  ['webgl_world','realtime_graphics_world'],
+  ['granular_synthesis','spatial_audio_world'],
+  ['composition_music_world','ai_agents_world'],
+];
+
+// ═══════════════════════════════════════════
+// WEBGL HERO — GLSL Fragment Shader
+// ═══════════════════════════════════════════
+const heroCanvas = document.getElementById('webgl-canvas');
+let gl, program, timeU, resU, mouseU;
+let heroMX = 0.5, heroMY = 0.5;
+
+function initWebGL() {
+  gl = heroCanvas.getContext('webgl') || heroCanvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const vsSrc = `
+    attribute vec2 a_pos;
+    void main(){ gl_Position = vec4(a_pos,0.0,1.0); }
+  `;
+
+  const fsSrc = `
+    precision highp float;
+    uniform float u_time;
+    uniform vec2  u_res;
+    uniform vec2  u_mouse;
+
+    float hash(vec2 p){
+      p = fract(p * vec2(443.897,441.423));
+      p += dot(p, p + 19.19);
+      return fract(p.x * p.y);
+    }
+    vec2 hash2(vec2 p){
+      return vec2(hash(p), hash(p+vec2(13.27,7.43)));
+    }
+    float noise(vec2 p){
+      vec2 i = floor(p); vec2 f = fract(p);
+      f = f*f*(3.0-2.0*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),
+                 mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+    }
+    void main(){
+      vec2 uv = gl_FragCoord.xy / u_res;
+      float asp = u_res.x / u_res.y;
+      vec2 p = uv * vec2(asp,1.0);
+      vec2 m = (u_mouse/u_res) * vec2(asp,1.0);
+      float t = u_time * 0.45;
+
+      vec3 col = mix(vec3(0.005,0.008,0.018), vec3(0.008,0.012,0.035), uv.y);
+
+      // Nebula via domain warping
+      vec2 q = vec2(noise(p*1.2+t*0.04), noise(p*1.2+vec2(5.2,1.3)+t*0.035));
+      vec2 r = vec2(noise(p*2.0+4.0*q), noise(p*2.0+vec2(1.7,9.2)+4.0*q));
+      float neb = noise(p*2.5+4.0*r);
+      col += vec3(0.0,0.12,0.28)*neb*0.35;
+      col += vec3(0.04,0.0,0.18)*(1.0-neb)*0.18;
+
+      // Star field 3 scales
+      for(int s=0;s<3;s++){
+        float sc = 10.0+float(s)*16.0;
+        vec2 sg = p*sc;
+        vec2 id = floor(sg);
+        vec2 gp = fract(sg)-0.5;
+        float h = hash(id+float(s)*7.3);
+        if(h>0.55){
+          float tw = 0.55+0.45*sin(t*(3.0+h*6.0)*2.0+h*6.283);
+          float sz = 0.003+h*0.009;
+          float st = sz/(length(gp)+0.002)*tw;
+          vec3 sc2 = mix(vec3(0.5,0.85,1.0),vec3(1.0,0.95,0.65),h);
+          col += sc2*st*0.45;
+        }
+      }
+
+      // Neural voronoi network
+      float md1=999.0, md2=999.0;
+      vec2 nn1=vec2(0.0), nn2=vec2(0.0);
+      vec2 ng = p*3.8;
+      vec2 ngb = floor(ng);
+      for(int dx=-2;dx<=2;dx++){
+        for(int dy=-2;dy<=2;dy++){
+          vec2 cell=ngb+vec2(float(dx),float(dy));
+          vec2 h2=hash2(cell);
+          float ch=hash(cell);
+          vec2 off=vec2(sin(t*(0.4+h2.x)+h2.x*6.28),cos(t*(0.35+h2.y)+h2.y*6.28))*0.18;
+          vec2 np=(cell+0.5+h2*0.55+off)/3.8;
+          vec2 toM=m-np;
+          float mDst=length(toM);
+          np+=toM*0.04*exp(-mDst*4.5);
+          float d=length(p-np);
+          if(d<md1){md2=md1;nn2=nn1;md1=d;nn1=np;}
+          else if(d<md2){md2=d;nn2=np;}
+        }
+      }
+
+      // Connection glow
+      vec2 ld=nn2-nn1; float ll=length(ld);
+      if(ll>0.0){
+        vec2 ln=ld/ll;
+        float lp=dot(p-nn1,ln);
+        float lt=clamp(lp/ll,0.0,1.0);
+        float lineDst=length(p-(nn1+ln*lp));
+        float pulse=fract(t*0.35+hash(nn1*9.0));
+        float pk=exp(-abs(lt-pulse)*14.0)*exp(-lineDst*55.0);
+        float cg=exp(-lineDst*38.0)*max(0.0,1.0-md1/0.55)*0.35;
+        col+=vec3(0.0,0.7,1.0)*cg;
+        col+=vec3(0.0,1.0,1.0)*pk*2.0;
+      }
+
+      // Node glow
+      float ng2=0.004/(md1+0.003);
+      float nc=exp(-md1*180.0)*3.5;
+      float np2=0.65+0.35*sin(t*2.8+hash(nn1*6.1)*6.28);
+      float mi=exp(-length(m-nn1)*7.0);
+      vec3 nc2=mix(vec3(0.0,0.85,1.0),vec3(0.9,0.75,0.1),hash(nn1*4.1));
+      col+=nc2*(ng2+nc)*(np2+mi*0.6);
+
+      // Mouse pulse
+      float cd=length(p-m);
+      col+=vec3(0.0,0.6,1.0)*0.003/(cd+0.006)*0.5;
+      float ring=exp(-abs(cd-0.06-sin(t*1.5)*0.015)*25.0)*0.4;
+      col+=vec3(0.9,0.8,0.0)*ring;
+      float wave=sin(cd*35.0-t*5.0)*exp(-cd*2.8);
+      col+=vec3(0.0,0.2,0.4)*wave*0.25;
+
+      // Vignette
+      float vig=smoothstep(1.5,0.35,length(uv-0.5)*2.0);
+      col*=vig;
+
+      // Tone map
+      col=1.0-exp(-col*1.3);
+      col=pow(col,vec3(0.84));
+      gl_FragColor=vec4(col,1.0);
+    }
+  `;
+
+  function compileShader(src, type) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    return s;
+  }
+
+  program = gl.createProgram();
+  gl.attachShader(program, compileShader(vsSrc, gl.VERTEX_SHADER));
+  gl.attachShader(program, compileShader(fsSrc, gl.FRAGMENT_SHADER));
+  gl.linkProgram(program);
+  gl.useProgram(program);
+
+  const verts = new Float32Array([-1,-1, 3,-1, -1,3]);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, 'a_pos');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+  timeU  = gl.getUniformLocation(program, 'u_time');
+  resU   = gl.getUniformLocation(program, 'u_res');
+  mouseU = gl.getUniformLocation(program, 'u_mouse');
+
+  resizeHero();
+}
+
+function resizeHero() {
+  heroCanvas.width  = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+  if (gl) gl.viewport(0, 0, heroCanvas.width, heroCanvas.height);
+}
+
+window.addEventListener('mousemove', e => {
+  const rect = heroCanvas.getBoundingClientRect();
+  heroMX = e.clientX - rect.left;
+  heroMY = heroCanvas.height - (e.clientY - rect.top);
+  lagHMX.target = e.clientX / window.innerWidth;
+  lagHMY.target = e.clientY / window.innerHeight;
+  lagHPulse.target = 1.0;
+  setTimeout(() => lagHPulse.target = 0, 600);
+});
+
+// ═══════════════════════════════════════════
+// CONSTELLATION CANVAS
+// ═══════════════════════════════════════════
+const constCanvas = document.getElementById('const-canvas');
+const ctx2 = constCanvas.getContext('2d');
+let constW = 0, constH = 650;
+let hoveredNode = null, mouseCanvX = -999, mouseCanvY = -999;
+
+function resizeConst() {
+  constW = constCanvas.parentElement.offsetWidth;
+  constCanvas.width  = constW;
+  constCanvas.height = constH;
+  constCanvas.style.height = constH + 'px';
+}
+
+function getNodePos(w) {
+  return { x: w.cx * constW, y: w.cy * constH };
+}
+
+function drawConstellation(t) {
+  if (!constCanvas.offsetParent && !document.getElementById('constellation').getBoundingClientRect().bottom > 0) return;
+  ctx2.clearRect(0, 0, constW, constH);
+
+  // Background
+  const bgGrad = ctx2.createLinearGradient(0, 0, 0, constH);
+  bgGrad.addColorStop(0, '#020810');
+  bgGrad.addColorStop(1, '#010508');
+  ctx2.fillStyle = bgGrad;
+  ctx2.fillRect(0, 0, constW, constH);
+
+  // Subtle grid
+  ctx2.strokeStyle = 'rgba(0,229,255,0.03)';
+  ctx2.lineWidth = 0.5;
+  for (let x = 0; x < constW; x += 80) { ctx2.beginPath(); ctx2.moveTo(x,0); ctx2.lineTo(x,constH); ctx2.stroke(); }
+  for (let y = 0; y < constH; y += 80) { ctx2.beginPath(); ctx2.moveTo(0,y); ctx2.lineTo(constW,y); ctx2.stroke(); }
+
+  // Build node lookup
+  const nodeLookup = {};
+  WORLDS.forEach(w => { nodeLookup[w.id] = w; });
+
+  // Draw connections
+  CONNECTIONS.forEach(([aId, bId]) => {
+    const a = nodeLookup[aId], b = nodeLookup[bId];
+    if (!a || !b) return;
+    const ap = getNodePos(a), bp = getNodePos(b);
+    const isCross = a.domain !== b.domain;
+    const isHovered = (hoveredNode && (hoveredNode.id === aId || hoveredNode.id === bId));
+
+    // Bezier control point
+    const mx = (ap.x + bp.x) / 2 + (bp.y - ap.y) * 0.15;
+    const my = (ap.y + bp.y) / 2 - (bp.x - ap.x) * 0.15;
+
+    // Pulse along connection
+    const pulseT = (t * 0.4 + (aId.charCodeAt(0) + bId.charCodeAt(0)) * 0.01) % 1;
+
+    // Base line
+    ctx2.beginPath();
+    ctx2.moveTo(ap.x, ap.y);
+    ctx2.quadraticCurveTo(mx, my, bp.x, bp.y);
+    const alpha = isHovered ? 0.5 : (isCross ? 0.12 : 0.18);
+    if (isCross) {
+      const grad = ctx2.createLinearGradient(ap.x, ap.y, bp.x, bp.y);
+      grad.addColorStop(0, DOMAIN_COLORS[a.domain] + '30');
+      grad.addColorStop(1, DOMAIN_COLORS[b.domain] + '30');
+      ctx2.strokeStyle = grad;
+    } else {
+      ctx2.strokeStyle = DOMAIN_COLORS[a.domain] + Math.round(alpha*255).toString(16).padStart(2,'0');
+    }
+    ctx2.lineWidth = isHovered ? 1.5 : (isCross ? 0.8 : 1);
+    ctx2.stroke();
+
+    // Animated pulse dot along bezier
+    lagSignalFlow.target = 1;
+    const px = (1-pulseT)*(1-pulseT)*ap.x + 2*(1-pulseT)*pulseT*mx + pulseT*pulseT*bp.x;
+    const py = (1-pulseT)*(1-pulseT)*ap.y + 2*(1-pulseT)*pulseT*my + pulseT*pulseT*bp.y;
+    ctx2.beginPath();
+    ctx2.arc(px, py, isCross ? 2 : 1.5, 0, Math.PI*2);
+    ctx2.fillStyle = isCross ? '#D4AF37BB' : (DOMAIN_COLORS[a.domain] + 'AA');
+    ctx2.fill();
+  });
+
+  // Draw domain cluster labels
+  const clusterLabels = [
+    { label:'MUSIC',  cx:.165, cy:.31, domain:'music' },
+    { label:'VIDEO',  cx:.73,  cy:.19, domain:'video' },
+    { label:'ART',    cx:.28,  cy:.62, domain:'art'   },
+    { label:'AV',     cx:.50,  cy:.06, domain:'av'    },
+    { label:'DATA',   cx:.82,  cy:.52, domain:'data'  },
+  ];
+  clusterLabels.forEach(cl => {
+    ctx2.font = '600 11px Courier New';
+    ctx2.letterSpacing = '4px';
+    ctx2.fillStyle = DOMAIN_COLORS[cl.domain] + '40';
+    ctx2.textAlign = 'center';
+    ctx2.fillText(cl.label, cl.cx * constW, cl.cy * constH);
+  });
+
+  // Draw nodes
+  WORLDS.forEach(w => {
+    const p = getNodePos(w);
+    const color = DOMAIN_COLORS[w.domain];
+    const isHov = hoveredNode && hoveredNode.id === w.id;
+    const pulse = 0.7 + 0.3 * Math.sin(t * 2.2 + w.cx * 10 + w.cy * 7);
+    const r = isHov ? 9 : 5;
+    const glowR = isHov ? 32 : 18;
+
+    lagNodeHover.target = isHov ? 1 : 0;
+
+    // Outer glow
+    const gGrad = ctx2.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
+    gGrad.addColorStop(0, color + (isHov ? 'CC' : '66'));
+    gGrad.addColorStop(1, color + '00');
+    ctx2.fillStyle = gGrad;
+    ctx2.beginPath();
+    ctx2.arc(p.x, p.y, glowR, 0, Math.PI*2);
+    ctx2.fill();
+
+    // Ring (hovered)
+    if (isHov) {
+      const ringR = 14 + 3 * Math.sin(t * 4);
+      ctx2.beginPath();
+      ctx2.arc(p.x, p.y, ringR, 0, Math.PI*2);
+      ctx2.strokeStyle = color + '44';
+      ctx2.lineWidth = 1;
+      ctx2.stroke();
+    }
+
+    // Core circle
+    ctx2.beginPath();
+    ctx2.arc(p.x, p.y, r * pulse, 0, Math.PI*2);
+    ctx2.fillStyle = isHov ? color : color + 'CC';
+    ctx2.fill();
+
+    // Inner white dot
+    ctx2.beginPath();
+    ctx2.arc(p.x, p.y, r * 0.3, 0, Math.PI*2);
+    ctx2.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx2.fill();
+
+    // Label (on hover, or nearby)
+    const distToMouse = Math.hypot(mouseCanvX - p.x, mouseCanvY - p.y);
+    if (isHov || distToMouse < 60) {
+      const alpha = isHov ? 1 : Math.max(0, 1 - distToMouse / 60);
+      ctx2.font = `${isHov ? 600 : 400} ${isHov ? 11 : 9}px Courier New`;
+      ctx2.fillStyle = `rgba(${isHov ? '0,229,255' : '200,230,255'},${alpha})`;
+      ctx2.textAlign = 'center';
+      ctx2.fillText(w.name, p.x, p.y - r - 5);
+    }
+  });
+}
+
+constCanvas.addEventListener('mousemove', e => {
+  const rect = constCanvas.getBoundingClientRect();
+  mouseCanvX = e.clientX - rect.left;
+  mouseCanvY = e.clientY - rect.top;
+
+  let found = null;
+  let minD = 20;
+  WORLDS.forEach(w => {
+    const p = getNodePos(w);
+    const d = Math.hypot(mouseCanvX - p.x, mouseCanvY - p.y);
+    if (d < minD) { minD = d; found = w; }
+  });
+  hoveredNode = found;
+  constCanvas.style.cursor = found ? 'pointer' : 'crosshair';
+});
+
+constCanvas.addEventListener('mouseleave', () => {
+  hoveredNode = null;
+  mouseCanvX = -999;
+});
+
+constCanvas.addEventListener('click', e => {
+  if (hoveredNode) openWorldPanel(hoveredNode);
+});
+
+// ═══════════════════════════════════════════
+// WORLD INFO PANEL
+// ═══════════════════════════════════════════
+const worldPanel = document.getElementById('world-panel');
+const panelClose = document.getElementById('panel-close');
+const panelBar   = document.getElementById('panel-bar');
+const panelBadge = document.getElementById('panel-badge');
+const panelTitle = document.getElementById('panel-title');
+const panelDesc  = document.getElementById('panel-desc');
+const panelEnter = document.getElementById('panel-enter');
+const panelRelated = document.getElementById('panel-related');
+const nodeLookup = {};
+WORLDS.forEach(w => { nodeLookup[w.id] = w; });
+
+function openWorldPanel(world) {
+  const color = DOMAIN_COLORS[world.domain];
+  panelBar.style.background = color;
+  panelBadge.textContent = world.domain.toUpperCase();
+  panelBadge.style.color = color;
+  panelBadge.style.borderColor = color + '80';
+  panelTitle.textContent = world.name;
+  panelDesc.textContent = world.desc;
+  panelEnter.href = world.path;
+  panelEnter.style.borderColor = color + '60';
+  panelEnter.style.color = color;
+  panelRelated.innerHTML = world.related.map(id => {
+    const r = nodeLookup[id];
+    if (!r) return '';
+    return `<a class="related-item" href="${r.path}" target="_blank">${r.name}</a>`;
+  }).join('');
+  worldPanel.classList.add('open');
+  lagPanelSlide.target = 1;
+}
+
+panelClose.addEventListener('click', () => {
+  worldPanel.classList.remove('open');
+  lagPanelSlide.target = 0;
+});
+
+// ═══════════════════════════════════════════
+// DOMAIN PORTALS — build HTML
+// ═══════════════════════════════════════════
+const PORTALS = [
+  { domain:'music', icon:'◈', name:'Music', color:'#00E5FF',
+    desc:'Sound synthesis, composition, and electronic music production.',
+    worlds:[
+      {n:'Signal Flow',path:'Music/signal_flow.html'},
+      {n:'Granular Synthesis',path:'Music/granular_synthesis.html'},
+      {n:'Modular Patch Lab',path:'Music/modular_patch_lab.html'},
+      {n:'Ambient Systems',path:'Music/ambient_systems.html'},
+      {n:'TouchDesigner Audio',path:'Music/touchdesigner_audio_world.html'},
+    ],
+    count:'31 Worlds'
+  },
+  { domain:'video', icon:'◇', name:'Video', color:'#D4AF37',
+    desc:'Cinematography, visual effects, color grading, and moving image.',
+    worlds:[
+      {n:'Editing Timeline',path:'Video/editing_timeline_world.html'},
+      {n:'Color Science',path:'Video/color_science_lab.html'},
+      {n:'Cinematography',path:'Video/cinematography_world.html'},
+      {n:'VFX Compositing',path:'Video/vfx_compositing_world.html'},
+      {n:'AI Video',path:'Video/ai_video_world.html'},
+    ],
+    count:'14 Worlds'
+  },
+  { domain:'art', icon:'◉', name:'Art', color:'#FF6B9D',
+    desc:'Generative art, shader programming, creative coding, and AI imagery.',
+    worlds:[
+      {n:'Shader Art',path:'Art/shader_art_world.html'},
+      {n:'Particle Systems',path:'Art/particle_systems_world.html'},
+      {n:'Creative Coding',path:'Art/creative_coding_canvas.html'},
+      {n:'Generative Art',path:'Art/generative_art_world.html'},
+      {n:'Diffusion Models',path:'Art/diffusion_models_world.html'},
+    ],
+    count:'21 Worlds'
+  },
+  { domain:'av', icon:'◎', name:'AV', color:'#9B59B6',
+    desc:'Audio-visual synthesis, live performance, and immersive installations.',
+    worlds:[
+      {n:'TD Signal Flow',path:'AV/touchdesigner_signal_flow.html'},
+      {n:'VJ Performance',path:'Video/vj_performance_environment.html'},
+      {n:'Projection Mapping',path:'Video/projection_mapping_studio.html'},
+      {n:'AV Ecosystems',path:'AV/audiovisual_ecosystems_world.html'},
+      {n:'Live Performance',path:'AV/live_performance_world.html'},
+    ],
+    count:'16 Worlds'
+  },
+  { domain:'data', icon:'◆', name:'Data / AI', color:'#2ECC71',
+    desc:'Machine learning, distributed systems, and AI agent infrastructure.',
+    worlds:[
+      {n:'AI Agents',path:'Data/ai_agents_world.html'},
+      {n:'RAG Systems',path:'Data/rag_systems_world.html'},
+      {n:'Generative AI',path:'Data/generative_ai.html'},
+      {n:'Distributed Systems',path:'Data/distributed_systems_world.html'},
+      {n:'Serverless',path:'Data/serverless_world.html'},
+    ],
+    count:'12 Worlds'
+  },
+  { domain:'code', icon:'◐', name:'Code / Repos', color:'#E74C3C',
+    desc:'Open-source repositories powering the entire WAVGEN technical stack.',
+    worlds:[
+      {n:'Repo Constellation',path:'repo_constellation_world.html'},
+      {n:'Shader Park Core',path:'#'},
+      {n:'TouchDesigner MCP',path:'#'},
+      {n:'DawDreamer',path:'#'},
+      {n:'RAGFlow',path:'#'},
+    ],
+    count:'100+ Repos'
+  },
+];
+
+const portalsGrid = document.getElementById('portals-grid');
+PORTALS.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'portal-card hidden';
+  card.style.setProperty('--domain-color', p.color);
+  card.innerHTML = `
+    <span class="portal-icon">${p.icon}</span>
+    <div class="portal-domain">${p.domain}</div>
+    <div class="portal-name">${p.name}</div>
+    <div class="portal-count">${p.count}</div>
+    <div class="portal-worlds">
+      ${p.worlds.map(w => `<a class="portal-world-link" href="${w.path}">${w.n}</a>`).join('')}
+    </div>
+    <span class="portal-explore">Explore Domain →</span>
+  `;
+  portalsGrid.appendChild(card);
+});
+
+// ═══════════════════════════════════════════
+// CROSS-DOMAIN BRIDGES — build HTML
+// ═══════════════════════════════════════════
+const BRIDGES = [
+  {from:'Sound ↔ OSC',      bridge:'TouchDesigner Bridge',      to:'Visual Output',    desc:'Audio drives visuals via OSC/MIDI control voltage'},
+  {from:'GLSL Shaders',     bridge:'WebGL ↔ TD Pipeline',       to:'Realtime Render',  desc:'Shader Park connects browser WebGL to TD GLSL TOPs'},
+  {from:'AI Agents',        bridge:'MCP Server Protocol',       to:'TD Control',       desc:'Claude → touchdesigner-mcp → full TD automation'},
+  {from:'Diffusion Models', bridge:'ComfyUI Pipeline',          to:'Video Generation', desc:'Steerable-Motion bridges image AI to temporal video'},
+  {from:'DawDreamer',       bridge:'Python DAW → Analysis',     to:'Data Pipeline',    desc:'Programmable audio processing feeds AI/ML systems'},
+  {from:'RAGFlow',          bridge:'Knowledge Retrieval',       to:'World Generation', desc:'Vector search over docs drives WAVGEN world content'},
+  {from:'Ableton Link',     bridge:'Beat Sync Protocol',        to:'AV Performance',   desc:'Cross-system tempo synchronization for live sets'},
+  {from:'Music Theory',     bridge:'Magenta AI Duet',           to:'Composition AI',   desc:'Neural networks trained on MIDI extend musical ideas'},
+];
+
+const bridgeGrid = document.getElementById('bridge-grid');
+BRIDGES.forEach(b => {
+  const row = document.createElement('div');
+  row.className = 'bridge-row';
+  row.innerHTML = `
+    <div class="bridge-from">${b.from}</div>
+    <div class="bridge-middle">
+      <div class="bridge-line"></div>
+      <div class="bridge-label">${b.bridge}</div>
+    </div>
+    <div class="bridge-to">${b.to}</div>
+  `;
+  bridgeGrid.appendChild(row);
+  lagBridgeAnim.target = 1;
+});
+
+// ═══════════════════════════════════════════
+// REPO INTELLIGENCE — build HTML
+// ═══════════════════════════════════════════
+const REPO_TIERS = [
+  { tier:'Tier 1', title:'WAVGEN Pillars', repos:[
+    't3kt/raytk — Raymarching toolkit for TD',
+    'DBraun/ChucKDesigner — ChucK audio in TD',
+    'shader-park/shader-park-core — JS → shaders',
+    'theexperiential/nodeo — Live performance server',
+    '8beeeaaat/touchdesigner-mcp — Claude ↔ TD bridge',
+    'PavelDoGreat/WebGL-Fluid-Simulation — Fluid WebGL',
+  ]},
+  { tier:'Tier 2', title:'Essential Stack', repos:[
+    'DBraun/DawDreamer — Python DAW engine',
+    'huggingface/diffusers — Diffusion model library',
+    'lllyasviel/FramePack — Practical video diffusion',
+    'infiniflow/ragflow — RAG retrieval engine',
+    'n8n-io/n8n — Workflow automation',
+    'chroma-core/chroma — Vector database',
+  ]},
+  { tier:'Tier 3', title:'High-Value Reference', repos:[
+    'QianMo/GPU-Pro-Books-Source-Code — Shader bible',
+    'NVlabs/stylegan3 — Generative portraiture',
+    'Ableton/link — Beat sync protocol',
+    'electricsquare/raymarching-workshop',
+    'banodoco/Steerable-Motion — AI animation',
+    'GollyGang/ready — Reaction-diffusion',
+  ]},
+];
+
+const repoPreview = document.getElementById('repo-preview');
+REPO_TIERS.forEach(t => {
+  const div = document.createElement('div');
+  div.className = 'repo-tier';
+  div.innerHTML = `
+    <div class="tier-label">${t.tier}</div>
+    <div class="tier-title">${t.title}</div>
+    <div class="repo-list">
+      ${t.repos.map(r => `<div class="repo-item">${r}</div>`).join('')}
+    </div>
+  `;
+  repoPreview.appendChild(div);
+  lagRepoPulse.target = 1;
+});
+
+// ═══════════════════════════════════════════
+// FUTURE EXPANSION ZONES — build HTML
+// ═══════════════════════════════════════════
+const FUTURE_ZONES = [
+  {icon:'⬡', name:'Physical Computing', status:'Designing'},
+  {icon:'⬡', name:'Biometric AV',        status:'Planned'},
+  {icon:'⬡', name:'Neural Interface',    status:'Researching'},
+  {icon:'⬡', name:'Holographic Display', status:'Concept'},
+  {icon:'⬡', name:'Quantum Audio',       status:'Theoretical'},
+  {icon:'⬡', name:'XR / Spatial Web',    status:'In Progress'},
+  {icon:'⬡', name:'Blockchain AV',       status:'Evaluating'},
+  {icon:'⬡', name:'Biorhythm Synthesis', status:'Concept'},
+  {icon:'⬡', name:'Climate Sonification',status:'Planned'},
+  {icon:'⬡', name:'Deep Sea Acoustics',  status:'Researching'},
+  {icon:'⬡', name:'Exoplanet Data AV',   status:'Concept'},
+  {icon:'⬡', name:'AI Conductor',        status:'Designing'},
+];
+
+const expGrid = document.getElementById('expansion-grid');
+FUTURE_ZONES.forEach(z => {
+  const div = document.createElement('div');
+  div.className = 'expansion-zone';
+  div.innerHTML = `<span class="exp-icon">${z.icon}</span><div class="exp-name">${z.name}</div><div class="exp-status">${z.status}</div>`;
+  expGrid.appendChild(div);
+  lagExpansionAnim.target = 1;
+});
+
+// ═══════════════════════════════════════════
+// INTERSECTION OBSERVER — scroll reveal
+// ═══════════════════════════════════════════
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.classList.remove('hidden', 'hidden-left', 'hidden-right');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.hidden, .hidden-left, .hidden-right').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// Re-observe portal cards (added dynamically)
+function observeNewEls() {
+  document.querySelectorAll('.hidden, .hidden-left, .hidden-right').forEach(el => {
+    revealObserver.observe(el);
+  });
+}
+setTimeout(observeNewEls, 100);
+
+// ═══════════════════════════════════════════
+// MAIN ANIMATION LOOP
+// ═══════════════════════════════════════════
+let lastTime = 0;
+
+function loop(ts) {
+  const dt = Math.min((ts - lastTime) / 1000, 0.05);
+  lastTime = ts;
+
+  // Update all lag filters
+  allLags.forEach(l => l.update(dt));
+
+  // WebGL Hero
+  if (gl && program) {
+    gl.uniform1f(timeU, ts / 1000);
+    gl.uniform2f(resU, heroCanvas.width, heroCanvas.height);
+    gl.uniform2f(mouseU,
+      lagHMX.value * heroCanvas.width,
+      (1 - lagHMY.value) * heroCanvas.height
+    );
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  // Constellation canvas
+  const constSec = document.getElementById('constellation');
+  const constRect = constSec.getBoundingClientRect();
+  if (constRect.bottom > 0 && constRect.top < window.innerHeight) {
+    lagCosmicDrift.target = 1;
+    lagStarField.target = 1;
+    lagNeuralPulse.target = 1;
+    drawConstellation(ts / 1000);
+  }
+
+  // Cross-link glow on bridge section
+  const bridgeSec = document.getElementById('bridges');
+  const bridgeRect = bridgeSec.getBoundingClientRect();
+  if (bridgeRect.bottom > 0 && bridgeRect.top < window.innerHeight) {
+    lagCrossLink.target = 1;
+    const rows = bridgeSec.querySelectorAll('.bridge-row');
+    rows.forEach((row, i) => {
+      const pulse = 0.5 + 0.5 * Math.sin(ts / 1000 * 1.2 + i * 0.6);
+      const line = row.querySelector('.bridge-line');
+      if (line) line.style.opacity = 0.3 + pulse * 0.5;
+    });
+  }
+
+  // Portal glow animation
+  lagPortalGlow.target = 0.5 + 0.5 * Math.sin(ts / 1000 * 0.8);
+  lagDomainFlow.target  = 0.5 + 0.5 * Math.cos(ts / 1000 * 0.5);
+
+  requestAnimationFrame(loop);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.addEventListener('resize', () => {
+  resizeHero();
+  resizeConst();
+});
+
+initWebGL();
+resizeConst();
+requestAnimationFrame(loop);
+
+</script>
+</body>
+</html>

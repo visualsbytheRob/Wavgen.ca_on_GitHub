@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Immersive root world exploring repo constellation">
+    <meta property="og:title" content="Repo Constellation World — WAVGEN">
+    <meta property="og:description" content="Immersive root world exploring repo constellation">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#00E5FF">
+    <link rel="canonical" href="https://wavgen.ca/repo_constellation_world.html">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REPO CONSTELLATION — WAVGEN Intelligence Galaxy</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0D1117;--graphite:#24292E;--cyan:#00E5FF;--gold:#D4AF37;
+  --text:#E6EDF3;--muted:#8B949E;--border:#30363D;
+  --td:#00E5FF;--webgl:#7C3AED;--ai:#D4AF37;--music:#22C55E;
+  --creative:#F97316;--rag:#EF4444;--video:#3B82F6;--auto:#A855F7;
+  --data:#06B6D4;--realtime:#EC4899;--experimental:#84CC16;--art:#F59E0B;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;overflow-x:hidden}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(13,17,23,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 20px;height:52px;display:flex;align-items:center;gap:4px;
+}
+.nav-logo{color:var(--cyan);font-weight:800;font-size:13px;letter-spacing:0.12em;margin-right:12px;white-space:nowrap}
+.nav-link{
+  color:var(--muted);font-size:11px;padding:5px 10px;
+  border-radius:5px;cursor:pointer;transition:all 0.2s;white-space:nowrap;border:none;background:none;
+}
+.nav-link:hover{color:var(--cyan);background:rgba(0,229,255,0.08)}
+section{padding:80px 48px;position:relative}
+.section-label{color:var(--cyan);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-size:clamp(26px,4vw,52px);font-weight:800;line-height:1.1;margin-bottom:8px}
+.section-sub{color:var(--muted);font-size:15px;margin-bottom:40px}
+
+/* HERO */
+#hero{padding:0;height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-content{position:relative;z-index:2;text-align:center;pointer-events:none}
+.hero-title{
+  font-size:clamp(36px,7vw,88px);font-weight:900;letter-spacing:-0.02em;line-height:0.92;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 45%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{color:var(--muted);font-size:16px;margin-top:14px;letter-spacing:0.12em;text-transform:uppercase}
+.hero-stats{display:flex;gap:48px;margin-top:28px;justify-content:center}
+.hero-stat .num{font-size:30px;font-weight:800;color:var(--gold);display:block}
+.hero-stat .lbl{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:11px;letter-spacing:0.2em;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.25}50%{opacity:1}}
+
+/* CONSTELLATION SECTION */
+#constellation{padding:72px 0;background:linear-gradient(180deg,var(--bg) 0%,#090d12 100%)}
+.constellation-header{padding:0 48px 28px}
+.graph-wrap{position:relative;background:rgba(255,255,255,0.015);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+#constellation-canvas{display:block;width:100%;cursor:grab}
+#constellation-canvas:active{cursor:grabbing}
+.zoom-controls{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:4px}
+.zoom-btn{
+  width:34px;height:34px;background:rgba(36,41,46,0.9);
+  border:1px solid var(--border);color:var(--text);
+  border-radius:6px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;
+}
+.zoom-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.graph-legend{display:flex;flex-wrap:wrap;gap:10px;padding:14px 48px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* TOOLTIP */
+#tooltip{
+  position:fixed;pointer-events:none;z-index:500;
+  background:rgba(22,27,34,0.97);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;font-size:12px;max-width:220px;display:none;
+  backdrop-filter:blur(8px);box-shadow:0 4px 24px rgba(0,0,0,0.6);
+}
+#tooltip .tt-name{font-weight:700;color:var(--text);margin-bottom:2px}
+#tooltip .tt-owner{color:var(--muted);font-size:11px}
+#tooltip .tt-domain{font-size:11px;margin-top:4px}
+
+/* DETAIL PANEL */
+#detail-panel{
+  position:fixed;right:0;top:52px;bottom:0;width:340px;
+  background:rgba(22,27,34,0.99);border-left:1px solid var(--border);
+  z-index:200;padding:22px;transform:translateX(100%);
+  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;
+}
+#detail-panel.open{transform:translateX(0)}
+.panel-close{
+  position:absolute;top:14px;right:14px;width:26px;height:26px;
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:4px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+}
+.panel-close:hover{color:var(--text);border-color:var(--text)}
+.panel-badge{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:10px;
+  font-size:10px;text-transform:uppercase;letter-spacing:0.1em;
+  background:rgba(255,255,255,0.05);margin-bottom:10px;
+}
+.panel-title{font-size:18px;font-weight:700;margin-bottom:3px}
+.panel-owner{color:var(--muted);font-size:12px;margin-bottom:14px}
+.panel-desc{color:#c9d1d9;font-size:13px;line-height:1.65;margin-bottom:16px}
+.panel-why{
+  background:rgba(212,175,55,0.06);border-left:2px solid var(--gold);
+  border-radius:0 6px 6px 0;padding:9px 11px;font-size:12px;
+  color:var(--text);line-height:1.6;margin-bottom:16px;
+}
+.panel-link{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 14px;
+  border-radius:6px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);
+  color:var(--cyan);font-size:12px;text-decoration:none;transition:all 0.2s;
+}
+.panel-link:hover{background:rgba(0,229,255,0.18)}
+.panel-worlds{margin-top:14px}
+.panel-worlds h4{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.world-tag{
+  display:inline-block;padding:2px 7px;margin:2px;
+  background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.18);
+  color:var(--gold);font-size:10px;border-radius:3px;
+}
+
+/* DOMAIN CLUSTERS */
+#domains{background:var(--bg)}
+.domains-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:40px}
+.domain-card{
+  background:var(--graphite);border:1px solid var(--border);
+  border-radius:12px;padding:22px;transition:all 0.35s;opacity:0;transform:translateY(22px);
+}
+.domain-card.revealed{opacity:1;transform:translateY(0)}
+.domain-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,229,255,0.06)}
+.domain-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.domain-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.domain-name{font-size:15px;font-weight:700}
+.domain-count{color:var(--muted);font-size:11px;margin-left:auto}
+.repo-list{list-style:none}
+.repo-item{
+  padding:5px 0;border-bottom:1px solid rgba(48,54,61,0.4);
+  font-size:12px;display:flex;align-items:center;gap:7px;
+}
+.repo-item:last-child{border-bottom:none}
+.repo-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.repo-item a{color:var(--text);text-decoration:none;flex:1}
+.repo-item a:hover{color:var(--cyan)}
+.repo-tier{color:var(--muted);font-size:10px;margin-left:auto;flex-shrink:0}
+
+/* CANONICAL */
+#canonical{background:linear-gradient(180deg,#090d12 0%,var(--bg) 100%)}
+.canonical-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;margin-top:40px}
+.canonical-card{
+  background:var(--graphite);border:1px solid var(--border);border-radius:12px;
+  padding:22px;position:relative;overflow:hidden;transition:all 0.4s;opacity:0;transform:translateY(22px);
+}
+.canonical-card.revealed{opacity:1;transform:translateY(0)}
+.canonical-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0}
+.canonical-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.5)}
+.canon-tier-badge{
+  position:absolute;top:14px;right:14px;padding:2px 7px;
+  border-radius:3px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;
+}
+.t1{background:rgba(212,175,55,0.12);color:var(--gold)}
+.t2{background:rgba(0,229,255,0.08);color:var(--cyan)}
+.canon-name{font-size:17px;font-weight:700;margin-bottom:3px}
+.canon-owner{color:var(--muted);font-size:12px;margin-bottom:11px}
+.canon-desc{color:#c9d1d9;font-size:13px;line-height:1.6;margin-bottom:12px}
+.canon-why{
+  background:rgba(212,175,55,0.05);border-left:2px solid var(--gold);
+  padding:8px 10px;font-size:12px;color:var(--text);border-radius:0 4px 4px 0;margin-bottom:14px;line-height:1.55;
+}
+.canon-footer{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.canon-tag{padding:2px 7px;border-radius:10px;font-size:10px;background:rgba(255,255,255,0.05);color:var(--muted)}
+.canon-gh{margin-left:auto;color:var(--cyan);font-size:11px;text-decoration:none}
+.canon-gh:hover{text-decoration:underline}
+
+/* BRIDGES */
+#bridges{background:var(--bg)}
+#bridge-canvas{display:block;width:100%;border-radius:12px;border:1px solid var(--border);margin-top:40px}
+.chain-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.chain-card{
+  background:var(--graphite);border:1px solid var(--border);border-radius:10px;
+  padding:18px;opacity:0;transform:translateY(18px);transition:all 0.4s;
+}
+.chain-card.revealed{opacity:1;transform:translateY(0)}
+.chain-title{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px}
+.chain-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.cn{padding:3px 8px;border-radius:3px;font-size:11px;font-weight:600;white-space:nowrap}
+.ca{color:var(--muted);font-size:12px}
+
+/* EMBEDS */
+#embeds{background:linear-gradient(180deg,#090d12 0%,var(--bg) 100%)}
+.embeds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;margin-top:40px}
+.embed-card{
+  background:var(--graphite);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;opacity:0;transform:translateY(20px);transition:all 0.4s;
+}
+.embed-card.revealed{opacity:1;transform:translateY(0)}
+.embed-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-2px)}
+.embed-preview{
+  width:100%;aspect-ratio:16/9;background:#060a0f;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+  position:relative;overflow:hidden;
+}
+.embed-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,229,255,0.08) 0%,transparent 70%);
+}
+.embed-live-btn{
+  position:relative;z-index:1;padding:9px 18px;
+  background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.4);
+  color:var(--cyan);border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;
+  transition:all 0.2s;text-decoration:none;
+}
+.embed-live-btn:hover{background:rgba(0,229,255,0.25);box-shadow:0 0 20px rgba(0,229,255,0.2)}
+.embed-method-label{position:relative;z-index:1;font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase}
+.embed-info{padding:14px 18px}
+.embed-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.embed-desc{color:var(--muted);font-size:12px;margin-bottom:8px;line-height:1.55}
+.embed-tags{display:flex;gap:5px;flex-wrap:wrap}
+.etag{padding:2px 7px;border-radius:3px;font-size:10px;background:rgba(255,255,255,0.05);color:var(--muted)}
+
+/* WORLD MAP */
+#worldmap{background:var(--bg)}
+.world-table{width:100%;border-collapse:collapse;margin-top:40px;font-size:13px}
+.world-table th{
+  text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);
+  font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);
+}
+.world-table td{padding:10px 14px;border-bottom:1px solid rgba(48,54,61,0.5);vertical-align:top}
+.world-table tr:hover td{background:rgba(255,255,255,0.015)}
+.wfile{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:11px}
+.rpill{
+  display:inline-flex;align-items:center;gap:3px;padding:2px 7px;margin:2px;
+  font-size:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:3px;color:var(--muted);
+}
+
+/* FUTURE */
+#future{background:linear-gradient(180deg,var(--bg) 0%,#090d12 100%)}
+#future-canvas{display:block;width:100%;border-radius:12px;border:1px solid var(--border);margin-top:40px}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  section{padding:60px 20px}
+  .chain-grid,.canonical-grid{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  nav .nav-link:nth-child(n+5){display:none}
+}
+</style>
+</head>
+<body class="domain-root">
+
+<nav>
+  <div class="nav-logo">⬡ WAVGEN REPOS</div>
+  <button class="nav-link" onclick="jumpTo('hero')">Galaxy</button>
+  <button class="nav-link" onclick="jumpTo('constellation')">Constellation</button>
+  <button class="nav-link" onclick="jumpTo('domains')">Domains</button>
+  <button class="nav-link" onclick="jumpTo('canonical')">Canonical</button>
+  <button class="nav-link" onclick="jumpTo('bridges')">Bridges</button>
+  <button class="nav-link" onclick="jumpTo('embeds')">Embeds</button>
+  <button class="nav-link" onclick="jumpTo('worldmap')">Worlds</button>
+  <button class="nav-link" onclick="jumpTo('future')">Future</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════ SECTION 1: HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-title">REPO<br>CONSTELLATION</div>
+    <div class="hero-sub">WAVGEN Intelligence Galaxy · wavgen.ca</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">1,406</span><span class="lbl">Stars</span></div>
+      <div class="hero-stat"><span class="num">14</span><span class="lbl">Domains</span></div>
+      <div class="hero-stat"><span class="num">66</span><span class="lbl">Key Nodes</span></div>
+      <div class="hero-stat"><span class="num">∞</span><span class="lbl">Connections</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint">▾ EXPLORE THE GALAXY ▾</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 2: CONSTELLATION GRAPH -->
+<section id="constellation">
+  <div class="constellation-header">
+    <div class="section-label">Interactive Star Map</div>
+    <h2 class="section-title">The Constellation Graph</h2>
+    <p class="section-sub">Each star is a repo. Size = tier importance. Color = domain. Lines = cross-domain relationships.<br>Drag to pan · Scroll to zoom · Hover for info · Click for details</p>
+  </div>
+  <div class="graph-wrap">
+    <canvas id="constellation-canvas"></canvas>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoom-in">+</button>
+      <button class="zoom-btn" id="zoom-reset">⊙</button>
+      <button class="zoom-btn" id="zoom-out">−</button>
+    </div>
+  </div>
+  <div class="graph-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#00E5FF"></div>TouchDesigner</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div>WebGL/GLSL</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4AF37"></div>AI/Generative</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#22C55E"></div>Music/Audio</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F97316"></div>Creative Coding</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EF4444"></div>RAG/Local AI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3B82F6"></div>Video</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#A855F7"></div>Automation</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#06B6D4"></div>Data</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EC4899"></div>Realtime</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#84CC16"></div>Experimental</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>Art</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 3: DOMAIN CLUSTERS -->
+<section id="domains">
+  <div class="section-label">Domain Atlas</div>
+  <h2 class="section-title">Domain Clusters</h2>
+  <p class="section-sub">1,406 starred repositories organized across 12 creative + technical domains</p>
+  <div class="domains-grid" id="domains-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 4: CANONICAL REPOS -->
+<section id="canonical">
+  <div class="section-label">Tier 1 Pillars</div>
+  <h2 class="section-title">Canonical Repos Showcase</h2>
+  <p class="section-sub">The definitive set of repos that define, power, and inspire the WAVGEN universe</p>
+  <div class="canonical-grid" id="canonical-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 5: CROSS-DOMAIN BRIDGES -->
+<section id="bridges">
+  <div class="section-label">Connection Atlas</div>
+  <h2 class="section-title">Cross-Domain Bridges</h2>
+  <p class="section-sub">How repos connect across domains — signal chains, pipelines, and integration paths</p>
+  <canvas id="bridge-canvas" height="320"></canvas>
+  <div class="chain-grid" id="chain-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 6: EMBED CANDIDATES -->
+<section id="embeds">
+  <div class="section-label">Live Demos</div>
+  <h2 class="section-title">Embed Candidates</h2>
+  <p class="section-sub">Repos with live interactive demos — iframeable, CDN-loadable, or web-deployable</p>
+  <div class="embeds-grid" id="embeds-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 7: WORLD MAP -->
+<section id="worldmap">
+  <div class="section-label">Integration Map</div>
+  <h2 class="section-title">WAVGEN World ↔ Repo Map</h2>
+  <p class="section-sub">Which repos power which WAVGEN worlds — the complete dependency atlas</p>
+  <table class="world-table">
+    <thead>
+      <tr>
+        <th>WAVGEN World</th>
+        <th>Primary Repos</th>
+        <th>Secondary Repos</th>
+        <th>Domain</th>
+      </tr>
+    </thead>
+    <tbody id="world-table-body"></tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SECTION 8: FUTURE MAP -->
+<section id="future">
+  <div class="section-label">Roadmap</div>
+  <h2 class="section-title">Future Integration Map</h2>
+  <p class="section-sub">RAG · Local AI · Realtime pipelines — the pathways being built into WAVGEN</p>
+  <canvas id="future-canvas" height="420"></canvas>
+</section>
+
+<!-- TOOLTIP -->
+<div id="tooltip">
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-owner" id="tt-owner"></div>
+  <div class="tt-domain" id="tt-domain"></div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div id="detail-panel">
+  <button class="panel-close" id="panel-close">✕</button>
+  <div class="panel-badge" id="panel-badge"></div>
+  <div class="panel-title" id="panel-title"></div>
+  <div class="panel-owner" id="panel-owner"></div>
+  <div class="panel-desc" id="panel-desc"></div>
+  <div class="panel-why" id="panel-why"></div>
+  <a class="panel-link" id="panel-link" target="_blank">↗ View on GitHub</a>
+  <div class="panel-worlds">
+    <h4>Related WAVGEN Worlds</h4>
+    <div id="panel-worlds-tags"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ═══════════════════════ LAG FILTERS (17 instances) ═══════════════════════
+class LagFilter {
+  constructor(tau, init=0){ this.value=init; this.tau=tau; }
+  update(target, dt){
+    this.value += (1 - Math.exp(-dt/this.tau)) * (target - this.value);
+    return this.value;
+  }
+}
+const lagHMX         = new LagFilter(0.18);   // hero mouse X
+const lagHMY         = new LagFilter(0.18);   // hero mouse Y
+const lagHPulse      = new LagFilter(1.2);    // hero ambient pulse
+const lagConstellZoom= new LagFilter(0.12);   // constellation zoom
+const lagConstellPanX= new LagFilter(0.10);   // constellation pan X
+const lagConstellPanY= new LagFilter(0.10);   // constellation pan Y
+const lagNodeDrift1  = new LagFilter(2.5);    // node drift zone 1
+const lagNodeDrift2  = new LagFilter(3.1);    // node drift zone 2
+const lagNodeDrift3  = new LagFilter(1.8);    // node drift zone 3
+const lagEdgePulse   = new LagFilter(0.6);    // edge pulse
+const lagPanelSlide  = new LagFilter(0.14);   // detail panel
+const lagDomainGlow  = new LagFilter(0.22);   // domain hover glow
+const lagStarTwinkle = new LagFilter(0.8);    // star twinkle in hero
+const lagCrossLink   = new LagFilter(0.45);   // cross-domain link pulse
+const lagEmbedReveal = new LagFilter(0.3);    // embed cards
+const lagFutureAnim  = new LagFilter(1.5);    // future map
+const lagSearchFilter= new LagFilter(0.2);    // search filter (reserved)
+
+// ═══════════════════════ DOMAIN COLOR MAP ═══════════════════════
+const DOMAIN_COLORS = {
+  td:'#00E5FF', webgl:'#7C3AED', ai:'#D4AF37', music:'#22C55E',
+  creative:'#F97316', rag:'#EF4444', video:'#3B82F6', auto:'#A855F7',
+  data:'#06B6D4', realtime:'#EC4899', experimental:'#84CC16', art:'#F59E0B'
+};
+const DOMAIN_NAMES = {
+  td:'TouchDesigner', webgl:'WebGL/GLSL', ai:'AI/Generative', music:'Music/Audio',
+  creative:'Creative Coding', rag:'RAG/Local AI', video:'Video', auto:'Automation',
+  data:'Data', realtime:'Realtime', experimental:'Experimental', art:'Art'
+};
+
+// ═══════════════════════ REPO NODE DATA (~66 nodes) ═══════════════════════
+const NODES = [
+  // TouchDesigner
+  {id:'raytk',name:'raytk',owner:'t3kt',domain:'td',tier:1,x:110,y:145,desc:'Raymarching shader toolkit for TD — premier node-based SDF compositing system',why:'CANONICAL — the premier TD shader system, enabling audio-reactive 3D SDF visuals',worlds:['touchdesigner_audio_world','glsl_world']},
+  {id:'td-mcp',name:'touchdesigner-mcp',owner:'8beeeaaat',domain:'td',tier:1,x:195,y:118,desc:'MCP server for controlling TouchDesigner with Claude — the Claude↔TD bridge',why:'Critical 2026 integration — natural language control of TD networks via Claude',worlds:['touchdesigner_audio_world','ai_agents_world']},
+  {id:'chuckdesigner',name:'ChucKDesigner',owner:'DBraun',domain:'td',tier:1,x:155,y:205,desc:'ChucK audio programming language integrated into TouchDesigner',why:'DBraun constellation — live ChucK synthesis inside TD for WAVGEN audio-visual synthesis',worlds:['touchdesigner_audio_world','spectral_processing_world']},
+  {id:'td-faust',name:'TD-Faust',owner:'DBraun',domain:'td',tier:1,x:82,y:172,desc:'FAUST DSP language integration into TouchDesigner',why:'DBraun constellation — high-performance DSP synthesis directly in TD',worlds:['touchdesigner_audio_world','spectral_processing_world']},
+  {id:'pytorch-top',name:'PyTorchTOP',owner:'DBraun',domain:'td',tier:1,x:238,y:178,desc:'GPU-accelerated PyTorch inference as a TouchDesigner TOP operator',why:'DBraun constellation — real-time ML inference on GPU inside TD',worlds:['touchdesigner_audio_world','ai_visual_world']},
+  {id:'nodeo',name:'nodeo',owner:'theexperiential',domain:'td',tier:1,x:165,y:108,desc:'Intuitive TD media server for live performance and installations',why:'CANONICAL partner project — the live performance media server at WAVGEN core',worlds:['touchdesigner_audio_world']},
+  {id:'tdneuron',name:'TDNeuron',owner:'tdneuron',domain:'td',tier:1,x:228,y:122,desc:'Deep learning framework built directly inside TouchDesigner',why:'CANONICAL — full neural network inference inside TD without leaving the node graph',worlds:['touchdesigner_audio_world','ai_visual_world']},
+  {id:'speedy-shaker',name:'TD-Speedy-Shaker',owner:'OVVO-Studio',domain:'td',tier:2,x:102,y:235,desc:'GLSL multi-texture blending compositor for TouchDesigner (OVVO Suite)',why:'OVVO GLSL Suite — high-quality multi-layer blending for live visual composition',worlds:['touchdesigner_audio_world']},
+  {id:'td-palette',name:'Palette',owner:'TouchDesigner',domain:'td',tier:1,x:198,y:248,desc:'Official Derivative community component palette — canonical TD components',why:'Source of truth for official TD components across all WAVGEN networks',worlds:['touchdesigner_audio_world']},
+  {id:'td-raymarch',name:'TDraymarchToolkit',owner:'hrtlacek',domain:'td',tier:1,x:268,y:158,desc:'Raymarching toolkit for TouchDesigner with GLSL SDF primitives',why:'Foundational SDF raymarching building blocks for WAVGEN 3D visual style',worlds:['touchdesigner_audio_world','glsl_world']},
+  {id:'touchfluids',name:'touchfluids',owner:'ancillarymagnet',domain:'td',tier:1,x:258,y:220,desc:'Navier-Stokes fluid simulation in TouchDesigner + GLSL',why:'GPU fluid simulation inside TD — WAVGEN signature fluid-audio-reactive visuals',worlds:['touchdesigner_audio_world','realtime_world']},
+  {id:'sp-td',name:'shader-park-touchdesigner',owner:'shader-park',domain:'td',tier:1,x:135,y:268,desc:'Shader Park JS-to-shader system integrated into TouchDesigner',why:'CANONICAL bridge — same Shader Park code runs in both browser and live TD performance',worlds:['touchdesigner_audio_world','webgl_world']},
+
+  // WebGL/GLSL
+  {id:'sp-core',name:'shader-park-core',owner:'shader-park',domain:'webgl',tier:1,x:678,y:112,desc:'JavaScript → real-time WebGL shader compilation engine',why:'CANONICAL — primary creative language for WAVGEN browser worlds',worlds:['webgl_world','glsl_world']},
+  {id:'webgl-fluid',name:'WebGL-Fluid-Simulation',owner:'PavelDoGreat',domain:'webgl',tier:1,x:758,y:92,desc:'Real-time fluid simulation running entirely in the browser',why:'CANONICAL — iconic embeddable fluid sim, audio-reactive variant powers WAVGEN worlds',worlds:['webgl_world','realtime_world']},
+  {id:'webgl-noise',name:'webgl-noise',owner:'ashima',domain:'webgl',tier:1,x:628,y:92,desc:'Procedural noise GLSL — Simplex, Classic, Periodic, Periodic noise',why:'CANONICAL — foundation of virtually every WAVGEN generative visual',worlds:['webgl_world','glsl_world']},
+  {id:'dli-flow',name:'flow',owner:'dli',domain:'webgl',tier:1,x:705,y:188,desc:'Volumetric fluid particle flow WebGL simulation by David Li',why:'CANONICAL — reference-quality particle fluid defining WAVGEN visual aesthetic',worlds:['webgl_world','realtime_world']},
+  {id:'raymarching',name:'raymarching-workshop',owner:'electricsquare',domain:'webgl',tier:1,x:778,y:158,desc:'Comprehensive introduction to raymarching in GLSL',why:'CANONICAL — best intro raymarching resource; all WAVGEN SDF worlds built on this',worlds:['webgl_world','glsl_world']},
+  {id:'gpu-noise',name:'GPU-Noise-Lib',owner:'BrianSharpe',domain:'webgl',tier:1,x:652,y:162,desc:'Comprehensive GPU noise function library with GLSL reference implementations',why:'CANONICAL — extends ashima noise with Hermite, Quintic, Perlin variants',worlds:['webgl_world','glsl_world']},
+  {id:'glsl-blend',name:'glsl-blend',owner:'jamieowen',domain:'webgl',tier:1,x:592,y:128,desc:'GLSL implementations of Photoshop blend modes for WebGL',why:'CANONICAL — WAVGEN multi-layer compositing relies on these blend modes',worlds:['webgl_world','glsl_world']},
+  {id:'snelly',name:'snelly',owner:'portsmouth',domain:'webgl',tier:1,x:835,y:105,desc:'WebGL SDF pathtracer with spectral rendering and real-time performance',why:'CANONICAL — sets visual quality bar for WAVGEN complex shader worlds',worlds:['webgl_world']},
+  {id:'dli-waves',name:'waves',owner:'dli',domain:'webgl',tier:1,x:748,y:222,desc:'Ocean wave simulation in WebGL — benchmark ocean surface rendering',why:'CANONICAL — reference for water-themed WAVGEN audio-reactive worlds',worlds:['webgl_world']},
+  {id:'gpu-pro',name:'GPU-Pro-Books',owner:'QianMo',domain:'webgl',tier:1,x:840,y:178,desc:'GPU Pro 1–7 source code — advanced real-time rendering techniques',why:'The GPU rendering bible — WAVGEN references for AO, GI, post-processing, PBR',worlds:['webgl_world','glsl_world']},
+
+  // AI/Generative
+  {id:'instant-ngp',name:'instant-ngp',owner:'NVlabs',domain:'ai',tier:2,x:898,y:322,desc:'Instant Neural Graphics Primitives — real-time NeRF training and rendering',why:'Transforms real-world capture into WAVGEN neural radiance field visual worlds',worlds:['ai_visual_world']},
+  {id:'stylegan3',name:'stylegan3',owner:'NVlabs',domain:'ai',tier:1,x:838,y:348,desc:'NVIDIA StyleGAN3 — alias-free GAN for high-fidelity image synthesis',why:'CANONICAL — latent space navigation for WAVGEN generative portrait and texture art',worlds:['ai_visual_world','art_world']},
+  {id:'diffusers',name:'diffusers',owner:'huggingface',domain:'ai',tier:1,x:918,y:382,desc:'Diffusion model library in PyTorch — SD, SDXL, video diffusion',why:'CANONICAL — primary Python framework for WAVGEN image and video generation',worlds:['ai_visual_world','video_world']},
+  {id:'steerable',name:'Steerable-Motion',owner:'banodoco',domain:'ai',tier:2,x:848,y:415,desc:'AI-driven animation control using ComfyUI for temporal consistency',why:'Solves AI video inconsistency — WAVGEN creates coherent AI animations across frames',worlds:['video_world','ai_visual_world']},
+  {id:'framepack',name:'FramePack',owner:'lllyasviel',domain:'ai',tier:1,x:968,y:348,desc:'Practical video generation using frame packing diffusion approach',why:'2025/2026 video gen — generates WAVGEN music video sequences from prompts',worlds:['video_world','ai_visual_world']},
+  {id:'realesrgan',name:'Real-ESRGAN',owner:'xinntao',domain:'ai',tier:1,x:978,y:408,desc:'Practical image/video super-resolution using enhanced ESRGAN',why:'Every AI-generated image/video gets upscaled through this before final output',worlds:['video_world','ai_visual_world']},
+  {id:'stable-gen',name:'generative-models',owner:'Stability-AI',domain:'ai',tier:1,x:868,y:288,desc:'Stability AI generative models — SDXL and successors',why:'CANONICAL — successor to Stable Diffusion powering WAVGEN AI image pipeline',worlds:['ai_visual_world']},
+  {id:'neuralangelo',name:'neuralangelo',owner:'NVlabs',domain:'ai',tier:2,x:962,y:288,desc:'Neural surface reconstruction — high-fidelity 3D mesh from video',why:'Turns WAVGEN performance/location footage into photorealistic 3D assets',worlds:['ai_visual_world']},
+  {id:'magenta-studio',name:'magenta-studio',owner:'magenta',domain:'ai',tier:2,x:808,y:452,desc:'Google Magenta AI music generation plugins for Ableton Live',why:'AI music generation directly inside Ableton — WAVGEN melodic continuations and drum AI',worlds:['composition_music_world','ableton_world']},
+
+  // Music/Audio
+  {id:'ableton-link',name:'link',owner:'Ableton',domain:'music',tier:1,x:122,y:428,desc:'Ableton Link — tempo and beat synchronization protocol across devices',why:'CANONICAL — beat sync backbone of WAVGEN, phase-locks TD, Ableton, and all devices',worlds:['ableton_world','touchdesigner_audio_world']},
+  {id:'dawdreamer',name:'DawDreamer',owner:'DBraun',domain:'music',tier:1,x:198,y:408,desc:'Python DAW with VST/VSTi, FAUST integration, audio warping, and analysis',why:'CANONICAL (DBraun) — programmable audio engine processing VST + FAUST + analysis',worlds:['daw_workflows_world','spectral_processing_world']},
+  {id:'chuck',name:'chuck',owner:'ccrma',domain:'music',tier:1,x:155,y:472,desc:'ChucK music programming language — concurrent, strongly-timed audio synthesis',why:'CANONICAL — unique concurrent timing ideal for WAVGEN audio-visual sync via ChucKDesigner',worlds:['touchdesigner_audio_world','spectral_processing_world']},
+  {id:'node-osc',name:'node-osc',owner:'automata',domain:'music',tier:1,x:88,y:455,desc:'OSC (Open Sound Control) implementation for Node.js',why:'CANONICAL — bridges the OSC ecosystem (Ableton/Max) to WAVGEN web stack',worlds:['touchdesigner_audio_world','ableton_world']},
+  {id:'oscar',name:'OSCAR',owner:'trafalmejo',domain:'music',tier:1,x:72,y:398,desc:'GUI-based OSC controller for AV systems — Ableton, TouchDesigner, Resolume',why:'CANONICAL — visual OSC routing for the complete WAVGEN AV signal chain',worlds:['touchdesigner_audio_world','ableton_world']},
+  {id:'osc-web',name:'osc-web',owner:'automata',domain:'music',tier:2,x:72,y:478,desc:'OSC to WebSocket bridge — connect OSC devices to web browsers',why:'Bridges audio OSC streams to WAVGEN browser WebGL shader parameters in real time',worlds:['touchdesigner_audio_world','webgl_world']},
+  {id:'tone-js',name:'Tone.js',owner:'Tonejs',domain:'music',tier:1,x:225,y:462,desc:'Web Audio API framework for creating interactive music in the browser',why:'Primary audio synthesis library for WAVGEN browser-based music tools',worlds:['composition_music_world','webgl_world']},
+  {id:'magenta-js',name:'magenta-js',owner:'magenta',domain:'music',tier:1,x:185,y:505,desc:'Magenta.js — AI music generation in the browser using TensorFlow.js',why:'Browser-native AI music — runs Magenta models without server for real-time AI composition',worlds:['composition_music_world']},
+
+  // RAG/Local AI
+  {id:'ragflow',name:'ragflow',owner:'infiniflow',domain:'rag',tier:2,x:645,y:508,desc:'Open-source RAG + agent engine — WAVGEN knowledge retrieval system',why:'WAVGEN knowledge retrieval — parses and queries the C:\\Claude\\Knowledge base',worlds:['serverless_world']},
+  {id:'dify',name:'dify',owner:'langgenius',domain:'rag',tier:2,x:722,y:488,desc:'Agentic workflow platform — production-ready AI automation',why:'Production-ready agent orchestration for WAVGEN multi-step AI workflows',worlds:['serverless_world','ai_agents_world']},
+  {id:'chroma',name:'chroma',owner:'chroma-core',domain:'rag',tier:2,x:688,y:558,desc:'Vector database — WAVGEN RAG search and semantic retrieval',why:'Stores WAVGEN knowledge embeddings for semantic search across all repo docs',worlds:['serverless_world']},
+  {id:'docling',name:'docling',owner:'docling-project',domain:'rag',tier:2,x:612,y:552,desc:'Document → AI-ready format — parses complex docs for RAG ingestion',why:'Converts WAVGEN markdown knowledge files to structured RAG-ready format',worlds:['serverless_world']},
+  {id:'mempalace',name:'mempalace',owner:'MemPalace',domain:'rag',tier:2,x:762,y:522,desc:'AI memory system — persistent RAG + agent memory across sessions',why:'Persistent memory layer for WAVGEN Claude agents across sessions',worlds:['serverless_world','ai_agents_world']},
+  {id:'mcp-servers',name:'servers',owner:'modelcontextprotocol',domain:'rag',tier:1,x:642,y:592,desc:'Official MCP server collection — Claude tool ecosystem',why:'Enables Claude to interact with filesystems, web, databases — WAVGEN tool layer',worlds:['ai_agents_world']},
+  {id:'exo',name:'exo',owner:'exo-explore',domain:'rag',tier:2,x:728,y:592,desc:'Distributed local LLM — run models across multiple devices',why:'Run Claude-tier models on WAVGEN local hardware without API dependency',worlds:['serverless_world']},
+
+  // Creative Coding
+  {id:'processing',name:'processing',owner:'processing',domain:'creative',tier:1,x:440,y:418,desc:'Processing language — the creative coding origin platform',why:'CANONICAL — creative coding origin; source of WAVGEN generative algorithm patterns',worlds:['future_creative_world']},
+  {id:'openframeworks',name:'openFrameworks',owner:'openframeworks',domain:'creative',tier:1,x:492,y:448,desc:'Creative coding C++ toolkit — industry standard for generative art',why:'CANONICAL — industry standard C++ creative toolkit; GPU pipeline reference',worlds:['future_creative_world']},
+  {id:'particles',name:'particles.js',owner:'VincentGarreau',domain:'creative',tier:2,x:395,y:452,desc:'Lightweight JS particle system library — CDN embeddable',why:'CDN-loadable particle system for WAVGEN world backgrounds and ambient effects',worlds:['webgl_world']},
+  {id:'manim',name:'manim',owner:'ManimCommunity',domain:'creative',tier:2,x:462,y:478,desc:'Mathematical animation engine in Python — 3Blue1Brown style',why:'Programmatic math animation for WAVGEN data visualization worlds',worlds:['data_world']},
+  {id:'awesome-cc',name:'awesome-creative-coding',owner:'terkelg',domain:'creative',tier:1,x:512,y:412,desc:'Master curated list of creative coding resources, tools, and inspiration',why:'CANONICAL reference list — master creative coding discovery for WAVGEN',worlds:['future_creative_world']},
+
+  // Video
+  {id:'remotion',name:'remotion',owner:'remotion-dev',domain:'video',tier:2,x:948,y:468,desc:'React-based programmatic video generation — code is the editor',why:'Programmatic video output for WAVGEN productions; React + animation APIs',worlds:['daw_workflows_world']},
+  {id:'mochi',name:'mochi',owner:'genmoai',domain:'video',tier:2,x:1012,y:442,desc:'Open-source video generation model from Genmo AI',why:'Open-source Sora alternative for WAVGEN atmospheric visual sequence generation',worlds:['ai_visual_world']},
+  {id:'dough',name:'Dough',owner:'banodoco',domain:'video',tier:2,x:1022,y:505,desc:'AI animation steering tool with timeline-based keyframe control',why:'Timeline-driven AI animation for WAVGEN keyframe-to-keyframe visual storytelling',worlds:['ai_visual_world']},
+
+  // Automation
+  {id:'n8n',name:'n8n',owner:'n8n-io',domain:'auto',tier:2,x:285,y:575,desc:'Workflow automation + AI agents — WAVGEN automation backbone',why:'CANONICAL Tier 2 — orchestrates WAVGEN multi-system AI workflows',worlds:['daw_workflows_world','serverless_world']},
+  {id:'airflow',name:'airflow',owner:'apache',domain:'auto',tier:2,x:358,y:585,desc:'Apache Airflow — workflow orchestration for data pipelines',why:'Data pipeline orchestration for WAVGEN batch processing and scheduled tasks',worlds:['serverless_world']},
+  {id:'browser-use',name:'browser-use',owner:'browser-use',domain:'auto',tier:2,x:225,y:595,desc:'AI browser automation — Claude controls web interfaces',why:'Enables WAVGEN Claude agents to interact with web tools that lack APIs',worlds:['ai_agents_world']},
+  {id:'gsd',name:'get-shit-done',owner:'gsd-build',domain:'auto',tier:2,x:308,y:542,desc:'Claude Code meta-prompting system — GSD methodology',why:'The meta-prompting framework powering WAVGEN Claude Code workflows',worlds:['ai_agents_world']},
+
+  // Realtime
+  {id:'ready',name:'ready',owner:'GollyGang',domain:'realtime',tier:2,x:385,y:258,desc:'Reaction-diffusion systems — Gray-Scott, BZ, and 20+ rule sets',why:'Reaction-diffusion visual patterns directly applicable to WAVGEN organic aesthetics',worlds:['data_world','art_world']},
+  {id:'cellular',name:'CellularForms',owner:'fogleman',domain:'realtime',tier:2,x:440,y:248,desc:"Andy Lomas' cellular forms — digital growth and morphogenesis simulation",why:'Digital growth simulation producing WAVGEN-quality organic 3D visual forms',worlds:['experimental_world']},
+  {id:'shan-shui',name:'shan-shui-inf',owner:'LingDong-',domain:'realtime',tier:2,x:358,y:298,desc:'Infinite procedural Chinese landscape painting — algorithmic art',why:'Infinite generative painting demonstrating WAVGEN procedural art approach',worlds:['art_world']},
+
+  // Experimental
+  {id:'origami',name:'OrigamiSimulator',owner:'amandaghassaei',domain:'experimental',tier:2,x:545,y:558,desc:'Real-time origami folding simulation in WebGL — constraint physics',why:'Unique WebGL physics sim for WAVGEN geometric transformation visual systems',worlds:['webgl_world','experimental_world']},
+  {id:'multiwindow',name:'multipleWindow3dScene',owner:'bgstaal',domain:'experimental',tier:2,x:510,y:612,desc:'Synchronized 3D scene rendered across multiple browser windows',why:'Multi-display WebGL — applicable to WAVGEN multi-screen performance setups',worlds:['webgl_world']},
+  {id:'isf-td',name:'ISF_TouchDesigner',owner:'JosefPelz',domain:'experimental',tier:2,x:592,y:612,desc:'Incompressible Schrödinger Flow simulation in TouchDesigner',why:'Advanced ISF physics — distinctive vortex-based flow visuals for WAVGEN experimental aesthetic',worlds:['experimental_world']},
+
+  // Data
+  {id:'kafka',name:'kafka',owner:'apache',domain:'data',tier:2,x:1082,y:412,desc:'Apache Kafka — event streaming for realtime data backbone',why:'Realtime data streaming for WAVGEN distributed performance data pipelines',worlds:['distributed_systems_world']},
+  {id:'diagrams',name:'diagrams',owner:'mingrammer',domain:'data',tier:2,x:1142,y:445,desc:'Architecture as code — Python diagram generation library',why:'WAVGEN architecture diagrams generated programmatically from code',worlds:['serverless_world']},
+];
+
+// ═══════════════════════ EDGE DATA (cross-domain connections) ═══════════════════════
+const EDGES = [
+  ['sp-core','sp-td'],['webgl-noise','gpu-noise'],['glsl-blend','speedy-shaker'],
+  ['raymarching','td-raymarch'],['snelly','raytk'],['chuck','chuckdesigner'],
+  ['dawdreamer','td-faust'],['ableton-link','dawdreamer'],['node-osc','oscar'],
+  ['node-osc','osc-web'],['diffusers','pytorch-top'],['tdneuron','diffusers'],
+  ['steerable','framepack'],['steerable','diffusers'],['ragflow','chroma'],
+  ['ragflow','dify'],['dify','n8n'],['mcp-servers','td-mcp'],['n8n','airflow'],
+  ['remotion','framepack'],['realesrgan','framepack'],['touchfluids','webgl-fluid'],
+  ['dli-flow','webgl-fluid'],['manim','processing'],['processing','openframeworks'],
+  ['cellular','ready'],['dawdreamer','magenta-studio'],['magenta-js','magenta-studio'],
+  ['magenta-js','tone-js'],['instant-ngp','neuralangelo'],['td-mcp','td-palette'],
+  ['nodeo','raytk'],['pytorch-top','tdneuron'],['chroma','docling'],
+  ['dify','mcp-servers'],['gsd','n8n'],['browser-use','n8n'],
+  ['ableton-link','node-osc'],['sp-core','processing'],['origami','dli-waves'],
+  ['shan-shui','ready'],['multiwindow','sp-core'],['isf-td','touchfluids'],
+  ['stable-gen','diffusers'],['magenta-studio','steerable'],['exo','ragflow'],
+  ['mempalace','dify'],['kafka','airflow'],
+];
+
+// Build lookup
+const NODE_MAP = {};
+NODES.forEach(n => NODE_MAP[n.id] = n);
+
+// ═══════════════════════ HERO WEBGL (Three.js + custom GLSL) ═══════════════════════
+(function initHero(){
+  const canvas = document.getElementById('hero-canvas');
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  canvas.width = W; canvas.height = H;
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x0D1117, 1);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 2000);
+  camera.position.set(0, 0, 280);
+
+  // Custom GLSL vertex shader for galaxy particles
+  const vertShader = `
+    attribute float aBrightness;
+    attribute vec3 aColor;
+    attribute float aPhase;
+    uniform float uTime;
+    varying float vBrightness;
+    varying vec3 vColor;
+    void main(){
+      float angle = uTime * 0.00012 + aPhase * 6.28318;
+      float ca = cos(angle); float sa = sin(angle);
+      vec3 p = position;
+      p.xz = vec2(ca*position.x - sa*position.z, sa*position.x + ca*position.z);
+      p.y += sin(uTime*0.0004 + aPhase*12.566) * 1.5;
+      vec4 mvp = modelViewMatrix * vec4(p, 1.0);
+      gl_Position = projectionMatrix * mvp;
+      float dist = -mvp.z;
+      gl_PointSize = clamp((aBrightness * 6.0 + 1.0) * (300.0 / dist), 1.0, 14.0);
+      vBrightness = aBrightness;
+      vColor = aColor;
+    }
+  `;
+  const fragShader = `
+    varying float vBrightness;
+    varying vec3 vColor;
+    void main(){
+      vec2 uv = gl_PointCoord - vec2(0.5);
+      float r = length(uv);
+      if(r > 0.5) discard;
+      float glow = exp(-r * r * 8.0);
+      float core = exp(-r * r * 40.0);
+      float alpha = glow * 0.6 + core * 0.9;
+      alpha *= vBrightness * 1.4 + 0.3;
+      gl_FragColor = vec4(vColor * (0.7 + core * 0.5), alpha);
+    }
+  `;
+
+  const N = 2200;
+  const positions = new Float32Array(N * 3);
+  const brightnesses = new Float32Array(N);
+  const colors = new Float32Array(N * 3);
+  const phases = new Float32Array(N);
+
+  // Domain color palette for star tinting
+  const starPalette = [
+    [0.0,0.898,1.0], [0.486,0.227,0.929], [0.831,0.686,0.216],
+    [0.133,0.773,0.369], [0.976,0.451,0.086], [0.937,0.267,0.267],
+    [0.231,0.510,0.965], [0.659,0.333,0.969], [0.024,0.714,0.831]
+  ];
+
+  for(let i=0;i<N;i++){
+    const arm = Math.floor(Math.random()*3);
+    const armAngle = (arm / 3) * Math.PI * 2;
+    const r = Math.pow(Math.random(), 0.5) * 200 + 5;
+    const spiral = r * 0.018 + armAngle;
+    const spread = (1 - r/200) * 0.4 + 0.05;
+    positions[i*3]   = Math.cos(spiral)*r + (Math.random()-0.5)*r*spread;
+    positions[i*3+1] = (Math.random()-0.5)*20 * (1-r/220);
+    positions[i*3+2] = Math.sin(spiral)*r + (Math.random()-0.5)*r*spread;
+    brightnesses[i] = Math.pow(Math.random(), 2.5) * 0.9 + 0.1;
+    phases[i] = Math.random();
+    const ci = Math.floor(Math.random()*starPalette.length);
+    const mix = 0.3 + Math.random()*0.7;
+    colors[i*3]   = starPalette[ci][0]*mix + (1-mix)*1.0;
+    colors[i*3+1] = starPalette[ci][1]*mix + (1-mix)*1.0;
+    colors[i*3+2] = starPalette[ci][2]*mix + (1-mix)*1.0;
+  }
+
+  // Add bright canonical "stars"
+  const canonicals = [
+    [0,40,0,1.0,[0.0,0.9,1.0]],[30,-10,15,1.0,[0.83,0.69,0.22]],
+    [-50,5,-20,1.0,[0.49,0.23,0.93]],[20,15,-35,1.0,[0.13,0.77,0.37]],
+    [-20,-8,40,1.0,[0.94,0.27,0.27]],[40,20,30,1.0,[0.83,0.69,0.22]],
+    [-35,10,10,0.95,[0.0,0.9,1.0]],[10,-20,50,0.9,[0.49,0.23,0.93]],
+  ];
+  canonicals.forEach((c,i)=>{
+    const idx = N - canonicals.length + i;
+    positions[idx*3]=c[0]; positions[idx*3+1]=c[1]; positions[idx*3+2]=c[2];
+    brightnesses[idx]=c[3]; phases[idx]=Math.random();
+    colors[idx*3]=c[4][0]; colors[idx*3+1]=c[4][1]; colors[idx*3+2]=c[4][2];
+  });
+
+  const geom = new THREE.BufferGeometry();
+  geom.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  geom.setAttribute('aBrightness', new THREE.BufferAttribute(brightnesses,1));
+  geom.setAttribute('aColor', new THREE.BufferAttribute(colors,3));
+  geom.setAttribute('aPhase', new THREE.BufferAttribute(phases,1));
+
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: vertShader, fragmentShader: fragShader,
+    uniforms:{ uTime:{ value:0 } },
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  });
+
+  scene.add(new THREE.Points(geom, mat));
+
+  // Constellation lines (few bright connections)
+  const linePairs = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,0],[0,2],[1,4]];
+  const linePositions = [];
+  linePairs.forEach(([a,b])=>{
+    if(b < canonicals.length){
+      const ai=N-canonicals.length+a, bi=N-canonicals.length+b;
+      linePositions.push(positions[ai*3],positions[ai*3+1],positions[ai*3+2]);
+      linePositions.push(positions[bi*3],positions[bi*3+1],positions[bi*3+2]);
+    }
+  });
+  const lineGeom = new THREE.BufferGeometry();
+  lineGeom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions),3));
+  const lineMat = new THREE.LineBasicMaterial({color:0x00E5FF,opacity:0.15,transparent:true});
+  scene.add(new THREE.LineSegments(lineGeom, lineMat));
+
+  let mx=0, my=0, prevTime=0;
+  document.addEventListener('mousemove', e=>{ mx=e.clientX/window.innerWidth-0.5; my=e.clientY/window.innerHeight-0.5; });
+
+  function animate(t){
+    if(!document.getElementById('hero')) return;
+    requestAnimationFrame(animate);
+    const dt = Math.min(t - prevTime, 50) / 1000; prevTime = t;
+    const smx = lagHMX.update(mx*15, dt);
+    const smy = lagHMY.update(my*8, dt);
+    camera.position.x = smx; camera.position.y = -smy;
+    camera.lookAt(0,0,0);
+    mat.uniforms.uTime.value = t;
+    lineMat.opacity = 0.08 + lagStarTwinkle.update(0.12 + Math.sin(t*0.0003)*0.05, dt)*0.5;
+    renderer.render(scene, camera);
+  }
+  animate(0);
+
+  window.addEventListener('resize', ()=>{
+    const W=canvas.offsetWidth, H=canvas.offsetHeight;
+    camera.aspect=W/H; camera.updateProjectionMatrix();
+    renderer.setSize(W,H);
+  });
+})();
+
+// ═══════════════════════ CONSTELLATION CANVAS (Canvas2D) ═══════════════════════
+(function initConstellation(){
+  const canvas = document.getElementById('constellation-canvas');
+  const wrap = canvas.parentElement;
+  const LW = 1350, LH = 650; // logical coordinate space
+
+  let view = { zoom:1, panX:0, panY:0, tZoom:1, tPanX:0, tPanY:0 };
+  let dragging=false, dragStart={x:0,y:0}, dragPan={x:0,y:0};
+  let hoveredNode=null, prevTime=0;
+  let nodeOffsets = {};
+
+  // Seed random per-node drift offsets
+  NODES.forEach(n=>{
+    nodeOffsets[n.id] = {
+      dx:0, dy:0,
+      tx:(Math.random()-0.5)*18, ty:(Math.random()-0.5)*12,
+      phase:Math.random()*Math.PI*2, speed:0.3+Math.random()*0.4
+    };
+  });
+
+  function resize(){
+    const W = wrap.clientWidth;
+    const H = Math.round(W * LH / LW);
+    canvas.width = W; canvas.height = H;
+    canvas.style.height = H + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function toScreen(lx, ly){
+    const W = canvas.width, H = canvas.height;
+    const sx = (lx / LW) * W;
+    const sy = (ly / LH) * H;
+    return {
+      x: sx * view.zoom + view.panX + W/2*(1-view.zoom),
+      y: sy * view.zoom + view.panY + H/2*(1-view.zoom),
+    };
+  }
+  function fromScreen(sx, sy){
+    const W=canvas.width, H=canvas.height;
+    const lsx = (sx - view.panX - W/2*(1-view.zoom)) / view.zoom;
+    const lsy = (sy - view.panY - H/2*(1-view.zoom)) / view.zoom;
+    return { x: lsx / W * LW, y: lsy / H * LH };
+  }
+
+  function draw(t){
+    const dt = Math.min(t - prevTime, 50)/1000; prevTime=t;
+
+    // Smooth view
+    view.zoom = lagConstellZoom.update(view.tZoom, dt);
+    view.panX = lagConstellPanX.update(view.tPanX, dt);
+    view.panY = lagConstellPanY.update(view.tPanY, dt);
+
+    // Update node drifts
+    const drift1 = lagNodeDrift1.update(Math.sin(t*0.0004)*10, dt);
+    const drift2 = lagNodeDrift2.update(Math.cos(t*0.0003)*8, dt);
+    const drift3 = lagNodeDrift3.update(Math.sin(t*0.00035+1)*7, dt);
+    const edgePulse = lagEdgePulse.update(0.5 + Math.sin(t*0.0008)*0.3, dt);
+    const crossPulse = lagCrossLink.update(0.4 + Math.cos(t*0.0006)*0.3, dt);
+
+    NODES.forEach(n=>{
+      const o = nodeOffsets[n.id];
+      const newTx = Math.sin(t*0.0003*o.speed + o.phase)*14;
+      const newTy = Math.cos(t*0.00025*o.speed + o.phase*1.3)*9;
+      o.dx += (newTx - o.dx) * (1 - Math.exp(-dt/1.5));
+      o.dy += (newTy - o.dy) * (1 - Math.exp(-dt/1.5));
+      n._rx = n.x + o.dx;
+      n._ry = n.y + o.dy;
+    });
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw edges
+    EDGES.forEach(([aid,bid])=>{
+      const a=NODE_MAP[aid], b=NODE_MAP[bid];
+      if(!a||!b) return;
+      const pa=toScreen(a._rx||a.x, a._ry||a.y);
+      const pb=toScreen(b._rx||b.x, b._ry||b.y);
+      const sameDomain = a.domain===b.domain;
+      const color = DOMAIN_COLORS[a.domain];
+      const alpha = sameDomain ? edgePulse*0.35 : crossPulse*0.5;
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = hexToRgba(color, alpha);
+      ctx.lineWidth = sameDomain ? 0.8 : 1.1;
+      ctx.setLineDash(sameDomain ? [] : [4,6]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    // Draw nodes
+    NODES.forEach(n=>{
+      const p = toScreen(n._rx||n.x, n._ry||n.y);
+      const r = n.tier===1 ? 7 : 5;
+      const color = DOMAIN_COLORS[n.domain];
+      const isHovered = hoveredNode===n;
+
+      // Glow
+      if(isHovered || n.tier===1){
+        const glowR = isHovered ? r*3.5 : r*2.5;
+        const grad = ctx.createRadialGradient(p.x,p.y,r*0.3,p.x,p.y,glowR);
+        grad.addColorStop(0, hexToRgba(color, isHovered ? 0.5 : 0.25));
+        grad.addColorStop(1, hexToRgba(color, 0));
+        ctx.beginPath(); ctx.arc(p.x,p.y,glowR,0,Math.PI*2);
+        ctx.fillStyle=grad; ctx.fill();
+      }
+
+      // Ring for tier 1
+      if(n.tier===1){
+        ctx.beginPath(); ctx.arc(p.x,p.y,r+2.5,0,Math.PI*2);
+        ctx.strokeStyle = hexToRgba(color, 0.45);
+        ctx.lineWidth=0.8; ctx.stroke();
+      }
+
+      // Core
+      ctx.beginPath(); ctx.arc(p.x,p.y,isHovered?r*1.4:r,0,Math.PI*2);
+      ctx.fillStyle = isHovered ? color : hexToRgba(color, 0.85);
+      ctx.fill();
+
+      // Label at sufficient zoom
+      if(view.zoom > 0.75 || isHovered){
+        const fontSize = Math.max(9, Math.min(11, 10*view.zoom));
+        ctx.font = `${n.tier===1?600:400} ${fontSize}px Inter,-apple-system,sans-serif`;
+        ctx.fillStyle = isHovered ? '#ffffff' : hexToRgba('#E6EDF3', 0.75);
+        ctx.textAlign = 'center';
+        ctx.fillText(n.name, p.x, p.y + r + fontSize + 1);
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  // Mouse interactions
+  canvas.addEventListener('mousedown', e=>{
+    dragging=true;
+    dragStart={x:e.clientX, y:e.clientY};
+    dragPan={x:view.tPanX, y:view.tPanY};
+  });
+  window.addEventListener('mouseup', ()=>dragging=false);
+  canvas.addEventListener('mousemove', e=>{
+    const rect=canvas.getBoundingClientRect();
+    const sx=e.clientX-rect.left, sy=e.clientY-rect.top;
+
+    if(dragging){
+      view.tPanX = dragPan.x + (e.clientX-dragStart.x);
+      view.tPanY = dragPan.y + (e.clientY-dragStart.y);
+    } else {
+      const lp = fromScreen(sx*(canvas.width/rect.width), sy*(canvas.height/rect.height));
+      hoveredNode = null;
+      for(const n of NODES){
+        const dx=(n._rx||n.x)-lp.x, dy=(n._ry||n.y)-lp.y;
+        const hit = (n.tier===1?9:7)/view.zoom * (LW/canvas.width) * (canvas.width/rect.width);
+        if(Math.sqrt(dx*dx+dy*dy) < hit){ hoveredNode=n; break; }
+      }
+      if(hoveredNode){
+        const tt=document.getElementById('tooltip');
+        document.getElementById('tt-name').textContent=hoveredNode.name;
+        document.getElementById('tt-owner').textContent='by '+hoveredNode.owner;
+        document.getElementById('tt-domain').style.color=DOMAIN_COLORS[hoveredNode.domain];
+        document.getElementById('tt-domain').textContent=DOMAIN_NAMES[hoveredNode.domain]+(hoveredNode.tier===1?' · Tier 1':'');
+        tt.style.display='block';
+        tt.style.left=(e.clientX+14)+'px';
+        tt.style.top=(e.clientY-10)+'px';
+      } else {
+        document.getElementById('tooltip').style.display='none';
+      }
+    }
+  });
+  canvas.addEventListener('mouseleave',()=>{
+    hoveredNode=null;
+    document.getElementById('tooltip').style.display='none';
+  });
+  canvas.addEventListener('click', e=>{
+    if(!hoveredNode) return;
+    const n=hoveredNode;
+    const panel=document.getElementById('detail-panel');
+    document.getElementById('panel-badge').textContent=DOMAIN_NAMES[n.domain];
+    document.getElementById('panel-badge').style.color=DOMAIN_COLORS[n.domain];
+    document.getElementById('panel-title').textContent=n.name;
+    document.getElementById('panel-owner').textContent='by '+n.owner;
+    document.getElementById('panel-desc').textContent=n.desc;
+    document.getElementById('panel-why').textContent=n.why||'Core WAVGEN repository.';
+    document.getElementById('panel-link').href='https://github.com/'+n.owner+'/'+n.name;
+    document.getElementById('panel-worlds-tags').innerHTML=
+      (n.worlds||[]).map(w=>`<span class="world-tag">${w}</span>`).join('');
+    panel.classList.add('open');
+  });
+  canvas.addEventListener('wheel', e=>{
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    view.tZoom = Math.max(0.35, Math.min(4, view.tZoom*delta));
+  }, {passive:false});
+
+  // Zoom buttons
+  document.getElementById('zoom-in').addEventListener('click',()=>view.tZoom=Math.min(4,view.tZoom*1.3));
+  document.getElementById('zoom-out').addEventListener('click',()=>view.tZoom=Math.max(0.35,view.tZoom/1.3));
+  document.getElementById('zoom-reset').addEventListener('click',()=>{view.tZoom=1;view.tPanX=0;view.tPanY=0;});
+  document.getElementById('panel-close').addEventListener('click',()=>document.getElementById('detail-panel').classList.remove('open'));
+})();
+
+// ═══════════════════════ DOMAIN CLUSTERS DATA ═══════════════════════
+const DOMAIN_DATA = [
+  {id:'td',icon:'⬡',name:'TouchDesigner',count:'40+ repos',repos:[
+    {name:'t3kt/raytk',desc:'Raymarching shader toolkit',tier:'T1'},
+    {name:'8beeeaaat/touchdesigner-mcp',desc:'Claude ↔ TD bridge (MCP)',tier:'T1'},
+    {name:'DBraun/ChucKDesigner',desc:'ChucK audio synthesis in TD',tier:'T1'},
+    {name:'DBraun/TD-Faust',desc:'FAUST DSP language in TD',tier:'T1'},
+    {name:'DBraun/PyTorchTOP',desc:'GPU ML inference in TD',tier:'T1'},
+    {name:'theexperiential/nodeo',desc:'TD media server partner',tier:'T1'},
+    {name:'tdneuron/TDNeuron',desc:'Deep learning framework in TD',tier:'T1'},
+    {name:'ancillarymagnet/touchfluids',desc:'Navier-Stokes fluid in TD',tier:'T1'},
+  ]},
+  {id:'webgl',icon:'◈',name:'WebGL / GLSL',count:'35+ repos',repos:[
+    {name:'shader-park/shader-park-core',desc:'JS → realtime shader',tier:'T1'},
+    {name:'PavelDoGreat/WebGL-Fluid-Simulation',desc:'Browser fluid sim',tier:'T1'},
+    {name:'ashima/webgl-noise',desc:'Procedural noise GLSL',tier:'T1'},
+    {name:'dli/flow',desc:'Volumetric particle flow',tier:'T1'},
+    {name:'electricsquare/raymarching-workshop',desc:'Raymarching intro',tier:'T1'},
+    {name:'BrianSharpe/GPU-Noise-Lib',desc:'GPU noise library',tier:'T1'},
+    {name:'jamieowen/glsl-blend',desc:'Photoshop blend modes in GLSL',tier:'T1'},
+    {name:'portsmouth/snelly',desc:'WebGL SDF pathtracer',tier:'T1'},
+  ]},
+  {id:'ai',icon:'◉',name:'AI / Generative',count:'50+ repos',repos:[
+    {name:'NVlabs/instant-ngp',desc:'Instant NeRF — 3D in seconds',tier:'T2'},
+    {name:'NVlabs/stylegan3',desc:'Alias-free GAN portraiture',tier:'T1'},
+    {name:'huggingface/diffusers',desc:'Diffusion models in PyTorch',tier:'T1'},
+    {name:'lllyasviel/FramePack',desc:'Practical video diffusion',tier:'T1'},
+    {name:'banodoco/Steerable-Motion',desc:'ComfyUI animation control',tier:'T2'},
+    {name:'xinntao/Real-ESRGAN',desc:'Image/video upscaling',tier:'T1'},
+    {name:'Stability-AI/generative-models',desc:'SDXL + successors',tier:'T1'},
+    {name:'NVIDIA/Cosmos',desc:'World foundation models',tier:'T2'},
+  ]},
+  {id:'music',icon:'♪',name:'Music / Audio',count:'20+ repos',repos:[
+    {name:'Ableton/link',desc:'Beat sync across all devices',tier:'T1'},
+    {name:'DBraun/DawDreamer',desc:'Python DAW + VST + FAUST',tier:'T1'},
+    {name:'ccrma/chuck',desc:'ChucK music language',tier:'T1'},
+    {name:'magenta/magenta-studio',desc:'AI music in Ableton',tier:'T1'},
+    {name:'automata/node-osc',desc:'OSC for Node.js',tier:'T1'},
+    {name:'trafalmejo/OSCAR',desc:'OSC GUI controller',tier:'T1'},
+    {name:'Tonejs/Tone.js',desc:'Browser audio synthesis',tier:'T1'},
+    {name:'magenta/magenta-js',desc:'Browser AI music generation',tier:'T1'},
+  ]},
+  {id:'rag',icon:'◎',name:'RAG / Local AI',count:'25+ repos',repos:[
+    {name:'infiniflow/ragflow',desc:'Open RAG + agent engine',tier:'T2'},
+    {name:'langgenius/dify',desc:'Agentic workflow platform',tier:'T2'},
+    {name:'chroma-core/chroma',desc:'Vector database',tier:'T2'},
+    {name:'docling-project/docling',desc:'Doc → AI-ready format',tier:'T2'},
+    {name:'MemPalace/mempalace',desc:'AI memory system',tier:'T2'},
+    {name:'modelcontextprotocol/servers',desc:'Official MCP servers',tier:'T1'},
+    {name:'exo-explore/exo',desc:'Distributed local LLM runner',tier:'T2'},
+  ]},
+  {id:'creative',icon:'✦',name:'Creative Coding',count:'20+ repos',repos:[
+    {name:'openframeworks/openFrameworks',desc:'Creative coding C++ toolkit',tier:'T1'},
+    {name:'processing/processing',desc:'Processing language',tier:'T1'},
+    {name:'terkelg/awesome-creative-coding',desc:'Master curated list',tier:'T1'},
+    {name:'VincentGarreau/particles.js',desc:'CDN particle library',tier:'T2'},
+    {name:'ManimCommunity/manim',desc:'Mathematical animation Python',tier:'T2'},
+    {name:'LingDong-/shan-shui-inf',desc:'Infinite generative painting',tier:'T2'},
+  ]},
+  {id:'video',icon:'▶',name:'Video Systems',count:'15+ repos',repos:[
+    {name:'remotion-dev/remotion',desc:'React programmatic video',tier:'T2'},
+    {name:'genmoai/mochi',desc:'Open video generation model',tier:'T2'},
+    {name:'banodoco/Dough',desc:'AI animation timeline steering',tier:'T2'},
+    {name:'xinntao/Real-ESRGAN',desc:'Video upscaling pipeline',tier:'T1'},
+    {name:'banodoco/Steerable-Motion',desc:'ComfyUI video consistency',tier:'T2'},
+  ]},
+  {id:'auto',icon:'⚙',name:'Automation',count:'15+ repos',repos:[
+    {name:'n8n-io/n8n',desc:'Workflow automation + AI agents',tier:'T2'},
+    {name:'gsd-build/get-shit-done',desc:'Claude Code meta-prompting',tier:'T2'},
+    {name:'firecrawl/firecrawl',desc:'AI web scraping',tier:'T2'},
+    {name:'browser-use/browser-use',desc:'AI browser automation',tier:'T2'},
+    {name:'apache/airflow',desc:'Pipeline orchestration',tier:'T2'},
+  ]},
+  {id:'data',icon:'◫',name:'Data / Cloud',count:'30+ repos',repos:[
+    {name:'apache/kafka',desc:'Event streaming backbone',tier:'T2'},
+    {name:'apache/airflow',desc:'Workflow orchestration',tier:'T2'},
+    {name:'mingrammer/diagrams',desc:'Architecture as code',tier:'T2'},
+    {name:'docling-project/docling',desc:'Document parsing for AI',tier:'T2'},
+    {name:'apache/spark',desc:'Big data processing',tier:'T3'},
+  ]},
+  {id:'realtime',icon:'◬',name:'Realtime Systems',count:'25+ repos',repos:[
+    {name:'GollyGang/ready',desc:'Reaction-diffusion systems',tier:'T2'},
+    {name:'fogleman/CellularForms',desc:"Andy Lomas cellular forms",tier:'T2'},
+    {name:'LingDong-/shan-shui-inf',desc:'Infinite landscape painting',tier:'T2'},
+    {name:'automata/osc-web',desc:'OSC WebSocket bridge',tier:'T2'},
+  ]},
+  {id:'experimental',icon:'⬟',name:'Experimental / Physics',count:'20+ repos',repos:[
+    {name:'amandaghassaei/OrigamiSimulator',desc:'WebGL origami folding sim',tier:'T2'},
+    {name:'bgstaal/multipleWindow3dScene',desc:'3D across browser windows',tier:'T2'},
+    {name:'JosefPelz/ISF_TouchDesigner',desc:'Schrödinger flow in TD',tier:'T2'},
+    {name:'GollyGang/ready',desc:'Reaction-diffusion explorer',tier:'T2'},
+  ]},
+  {id:'art',icon:'◐',name:'Generative Art',count:'15+ repos',repos:[
+    {name:'LingDong-/shan-shui-inf',desc:'Chinese landscape painting AI',tier:'T2'},
+    {name:'shader-park/shader-park-website',desc:'3D virtual sculpture park',tier:'T2'},
+    {name:'edankwan/The-Spirit',desc:'Particle WebGL art experiment',tier:'T2'},
+    {name:'fogleman/CellularForms',desc:'Digital growth forms',tier:'T2'},
+  ]},
+];
+
+// Render domain cards
+const dg = document.getElementById('domains-grid');
+DOMAIN_DATA.forEach(d=>{
+  const color = DOMAIN_COLORS[d.id];
+  const card = document.createElement('div');
+  card.className='domain-card reveal';
+  card.innerHTML=`
+    <div class="domain-header">
+      <div class="domain-dot" style="background:${color};box-shadow:0 0 8px ${color}44"></div>
+      <div class="domain-name">${d.icon} ${d.name}</div>
+      <div class="domain-count">${d.count}</div>
+    </div>
+    <ul class="repo-list">
+      ${d.repos.map(r=>`
+        <li class="repo-item">
+          <div class="repo-dot" style="background:${color}88"></div>
+          <a href="https://github.com/${r.name}" target="_blank">${r.name.split('/')[1]}</a>
+          <span style="color:var(--muted);font-size:11px;flex:1;padding-left:4px">— ${r.desc}</span>
+          <span class="repo-tier" style="color:${r.tier==='T1'?'var(--gold)':'var(--muted)'}">${r.tier}</span>
+        </li>`).join('')}
+    </ul>`;
+  dg.appendChild(card);
+});
+
+// ═══════════════════════ CANONICAL REPOS ═══════════════════════
+const CANONICAL_DATA = [
+  {name:'raytk',owner:'t3kt',domain:'td',tier:1,
+   desc:'Raymarching shader toolkit for TouchDesigner — fully node-based SDF compositing system with hundreds of signed distance field primitives, operators, and rendering modes.',
+   why:'CANONICAL PILLAR — the premier TD shader system enabling WAVGEN\'s signature geometric audio-reactive 3D visuals. Every WAVGEN performance shader passes through raytk.'},
+  {name:'touchdesigner-mcp',owner:'8beeeaaat',domain:'td',tier:1,
+   desc:'MCP (Model Context Protocol) server for TouchDesigner — enables Claude to read TD network state, modify parameters, add operators, and automate visual networks via natural language.',
+   why:'Critical 2026 integration — the Claude↔TouchDesigner bridge. Natural language now controls live WAVGEN visual systems through MCP protocol.'},
+  {name:'shader-park-core',owner:'shader-park',domain:'webgl',tier:1,
+   desc:'JavaScript → real-time WebGL shader compiler. Write JavaScript-like code that compiles to GLSL, enabling rapid generative visual iteration without raw GLSL syntax.',
+   why:'CANONICAL PILLAR — the primary creative language for WAVGEN browser worlds. Shader Park IS the WAVGEN world language for browser-based generative art.'},
+  {name:'WebGL-Fluid-Simulation',owner:'PavelDoGreat',domain:'webgl',tier:1,
+   desc:'Real-time GPU fluid simulation running entirely in a WebGL canvas — Navier-Stokes equations on the GPU with stunning visual quality, fully embeddable.',
+   why:'Iconic embeddable fluid sim — WAVGEN\'s fluid-audio-reactive worlds use this as the base renderer, with audio analysis driving turbulence and dye injection.'},
+  {name:'nodeo',owner:'theexperiential',domain:'td',tier:1,
+   desc:'Intuitive TD media server for live performance and multi-screen installations. Handles routing, cueing, video playback, and multi-output management.',
+   why:'CANONICAL PARTNER PROJECT — nodeo is the live performance media server at the core of WAVGEN\'s TD infrastructure for multi-output AV shows.'},
+  {name:'DawDreamer',owner:'DBraun',domain:'music',tier:1,
+   desc:'Python DAW with VST/VSTi plugin support, FAUST DSP integration, audio warping, and spectral analysis — the complete programmable audio pipeline.',
+   why:'DBraun Constellation anchor — WAVGEN\'s programmable audio engine. Processes VST plugins, applies FAUST DSP, exports analysis data driving visual systems.'},
+  {name:'ChucKDesigner',owner:'DBraun',domain:'td',tier:1,
+   desc:'ChucK music programming language fully integrated into TouchDesigner — audio synthesis and TD visuals in a single unified environment.',
+   why:'DBraun Constellation — live ChucK audio synthesis inside TD so WAVGEN\'s audio-visual synthesis can happen in one integrated node-based environment.'},
+  {name:'diffusers',owner:'huggingface',domain:'ai',tier:1,
+   desc:'Diffusion model library in PyTorch — Stable Diffusion, SDXL, ControlNet, video diffusion, and hundreds of specialized pipelines for image and video generation.',
+   why:'CANONICAL — the primary Python framework for WAVGEN image and video generation pipeline. Every diffusion model inference runs through HuggingFace diffusers.'},
+  {name:'ragflow',owner:'infiniflow',domain:'rag',tier:2,
+   desc:'Open-source RAG + agent engine with deep document parsing, knowledge graph construction, and multi-modal retrieval — production-grade RAG system.',
+   why:'WAVGEN knowledge retrieval engine — parses the C:\\Claude\\Knowledge base and serves semantic queries to Claude for world generation and research.'},
+  {name:'dify',owner:'langgenius',domain:'rag',tier:2,
+   desc:'Production-ready agentic workflow platform — build, deploy, and orchestrate LLM-powered agents and multi-step AI pipelines with visual workflow editor.',
+   why:'Agent orchestration for WAVGEN multi-system AI workflows — connects Claude, image gen, audio analysis, and data pipelines in production-ready flows.'},
+  {name:'n8n',owner:'n8n-io',domain:'auto',tier:2,
+   desc:'Self-hosted workflow automation with 400+ integrations and native AI agent support — the WAVGEN automation backbone for connecting all systems.',
+   why:'CANONICAL Tier 2 — orchestrates WAVGEN multi-system workflows. Connects Ableton, TD, Claude, web scraping, email, database, and cloud services.'},
+  {name:'link',owner:'Ableton',domain:'music',tier:1,
+   desc:'Ableton Link — open-source technology for beat and tempo synchronization across multiple applications and devices on a local network.',
+   why:'CANONICAL — the beat sync backbone of WAVGEN. Phase-locks Ableton Live, TouchDesigner, and any Link-enabled device so all audio-visual elements stay synchronized.'},
+];
+const cg = document.getElementById('canonical-grid');
+CANONICAL_DATA.forEach((c,i)=>{
+  const color = DOMAIN_COLORS[c.domain];
+  const card = document.createElement('div');
+  card.className='canonical-card reveal';
+  card.style.borderTop = `2px solid ${color}`;
+  card.style.transitionDelay = (i%4)*0.08+'s';
+  card.innerHTML=`
+    <div class="canon-tier-badge ${c.tier===1?'t1':'t2'}">${c.tier===1?'TIER 1 PILLAR':'TIER 2 ESSENTIAL'}</div>
+    <div class="canon-name">${c.name}</div>
+    <div class="canon-owner">by ${c.owner}</div>
+    <div class="canon-desc">${c.desc}</div>
+    <div class="canon-why">${c.why}</div>
+    <div class="canon-footer">
+      <span class="canon-tag" style="color:${color};border-color:${color}33">${DOMAIN_NAMES[c.domain]}</span>
+      <a class="canon-gh" href="https://github.com/${c.owner}/${c.name}" target="_blank">↗ ${c.owner}/${c.name}</a>
+    </div>`;
+  cg.appendChild(card);
+  revealObs.observe(card);
+});
+
+// ═══════════════════════ BRIDGE CANVAS ═══════════════════════
+(function initBridgeCanvas(){
+  const canvas = document.getElementById('bridge-canvas');
+  function drawBridge(){
+    const W = canvas.offsetWidth; canvas.width=W;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,W,320);
+    ctx.fillStyle='#090d12'; ctx.fillRect(0,0,W,320);
+
+    const cx=W/2, cy=155;
+    const s=Math.min(W/1100,1);
+    const nodes = [
+      {label:'SOUND\n(Ableton)',x:cx-420*s,y:cy,color:'#22C55E'},
+      {label:'DawDreamer\nPython DAW',x:cx-265*s,y:cy-55,color:'#22C55E'},
+      {label:'FAUST DSP\nTD-Faust',x:cx-130*s,y:cy-100,color:'#00E5FF'},
+      {label:'TouchDesigner\nCore',x:cx,y:cy,color:'#00E5FF'},
+      {label:'GLSL Shaders\nraytk',x:cx+130*s,y:cy-55,color:'#7C3AED'},
+      {label:'WebGL\nBrowser',x:cx+280*s,y:cy,color:'#7C3AED'},
+      {label:'WAVGEN\nWorlds',x:cx+420*s,y:cy+55,color:'#D4AF37'},
+      {label:'Claude +\nMCP',x:cx-55*s,y:cy+88,color:'#EF4444'},
+      {label:'n8n\nAutomation',x:cx-185*s,y:cy+105,color:'#A855F7'},
+      {label:'RAGFlow\nChroma',x:cx-320*s,y:cy+78,color:'#EF4444'},
+    ];
+    const edges2=[
+      [0,3],[1,3],[2,3],[3,4],[4,5],[5,6],[3,6],[6,3],[7,3],[7,8],[8,9],[9,7]
+    ];
+
+    // Draw edge connections
+    edges2.forEach(([a,b])=>{
+      const na=nodes[a], nb=nodes[b];
+      const grad=ctx.createLinearGradient(na.x,na.y,nb.x,nb.y);
+      grad.addColorStop(0,na.color+'66');
+      grad.addColorStop(1,nb.color+'66');
+      ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y);
+      ctx.strokeStyle=grad; ctx.lineWidth=1.5; ctx.stroke();
+    });
+
+    nodes.forEach(n=>{
+      // Glow
+      const grad=ctx.createRadialGradient(n.x,n.y,5,n.x,n.y,28);
+      grad.addColorStop(0,n.color+'55'); grad.addColorStop(1,n.color+'00');
+      ctx.beginPath(); ctx.arc(n.x,n.y,28,0,Math.PI*2);
+      ctx.fillStyle=grad; ctx.fill();
+
+      // Node
+      ctx.beginPath(); ctx.arc(n.x,n.y,8,0,Math.PI*2);
+      ctx.fillStyle=n.color; ctx.fill();
+
+      // Label
+      const lines=n.label.split('\n');
+      ctx.textAlign='center'; ctx.fillStyle='#E6EDF3';
+      lines.forEach((line,i)=>{
+        ctx.font=i===0?'600 11px Inter,sans-serif':'400 10px Inter,sans-serif';
+        ctx.fillStyle=i===0?'#E6EDF3':'#8B949E';
+        ctx.fillText(line, n.x, n.y+22+i*13);
+      });
+    });
+  }
+  drawBridge();
+  window.addEventListener('resize', drawBridge);
+})();
+
+// Bridge chain cards
+const CHAIN_DATA = [
+  {title:'The DBraun Constellation — Audio-AI in TD',nodes:[
+    {l:'DawDreamer',c:'#22C55E'},{l:'→',a:true},{l:'ChucKDesigner',c:'#00E5FF'},
+    {l:'→',a:true},{l:'TD-Faust',c:'#00E5FF'},{l:'→',a:true},{l:'PyTorchTOP',c:'#D4AF37'},
+  ]},
+  {title:'Shader Park Universe — WebGL ↔ TD ↔ Browser',nodes:[
+    {l:'shader-park-core',c:'#7C3AED'},{l:'→',a:true},{l:'sp-touchdesigner',c:'#00E5FF'},
+    {l:'→',a:true},{l:'sp-live-coding',c:'#7C3AED'},
+  ]},
+  {title:'AI Visual Pipeline',nodes:[
+    {l:'diffusers',c:'#D4AF37'},{l:'→',a:true},{l:'Steerable-Motion',c:'#D4AF37'},
+    {l:'→',a:true},{l:'FramePack',c:'#D4AF37'},{l:'→',a:true},{l:'Real-ESRGAN',c:'#D4AF37'},
+  ]},
+  {title:'WAVGEN RAG Knowledge System',nodes:[
+    {l:'Docling',c:'#EF4444'},{l:'→',a:true},{l:'Chroma',c:'#EF4444'},
+    {l:'→',a:true},{l:'RAGFlow',c:'#EF4444'},{l:'→',a:true},{l:'MemPalace',c:'#EF4444'},
+    {l:'→',a:true},{l:'Claude+MCP',c:'#00E5FF'},
+  ]},
+  {title:'OSC Signal Chain — Audio to Visual',nodes:[
+    {l:'Ableton Live',c:'#22C55E'},{l:'→',a:true},{l:'node-osc',c:'#22C55E'},
+    {l:'→',a:true},{l:'osc-web',c:'#22C55E'},{l:'→',a:true},{l:'WebGL Browser',c:'#7C3AED'},
+  ]},
+  {title:'Automation Backbone',nodes:[
+    {l:'get-shit-done',c:'#A855F7'},{l:'→',a:true},{l:'n8n',c:'#A855F7'},
+    {l:'→',a:true},{l:'browser-use',c:'#A855F7'},{l:'→',a:true},{l:'airflow',c:'#06B6D4'},
+  ]},
+];
+const cg2 = document.getElementById('chain-grid');
+CHAIN_DATA.forEach(ch=>{
+  const card=document.createElement('div');
+  card.className='chain-card reveal';
+  card.innerHTML=`
+    <div class="chain-title">${ch.title}</div>
+    <div class="chain-flow">
+      ${ch.nodes.map(n=>n.a
+        ? `<span class="ca">→</span>`
+        : `<span class="cn" style="background:${n.c}18;color:${n.c};border:1px solid ${n.c}33">${n.l}</span>`
+      ).join('')}
+    </div>`;
+  cg2.appendChild(card);
+});
+
+// ═══════════════════════ EMBED CANDIDATES ═══════════════════════
+const EMBED_DATA = [
+  {name:'WebGL-Fluid-Simulation',owner:'PavelDoGreat',domain:'webgl',
+   url:'https://paveldogreat.github.io/WebGL-Fluid-Simulation/',
+   method:'iframe',desc:'Real-time GPU Navier-Stokes fluid in the browser — audio-reactive variant for WAVGEN worlds.',
+   tags:['WebGL','Interactive','Audio-reactive','Tier 1']},
+  {name:'flow',owner:'dli',domain:'webgl',
+   url:'http://david.li/flow',method:'iframe',
+   desc:'Volumetric fluid particle flow — reference visual quality benchmark for WAVGEN aesthetic.',
+   tags:['WebGL','Particles','Fluid dynamics']},
+  {name:'shan-shui-inf',owner:'LingDong-',domain:'art',
+   url:'https://lingdong-.github.io/shan-shui-inf/',method:'iframe',
+   desc:'Infinite procedural Chinese landscape painting — algorithmic generative art at its finest.',
+   tags:['Generative','Canvas2D','Infinite']},
+  {name:'OrigamiSimulator',owner:'amandaghassaei',domain:'experimental',
+   url:'https://origamisimulator.org',method:'iframe',
+   desc:'Real-time origami folding physics in WebGL — geometric transformation for WAVGEN visual worlds.',
+   tags:['WebGL','Physics','Interactive']},
+  {name:'waves',owner:'dli',domain:'webgl',
+   url:'http://david.li/waves',method:'iframe',
+   desc:'Ocean wave simulation — reference water surface rendering quality for WAVGEN fluid worlds.',
+   tags:['WebGL','Ocean sim','Tier 1']},
+  {name:'aiexperiments-ai-duet',owner:'googlecreativelab',domain:'music',
+   url:'https://experiments.withgoogle.com/ai-duet',method:'iframe',
+   desc:'AI piano duet — play a melody, AI responds in real time. WAVGEN music interaction model.',
+   tags:['Magenta.js','TensorFlow','Music AI','Browser']},
+];
+const eg = document.getElementById('embeds-grid');
+EMBED_DATA.forEach(e=>{
+  const color = DOMAIN_COLORS[e.domain];
+  const card=document.createElement('div');
+  card.className='embed-card reveal';
+  card.innerHTML=`
+    <div class="embed-preview">
+      <div class="embed-glow" style="background:radial-gradient(ellipse,${color}14 0%,transparent 70%)"></div>
+      <a class="embed-live-btn" href="${e.url}" target="_blank">▶ LIVE DEMO</a>
+      <div class="embed-method-label">${e.method} · ${e.owner}</div>
+    </div>
+    <div class="embed-info">
+      <div class="embed-name">${e.name}</div>
+      <div class="embed-desc">${e.desc}</div>
+      <div class="embed-tags">
+        ${e.tags.map(t=>`<span class="etag">${t}</span>`).join('')}
+      </div>
+    </div>`;
+  eg.appendChild(card);
+});
+
+// ═══════════════════════ WORLD MAP TABLE ═══════════════════════
+const WORLD_MAP = [
+  {world:'touchdesigner_audio_world.html',primary:['ChucKDesigner','TD-Faust','raytk'],secondary:['node-osc','Ableton/link','td-scope'],domain:'td'},
+  {world:'ableton_world.html',primary:['Ableton/link','magenta-studio'],secondary:['DawDreamer','osc-web','node-osc'],domain:'music'},
+  {world:'spectral_processing_world.html',primary:['DawDreamer','TD-Faust'],secondary:['vstoscspectrum','ccrma/chuck'],domain:'music'},
+  {world:'dub_techniques_world.html',primary:['DawDreamer','ccrma/chuck'],secondary:['node-osc','OSCAR'],domain:'music'},
+  {world:'composition_music_world.html',primary:['magenta-studio','ai-duet'],secondary:['DawDreamer','Ableton/link','Tone.js'],domain:'music'},
+  {world:'daw_workflows_world.html',primary:['DawDreamer','n8n'],secondary:['remotion','airflow'],domain:'auto'},
+  {world:'serverless_world.html',primary:['airflow','diagrams'],secondary:['docling','ragflow'],domain:'data'},
+  {world:'distributed_systems_world.html',primary:['apache/kafka','apache/spark'],secondary:['chroma-core/chroma'],domain:'data'},
+  {world:'webgl_world (future)',primary:['shader-park-core','webgl-noise','PavelDoGreat'],secondary:['dli/flow','raytk'],domain:'webgl'},
+  {world:'ai_visual_world (future)',primary:['instant-ngp','stylegan3','diffusers'],secondary:['Steerable-Motion','FramePack'],domain:'ai'},
+  {world:'realtime_world (future)',primary:['raytk','touchfluids'],secondary:['GollyGang/ready','cellular'],domain:'realtime'},
+];
+const tb = document.getElementById('world-table-body');
+WORLD_MAP.forEach(w=>{
+  const color = DOMAIN_COLORS[w.domain];
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><span class="wfile">${w.world}</span></td>
+    <td>${w.primary.map(r=>`<span class="rpill" style="color:${color};border-color:${color}22">${r}</span>`).join('')}</td>
+    <td>${w.secondary.map(r=>`<span class="rpill">${r}</span>`).join('')}</td>
+    <td><span style="color:${color};font-size:12px">${DOMAIN_NAMES[w.domain]}</span></td>`;
+  tb.appendChild(tr);
+});
+
+// ═══════════════════════ FUTURE INTEGRATION CANVAS ═══════════════════════
+(function initFutureCanvas(){
+  const canvas = document.getElementById('future-canvas');
+  let animT=0;
+  function draw(){
+    const W=canvas.offsetWidth; canvas.width=W;
+    const H=420; canvas.height=H;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#090d12'; ctx.fillRect(0,0,W,H);
+
+    const dt=0.016;
+    animT+=dt;
+    const pulse=lagFutureAnim.update(0.5+Math.sin(animT*0.8)*0.4, dt);
+
+    // Define integration pathway nodes
+    const nodes=[
+      {l:'WAVGEN\nKnowledge',x:W*0.08,y:H*0.35,c:'#D4AF37',r:22},
+      {l:'Docling\nParser',x:W*0.21,y:H*0.25,c:'#EF4444',r:16},
+      {l:'Chroma\nVector DB',x:W*0.34,y:H*0.35,c:'#EF4444',r:18},
+      {l:'RAGFlow\nEngine',x:W*0.47,y:H*0.25,c:'#EF4444',r:18},
+      {l:'MemPalace\nMemory',x:W*0.47,y:H*0.65,c:'#A855F7',r:16},
+      {l:'Claude +\nMCP Servers',x:W*0.60,y:H*0.45,c:'#00E5FF',r:24},
+      {l:'TouchDesigner\nMCP',x:W*0.73,y:H*0.30,c:'#00E5FF',r:18},
+      {l:'n8n\nWorkflows',x:W*0.73,y:H*0.65,c:'#A855F7',r:16},
+      {l:'WAVGEN\nWorlds',x:W*0.87,y:H*0.45,c:'#D4AF37',r:22},
+      {l:'Dify\nAgents',x:W*0.60,y:H*0.18,c:'#EF4444',r:16},
+      {l:'Real-ESRGAN\n+ FramePack',x:W*0.87,y:H*0.22,c:'#D4AF37',r:14},
+    ];
+    const edgesFut=[
+      [0,1],[1,2],[2,3],[3,5],[4,5],[5,6],[5,7],[5,8],[5,9],[9,8],[6,8],[7,8],[10,8]
+    ];
+
+    // Draw edges with animated dash
+    edgesFut.forEach(([a,b])=>{
+      const na=nodes[a],nb=nodes[b];
+      const grad=ctx.createLinearGradient(na.x,na.y,nb.x,nb.y);
+      grad.addColorStop(0,na.c+'88'); grad.addColorStop(1,nb.c+'88');
+      ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y);
+      ctx.strokeStyle=grad; ctx.lineWidth=1.5;
+      ctx.setLineDash([6,8]); ctx.lineDashOffset=-animT*15;
+      ctx.stroke(); ctx.setLineDash([]);
+    });
+
+    // Draw nodes
+    nodes.forEach(n=>{
+      const glow=ctx.createRadialGradient(n.x,n.y,n.r*0.5,n.x,n.y,n.r*2.5);
+      glow.addColorStop(0,n.c+(pulse>0.6?'44':'22'));
+      glow.addColorStop(1,n.c+'00');
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r*2.5,0,Math.PI*2);
+      ctx.fillStyle=glow; ctx.fill();
+
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=n.c+'22'; ctx.fill();
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.strokeStyle=n.c; ctx.lineWidth=1.5; ctx.stroke();
+
+      const lines=n.l.split('\n');
+      ctx.textAlign='center';
+      lines.forEach((line,i)=>{
+        ctx.font=i===0?`600 ${Math.max(9,n.r*0.5+1)}px Inter,sans-serif`:`400 ${Math.max(8,n.r*0.45)}px Inter,sans-serif`;
+        ctx.fillStyle=i===0?n.c:'#8B949E';
+        ctx.fillText(line, n.x, n.y+n.r+12+i*12);
+      });
+    });
+
+    // Title
+    ctx.font='600 11px Inter,sans-serif';
+    ctx.fillStyle='#8B949E';
+    ctx.textAlign='left';
+    ctx.fillText('WAVGEN FUTURE INTEGRATION PATHWAY — RAG · LOCAL AI · REALTIME', 20, 20);
+  }
+
+  function loop(){ draw(); requestAnimationFrame(loop); }
+  loop();
+  window.addEventListener('resize',()=>{});
+})();
+
+// ═══════════════════════ INTERSECTION OBSERVER — SCROLL REVEAL ═══════════════════════
+const revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('revealed'), 60);
+    }
+  });
+},{threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.reveal, .domain-card, .canonical-card, .embed-card, .chain-card').forEach((el,i)=>{
+  el.style.transitionDelay = (i%6)*0.07+'s';
+  revealObs.observe(el);
+});
+
+// ═══════════════════════ JUMP NAVIGATION ═══════════════════════
+function jumpTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════ UTILITY ═══════════════════════
+function hexToRgba(hex, alpha){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+</script>
+</body>
+</html>
+                                                                                                         
