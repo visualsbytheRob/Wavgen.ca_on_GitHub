@@ -7,13 +7,29 @@ Layout for WAVGEN interactive world pages integrated under the site's sticky hea
 
 - Extends base.njk so all worlds get the site nav, footer, GSAP, and global scripts.
 - Wraps world content in .wavgen-world to provide a CSS scoping root.
-- Overrides the world's own sticky nav to sit below the 64px site header.
-- Suppresses any world-injected top-level nav that would duplicate site navigation.
+- Injects a sticky breadcrumb bar (Row 2) below the site header.
+- Repositions the world's own nav to act as a section jump nav (Row 3).
+- Suppresses any world-injected top-level nav logo/brand that would duplicate site navigation.
 - Keeps fixed-position particle/bg canvases visually below the site header.
 
-Header height: 64px  (py-4 = 32px padding + text-2xl = 32px line-height in navigation.njk)
-World nav z-index override: 20 (below site header z-30, above page content z-10)
+Three-row sticky stack:
+  Row 1 — Site header        64px  sticky top:0   z-30  (navigation.njk, base.njk)
+  Row 2 — Breadcrumb         36px  sticky top:64  z-25  (.wg-breadcrumb, injected here)
+  Row 3 — World jump nav     ~60px sticky top:100 z-20  (world's own <nav>, repositioned)
+
+scroll-margin-top on [id] anchors: 160px  (64 + 36 + 60)
 #}
+
+{# ── Row 2: Breadcrumb — sticky below the 64px site header ──────────────── #}
+<nav class="wg-breadcrumb" aria-label="breadcrumb">
+  <a href="/">Home</a>
+  <span aria-hidden="true">›</span>
+  {% if domain %}
+  <a href="/{{ domain }}/">{{ domain | capitalize }}</a>
+  <span aria-hidden="true">›</span>
+  {% endif %}
+  <span>{{ title | replace(" — Visual Learning World", "") }}</span>
+</nav>
 
 {# World content is scoped under .wavgen-world so CSS overrides below beat the world's own
    inline <style> selectors (0,1,1 specificity beats bare element selectors 0,0,1). #}
@@ -28,47 +44,124 @@ World nav z-index override: 20 (below site header z-30, above page content z-10)
 {% endif %}
 
 <style>
-  /* ── Suppress world-injected top nav — site header replaces it ───────── */
-  /* NOTE: only match .wg-nav exactly; do NOT use [class*="wg-nav"] because
-     that substring also matches .wg-jump-nav and would hide the jump nav. */
+  /* ══════════════════════════════════════════════════════
+     ROW 2 — BREADCRUMB (sticky below 64px site header)
+  ══════════════════════════════════════════════════════ */
+  .wg-breadcrumb {
+    position: sticky;
+    top: 64px;
+    z-index: 25;
+    background: #2c0077;           /* wavgen-dark-purple — matches site header */
+    padding: 0 1.5rem;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .wg-breadcrumb a {
+    color: #fbbf24;                /* wavgen-yellow */
+    text-decoration: none;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .wg-breadcrumb a:hover { color: #fde68a; }
+  .wg-breadcrumb span[aria-hidden] {
+    color: rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+  }
+  .wg-breadcrumb > span:last-child {
+    color: rgba(255, 255, 255, 0.75);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     SUPPRESS old-style .wg-nav class (exact match only)
+     NOTE: do NOT use [class*="wg-nav"] — that would also
+     match .wg-jump-nav and hide the jump nav.
+  ══════════════════════════════════════════════════════ */
   .wavgen-world .wg-nav { display: none !important; }
 
-  /* ── Jump nav: sticky below the 64px site header ─────────────────────── */
-  /* Handles worlds that use the .wg-jump-nav class */
-  .wavgen-world .wg-jump-nav {
+  /* ══════════════════════════════════════════════════════
+     ROW 3 — WORLD JUMP NAV (sticky below header + breadcrumb)
+     Overrides position:fixed or position:sticky top:0 set
+     by each world's own <style> block.
+  ══════════════════════════════════════════════════════ */
+  .wavgen-world nav {
     position: sticky !important;
-    top: 64px !important;
-    z-index: 20 !important;   /* below site header z-30, above content z-10 */
+    top: 100px !important;         /* 64px header + 36px breadcrumb */
+    z-index: 20 !important;        /* below site header z-30, above content */
+    left: auto !important;         /* undo fixed-element left:0 */
+    right: auto !important;        /* undo fixed-element right:0 */
+    overflow-x: auto !important;
+    scrollbar-width: none;
+  }
+  .wavgen-world nav::-webkit-scrollbar { display: none; }
+
+  /* Hide world nav logo/brand — redundant with site header + breadcrumb ─── */
+  .wavgen-world nav .nav-logo,
+  .wavgen-world nav .nav-brand,
+  .wavgen-world nav .nav-brand-group { display: none !important; }
+
+  /* Ensure inner containers don't wrap and scroll horizontally ────────────── */
+  .wavgen-world nav .nav-inner,
+  .wavgen-world nav .nav-links {
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    overflow-x: auto !important;
+    scrollbar-width: none;
+  }
+  .wavgen-world nav .nav-inner::-webkit-scrollbar,
+  .wavgen-world nav .nav-links::-webkit-scrollbar { display: none; }
+
+  /* ul.nav-links (ml, quantum use <ul>) ────────────────────────────────────── */
+  .wavgen-world nav ul.nav-links {
+    list-style: none;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
   }
 
-  /* ── Offset world's bare <nav> below the site header ─────────────────── */
-  /* Handles current worlds that use a bare <nav> with position:fixed/sticky */
-  .wavgen-world nav:not([class*="mobile"]) {
-    top: 64px !important;
-    z-index: 20 !important;
+  /* ── Remove padding-top that worlds added to compensate for fixed nav ───── */
+  /* Only ml uses .world-main with padding-top; reset it now nav is in flow. */
+  .wavgen-world .world-main { padding-top: 0 !important; }
+
+  /* ══════════════════════════════════════════════════════
+     SECTION ANCHOR SCROLL OFFSET
+     Keeps section headings visible below the full nav stack
+     when a jump-nav link is clicked.
+     160px = 64px header + 36px breadcrumb + 60px jump nav
+  ══════════════════════════════════════════════════════ */
+  .wavgen-world [id] {
+    scroll-margin-top: 160px;
   }
 
-  /* ── Ensure no overflow clipping breaks sticky positioning ────────────── */
+  /* ══════════════════════════════════════════════════════
+     PREVENT OVERFLOW CLIPPING FROM BREAKING STICKY
+  ══════════════════════════════════════════════════════ */
   .wavgen-world {
     overflow: visible !important;
   }
 
-  /* ── Clip hero canvases so they don't underrun the site header ─────────── */
+  /* ══════════════════════════════════════════════════════
+     CANVAS CONSTRAINTS
+  ══════════════════════════════════════════════════════ */
+
+  /* Hero canvases: clip so they don't underrun the site header */
   .wavgen-world canvas[id*="hero"],
   .wavgen-world canvas[id*="Hero"],
   .wavgen-world .hero-canvas {
     max-height: calc(100vh - 64px);
   }
 
-  /* ── Fixed particle/background canvases: push down so they start below header */
+  /* Fixed particle/background canvases: push down below header */
   .wavgen-world #particle-canvas,
   .wavgen-world #bg-canvas,
   .wavgen-world canvas.bg-canvas {
     top: 64px !important;
     height: calc(100vh - 64px) !important;
   }
-
-  /* ── Prevent world body/html resets from escaping the .wavgen-world scope ─
-     The world's * { margin:0; padding:0; } is inline so we can't re-scope it,
-     but box-sizing: border-box is benign and already set by Tailwind preflight. */
 </style>
