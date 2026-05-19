@@ -207,6 +207,51 @@ body {
 .wavgen-world [id] {
   scroll-margin-top: 160px; /* 144px nav stack + 16px breathing room */
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   9. HEADER PROTECTION
+   Bug 1 fix: world CSS nav { position: fixed } hijacks the site header nav.
+   Use body > header (direct child) so we target only the site header,
+   not any header element inside world content.
+   ═══════════════════════════════════════════════════════════════════════ */
+body > header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10000 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* The nav INSIDE the site header must stay in normal flow — explicitly
+   undo whatever world CSS does with nav { position: fixed / absolute }. */
+body > header nav,
+body > header nav ul,
+body > header nav li,
+body > header nav a {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   10. BODY OVERFLOW — BELT-AND-SUSPENDERS
+   Bug 2 fix: Tailwind .sticky class not compiled → header position is static.
+   Some browsers also need the shorthand reset, not just the longhands.
+   overflow-y MUST stay visible/auto — setting it to hidden kills sticky.
+   ═══════════════════════════════════════════════════════════════════════ */
+html {
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}
+body {
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+}
 </style>
 
 <script>
