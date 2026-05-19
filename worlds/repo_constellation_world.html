@@ -1082,7 +1082,7 @@ CANONICAL_DATA.forEach((c,i)=>{
       <a class="canon-gh" href="https://github.com/${c.owner}/${c.name}" target="_blank">↗ ${c.owner}/${c.name}</a>
     </div>`;
   cg.appendChild(card);
-  revealObs.observe(card);
+  /* revealObs defined below — global querySelectorAll handles observation */
 });
 
 // ═══════════════════════ BRIDGE CANVAS ═══════════════════════

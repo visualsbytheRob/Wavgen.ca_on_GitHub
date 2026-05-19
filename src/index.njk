@@ -127,14 +127,29 @@ footerTagline: Exploring the intersection of creativity and technology.
 </section>
 
 <!-- GitHub Repo Constellation -->
-<section id="github-constellation" style="height: calc(100vh - 64px); position: relative; background: #050a1a;">
-  <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; padding: 0 2rem; height: 36px; background: #2c0077; border-bottom: 1px solid rgba(255,255,255,0.08);">
-    <span style="color: #FEDD00; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;">GitHub Constellation</span>
-    <a href="#recent-releases" style="margin-left: auto; font-size: 0.72rem; color: rgba(255,255,255,0.5); text-decoration: none;" aria-label="Skip to recent releases">↓ Scroll past</a>
-  </div>
+<section id="github-constellation" style="height: calc(100vh - 64px); position: relative; display: flex; flex-direction: column; background: #050a1a;">
+
+  {# Breadcrumb — sticky within this section, sits at 64px (below site header) #}
+  <nav aria-label="Constellation navigation" style="position: sticky; top: 64px; z-index: 50; flex-shrink: 0; display: flex; align-items: center; gap: 0.4rem; padding: 0 2rem; height: 36px; background: #2c0077; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.75rem; white-space: nowrap; overflow: hidden;">
+    <a href="/" style="color: rgba(255,255,255,0.6); text-decoration: none;">Home</a>
+    <span style="color: rgba(255,255,255,0.3);">›</span>
+    <span style="color: rgba(255,255,255,0.9); font-weight: 500;">GitHub Constellation</span>
+    <span style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center;">
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('hero')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Galaxy</button>
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('constellation')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Graph</button>
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('domains')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Domains</button>
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('canonical')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Canonical</button>
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('bridges')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Bridges</button>
+      <button onclick="document.getElementById('constellation-frame').contentWindow.document.getElementById('worldmap')?.scrollIntoView({behavior:'smooth'})" style="background: none; border: none; color: rgba(255,255,255,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 0 0.5rem;">Worlds</button>
+      <a href="#recent-releases" style="color: rgba(255,255,255,0.3); font-size: 0.68rem; text-decoration: none; padding: 0 0.5rem;">↓</a>
+    </span>
+  </nav>
+
+  {# World iframe — fills the remaining height (100vh - 64px site header - 36px breadcrumb) #}
   <iframe
+    id="constellation-frame"
     src="/worlds/repo_constellation_world.html"
-    style="display: block; width: 100%; height: 100%; border: none;"
+    style="display: block; width: 100%; flex: 1; border: none;"
     title="GitHub Repository Constellation"
     loading="lazy"
   ></iframe>
