@@ -12,7 +12,9 @@
     "debug": "DEBUG=Eleventy* eleventy",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
-    "refresh:feeds": "node scripts/refresh-latest-feeds.js"
+    "refresh:feeds": "node scripts/refresh-latest-feeds.js",
+    "refresh:projects": "node scripts/refresh-projects.js",
+    "refresh:monthly": "npm run refresh:feeds && npm run refresh:projects"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",

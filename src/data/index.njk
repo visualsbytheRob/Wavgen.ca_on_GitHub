@@ -36,12 +36,28 @@ This file defines the Data & Tech landing page for the site.
 } %}
 {% include "components/hero.njk" %}
 
-<!-- Data App Embed -->
+<!-- Interactive projects (refreshed monthly from scripts/refresh-projects.js) -->
 <section class="py-20 bg-gray-900">
     <div class="container mx-auto px-4">
-        <div id="data-app-embed-container">
-            <!-- Data app embed will be rendered here by JavaScript -->
+        <div class="flex items-baseline justify-between mb-2">
+            <h2 class="text-3xl font-bold text-white">Interactive projects</h2>
+            <span class="text-xs text-gray-500">Auto-refreshed monthly · newest first</span>
         </div>
+        <p class="text-gray-400 mb-8">Live demos and playgrounds built on the site — synths, shaders, generative systems.</p>
+        {% if featuredProjects.items and featuredProjects.items.length > 0 %}
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for project in featuredProjects.items %}
+                    <a href="{{ project.url }}" class="group block bg-black/40 hover:bg-black/60 border border-white/10 hover:border-wavgen-yellow/60 rounded-xl p-5 transition-colors">
+                        <span class="inline-block text-xs px-2 py-0.5 rounded bg-wavgen-purple/40 text-wavgen-yellow uppercase tracking-wide font-semibold mb-3">{{ project.tag }}</span>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-wavgen-yellow transition-colors">{{ project.title }}</h3>
+                        <p class="text-gray-300 text-sm mb-4">{{ project.description }}</p>
+                        <span class="text-wavgen-yellow text-sm">Explore →</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-400">No projects yet.</p>
+        {% endif %}
     </div>
 </section>
 
@@ -121,5 +137,3 @@ This file defines the Data & Tech landing page for the site.
         </div>
     </div>
 </section>
-
-<script src="/js/data-app-embed.js"></script>
