@@ -47,7 +47,7 @@ async function refreshTracks() {
       type: embedMatch[1],
       id: embedMatch[2],
       page_url: pageUrl,
-      embed_url: `https://bandcamp.com/EmbeddedPlayer/v=2/${embedMatch[1]}=${embedMatch[2]}/size=large/bgcol=181818/linkcol=facd1c/tracklist=false/transparent=true/`
+      embed_url: `https://bandcamp.com/EmbeddedPlayer/v=2/${embedMatch[1]}=${embedMatch[2]}/size=large/bgcol=181818/linkcol=facd1c/transparent=true/`
     });
   }
   return items;
