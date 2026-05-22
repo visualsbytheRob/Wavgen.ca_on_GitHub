@@ -1,5 +1,42 @@
 {
-  "lastUpdated": null,
-  "note": "Waiting for first scheduled run.",
-  "items": []
+  "lastUpdated": "2026-05-22",
+  "note": "Initial seed — covers roughly the last 30–60 days for breadth. Daily 24-hour runs start tomorrow.",
+  "items": [
+    {
+      "title": "TouchDesigner build 2025.32820 lands, POPs reshape 3D workflow",
+      "url": "https://derivative.ca/UserGuide/Release_Notes",
+      "source": "Derivative",
+      "date": "2026-05-06",
+      "summary": "Latest 2025-cycle build. New POPs (Text, Trace, Triangulate) shift 3D work onto a high-performance node family — a real rethink.",
+      "subtopic": "touchdesigner-signal-flow",
+      "subtopicUrl": "/video/touchdesigner-signal-flow/"
+    },
+    {
+      "title": "OpenAI shuts down the Sora app, API to follow in September",
+      "url": "https://en.wikipedia.org/wiki/Sora_(text-to-video_model)",
+      "source": "OpenAI",
+      "date": "2026-04-26",
+      "summary": "Standalone Sora product retired April 26. Compute costs and falling usage cited. Sora 2 Pro continues inside aggregator platforms.",
+      "subtopic": "ai-video",
+      "subtopicUrl": "/video/ai-video/"
+    },
+    {
+      "title": "Runway becomes a multi-model hub for AI video",
+      "url": "https://releasebot.io/updates/runwayai",
+      "source": "Runway",
+      "date": "2026-05-12",
+      "summary": "Rather than ship a successor, Runway aggregates Kling 3.0, Veo, Seedance 2.0, Sora 2 Pro. Seedance brings keyframe + audio control.",
+      "subtopic": "ai-video",
+      "subtopicUrl": "/video/ai-video/"
+    },
+    {
+      "title": "2026 TouchDesigner community tools roundup",
+      "url": "https://interactiveimmersive.io/blog/touchdesigner-resources/2026-touchdesigner-community-tools/",
+      "source": "Interactive & Immersive HQ",
+      "date": "2026-04-10",
+      "summary": "Annual community-tools survey — palettes, utilities, and shared components worth a scan before the next project.",
+      "subtopic": "touchdesigner-signal-flow",
+      "subtopicUrl": "/video/touchdesigner-signal-flow/"
+    }
+  ]
 }

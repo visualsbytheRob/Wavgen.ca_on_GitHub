@@ -1,5 +1,51 @@
 {
-  "lastUpdated": null,
-  "note": "Waiting for first scheduled run.",
-  "items": []
+  "lastUpdated": "2026-05-22",
+  "note": "Initial seed — covers roughly the last 30–60 days for breadth. Daily 24-hour runs start tomorrow.",
+  "items": [
+    {
+      "title": "Claude Opus 4.7 launches alongside Claude Design",
+      "url": "https://www.anthropic.com/news/claude-opus-4-7",
+      "source": "Anthropic",
+      "date": "2026-04-16",
+      "summary": "Frontier Claude model with stronger long-running coding and higher-resolution vision. Paired with Claude Design for prototypes, slides, and one-pagers.",
+      "subtopic": "genai",
+      "subtopicUrl": "/data/genai/"
+    },
+    {
+      "title": "Hugging Face ships ml-intern: open-source agent that runs LLM post-training",
+      "url": "https://github.com/huggingface/ml-intern",
+      "source": "Hugging Face",
+      "date": "2026-04-21",
+      "summary": "Built on smolagents. Reads papers, picks datasets, runs training scripts, iterates on eval. Reportedly beats Claude Code on the same scientific-reasoning benchmark.",
+      "subtopic": "ai-agents",
+      "subtopicUrl": "/data/ai-agents/"
+    },
+    {
+      "title": "AI agent framework field consolidates to six majors",
+      "url": "https://medium.com/@richardhightower/the-agent-framework-landscape-langchain-deep-agents-vs-claude-agent-sdk-1dfed14bb311",
+      "source": "Medium",
+      "date": "2026-03-25",
+      "summary": "Claude Agent SDK, Strands (AWS), LangGraph, OpenAI Agents SDK, CrewAI, AG2 — the rest are fading. Pick based on lock-in tolerance.",
+      "subtopic": "ai-agents",
+      "subtopicUrl": "/data/ai-agents/"
+    },
+    {
+      "title": "Hugging Face: Spring 2026 state of open source",
+      "url": "https://huggingface.co/blog/huggingface/state-of-os-hf-spring-2026",
+      "source": "Hugging Face",
+      "date": "2026-04-08",
+      "summary": "Mean size of downloaded open models jumped from 827M (2023) to 20.8B (2025). Quantization and MoE doing the heavy lifting.",
+      "subtopic": "ml",
+      "subtopicUrl": "/data/ml/"
+    },
+    {
+      "title": "LangChain open-sources Deep Agents — a Claude-Code-style replica",
+      "url": "https://medium.com/@richardhightower/deep-agents-langchain-just-open-sourced-a-replica-of-claude-code-69e72ced54b8",
+      "source": "Medium",
+      "date": "2026-03-15",
+      "summary": "Subagents, lifecycle hooks, and a planning loop modeled on Claude Code's architecture. The agent-engine pattern is now commodity.",
+      "subtopic": "ai-agents",
+      "subtopicUrl": "/data/ai-agents/"
+    }
+  ]
 }

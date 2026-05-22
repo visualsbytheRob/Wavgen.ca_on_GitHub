@@ -1,5 +1,86 @@
 {
-  "lastUpdated": null,
-  "note": "Waiting for first scheduled run.",
-  "items": []
+  "lastUpdated": "2026-05-22",
+  "note": "Initial seed — top picks across all four sections, last ~30–60 days. Daily 24-hour runs start tomorrow.",
+  "items": [
+    {
+      "title": "Ableton Live 12.4 ships with Link Audio and Push/Move overhaul",
+      "url": "https://synthanatomy.com/2026/04/ableton-live-12-stay-creative-and-in-focus-an-overview-of-the-new-features.html",
+      "source": "Synth Anatomy",
+      "date": "2026-05-05",
+      "summary": "Public release May 5. Link Audio sync, MIDI mapping for Push, expanded Delay LFO modes, and tighter Move workflow.",
+      "section": "music",
+      "subtopic": "ableton",
+      "subtopicUrl": "/music/ableton/"
+    },
+    {
+      "title": "Claude Opus 4.7 launches alongside Claude Design",
+      "url": "https://www.anthropic.com/news/claude-opus-4-7",
+      "source": "Anthropic",
+      "date": "2026-04-16",
+      "summary": "Frontier Claude with stronger long-running coding and higher-resolution vision. Paired with Claude Design for prototypes and slides.",
+      "section": "data",
+      "subtopic": "genai",
+      "subtopicUrl": "/data/genai/"
+    },
+    {
+      "title": "TouchDesigner 2025.32820 lands, POPs reshape 3D workflow",
+      "url": "https://derivative.ca/UserGuide/Release_Notes",
+      "source": "Derivative",
+      "date": "2026-05-06",
+      "summary": "Latest 2025-cycle build. New Point Operators (Text, Trace, Triangulate) shift 3D work onto a high-performance node family.",
+      "section": "video",
+      "subtopic": "touchdesigner-signal-flow",
+      "subtopicUrl": "/video/touchdesigner-signal-flow/"
+    },
+    {
+      "title": "Midjourney V8 Alpha ships, V8.1 already in preview",
+      "url": "https://cogitodaily.com/articles/midjourney-2026-review-ai-art-generator-1768618831688",
+      "source": "CogitoDaily",
+      "date": "2026-04-15",
+      "summary": "V8 launched March 17 with ~5x faster generation, native 2K via --hd, and better text rendering. V8.1 already in preview.",
+      "section": "art",
+      "subtopic": "ai-art",
+      "subtopicUrl": "/art/ai-art/"
+    },
+    {
+      "title": "MUTEK Montréal 2026 announces full lineup, Aug 25–30",
+      "url": "https://montreal.mutek.org/en/news/mutek-montreal-announces-full-2026-lineup",
+      "source": "MUTEK Montréal",
+      "date": "2026-05-08",
+      "summary": "120 artists from 28 countries, 80+ live AV performances, plus a public installation village in Quartier des Spectacles.",
+      "section": "music",
+      "subtopic": "audiovisual-performance",
+      "subtopicUrl": "/music/audiovisual-performance/"
+    },
+    {
+      "title": "Hugging Face ships ml-intern: agent that runs LLM post-training",
+      "url": "https://github.com/huggingface/ml-intern",
+      "source": "Hugging Face",
+      "date": "2026-04-21",
+      "summary": "Open-source agent that reads papers, picks datasets, runs training, iterates. Reportedly beats Claude Code on a scientific-reasoning benchmark.",
+      "section": "data",
+      "subtopic": "ai-agents",
+      "subtopicUrl": "/data/ai-agents/"
+    },
+    {
+      "title": "OpenAI shuts down the Sora app, API to follow in September",
+      "url": "https://en.wikipedia.org/wiki/Sora_(text-to-video_model)",
+      "source": "OpenAI",
+      "date": "2026-04-26",
+      "summary": "Standalone Sora retired April 26. Compute costs and falling usage cited. Sora 2 Pro continues inside aggregator platforms.",
+      "section": "video",
+      "subtopic": "ai-video",
+      "subtopicUrl": "/video/ai-video/"
+    },
+    {
+      "title": "\"Neverness To Everness\" launch ignites AI-art controversy in 24 hours",
+      "url": "https://backyarddrunkard.com/games/neverness-to-everness-ai-controversy-explained/",
+      "source": "Backyard Drunkard",
+      "date": "2026-05-03",
+      "summary": "Game shipped April 29 amid allegations of AI-generated assets. Hotta Studio silent. The workflow-vs-final-output question recurs.",
+      "section": "art",
+      "subtopic": "ai-art",
+      "subtopicUrl": "/art/ai-art/"
+    }
+  ]
 }

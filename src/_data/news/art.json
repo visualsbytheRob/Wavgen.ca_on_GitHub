@@ -1,5 +1,42 @@
 {
-  "lastUpdated": null,
-  "note": "Waiting for first scheduled run.",
-  "items": []
+  "lastUpdated": "2026-05-22",
+  "note": "Initial seed — covers roughly the last 30–90 days for breadth. Art is a quieter beat than music or data; daily runs may often be sparse.",
+  "items": [
+    {
+      "title": "\"Neverness To Everness\" launch ignites AI-art controversy in 24 hours",
+      "url": "https://backyarddrunkard.com/games/neverness-to-everness-ai-controversy-explained/",
+      "source": "Backyard Drunkard",
+      "date": "2026-05-03",
+      "summary": "Game shipped April 29 amid allegations of AI-generated assets. Hotta Studio silent. The workflow-vs-final-output question keeps recurring.",
+      "subtopic": "ai-art",
+      "subtopicUrl": "/art/ai-art/"
+    },
+    {
+      "title": "Midjourney V8 Alpha ships, V8.1 already in preview",
+      "url": "https://cogitodaily.com/articles/midjourney-2026-review-ai-art-generator-1768618831688",
+      "source": "CogitoDaily",
+      "date": "2026-04-15",
+      "summary": "V8 launched March 17 with ~5x faster generation, native 2K via --hd, and better text rendering. V8.1 already in alpha.midjourney.com preview.",
+      "subtopic": "ai-art",
+      "subtopicUrl": "/art/ai-art/"
+    },
+    {
+      "title": "Codrops: WebGL for designers, not just engineers",
+      "url": "https://tympanus.net/codrops/2026/03/04/webgl-for-designers-creating-interactive-shader-driven-graphics-directly-in-the-browser/",
+      "source": "Codrops",
+      "date": "2026-03-04",
+      "summary": "Long-form tutorial on shader-driven browser graphics aimed at designers rather than engineers. Worth a Sunday afternoon.",
+      "subtopic": "webgl",
+      "subtopicUrl": "/art/webgl/"
+    },
+    {
+      "title": "Verse × EXPANDED.ART: Generative Abstraction and Beyond, Part III",
+      "url": "https://verse.works/exhibitions/generative-abstraction-part-3",
+      "source": "Verse",
+      "date": "2026-04-01",
+      "summary": "Third installment of the algorithm-and-code abstraction survey. Both in-person (Berlin) and online — long-form generative plus open editions.",
+      "subtopic": "generative-art",
+      "subtopicUrl": "/art/generative-art/"
+    }
+  ]
 }
