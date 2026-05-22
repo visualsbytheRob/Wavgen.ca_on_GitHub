@@ -240,6 +240,26 @@ footerTagline: Exploring the intersection of creativity and technology.
       </div>
     </div>
     <div class="h-px bg-white/10 mt-12"></div>
+
+    <!-- Interactive projects (top 6, refreshed monthly — full set on /data/) -->
+    <div class="mt-12">
+      <div class="flex items-baseline justify-between mb-4">
+        <h4 class="text-2xl font-semibold">Interactive projects</h4>
+        <a href="/data/" class="text-sm text-wavgen-yellow underline hover:text-white">See all →</a>
+      </div>
+      {% if featuredProjects.items and featuredProjects.items.length > 0 %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for project in featuredProjects.items | head(6) %}
+            <a href="{{ project.url }}" class="group block bg-black/40 hover:bg-black/60 border border-white/10 hover:border-wavgen-yellow/60 rounded-xl p-5 transition-colors">
+              <span class="inline-block text-xs px-2 py-0.5 rounded bg-wavgen-purple/40 text-wavgen-yellow uppercase tracking-wide font-semibold mb-3">{{ project.tag }}</span>
+              <h3 class="text-xl font-bold text-white mb-2 group-hover:text-wavgen-yellow transition-colors">{{ project.title }}</h3>
+              <p class="text-gray-300 text-sm mb-4">{{ project.description }}</p>
+              <span class="text-wavgen-yellow text-sm">Explore →</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
   </div>
   </section>
 
