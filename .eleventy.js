@@ -49,6 +49,13 @@ module.exports = function(eleventyConfig) {
   
   // Home page images (hero backgrounds, featured content)
   eleventyConfig.addCollection("homeImages", createImageCollection("home", "home"));
+
+  // Site Log timeline: merges manual diary entries and automated news briefings, newest first
+  eleventyConfig.addCollection("logTimeline", function(collectionApi) {
+    return collectionApi.getAll()
+      .filter(item => item.data.tags && (item.data.tags.includes("diary") || item.data.tags.includes("briefing")))
+      .sort((a, b) => b.date - a.date);
+  });
   
   // Art section collections
   eleventyConfig.addCollection("paintingImages", createImageCollection("art/painting", "art/painting"));

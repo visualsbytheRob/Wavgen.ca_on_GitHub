@@ -1,6 +1,6 @@
 # Daily news loop
 
-A Claude Code on the web scheduled trigger runs once each morning. It searches the web for news relevant to each section of wavgen.ca, writes per-section + aggregated JSON feeds into `src/_data/news/`, writes a daily briefing markdown into `briefings/`, commits to `main`, and emails the briefing.
+A Claude Code on the web scheduled trigger runs once each morning. It searches the web for news relevant to each section of wavgen.ca, writes per-section + aggregated JSON feeds into `src/_data/news/`, writes a daily briefing markdown into `src/diary/news/`, commits to `main`, and emails the briefing.
 
 ## Architecture
 
@@ -11,11 +11,11 @@ Daily 7am ET (schedule trigger on claude.ai/code)
 Fresh Claude Code session runs THE PROMPT below
    │
    ├─ Reads subtopic slugs from src/{music,video,data,art}/
-   ├─ Reads last 7 days of briefings/ for dedup
+   ├─ Reads last 7 days of src/diary/news/ for dedup
    ├─ Web searches per section (3-5 queries each)
    ├─ Curates 3-5 items per section in Rob's editorial voice
    ├─ Writes src/_data/news/{music,video,data,art,aggregated}.json
-   ├─ Writes briefings/YYYY-MM-DD.md
+   ├─ Writes src/diary/news/YYYY-MM-DD.md
    ├─ Sends email to robmcdtv@gmail.com via Gmail MCP
    └─ git commit + push → deploy.yml auto-deploys site
 ```
@@ -76,7 +76,7 @@ Briefings are sent via the Gmail MCP. The MCP must be authorized for **robmcdtv@
 
 1. Go to https://claude.ai/code → pick the **wavgen.ca_on_github** repo.
 2. Click **Triggers** (or **Schedules**) in the sidebar → **New trigger** → **Schedule**.
-3. **When**: Daily at `07:00`, timezone **America/Toronto**.
+3. **When**: Monday, Wednesday, Friday at `07:00`, timezone **America/Toronto**. (cron: `0 7 * * 1,3,5`)
 4. **Branch**: `main`. The session will pull latest before running.
 5. **Environment**: pick one with outbound network access (web search and Gmail both need it). If you're unsure which, pick the default — it generally allows outbound HTTPS. The Gmail MCP authorization from step A above carries through.
 6. **Prompt**: paste the full prompt from the section below. Verbatim — don't trim the rules section.
@@ -86,7 +86,7 @@ Briefings are sent via the Gmail MCP. The MCP must be authorized for **robmcdtv@
 
 From the trigger page, click **Run now**. Watch the session in real time. On first run, confirm:
 - The 5 JSON files under `src/_data/news/` are updated with real content
-- `briefings/YYYY-MM-DD.md` exists
+- `src/diary/news/YYYY-MM-DD.md` exists
 - The email arrived at robmcdtv@gmail.com
 - The commit landed on `main` and the site rebuilt via deploy.yml
 
@@ -133,7 +133,7 @@ These are Rob's awareness layer beyond his personal beats. One item per category
 1. **Quality bar**: 3-5 items per section MAX. Better to publish 2 strong items than 5 weak ones.
 2. **The quiet-day rule**: If nothing notable happened in a section today, output 0 items and set "note" to an honest one-liner ("Quiet day in modular — nothing beyond gear catalog drops"). DO NOT pad with filler, listicles, or "10 things you missed" SEO content.
 3. **Source attribution**: Every item must have a working URL, real publication source, and accurate date. Do not invent sources or items. If you can't verify, don't include.
-4. **Dedup**: Read the last 7 daily briefings under `briefings/`. Do not republish items (by URL or near-identical title) that appeared in the last 7 days.
+4. **Dedup**: Read the last 7 daily briefings under `src/diary/news/`. Do not republish items (by URL or near-identical title) that appeared in the last 7 days.
 5. **Subtopic tagging**: For each item, pick the single best matching subtopic from the actual directory names under `src/{music,video,data,art}/`. Use the directory slug as `subtopic` and `/section/slug/` as `subtopicUrl`. If nothing fits well, omit subtopic — don't force it.
 6. **Voice**: Rewrite summaries in Rob's voice — direct, curious, technically literate, no breathless hype. Avoid "game-changing," "revolutionary," "the future of," "you won't believe."
 7. **Length**: Title ≤ 90 chars. Summary 1-2 sentences, ≤ 200 chars total.
@@ -142,21 +142,21 @@ These are Rob's awareness layer beyond his personal beats. One item per category
 ## Steps in order
 
 1. **Discover the editorial scope**: `ls src/music/ src/video/ src/data/ src/art/` to capture the current subtopic slugs.
-2. **Dedup context**: read the most recent 7 files in `briefings/` (skip the README). Note URLs and titles already covered.
+2. **Dedup context**: read the most recent 7 files in `src/diary/news/` (skip the README). Note URLs and titles already covered.
 3. **Search per section**: ~3-5 targeted web searches per section. Mix broad ("electronic music news this week") with subtopic-specific ("TouchDesigner 2026 release", "new Eurorack module").
 4. **Read promising results**: fetch and read content before deciding to include. A headline alone is not enough.
 5. **Curate**: rewrite headlines/summaries in Rob's voice. Tag with the closest subtopic.
 6. **Build the aggregated feed**: pick the top 2-3 from each of the 4 sections, max 8 total, ordered by editorial weight. Each item gets a `"section"` field.
 7. **Build the wider-context feed**: exactly 3 items — one World, one Toronto, one Good news — following the editorial guidance above. Each item gets a `"section"` field with value `"World"`, `"Toronto"`, or `"Good news"`.
 8. **Write 6 JSON files**: overwrite (do not append) `src/_data/news/{music,video,data,art,aggregated,world}.json`. Use the schema in `docs/daily-news-loop.md`.
-9. **Write the briefing**: `briefings/YYYY-MM-DD.md` following the schema in `briefings/README.md`. Lead with a one-paragraph overview of the day. Include the three wider-context items at the top under a `## Wider context` heading.
+9. **Write the briefing**: `src/diary/news/YYYY-MM-DD.md` following the schema in `docs/briefings-schema.md`. Frontmatter MUST include `title` (e.g. `"Wavgen briefing — 2026-05-22"`) and `date` (ISO). Lead with a one-paragraph overview of the day. Include the three wider-context items at the top under a `## Wider context` heading.
 10. **Email Rob**: via the Gmail MCP, send to `robmcdtv@gmail.com`, subject `Wavgen daily — YYYY-MM-DD`, body = the briefing markdown (plain text, not HTML).
 11. **Commit and push**: commit message format `daily news YYYY-MM-DD: N music, N video, N data, N art (+ wider context)`. Push to `main`.
 
 ## Failure handling
 
 - Web search returns garbage → still write empty JSON arrays with explanatory `note` fields, commit them, and email Rob explaining "search was thin today."
-- Gmail send fails → still commit and push the news files. Add a note to `briefings/YYYY-MM-DD.md` saying email failed.
+- Gmail send fails → still commit and push the news files. Add a note to `src/diary/news/YYYY-MM-DD.md` saying email failed.
 - A JSON file would be invalid → fail loudly. Do not commit malformed JSON. Email Rob the error.
 - `git push` fails → email Rob the error. Do not force push.
 
@@ -185,4 +185,4 @@ Rough estimate at current Claude API rates: $0.20–$0.60 per daily run. Monthly
 - **First 1-2 weeks will be uneven** — the prompt is unproven, web search picks up SEO sludge, the agent doesn't yet know which sources you trust.
 - **No human review before publish** — the site updates directly. If a bad item ships, it stays until the next run replaces it (or you `git revert`).
 - **Email depends on Gmail MCP being enabled in the trigger's environment** — easy to forget after an environment change.
-- **No archive page yet** — old `briefings/` markdowns aren't rendered as a public page. Add `/briefings/` Eleventy collection later if you want a public history.
+- **No archive page yet** — old `src/diary/news/` markdowns aren't rendered as a public page. Add `/src/diary/news/` Eleventy collection later if you want a public history.
