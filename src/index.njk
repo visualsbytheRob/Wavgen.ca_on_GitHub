@@ -206,45 +206,58 @@ footerTagline: Exploring the intersection of creativity and technology.
       {% endif %}
     </div>
 
-    <!-- Explicit latest links -->
+    <!-- Latest tracks (Bandcamp) + Latest videos (YouTube), refreshed monthly -->
     <div class="mt-12 grid md:grid-cols-2 gap-10">
       <div>
-        <h4 class="text-2xl font-semibold mb-3">Latest tracks</h4>
-        <div class="md:flex md:items-start md:justify-between md:gap-6">
-          <ul class="space-y-2 list-disc list-inside md:flex-1">
-            {% if collections.music %}
-              {% for item in collections.music | reverse | slice(0,3) %}
-                <li>
-                  <a href="{{ item.url }}" class="underline text-wavgen-yellow hover:text-white">
-                    {{ item.data.title or item.fileSlug }}
-                  </a>
-                </li>
-              {% endfor %}
-            {% else %}
-              <li class="text-gray-400">No tracks yet.</li>
-            {% endif %}
-          </ul>
-          <a href="/music/" class="mt-3 md:mt-0 md:ml-6 shrink-0 text-sm text-wavgen-yellow underline hover:text-white">See all Music →</a>
+        <div class="flex items-baseline justify-between mb-4">
+          <h4 class="text-2xl font-semibold">Latest tracks</h4>
+          <a href="/music/" class="text-sm text-wavgen-yellow underline hover:text-white">See all Music →</a>
         </div>
+        {% if latestTracks.items and latestTracks.items.length > 0 %}
+          <div class="space-y-4">
+            {% for item in latestTracks.items %}
+              <div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
+                <iframe
+                  loading="lazy"
+                  style="border:0; width:100%; height:120px;"
+                  src="{{ item.embed_url }}"
+                  seamless
+                  title="{{ item.title }} on Bandcamp">
+                </iframe>
+                <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ item.page_url }}" target="_blank" rel="noopener">{{ item.title }} →</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-gray-400">No tracks yet.</p>
+        {% endif %}
       </div>
       <div>
-        <h4 class="text-2xl font-semibold mb-3">Latest videos</h4>
-        <div class="md:flex md:items-start md:justify-between md:gap-6">
-          <ul class="space-y-2 list-disc list-inside md:flex-1">
-            {% if collections.video %}
-              {% for item in collections.video | reverse | slice(0,3) %}
-                <li>
-                  <a href="{{ item.url }}" class="underline text-wavgen-yellow hover:text-white">
-                    {{ item.data.title or item.fileSlug }}
-                  </a>
-                </li>
-              {% endfor %}
-            {% else %}
-              <li class="text-gray-400">No videos yet.</li>
-            {% endif %}
-          </ul>
-          <a href="/video/" class="mt-3 md:mt-0 md:ml-6 shrink-0 text-sm text-wavgen-yellow underline hover:text-white">See all Videos →</a>
+        <div class="flex items-baseline justify-between mb-4">
+          <h4 class="text-2xl font-semibold">Latest videos</h4>
+          <a href="/video/" class="text-sm text-wavgen-yellow underline hover:text-white">See all Videos →</a>
         </div>
+        {% if latestVideos.items and latestVideos.items.length > 0 %}
+          <div class="space-y-4">
+            {% for item in latestVideos.items %}
+              <div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
+                <div class="relative" style="padding-bottom:56.25%;">
+                  <iframe
+                    loading="lazy"
+                    class="absolute inset-0 w-full h-full"
+                    src="{{ item.embed_url }}"
+                    title="{{ item.title }}"
+                    frameborder="0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                </div>
+                <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ item.page_url }}" target="_blank" rel="noopener">{{ item.title }} →</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-gray-400">No videos yet.</p>
+        {% endif %}
       </div>
     </div>
     <div class="h-px bg-white/10 mt-12"></div>

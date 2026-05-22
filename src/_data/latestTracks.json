@@ -1,0 +1,27 @@
+{
+  "fetched_at": "2026-05-22T16:46:58.396Z",
+  "source": "https://waveformgeneration.bandcamp.com/music",
+  "items": [
+    {
+      "title": "Seven",
+      "type": "album",
+      "id": "4214917917",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/seven",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/album=4214917917/size=large/tracklist=false/artwork=small/linkcol=facd1c/"
+    },
+    {
+      "title": "Early Underground",
+      "type": "album",
+      "id": "3621114200",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/early-underground",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/album=3621114200/size=large/tracklist=false/artwork=small/linkcol=facd1c/"
+    },
+    {
+      "title": "INPUT AUX",
+      "type": "track",
+      "id": "1236301276",
+      "page_url": "https://waveformgeneration.bandcamp.com/track/input-aux",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/track=1236301276/size=large/tracklist=false/artwork=small/linkcol=facd1c/"
+    }
+  ]
+}
