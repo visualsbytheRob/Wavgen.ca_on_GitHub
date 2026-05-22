@@ -16,7 +16,7 @@ Fresh Claude Code session runs THE PROMPT below
    ├─ Curates 3-5 items per section in Rob's editorial voice
    ├─ Writes src/_data/news/{music,video,data,art,aggregated}.json
    ├─ Writes briefings/YYYY-MM-DD.md
-   ├─ Sends email to robmcd@me.com via Gmail MCP
+   ├─ Sends email to robmcdtv@gmail.com via Gmail MCP
    └─ git commit + push → deploy.yml auto-deploys site
 ```
 
@@ -57,17 +57,40 @@ Every file under `src/_data/news/*.json` follows this shape:
 
 ## Setup checklist
 
-One-time setup, done from claude.ai/code on desktop:
+One-time setup, done from claude.ai/code on desktop.
 
-1. **Open the schedule trigger UI**
-   Go to https://claude.ai/code → this repo → Triggers → New trigger → Schedule.
-2. **Schedule**: Daily at `07:00` America/Toronto.
-3. **Branch**: `main` (the session will pull latest before running).
-4. **Environment**: Use whichever environment policy already has outbound network access (web search needs it). Add the Gmail MCP server to this environment so the session can send the briefing email — Claude Code on the web → environment settings → MCP servers → enable Gmail.
-5. **Prompt**: Paste the full prompt from the section below.
-6. **Save**.
+### A. Enable the Gmail MCP for the scheduled session
 
-Run it once manually from the trigger page to verify before relying on the schedule.
+Briefings are sent via the Gmail MCP. The MCP must be authorized for **robmcdtv@gmail.com** in the environment that the schedule trigger uses, otherwise step 9 of the prompt will fail and the loop will fall back to committing news without an email.
+
+1. Go to https://claude.ai → click your avatar (top right) → **Settings** → **Connectors** (or **Integrations** depending on UI version).
+2. Find **Gmail** in the list. If it shows "Connected" with a different address, click it → **Disconnect**.
+3. Click **Connect** on Gmail. Sign in to Google with **robmcdtv@gmail.com**.
+4. On the Google permission screen, grant:
+   - Read, compose, send, and permanently delete all your email from Gmail (or at minimum: **compose and send**)
+   - Click **Allow**.
+5. Back in Claude settings, confirm Gmail shows **Connected as robmcdtv@gmail.com**.
+6. Sanity-check: open a Claude chat (anywhere) and ask "Send me a test email at robmcdtv@gmail.com with subject 'test' and body 'hi'." If it arrives in your inbox, you're done.
+
+### B. Create the schedule trigger
+
+1. Go to https://claude.ai/code → pick the **wavgen.ca_on_github** repo.
+2. Click **Triggers** (or **Schedules**) in the sidebar → **New trigger** → **Schedule**.
+3. **When**: Daily at `07:00`, timezone **America/Toronto**.
+4. **Branch**: `main`. The session will pull latest before running.
+5. **Environment**: pick one with outbound network access (web search and Gmail both need it). If you're unsure which, pick the default — it generally allows outbound HTTPS. The Gmail MCP authorization from step A above carries through.
+6. **Prompt**: paste the full prompt from the section below. Verbatim — don't trim the rules section.
+7. **Save**.
+
+### C. Run it once manually
+
+From the trigger page, click **Run now**. Watch the session in real time. On first run, confirm:
+- The 5 JSON files under `src/_data/news/` are updated with real content
+- `briefings/YYYY-MM-DD.md` exists
+- The email arrived at robmcdtv@gmail.com
+- The commit landed on `main` and the site rebuilt via deploy.yml
+
+If any step fails, the prompt's failure-handling section tells the session what to do. Read the briefing markdown for clues, fix the prompt or MCP setup, and run again.
 
 ## THE PROMPT
 
@@ -116,7 +139,7 @@ You are the daily news curator for wavgen.ca, Rob McDonald's creative-technologi
 6. **Build the aggregated feed**: pick the top 2-3 from each section, max 8 total, ordered by editorial weight. Each item gets a `"section"` field.
 7. **Write 5 JSON files**: overwrite (do not append) `src/_data/news/{music,video,data,art,aggregated}.json`. Use the schema in `docs/daily-news-loop.md`.
 8. **Write the briefing**: `briefings/YYYY-MM-DD.md` following the schema in `briefings/README.md`. Lead with a one-paragraph overview of the day.
-9. **Email Rob**: via the Gmail MCP, send to `robmcd@me.com`, subject `Wavgen daily — YYYY-MM-DD`, body = the briefing markdown.
+9. **Email Rob**: via the Gmail MCP, send to `robmcdtv@gmail.com`, subject `Wavgen daily — YYYY-MM-DD`, body = the briefing markdown (plain text, not HTML).
 10. **Commit and push**: commit message format `daily news YYYY-MM-DD: N music, N video, N data, N art`. Push to `main`.
 
 ## Failure handling
