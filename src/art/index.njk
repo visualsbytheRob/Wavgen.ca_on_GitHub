@@ -36,6 +36,12 @@ This file defines the Art landing page for the site.
 } %}
 {% include "components/hero.njk" %}
 
+<!-- Art news (daily loop) -->
+{% set newsData = news.art %}
+{% set newsTitle = "Art news today" %}
+{% set newsSection = "Art" %}
+{% include "components/news-feed.njk" %}
+
 <!-- Art Mediums Grid -->
 <section class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">

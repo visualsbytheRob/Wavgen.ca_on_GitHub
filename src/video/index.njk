@@ -44,6 +44,12 @@ This file defines the Video landing page for the site.
     </div>
 </section>
 
+<!-- Video news (daily loop) -->
+{% set newsData = news.video %}
+{% set newsTitle = "Video news today" %}
+{% set newsSection = "Video" %}
+{% include "components/news-feed.njk" %}
+
 <!-- Video Technologies Grid -->
 <section id="video-tech" class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">
