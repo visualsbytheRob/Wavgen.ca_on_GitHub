@@ -45,6 +45,12 @@ This file defines the Data & Tech landing page for the site.
     </div>
 </section>
 
+<!-- Data news (daily loop) -->
+{% set newsData = news.data %}
+{% set newsTitle = "Data & tech news today" %}
+{% set newsSection = "Data" %}
+{% include "components/news-feed.njk" %}
+
 <!-- Tech Stack Grid -->
 <section class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">

@@ -53,6 +53,12 @@ Only the first genre card is commented in detail; all following cards are analog
     </div>
 </section>
 
+<!-- Music news (daily loop) -->
+{% set newsData = news.music %}
+{% set newsTitle = "Music news today" %}
+{% set newsSection = "Music" %}
+{% include "components/news-feed.njk" %}
+
 <!-- Music Genres Grid -->
 <section class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">

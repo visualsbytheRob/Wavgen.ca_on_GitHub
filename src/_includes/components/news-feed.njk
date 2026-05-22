@@ -1,0 +1,53 @@
+{#
+  News feed partial — renders a curated news array in the wavgen visual language.
+
+  Variables expected in the including template:
+    newsData    object: { lastUpdated, note, items: [...] }
+    newsTitle   string: heading shown above the feed (e.g. "Music news today")
+    newsSection string: optional, shown as a small label per item ("Music", "Video", etc.)
+
+  Each item in items[] is expected to have:
+    { title, url, source, date, summary, subtopic?, subtopicUrl? }
+#}
+<section class="py-16 bg-gray-900 border-t border-b border-white/10">
+  <div class="container mx-auto px-4">
+    <div class="flex items-baseline justify-between mb-8 flex-wrap gap-2">
+      <h2 class="text-3xl font-bold text-white">{{ newsTitle or "From the wider world" }}</h2>
+      {% if newsData and newsData.lastUpdated %}
+        <span class="text-sm text-gray-400">Updated {{ newsData.lastUpdated }}</span>
+      {% endif %}
+    </div>
+
+    {% if newsData and newsData.note %}
+      <p class="text-sm text-gray-400 italic mb-6">{{ newsData.note }}</p>
+    {% endif %}
+
+    {% if newsData and newsData.items and newsData.items.length > 0 %}
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {%- for item in newsData.items %}
+          <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer"
+             class="block bg-wavgen-dark-purple/60 hover:bg-wavgen-purple/60 border-2 border-wavgen-purple hover:border-wavgen-yellow rounded-xl p-5 transition-colors no-underline">
+            <div class="flex items-center gap-2 text-xs text-wavgen-yellow mb-2 flex-wrap">
+              {%- if newsSection or item.section %}
+                <span class="uppercase tracking-wide font-semibold">{{ item.section or newsSection }}</span>
+                <span class="text-gray-500">·</span>
+              {%- endif %}
+              <span class="uppercase tracking-wide font-semibold">{{ item.source }}</span>
+              <span class="text-gray-500">·</span>
+              <span class="text-gray-400">{{ item.date }}</span>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2 leading-tight">{{ item.title }}</h3>
+            <p class="text-sm text-gray-300 mb-3 leading-snug">{{ item.summary }}</p>
+            {%- if item.subtopic and item.subtopicUrl %}
+              <span class="inline-block text-xs px-2 py-1 rounded bg-wavgen-purple/40 text-wavgen-yellow">
+                Related: <span class="underline">{{ item.subtopic }}</span>
+              </span>
+            {%- endif %}
+          </a>
+        {%- endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-400 italic">Quiet day — nothing notable to report. Check back tomorrow.</p>
+    {% endif %}
+  </div>
+</section>
