@@ -51,3 +51,21 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v5
+
+    - name: Notify Slack — deploy result
+      if: always() && env.SLACK_WEBHOOK_AGENT_LOGS != ''
+      env:
+        SLACK_WEBHOOK_AGENT_LOGS: ${{ secrets.SLACK_WEBHOOK_AGENT_LOGS }}
+        STATUS: ${{ job.status }}
+        PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        COMMIT: ${{ github.sha }}
+      run: |
+        jq -n \
+          --arg status "$STATUS" \
+          --arg page "$PAGE_URL" \
+          --arg run "$RUN_URL" \
+          --arg sha "${COMMIT:0:7}" \
+          '{text: ("Deploy " + $status + " for " + $sha + " — <" + $run + "|run> · <" + $page + "|site>")}' \
+        | curl -sS -X POST -H 'Content-type: application/json' \
+            --data @- "$SLACK_WEBHOOK_AGENT_LOGS"

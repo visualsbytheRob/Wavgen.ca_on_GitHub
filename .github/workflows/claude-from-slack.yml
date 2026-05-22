@@ -1,0 +1,64 @@
+name: Claude from Slack
+
+# Triggered by a Slack Workflow Builder POST to GitHub's repository_dispatch
+# endpoint. The Slack workflow sends:
+#   { "event_type": "claude-task", "client_payload": { "prompt": "...", "user": "..." } }
+
+on:
+  repository_dispatch:
+    types: [claude-task]
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Task for Claude'
+        required: true
+        type: string
+
+jobs:
+  run-claude:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    env:
+      PROMPT: ${{ github.event.client_payload.prompt || inputs.prompt }}
+      REQUESTER: ${{ github.event.client_payload.user || github.actor }}
+      SLACK_WEBHOOK_AGENTS: ${{ secrets.SLACK_WEBHOOK_AGENTS }}
+      SLACK_WEBHOOK_AGENT_LOGS: ${{ secrets.SLACK_WEBHOOK_AGENT_LOGS }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Notify Slack — task starting
+        if: env.SLACK_WEBHOOK_AGENTS != ''
+        run: |
+          jq -n \
+            --arg prompt "$PROMPT" \
+            --arg user "$REQUESTER" \
+            --arg url "$RUN_URL" \
+            '{text: ("Task started by " + $user + "\n>" + $prompt + "\n<" + $url + "|Run log>")}' \
+          | curl -sS -X POST -H 'Content-type: application/json' \
+              --data @- "$SLACK_WEBHOOK_AGENTS"
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ env.PROMPT }}
+
+      - name: Notify Slack — task finished
+        if: always() && env.SLACK_WEBHOOK_AGENTS != ''
+        run: |
+          jq -n \
+            --arg status "${{ job.status }}" \
+            --arg user "$REQUESTER" \
+            --arg url "$RUN_URL" \
+            '{text: ("Task " + $status + " (requested by " + $user + ") — <" + $url + "|Run log>")}' \
+          | curl -sS -X POST -H 'Content-type: application/json' \
+              --data @- "$SLACK_WEBHOOK_AGENTS"
