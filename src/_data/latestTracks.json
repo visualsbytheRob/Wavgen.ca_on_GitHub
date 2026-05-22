@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-22T16:58:12.233Z",
+  "fetched_at": "2026-05-22T17:08:53.386Z",
   "source": "https://waveformgeneration.bandcamp.com/music",
   "items": [
     {
@@ -22,6 +22,27 @@
       "id": "1236301276",
       "page_url": "https://waveformgeneration.bandcamp.com/track/input-aux",
       "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/track=1236301276/size=large/bgcol=181818/linkcol=facd1c/transparent=true/"
+    },
+    {
+      "title": "ARP!",
+      "type": "track",
+      "id": "3972987132",
+      "page_url": "https://waveformgeneration.bandcamp.com/track/arp",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/track=3972987132/size=large/bgcol=181818/linkcol=facd1c/transparent=true/"
+    },
+    {
+      "title": "Sunday Brunch",
+      "type": "album",
+      "id": "2593241968",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/sunday-brunch",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/album=2593241968/size=large/bgcol=181818/linkcol=facd1c/transparent=true/"
+    },
+    {
+      "title": "Study Break",
+      "type": "album",
+      "id": "2404514063",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/study-break",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/v=2/album=2404514063/size=large/bgcol=181818/linkcol=facd1c/transparent=true/"
     }
   ]
 }

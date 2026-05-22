@@ -9,7 +9,7 @@ const path = require("node:path");
 const BANDCAMP_BASE = "https://waveformgeneration.bandcamp.com";
 const YOUTUBE_CHANNEL_ID = "UCLK1PORnw7wtArjjhfnA2RQ";
 const UA = "Mozilla/5.0 (compatible; WavgenFeedRefresher/1.0)";
-const COUNT = 3;
+const VIDEO_COUNT = 9;
 
 async function getText(url) {
   const res = await fetch(url, { headers: { "User-Agent": UA } });
@@ -27,7 +27,7 @@ async function refreshTracks() {
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
-  }).slice(0, COUNT);
+  });
 
   const items = [];
   for (const { type, slug } of ordered) {
@@ -55,7 +55,7 @@ async function refreshTracks() {
 
 async function refreshVideos() {
   const xml = await getText(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
-  const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, COUNT);
+  const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, VIDEO_COUNT);
   return entries.map(([, body]) => {
     const id = body.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1];
     const title = body.match(/<title>([^<]+)<\/title>/)?.[1];

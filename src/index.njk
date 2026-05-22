@@ -206,7 +206,7 @@ footerTagline: Exploring the intersection of creativity and technology.
       {% endif %}
     </div>
 
-    <!-- Latest tracks (Bandcamp) + Latest videos (YouTube), refreshed monthly -->
+    <!-- Latest tracks (Bandcamp) + Latest videos (YouTube), refreshed monthly. Homepage shows top 3 each; full set lives on /music/ and /video/. -->
     <div class="mt-12 grid md:grid-cols-2 gap-10">
       <div>
         <div class="flex items-baseline justify-between mb-4">
@@ -215,17 +215,8 @@ footerTagline: Exploring the intersection of creativity and technology.
         </div>
         {% if latestTracks.items and latestTracks.items.length > 0 %}
           <div class="space-y-4">
-            {% for item in latestTracks.items %}
-              <div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
-                <iframe
-                  loading="lazy"
-                  style="border:0; width:100%; height:540px;"
-                  src="{{ item.embed_url }}"
-                  seamless
-                  title="{{ item.title }} on Bandcamp">
-                </iframe>
-                <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ item.page_url }}" target="_blank" rel="noopener">{{ item.title }} →</a>
-              </div>
+            {% for track in latestTracks.items | head(3) %}
+              {% include "components/track-embed.njk" %}
             {% endfor %}
           </div>
         {% else %}
@@ -239,20 +230,8 @@ footerTagline: Exploring the intersection of creativity and technology.
         </div>
         {% if latestVideos.items and latestVideos.items.length > 0 %}
           <div class="space-y-4">
-            {% for item in latestVideos.items %}
-              <div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
-                <div class="relative" style="padding-bottom:56.25%;">
-                  <iframe
-                    loading="lazy"
-                    class="absolute inset-0 w-full h-full"
-                    src="{{ item.embed_url }}"
-                    title="{{ item.title }}"
-                    frameborder="0"
-                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-                </div>
-                <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ item.page_url }}" target="_blank" rel="noopener">{{ item.title }} →</a>
-              </div>
+            {% for video in latestVideos.items | head(3) %}
+              {% include "components/video-embed.njk" %}
             {% endfor %}
           </div>
         {% else %}

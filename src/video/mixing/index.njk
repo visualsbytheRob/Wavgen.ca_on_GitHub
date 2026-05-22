@@ -38,14 +38,19 @@ This file defines the Mixing video technology subpage for the Video section.
     </div>
 </nav>
 
-<!-- Video Player -->
+<!-- Watch: YouTube videos (auto-refreshed monthly from the channel) -->
 <section class="py-20 bg-gray-900">
     <div class="container mx-auto px-4">
-        <div id="video-player-container" data-default-category="mixing">
-            <!-- Video player will be rendered here by JavaScript -->
-        </div>
+        <h2 class="text-3xl font-bold text-white mb-2">Watch</h2>
+        <p class="text-gray-300 mb-8">Recent videos from The Waveform Generation.</p>
+        {% if latestVideos.items and latestVideos.items.length > 0 %}
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for video in latestVideos.items %}
+                    {% include "components/video-embed.njk" %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    
 </section>
 
 <!-- Mixing Elements -->

@@ -1,0 +1,14 @@
+{# Renders one YouTube video card. Expects `video` in scope (object from latestVideos.items). #}
+<div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
+  <div class="relative" style="padding-bottom:56.25%;">
+    <iframe
+      loading="lazy"
+      class="absolute inset-0 w-full h-full"
+      src="{{ video.embed_url }}"
+      title="{{ video.title }}"
+      frameborder="0"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ video.page_url }}" target="_blank" rel="noopener">{{ video.title }} →</a>
+</div>

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-22T16:58:12.233Z",
+  "fetched_at": "2026-05-22T17:08:53.386Z",
   "source": "https://www.youtube.com/channel/UCLK1PORnw7wtArjjhfnA2RQ",
   "items": [
     {
@@ -22,6 +22,48 @@
       "published": "2025-11-05T03:48:46+00:00",
       "page_url": "https://www.youtube.com/watch?v=2G42wtp5Ue4",
       "embed_url": "https://www.youtube.com/embed/2G42wtp5Ue4?rel=0&modestbranding=1"
+    },
+    {
+      "title": "TD November – Nov 3 – Instancing with POPs",
+      "video_id": "wNlsQnt--XM",
+      "published": "2025-11-04T00:49:51+00:00",
+      "page_url": "https://www.youtube.com/watch?v=wNlsQnt--XM",
+      "embed_url": "https://www.youtube.com/embed/wNlsQnt--XM?rel=0&modestbranding=1"
+    },
+    {
+      "title": "TD November – Nov 2 – Particle Emitter &amp; Noise",
+      "video_id": "tpRkkkARk0k",
+      "published": "2025-11-03T02:59:36+00:00",
+      "page_url": "https://www.youtube.com/watch?v=tpRkkkARk0k",
+      "embed_url": "https://www.youtube.com/embed/tpRkkkARk0k?rel=0&modestbranding=1"
+    },
+    {
+      "title": "TD November – Nov 2 – Particle Emitter &amp; Noise",
+      "video_id": "RSBmWzkVqlU",
+      "published": "2025-11-03T01:00:29+00:00",
+      "page_url": "https://www.youtube.com/watch?v=RSBmWzkVqlU",
+      "embed_url": "https://www.youtube.com/embed/RSBmWzkVqlU?rel=0&modestbranding=1"
+    },
+    {
+      "title": "TD November – Nov 1 – Hello POPs",
+      "video_id": "Ulgp4gVcz3M",
+      "published": "2025-11-01T19:20:03+00:00",
+      "page_url": "https://www.youtube.com/watch?v=Ulgp4gVcz3M",
+      "embed_url": "https://www.youtube.com/embed/Ulgp4gVcz3M?rel=0&modestbranding=1"
+    },
+    {
+      "title": "Wan2.2 is excellent",
+      "video_id": "Vxtk_WgOtZI",
+      "published": "2025-09-19T18:32:19+00:00",
+      "page_url": "https://www.youtube.com/watch?v=Vxtk_WgOtZI",
+      "embed_url": "https://www.youtube.com/embed/Vxtk_WgOtZI?rel=0&modestbranding=1"
+    },
+    {
+      "title": "Limitless Possibilities",
+      "video_id": "dmQ7q2oSt78",
+      "published": "2025-09-19T18:16:21+00:00",
+      "page_url": "https://www.youtube.com/watch?v=dmQ7q2oSt78",
+      "embed_url": "https://www.youtube.com/embed/dmQ7q2oSt78?rel=0&modestbranding=1"
     }
   ]
 }

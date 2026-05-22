@@ -1,6 +1,13 @@
 # Monthly music + video refresh loop
 
-A third Claude Code on the web scheduled trigger, separate from the news loop and the diary loop. Runs once a month, refreshes the homepage's "Latest tracks" and "Latest videos" sections with whatever's most recent on Bandcamp and YouTube.
+A third Claude Code on the web scheduled trigger, separate from the news loop and the diary loop. Runs once a month, refreshes the homepage and all music/video pages with whatever's most recent on Bandcamp and YouTube.
+
+The refreshed data drives **10 pages**:
+- **Homepage** (`/`): shows the top 3 of each
+- **`/music/`** + 4 genre subpages (electro/ambient/melodic/breaks): show all Bandcamp releases (~6)
+- **`/video/`** + 4 category subpages (editing/mapping/realtime/mixing): show 9 most-recent YouTube videos
+
+Genre/category subpages currently show the same set as the main page — there's no per-release category metadata on Bandcamp/YouTube to filter on, so each subpage just contributes its own intro text + the shared embed grid. If you ever want true per-subpage filtering, the cleanest path is YouTube playlists (one per category) and a manual genre-tag JSON for Bandcamp releases.
 
 This loop is dumb on purpose: it just runs the local script `scripts/refresh-latest-feeds.js`, which does all the scraping and writes two JSON data files. Claude doesn't parse HTML in-prompt for this one — the script is faster, more deterministic, and you can run it locally any time without burning a session.
 
@@ -12,12 +19,13 @@ Monthly (1st of the month, 9am ET)
    ▼
 npm run refresh:feeds
    ├─ Fetches https://waveformgeneration.bandcamp.com/music
-   │   ├─ Parses 3 most recent release URLs from the page
+   │   ├─ Parses every release URL on the page
    │   └─ For each, fetches the release page and extracts the
    │       numeric album/track ID for the Bandcamp embed iframe
    │
    ├─ Fetches https://www.youtube.com/feeds/videos.xml?channel_id=UCLK1PORnw7wtArjjhfnA2RQ
-   │   └─ Parses 3 most recent video IDs from the YouTube RSS feed
+   │   └─ Takes the 9 most-recent video IDs from the RSS feed
+   │       (count controlled by VIDEO_COUNT in the script)
    │
    └─ Writes src/_data/latestTracks.json and src/_data/latestVideos.json
    │

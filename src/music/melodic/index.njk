@@ -48,24 +48,19 @@ footerTagline: Creating memorable melodic journeys through electronic compositio
     </div>
 </div>
 
-<!-- Listen Section: Mini Player -->
+<!-- Listen: Bandcamp releases (auto-refreshed monthly from waveformgeneration.bandcamp.com) -->
 <section class="py-16 bg-gray-900 border-t border-gray-800">
     <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-white mb-6">Listen</h2>
-        <p class="text-gray-300 mb-4">Featured tracks from The Waveform Generation. Melodic-tagged tracks will be added shortly.</p>
-        <div id="music-player-container" data-genre="melodic"></div>
+        <h2 class="text-3xl font-bold text-white mb-2">Listen</h2>
+        <p class="text-gray-300 mb-8">Recent releases from The Waveform Generation.</p>
+        {% if latestTracks.items and latestTracks.items.length > 0 %}
+            <div class="grid md:grid-cols-2 gap-6">
+                {% for track in latestTracks.items %}
+                    {% include "components/track-embed.njk" %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-</section>
-
-<!-- Music Player Section -->
-<section class="py-20 bg-gray-900">
-    <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-4xl font-bold text-white mb-8 text-center">Melodic Music Player</h2>
-            <div id="music-player-container" data-default-genre="melodic" data-compact="true"></div>
-        </div>
-    </div>
-    <script src="/js/music-player.js"></script>
 </section>
 
 <!-- Melodic Elements -->

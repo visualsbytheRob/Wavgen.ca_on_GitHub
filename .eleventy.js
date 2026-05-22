@@ -50,6 +50,9 @@ module.exports = function(eleventyConfig) {
   // Home page images (hero backgrounds, featured content)
   eleventyConfig.addCollection("homeImages", createImageCollection("home", "home"));
 
+  // Take the first N items of an array (Nunjucks' built-in `slice` filter chunks into N equal arrays — not what we want)
+  eleventyConfig.addFilter("head", (arr, n) => Array.isArray(arr) ? arr.slice(0, n) : []);
+
   // Site Log timeline: merges manual diary entries and automated news briefings, newest first
   eleventyConfig.addCollection("logTimeline", function(collectionApi) {
     return collectionApi.getAll()

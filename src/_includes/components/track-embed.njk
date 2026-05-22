@@ -1,0 +1,11 @@
+{# Renders one Bandcamp track/album card. Expects `track` in scope (object from latestTracks.items). #}
+<div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
+  <iframe
+    loading="lazy"
+    style="border:0; width:100%; height:540px;"
+    src="{{ track.embed_url }}"
+    seamless
+    title="{{ track.title }} on Bandcamp">
+  </iframe>
+  <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ track.page_url }}" target="_blank" rel="noopener">{{ track.title }} →</a>
+</div>
