@@ -20,6 +20,11 @@ sections:
 
 One-paragraph overview of the day (what's notable, what's quiet).
 
+## Wider context
+- **World** — *[headline](url)*. One-line summary.
+- **Toronto** — *[headline](url)*. One-line summary.
+- **Good news** — *[headline](url)*. One-line summary.
+
 ## Music
 - **[Item title](url)** — *Source, date.* One-line summary.
 - ...

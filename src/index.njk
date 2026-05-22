@@ -155,6 +155,11 @@ footerTagline: Exploring the intersection of creativity and technology.
   ></iframe>
 </section>
 
+<!-- Wider context (daily loop): world, Toronto, good news -->
+{% set newsData = news.world %}
+{% set newsTitle = "Wider context" %}
+{% include "components/news-feed.njk" %}
+
 <!-- News across Wavgen (daily loop, aggregated) -->
 {% set newsData = news.aggregated %}
 {% set newsTitle = "Today across Wavgen" %}
