@@ -1,51 +1,34 @@
 {
-  "lastUpdated": "2026-05-22",
-  "note": "Initial seed — covers roughly the last 30–60 days for breadth. Daily 24-hour runs start tomorrow.",
+  "lastUpdated": "2026-05-23",
+  "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Claude Opus 4.7 launches alongside Claude Design",
-      "url": "https://www.anthropic.com/news/claude-opus-4-7",
-      "source": "Anthropic",
-      "date": "2026-04-16",
-      "summary": "Frontier Claude model with stronger long-running coding and higher-resolution vision. Paired with Claude Design for prototypes, slides, and one-pagers.",
-      "subtopic": "genai",
-      "subtopicUrl": "/data/genai/"
+      "title": "FBI director's Based Apparel site has been spotted hosting a 'ClickFix' attack",
+      "url": "https://www.pcmag.com/news/kash-patels-apparel-site-is-trying-to-trick-visitors-into-installing-malware",
+      "source": "Hacker News",
+      "date": "2026-05-23",
+      "summary": "Comments"
     },
     {
-      "title": "Hugging Face ships ml-intern: open-source agent that runs LLM post-training",
-      "url": "https://github.com/huggingface/ml-intern",
-      "source": "Hugging Face",
-      "date": "2026-04-21",
-      "summary": "Built on smolagents. Reads papers, picks datasets, runs training scripts, iterates on eval. Reportedly beats Claude Code on the same scientific-reasoning benchmark.",
-      "subtopic": "ai-agents",
-      "subtopicUrl": "/data/ai-agents/"
+      "title": "TikTok disproportionately served anti-Democratic videos during the 2024 election",
+      "url": "https://www.psypost.org/tiktok-disproportionately-served-anti-democratic-videos-during-the-2024-election-study-finds/",
+      "source": "Hacker News",
+      "date": "2026-05-22",
+      "summary": "Comments"
     },
     {
-      "title": "AI agent framework field consolidates to six majors",
-      "url": "https://medium.com/@richardhightower/the-agent-framework-landscape-langchain-deep-agents-vs-claude-agent-sdk-1dfed14bb311",
-      "source": "Medium",
-      "date": "2026-03-25",
-      "summary": "Claude Agent SDK, Strands (AWS), LangGraph, OpenAI Agents SDK, CrewAI, AG2 — the rest are fading. Pick based on lock-in tolerance.",
-      "subtopic": "ai-agents",
-      "subtopicUrl": "/data/ai-agents/"
+      "title": "SpaceX launches Starship v3 rocket",
+      "url": "https://www.nbcnews.com/now/video/spacex-successfully-launches-prototype-of-starship-rocket-263835205505",
+      "source": "Hacker News",
+      "date": "2026-05-22",
+      "summary": "Comments"
     },
     {
-      "title": "Hugging Face: Spring 2026 state of open source",
-      "url": "https://huggingface.co/blog/huggingface/state-of-os-hf-spring-2026",
-      "source": "Hugging Face",
-      "date": "2026-04-08",
-      "summary": "Mean size of downloaded open models jumped from 827M (2023) to 20.8B (2025). Quantization and MoE doing the heavy lifting.",
-      "subtopic": "ml",
-      "subtopicUrl": "/data/ml/"
-    },
-    {
-      "title": "LangChain open-sources Deep Agents — a Claude-Code-style replica",
-      "url": "https://medium.com/@richardhightower/deep-agents-langchain-just-open-sourced-a-replica-of-claude-code-69e72ced54b8",
-      "source": "Medium",
-      "date": "2026-03-15",
-      "summary": "Subagents, lifecycle hooks, and a planning loop modeled on Claude Code's architecture. The agent-engine pattern is now commodity.",
-      "subtopic": "ai-agents",
-      "subtopicUrl": "/data/ai-agents/"
+      "title": "AI is being used to resurrect the voices of dead pilots",
+      "url": "https://techcrunch.com/2026/05/22/ai-is-being-used-to-resurrect-the-voices-of-dead-pilots/",
+      "source": "TechCrunch",
+      "date": "2026-05-22",
+      "summary": "People used AI on a spectrogram image of cockpit recordings to reconstruct them, forcing the NTSB to temporarily block access to its docket system."
     }
   ]
 }

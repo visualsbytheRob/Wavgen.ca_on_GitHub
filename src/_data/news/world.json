@@ -1,30 +1,22 @@
 {
-  "lastUpdated": "2026-05-22",
-  "note": "Wider context — refreshed alongside the section briefings.",
+  "lastUpdated": "2026-05-23",
+  "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
       "section": "World",
-      "title": "World briefing: DRC Ebola spread, US–China trade deals, Bolivia crisis",
-      "url": "https://www.euronews.com/video/2026/05/22/latest-news-bulletin-may-22nd-2026-morning",
-      "source": "Euronews",
+      "title": "'Speed, money and compassion' - lessons from an Ebola survivor and other experts",
+      "url": "https://www.bbc.com/news/articles/cj3p2rdx0l8o?at_medium=RSS&amp;at_campaign=rss",
+      "source": "BBC News",
       "date": "2026-05-22",
-      "summary": "Three to know: a rare Ebola variant spreading in eastern Congo (134 deaths, 500+ cases), US–China trade deals from the May 15 summit, political unrest in Bolivia."
-    },
-    {
-      "section": "Toronto",
-      "title": "Toronto roundup: Metrolinx delay, housing project losses, mini pitch opens",
-      "url": "https://urbantoronto.ca/news/2026/05/news-roundup-may-21-2026.61034",
-      "source": "Urban Toronto",
-      "date": "2026-05-21",
-      "summary": "Richmond Hill subway extension delayed, 26 affordable housing projects lose city benefits, and a new Soccer For All mini pitch opens in Scarborough."
+      "summary": "Those caught up in West Africa's Ebola outbreak a decade ago on how best to tackle the current epidemic."
     },
     {
       "section": "Good news",
-      "title": "Algeria eliminates trachoma; US renewables overtake gas",
-      "url": "https://www.positive.news/society/good-news-stories-from-week-19-of-2026/",
-      "source": "Positive News",
-      "date": "2026-05-10",
-      "summary": "Algeria becomes the latest country to eliminate trachoma as a public health problem. US renewables produced 35% of electricity in March vs gas at 34%."
+      "title": "AI Used to Pinpoint Whale Heat Signatures to Prevent Ship Collisions in San Francisco Bay",
+      "url": "https://www.goodnewsnetwork.org/ai-employed-to-pinpoint-whale-heat-signatures-in-san-francisco-bay-to-prevent-ship-collisions/",
+      "source": "Good News Network",
+      "date": "2026-05-22",
+      "summary": "Scientists in California are using heat-sensing AI to save grey whales transiting through San Francisco Bay. More and more sightings of grey whales, a medium size baleen that can grow to between 40 an…"
     }
   ]
 }

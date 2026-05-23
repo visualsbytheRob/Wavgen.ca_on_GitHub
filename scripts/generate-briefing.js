@@ -14,9 +14,42 @@ const path = require("node:path");
 
 const ROOT = path.join(__dirname, "..");
 const NEWS_DIR = path.join(ROOT, "src", "diary", "news");
+const NEWS_DATA_DIR = path.join(ROOT, "src", "_data", "news");
 const ITEMS_PER_SECTION = 4;
 const DEDUP_LOOKBACK_DAYS = 7;
 const UA = "Mozilla/5.0 (compatible; WavgenBriefingBot/1.0)";
+
+// Hostname → display name for the source field on news cards.
+// Falls back to the hostname (without leading www.) if not listed.
+const PRETTY_SOURCE = {
+  "daily.bandcamp.com": "Bandcamp Daily",
+  "factmag.com": "FACT Magazine",
+  "ra.co": "Resident Advisor",
+  "pitchfork.com": "Pitchfork",
+  "nofilmschool.com": "No Film School",
+  "petapixel.com": "PetaPixel",
+  "cinema5d.com": "cinema5D",
+  "news.ycombinator.com": "Hacker News",
+  "techcrunch.com": "TechCrunch",
+  "theverge.com": "The Verge",
+  "thisiscolossal.com": "Colossal",
+  "hyperallergic.com": "Hyperallergic",
+  "itsnicethat.com": "It's Nice That",
+  "feeds.bbci.co.uk": "BBC News",
+  "bbc.com": "BBC News",
+  "goodnewsnetwork.org": "Good News Network",
+  "blogto.com": "blogTO"
+};
+
+function prettySource(host) {
+  return PRETTY_SOURCE[host] || host.replace(/^www\./, "");
+}
+
+function isoDate(pubDate) {
+  const t = Date.parse(pubDate);
+  if (!t) return new Date().toISOString().slice(0, 10);
+  return new Date(t).toISOString().slice(0, 10);
+}
 
 const FEEDS = {
   Music: [
@@ -63,10 +96,13 @@ async function fetchFeed(url) {
 }
 
 function unescapeXml(s) {
-  return s.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'").replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ").replace(/&[a-z0-9]+;/gi, "");
+  return s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&")
+    .replace(/&[a-z0-9]+;/gi, "");
 }
 
 function stripTags(s) {
@@ -102,7 +138,7 @@ function parseRss(xml, sourceUrl) {
     if (title && link) {
       items.push({
         title, link, description, pubDate,
-        source: new URL(sourceUrl).hostname.replace(/^www\./, "")
+        source: prettySource(new URL(sourceUrl).hostname.replace(/^www\./, ""))
       });
     }
   }
@@ -168,10 +204,12 @@ async function main() {
   const today = new Date().toISOString().slice(0, 10);
   const outFile = path.join(NEWS_DIR, `${today}.md`);
 
+  // Check if today's briefing already exists. If yes, we'll still refresh the
+  // news JSONs (so news cards stay current) but skip rewriting the markdown.
+  let briefingExists = false;
   try {
     await fs.access(outFile);
-    console.log(`[briefing] ${today}.md already exists — skipping (Claude or earlier run wrote it)`);
-    return;
+    briefingExists = true;
   } catch {}
 
   const seen = await getRecentLinks();
@@ -200,9 +238,65 @@ async function main() {
     md += `## ${section}\n${renderItems(items)}\n`;
   }
 
-  await fs.mkdir(NEWS_DIR, { recursive: true });
-  await fs.writeFile(outFile, md);
-  console.log(`[briefing] wrote ${path.relative(ROOT, outFile)} (${totalItems} items)`);
+  if (!briefingExists) {
+    await fs.mkdir(NEWS_DIR, { recursive: true });
+    await fs.writeFile(outFile, md);
+    console.log(`[briefing] wrote ${path.relative(ROOT, outFile)} (${totalItems} items)`);
+  } else {
+    console.log(`[briefing] ${today}.md already exists — refreshing news JSONs only`);
+  }
+
+  // Also write the 6 JSON files that drive the news cards on home/music/video/data pages.
+  // Schema matches what the existing news-feed.njk component expects:
+  // { lastUpdated, note, items: [{ title, url, source, date, summary, section?, subtopic?, subtopicUrl? }] }
+  await fs.mkdir(NEWS_DATA_DIR, { recursive: true });
+  const note = "Auto-refreshed by RSS aggregator (free-tier backup).";
+
+  function toCardItem(item) {
+    return {
+      title: item.title,
+      url: item.link,
+      source: item.source,
+      date: isoDate(item.pubDate),
+      summary: truncate(item.description, 200)
+    };
+  }
+
+  // music/video/data/art per-section JSONs
+  const sectionKeys = { Music: "music", Video: "video", Data: "data", Art: "art" };
+  for (const [sectionLabel, fileKey] of Object.entries(sectionKeys)) {
+    const items = (sections[sectionLabel] || []).map(toCardItem);
+    await fs.writeFile(
+      path.join(NEWS_DATA_DIR, `${fileKey}.json`),
+      JSON.stringify({ lastUpdated: today, note, items }, null, 2) + "\n"
+    );
+  }
+
+  // aggregated.json — top 2 of each section, sorted by date desc
+  const aggregatedItems = [];
+  for (const [sectionLabel, fileKey] of Object.entries(sectionKeys)) {
+    for (const item of (sections[sectionLabel] || []).slice(0, 2)) {
+      aggregatedItems.push({ ...toCardItem(item), section: fileKey });
+    }
+  }
+  aggregatedItems.sort((a, b) => b.date.localeCompare(a.date));
+  await fs.writeFile(
+    path.join(NEWS_DATA_DIR, "aggregated.json"),
+    JSON.stringify({ lastUpdated: today, note, items: aggregatedItems }, null, 2) + "\n"
+  );
+
+  // world.json — wider context (World/Toronto/Good news), one item each
+  const worldItems = [];
+  for (const [section, items] of Object.entries(wider)) {
+    if (!items.length) continue;
+    worldItems.push({ section, ...toCardItem(items[0]) });
+  }
+  await fs.writeFile(
+    path.join(NEWS_DATA_DIR, "world.json"),
+    JSON.stringify({ lastUpdated: today, note, items: worldItems }, null, 2) + "\n"
+  );
+
+  console.log(`[briefing] also wrote 6 news JSON files (music, video, data, art, aggregated, world)`);
 }
 
 main().catch(err => {

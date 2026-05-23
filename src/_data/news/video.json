@@ -1,42 +1,34 @@
 {
-  "lastUpdated": "2026-05-22",
-  "note": "Initial seed — covers roughly the last 30–60 days for breadth. Daily 24-hour runs start tomorrow.",
+  "lastUpdated": "2026-05-23",
+  "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "TouchDesigner build 2025.32820 lands, POPs reshape 3D workflow",
-      "url": "https://derivative.ca/UserGuide/Release_Notes",
-      "source": "Derivative",
-      "date": "2026-05-06",
-      "summary": "Latest 2025-cycle build. New POPs (Text, Trace, Triangulate) shift 3D work onto a high-performance node family — a real rethink.",
-      "subtopic": "touchdesigner-signal-flow",
-      "subtopicUrl": "/video/touchdesigner-signal-flow/"
+      "title": "Grab an Affordable Panasonic Zoom Lens For Your Bag With These Killer Deals",
+      "url": "https://nofilmschool.com/panasonic-zoom-lenses-sale",
+      "source": "No Film School",
+      "date": "2026-05-22",
+      "summary": "In the film and video game, it's never a bad time to make an investment in yourself. You can make those investments in a lot of ways, of course, as you can always learn a new skill or try a new projec…"
     },
     {
-      "title": "OpenAI shuts down the Sora app, API to follow in September",
-      "url": "https://en.wikipedia.org/wiki/Sora_(text-to-video_model)",
-      "source": "OpenAI",
-      "date": "2026-04-26",
-      "summary": "Standalone Sora product retired April 26. Compute costs and falling usage cited. Sora 2 Pro continues inside aggregator platforms.",
-      "subtopic": "ai-video",
-      "subtopicUrl": "/video/ai-video/"
+      "title": "What Lawrence Kasdan Can Teach You About Making Your First Film",
+      "url": "https://nofilmschool.com/lawrence-kasdan-first-film",
+      "source": "No Film School",
+      "date": "2026-05-22",
+      "summary": "The Criterion Collection just dropped a 4K release of Body Heat, and with it comes a new interview with writer/director Lawrence Kasdan. And we always love learning from the greats.This might sound fa…"
     },
     {
-      "title": "Runway becomes a multi-model hub for AI video",
-      "url": "https://releasebot.io/updates/runwayai",
-      "source": "Runway",
-      "date": "2026-05-12",
-      "summary": "Rather than ship a successor, Runway aggregates Kling 3.0, Veo, Seedance 2.0, Sora 2 Pro. Seedance brings keyframe + audio control.",
-      "subtopic": "ai-video",
-      "subtopicUrl": "/video/ai-video/"
+      "title": "Yashica Brings Beloved Characters to the Cheap Keychain Camera Segment",
+      "url": "https://petapixel.com/2026/05/22/yashica-brings-beloved-characters-to-the-cheap-keychain-camera-segment/",
+      "source": "PetaPixel",
+      "date": "2026-05-22",
+      "summary": "Yashica has announced the Funtastic, a tiny camera that bears much more than a passing resemblance to last year's smash hit Kodak Charmera and even more so the knockoffs that inevitably followed. [Rea…"
     },
     {
-      "title": "2026 TouchDesigner community tools roundup",
-      "url": "https://interactiveimmersive.io/blog/touchdesigner-resources/2026-touchdesigner-community-tools/",
-      "source": "Interactive & Immersive HQ",
-      "date": "2026-04-10",
-      "summary": "Annual community-tools survey — palettes, utilities, and shared components worth a scan before the next project.",
-      "subtopic": "touchdesigner-signal-flow",
-      "subtopicUrl": "/video/touchdesigner-signal-flow/"
+      "title": "Scoring the Tension: An Interview with 'Dirty Hands' Composer Andrew Meehan",
+      "url": "https://nofilmschool.com/andrew-meehan-interview",
+      "source": "No Film School",
+      "date": "2026-05-22",
+      "summary": "Breaking into the world of feature film scoring requires a perfect mix of technical skill, creative intuition, and pure serendipity.For composer Andrew Meehan, that moment arrived not through a standa…"
     }
   ]
 }

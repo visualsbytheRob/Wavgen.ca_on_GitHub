@@ -1,69 +1,34 @@
 {
-  "lastUpdated": "2026-05-22",
-  "note": "Initial seed — covers roughly the last 30–60 days for breadth. Daily 24-hour runs start tomorrow.",
+  "lastUpdated": "2026-05-23",
+  "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Ableton Live 12.4 ships with Link Audio and Push/Move overhaul",
-      "url": "https://synthanatomy.com/2026/04/ableton-live-12-stay-creative-and-in-focus-an-overview-of-the-new-features.html",
-      "source": "Synth Anatomy",
-      "date": "2026-05-05",
-      "summary": "Public release May 5. Link Audio sync, MIDI mapping for Push, expanded Delay LFO modes, and tighter Move workflow.",
-      "subtopic": "ableton",
-      "subtopicUrl": "/music/ableton/"
-    },
-    {
-      "title": "MUTEK Montréal 2026 announces full lineup, Aug 25–30",
-      "url": "https://montreal.mutek.org/en/news/mutek-montreal-announces-full-2026-lineup",
-      "source": "MUTEK Montréal",
-      "date": "2026-05-08",
-      "summary": "120 artists from 28 countries, 80+ live AV performances, plus a public installation village in Quartier des Spectacles.",
-      "subtopic": "audiovisual-performance",
-      "subtopicUrl": "/music/audiovisual-performance/"
-    },
-    {
-      "title": "RNBO turns Ableton Move into a Max-for-Live hardware target",
-      "url": "https://synthanatomy.com/2026/03/rnbo-move-takeover-ableton-move-becomes-a-max-for-live-hardware-device.html",
-      "source": "Synth Anatomy",
-      "date": "2026-03-20",
-      "summary": "RNBO patches now run natively on Move — Ableton's standalone hardware becomes a programmable target for custom devices.",
-      "subtopic": "max-msp",
-      "subtopicUrl": "/music/max-msp/"
-    },
-    {
-      "title": "Doepfer launches a micro series: ADSR, MIDI-to-CV, VCA in tiny HP",
-      "url": "https://synthanatomy.com/2026/04/doepfer-micro-new-compact-adsr-midi-to-cv-env-controlled-vca-and-buffer-modules.html",
-      "source": "Synth Anatomy",
-      "date": "2026-04-12",
-      "summary": "Compact utilities for dense racks — ADSR, MIDI-to-CV, env-controlled VCA, and buffer in a single ultra-small family.",
-      "subtopic": "modular-patch-lab",
-      "subtopicUrl": "/music/modular-patch-lab/"
-    },
-    {
-      "title": "Erica Synths Konstrukt-8: a build-it-yourself analog drum machine",
-      "url": "https://synthanatomy.com/2026/03/erica-synth-konstrukt-8-this-analog-drum-machine-is-modular-and-diy.html",
-      "source": "Synth Anatomy",
-      "date": "2026-03-15",
-      "summary": "Eight analog voices, modular patch points, sold as a kit you assemble. Erica leans into hands-on craft.",
-      "subtopic": "sound-design",
-      "subtopicUrl": "/music/sound-design/"
-    },
-    {
-      "title": "Bandcamp Daily: best ambient releases of April 2026",
-      "url": "https://daily.bandcamp.com/best-ambient/the-best-ambient-music-on-bandcamp-april-2026",
+      "title": "Essential Releases, May 22, 2026",
+      "url": "https://daily.bandcamp.com/essential-releases/essential-releases-may-22-2026",
       "source": "Bandcamp Daily",
-      "date": "2026-04-30",
-      "summary": "Curated April roundup — drone, generative ambient, and field-recording-led work worth an evening listen.",
-      "subtopic": "ambient",
-      "subtopicUrl": "/music/ambient/"
+      "date": "2026-05-22",
+      "summary": "Experimental club music, funk, and more. Read full story on the Bandcamp Daily."
     },
     {
-      "title": "Bandcamp Daily Essential Releases, May 1",
-      "url": "https://daily.bandcamp.com/essential-releases/essential-releases-may-1-2026",
+      "title": "Ital Tek, “Mind Abandon”",
+      "url": "https://daily.bandcamp.com/album-of-the-day/ital-tek-mind-abandon-review",
       "source": "Bandcamp Daily",
-      "date": "2026-05-01",
-      "summary": "Weekly cross-genre picks. New jungle, dub, modular, and experimental gathered in one place.",
-      "subtopic": "breaks",
-      "subtopicUrl": "/music/breaks/"
+      "date": "2026-05-22",
+      "summary": "Alan Myson embraces imperfection on his most introspective, human-sounding music to date. Read full story on the Bandcamp Daily."
+    },
+    {
+      "title": "How Visible Cloaks Stitched Themselves Back Together",
+      "url": "https://daily.bandcamp.com/features/visible-cloaks-spencer-doran-paradessence-interview",
+      "source": "Bandcamp Daily",
+      "date": "2026-05-21",
+      "summary": "Spencer Doran on the duo's first album in nine years, their experiences scoring video games, and much more. Read full story on the Bandcamp Daily."
+    },
+    {
+      "title": "Takkak Takkak, “Abu”",
+      "url": "https://daily.bandcamp.com/album-of-the-day/takkak-takkak-abu-review",
+      "source": "Bandcamp Daily",
+      "date": "2026-05-21",
+      "summary": "The collision of gabber, gamelan, and metal becomes something strangely transcendent on Takkak Takkak’s second album. Read full story on the Bandcamp Daily."
     }
   ]
 }

@@ -34,20 +34,26 @@ jobs:
 
       - run: node scripts/generate-briefing.js
 
-      - name: Commit and push if briefing was written
+      - name: Commit and push if briefing or news JSONs changed
         id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/diary/news/
+          git add src/diary/news/ src/_data/news/
           if git diff --cached --quiet; then
-            echo "No new briefing — nothing to commit."
+            echo "Nothing changed — no commit."
             echo "wrote_briefing=false" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
-            git push
-            echo "wrote_briefing=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          # Email only fires if a NEW briefing markdown was written today
+          # (JSON-only refreshes don't email — they're a quiet card update)
+          if git diff --cached --name-only | grep -qE "src/diary/news/[0-9-]+\.md"; then
+            echo "wrote_briefing=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "wrote_briefing=false" >> "$GITHUB_OUTPUT"
+          fi
+          git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
+          git push
 
       - name: Email today's briefing
         if: steps.commit.outputs.wrote_briefing == 'true'
