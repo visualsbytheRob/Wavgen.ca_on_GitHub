@@ -51,4 +51,8 @@ jobs:
             exit 0
           fi
           git commit -m "diary: capture email reply(s) $(date -u +%Y-%m-%d)"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed; retrying after 5s…"
+            sleep 5
+          done

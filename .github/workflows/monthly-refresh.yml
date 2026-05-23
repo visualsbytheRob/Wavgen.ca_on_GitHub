@@ -43,4 +43,8 @@ jobs:
             exit 0
           fi
           git commit -m "refresh: monthly feeds + projects ($(date -u +%Y-%m-%d))"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed; retrying after 5s…"
+            sleep 5
+          done

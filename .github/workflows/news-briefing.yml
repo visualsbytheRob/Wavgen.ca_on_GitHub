@@ -59,7 +59,11 @@ jobs:
             echo "wrote_briefing=false" >> "$GITHUB_OUTPUT"
           fi
           git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed; retrying after 5s…"
+            sleep 5
+          done
 
       - name: Email today's briefing
         if: steps.commit.outputs.wrote_briefing == 'true'
