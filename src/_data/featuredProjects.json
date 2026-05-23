@@ -1,117 +1,117 @@
 {
-  "fetched_at": "2026-05-22T17:32:41.432Z",
+  "fetched_at": "2026-05-23T00:31:11.877Z",
   "items": [
     {
       "url": "/music/waveform-playground/",
       "title": "Waveform Playground",
       "description": "Real-time waveform visualization and synthesis — sine/saw/square oscillators, harmonic editing, FM controls.",
       "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
+      "dateAdded": "2026-05-23T00:03:57Z"
     },
     {
       "url": "/video/generative-universe/",
       "title": "Generative Universe",
       "description": "Procedural universe generator with interactive exploration controls.",
       "tag": "Video",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
+      "dateAdded": "2026-05-23T00:03:57Z"
     },
     {
       "url": "/art/shader-systems/",
       "title": "Shader Systems",
       "description": "GLSL shader editor and visualizer — edit code, see results live.",
       "tag": "Art",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/modular-patch-lab/",
-      "title": "Modular Patch Lab",
-      "description": "Interactive modular synthesis environment — patch VCOs, VCFs, and LFOs with cable routing.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/art/particle-systems/",
-      "title": "Particle Systems",
-      "description": "Generative particle effects you can manipulate in real time on canvas.",
-      "tag": "Art",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/video/audiovisual-ecosystems/",
-      "title": "Audiovisual Ecosystems",
-      "description": "Audio-reactive visual ecosystems that respond to sound input.",
-      "tag": "Video",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/dj-performance-lab/",
-      "title": "DJ & Performance Lab",
-      "description": "DJ mixer simulation with turntables, crossfading, and live performance controls.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/art/generative-art/",
-      "title": "Generative Art",
-      "description": "Live algorithmic art generation — code-driven canvas compositions.",
-      "tag": "Art",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/reverb-lab/",
-      "title": "Reverb Lab",
-      "description": "Manipulate reverb parameters with real-time audio processing across multiple algorithms.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/video/realtime-visuals/",
-      "title": "Realtime Visuals",
-      "description": "Real-time visual effects renderer with parameter knobs.",
-      "tag": "Video",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/delay-echo-lab/",
-      "title": "Delay & Echo Lab",
-      "description": "Interactive delay and echo processor with feedback loops and time-based controls.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/art/creative-coding-canvas/",
-      "title": "Creative Coding Canvas",
-      "description": "Canvas-based creative coding playground for sketches and experiments.",
-      "tag": "Art",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/sampling-lab/",
-      "title": "Sampling Lab",
-      "description": "Audio sampling interface with pitch shifting, manipulation, and playback controls.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/psychoacoustics-lab/",
-      "title": "Psychoacoustics Lab",
-      "description": "Explore audio perception with experiments in frequency response and binaural effects.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
-    },
-    {
-      "url": "/music/algorithmic-composition/",
-      "title": "Algorithmic Composition",
-      "description": "Generative music system — rule-based composition that plays itself out.",
-      "tag": "Audio",
-      "dateAdded": "2026-05-19T00:03:37-04:00"
+      "dateAdded": "2026-05-23T00:03:57Z"
     },
     {
       "url": "/data/big-data/",
       "title": "Big Data Pipelines",
       "description": "Interactive data pipeline visualization with flow diagrams and concept exploration.",
       "tag": "Data",
-      "dateAdded": "2026-05-16T13:36:19-04:00"
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/modular-patch-lab/",
+      "title": "Modular Patch Lab",
+      "description": "Interactive modular synthesis environment — patch VCOs, VCFs, and LFOs with cable routing.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/art/particle-systems/",
+      "title": "Particle Systems",
+      "description": "Generative particle effects you can manipulate in real time on canvas.",
+      "tag": "Art",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/video/audiovisual-ecosystems/",
+      "title": "Audiovisual Ecosystems",
+      "description": "Audio-reactive visual ecosystems that respond to sound input.",
+      "tag": "Video",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/dj-performance-lab/",
+      "title": "DJ & Performance Lab",
+      "description": "DJ mixer simulation with turntables, crossfading, and live performance controls.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/art/generative-art/",
+      "title": "Generative Art",
+      "description": "Live algorithmic art generation — code-driven canvas compositions.",
+      "tag": "Art",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/reverb-lab/",
+      "title": "Reverb Lab",
+      "description": "Manipulate reverb parameters with real-time audio processing across multiple algorithms.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/video/realtime-visuals/",
+      "title": "Realtime Visuals",
+      "description": "Real-time visual effects renderer with parameter knobs.",
+      "tag": "Video",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/delay-echo-lab/",
+      "title": "Delay & Echo Lab",
+      "description": "Interactive delay and echo processor with feedback loops and time-based controls.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/art/creative-coding-canvas/",
+      "title": "Creative Coding Canvas",
+      "description": "Canvas-based creative coding playground for sketches and experiments.",
+      "tag": "Art",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/sampling-lab/",
+      "title": "Sampling Lab",
+      "description": "Audio sampling interface with pitch shifting, manipulation, and playback controls.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/psychoacoustics-lab/",
+      "title": "Psychoacoustics Lab",
+      "description": "Explore audio perception with experiments in frequency response and binaural effects.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
+    },
+    {
+      "url": "/music/algorithmic-composition/",
+      "title": "Algorithmic Composition",
+      "description": "Generative music system — rule-based composition that plays itself out.",
+      "tag": "Audio",
+      "dateAdded": "2026-05-23T00:03:57Z"
     }
   ]
 }
