@@ -1,7 +1,8 @@
 {
   "date": "2026-05-23",
-  "question": "What feedback did you ignore this week, rightly or wrongly?",
-  "source": "static-rotation",
-  "rotation_index": 43,
-  "rotation_size": 50
+  "question": "Where do your habits diverge from your stated values?",
+  "source": "random-with-history",
+  "chosen_index": 245,
+  "bank_size": 409,
+  "recently_used_window": 5
 }
