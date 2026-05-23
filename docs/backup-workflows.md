@@ -18,18 +18,32 @@ The two news briefings (Claude + RSS) produce different output even on the same 
 
 ```
 .github/workflows/
-├── monthly-refresh.yml      # cron `0 14 1 * *`  → npm run refresh:monthly + commit
-├── news-briefing.yml        # cron `0 12 * * 1,3,5` → generate-briefing + commit
-└── diary-prompt.yml         # cron `0 13 * * *`  → pick-diary-prompt + commit
+├── monthly-refresh.yml         # cron `0 14 1 * *`     → npm run refresh:monthly + commit
+├── news-briefing.yml           # cron `0 12 * * 1,3,5` → generate-briefing + commit + email
+├── diary-prompt.yml            # cron `0 13 * * *`     → pick-diary-prompt + commit + email
+└── collect-diary-replies.yml   # cron `0 */2 * * *`    → poll Gmail, write entries, commit
 
 scripts/
-├── generate-briefing.js     # RSS aggregator, writes src/diary/news/YYYY-MM-DD.md
-└── pick-diary-prompt.js     # picks today's question from rotation
+├── generate-briefing.js        # RSS aggregator, writes src/diary/news/YYYY-MM-DD.md
+├── pick-diary-prompt.js        # picks today's question from rotation
+├── send-email.js               # Gmail SMTP sender (CLI: subject + stdin body)
+└── collect-diary-replies.js    # IMAP poller — reads replies, writes diary entries
 
 src/_data/
-├── diaryQuestions.json      # static rotation (~50 hand-written reflection questions)
-└── dailyPrompt.json         # today's pick, surfaced on /diary/
+├── diaryQuestions.json         # static rotation (~50 hand-written reflection questions)
+└── dailyPrompt.json            # today's pick, surfaced on /diary/
+
+.diary-processed-replies.json   # state file — Message-IDs already turned into entries
 ```
+
+## The full diary loop
+
+1. **9am EDT daily**: `diary-prompt.yml` picks today's question, writes JSON, emails you
+2. **You reply** to that email anytime during the day (just hit reply, write 100-300 words, send)
+3. **Within ~2 hours**: `collect-diary-replies.yml` polls Gmail, finds your reply, extracts the body (strips quoted text), writes `src/diary/entries/YYYY-MM-DD-question-slug.md`, commits, pushes
+4. **GitHub Pages rebuilds**: your reply now appears on `/diary/` in the Site Log timeline, with the question as the entry title
+
+Same Gmail app password handles both send (SMTP) and read (IMAP) — Gmail allows both with a single app password.
 
 ## Cron timing
 
