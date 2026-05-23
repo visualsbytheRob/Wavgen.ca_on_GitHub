@@ -3,6 +3,13 @@
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
+      "title": "Is AI Profitable Yet?",
+      "url": "https://isaiprofitable.com/",
+      "source": "Hacker News",
+      "date": "2026-05-23",
+      "summary": "Comments"
+    },
+    {
       "title": "I was bored so I turned my dev tools into an alien planet ruled by my dog",
       "url": "https://github.com/bkawa-bot/planet-maiko",
       "source": "Hacker News",
@@ -22,13 +29,6 @@
       "source": "TechCrunch",
       "date": "2026-05-22",
       "summary": "Jeff Bezos' rocket company confirmed an engine failure led to the loss of an AST SpaceMobile satellite last month, but offered little detail."
-    },
-    {
-      "title": "Shipping a laptop to a refugee camp in Uganda",
-      "url": "https://notesbylex.com/shipping-a-laptop-to-a-refugee-camp-in-uganda",
-      "source": "Hacker News",
-      "date": "2026-05-22",
-      "summary": "Comments"
     }
   ]
 }
