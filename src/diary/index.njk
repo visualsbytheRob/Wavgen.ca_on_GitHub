@@ -84,6 +84,75 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
+    // Manual workflow triggers: fire GitHub Actions workflows via the
+    // workflow_dispatch REST endpoint. Requires a GitHub fine-grained PAT
+    // scoped to actions:write on this repo. The PAT is stored in the user's
+    // browser localStorage only — never sent to or seen by any server.
+    try {
+      var TOKEN_KEY = 'wavgen-gh-pat';
+      var REPO = 'visualsbytheRob/Wavgen.ca_on_GitHub';
+
+      function getToken() { return localStorage.getItem(TOKEN_KEY); }
+      function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+      function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+
+      function showStatus(msg, ok) {
+        var el = document.getElementById('trigger-status');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.remove('hidden', 'text-wavgen-yellow', 'text-red-400', 'text-gray-400');
+        el.classList.add(ok === true ? 'text-wavgen-yellow' : ok === false ? 'text-red-400' : 'text-gray-400');
+      }
+
+      function refreshClearButton() {
+        var btn = document.getElementById('trigger-clear-token');
+        if (!btn) return;
+        if (getToken()) btn.classList.remove('hidden'); else btn.classList.add('hidden');
+      }
+
+      async function fireWorkflow(workflow) {
+        var token = getToken();
+        if (!token) {
+          token = prompt('Paste your GitHub fine-grained PAT (Actions: Read and write on this repo). Stored only in your browser.');
+          if (!token) { showStatus('Cancelled.', null); return; }
+          setToken(token.trim());
+          refreshClearButton();
+        }
+        showStatus('Triggering ' + workflow + '…', null);
+        try {
+          var res = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/' + workflow + '/dispatches', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + getToken(),
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ref: 'main' })
+          });
+          if (res.status === 204) {
+            showStatus('✅ Triggered. Check Actions tab in ~30 seconds; site updates a minute or two after.', true);
+          } else if (res.status === 401 || res.status === 403) {
+            clearToken();
+            refreshClearButton();
+            showStatus('❌ Token rejected (' + res.status + '). Cleared. Click again to re-enter.', false);
+          } else {
+            var err = await res.text();
+            showStatus('❌ Failed (' + res.status + '): ' + err.slice(0, 120), false);
+          }
+        } catch (e) {
+          showStatus('❌ Network error: ' + e.message, false);
+        }
+      }
+
+      document.querySelectorAll('[data-workflow]').forEach(function(btn){
+        btn.addEventListener('click', function(){ fireWorkflow(btn.getAttribute('data-workflow')); });
+      });
+      var clearBtn = document.getElementById('trigger-clear-token');
+      if (clearBtn) clearBtn.addEventListener('click', function(){ clearToken(); refreshClearButton(); showStatus('Token cleared.', null); });
+      refreshClearButton();
+    } catch (e) { /* fail silent */ }
+
     // Helper: inject today's date and copy template (isolated)
     try {
       (function(){
@@ -344,6 +413,20 @@ but the content is a concise documentary/logbook about the site.
         <p class="text-sm text-gray-400 mt-3">Reply to the morning email and it'll land here as an entry within ~2 hours.</p>
       </div>
       {% endif %}
+
+      <!-- Manual triggers: fire GitHub Actions workflows on demand. Owner-only via PAT stored in browser localStorage. -->
+      <div class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-white">Manual triggers</h3>
+          <button id="trigger-clear-token" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Clear stored token</button>
+        </div>
+        <p class="text-sm text-gray-400 mb-4">Fire the news scrape or send a fresh diary prompt right now. First click prompts you for a GitHub fine-grained PAT (Actions write scope on this repo). It's stored only in your browser.</p>
+        <div class="flex flex-wrap gap-3">
+          <button id="trigger-news-btn" data-workflow="news-briefing.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now</button>
+          <button id="trigger-prompt-btn" data-workflow="diary-prompt.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now</button>
+        </div>
+        <p id="trigger-status" class="text-sm mt-3 hidden"></p>
+      </div>
 
       <!-- Unified timeline: manual diary entries + automated news briefings, newest first -->
       {% for entry in collections.logTimeline %}

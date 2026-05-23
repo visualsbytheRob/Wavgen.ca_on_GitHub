@@ -134,7 +134,41 @@ Once these three are set, the next scheduled run will email you. To disable emai
 - **Diary prompt email** daily at ~9am EDT — subject `Wavgen prompt — YYYY-MM-DD`, body is the question
 - **News briefing email** Mon/Wed/Fri at ~8am EDT — subject `Wavgen briefing — YYYY-MM-DD`, body is the briefing markdown (without the YAML frontmatter)
 
+## Manual triggers on /diary/ (browser → GitHub Actions)
+
+Two buttons live in the "Manual triggers" card on `/diary/`:
+- 📰 **Scrape news now** — fires the news-briefing workflow on demand
+- ✍️ **Send me a prompt now** — fires the diary-prompt workflow on demand
+
+How it works: the button POSTs to GitHub's `workflow_dispatch` REST endpoint using a fine-grained Personal Access Token (PAT) you provide once and store only in your browser's localStorage. No server, no Cloudflare Worker, no proxy — direct browser → GitHub API.
+
+### Setting up the PAT (one time, ~3 minutes)
+
+1. Open <https://github.com/settings/personal-access-tokens/new>
+2. **Token name**: `Wavgen diary buttons`
+3. **Expiration**: 90 days (renewable — set a calendar reminder)
+4. **Repository access**: *Only select repositories* → pick `Wavgen.ca_on_GitHub`
+5. **Repository permissions**:
+   - **Actions**: Read and write (the only one you need)
+   - (Metadata: Read-only is auto-selected — leave it)
+6. Generate token, **copy it immediately** (only shown once)
+7. Visit https://wavgen.ca/diary/, click either button, paste the PAT when prompted
+8. Done — future clicks fire instantly
+
+### Safety story
+
+- The PAT lives in your browser's localStorage on wavgen.ca's origin only — never sent anywhere except api.github.com
+- Scope is restricted to **one repo** and **one permission** (Actions write). Even if leaked, blast radius = "anyone with the token can trigger your workflows" (no code access, no secrets exposure, no other repos)
+- Anyone visiting /diary/ sees the buttons but can't fire workflows without their own PAT — clicking just prompts them for a token they don't have
+- To revoke: visit https://github.com/settings/personal-access-tokens, find the token, click Delete. Done.
+- To clear from your browser: click the small "Clear stored token" link that appears next to the button heading once you've stored one
+
+### What it doesn't do
+
+- Doesn't bypass GitHub's normal rate limits (5000 requests/hour authenticated — way more than this uses)
+- Doesn't expose your other repos, account, or any secrets
+- Doesn't let visitors fire your workflows (they'd need their own valid PAT with write access to YOUR repo — impossible without you adding them as a collaborator)
+
 ## Future enhancements (optional)
 
-- **Better Toronto + local sources** — Google News RSS query targeting Toronto: `https://news.google.com/rss/search?q=Toronto&hl=en-CA`
 - **Auto-disable Claude triggers** when these are running, by checking a repo flag. Currently you manually choose which to use.

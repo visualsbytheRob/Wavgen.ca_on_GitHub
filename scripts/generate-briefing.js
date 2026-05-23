@@ -38,7 +38,9 @@ const PRETTY_SOURCE = {
   "feeds.bbci.co.uk": "BBC News",
   "bbc.com": "BBC News",
   "goodnewsnetwork.org": "Good News Network",
-  "blogto.com": "blogTO"
+  "blogto.com": "blogTO",
+  "cbc.ca": "CBC Toronto",
+  "news.google.com": "Google News"
 };
 
 function prettySource(host) {
@@ -77,7 +79,10 @@ const FEEDS = {
 
 const WIDER_CONTEXT = {
   World: ["http://feeds.bbci.co.uk/news/world/rss.xml"],
-  Toronto: ["https://www.blogto.com/rss"],
+  Toronto: [
+    "https://www.cbc.ca/cmlink/rss-canada-toronto",
+    "https://news.google.com/rss/search?q=Toronto&hl=en-CA&gl=CA&ceid=CA:en"
+  ],
   "Good news": ["https://www.goodnewsnetwork.org/category/news/feed/"]
 };
 
@@ -106,7 +111,9 @@ function unescapeXml(s) {
 }
 
 function stripTags(s) {
-  return unescapeXml(s.replace(/<[^>]+>/g, "")).replace(/\s+/g, " ").trim();
+  // Unescape entities FIRST so HTML-encoded tags (e.g. Google News uses &lt;a&gt;)
+  // become real tags, then strip them in a single pass.
+  return unescapeXml(s).replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
 function pickCdataOrText(block, tag) {
