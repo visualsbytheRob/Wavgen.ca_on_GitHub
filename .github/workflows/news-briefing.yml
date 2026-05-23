@@ -3,19 +3,22 @@ name: News briefing (RSS backup for Claude editorial loop)
 # Free-tier backup for the Claude daily-news-loop trigger.
 # Aggregates RSS feeds from music/video/data/art/world/Toronto/good-news
 # sources, dedupes against the last 7 days of briefings, writes a markdown
-# file to src/diary/news/YYYY-MM-DD.md, commits, pushes.
+# file to src/diary/news/YYYY-MM-DD.md, commits, pushes, emails.
 #
 # Skips silently if today's briefing already exists (e.g., the Claude loop
 # already wrote it, so they coexist gracefully).
 #
-# Cron is in UTC. 12:00 UTC ≈ 8am ET (EDT) / 7am ET (EST) on Mon/Wed/Fri.
+# Cron is in UTC. 12:00 UTC ≈ 8am ET (EDT) / 7am ET (EST), daily.
 on:
   schedule:
-    - cron: "0 12 * * 1,3,5"
+    - cron: "0 12 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   briefing:

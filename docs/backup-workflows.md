@@ -19,7 +19,7 @@ The two news briefings (Claude + RSS) produce different output even on the same 
 ```
 .github/workflows/
 ├── monthly-refresh.yml         # cron `0 14 1 * *`     → npm run refresh:monthly + commit
-├── news-briefing.yml           # cron `0 12 * * 1,3,5` → generate-briefing + commit + email
+├── news-briefing.yml           # cron `0 12 * * *`     → generate-briefing + commit + email
 ├── diary-prompt.yml            # cron `0 13 * * *`     → pick-diary-prompt + commit + email
 └── collect-diary-replies.yml   # cron `0 */2 * * *`    → poll Gmail, write entries, commit
 
@@ -51,8 +51,9 @@ GitHub Actions cron is in **UTC** and doesn't support timezones. The schedules a
 
 | Workflow | Cron (UTC) | Fires at (EDT) | Fires at (EST, drifts) |
 |---|---|---|---|
-| News briefing | `0 12 * * 1,3,5` | 8am Mon/Wed/Fri | 7am Mon/Wed/Fri |
+| News briefing | `0 12 * * *` | 8am daily | 7am daily |
 | Diary prompt | `0 13 * * *` | 9am daily | 8am daily |
+| Reply collector | `0 */2 * * *` | every 2 hours | every 2 hours |
 | Monthly refresh | `0 14 1 * *` | 10am on the 1st | 9am on the 1st |
 
 GitHub Actions cron is **not exact** — runs can be delayed 15-30 minutes during peak load. For a backup, that's fine.
