@@ -3,32 +3,32 @@
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "FBI director's Based Apparel site has been spotted hosting a 'ClickFix' attack",
-      "url": "https://www.pcmag.com/news/kash-patels-apparel-site-is-trying-to-trick-visitors-into-installing-malware",
-      "source": "Hacker News",
-      "date": "2026-05-23",
-      "summary": "Comments"
-    },
-    {
-      "title": "TikTok disproportionately served anti-Democratic videos during the 2024 election",
-      "url": "https://www.psypost.org/tiktok-disproportionately-served-anti-democratic-videos-during-the-2024-election-study-finds/",
-      "source": "Hacker News",
-      "date": "2026-05-22",
-      "summary": "Comments"
-    },
-    {
-      "title": "SpaceX launches Starship v3 rocket",
-      "url": "https://www.nbcnews.com/now/video/spacex-successfully-launches-prototype-of-starship-rocket-263835205505",
-      "source": "Hacker News",
-      "date": "2026-05-22",
-      "summary": "Comments"
-    },
-    {
-      "title": "AI is being used to resurrect the voices of dead pilots",
-      "url": "https://techcrunch.com/2026/05/22/ai-is-being-used-to-resurrect-the-voices-of-dead-pilots/",
+      "title": "SpaceX launches Starship V3 for the first time, but loses booster on return",
+      "url": "https://techcrunch.com/2026/05/22/spacex-launches-starship-v3-for-the-first-time-but-loses-booster-on-return/",
       "source": "TechCrunch",
       "date": "2026-05-22",
-      "summary": "People used AI on a spectrogram image of cockpit recordings to reconstruct them, forcing the NTSB to temporarily block access to its docket system."
+      "summary": "The company had a mostly successful first launch of its upgraded Starship V3, which it needs to power its many ambitious goals in the years to come."
+    },
+    {
+      "title": "Sleep research led to a new sleep apnea drug",
+      "url": "https://temertymedicine.utoronto.ca/news/how-decades-sleep-research-led-new-sleep-apnea-drug",
+      "source": "Hacker News",
+      "date": "2026-05-22",
+      "summary": "Comments"
+    },
+    {
+      "title": "Blue Origin cleared to fly New Glenn mega-rocket after April mishap",
+      "url": "https://techcrunch.com/2026/05/22/blue-origin-cleared-to-fly-new-glenn-mega-rocket-after-april-mishap/",
+      "source": "TechCrunch",
+      "date": "2026-05-22",
+      "summary": "Jeff Bezos' rocket company confirmed an engine failure led to the loss of an AST SpaceMobile satellite last month, but offered little detail."
+    },
+    {
+      "title": "Shipping a laptop to a refugee camp in Uganda",
+      "url": "https://notesbylex.com/shipping-a-laptop-to-a-refugee-camp-in-uganda",
+      "source": "Hacker News",
+      "date": "2026-05-22",
+      "summary": "Comments"
     }
   ]
 }
