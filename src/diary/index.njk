@@ -341,8 +341,28 @@ but the content is a concise documentary/logbook about the site.
           <span class="text-xs text-gray-500">{{ dailyPrompt.date }}</span>
         </div>
         <p class="text-xl text-white leading-relaxed">{{ dailyPrompt.question }}</p>
+        <p class="text-sm text-gray-400 mt-3">Reply to the morning email and it'll land here as an entry within ~2 hours.</p>
       </div>
       {% endif %}
+
+      <!-- Unified timeline: manual diary entries + automated news briefings, newest first -->
+      {% for entry in collections.logTimeline %}
+      {% set isBriefing = entry.data.tags and "briefing" in entry.data.tags %}
+      <article class="bg-black/30 border border-white/10 rounded-xl p-5">
+        <div class="text-sm text-gray-400 flex items-center gap-2 mb-1">
+          <span>{{ entry.date }}</span>
+          {% if isBriefing %}
+            <span class="text-xs px-1.5 py-0.5 rounded bg-wavgen-purple/40 text-wavgen-yellow uppercase tracking-wide font-semibold">News briefing</span>
+          {% else %}
+            <span class="text-xs px-1.5 py-0.5 rounded bg-yellow-900/40 text-wavgen-yellow uppercase tracking-wide font-semibold">Diary</span>
+          {% endif %}
+        </div>
+        <h3 class="text-xl font-semibold text-wavgen-yellow">{{ entry.data.title or ("Daily briefing — " + entry.date) }}</h3>
+        <div class="prose prose-invert max-w-none">
+          {{ entry.templateContent | safe }}
+        </div>
+      </article>
+      {% endfor %}
 
       <!-- New Entry helper: copy scaffold to clipboard -->
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
@@ -427,25 +447,6 @@ Notes:
         </div>
         <ul id="prompt-list" class="list-disc list-inside text-gray-200 space-y-1"></ul>
       </div>
-
-      <!-- Unified timeline: manual diary entries + automated news briefings, newest first -->
-      {% for entry in collections.logTimeline %}
-      {% set isBriefing = entry.data.tags and "briefing" in entry.data.tags %}
-      <article class="bg-black/30 border border-white/10 rounded-xl p-5">
-        <div class="text-sm text-gray-400 flex items-center gap-2 mb-1">
-          <span>{{ entry.date }}</span>
-          {% if isBriefing %}
-            <span class="text-xs px-1.5 py-0.5 rounded bg-wavgen-purple/40 text-wavgen-yellow uppercase tracking-wide font-semibold">News briefing</span>
-          {% else %}
-            <span class="text-xs px-1.5 py-0.5 rounded bg-yellow-900/40 text-wavgen-yellow uppercase tracking-wide font-semibold">Diary</span>
-          {% endif %}
-        </div>
-        <h3 class="text-xl font-semibold text-wavgen-yellow">{{ entry.data.title or ("Daily briefing — " + entry.date) }}</h3>
-        <div class="prose prose-invert max-w-none">
-          {{ entry.templateContent | safe }}
-        </div>
-      </article>
-      {% endfor %}
 
       <!-- Helper note -->
       <article class="bg-black/20 border border-dashed border-white/10 rounded-xl p-4">
