@@ -84,28 +84,22 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    // Manual triggers: enter the password → buttons fire workflows directly
-    // via GitHub's API. The PAT is XOR'd with the password and stored in
-    // the OBFUSCATED_PAT constant below — light obfuscation is enough to
-    // bypass GitHub's secret scanner (which would otherwise auto-revoke
-    // a raw github_pat_… string committed to a public repo).
+    // Manual triggers: type the password to unlock, then buttons fire
+    // workflows directly via GitHub's API.
     //
-    // Setup (one time):
-    //   1. Generate a fine-grained PAT at github.com/settings/personal-access-tokens/new
-    //      Repo access: only Wavgen.ca_on_GitHub. Permissions: Actions = Read and write.
-    //   2. Run locally: node scripts/obfuscate-pat.js <PAT> transmit
-    //   3. Paste the output into OBFUSCATED_PAT below, commit, push.
-    //
-    // Until OBFUSCATED_PAT is set, the buttons fall back to deep-link mode
-    // (open the GitHub Actions page in a new tab).
+    // The PAT lives ONLY in your browser's localStorage on wavgen.ca.
+    // Not in this source code. Not in any external service. Not anywhere
+    // else. First time you click a button, the page prompts you to paste
+    // your PAT once. After that it's remembered. To use on a different
+    // device, paste it again there. To clear it, click "Forget PAT" in
+    // the card header.
     try {
-      // === CONFIG (edit these two lines after one-time PAT setup) ===
+      // The fun password. Change it here if you want — it's just a UX gate.
       var PASSWORD = 'transmit';
-      var OBFUSCATED_PAT = '';  // paste output of scripts/obfuscate-pat.js here
-      // ==============================================================
 
       var REPO = 'visualsbytheRob/Wavgen.ca_on_GitHub';
       var UNLOCK_KEY = 'wavgen-triggers-unlocked';
+      var PAT_KEY = 'wavgen-triggers-pat';
       var locked = document.getElementById('trigger-locked');
       var unlocked = document.getElementById('trigger-unlocked');
       var lockBtn = document.getElementById('trigger-lock');
@@ -117,25 +111,18 @@ but the content is a concise documentary/logbook about the site.
       var result = document.getElementById('trigger-result');
       if (!locked || !unlocked) return;
 
-      var fireMode = !!OBFUSCATED_PAT;
-      modeHint.textContent = fireMode
-        ? '🔓 Unlocked. Buttons fire workflows directly.'
-        : '🔓 Unlocked. Buttons open the GitHub Actions page in a new tab. Run scripts/obfuscate-pat.js and paste the result into src/diary/index.njk to enable one-tap firing.';
-      if (fireMode && ruleAllBtn) ruleAllBtn.classList.remove('hidden');
+      function getPat() { return localStorage.getItem(PAT_KEY); }
+      function setPat(v) { localStorage.setItem(PAT_KEY, v); }
+      function clearPat() { localStorage.removeItem(PAT_KEY); }
 
-      var unlockedPat = null;  // set after successful password unlock
-
-      function xorCrypt(input, key) {
-        var out = '';
-        for (var i = 0; i < input.length; i++) {
-          out += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+      function updateModeHint() {
+        if (getPat()) {
+          modeHint.textContent = '🔓 Unlocked. PAT saved in this browser. Tap a button to fire.';
+          if (ruleAllBtn) ruleAllBtn.classList.remove('hidden');
+        } else {
+          modeHint.textContent = '🔓 Unlocked. Tap any button — first time you\'ll be prompted to paste your GitHub PAT (stored only in this browser).';
+          if (ruleAllBtn) ruleAllBtn.classList.add('hidden');
         }
-        return out;
-      }
-
-      function deobfuscatePat(b64, password) {
-        try { return xorCrypt(atob(b64), password); }
-        catch (e) { return null; }
       }
 
       function show(unlockedNow) {
@@ -143,12 +130,11 @@ but the content is a concise documentary/logbook about the site.
           locked.classList.add('hidden');
           unlocked.classList.remove('hidden');
           if (lockBtn) lockBtn.classList.remove('hidden');
-          if (fireMode) unlockedPat = deobfuscatePat(OBFUSCATED_PAT, PASSWORD);
+          updateModeHint();
         } else {
           locked.classList.remove('hidden');
           unlocked.classList.add('hidden');
           if (lockBtn) lockBtn.classList.add('hidden');
-          unlockedPat = null;
         }
       }
 
@@ -172,12 +158,22 @@ but the content is a concise documentary/logbook about the site.
         }
       }
 
-      async function fireWorkflow(workflow) {
-        if (!unlockedPat) return { workflow: workflow, ok: false, error: 'no PAT' };
+      function ensurePat() {
+        var existing = getPat();
+        if (existing) return existing;
+        var entered = prompt('Paste your GitHub fine-grained PAT (Actions: write on this repo). It will be stored only in this browser.');
+        if (!entered) return null;
+        entered = entered.trim();
+        setPat(entered);
+        updateModeHint();
+        return entered;
+      }
+
+      async function fireWorkflow(workflow, pat) {
         var res = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/' + workflow + '/dispatches', {
           method: 'POST',
           headers: {
-            'Authorization': 'Bearer ' + unlockedPat,
+            'Authorization': 'Bearer ' + pat,
             'Accept': 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
             'Content-Type': 'application/json'
@@ -188,36 +184,47 @@ but the content is a concise documentary/logbook about the site.
       }
 
       async function fireAndReport(target) {
+        var pat = ensurePat();
+        if (!pat) { showResult('Cancelled — no PAT entered.', null); return; }
+
         if (target === 'all') {
           showResult('Firing all three workflows…', null);
           var all = ['news-briefing.yml', 'diary-prompt.yml', 'collect-diary-replies.yml'];
-          var results = await Promise.all(all.map(fireWorkflow));
+          var results = await Promise.all(all.map(function(w){ return fireWorkflow(w, pat); }));
           var ok = results.filter(function(r){ return r.ok; }).length;
-          showResult(ok === all.length
-            ? '💍 Fired all ' + ok + ' workflows. Site updates in ~1-2 min.'
-            : '⚠️ Fired ' + ok + '/' + all.length + '. Check Actions tab.', ok === all.length ? 'ok' : 'err');
+          if (ok === all.length) {
+            showResult('💍 Fired all ' + ok + ' workflows. Site updates in ~1-2 min.', 'ok');
+          } else if (results.some(function(r){ return r.status === 401 || r.status === 403; })) {
+            clearPat();
+            updateModeHint();
+            showResult('❌ PAT rejected. Cleared. Tap a button again to paste a new one.', 'err');
+          } else {
+            showResult('⚠️ Fired ' + ok + '/' + all.length + '. Check Actions tab.', 'err');
+          }
         } else {
           showResult('Firing ' + target + '…', null);
-          var r = await fireWorkflow(target);
-          showResult(r.ok ? '✅ Fired. Site updates in ~1-2 min.' : '❌ Failed (HTTP ' + r.status + '). PAT may have expired or password is wrong.', r.ok ? 'ok' : 'err');
-        }
-      }
-
-      function handleTriggerClick(btn) {
-        var workflow = btn.getAttribute('data-workflow');
-        var href = btn.getAttribute('data-href');
-        if (fireMode && unlockedPat) {
-          fireAndReport(workflow);
-        } else if (href) {
-          window.open(href, '_blank', 'noopener');
+          var r = await fireWorkflow(target, pat);
+          if (r.ok) {
+            showResult('✅ Fired. Site updates in ~1-2 min.', 'ok');
+          } else if (r.status === 401 || r.status === 403) {
+            clearPat();
+            updateModeHint();
+            showResult('❌ PAT rejected (HTTP ' + r.status + '). Cleared. Tap again to paste a new one.', 'err');
+          } else {
+            showResult('❌ Failed (HTTP ' + r.status + ').', 'err');
+          }
         }
       }
 
       pwBtn.addEventListener('click', tryUnlock);
       pwInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
-      if (lockBtn) lockBtn.addEventListener('click', function(){ localStorage.removeItem(UNLOCK_KEY); show(false); });
+      if (lockBtn) lockBtn.addEventListener('click', function(){
+        localStorage.removeItem(UNLOCK_KEY);
+        clearPat();
+        show(false);
+      });
       document.querySelectorAll('.trigger-action').forEach(function(btn){
-        btn.addEventListener('click', function(){ handleTriggerClick(btn); });
+        btn.addEventListener('click', function(){ fireAndReport(btn.getAttribute('data-workflow')); });
       });
 
       show(localStorage.getItem(UNLOCK_KEY) === '1');
@@ -484,12 +491,12 @@ but the content is a concise documentary/logbook about the site.
       </div>
       {% endif %}
 
-      <!-- Manual triggers: fun password unlocks deep-links to GitHub Actions pages. -->
-      <!-- No PAT, no API calls — your existing GitHub login is the real auth when you tap "Run workflow" on the Actions page. -->
+      <!-- Manual triggers: password-locked launcher for GitHub Actions workflows. -->
+      <!-- PAT lives only in this browser's localStorage. Click "Forget PAT & lock" to wipe it. -->
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-lg font-semibold text-white">Manual triggers</h3>
-          <button id="trigger-lock" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Lock again</button>
+          <button id="trigger-lock" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Forget PAT & lock</button>
         </div>
         <div id="trigger-locked">
           <p class="text-sm text-gray-400 mb-3">🔒 Locked. Enter the password to reveal the launch buttons.</p>
@@ -502,9 +509,9 @@ but the content is a concise documentary/logbook about the site.
         <div id="trigger-unlocked" class="hidden">
           <p id="trigger-mode-hint" class="text-sm text-gray-400 mb-4"></p>
           <div class="flex flex-wrap gap-3 mb-3">
-            <button data-workflow="news-briefing.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/news-briefing.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now</button>
-            <button data-workflow="diary-prompt.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/diary-prompt.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now</button>
-            <button data-workflow="collect-diary-replies.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/collect-diary-replies.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📥 Collect replies now</button>
+            <button data-workflow="news-briefing.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now</button>
+            <button data-workflow="diary-prompt.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now</button>
+            <button data-workflow="collect-diary-replies.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📥 Collect replies now</button>
           </div>
           <button id="trigger-all" data-workflow="all" class="trigger-action hidden control-btn bg-gradient-to-r from-wavgen-purple to-wavgen-yellow text-black px-4 py-2 rounded-md font-bold hover:opacity-90 w-full">💍 One button to rule them all</button>
           <p id="trigger-result" class="text-sm mt-3 hidden"></p>

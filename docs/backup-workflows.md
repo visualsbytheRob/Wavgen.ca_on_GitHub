@@ -140,52 +140,41 @@ The "Manual triggers" card on `/diary/` has a password-locked launcher with:
 - 📰 **Scrape news now**
 - ✍️ **Send me a prompt now**
 - 📥 **Collect replies now**
-- 💍 **One button to rule them all** (fires all three at once)
+- 💍 **One button to rule them all** (fires all three at once — appears once a PAT is stored)
 
 Default password is **`transmit`** (changeable in one line of `src/diary/index.njk`).
 
-### One-time setup (~3 minutes)
-
-The buttons need a GitHub PAT to fire workflows. To avoid GitHub's secret scanner auto-revoking it, we lightly XOR-obfuscate the PAT with your password before committing it.
-
-1. **Generate a fine-grained PAT**:
-   - <https://github.com/settings/personal-access-tokens/new>
-   - Name: `Wavgen diary buttons`
-   - Expiration: 1 year (renewable)
-   - Repository access: *Only select repositories* → `Wavgen.ca_on_GitHub`
-   - Repository permissions: **Actions** = Read and write (the only one)
-   - Generate, copy the token (only shown once)
-
-2. **Obfuscate it locally**:
-   ```bash
-   node scripts/obfuscate-pat.js <YOUR_PAT> transmit
-   ```
-   It prints a base64 string like `ExsVBgYPNgQVBj4oMiYs…`
-
-3. **Paste the result into `src/diary/index.njk`**:
-   ```js
-   var PASSWORD = 'transmit';
-   var OBFUSCATED_PAT = 'ExsVBgYPNgQVBj4oMiYs…';  // paste here
-   ```
-
-4. **Commit and push.** Done.
-
 ### How it works
 
-- The committed file contains the XOR'd base64 — no `github_pat_…` literal, so GitHub's secret scanner doesn't flag/auto-revoke it
-- When you enter the password on /diary/, the JS decodes the PAT in browser memory and uses it to POST to the GitHub API
-- Wrong password = the decoded "PAT" is garbage → GitHub API rejects → buttons fail with a clear error
-- The 💍 button POSTs to all three workflow_dispatch endpoints in parallel
+- Password unlocks the card UI (pure UX flavor — stored in localStorage so future visits skip the password)
+- First button click prompts you to paste a GitHub fine-grained PAT. The PAT is stored in your browser's localStorage on `wavgen.ca` and **never leaves your device**
+- Subsequent button clicks fire workflows directly via the GitHub API using the stored PAT — no new tabs, ~1 second per fire
+- 💍 button POSTs to all three workflow_dispatch endpoints in parallel
+- If the PAT ever expires or is rejected (HTTP 401/403), the JS auto-clears it and prompts you to paste a fresh one
+- Click **Forget PAT & lock** in the card header to wipe both the unlock state and the PAT from this browser
 
-### Until you paste the PAT
+### One-time PAT setup (~2 minutes)
 
-The buttons fall back to deep-link mode (open the GitHub Actions page in a new tab; tap Run workflow there). So they always work — they just become one-tap once the PAT is in place.
+1. **Generate the PAT**:
+   - <https://github.com/settings/personal-access-tokens/new>
+   - **Token name**: `Wavgen diary buttons`
+   - **Expiration**: 1 year (renewable — set a calendar reminder)
+   - **Repository access**: *Only select repositories* → `Wavgen.ca_on_GitHub`
+   - **Repository permissions** → **Actions: Read and write** (the only one needed)
+   - Generate and copy the token (Google only shows it once)
+2. **Visit /diary/**, type the password, click any button. The browser prompts: *"Paste your GitHub fine-grained PAT…"* — paste, hit OK.
+3. Done. Every future click on this device just fires the workflow.
 
-### Security reality (you said you don't care, here's what you're accepting)
+### Per-device
 
-- The committed file has BOTH the obfuscated PAT and the password (in plain JS source). Anyone who finds both and knows XOR can recover the PAT.
-- Worst case if extracted: someone fires your workflows = you get spam emails from the news/diary loops. They cannot read your code, see other secrets, or touch any other repo (the PAT is scoped narrowly).
-- Mitigation when annoying: delete the PAT at <https://github.com/settings/personal-access-tokens>, regenerate, re-run the obfuscate script, push.
+- localStorage is per-origin per-device. Paste the PAT on each device you want to fire from (phone, laptop). One PAT works on all of them; nothing in this design needs separate tokens.
+
+### Security reality
+
+- The PAT is stored client-side in `localStorage` — visible to JS running on `wavgen.ca` only. Same-origin policy keeps other sites away from it.
+- It's NEVER committed to source, NEVER pushed to GitHub, NEVER sent to any server except api.github.com.
+- The PAT is scoped to one repo + one permission (Actions: write). Even if compromised (e.g. someone uses your unlocked phone), they could fire your workflows — at worst, you get spam emails. They can't read your code, see other secrets, or touch any other repo.
+- Revoke any time at <https://github.com/settings/personal-access-tokens> — one click.
 
 ## Future enhancements (optional)
 
