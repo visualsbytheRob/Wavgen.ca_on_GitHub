@@ -3,12 +3,44 @@
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Is AI Profitable Yet?",
-      "url": "https://isaiprofitable.com/",
+      "title": "The Hidden World of Insect Wings Revealed by Macro Photographer",
+      "url": "https://petapixel.com/2026/05/23/the-hidden-world-of-insect-wings-revealed-by-photographer/",
+      "source": "PetaPixel",
+      "date": "2026-05-23",
+      "summary": "A photographer uses lighting and special equipment to capture something not usually seen by the human eye: the intricate patterns, texture, and color found on insect wings. [Read More]",
+      "section": "video"
+    },
+    {
+      "title": "These Earbuds Have Tiny Cameras That Take Photos and Let Users Talk to AI About What They See",
+      "url": "https://petapixel.com/2026/05/23/these-earbuds-have-tiny-cameras-that-take-photos-and-let-users-talk-to-ai-about-what-they-see/",
+      "source": "PetaPixel",
+      "date": "2026-05-23",
+      "summary": "Scientists have built tiny cameras into off-the-shelf wireless earbuds that capture low-resolution images to allow users to talk with an AI system about what is in front of them. [Read More]",
+      "section": "video"
+    },
+    {
+      "title": "80386 Microcode Disassembled",
+      "url": "https://www.reenigne.org/blog/80386-microcode-disassembled/",
       "source": "Hacker News",
       "date": "2026-05-23",
       "summary": "Comments",
       "section": "data"
+    },
+    {
+      "title": "I have a new go-to browser",
+      "url": "https://www.theverge.com/tech/936395/vivaldi-8-review-mandalorian-installer",
+      "source": "The Verge",
+      "date": "2026-05-23",
+      "summary": "Hi, friends! Welcome to Installer No. 129, your guide to the best and Verge-iest stuff in the world. (If you're new here, welcome, come on you Gunners, and also you can read all the old editions at th…",
+      "section": "data"
+    },
+    {
+      "title": "Gabrielle Goliath, Richard Avedon, “Chicken Linda”",
+      "url": "https://hyperallergic.com/gabrielle-goliath-richard-avedon-chicken-linda/",
+      "source": "Hyperallergic",
+      "date": "2026-05-23",
+      "summary": "A Jackson Pollock sold for a record-breaking $181 million at Christie's auction. Should it matter to anyone?",
+      "section": "art"
     },
     {
       "title": "Kaitlyn Aurelia Smith Launches Label With New Album Ruin: It’s Not Just Music",
@@ -27,43 +59,11 @@
       "section": "music"
     },
     {
-      "title": "Fujifilm Has Over 40 New Lens Ideas: ‘It’s Difficult to Convey How Much We Care About Our Lenses’",
-      "url": "https://petapixel.com/2026/05/22/fujifilm-has-over-40-new-lens-ideas-its-difficult-to-convey-how-much-we-care-about-our-lenses/",
-      "source": "PetaPixel",
-      "date": "2026-05-22",
-      "summary": "This week on the PetaPixel Podcast, we sat down with Yuji Igarashi, General Manager of Professional Imaging Products in Fujifilm's Imaging Solutions Division. Echoing Fujifilm's successful Focus on Gl…",
-      "section": "video"
-    },
-    {
-      "title": "Why So Many Watch Enthusiasts Love One Specific Camera",
-      "url": "https://petapixel.com/2026/05/22/why-so-many-watch-enthusiasts-love-one-specific-camera/",
-      "source": "PetaPixel",
-      "date": "2026-05-22",
-      "summary": "Among the watch enthusiast community, one camera seemingly proves inordinately popular. Horophiles, or those who love timekeeping devices, gravitate toward the Ricoh GR IIIx. Why? [Read More]",
-      "section": "video"
-    },
-    {
-      "title": "I was bored so I turned my dev tools into an alien planet ruled by my dog",
-      "url": "https://github.com/bkawa-bot/planet-maiko",
-      "source": "Hacker News",
-      "date": "2026-05-22",
-      "summary": "Comments",
-      "section": "data"
-    },
-    {
       "title": "Karla Knight’s Cosmic Conspiracies",
       "url": "https://hyperallergic.com/karla-knights-cosmic-conspiracies/",
       "source": "Hyperallergic",
       "date": "2026-05-22",
       "summary": "The artist’s game-like paintings and tapestries suggest an overactive imagination fueled by generations of crackpot supernatural lore.",
-      "section": "art"
-    },
-    {
-      "title": "The Photographs that Shaped the Black Arts Movement in the Mid-20th Century",
-      "url": "https://www.thisiscolossal.com/2026/05/photography-black-arts-movement-exhibition/",
-      "source": "Colossal",
-      "date": "2026-05-22",
-      "summary": "'Photography and the Black Arts Movement, 1955-1985' features works by more than 100 artists, journalists, organizers, and more. Do stories and artists like this matter to you? Become a Colossal Membe…",
       "section": "art"
     }
   ]
