@@ -58,6 +58,7 @@ jobs:
           fi
 
       - name: Email today's prompt
+        continue-on-error: true
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -65,4 +66,4 @@ jobs:
         run: |
           QUESTION=$(node -e "console.log(require('./src/_data/dailyPrompt.json').question)")
           DATE=$(node -e "console.log(require('./src/_data/dailyPrompt.json').date)")
-          printf "%s\n\n— Today's reflection from wavgen.ca\nhttps://wavgen.ca/diary/\n" "$QUESTION" | node scripts/send-email.js "Wavgen prompt — $DATE"
+          printf "%s\n\n— Today's reflection from wavgen.ca\nhttps://wavgen.ca/diary/\n" "$QUESTION" | node scripts/send-email.js "Wavgen prompt — $DATE" || echo "[email] send failed — workflow continues (commit + push already succeeded)"

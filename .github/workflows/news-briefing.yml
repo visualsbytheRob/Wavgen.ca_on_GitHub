@@ -67,6 +67,7 @@ jobs:
 
       - name: Email today's briefing
         if: steps.commit.outputs.wrote_briefing == 'true'
+        continue-on-error: true
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -75,5 +76,5 @@ jobs:
           TODAY=$(date -u +%Y-%m-%d)
           BRIEFING_FILE="src/diary/news/$TODAY.md"
           if [ -f "$BRIEFING_FILE" ]; then
-            { tail -n +6 "$BRIEFING_FILE"; printf "\n— Full briefing styled on wavgen.ca\nhttps://wavgen.ca/diary/\n"; } | node scripts/send-email.js "Wavgen briefing — $TODAY"
+            { tail -n +6 "$BRIEFING_FILE"; printf "\n— Full briefing styled on wavgen.ca\nhttps://wavgen.ca/diary/\n"; } | node scripts/send-email.js "Wavgen briefing — $TODAY" || echo "[email] send failed — workflow continues (commit + push already succeeded)"
           fi
