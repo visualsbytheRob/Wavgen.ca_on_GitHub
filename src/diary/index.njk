@@ -333,6 +333,17 @@ but the content is a concise documentary/logbook about the site.
     </div>
 
     <div class="space-y-8 max-w-3xl mx-auto">
+      <!-- Today's prompt: rotates daily via .github/workflows/diary-prompt.yml -->
+      {% if dailyPrompt and dailyPrompt.question %}
+      <div class="bg-gradient-to-br from-wavgen-purple/30 to-black/40 border border-wavgen-yellow/30 rounded-xl p-5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs px-2 py-0.5 rounded bg-wavgen-yellow/20 text-wavgen-yellow uppercase tracking-wide font-semibold">Today's prompt</span>
+          <span class="text-xs text-gray-500">{{ dailyPrompt.date }}</span>
+        </div>
+        <p class="text-xl text-white leading-relaxed">{{ dailyPrompt.question }}</p>
+      </div>
+      {% endif %}
+
       <!-- New Entry helper: copy scaffold to clipboard -->
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
         <div class="flex items-center justify-between mb-3">

@@ -1,0 +1,42 @@
+name: News briefing (RSS backup for Claude editorial loop)
+
+# Free-tier backup for the Claude daily-news-loop trigger.
+# Aggregates RSS feeds from music/video/data/art/world/Toronto/good-news
+# sources, dedupes against the last 7 days of briefings, writes a markdown
+# file to src/diary/news/YYYY-MM-DD.md, commits, pushes.
+#
+# Skips silently if today's briefing already exists (e.g., the Claude loop
+# already wrote it, so they coexist gracefully).
+#
+# Cron is in UTC. 12:00 UTC ≈ 8am ET (EDT) / 7am ET (EST) on Mon/Wed/Fri.
+on:
+  schedule:
+    - cron: "0 12 * * 1,3,5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: node scripts/generate-briefing.js
+
+      - name: Commit and push if briefing was written
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/diary/news/
+          if git diff --cached --quiet; then
+            echo "No new briefing — nothing to commit."
+            exit 0
+          fi
+          git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
+          git push

@@ -1,0 +1,44 @@
+name: Diary prompt (static rotation backup)
+
+# Free-tier backup for the Claude daily-diary-loop trigger.
+# Picks today's reflection question from src/_data/diaryQuestions.json
+# (deterministic by day-of-year) and writes it to src/_data/dailyPrompt.json.
+# The /diary/ page reads this and surfaces today's prompt at the top of
+# the Site Log timeline.
+#
+# This is complementary to the Claude version (which sends email) —
+# the static one runs the site display, Claude pushes via email. They can
+# coexist or you can disable one.
+#
+# Cron is in UTC. 13:00 UTC ≈ 9am ET (EDT) / 8am ET (EST), daily.
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: node scripts/pick-diary-prompt.js
+
+      - name: Commit and push if prompt changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/_data/dailyPrompt.json
+          if git diff --cached --quiet; then
+            echo "No change to today's prompt."
+            exit 0
+          fi
+          git commit -m "prompt: $(date -u +%Y-%m-%d)"
+          git push

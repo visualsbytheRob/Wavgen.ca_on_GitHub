@@ -1,0 +1,39 @@
+name: Monthly refresh (Bandcamp + YouTube + Projects)
+
+# Free-tier backup for the Claude monthly-music-video-loop trigger.
+# Runs the same `npm run refresh:monthly` script, commits any data changes,
+# pushes. GitHub Pages auto-deploys the site.
+#
+# Cron is in UTC. 14:00 UTC ≈ 10am ET (EDT) / 9am ET (EST) on the 1st of each
+# month. GitHub Actions cron is not exact — may delay 15-30 min during peak.
+on:
+  schedule:
+    - cron: "0 14 1 * *"
+  workflow_dispatch:  # allow manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: npm run refresh:monthly
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/_data/latestTracks.json src/_data/latestVideos.json src/_data/featuredProjects.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "refresh: monthly feeds + projects ($(date -u +%Y-%m-%d))"
+          git push
