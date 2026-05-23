@@ -1,8 +1,8 @@
 {
   "date": "2026-05-23",
-  "question": "What would your work gain from a month with no internet?",
+  "question": "If you had to delete half your sample library to make better use of the rest, which half stays?",
   "source": "random-with-history",
-  "chosen_index": 393,
+  "chosen_index": 59,
   "bank_size": 409,
-  "recently_used_window": 6
+  "recently_used_window": 7
 }
