@@ -84,73 +84,56 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    // Manual workflow triggers: fire GitHub Actions workflows via the
-    // workflow_dispatch REST endpoint. Requires a GitHub fine-grained PAT
-    // scoped to actions:write on this repo. The PAT is stored in the user's
-    // browser localStorage only — never sent to or seen by any server.
+    // Manual triggers: a fun password unlocks deep-link buttons to the
+    // GitHub Actions workflow pages. Once on those pages, tapping
+    // "Run workflow" requires your existing GitHub login — THAT is the
+    // real auth. The password here is pure UX flavor; it gates the UI
+    // not the API. It's stored in localStorage so you only enter it
+    // once per browser.
     try {
-      var TOKEN_KEY = 'wavgen-gh-pat';
-      var REPO = 'visualsbytheRob/Wavgen.ca_on_GitHub';
+      // CHANGE THIS to whatever password you want. Lowercase, no spaces.
+      var PASSWORD = 'transmit';
+      var UNLOCK_KEY = 'wavgen-triggers-unlocked';
 
-      function getToken() { return localStorage.getItem(TOKEN_KEY); }
-      function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
-      function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+      var locked = document.getElementById('trigger-locked');
+      var unlocked = document.getElementById('trigger-unlocked');
+      var lockBtn = document.getElementById('trigger-lock');
+      var pwInput = document.getElementById('trigger-pw-input');
+      var pwBtn = document.getElementById('trigger-pw-btn');
+      var pwMsg = document.getElementById('trigger-pw-msg');
+      if (!locked || !unlocked) return;
 
-      function showStatus(msg, ok) {
-        var el = document.getElementById('trigger-status');
-        if (!el) return;
-        el.textContent = msg;
-        el.classList.remove('hidden', 'text-wavgen-yellow', 'text-red-400', 'text-gray-400');
-        el.classList.add(ok === true ? 'text-wavgen-yellow' : ok === false ? 'text-red-400' : 'text-gray-400');
-      }
-
-      function refreshClearButton() {
-        var btn = document.getElementById('trigger-clear-token');
-        if (!btn) return;
-        if (getToken()) btn.classList.remove('hidden'); else btn.classList.add('hidden');
-      }
-
-      async function fireWorkflow(workflow) {
-        var token = getToken();
-        if (!token) {
-          token = prompt('Paste your GitHub fine-grained PAT (Actions: Read and write on this repo). Stored only in your browser.');
-          if (!token) { showStatus('Cancelled.', null); return; }
-          setToken(token.trim());
-          refreshClearButton();
-        }
-        showStatus('Triggering ' + workflow + '…', null);
-        try {
-          var res = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/' + workflow + '/dispatches', {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + getToken(),
-              'Accept': 'application/vnd.github+json',
-              'X-GitHub-Api-Version': '2022-11-28',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ref: 'main' })
-          });
-          if (res.status === 204) {
-            showStatus('✅ Triggered. Check Actions tab in ~30 seconds; site updates a minute or two after.', true);
-          } else if (res.status === 401 || res.status === 403) {
-            clearToken();
-            refreshClearButton();
-            showStatus('❌ Token rejected (' + res.status + '). Cleared. Click again to re-enter.', false);
-          } else {
-            var err = await res.text();
-            showStatus('❌ Failed (' + res.status + '): ' + err.slice(0, 120), false);
-          }
-        } catch (e) {
-          showStatus('❌ Network error: ' + e.message, false);
+      function show(unlockedNow) {
+        if (unlockedNow) {
+          locked.classList.add('hidden');
+          unlocked.classList.remove('hidden');
+          if (lockBtn) lockBtn.classList.remove('hidden');
+        } else {
+          locked.classList.remove('hidden');
+          unlocked.classList.add('hidden');
+          if (lockBtn) lockBtn.classList.add('hidden');
         }
       }
 
-      document.querySelectorAll('[data-workflow]').forEach(function(btn){
-        btn.addEventListener('click', function(){ fireWorkflow(btn.getAttribute('data-workflow')); });
-      });
-      var clearBtn = document.getElementById('trigger-clear-token');
-      if (clearBtn) clearBtn.addEventListener('click', function(){ clearToken(); refreshClearButton(); showStatus('Token cleared.', null); });
-      refreshClearButton();
+      function tryUnlock() {
+        var attempt = (pwInput.value || '').trim().toLowerCase();
+        if (attempt === PASSWORD) {
+          localStorage.setItem(UNLOCK_KEY, '1');
+          show(true);
+          pwInput.value = '';
+          pwMsg.classList.add('hidden');
+        } else {
+          pwMsg.textContent = '❌ Nope. Try again.';
+          pwMsg.classList.remove('hidden', 'text-wavgen-yellow');
+          pwMsg.classList.add('text-red-400');
+        }
+      }
+
+      pwBtn.addEventListener('click', tryUnlock);
+      pwInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
+      if (lockBtn) lockBtn.addEventListener('click', function(){ localStorage.removeItem(UNLOCK_KEY); show(false); });
+
+      show(localStorage.getItem(UNLOCK_KEY) === '1');
     } catch (e) { /* fail silent */ }
 
     // Helper: inject today's date and copy template (isolated)
@@ -414,18 +397,29 @@ but the content is a concise documentary/logbook about the site.
       </div>
       {% endif %}
 
-      <!-- Manual triggers: fire GitHub Actions workflows on demand. Owner-only via PAT stored in browser localStorage. -->
+      <!-- Manual triggers: fun password unlocks deep-links to GitHub Actions pages. -->
+      <!-- No PAT, no API calls — your existing GitHub login is the real auth when you tap "Run workflow" on the Actions page. -->
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-lg font-semibold text-white">Manual triggers</h3>
-          <button id="trigger-clear-token" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Clear stored token</button>
+          <button id="trigger-lock" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Lock again</button>
         </div>
-        <p class="text-sm text-gray-400 mb-4">Fire the news scrape or send a fresh diary prompt right now. First click prompts you for a GitHub fine-grained PAT (Actions write scope on this repo). It's stored only in your browser.</p>
-        <div class="flex flex-wrap gap-3">
-          <button id="trigger-news-btn" data-workflow="news-briefing.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now</button>
-          <button id="trigger-prompt-btn" data-workflow="diary-prompt.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now</button>
+        <div id="trigger-locked">
+          <p class="text-sm text-gray-400 mb-3">🔒 Locked. Enter the password to reveal the launch buttons.</p>
+          <div class="flex gap-2">
+            <input id="trigger-pw-input" type="password" placeholder="Password" autocomplete="off" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-wavgen-yellow" />
+            <button id="trigger-pw-btn" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">Unlock</button>
+          </div>
+          <p id="trigger-pw-msg" class="text-sm mt-2 hidden"></p>
         </div>
-        <p id="trigger-status" class="text-sm mt-3 hidden"></p>
+        <div id="trigger-unlocked" class="hidden">
+          <p class="text-sm text-gray-400 mb-4">🔓 Unlocked. Tap a button — it opens the workflow's GitHub Actions page in a new tab; tap "Run workflow" there to fire it.</p>
+          <div class="flex flex-wrap gap-3">
+            <a id="trigger-news-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/news-briefing.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now ↗</a>
+            <a id="trigger-prompt-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/diary-prompt.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now ↗</a>
+            <a id="trigger-replies-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/collect-diary-replies.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📥 Collect replies now ↗</a>
+          </div>
+        </div>
       </div>
 
       <!-- Unified timeline: manual diary entries + automated news briefings, newest first -->

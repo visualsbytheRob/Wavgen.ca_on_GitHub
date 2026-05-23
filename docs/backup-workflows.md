@@ -134,40 +134,33 @@ Once these three are set, the next scheduled run will email you. To disable emai
 - **Diary prompt email** daily at ~9am EDT — subject `Wavgen prompt — YYYY-MM-DD`, body is the question
 - **News briefing email** Mon/Wed/Fri at ~8am EDT — subject `Wavgen briefing — YYYY-MM-DD`, body is the briefing markdown (without the YAML frontmatter)
 
-## Manual triggers on /diary/ (browser → GitHub Actions)
+## Manual triggers on /diary/ (password-unlocked deep-links to GitHub Actions)
 
-Two buttons live in the "Manual triggers" card on `/diary/`:
-- 📰 **Scrape news now** — fires the news-briefing workflow on demand
-- ✍️ **Send me a prompt now** — fires the diary-prompt workflow on demand
+The "Manual triggers" card on `/diary/` has a password gate. Enter the password once (stored in localStorage so future visits are instant), and three buttons reveal:
 
-How it works: the button POSTs to GitHub's `workflow_dispatch` REST endpoint using a fine-grained Personal Access Token (PAT) you provide once and store only in your browser's localStorage. No server, no Cloudflare Worker, no proxy — direct browser → GitHub API.
+- 📰 **Scrape news now** — opens the news-briefing workflow page on GitHub
+- ✍️ **Send me a prompt now** — opens the diary-prompt workflow page on GitHub
+- 📥 **Collect replies now** — opens the collect-diary-replies workflow page on GitHub
 
-### Setting up the PAT (one time, ~3 minutes)
+On each Actions page, tap **Run workflow** to fire. Two taps total. **No PAT, no API tokens, no secrets in code.** Your existing GitHub login is the real authorization on the Actions page.
 
-1. Open <https://github.com/settings/personal-access-tokens/new>
-2. **Token name**: `Wavgen diary buttons`
-3. **Expiration**: 90 days (renewable — set a calendar reminder)
-4. **Repository access**: *Only select repositories* → pick `Wavgen.ca_on_GitHub`
-5. **Repository permissions**:
-   - **Actions**: Read and write (the only one you need)
-   - (Metadata: Read-only is auto-selected — leave it)
-6. Generate token, **copy it immediately** (only shown once)
-7. Visit https://wavgen.ca/diary/, click either button, paste the PAT when prompted
-8. Done — future clicks fire instantly
+### Setting the password
 
-### Safety story
+Default password is **`transmit`**. To change it, edit one line in `src/diary/index.njk`:
 
-- The PAT lives in your browser's localStorage on wavgen.ca's origin only — never sent anywhere except api.github.com
-- Scope is restricted to **one repo** and **one permission** (Actions write). Even if leaked, blast radius = "anyone with the token can trigger your workflows" (no code access, no secrets exposure, no other repos)
-- Anyone visiting /diary/ sees the buttons but can't fire workflows without their own PAT — clicking just prompts them for a token they don't have
-- To revoke: visit https://github.com/settings/personal-access-tokens, find the token, click Delete. Done.
-- To clear from your browser: click the small "Clear stored token" link that appears next to the button heading once you've stored one
+```js
+var PASSWORD = 'transmit';  // change to whatever you want
+```
 
-### What it doesn't do
+Commit and push. The new password takes effect on the next site rebuild.
 
-- Doesn't bypass GitHub's normal rate limits (5000 requests/hour authenticated — way more than this uses)
-- Doesn't expose your other repos, account, or any secrets
-- Doesn't let visitors fire your workflows (they'd need their own valid PAT with write access to YOUR repo — impossible without you adding them as a collaborator)
+### Why a password if it's not real security?
+
+- The Actions pages themselves require GitHub auth — random visitors can't fire workflows even if they see the buttons
+- The password gate is **pure UX flavor** (a fun unlock ritual you asked for)
+- Once unlocked, your browser stays unlocked across visits via localStorage
+- Tap **Lock again** in the card header to relock (clears localStorage key)
+- If someone else "cracks" the password, the worst they can do is see three buttons and tap them — they still can't run the workflows without your GitHub login
 
 ## Future enhancements (optional)
 
