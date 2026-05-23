@@ -84,24 +84,40 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    // Manual triggers: a fun password unlocks deep-link buttons to the
-    // GitHub Actions workflow pages. Once on those pages, tapping
-    // "Run workflow" requires your existing GitHub login — THAT is the
-    // real auth. The password here is pure UX flavor; it gates the UI
-    // not the API. It's stored in localStorage so you only enter it
-    // once per browser.
+    // Manual triggers: a fun password unlocks buttons that fire workflows.
+    //
+    // Two modes:
+    //   DEEP-LINK (default, no setup): buttons open the GitHub Actions
+    //     page in a new tab; you tap "Run workflow" there to fire.
+    //   WORKER (paste a Cloudflare Worker URL below): buttons POST to
+    //     the worker which fires the workflow server-side using its
+    //     stored PAT. One-tap firing. "Rule them all" button appears.
+    //
+    // See cloudflare-worker/wavgen-triggers.js and
+    // docs/cloudflare-worker-setup.md to deploy.
     try {
-      // CHANGE THIS to whatever password you want. Lowercase, no spaces.
+      // === CONFIG (edit these two lines) ===
       var PASSWORD = 'transmit';
-      var UNLOCK_KEY = 'wavgen-triggers-unlocked';
+      var WORKER_URL = '';  // e.g. 'https://wavgen-triggers.YOURNAME.workers.dev/'
+      // =====================================
 
+      var UNLOCK_KEY = 'wavgen-triggers-unlocked';
       var locked = document.getElementById('trigger-locked');
       var unlocked = document.getElementById('trigger-unlocked');
       var lockBtn = document.getElementById('trigger-lock');
       var pwInput = document.getElementById('trigger-pw-input');
       var pwBtn = document.getElementById('trigger-pw-btn');
       var pwMsg = document.getElementById('trigger-pw-msg');
+      var modeHint = document.getElementById('trigger-mode-hint');
+      var ruleAllBtn = document.getElementById('trigger-all');
+      var result = document.getElementById('trigger-result');
       if (!locked || !unlocked) return;
+
+      var workerMode = WORKER_URL && /^https?:\/\//.test(WORKER_URL);
+      modeHint.textContent = workerMode
+        ? '🔓 Unlocked. Buttons fire workflows directly via your Cloudflare Worker.'
+        : '🔓 Unlocked. Buttons open the GitHub Actions page in a new tab; tap "Run workflow" there. Set WORKER_URL in src/diary/index.njk to enable one-tap firing.';
+      if (workerMode && ruleAllBtn) ruleAllBtn.classList.remove('hidden');
 
       function show(unlockedNow) {
         if (unlockedNow) {
@@ -113,6 +129,12 @@ but the content is a concise documentary/logbook about the site.
           unlocked.classList.add('hidden');
           if (lockBtn) lockBtn.classList.add('hidden');
         }
+      }
+
+      function showResult(msg, kind) {
+        result.textContent = msg;
+        result.classList.remove('hidden', 'text-wavgen-yellow', 'text-red-400', 'text-gray-400');
+        result.classList.add(kind === 'ok' ? 'text-wavgen-yellow' : kind === 'err' ? 'text-red-400' : 'text-gray-400');
       }
 
       function tryUnlock() {
@@ -129,9 +151,43 @@ but the content is a concise documentary/logbook about the site.
         }
       }
 
+      async function fireViaWorker(workflow) {
+        showResult('Firing ' + (workflow === 'all' ? 'all workflows' : workflow) + '…', null);
+        try {
+          var res = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: PASSWORD, workflow: workflow })
+          });
+          var data = await res.json();
+          if (res.ok && data.results) {
+            var ok = data.results.filter(function(r){ return r.ok; }).length;
+            var total = data.results.length;
+            showResult('✅ Fired ' + ok + '/' + total + ' workflow' + (total > 1 ? 's' : '') + '. Site updates in ~1-2 min.', 'ok');
+          } else {
+            showResult('❌ ' + (data.error || ('HTTP ' + res.status)), 'err');
+          }
+        } catch (e) {
+          showResult('❌ Network error: ' + e.message, 'err');
+        }
+      }
+
+      function handleTriggerClick(btn) {
+        var workflow = btn.getAttribute('data-workflow');
+        var href = btn.getAttribute('data-href');
+        if (workerMode) {
+          fireViaWorker(workflow);
+        } else if (href) {
+          window.open(href, '_blank', 'noopener');
+        }
+      }
+
       pwBtn.addEventListener('click', tryUnlock);
       pwInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
       if (lockBtn) lockBtn.addEventListener('click', function(){ localStorage.removeItem(UNLOCK_KEY); show(false); });
+      document.querySelectorAll('.trigger-action').forEach(function(btn){
+        btn.addEventListener('click', function(){ handleTriggerClick(btn); });
+      });
 
       show(localStorage.getItem(UNLOCK_KEY) === '1');
     } catch (e) { /* fail silent */ }
@@ -413,12 +469,14 @@ but the content is a concise documentary/logbook about the site.
           <p id="trigger-pw-msg" class="text-sm mt-2 hidden"></p>
         </div>
         <div id="trigger-unlocked" class="hidden">
-          <p class="text-sm text-gray-400 mb-4">🔓 Unlocked. Tap a button — it opens the workflow's GitHub Actions page in a new tab; tap "Run workflow" there to fire it.</p>
-          <div class="flex flex-wrap gap-3">
-            <a id="trigger-news-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/news-briefing.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now ↗</a>
-            <a id="trigger-prompt-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/diary-prompt.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now ↗</a>
-            <a id="trigger-replies-link" target="_blank" rel="noopener" href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/collect-diary-replies.yml" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📥 Collect replies now ↗</a>
+          <p id="trigger-mode-hint" class="text-sm text-gray-400 mb-4"></p>
+          <div class="flex flex-wrap gap-3 mb-3">
+            <button data-workflow="news-briefing.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/news-briefing.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📰 Scrape news now</button>
+            <button data-workflow="diary-prompt.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/diary-prompt.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">✍️ Send me a prompt now</button>
+            <button data-workflow="collect-diary-replies.yml" data-href="https://github.com/visualsbytheRob/Wavgen.ca_on_GitHub/actions/workflows/collect-diary-replies.yml" class="trigger-action control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">📥 Collect replies now</button>
           </div>
+          <button id="trigger-all" data-workflow="all" class="trigger-action hidden control-btn bg-gradient-to-r from-wavgen-purple to-wavgen-yellow text-black px-4 py-2 rounded-md font-bold hover:opacity-90 w-full">💍 One button to rule them all</button>
+          <p id="trigger-result" class="text-sm mt-3 hidden"></p>
         </div>
       </div>
 
