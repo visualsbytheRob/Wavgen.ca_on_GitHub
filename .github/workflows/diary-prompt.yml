@@ -29,6 +29,8 @@ jobs:
         with:
           node-version: "22"
 
+      - run: npm ci
+
       - run: node scripts/pick-diary-prompt.js
 
       - name: Commit and push if prompt changed
@@ -38,7 +40,17 @@ jobs:
           git add src/_data/dailyPrompt.json
           if git diff --cached --quiet; then
             echo "No change to today's prompt."
-            exit 0
+          else
+            git commit -m "prompt: $(date -u +%Y-%m-%d)"
+            git push
           fi
-          git commit -m "prompt: $(date -u +%Y-%m-%d)"
-          git push
+
+      - name: Email today's prompt
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          QUESTION=$(node -e "console.log(require('./src/_data/dailyPrompt.json').question)")
+          DATE=$(node -e "console.log(require('./src/_data/dailyPrompt.json').date)")
+          printf "%s\n\n— Today's reflection from wavgen.ca\nhttps://wavgen.ca/diary/\n" "$QUESTION" | node scripts/send-email.js "Wavgen prompt — $DATE"

@@ -10,7 +10,7 @@ Designed to **coexist** with the Claude loops: each backup checks whether Claude
 |---|---|---|
 | **Monthly refresh** | Same: runs `npm run refresh:monthly`, commits, pushes | Identical — no editorial loss. **Pure 1:1 replacement.** |
 | **News briefing** (M/W/F) | Selects, dedupes, summarizes news items per section; sends email | Aggregates RSS, dedupes against last 7 days, surfaces titles + RSS summaries. No editorial layer, no email. **Shows up on /diary/** |
-| **Diary prompt** (daily) | Reads your repo context, asks one specific contextual question; sends email | Picks one of 50 hand-written questions by day-of-year. **Shows up on /diary/** at the top of the Site Log |
+| **Diary prompt** (daily) | Reads your repo context, asks one specific contextual question; sends email | Picks one of 50 hand-written questions by day-of-year. **Shows up on /diary/** at the top of the Site Log + emails via Gmail SMTP (when secrets configured) |
 
 The two news briefings (Claude + RSS) produce different output even on the same day — Claude writes editorial summaries, RSS just lists headlines with descriptions. Both follow the same Markdown schema (frontmatter + sections), so both appear in the Site Log timeline.
 
@@ -85,8 +85,41 @@ Edit `src/_data/diaryQuestions.json` — add strings to the `questions` array. T
 - **Bandwidth/storage**: Negligible. Each briefing markdown is ~5KB. JSON data files ~3-15KB each.
 - **No API keys required.** No SMTP. No email. No paid services anywhere.
 
+## Email setup (free, optional)
+
+Both the diary prompt and the news briefing workflows can email via Gmail SMTP using a free app password. Without secrets configured, the workflows still commit to the repo and surface content on the site — they just don't email.
+
+### Generate a Gmail app password
+
+1. Go to <https://myaccount.google.com/apppasswords> (requires 2-Step Verification enabled — same page will walk you through enabling it if not)
+2. Pick a name like `Wavgen GitHub Actions` and create
+3. Google shows a 16-character password — copy it now, you can't view it again later (you CAN delete it and make a new one any time)
+
+### Add three GitHub repo secrets
+
+Repo settings → Secrets and variables → Actions → New repository secret.
+
+| Secret name | Value |
+|---|---|
+| `GMAIL_USER` | The Gmail address that sends (e.g. `robmcdtv@gmail.com`) |
+| `GMAIL_APP_PASSWORD` | The 16-character app password from step 1 (paste as-is, spaces are fine) |
+| `EMAIL_TO` | The address that receives (usually same as `GMAIL_USER`) |
+
+Once these three are set, the next scheduled run will email you. To disable email later, delete `GMAIL_APP_PASSWORD` from secrets — the workflows fall back to site-only mode automatically.
+
+### Safety story
+
+- App passwords are **single-purpose** — they can ONLY authenticate SMTP send. They cannot read your inbox, change settings, or access your account.
+- They're **revocable** in one click at <https://myaccount.google.com/apppasswords> without touching your main Gmail password.
+- GitHub secrets are **encrypted at rest** and auto-masked in workflow logs (even if a step tried to `echo` the password, GitHub redacts it).
+- The credential never leaves your repo's secret store and Google's SMTP server — no third party touches it.
+
+### What you'll get
+
+- **Diary prompt email** daily at ~9am EDT — subject `Wavgen prompt — YYYY-MM-DD`, body is the question
+- **News briefing email** Mon/Wed/Fri at ~8am EDT — subject `Wavgen briefing — YYYY-MM-DD`, body is the briefing markdown (without the YAML frontmatter)
+
 ## Future enhancements (optional)
 
-- **Add email** by adding `nodemailer` and using a Gmail app password as a repo secret. Free, ~10 minutes of setup. The backup workflows would gain email parity with the Claude versions.
 - **Better Toronto + local sources** — Google News RSS query targeting Toronto: `https://news.google.com/rss/search?q=Toronto&hl=en-CA`
 - **Auto-disable Claude triggers** when these are running, by checking a repo flag. Currently you manually choose which to use.

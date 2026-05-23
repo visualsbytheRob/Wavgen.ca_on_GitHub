@@ -27,16 +27,34 @@ jobs:
         with:
           node-version: "22"
 
+      - run: npm ci
+
       - run: node scripts/generate-briefing.js
 
       - name: Commit and push if briefing was written
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/diary/news/
           if git diff --cached --quiet; then
             echo "No new briefing — nothing to commit."
-            exit 0
+            echo "wrote_briefing=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
+            git push
+            echo "wrote_briefing=true" >> "$GITHUB_OUTPUT"
           fi
-          git commit -m "briefing: RSS digest $(date -u +%Y-%m-%d)"
-          git push
+
+      - name: Email today's briefing
+        if: steps.commit.outputs.wrote_briefing == 'true'
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          BRIEFING_FILE="src/diary/news/$TODAY.md"
+          if [ -f "$BRIEFING_FILE" ]; then
+            { tail -n +6 "$BRIEFING_FILE"; printf "\n— Full briefing styled on wavgen.ca\nhttps://wavgen.ca/diary/\n"; } | node scripts/send-email.js "Wavgen briefing — $TODAY"
+          fi
