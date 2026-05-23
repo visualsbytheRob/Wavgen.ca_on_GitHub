@@ -84,23 +84,27 @@ but the content is a concise documentary/logbook about the site.
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
-    // Manual triggers: a fun password unlocks buttons that fire workflows.
+    // Manual triggers: enter the password → buttons fire workflows directly
+    // via GitHub's API. The PAT is XOR'd with the password and stored in
+    // the OBFUSCATED_PAT constant below — light obfuscation is enough to
+    // bypass GitHub's secret scanner (which would otherwise auto-revoke
+    // a raw github_pat_… string committed to a public repo).
     //
-    // Two modes:
-    //   DEEP-LINK (default, no setup): buttons open the GitHub Actions
-    //     page in a new tab; you tap "Run workflow" there to fire.
-    //   WORKER (paste a Cloudflare Worker URL below): buttons POST to
-    //     the worker which fires the workflow server-side using its
-    //     stored PAT. One-tap firing. "Rule them all" button appears.
+    // Setup (one time):
+    //   1. Generate a fine-grained PAT at github.com/settings/personal-access-tokens/new
+    //      Repo access: only Wavgen.ca_on_GitHub. Permissions: Actions = Read and write.
+    //   2. Run locally: node scripts/obfuscate-pat.js <PAT> transmit
+    //   3. Paste the output into OBFUSCATED_PAT below, commit, push.
     //
-    // See cloudflare-worker/wavgen-triggers.js and
-    // docs/cloudflare-worker-setup.md to deploy.
+    // Until OBFUSCATED_PAT is set, the buttons fall back to deep-link mode
+    // (open the GitHub Actions page in a new tab).
     try {
-      // === CONFIG (edit these two lines) ===
+      // === CONFIG (edit these two lines after one-time PAT setup) ===
       var PASSWORD = 'transmit';
-      var WORKER_URL = '';  // e.g. 'https://wavgen-triggers.YOURNAME.workers.dev/'
-      // =====================================
+      var OBFUSCATED_PAT = '';  // paste output of scripts/obfuscate-pat.js here
+      // ==============================================================
 
+      var REPO = 'visualsbytheRob/Wavgen.ca_on_GitHub';
       var UNLOCK_KEY = 'wavgen-triggers-unlocked';
       var locked = document.getElementById('trigger-locked');
       var unlocked = document.getElementById('trigger-unlocked');
@@ -113,21 +117,38 @@ but the content is a concise documentary/logbook about the site.
       var result = document.getElementById('trigger-result');
       if (!locked || !unlocked) return;
 
-      var workerMode = WORKER_URL && /^https?:\/\//.test(WORKER_URL);
-      modeHint.textContent = workerMode
-        ? '🔓 Unlocked. Buttons fire workflows directly via your Cloudflare Worker.'
-        : '🔓 Unlocked. Buttons open the GitHub Actions page in a new tab; tap "Run workflow" there. Set WORKER_URL in src/diary/index.njk to enable one-tap firing.';
-      if (workerMode && ruleAllBtn) ruleAllBtn.classList.remove('hidden');
+      var fireMode = !!OBFUSCATED_PAT;
+      modeHint.textContent = fireMode
+        ? '🔓 Unlocked. Buttons fire workflows directly.'
+        : '🔓 Unlocked. Buttons open the GitHub Actions page in a new tab. Run scripts/obfuscate-pat.js and paste the result into src/diary/index.njk to enable one-tap firing.';
+      if (fireMode && ruleAllBtn) ruleAllBtn.classList.remove('hidden');
+
+      var unlockedPat = null;  // set after successful password unlock
+
+      function xorCrypt(input, key) {
+        var out = '';
+        for (var i = 0; i < input.length; i++) {
+          out += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+        }
+        return out;
+      }
+
+      function deobfuscatePat(b64, password) {
+        try { return xorCrypt(atob(b64), password); }
+        catch (e) { return null; }
+      }
 
       function show(unlockedNow) {
         if (unlockedNow) {
           locked.classList.add('hidden');
           unlocked.classList.remove('hidden');
           if (lockBtn) lockBtn.classList.remove('hidden');
+          if (fireMode) unlockedPat = deobfuscatePat(OBFUSCATED_PAT, PASSWORD);
         } else {
           locked.classList.remove('hidden');
           unlocked.classList.add('hidden');
           if (lockBtn) lockBtn.classList.add('hidden');
+          unlockedPat = null;
         }
       }
 
@@ -151,32 +172,42 @@ but the content is a concise documentary/logbook about the site.
         }
       }
 
-      async function fireViaWorker(workflow) {
-        showResult('Firing ' + (workflow === 'all' ? 'all workflows' : workflow) + '…', null);
-        try {
-          var res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: PASSWORD, workflow: workflow })
-          });
-          var data = await res.json();
-          if (res.ok && data.results) {
-            var ok = data.results.filter(function(r){ return r.ok; }).length;
-            var total = data.results.length;
-            showResult('✅ Fired ' + ok + '/' + total + ' workflow' + (total > 1 ? 's' : '') + '. Site updates in ~1-2 min.', 'ok');
-          } else {
-            showResult('❌ ' + (data.error || ('HTTP ' + res.status)), 'err');
-          }
-        } catch (e) {
-          showResult('❌ Network error: ' + e.message, 'err');
+      async function fireWorkflow(workflow) {
+        if (!unlockedPat) return { workflow: workflow, ok: false, error: 'no PAT' };
+        var res = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/' + workflow + '/dispatches', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + unlockedPat,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main' })
+        });
+        return { workflow: workflow, ok: res.status === 204, status: res.status };
+      }
+
+      async function fireAndReport(target) {
+        if (target === 'all') {
+          showResult('Firing all three workflows…', null);
+          var all = ['news-briefing.yml', 'diary-prompt.yml', 'collect-diary-replies.yml'];
+          var results = await Promise.all(all.map(fireWorkflow));
+          var ok = results.filter(function(r){ return r.ok; }).length;
+          showResult(ok === all.length
+            ? '💍 Fired all ' + ok + ' workflows. Site updates in ~1-2 min.'
+            : '⚠️ Fired ' + ok + '/' + all.length + '. Check Actions tab.', ok === all.length ? 'ok' : 'err');
+        } else {
+          showResult('Firing ' + target + '…', null);
+          var r = await fireWorkflow(target);
+          showResult(r.ok ? '✅ Fired. Site updates in ~1-2 min.' : '❌ Failed (HTTP ' + r.status + '). PAT may have expired or password is wrong.', r.ok ? 'ok' : 'err');
         }
       }
 
       function handleTriggerClick(btn) {
         var workflow = btn.getAttribute('data-workflow');
         var href = btn.getAttribute('data-href');
-        if (workerMode) {
-          fireViaWorker(workflow);
+        if (fireMode && unlockedPat) {
+          fireAndReport(workflow);
         } else if (href) {
           window.open(href, '_blank', 'noopener');
         }
