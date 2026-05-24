@@ -479,6 +479,20 @@ but the content is a concise documentary/logbook about the site.
     </div>
 
     <div class="space-y-8 max-w-3xl mx-auto">
+      <!-- On this day: silent unless a past-year diary entry matches today's MM-DD -->
+      {% if collections.onThisDay and collections.onThisDay.length > 0 %}
+      <div class="bg-gradient-to-br from-wavgen-yellow/10 to-black/40 border border-wavgen-yellow/30 rounded-xl p-5">
+        <div class="text-xs px-2 py-0.5 inline-block rounded bg-wavgen-yellow/20 text-wavgen-yellow uppercase tracking-wide font-semibold mb-3">On this day</div>
+        {% for entry in collections.onThisDay %}
+        <div class="mb-3 last:mb-0">
+          <div class="text-sm text-gray-400 mb-1">{{ entry.date }} — {{ entry.data.yearsAgo }} year{% if entry.data.yearsAgo != 1 %}s{% endif %} ago</div>
+          <h4 class="text-lg font-semibold text-white">{{ entry.data.title }}</h4>
+          <div class="prose prose-invert prose-sm max-w-none text-gray-300">{{ entry.templateContent | safe }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       <!-- Today's prompt: rotates daily via .github/workflows/diary-prompt.yml -->
       {% if dailyPrompt and dailyPrompt.question %}
       <div class="bg-gradient-to-br from-wavgen-purple/30 to-black/40 border border-wavgen-yellow/30 rounded-xl p-5">

@@ -1,0 +1,66 @@
+name: Celebrate ships (auto-diary new Bandcamp + YouTube releases)
+
+# Daily check for NEW releases (since the last celebrated set). For each
+# new track or video, writes a "Shipped: …" diary entry with the embed.
+# Silent if nothing new appeared — most days this is a no-op commit.
+#
+# Refreshes the source feeds first so YouTube uploads are caught within
+# ~24h of going live (instead of waiting for the monthly refresh).
+#
+# Cron is in UTC. 12:30 UTC = 8:30am EDT, daily — runs just after the
+# morning digest so the entry shows up the same morning it landed.
+on:
+  schedule:
+    - cron: "30 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backup-workflows
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  celebrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Refresh Bandcamp + YouTube feeds
+        run: node scripts/refresh-latest-feeds.js
+
+      - name: Detect new ships and write diary entries
+        run: node scripts/celebrate-ships.js
+
+      - name: Commit and push if new entries appeared
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/diary/entries/ .celebrated-ships.json src/_data/latestTracks.json src/_data/latestVideos.json
+          if git diff --cached --quiet; then
+            echo "Nothing new shipped — no commit."
+            exit 0
+          fi
+          # Only commit if a "Shipped:" entry was actually added; ignore noise-only feed-timestamp updates
+          if ! git diff --cached --name-only | grep -qE "src/diary/entries/.+shipped-.+\.md|\.celebrated-ships\.json"; then
+            echo "Only feed timestamps changed — discarding noise."
+            git reset HEAD
+            exit 0
+          fi
+          git commit -m "ship: celebrate new release(s) $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed; retrying after 5s…"
+            sleep 5
+          done

@@ -59,6 +59,27 @@ module.exports = function(eleventyConfig) {
       .filter(item => item.data.tags && (item.data.tags.includes("diary") || item.data.tags.includes("briefing")))
       .sort((a, b) => b.date - a.date);
   });
+
+  // On this day: diary entries from past years matching today's month-day.
+  // Rebuilds happen daily via the morning-digest push, so "today" stays fresh.
+  // Annotates each item with `yearsAgo` so the template doesn't need date math.
+  eleventyConfig.addCollection("onThisDay", function(collectionApi) {
+    const today = new Date();
+    const todayMD = `${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const todayYear = today.getFullYear();
+    return collectionApi.getAll()
+      .filter(item => item.data.tags && item.data.tags.includes("diary"))
+      .filter(item => {
+        const d = item.date;
+        const itemMD = `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+        return itemMD === todayMD && d.getFullYear() < todayYear;
+      })
+      .map(item => {
+        item.data.yearsAgo = todayYear - item.date.getFullYear();
+        return item;
+      })
+      .sort((a, b) => b.date - a.date);
+  });
   
   // Art section collections
   eleventyConfig.addCollection("paintingImages", createImageCollection("art/painting", "art/painting"));

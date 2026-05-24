@@ -1,0 +1,51 @@
+name: Sunday weekly digest (one-email recap)
+
+# Compresses the past 7 days into one Sunday-morning email: diary entries,
+# your (human) commits, and the news briefings that ran. Silent if the
+# week was empty — no email goes out for nothing-weeks.
+#
+# Cron is in UTC. 11:00 UTC = 7am EDT / 6am EST, Sundays.
+on:
+  schedule:
+    - cron: "0 11 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backup-workflows
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need full history for git log
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Compose and send weekly digest
+        continue-on-error: true
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          BODY=$(node scripts/weekly-digest.js 2>/dev/null)
+          if [ -z "$BODY" ]; then
+            echo "[weekly-digest] empty week — skipping email"
+            exit 0
+          fi
+          printf "%s" "$BODY" | node scripts/send-email.js "Wavgen week — $DATE" || echo "[email] send failed — see SMTP error above"
