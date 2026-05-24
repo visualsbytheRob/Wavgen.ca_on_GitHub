@@ -10,11 +10,11 @@ name: Diary prompt (static rotation backup)
 # the static one runs the site display, Claude pushes via email. They can
 # coexist or you can disable one.
 #
-# Cron is in UTC. 10:30 UTC ≈ 6:30am ET (EDT) / 5:30am ET (EST — winter shifts 1h earlier),
-# scheduled alongside the news briefing so both land in your inbox first thing.
+# Cron is in UTC. 10:35 UTC ≈ 6:35am ET (EDT) — staggered 5 min after the
+# news briefing so both land in your inbox separately around 6:30-6:40am.
 on:
   schedule:
-    - cron: "30 10 * * *"
+    - cron: "35 10 * * *"
   workflow_dispatch:
 
 permissions:
