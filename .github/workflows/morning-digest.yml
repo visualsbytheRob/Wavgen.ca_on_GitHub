@@ -11,7 +11,7 @@ name: Morning digest (news briefing + diary prompt in one email)
 # Cron is in UTC. 10:30 UTC = 6:30am EDT (5:30am EST in winter).
 on:
   schedule:
-    - cron: "30 10 * * *"
+    - cron: "30 11 * * *"
   workflow_dispatch:
 
 permissions:
