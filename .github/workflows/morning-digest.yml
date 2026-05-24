@@ -1,0 +1,83 @@
+name: Morning digest (news briefing + diary prompt in one email)
+
+# Combined morning workflow that replaces the separate news-briefing and
+# diary-prompt scheduled fires. Sends ONE email at ~6:30am EDT with the
+# day's reflection question at the top and the RSS briefing below.
+#
+# The two source workflows (news-briefing.yml, diary-prompt.yml) keep their
+# workflow_dispatch triggers so the /diary/ manual buttons can still fire
+# them individually for ad-hoc refreshes.
+#
+# Cron is in UTC. 10:30 UTC = 6:30am EDT (5:30am EST in winter).
+on:
+  schedule:
+    - cron: "30 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backup-workflows
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Refresh RSS briefing
+        run: node scripts/generate-briefing.js
+
+      - name: Pick today's diary prompt
+        run: node scripts/pick-diary-prompt.js
+
+      - name: Commit and push all changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/diary/news/ src/_data/news/ src/_data/dailyPrompt.json .diary-prompt-state.json
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "morning: digest $(date -u +%Y-%m-%d)"
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin main && break
+              echo "Push attempt $i failed; retrying after 5s…"
+              sleep 5
+            done
+          fi
+
+      - name: Send combined morning email
+        continue-on-error: true
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          QUESTION=$(node -e "console.log(require('./src/_data/dailyPrompt.json').question)")
+          BRIEFING_FILE="src/diary/news/$DATE.md"
+          {
+            printf "%s\n\n" "$QUESTION"
+            printf "— Reply with your thoughts; they'll land as a diary entry on /diary/ within ~2 hours.\n\n"
+            printf "─────────────────────────\n\n"
+            printf "📰 TODAY'S BRIEFING\n\n"
+            if [ -f "$BRIEFING_FILE" ]; then
+              tail -n +6 "$BRIEFING_FILE"
+            else
+              printf "(No briefing today.)\n"
+            fi
+            printf "\n— Full briefing styled on wavgen.ca\nhttps://wavgen.ca/diary/\n"
+          } | node scripts/send-email.js "Wavgen morning — $DATE" || echo "[email] send failed — workflow continues"

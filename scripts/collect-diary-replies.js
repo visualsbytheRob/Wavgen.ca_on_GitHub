@@ -22,7 +22,10 @@ const { simpleParser } = require("mailparser");
 const ROOT = path.join(__dirname, "..");
 const ENTRIES_DIR = path.join(ROOT, "src", "diary", "entries");
 const STATE_FILE = path.join(ROOT, ".diary-processed-replies.json");
-const SUBJECT_MATCH = /^Re:\s*Wavgen prompt\s*[—-]/i;
+// Matches replies to either the combined "Wavgen morning" digest emails
+// (new default from morning-digest.yml) or the standalone "Wavgen prompt"
+// emails (from manual diary-prompt fires).
+const SUBJECT_MATCH = /^Re:\s*Wavgen\s+(morning|prompt)\s*[—-]/i;
 
 async function loadState() {
   try {
@@ -152,7 +155,8 @@ async function main() {
   let lock;
   try {
     lock = await client.getMailboxLock("INBOX");
-    const uids = await client.search({ subject: "Wavgen prompt" });
+    // Broad IMAP search — SUBJECT_MATCH regex then precision-filters.
+    const uids = await client.search({ subject: "Wavgen" });
     let saved = 0;
     for (const uid of uids) {
       // Quick subject pre-filter (search is fuzzy in Gmail)

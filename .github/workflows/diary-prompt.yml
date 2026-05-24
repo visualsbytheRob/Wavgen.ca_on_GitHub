@@ -10,11 +10,10 @@ name: Diary prompt (static rotation backup)
 # the static one runs the site display, Claude pushes via email. They can
 # coexist or you can disable one.
 #
-# Cron is in UTC. 10:35 UTC ≈ 6:35am ET (EDT) — staggered 5 min after the
-# news briefing so both land in your inbox separately around 6:30-6:40am.
+# Scheduled morning fire moved to morning-digest.yml (combined email).
+# This workflow now runs only on manual dispatch via the /diary/ button
+# for ad-hoc extra prompts during the day.
 on:
-  schedule:
-    - cron: "35 10 * * *"
   workflow_dispatch:
 
 permissions:

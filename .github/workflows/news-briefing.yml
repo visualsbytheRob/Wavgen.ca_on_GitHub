@@ -8,11 +8,10 @@ name: News briefing (RSS backup for Claude editorial loop)
 # Skips silently if today's briefing already exists (e.g., the Claude loop
 # already wrote it, so they coexist gracefully).
 #
-# Cron is in UTC. 10:30 UTC ≈ 6:30am ET (EDT) / 5:30am ET (EST — winter shifts 1h earlier),
-# scheduled alongside the diary prompt so both land in your inbox first thing.
+# Scheduled morning fire moved to morning-digest.yml (combined email).
+# This workflow now runs only on manual dispatch via the /diary/ button
+# for ad-hoc news refreshes during the day.
 on:
-  schedule:
-    - cron: "30 10 * * *"
   workflow_dispatch:
 
 permissions:
