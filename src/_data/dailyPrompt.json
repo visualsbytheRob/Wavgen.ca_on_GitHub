@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-27",
-  "question": "What would your favorite teacher say about your work this year?",
+  "date": "2026-05-28",
+  "question": "What's a question you've been afraid to ask out loud?",
   "source": "random-with-history",
-  "chosen_index": 341,
+  "chosen_index": 234,
   "bank_size": 409,
-  "recently_used_window": 15
+  "recently_used_window": 16
 }

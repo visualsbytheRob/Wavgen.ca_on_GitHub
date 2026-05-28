@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-05-27",
+  "lastUpdated": "2026-05-28",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "The Witcher 3 is getting another expansion, more than a decade after launch",
-      "url": "https://www.theverge.com/entertainment/937970/the-witcher-3-songs-of-the-past-expansion",
-      "source": "The Verge",
-      "date": "2026-05-27",
-      "summary": "The fourth Witcher game may be a ways off, but fans won't be without Geralt of Rivia for long. CD Projekt Red just announced Songs of the Past, the third expansion for The Witcher 3, which will be lau…"
-    },
-    {
-      "title": "Tech CEOs are apparently suffering from AI psychosis",
-      "url": "https://techcrunch.com/2026/05/27/tech-ceos-are-apparently-suffering-from-ai-psychosis/",
-      "source": "TechCrunch",
-      "date": "2026-05-27",
-      "summary": "\"CEOs are uniquely prone to AI psychosis,\" Box CEO Aaron Levie opines. Maybe that explains the almost religious belief in AI productivity gains."
-    },
-    {
-      "title": "Robinhood now lets your AI agents trade stocks",
-      "url": "https://techcrunch.com/2026/05/27/robinhood-now-lets-your-ai-agents-trade-stocks/",
-      "source": "TechCrunch",
-      "date": "2026-05-27",
-      "summary": "Robinhood will let users create a separate account with pre-loaded balance that an agent use to trade"
-    },
-    {
-      "title": "Incident with Pull Requests, Issues, Git Operations and API Requests",
-      "url": "https://www.githubstatus.com/incidents/xy1tt3hs572m",
+      "title": "Five frontier LLMs disagree on 67% of 1k real-world fact-check claims",
+      "url": "https://lenz.io/research/llm-disagreement",
       "source": "Hacker News",
-      "date": "2026-05-27",
+      "date": "2026-05-28",
       "summary": "Comments"
+    },
+    {
+      "title": "Oura unveils its Ring 5 with a thinner, lighter design starting at $399",
+      "url": "https://techcrunch.com/2026/05/28/oura-unveils-its-ring-5-with-a-thinner-lighter-design-starting-at-399/",
+      "source": "TechCrunch",
+      "date": "2026-05-28",
+      "summary": "The ring is 40% smaller than its predecessor, and comes with more accurate sensing, enhanced battery life, and more."
+    },
+    {
+      "title": "They’ve finally made the Oura Ring smaller and lighter",
+      "url": "https://www.theverge.com/tech/938518/oura-ring-5-smart-ring-price-specs-wearables-hands-on",
+      "source": "The Verge",
+      "date": "2026-05-28",
+      "summary": "Wherever I go, whatever I do, people point at my finger and ask, \"Is that an Oura Ring?\" Lots of people find they like the design, and they tell me why they're thinking about switching to a smart ring…"
+    },
+    {
+      "title": "Kia’s flagship EV has a battery problem",
+      "url": "https://www.theverge.com/report/938783/kia-ev9-battery-problem-issues",
+      "source": "The Verge",
+      "date": "2026-05-28",
+      "summary": "I first realized there was an issue with Kia's flagship EV9 when I tried to unlock my car last year. The hulking three-row SUV was sitting on my driveway completely dead. The key didn't work, the app…"
     }
   ]
 }
