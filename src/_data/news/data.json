@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-05-29",
+  "lastUpdated": "2026-05-30",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Trump Mobile’s website still says the T1 Phone is ‘American-made’",
-      "url": "https://www.theverge.com/tech/939108/trump-mobile-t1-phone-website-american-made",
-      "source": "The Verge",
-      "date": "2026-05-29",
-      "summary": "Where's the Trump phone? We're going to keep talking about it every week. We've reached out, as usual, to ask about the Trump phone's whereabouts. As the phone's supposed launch continues, we noticed…"
-    },
-    {
-      "title": "Jony Ive’s funky Ferrari",
-      "url": "https://www.theverge.com/podcast/939589/ferrari-luce-jony-ive-vergecast",
-      "source": "The Verge",
-      "date": "2026-05-29",
-      "summary": "Most people will never own, drive, or even sit inside a Ferrari Luce. (If you can, or do… hit us up.) There's still no question that Ferrari's first electric vehicle is one of the most interesting, su…"
-    },
-    {
-      "title": "Cedana (YC S23) Is Hiring",
-      "url": "https://www.ycombinator.com/companies/cedana/jobs/d1vYocG-forward-deployed-engineer-ai-hpc",
+      "title": "Proposed new US funding rules: We can cancel any grant at any time",
+      "url": "https://arstechnica.com/science/2026/05/the-office-of-management-and-budget-tries-again-to-cripple-us-science/",
       "source": "Hacker News",
-      "date": "2026-05-29",
+      "date": "2026-05-30",
       "summary": "Comments"
     },
     {
-      "title": "This chip startup just raised $135M on a bet that AI’s biggest bottleneck isn’t compute — it’s memory",
-      "url": "https://techcrunch.com/2026/05/29/xcena-secures-135m-at-570m-valuation-betting-on-memory-as-ais-real-bottleneck/",
-      "source": "TechCrunch",
-      "date": "2026-05-29",
-      "summary": "South Korean chip startup Xcena is betting that AI's real bottleneck is not compute, but memory."
+      "title": "Pandoc Templates",
+      "url": "https://pandoc-templates.org/",
+      "source": "Hacker News",
+      "date": "2026-05-30",
+      "summary": "Comments"
+    },
+    {
+      "title": "The Kaiser and a \"Mediocre Man\" Theory of History",
+      "url": "https://www.deadcarl.com/p/the-kaiser-and-a-mediocre-man-theory",
+      "source": "Hacker News",
+      "date": "2026-05-30",
+      "summary": "Comments"
+    },
+    {
+      "title": "Zig: Build System Reworked",
+      "url": "https://ziglang.org/devlog/2026/#2026-05-26",
+      "source": "Hacker News",
+      "date": "2026-05-30",
+      "summary": "Comments"
     }
   ]
 }
