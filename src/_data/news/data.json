@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-06-01",
+  "lastUpdated": "2026-06-02",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "When AI Crosses the Line: The Matplotlib Incident",
-      "url": "https://members.sigmazero.cc/posts/when-ai-crosses-159174096?postId=when-ai-crosses-159174096",
-      "source": "Hacker News",
-      "date": "2026-06-01",
-      "summary": "Comments"
-    },
-    {
-      "title": "MacBook Pro Rival with the Nvidia Powered Surface Laptop Ultra",
-      "url": "https://www.windowslatest.com/2026/06/01/microsoft-builds-its-ultimate-macbook-pro-rival-with-the-nvidia-powered-surface-laptop-ultra/",
-      "source": "Hacker News",
-      "date": "2026-06-01",
-      "summary": "Comments"
-    },
-    {
-      "title": "Strava declares war on scrapers ahead of IPO",
-      "url": "https://techcrunch.com/2026/06/01/strava-declares-war-on-scrapers-ahead-of-ipo/",
+      "title": "ZeroDrift raises $10 million to protect AI models from themselves",
+      "url": "https://techcrunch.com/2026/06/02/zerodrift-raises-10-million-to-protect-ai-models-from-themselves/",
       "source": "TechCrunch",
-      "date": "2026-06-01",
-      "summary": "Strava will charge a flat monthly fee from developers to access its API"
+      "date": "2026-06-02",
+      "summary": "A new AI compliance service sits between AI models and end users to flag and replace any messages that might present a compliance problem."
     },
     {
-      "title": "These are the first Nvidia RTX Spark laptops",
-      "url": "https://www.theverge.com/gadgets/940794/first-nvidia-rtx-spark-laptops-roundup-computex-2026",
-      "source": "The Verge",
-      "date": "2026-06-01",
-      "summary": "Nvidia has officially entered the world of consumer laptop chips with the RTX Spark, and several device makers already have hardware lined up for it. Microsoft, Asus, HP, MSI, Lenovo, and Dell are exp…"
+      "title": "Sweden is now America's most valuable tech ally. Most Americans haven't noticed",
+      "url": "https://thehill.com/opinion/technology/5898904-strategic-alliance-sweden-us/",
+      "source": "Hacker News",
+      "date": "2026-06-02",
+      "summary": "Comments"
+    },
+    {
+      "title": "Great Question (YC W21) Is Hiring Applied AI Interns",
+      "url": "https://www.ycombinator.com/companies/great-question/jobs/J5TNvQH-ai-engineer-intern",
+      "source": "Hacker News",
+      "date": "2026-06-02",
+      "summary": "Comments"
+    },
+    {
+      "title": "Apple rejected my dictation app for using the accessibility API",
+      "url": "https://www.mitmllc.com/blog/apple-rejected-my-dictation-app/",
+      "source": "Hacker News",
+      "date": "2026-06-02",
+      "summary": "Comments"
     }
   ]
 }

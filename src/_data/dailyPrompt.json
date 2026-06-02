@@ -1,8 +1,8 @@
 {
-  "date": "2026-06-01",
-  "question": "What's a thing AI can do that you'd rather it not do for you, even if it would be faster?",
+  "date": "2026-06-02",
+  "question": "What does the room do to your work?",
   "source": "random-with-history",
-  "chosen_index": 310,
+  "chosen_index": 381,
   "bank_size": 409,
-  "recently_used_window": 20
+  "recently_used_window": 21
 }
