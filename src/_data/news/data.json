@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-06-03",
+  "lastUpdated": "2026-06-04",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "SwitchBot’s acquisition of Nanoleaf is about more than lighting",
-      "url": "https://www.theverge.com/tech/942328/nanoleaf-switchbot-onerobotics-sale-ai-robotics",
+      "title": "Let us filter AI slop, you cowards",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942909/let-us-filter-ai-slop-google-youtube-meta-instagram-tiktok",
       "source": "The Verge",
-      "date": "2026-06-03",
-      "summary": "Smart lighting company Nanoleaf has been acquired by OneRobotics, the parent company of SwitchBot. In an exclusive interview with The Verge, Nanoleaf CEO Gimmy Chu says the company will remain indepen…"
+      "date": "2026-06-04",
+      "summary": "It's almost impossible to avoid seeing AI-generated content online, but it doesn't have to be this way. YouTube, Instagram, TikTok, and more have ramped up content authentication efforts over the last…"
     },
     {
-      "title": "Piramidal (YC W24) – Software Engineers – NYC Onsite",
-      "url": "https://news.ycombinator.com/item?id=48382853",
+      "title": "AI leaders call for tougher protections against AI-aided bioweapons",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/942956/ai-biological-weapons-open-letter-congress",
+      "source": "The Verge",
+      "date": "2026-06-04",
+      "summary": "Some of the AI industry's biggest rivals have put their many, many grievances aside for a common cause: making it harder for people to use their technology to develop biological weapons. In an open le…"
+    },
+    {
+      "title": "AccessOwl (YC S22) is hiring an AI TypeScript Engineer to connect 300 SaaS tools",
+      "url": "https://www.ycombinator.com/companies/accessowl/jobs/hfWAhVp-ai-enabled-senior-software-engineer-typescript-focus",
       "source": "Hacker News",
-      "date": "2026-06-03",
+      "date": "2026-06-04",
       "summary": "Comments"
     },
     {
-      "title": "Every Byte Matters",
-      "url": "https://fzakaria.com/2026/06/01/every-byte-matters",
-      "source": "Hacker News",
-      "date": "2026-06-03",
-      "summary": "Comments"
-    },
-    {
-      "title": "Trans teens have something to say",
-      "url": "https://www.theverge.com/features/940977/trans-teens-pediatric-care-closing",
-      "source": "The Verge",
-      "date": "2026-06-03",
-      "summary": "By the time the Children's Hospital closed its doors to trans patients, Sage had already stopped taking testosterone. A nonbinary high school student, they originally received treatment for the rapid…"
+      "title": "Oura Ring 5 review: Thinner, lighter, better",
+      "url": "https://techcrunch.com/2026/06/04/oura-ring-5-review-thinner-lighter-better/",
+      "source": "TechCrunch",
+      "date": "2026-06-04",
+      "summary": "The Ring 5, which Oura describes as the world’s smallest smart ring, is 40% smaller than its predecessor and starts at $399."
     }
   ]
 }
