@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-06-08",
+  "lastUpdated": "2026-06-09",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Anthropic's Project Glasswing Update",
-      "url": "https://www.schneier.com/blog/archives/2026/06/anthropics-project-glasswing-update.html",
+      "title": "Emerge Career (YC S22) Is Hiring a Founding Growth Marketer",
+      "url": "https://www.ycombinator.com/companies/emerge-career/jobs/v0S1AEG-founding-growth-marketer",
       "source": "Hacker News",
-      "date": "2026-06-08",
+      "date": "2026-06-09",
       "summary": "Comments"
     },
     {
-      "title": "Nvidia partners with LG robotics to build humanoid robots in South Korea",
-      "url": "https://blogs.nvidia.com/blog/nvidia-and-lg-group-ai-factory/",
-      "source": "Hacker News",
-      "date": "2026-06-08",
-      "summary": "Comments"
-    },
-    {
-      "title": "Uber tells London to get ready for robotaxis",
-      "url": "https://www.theverge.com/transportation/945614/uber-wayve-robotaxi-interest-list-launch-london",
-      "source": "The Verge",
-      "date": "2026-06-08",
-      "summary": "Uber is getting ready to put robotaxis on London's streets, opening an interest list for riders who want to be among the first to hail one of Wayve's autonomous vehicles when the service goes live lat…"
-    },
-    {
-      "title": "Uber, Wayve and Waymo are headed towards a robotaxi showdown in London",
-      "url": "https://techcrunch.com/2026/06/08/uber-wayve-and-waymo-are-headed-towards-a-robotaxi-showdown-in-london/",
+      "title": "How an e-scooter founder raised $5 million to build space data centers",
+      "url": "https://techcrunch.com/2026/06/09/how-an-e-scooter-founder-raised-5-million-to-build-space-data-centers/",
       "source": "TechCrunch",
-      "date": "2026-06-08",
-      "summary": "Uber customers in the UK can now join an interest list to increase their chances of being matched with a Wayve robotaxi."
+      "date": "2026-06-09",
+      "summary": "Orbital founder Euwyn Poon built 250,000 scooters at Spin. Now he wants to launch 10,000 space data centers."
+    },
+    {
+      "title": "Marshall’s Stockwell speaker gets a replaceable battery that runs twice as long",
+      "url": "https://www.theverge.com/tech/945623/marshalls-stockwell-speaker-gets-a-replaceable-battery-that-runs-twice-as-long",
+      "source": "The Verge",
+      "date": "2026-06-09",
+      "summary": "Marshall has announced a new version of its stylish Stockwell Bluetooth speaker, putting a new focus on repairability. The Stockwell III, the brand's first update to this model since early 2019, featu…"
+    },
+    {
+      "title": "Hue’s SpatialAware finally made me appreciate color-changing lights",
+      "url": "https://www.theverge.com/tech/945624/philips-hue-bridge-pro-review-spatialaware-motionaware",
+      "source": "The Verge",
+      "date": "2026-06-09",
+      "summary": "I've been a fan of Philips Hue smart lights since the early days. It's one of the few staples in my ever-changing smart home. However, when the Bridge Pro launched late last year, it wasn't immediatel…"
     }
   ]
 }
