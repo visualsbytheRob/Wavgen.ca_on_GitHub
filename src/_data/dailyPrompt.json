@@ -1,8 +1,8 @@
 {
-  "date": "2026-06-09",
-  "question": "Which decision did you delay today? Why?",
+  "date": "2026-06-10",
+  "question": "What's the work in front of the work that everybody sees too much of?",
   "source": "random-with-history",
-  "chosen_index": 47,
+  "chosen_index": 349,
   "bank_size": 409,
-  "recently_used_window": 28
+  "recently_used_window": 29
 }
