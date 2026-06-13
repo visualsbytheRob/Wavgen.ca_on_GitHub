@@ -1,8 +1,8 @@
 {
-  "date": "2026-06-12",
-  "question": "When did AI distract you from a wall you needed to push through yourself?",
+  "date": "2026-06-13",
+  "question": "What's the most boring task you did today, and why does it matter?",
   "source": "random-with-history",
-  "chosen_index": 125,
+  "chosen_index": 31,
   "bank_size": 409,
-  "recently_used_window": 31
+  "recently_used_window": 32
 }
