@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-06-13",
+  "lastUpdated": "2026-06-14",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Echo Isle is a pint-sized adventure inspired by classic Zelda",
-      "url": "https://www.theverge.com/games/947136/echo-isle-review-pc",
-      "source": "The Verge",
-      "date": "2026-06-13",
-      "summary": "Echo Isle is heavily inspired by The Legend of Zelda, and it's not afraid to show it: The retro graphics bear a striking resemblance to Link's Awakening, the main character wears a blue tunic and wiel…"
-    },
-    {
-      "title": "Apple’s new AI photo editing tools mostly work, for better and worse",
-      "url": "https://www.theverge.com/tech/949360/apple-ai-photo-edit-reframe-extend-clean-up-hands-on",
-      "source": "The Verge",
-      "date": "2026-06-13",
-      "summary": "The most popular camera in the world just got its first set of serious AI photo editing features, and I don't think any of us are ready. As far as AI photo editing goes, the new features in iOS 27 are…"
-    },
-    {
-      "title": "A better way to manage all your screenshots",
-      "url": "https://www.theverge.com/tech/949465/pool-screenshots-app-disclosure-day-installer",
-      "source": "The Verge",
-      "date": "2026-06-13",
-      "summary": "Hi, friends! Welcome to Installer No. 132, your guide to the best and Verge-iest stuff in the world. (If you're new here, welcome, happy soccer, and also you can read all the old editions at the Insta…"
-    },
-    {
-      "title": "Arch Linux Now Believes Malware Incident Under Control: More Than 1,500 Packages",
-      "url": "https://www.phoronix.com/news/Arch-Linux-AUR-More-Than-1500",
+      "title": "How to Earn a Billion Dollars",
+      "url": "https://paulgraham.com/earn.html",
       "source": "Hacker News",
-      "date": "2026-06-13",
+      "date": "2026-06-14",
+      "summary": "Comments"
+    },
+    {
+      "title": "Don't trust large context windows",
+      "url": "https://garrit.xyz/posts/2026-05-06-dont-trust-large-context-windows",
+      "source": "Hacker News",
+      "date": "2026-06-14",
+      "summary": "Comments"
+    },
+    {
+      "title": "Tribblix: The retro Illumos distribution",
+      "url": "http://tribblix.org/",
+      "source": "Hacker News",
+      "date": "2026-06-14",
+      "summary": "Comments"
+    },
+    {
+      "title": "Phoenix LiveView 1.2",
+      "url": "https://phoenixframework.org/blog/phoenix-liveview-1-2-released",
+      "source": "Hacker News",
+      "date": "2026-06-14",
       "summary": "Comments"
     }
   ]
