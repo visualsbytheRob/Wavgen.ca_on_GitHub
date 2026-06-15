@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-06-14",
+  "lastUpdated": "2026-06-15",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "How to Earn a Billion Dollars",
-      "url": "https://paulgraham.com/earn.html",
+      "title": "Google Earth’s flight simulator is now available in your browser",
+      "url": "https://www.theverge.com/tech/949749/google-earth-flight-simulator-browser-experimental",
+      "source": "The Verge",
+      "date": "2026-06-15",
+      "summary": "On Friday Google announced it was making a relatively unknown feature of Google Earth available to a wider audience. The desktop version of Google Earth has had a hidden flight simulator mode since 20…"
+    },
+    {
+      "title": "As AI agents become employees, NewCore emerges with $66M to give them identities",
+      "url": "https://techcrunch.com/2026/06/15/ai-agents-are-becoming-employees-newcore-emerges-with-66m-to-give-them-identities/",
+      "source": "TechCrunch",
+      "date": "2026-06-15",
+      "summary": "NewCore argues the next challenge in enterprise security will be managing AI agents, not people."
+    },
+    {
+      "title": "Fox to Buy Roku Streaming Service in $22B Deal",
+      "url": "https://www.wsj.com/business/deals/fox-roku-deal-f6e564f9",
       "source": "Hacker News",
-      "date": "2026-06-14",
+      "date": "2026-06-15",
       "summary": "Comments"
     },
     {
-      "title": "Don't trust large context windows",
-      "url": "https://garrit.xyz/posts/2026-05-06-dont-trust-large-context-windows",
+      "title": "Salesforce to Acquire Fin (formerly Intercom) for $3.6BN",
+      "url": "https://www.salesforce.com/news/press-releases/2026/06/15/salesforce-signs-definitive-agreement-to-acquire-fin/?bc=HL",
       "source": "Hacker News",
-      "date": "2026-06-14",
-      "summary": "Comments"
-    },
-    {
-      "title": "Tribblix: The retro Illumos distribution",
-      "url": "http://tribblix.org/",
-      "source": "Hacker News",
-      "date": "2026-06-14",
-      "summary": "Comments"
-    },
-    {
-      "title": "Phoenix LiveView 1.2",
-      "url": "https://phoenixframework.org/blog/phoenix-liveview-1-2-released",
-      "source": "Hacker News",
-      "date": "2026-06-14",
+      "date": "2026-06-15",
       "summary": "Comments"
     }
   ]
