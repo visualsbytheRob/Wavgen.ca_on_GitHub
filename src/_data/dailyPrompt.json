@@ -1,8 +1,8 @@
 {
-  "date": "2026-06-15",
-  "question": "When was the last time you finished a track because you ran out of options vs. because you found the right one?",
+  "date": "2026-06-16",
+  "question": "What's the difference between AI as tool and AI as audience?",
   "source": "random-with-history",
-  "chosen_index": 78,
+  "chosen_index": 138,
   "bank_size": 409,
-  "recently_used_window": 34
+  "recently_used_window": 35
 }
