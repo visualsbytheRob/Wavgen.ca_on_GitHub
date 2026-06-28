@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-06-27",
+  "lastUpdated": "2026-06-28",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Fintech Engineering Handbook",
-      "url": "https://w.pitula.me/fintech-engineering-handbook/",
+      "title": "Nest’s quest to fix your thermostat",
+      "url": "https://www.theverge.com/podcast/958735/nest-thermostat-version-history",
+      "source": "The Verge",
+      "date": "2026-06-28",
+      "summary": "The founding story of Nest is pretty much a perfect tech myth. A legendary product maker (in this case, Tony Fadell) helps create one of the most successful products ever (the iPhone) and then rides o…"
+    },
+    {
+      "title": "Ad-free streaming is a luxury now",
+      "url": "https://www.theverge.com/column/958379/streaming-industry-ads",
+      "source": "The Verge",
+      "date": "2026-06-28",
+      "summary": "This is The Stepback, a weekly newsletter breaking down one essential story from the tech world. For more news about the streaming industry, follow Emma Roth. The Stepback arrives in our subscribers'…"
+    },
+    {
+      "title": "More evidence of life on Mars but still no life",
+      "url": "https://www.cbc.ca/radio/quirks/more-evidence-of-life-on-mars-but-still-no-life-1.7649645",
       "source": "Hacker News",
-      "date": "2026-06-27",
+      "date": "2026-06-28",
       "summary": "Comments"
     },
     {
-      "title": "DeepSeek open-sources inference optimizations with 60–85% faster generation [pdf]",
-      "url": "https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf",
+      "title": "DLL that was not present in memory despite not being formally unloaded",
+      "url": "https://devblogs.microsoft.com/oldnewthing/20260625-00/?p=112467",
       "source": "Hacker News",
-      "date": "2026-06-27",
-      "summary": "Comments"
-    },
-    {
-      "title": "Beer CSS – Build material design in record time",
-      "url": "https://www.beercss.com",
-      "source": "Hacker News",
-      "date": "2026-06-27",
-      "summary": "Comments"
-    },
-    {
-      "title": "IBM MCGA Gate Array Reverse Engineering",
-      "url": "https://github.com/schlae/IBM_MCGA",
-      "source": "Hacker News",
-      "date": "2026-06-27",
+      "date": "2026-06-28",
       "summary": "Comments"
     }
   ]
