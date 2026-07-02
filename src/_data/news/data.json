@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-07-01",
+  "lastUpdated": "2026-07-02",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Swedish court says Google is to pay $1.5B to Klarna in antitrust damages",
-      "url": "https://www.reuters.com/business/swedish-court-says-google-is-pay-15-billion-klarna-antitrust-damages-2026-07-01/",
+      "title": "Yep, we’re using OpenClaw to date now",
+      "url": "https://techcrunch.com/2026/07/02/yep-were-using-openclaw-to-date-now/",
+      "source": "TechCrunch",
+      "date": "2026-07-02",
+      "summary": "Ben Guez has \"a bunch of potential international wives in [his] DMs,\" thanks to an automated script he set up using OpenClaw, Claude code, and Instagram trials."
+    },
+    {
+      "title": "Mystery box shows are complicated for everyone — even the actors",
+      "url": "https://www.theverge.com/entertainment/960265/silo-season-3-apple-tv-interview-mystery-box",
+      "source": "The Verge",
+      "date": "2026-07-02",
+      "summary": "Silo is such a complicated show that even its showrunner gets confused sometimes. While filming the final seasons of the Apple TV sci-fi thriller, Graham Yost remembers two instances where he messed u…"
+    },
+    {
+      "title": "Vite+ Beta",
+      "url": "https://voidzero.dev/posts/announcing-vite-plus-beta",
       "source": "Hacker News",
-      "date": "2026-07-01",
+      "date": "2026-07-02",
       "summary": "Comments"
     },
     {
-      "title": "Range anxiety",
-      "url": "https://www.theverge.com/cs/features/938196/rivian-r2-ev-factory-supply-chain",
-      "source": "The Verge",
-      "date": "2026-07-01",
-      "summary": "The storm developed quickly over west central Illinois on April 17th, first as a single high-intensity system called a supercell, and then later that evening transforming into a long squall line of th…"
-    },
-    {
-      "title": "The cube was a lie: up close with our Dbrand Companion Cube before it gets destroyed",
-      "url": "https://www.theverge.com/games/959890/dbrand-companion-cube-photos-hands-on",
-      "source": "The Verge",
-      "date": "2026-07-01",
-      "summary": "Dbrand is the company that shipped a product that told Nintendo's legal team to \"go fuck yourself,\" and the company that had a second set of lawyer-dodging PS5 plates ready when Sony threatened to sue…"
-    },
-    {
-      "title": "Show HN: HackerNows – Native iOS HN Client",
-      "url": "https://hackernows.app/",
+      "title": "OpenAI: In early talks to give 5% stake to US Government",
+      "url": "https://www.theguardian.com/technology/2026/jul/02/openai-stake-us-government-ai-sam-altman",
       "source": "Hacker News",
-      "date": "2026-07-01",
+      "date": "2026-07-02",
       "summary": "Comments"
     }
   ]
