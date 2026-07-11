@@ -1,8 +1,8 @@
 {
-  "date": "2026-07-10",
-  "question": "What's the question behind the question you've been asking yourself?",
+  "date": "2026-07-11",
+  "question": "What's the difference between resting and stalling for you right now?",
   "source": "random-with-history",
-  "chosen_index": 12,
+  "chosen_index": 17,
   "bank_size": 409,
-  "recently_used_window": 59
+  "recently_used_window": 60
 }
