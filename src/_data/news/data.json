@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-07-13",
+  "lastUpdated": "2026-07-14",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Uber’s robotaxi lobbying effort puts it on a collision course with Waymo",
-      "url": "https://techcrunch.com/2026/07/13/ubers-robotaxi-lobbying-effort-has-put-it-on-a-collision-course-with-waymo/",
-      "source": "TechCrunch",
-      "date": "2026-07-13",
-      "summary": "Washington, D.C. has become a battleground for Uber and Waymo's competing views."
-    },
-    {
-      "title": "Leak of San Francisco Police Drone Footage Exposes Reality of Urban Surveillance",
-      "url": "https://www.wired.com/story/sfpd-drone-video-leak-surveillance/",
+      "title": "Show HN: I RL-trained an agent that trains models with RL (for –$1.3k)",
+      "url": "https://github.com/Danau5tin/ai-trains-ai",
       "source": "Hacker News",
-      "date": "2026-07-13",
+      "date": "2026-07-14",
       "summary": "Comments"
     },
     {
-      "title": "Show HN: DOM-docx – HTML to native, editable Word docs (MIT)",
-      "url": "https://github.com/floodtide/dom-docx",
+      "title": "Beautiful Type Erasure with C++26 Reflection",
+      "url": "https://ryanjk5.github.io/posts/rjk-duck/",
       "source": "Hacker News",
-      "date": "2026-07-13",
+      "date": "2026-07-14",
       "summary": "Comments"
     },
     {
-      "title": "An Infuriating Goodbye to Photoshop",
-      "url": "https://anderegg.ca/2026/07/12/an-infuriating-goodbye-to-photoshop",
+      "title": "Coding agents think ahead of time",
+      "url": "https://arxiv.org/abs/2607.05188",
       "source": "Hacker News",
-      "date": "2026-07-13",
+      "date": "2026-07-14",
+      "summary": "Comments"
+    },
+    {
+      "title": "Germany set to restrict its Freedom of Information Act",
+      "url": "https://www.dw.com/en/germany-freedom-of-information-act/a-77939695",
+      "source": "Hacker News",
+      "date": "2026-07-14",
       "summary": "Comments"
     }
   ]
