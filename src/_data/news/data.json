@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-07-14",
+  "lastUpdated": "2026-07-15",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Show HN: I RL-trained an agent that trains models with RL (for –$1.3k)",
-      "url": "https://github.com/Danau5tin/ai-trains-ai",
+      "title": "The Motorola Edge 70 Max is all about power",
+      "url": "https://www.theverge.com/tech/965884/motorola-edge-70-max-qi2-wireless-price-availability",
+      "source": "The Verge",
+      "date": "2026-07-15",
+      "summary": "Motorola has launched the Edge 70 Max, its latest flagship phone that's designed for power intensive tasks like streaming video and mobile gaming. Alongside having a huge battery and rapid wired charg…"
+    },
+    {
+      "title": "Jiga (YC W21) is hiring the best people to make manufacturing great again",
+      "url": "https://jiga.io/about-us/",
       "source": "Hacker News",
-      "date": "2026-07-14",
+      "date": "2026-07-15",
       "summary": "Comments"
     },
     {
-      "title": "Beautiful Type Erasure with C++26 Reflection",
-      "url": "https://ryanjk5.github.io/posts/rjk-duck/",
-      "source": "Hacker News",
-      "date": "2026-07-14",
-      "summary": "Comments"
+      "title": "Indian AI coding startup Emergent becomes a unicorn with $130M Series C",
+      "url": "https://techcrunch.com/2026/07/15/indian-ai-coding-startup-emergent-becomes-a-unicorn-just-over-a-year-after-launch/",
+      "source": "TechCrunch",
+      "date": "2026-07-15",
+      "summary": "The startup has reached a $120 million annualized revenue run rate and more than 200,000 paying customers."
     },
     {
-      "title": "Coding agents think ahead of time",
-      "url": "https://arxiv.org/abs/2607.05188",
-      "source": "Hacker News",
-      "date": "2026-07-14",
-      "summary": "Comments"
-    },
-    {
-      "title": "Germany set to restrict its Freedom of Information Act",
-      "url": "https://www.dw.com/en/germany-freedom-of-information-act/a-77939695",
-      "source": "Hacker News",
-      "date": "2026-07-14",
-      "summary": "Comments"
+      "title": "Vint Cerf is working on a plan to unleash AI agents on the open internet",
+      "url": "https://techcrunch.com/2026/07/15/vint-cerf-is-working-on-a-plan-to-unleash-ai-agents-on-the-open-internet/",
+      "source": "TechCrunch",
+      "date": "2026-07-15",
+      "summary": "The guy behind TCP/IP is working on a standard for identifying AI agents in the wild."
     }
   ]
 }
