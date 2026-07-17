@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-07-16",
+  "lastUpdated": "2026-07-17",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "OnePlus never had a chance in the US",
-      "url": "https://www.theverge.com/tech/966274/oneplus-never-had-a-chance-in-the-us",
-      "source": "The Verge",
-      "date": "2026-07-16",
-      "summary": "After an eight-year run, OnePlus announced today that it has exited the United States. It's bittersweet, as the brand has been on a comeback tour of sorts with its excellent OnePlus 15 and widely-prai…"
-    },
-    {
-      "title": "Claude can now use your 1Password credentials for you",
-      "url": "https://www.theverge.com/tech/966442/1password-anthropic-claude-browser-integration",
-      "source": "The Verge",
-      "date": "2026-07-16",
-      "summary": "1Password has launched a new browser integration for Claude that allows the Anthropic chatbot to access stored security credentials like usernames and passwords. The 1Password for Claude feature means…"
-    },
-    {
-      "title": "Google ordered to open Android and Search to rivals in Europe",
-      "url": "https://www.theverge.com/policy/966438/eu-google-android-ai-interoperability-search-data-dma",
-      "source": "The Verge",
-      "date": "2026-07-16",
-      "summary": "Google must give rival AI assistants and search engines greater access to key parts of Android and Google Search after the European Union ordered the company to comply with the bloc's digital antitrus…"
-    },
-    {
-      "title": "British Steel taken into public ownership to protect 'vital' UK supply",
-      "url": "https://www.bbc.com/news/articles/c5y680w62wno",
+      "title": "Apple targets dozens of OpenAI employees with legal letters",
+      "url": "https://www.ft.com/content/1b8c9d52-88a9-426b-ba47-f1811f859166",
       "source": "Hacker News",
-      "date": "2026-07-16",
+      "date": "2026-07-17",
       "summary": "Comments"
+    },
+    {
+      "title": "Why the first GPU financiers are turning to inference chips in a $400 million deal",
+      "url": "https://techcrunch.com/2026/07/17/why-the-first-gpu-financiers-are-turning-to-inference-chips-in-a-400-million-deal/",
+      "source": "TechCrunch",
+      "date": "2026-07-17",
+      "summary": "A $400 million chip-backed loan points to the next wave of AI infrastructure deals."
+    },
+    {
+      "title": "Blatant AI slop just won a 25k USD DeepMind Kaggle Grand Prize",
+      "url": "https://www.kaggle.com/competitions/kaggle-measuring-agi/discussion/724918#3498423",
+      "source": "Hacker News",
+      "date": "2026-07-17",
+      "summary": "Comments"
+    },
+    {
+      "title": "The war on ‘woke science’ comes for space research",
+      "url": "https://www.theverge.com/science/966711/omb-grant-science-space-nasa-planetary-society",
+      "source": "The Verge",
+      "date": "2026-07-17",
+      "summary": "The Trump administration is waging a culture war on science, and the latest salvo is in the form of a dry, bureaucratic proposal from the Office of Management and Budget (OMB) that could threaten the…"
     }
   ]
 }
