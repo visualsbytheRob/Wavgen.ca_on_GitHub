@@ -1,33 +1,33 @@
 {
-  "lastUpdated": "2026-07-28",
+  "lastUpdated": "2026-07-29",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Granola launches an Apple Watch app",
-      "url": "https://techcrunch.com/2026/07/28/granola-launches-an-apple-watch-app/",
+      "title": "DoorDash is building its own drone delivery business",
+      "url": "https://techcrunch.com/2026/07/29/doordash-is-building-its-own-drone-delivery-business/",
       "source": "TechCrunch",
-      "date": "2026-07-28",
-      "summary": "Granola debutes an Apple Watch app for in-person notetaking"
+      "date": "2026-07-29",
+      "summary": "DoorDash has received FAA approval to operate a commercial drone delivery service in the United States."
     },
     {
-      "title": "Twelve South’s stylish charging tray now delivers more wireless power with a smaller footprint",
-      "url": "https://www.theverge.com/tech/969957/twelve-south-valet-wireless-charger-qi2-25w-leather",
+      "title": "Spotify adds a running mode to its app",
+      "url": "https://techcrunch.com/2026/07/29/spotify-adds-a-running-mode-to-its-app/",
+      "source": "TechCrunch",
+      "date": "2026-07-29",
+      "summary": "Running Mode will be available to Premium users on iOS in select countries"
+    },
+    {
+      "title": "DoorDash is going airborne with new drone delivery division",
+      "url": "https://www.theverge.com/science/970731/doordash-air-drone-delivery-faa",
       "source": "The Verge",
-      "date": "2026-07-28",
-      "summary": "Following the original's debut at CES earlier this year, Twelve South is introducing a new version of its leather-wrapped Valet charging tray designed for use in places where space is at a premium. Wh…"
+      "date": "2026-07-29",
+      "summary": "DoorDash is launching a new drone delivery program called DoorDash Air. The largest food delivery app in the US said that it has approval from the Federal Aviation Administration that clears the way f…"
     },
     {
-      "title": "You don’t need to splurge on an expensive handheld fan to beat the heat",
-      "url": "https://www.theverge.com/tech/970092/jisulife-10s-handheld-personal-fan",
-      "source": "The Verge",
-      "date": "2026-07-28",
-      "summary": "Despite what influencers may say, you don’t need to spend $99.99 on Dyson’s HushJet Mini Cool or $149.99 for the Shark ChillPill to survive the summer whenever you leave the comfort of air-conditionin…"
-    },
-    {
-      "title": "I'm 38 and I Can't Support Myself Anymore",
-      "url": "https://itsmevox.substack.com/p/im-38-and-i-cant-support-myself-anymore",
+      "title": "A Texture Lookup Approach to Bézier Curve Evaluation on the GPU (JCGT)",
+      "url": "https://jcgt.org/published/0015/02/01/",
       "source": "Hacker News",
-      "date": "2026-07-28",
+      "date": "2026-07-29",
       "summary": "Comments"
     }
   ]
