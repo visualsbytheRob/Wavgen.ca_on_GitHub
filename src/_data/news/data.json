@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-07-29",
+  "lastUpdated": "2026-07-30",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "DoorDash is building its own drone delivery business",
-      "url": "https://techcrunch.com/2026/07/29/doordash-is-building-its-own-drone-delivery-business/",
-      "source": "TechCrunch",
-      "date": "2026-07-29",
-      "summary": "DoorDash has received FAA approval to operate a commercial drone delivery service in the United States."
-    },
-    {
       "title": "Spotify adds a running mode to its app",
-      "url": "https://techcrunch.com/2026/07/29/spotify-adds-a-running-mode-to-its-app/",
+      "url": "https://techcrunch.com/2026/07/30/spotify-adds-a-running-mode-to-its-app/",
       "source": "TechCrunch",
-      "date": "2026-07-29",
+      "date": "2026-07-30",
       "summary": "Running Mode will be available to Premium users on iOS in select countries"
     },
     {
-      "title": "DoorDash is going airborne with new drone delivery division",
-      "url": "https://www.theverge.com/science/970731/doordash-air-drone-delivery-faa",
-      "source": "The Verge",
-      "date": "2026-07-29",
-      "summary": "DoorDash is launching a new drone delivery program called DoorDash Air. The largest food delivery app in the US said that it has approval from the Federal Aviation Administration that clears the way f…"
+      "title": "Inforcer raises $50M to help prepare smaller businesses for a new world of AI and security risks",
+      "url": "https://techcrunch.com/2026/07/30/inforcer-raises-50m-to-help-prepare-smbs-for-a-new-world-of-ai-and-security-risks/",
+      "source": "TechCrunch",
+      "date": "2026-07-30",
+      "summary": "London-based Inforcer just closed a $50 million Series C round led by Insight Partners."
     },
     {
-      "title": "A Texture Lookup Approach to Bézier Curve Evaluation on the GPU (JCGT)",
-      "url": "https://jcgt.org/published/0015/02/01/",
-      "source": "Hacker News",
-      "date": "2026-07-29",
-      "summary": "Comments"
+      "title": "Dili raises $21.7 million to bring AI compliance to the infrastructure boom",
+      "url": "https://techcrunch.com/2026/07/30/dili-raises-15-million-to-bring-ai-compliance-to-the-infrastructure-boom/",
+      "source": "TechCrunch",
+      "date": "2026-07-30",
+      "summary": "The Series A was led by Khosla Ventures, with participation from Allianz, Rebel Fund, Brick and Mortar Ventures’ Darren Bechtel, and Y Combinator’s Garry Tan."
+    },
+    {
+      "title": "Spotify Running Mode helps match tunes to tempo",
+      "url": "https://www.theverge.com/entertainment/973002/spotify-running-mode-launch-bpm-playlists",
+      "source": "The Verge",
+      "date": "2026-07-30",
+      "summary": "Spotify has introduced a new Running Mode feature that makes it easier to curate playlists around your workout goals, music tastes, and desired beats per minute (BPM). The aim is to help you \"spend le…"
     }
   ]
 }
