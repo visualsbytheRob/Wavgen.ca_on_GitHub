@@ -1,8 +1,8 @@
 {
-  "date": "2026-07-31",
-  "question": "Where do you feel like a beginner this year? Is that a problem or a gift?",
+  "date": "2026-08-01",
+  "question": "Which command-line move has changed your year?",
   "source": "random-with-history",
-  "chosen_index": 391,
+  "chosen_index": 215,
   "bank_size": 409,
-  "recently_used_window": 79
+  "recently_used_window": 80
 }
