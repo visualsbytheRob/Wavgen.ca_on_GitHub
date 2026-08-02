@@ -1,8 +1,8 @@
 {
-  "date": "2026-08-01",
-  "question": "Which command-line move has changed your year?",
+  "date": "2026-08-02",
+  "question": "What do you wear when you perform vs. when you don't? What does that mean?",
   "source": "random-with-history",
-  "chosen_index": 215,
+  "chosen_index": 178,
   "bank_size": 409,
-  "recently_used_window": 80
+  "recently_used_window": 81
 }
