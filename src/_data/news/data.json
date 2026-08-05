@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-08-04",
+  "lastUpdated": "2026-08-05",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Is the future of data centers portable? Runware builds a pod to find out",
-      "url": "https://techcrunch.com/2026/08/04/is-the-future-of-data-centers-portable-runware-builds-a-pod-to-find-out/",
+      "title": "Iowa et al asks OpenAI to keep their bots sandboxed",
+      "url": "https://www.iowaattorneygeneral.gov/newsroom/attorney-general-brenna-bird-leads-coalition-demanding-transparency-from-openai-after-ai-breach-and",
+      "source": "Hacker News",
+      "date": "2026-08-05",
+      "summary": "Comments"
+    },
+    {
+      "title": "TIME Is Serving AI Bots a Different Website, with Ads Built In",
+      "url": "https://www.vincentschmalbach.com/time-serves-ai-bots-a-different-website/",
+      "source": "Hacker News",
+      "date": "2026-08-05",
+      "summary": "Comments"
+    },
+    {
+      "title": "MacPaw taps Liquid AI to offer on-device inference to devs building for its app store",
+      "url": "https://techcrunch.com/2026/08/05/macpaw-taps-liquid-ai-to-offer-on-device-inference-to-devs-building-for-its-app-store/",
       "source": "TechCrunch",
-      "date": "2026-08-04",
-      "summary": "On Tuesday, AI infrastructure company Runware announced the launch of its own modular data center called Sonic Inference Pod."
+      "date": "2026-08-05",
+      "summary": "MacPaw is building a local version of its AI assistant Eney using Liquid AI's models."
     },
     {
-      "title": "Peak Design’s latest bags have clever integrated hooks",
-      "url": "https://www.theverge.com/tech/973624/peak-design-city-line-details-price",
-      "source": "The Verge",
-      "date": "2026-08-04",
-      "summary": "Peak Design's new City Line collection includes six lightweight bags designed for everyday carry. There's a 15-liter and 22L City Backpack, 15L City Tote, 6L and 12L City Crescent crossbody bags, and…"
-    },
-    {
-      "title": "Nothing CMF is launching its first open earbuds",
-      "url": "https://www.theverge.com/gadgets/974933/nothing-cmf-clip-pro-open-ear-buds-price-launch",
-      "source": "The Verge",
-      "date": "2026-08-04",
-      "summary": "Open earbuds are having a bit of a moment right now, and Nothing is the latest company jumping on the trend. Its budget sub-brand has introduced the CMF Clip Pro, CMF's first open-ear buds that are de…"
-    },
-    {
-      "title": "Apple briefly yanked Telegram from the App Store over CSAM violations",
-      "url": "https://www.theverge.com/tech/974951/telegram-apple-app-store-removed",
-      "source": "The Verge",
-      "date": "2026-08-04",
-      "summary": "Telegram is back on the App Store after Apple briefly removed it on Monday night over concerns about child sexual abuse material (CSAM). In a statement to Bloomberg's Mark Gurman, Apple says a review…"
+      "title": "Robinhood to list a fund that lets anyone back Y Combinator startups",
+      "url": "https://techcrunch.com/2026/08/05/robinhood-to-list-a-fund-that-lets-anyone-back-y-combinator-startups/",
+      "source": "TechCrunch",
+      "date": "2026-08-05",
+      "summary": "Robinhood's latest financial instrument intends to let any retail investor feel like they, too, can make money by backing Y Combinator startups."
     }
   ]
 }
