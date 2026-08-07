@@ -1,8 +1,8 @@
 {
-  "date": "2026-08-06",
-  "question": "When did you say no to something you should have said yes to? What did it cost?",
+  "date": "2026-08-07",
+  "question": "What's a feature you built that nobody uses? Should it stay?",
   "source": "random-with-history",
-  "chosen_index": 255,
+  "chosen_index": 160,
   "bank_size": 409,
-  "recently_used_window": 85
+  "recently_used_window": 86
 }
