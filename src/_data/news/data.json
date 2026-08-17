@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-08-16",
+  "lastUpdated": "2026-08-17",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Show HN: Grafana agent observability for Hermes Agent",
-      "url": "https://github.com/alexander-akhmetov/grafana-agento11y-hermes",
-      "source": "Hacker News",
-      "date": "2026-08-16",
-      "summary": "Comments"
-    },
-    {
-      "title": "What happens when an LLM never sees material beyond fifth grade?",
-      "url": "https://littlelearner-ll.github.io/",
-      "source": "Hacker News",
-      "date": "2026-08-16",
-      "summary": "Comments"
-    },
-    {
-      "title": "Falstad Math and Physics Simulations",
-      "url": "https://www.falstad.com/mathphysics.html",
-      "source": "Hacker News",
-      "date": "2026-08-16",
-      "summary": "Comments"
-    },
-    {
-      "title": "Polaroid’s tiny instant camera is $72 and includes a free pack of film",
-      "url": "https://www.theverge.com/gadgets/980448/polaroid-go-second-generation-film-pack-bundle-deal-sale",
+      "title": "How to take better photos of your pets",
+      "url": "https://www.theverge.com/tech/970021/how-to-take-better-pet-photos",
       "source": "The Verge",
-      "date": "2026-08-16",
-      "summary": "Smartphone cameras are convenient, but they lack the charm of analog instant cameras. If you’re trying to relive the nostalgia of waiting for an instant photo to develop, Amazon is selling the second-…"
+      "date": "2026-08-17",
+      "summary": "Like the pets of any self-respecting millennial, my cats have their own Instagram account. Noodle and Loaf - aka Carb Cats - aren't exactly celebrities. But they are used to having their photos taken…"
+    },
+    {
+      "title": "Whisker’s AI-powered litter robot thinks my cats swapped bodies",
+      "url": "https://www.theverge.com/tech/978323/whisker-litter-robot-5-pro-review",
+      "source": "The Verge",
+      "date": "2026-08-17",
+      "summary": "The greatest invention in pet tech in recent years is the litter robot. A machine that scoops your kitties' poop so you don't have to - what else could a cat owner possibly want? How about insights in…"
+    },
+    {
+      "title": "Anthropic explains how Claude’s invisible text watermarks will work",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/980869/anthropic-claude-watermarks-synthid-text-system",
+      "source": "The Verge",
+      "date": "2026-08-17",
+      "summary": "Anthropic has clarified how it's planning to apply invisible watermarks to Claude-generated text in order to comply with Europe's AI transparency rules. On Friday, Anthropic announced that Claude's te…"
+    },
+    {
+      "title": "Self hosted email continues to steeply decline",
+      "url": "https://labs.ripe.net/author/artem-berezin/two-providers-a-stubborn-plateau-and-a-very-long-tail-email-in-the-tranco-top-1m/",
+      "source": "Hacker News",
+      "date": "2026-08-17",
+      "summary": "Comments"
     }
   ]
 }
