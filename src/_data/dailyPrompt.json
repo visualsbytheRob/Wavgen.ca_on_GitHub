@@ -1,8 +1,8 @@
 {
-  "date": "2026-08-25",
-  "question": "What does your work look like in print, on a phone, on a giant LED wall? Which of those matters most to you?",
+  "date": "2026-08-26",
+  "question": "If you couldn't use Claude tomorrow, what would you build first?",
   "source": "random-with-history",
-  "chosen_index": 297,
+  "chosen_index": 131,
   "bank_size": 409,
-  "recently_used_window": 104
+  "recently_used_window": 105
 }
