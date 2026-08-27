@@ -1,8 +1,8 @@
 {
-  "date": "2026-08-26",
-  "question": "If you couldn't use Claude tomorrow, what would you build first?",
+  "date": "2026-08-27",
+  "question": "Where do your tracks borrow from voices that aren't yours? Is that fluent or derivative?",
   "source": "random-with-history",
-  "chosen_index": 131,
+  "chosen_index": 274,
   "bank_size": 409,
-  "recently_used_window": 105
+  "recently_used_window": 106
 }
