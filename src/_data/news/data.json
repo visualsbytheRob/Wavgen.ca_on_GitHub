@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-09-01",
+  "lastUpdated": "2026-09-02",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Microsoft 365 outage drags on, but things are improving",
-      "url": "https://techcrunch.com/2026/09/01/microsoft-365-outage-drags-on-but-things-are-improving/",
+      "title": "HiddenLayer nabs $100M as enterprises rush to secure their AI deployments",
+      "url": "https://techcrunch.com/2026/09/02/hiddenlayer-nabs-100m-as-enterprises-rush-to-secure-their-ai-deployments/",
       "source": "TechCrunch",
-      "date": "2026-09-01",
-      "summary": "Microsoft 365 and Outlook are still seeing service degradations on Tuesday, the company's status page indicates."
+      "date": "2026-09-02",
+      "summary": "HiddenLayer has raised a $100M Series B from Delta-v Capital, Ten Eleven Ventures, Morgan Stanley, Microsoft's M12, Booz Allen Hamilton, and others."
     },
     {
-      "title": "Shelly’s new $50 security camera watches your home without a subscription",
-      "url": "https://www.theverge.com/tech/987436/shelly-smart-home-hd-security-camera-automation",
+      "title": "Belkin’s kid-friendly wireless headphones are 25 percent off",
+      "url": "https://www.theverge.com/gadgets/987687/belkin-headphones-sonos-ace-nintendo-switch-2-kirby-amazon-resale-deal-sale",
       "source": "The Verge",
-      "date": "2026-09-01",
-      "summary": "After launching a budget-friendly flood sensor last month with impressive battery life, Shelly announced a new $49.99 security camera today that can be used without any additional subscription fees -…"
+      "date": "2026-09-02",
+      "summary": "Verge readers can get a discount on Belkin’s SoundForm Mini 2 wireless headphones. The kid-focused on-ear headphones feature an 85-decibel volume limit and easy controls, and a mode that lets them bea…"
     },
     {
-      "title": "Christian Employers Can Now Discriminate Against Trans People",
-      "url": "https://theintercept.com/2026/09/01/christian-employers-settlement-gender-discrimination-eeoc/",
-      "source": "Hacker News",
-      "date": "2026-09-01",
-      "summary": "Comments"
-    },
-    {
-      "title": "Fambot introduces an ‘AI chief of staff’ for families",
-      "url": "https://techcrunch.com/2026/09/01/fambot-introduces-an-ai-chief-of-staff-for-families/",
+      "title": "PSA: Amazon’s shopping AI can now tell you if that message is a scam",
+      "url": "https://techcrunch.com/2026/09/02/psa-amazons-shopping-ai-can-now-tell-you-if-that-message-is-a-scam/",
       "source": "TechCrunch",
-      "date": "2026-09-01",
-      "summary": "Fambot is building an AI “chief of staff” to help families manage the emails, calendars, school updates, sports schedules, and other logistics of raising kids."
+      "date": "2026-09-02",
+      "summary": "Amazon is adding a scam-detection feature to Alexa for Shopping that can verify whether suspicious emails, texts, and other messages actually came from the retailer."
+    },
+    {
+      "title": "OpenAI accused of ‘aiding and abetting’ Tumbler Ridge mass shooting in dozens of new lawsuits",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/988261/openai-tumbler-ridge-shooting-lawsuit-aiding-abetting",
+      "source": "The Verge",
+      "date": "2026-09-02",
+      "summary": "OpenAI and its CEO Sam Altman are facing 30 new lawsuits that accuse them of providing \"substantial assistance and encouragement\" to the suspect in Canada's Tumbler Ridge school shooting, as reported…"
     }
   ]
 }
