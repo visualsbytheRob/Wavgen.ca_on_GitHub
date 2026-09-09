@@ -1,9 +1,26 @@
 name: Deploy Eleventy to GitHub Pages
 
+# Deploys on three paths:
+#   1. push        — a human commit to main/master.
+#   2. workflow_run — a content workflow finished and pushed new material.
+#      GitHub deliberately does NOT fire `push` for commits made with the
+#      default GITHUB_TOKEN (it prevents workflows retriggering themselves),
+#      and every content workflow below pushes with that token. Without this
+#      trigger their commits land in the repo but never reach the live site.
+#   3. workflow_dispatch — manual redeploy.
 on:
   workflow_dispatch:
   push:
     branches: [ main, master ]
+  workflow_run:
+    workflows:
+      - "Morning digest (news briefing + diary prompt in one email)"
+      - "Celebrate ships (auto-diary new Bandcamp + YouTube releases)"
+      - "Collect diary email replies (IMAP → markdown entries)"
+      - "Monthly refresh (Bandcamp + YouTube + Projects)"
+      - "News briefing (RSS backup for Claude editorial loop)"
+      - "Diary prompt (static rotation backup)"
+    types: [completed]
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -11,6 +28,13 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    # Only skip when a *content* workflow finished unsuccessfully — it will
+    # not have pushed anything worth publishing. Push and manual runs carry
+    # no workflow_run object, so the first clause lets them through.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
 
     environment:
       name: github-pages
@@ -22,13 +46,20 @@ jobs:
       id-token: write
 
     steps:
+    # Pin the ref to the branch tip rather than the event SHA. On a
+    # workflow_run event GITHUB_SHA is the head commit of the triggering
+    # run, which for a content workflow is the commit BEFORE it pushed its
+    # own new material — checking that out would deploy stale content.
+    # Naming the branch always resolves to its current tip.
     - name: Checkout repository
       uses: actions/checkout@v5
+      with:
+        ref: ${{ github.event.workflow_run.head_branch || github.ref_name }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '18'
+        node-version: '22'
         cache: 'npm'
 
     - name: Install dependencies

@@ -17,7 +17,7 @@ Fresh Claude Code session runs THE PROMPT below
    ├─ Writes src/_data/news/{music,video,data,art,aggregated}.json
    ├─ Writes src/diary/news/YYYY-MM-DD.md
    ├─ Sends email to robmcdtv@gmail.com via Gmail MCP
-   └─ git commit + push → deploy.yml auto-deploys site
+   └─ git commit + push → eleventy-deploy.yml auto-deploys site
 ```
 
 ## Where the news shows up on the site
@@ -88,7 +88,7 @@ From the trigger page, click **Run now**. Watch the session in real time. On fir
 - The 5 JSON files under `src/_data/news/` are updated with real content
 - `src/diary/news/YYYY-MM-DD.md` exists
 - The email arrived at robmcdtv@gmail.com
-- The commit landed on `main` and the site rebuilt via deploy.yml
+- The commit landed on `main` and the site rebuilt via eleventy-deploy.yml
 
 If any step fails, the prompt's failure-handling section tells the session what to do. Read the briefing markdown for clues, fix the prompt or MCP setup, and run again.
 

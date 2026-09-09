@@ -100,7 +100,12 @@ git push origin main
 
 After the push:
 
-1. **GitHub Actions Workflow triggers** (based on `on: push` in `.github/workflows/deploy.yml`)
+1. **GitHub Actions Workflow triggers** (`.github/workflows/eleventy-deploy.yml`)
+   - `push` to `main` for human commits.
+   - `workflow_run` when a content workflow finishes. Commits pushed by
+     Actions using the default `GITHUB_TOKEN` do **not** fire `push`, so the
+     scheduled content workflows rely on this trigger to reach the live site.
+   - `workflow_dispatch` for a manual redeploy.
 2. Steps that run:
 
    * Checkout repo
@@ -130,7 +135,7 @@ Or if you're using a custom domain, the one you configured.
 | `tailwind.config.js`           | Configures purging, colors, fonts, safelist                            |
 | `input.css`                    | Tailwind base file (with `@tailwind` directives and custom components) |
 | `.eleventy.js`                 | Eleventy config – controls passthroughs, directories, plugins          |
-| `.github/workflows/deploy.yml` | GitHub Actions script for automatic deployment                         |
+| `.github/workflows/eleventy-deploy.yml` | GitHub Actions script for automatic deployment               |
 | `_site/`                       | Eleventy’s output folder — auto-deployed to GitHub Pages               |
 
 ---
