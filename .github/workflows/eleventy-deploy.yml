@@ -7,11 +7,22 @@ name: Deploy Eleventy to GitHub Pages
 #      default GITHUB_TOKEN (it prevents workflows retriggering themselves),
 #      and every content workflow below pushes with that token. Without this
 #      trigger their commits land in the repo but never reach the live site.
-#   3. workflow_dispatch — manual redeploy.
+#   3. schedule — a daily safety net. workflow_run proved unreliable in
+#      testing: a manually dispatched morning digest committed and pushed
+#      successfully, yet no deploy was triggered, so the content sat
+#      unpublished. GitHub appears to suppress workflow_run when the
+#      triggering run was itself started by a token-authenticated
+#      dispatch. Rather than rely on it, this cron guarantees the site
+#      rebuilds every day whether or not workflow_run fires.
+#      13:00 UTC sits after the 11:30 digest and the 12:30 ship
+#      celebration, so one build picks up both.
+#   4. workflow_dispatch — manual redeploy.
 on:
   workflow_dispatch:
   push:
     branches: [ main, master ]
+  schedule:
+    - cron: "0 13 * * *"
   workflow_run:
     workflows:
       - "Morning digest (news briefing + diary prompt in one email)"
