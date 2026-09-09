@@ -1,3 +1,331 @@
+/**
+ * MAIN CSS ENTRY POINT
+ * 
+ * Layer order (cascading):
+ * 1. Design tokens (@layer base)
+ * 2. Animations (@layer animations)
+ * 3. Tailwind base (@tailwind base)
+ * 4. Tailwind components (@tailwind components)
+ * 5. Custom components (@layer components)
+ * 6. Tailwind utilities (@tailwind utilities)
+ * 
+ * This order ensures proper cascading and specificity
+ */
+
+/* System imports: Design tokens and animations */
+
+/**
+ * DESIGN TOKENS
+ * 
+ * Purpose: Centralized design system for Wavgen.ca
+ * - Brand colors
+ * - Spacing scale
+ * - Typography sizes
+ * - Z-index hierarchy
+ * - Shadow system
+ * 
+ * These tokens are used throughout the site to ensure consistency
+ * Makes theming and updates simple (change once, updates everywhere)
+ * 
+ * USAGE:
+ * background: var(--color-primary);
+ * font-size: var(--text-lg);
+ * padding: var(--space-md);
+ * box-shadow: var(--shadow-md);
+ */
+
+/* ==========================================
+   TOKEN USAGE HELPER CLASSES (Optional utilities)
+   ========================================== */
+
+/**
+ * ANIMATIONS CSS LAYER
+ * 
+ * Purpose: CSS foundation for GSAP animations and transitions
+ * - Smooth easing presets
+ * - Transition utilities
+ * - Animation helpers
+ * - Accessibility (prefers-reduced-motion)
+ * 
+ * This @layer is applied BEFORE Tailwind utilities
+ * Keeps animations organized and separate from component layer
+ * 
+ * USAGE:
+ * <div class="animate-in-up"> — Entrance animation ready
+ * <div class="transition-smooth"> — GSAP-optimized transition
+ */
+
+@layer animations {
+  /* ==========================================
+     ENTRANCE ANIMATIONS
+     ========================================== */
+
+  /* Fade in from below (hero sections, cards) */
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  /* Fade in with slight scale */
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-in-scale {
+    animation: fadeInScale 0.8s ease-out forwards;
+  }
+
+  /* Fade in from sides (staggered reveal) */
+
+  @keyframes fadeInSide {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-in-side {
+    animation: fadeInSide 0.8s ease-out forwards;
+  }
+
+  /* ==========================================
+     EXIT ANIMATIONS
+     ========================================== */
+
+  /* Fade out downward */
+
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  .animate-out-down {
+    animation: fadeOutDown 0.6s ease-in forwards;
+  }
+
+  /* ==========================================
+     HOVER INTERACTIONS
+     ========================================== */
+
+  /* Smooth hover: Lift + scale */
+
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover\:lift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ==========================================
+     SPECIAL EFFECTS
+     ========================================== */
+
+  /* Pulse: Breathing effect */
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Shine: Horizontal sweep */
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .shimmer-effect {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 221, 0, 0.3), transparent);
+    background-size: 1000px 100%;
+  }
+
+  /* ==========================================
+     STAGGER ANIMATIONS (for sequence effects)
+     ========================================== */
+
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-3 {
+    animation-delay: 0.3s;
+  }
+
+  .stagger-4 {
+    animation-delay: 0.4s;
+  }
+
+  .stagger-5 {
+    animation-delay: 0.5s;
+  }
+
+  /* ==========================================
+     TRANSITIONS (for smooth state changes)
+     ========================================== */
+
+  /* Optimized for GSAP integration */
+
+  .will-animate {
+    will-change: transform, opacity;
+  }
+
+  .transition-transform {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transition-all {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .transition-colors {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* ==========================================
+     ACCESSIBILITY: MOTION PREFERENCES
+     ========================================== */
+
+  /* Respect prefers-reduced-motion globally */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ==========================================
+     EASING FUNCTION UTILITIES
+     ========================================== */
+
+  /* GSAP/CSS easing equivalents */
+
+  .ease-in {
+    animation-timing-function: cubic-bezier(0.42, 0, 1, 1);
+  }
+
+  .ease-out {
+    animation-timing-function: cubic-bezier(0, 0, 0.58, 1);
+  }
+
+  .ease-in-out {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  /* Apple-like easing */
+
+  .ease-smooth {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Power easing (for entrance effects) */
+
+  .ease-power-in {
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  .ease-power-out {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  /* ==========================================
+     ANIMATION STATES
+     ========================================== */
+
+  /* Pause animations on click */
+
+  .animate-pause {
+    animation-play-state: paused;
+  }
+
+  /* Infinite loop */
+
+  .animate-infinite {
+    animation-iteration-count: infinite;
+  }
+
+  /* ==========================================
+     MOBILE OPTIMIZATION
+     ========================================== */
+
+  @media (max-width: 768px) {
+    /* Faster animations on mobile */
+
+    .animate-in-up,
+    .animate-in-scale,
+    .animate-in-side {
+      animation-duration: 0.6s;
+    }
+
+    /* Disable complex animations on lower-end mobile */
+
+    .reduce-motion-mobile {
+      animation: none !important;
+      transition: opacity 0.2s ease;
+    }
+  }
+}
+
+/* Tailwind directives */
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -106,9 +434,8 @@
   --tw-contain-style:  ;
 }
 
-/*
-! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
-*/
+/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+ */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -554,6 +881,200 @@ video {
   display: none;
 }
 
+:root {
+  /* ==========================================
+       BRAND COLORS
+       ========================================== */
+  --color-primary: #FEDD00;
+  /* Wavgen Yellow - CTAs, highlights */
+  --color-secondary: #340093;
+  /* Wavgen Purple - Main brand */
+  --color-accent: #2c0077;
+  /* Dark Purple - Secondary brand */
+  --color-tertiary: #6366f1;
+  /* Light Purple - Interactive states */
+  /* ==========================================
+       NEUTRAL COLORS (for dark mode)
+       ========================================== */
+  --color-bg-dark: #0f172a;
+  /* Almost black background */
+  --color-bg-darker: #0a0e1a;
+  /* Darker background overlay */
+  --color-surface: #1e293b;
+  /* Card/container surface */
+  --color-surface-light: #334155;
+  /* Hover state surface */
+  --color-text-primary: #ffffff;
+  /* Primary text */
+  --color-text-secondary: #cbd5e1;
+  /* Secondary text */
+  --color-text-muted: #94a3b8;
+  /* Muted text */
+  --color-border: #475569;
+  /* Border color */
+  --color-border-light: #64748b;
+  /* Lighter border */
+  /* ==========================================
+       SEMANTIC COLORS
+       ========================================== */
+  --color-success: #10b981;
+  /* Green - Success states */
+  --color-warning: #f59e0b;
+  /* Amber - Warning states */
+  --color-error: #ef4444;
+  /* Red - Error states */
+  --color-info: #3b82f6;
+  /* Blue - Info states */
+  /* ==========================================
+       SPACING SCALE (8px base unit)
+       ========================================== */
+  --space-xs: 0.25rem;
+  /* 4px - Micro spacing */
+  --space-sm: 0.5rem;
+  /* 8px - Small spacing */
+  --space-md: 1rem;
+  /* 16px - Medium spacing */
+  --space-lg: 1.5rem;
+  /* 24px - Large spacing */
+  --space-xl: 2rem;
+  /* 32px - Extra large */
+  --space-2xl: 3rem;
+  /* 48px - Double extra large */
+  --space-3xl: 4rem;
+  /* 64px - Triple extra large */
+  --space-4xl: 6rem;
+  /* 96px - Massive */
+  /* ==========================================
+       TYPOGRAPHY SCALE
+       ========================================== */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-md: 1rem;
+  /* 16px - Base */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
+  --text-4xl: 2.25rem;
+  /* 36px */
+  --text-5xl: 3rem;
+  /* 48px - Hero text */
+  --text-6xl: 3.75rem;
+  /* 60px - Large hero */
+  /* ==========================================
+       LINE HEIGHTS
+       ========================================== */
+  --line-tight: 1.2;
+  /* Headings */
+  --line-normal: 1.5;
+  /* Body text */
+  --line-relaxed: 1.75;
+  /* Long-form content */
+  /* ==========================================
+       FONT WEIGHTS
+       ========================================== */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 900;
+  /* ==========================================
+       SHADOWS (Elevation system)
+       ========================================== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /* Cinematic/Brand shadow (with yellow tint) */
+  --shadow-brand: 0 10px 30px rgba(253, 224, 71, 0.15);
+  /* ==========================================
+       BLUR (for glass morphism)
+       ========================================== */
+  --blur-sm: blur(4px);
+  --blur-md: blur(12px);
+  --blur-lg: blur(20px);
+  /* ==========================================
+       BORDER RADIUS (rounded corners)
+       ========================================== */
+  --radius-sm: 0.25rem;
+  /* 4px - Minimal */
+  --radius-md: 0.5rem;
+  /* 8px - Standard */
+  --radius-lg: 1rem;
+  /* 16px - Large */
+  --radius-xl: 1.5rem;
+  /* 24px - Extra large */
+  --radius-full: 9999px;
+  /* Pill shape */
+  /* ==========================================
+       Z-INDEX HIERARCHY (Stacking order)
+       ========================================== */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-bg: 900;
+  --z-modal: 1000;
+  --z-tooltip: 1100;
+  --z-notification: 1200;
+  /* ==========================================
+       TRANSITIONS (Timing functions)
+       ========================================== */
+  --transition-fast: 150ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+  --transition-slower: 800ms;
+  /* ==========================================
+       BREAKPOINTS (for responsive design)
+       ========================================== */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  /* ==========================================
+       CONTAINER QUERIES (future support)
+       ========================================== */
+  --container-sm: 320px;
+  --container-md: 448px;
+  --container-lg: 576px;
+  --container-xl: 672px;
+  --container-2xl: 768px;
+}
+
+/* ==========================================
+     DARK MODE OVERRIDES (if needed)
+     ========================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode is already our default, but can add overrides here */
+  }
+}
+
+/* ==========================================
+     REDUCED MOTION MODE
+     ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 1ms;
+    --transition-normal: 1ms;
+    --transition-slow: 1ms;
+    --transition-slower: 1ms;
+  }
+}
+
 .\!container {
   width: 100% !important;
 }
@@ -612,6 +1133,34 @@ video {
   }
 }
 
+/* Quick spacing utilities using tokens */
+
+/* Quick shadow utilities */
+
+/* Quick radius utilities */
+
+/* Quick text utilities */
+
+.nav-link {
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+@layer animations {
+  .nav-link {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+}
+
+.nav-link:hover {
+  --tw-text-opacity: 1;
+  color: rgb(254 221 0 / var(--tw-text-opacity, 1));
+}
+
 .section-card {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   border-radius: 0.5rem;
@@ -627,6 +1176,12 @@ video {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+}
+
+@layer animations {
+  .section-card {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
 .section-card:hover {
@@ -702,6 +1257,10 @@ video {
   visibility: hidden;
 }
 
+.collapse {
+  visibility: collapse;
+}
+
 .static {
   position: static;
 }
@@ -716,6 +1275,10 @@ video {
 
 .relative {
   position: relative;
+}
+
+.sticky {
+  position: sticky;
 }
 
 .inset-0 {
@@ -949,12 +1512,24 @@ video {
   display: inline-block;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
 }
 
 .inline-flex {
   display: inline-flex;
+}
+
+.table {
+  display: table;
+}
+
+.\!grid {
+  display: grid !important;
 }
 
 .grid {
@@ -1205,10 +1780,6 @@ video {
   max-width: 56rem;
 }
 
-.max-w-5xl {
-  max-width: 64rem;
-}
-
 .max-w-\[260px\] {
   max-width: 260px;
 }
@@ -1229,11 +1800,11 @@ video {
   flex: 1 1 0%;
 }
 
-.flex-shrink-0 {
-  flex-shrink: 0;
+.flex-shrink {
+  flex-shrink: 1;
 }
 
-.shrink-0 {
+.flex-shrink-0 {
   flex-shrink: 0;
 }
 
@@ -1325,6 +1896,10 @@ video {
 
 .items-center {
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .items-stretch {
@@ -1613,6 +2188,10 @@ video {
   border-color: rgb(254 221 0 / var(--tw-border-opacity, 1));
 }
 
+.border-wavgen-yellow\/30 {
+  border-color: rgb(254 221 0 / 0.3);
+}
+
 .border-white\/10 {
   border-color: rgb(255 255 255 / 0.1);
 }
@@ -1744,6 +2323,10 @@ video {
   background-color: rgb(44 0 119 / 0.5);
 }
 
+.bg-wavgen-dark-purple\/60 {
+  background-color: rgb(44 0 119 / 0.6);
+}
+
 .bg-wavgen-dark-purple\/80 {
   background-color: rgb(44 0 119 / 0.8);
 }
@@ -1758,6 +2341,10 @@ video {
   background-color: rgb(52 0 147 / var(--tw-bg-opacity, 1));
 }
 
+.bg-wavgen-purple\/40 {
+  background-color: rgb(52 0 147 / 0.4);
+}
+
 .bg-wavgen-purple\/50 {
   background-color: rgb(52 0 147 / 0.5);
 }
@@ -1765,6 +2352,10 @@ video {
 .bg-wavgen-yellow {
   --tw-bg-opacity: 1;
   background-color: rgb(254 221 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-wavgen-yellow\/20 {
+  background-color: rgb(254 221 0 / 0.2);
 }
 
 .bg-wavgen-yellow\/70 {
@@ -1783,6 +2374,10 @@ video {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity, 1));
+}
+
+.bg-yellow-900\/40 {
+  background-color: rgb(113 63 18 / 0.4);
 }
 
 .bg-opacity-50 {
@@ -1937,8 +2532,20 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-wavgen-purple\/30 {
+  --tw-gradient-from: rgb(52 0 147 / 0.3) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(52 0 147 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-wavgen-yellow {
   --tw-gradient-from: #FEDD00 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(254 221 0 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-wavgen-yellow\/10 {
+  --tw-gradient-from: rgb(254 221 0 / 0.1) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(254 221 0 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -2033,6 +2640,10 @@ video {
 .via-yellow-900 {
   --tw-gradient-to: rgb(113 63 18 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #713f12 var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.to-black\/40 {
+  --tw-gradient-to: rgb(0 0 0 / 0.4) var(--tw-gradient-to-position);
 }
 
 .to-blue-500 {
@@ -2200,6 +2811,11 @@ video {
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+
+.px-1\.5 {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
 }
 
 .px-2 {
@@ -2379,6 +2995,10 @@ video {
   text-transform: uppercase;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .italic {
   font-style: italic;
 }
@@ -2393,6 +3013,10 @@ video {
 
 .leading-relaxed {
   line-height: 1.625;
+}
+
+.leading-snug {
+  line-height: 1.375;
 }
 
 .leading-tight {
@@ -2529,6 +3153,16 @@ video {
   text-underline-offset: 2px;
 }
 
+.placeholder-gray-500::-moz-placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-placeholder-opacity, 1));
+}
+
+.placeholder-gray-500::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-placeholder-opacity, 1));
+}
+
 .opacity-0 {
   opacity: 0;
 }
@@ -2555,6 +3189,12 @@ video {
 
 .opacity-80 {
   opacity: 0.8;
+}
+
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-2xl {
@@ -2610,6 +3250,11 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.drop-shadow {
+  --tw-drop-shadow: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
@@ -2628,6 +3273,11 @@ video {
 
 .backdrop-blur-sm {
   --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.backdrop-filter {
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -2694,6 +3344,12 @@ video {
   will-change: transform;
 }
 
+/* Google Fonts */
+
+.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+
 .hover\:-translate-y-1:hover {
   --tw-translate-y: -0.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -2716,12 +3372,20 @@ video {
   border-color: rgb(254 221 0 / var(--tw-border-opacity, 1));
 }
 
+.hover\:border-wavgen-yellow\/60:hover {
+  border-color: rgb(254 221 0 / 0.6);
+}
+
 .hover\:bg-black\/40:hover {
   background-color: rgb(0 0 0 / 0.4);
 }
 
 .hover\:bg-black\/50:hover {
   background-color: rgb(0 0 0 / 0.5);
+}
+
+.hover\:bg-black\/60:hover {
+  background-color: rgb(0 0 0 / 0.6);
 }
 
 .hover\:bg-blue-400:hover {
@@ -2820,6 +3484,10 @@ video {
   opacity: 1;
 }
 
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+
 .hover\:shadow-2xl:hover {
   --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
@@ -2847,6 +3515,11 @@ video {
 
 .focus\:top-2:focus {
   top: 0.5rem;
+}
+
+.focus\:border-wavgen-yellow:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 221 0 / var(--tw-border-opacity, 1));
 }
 
 .focus\:outline-none:focus {
@@ -2894,6 +3567,11 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.group:hover .group-hover\:text-wavgen-yellow {
+  --tw-text-opacity: 1;
+  color: rgb(254 221 0 / var(--tw-text-opacity, 1));
+}
+
 .group:hover .group-hover\:opacity-100 {
   opacity: 1;
 }
@@ -2939,18 +3617,6 @@ video {
     margin-left: 0.5rem;
   }
 
-  .md\:ml-6 {
-    margin-left: 1.5rem;
-  }
-
-  .md\:mt-0 {
-    margin-top: 0px;
-  }
-
-  .md\:flex {
-    display: flex;
-  }
-
   .md\:h-\[700px\] {
     height: 700px;
   }
@@ -2967,10 +3633,6 @@ video {
     height: 900px;
   }
 
-  .md\:flex-1 {
-    flex: 1 1 0%;
-  }
-
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2983,20 +3645,12 @@ video {
     flex-direction: row;
   }
 
-  .md\:items-start {
-    align-items: flex-start;
-  }
-
   .md\:items-center {
     align-items: center;
   }
 
   .md\:justify-between {
     justify-content: space-between;
-  }
-
-  .md\:gap-6 {
-    gap: 1.5rem;
   }
 
   .md\:space-x-3 > :not([hidden]) ~ :not([hidden]) {
@@ -3033,6 +3687,10 @@ video {
 
   .lg\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-4 {

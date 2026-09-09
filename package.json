@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"npm run build-css\" \"eleventy --serve\" \"node scripts/save-entry-server.js\"",
-    "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
+    "dev": "concurrently \"npm run watch-css\" \"eleventy --serve\" \"node scripts/save-entry-server.js\"",
+    "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css",
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
@@ -17,7 +17,8 @@
     "refresh:monthly": "npm run refresh:feeds && npm run refresh:projects",
     "briefing:generate": "node scripts/generate-briefing.js",
     "diary:pick": "node scripts/pick-diary-prompt.js",
-    "diary:collect": "node scripts/collect-diary-replies.js"
+    "diary:collect": "node scripts/collect-diary-replies.js",
+    "watch-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",

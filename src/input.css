@@ -13,8 +13,8 @@
  */
 
 /* System imports: Design tokens and animations */
-@import 'systems/tokens.css';
-@import 'systems/animations.css';
+@import 'css/systems/tokens.css';
+@import 'css/systems/animations.css';
 
 /* Tailwind directives */
 @tailwind base;

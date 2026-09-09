@@ -12,7 +12,7 @@ This template renders the footer for the site.
             <p class="text-gray-300 mb-6">{{ footerDescription or 'Creative Technology • Toronto, Canada' }}</p>
             <div class="border-t border-wavgen-purple pt-6">
                 <p class="text-gray-400 text-sm">
-                    &copy; 2025 Rob McDonald. {{ footerTagline or 'Exploring the intersection of creativity and technology.' }}
+                    &copy; {{ build.currentYear }} Rob McDonald. {{ footerTagline or 'Exploring the intersection of creativity and technology.' }}
                 </p>
             </div>
         </div>
