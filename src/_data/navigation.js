@@ -24,12 +24,7 @@ module.exports = {
         // World pages
         { title: 'Signal Flow',              url: '/music/signal-flow/',              description: 'Audio routing and signal chains' },
         { title: 'Waveform Playground',      url: '/music/waveform-playground/',      description: 'Oscillators, waveforms, and synthesis' },
-        { title: 'Modular Patch Lab',        url: '/music/modular-patch-lab/',        description: 'Eurorack and modular synthesis' },
-        { title: 'Granular Synthesis',       url: '/music/granular-synthesis/',       description: 'Granular and microsound techniques' },
-        { title: 'Algorithmic Composition',  url: '/music/algorithmic-composition/',  description: 'Rules, patterns, and generative music' },
-        { title: 'Generative Music Systems', url: '/music/generative-music-systems/', description: 'Self-evolving musical structures' },
-        { title: 'Sound Design',             url: '/music/sound-design/',             description: 'Synthesis, sampling, and sound shaping' },
-        { title: 'Music Theory',             url: '/music/music-theory/',             description: 'Harmony, scales, and composition' }
+        { title: 'Granular Synthesis',       url: '/music/granular-synthesis/',       description: 'Granular and microsound techniques' }
       ]
     },
     {
@@ -43,21 +38,10 @@ module.exports = {
         { title: 'Mixing',   url: '/video/mixing/',   description: 'Live video composition' },
         { title: 'Editing',  url: '/video/editing/',  description: 'Post-production workflows' },
         // World pages
-        { title: 'Cinematography',  url: '/video/cinematography/',    description: 'Camera craft, lensing, and visual storytelling' },
-        { title: 'Color Science',   url: '/video/color-science-lab/', description: 'Color grading, LUTs, and colorimetry' },
         { title: 'DaVinci Resolve', url: '/video/davinci-resolve/',   description: 'Professional grading and editing workflows' },
-        { title: 'VFX Compositing', url: '/video/vfx-compositing/',   description: 'Compositing, keying, and visual effects' },
-        { title: 'Motion Graphics', url: '/video/motion-graphics/',   description: 'Kinetic type, animation, and motion design' },
         { title: 'AI Video',        url: '/video/ai-video/',          description: 'AI-assisted video generation and editing' },
         // AV worlds (merged from former AV section)
-        { title: 'Audiovisual Ecosystems',    url: '/video/audiovisual-ecosystems/',    description: 'Integrated AV signal flows and system design' },
-        { title: 'TouchDesigner Signal Flow', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' },
-        { title: 'Live Performance',          url: '/video/live-performance/',          description: 'Realtime AV performance and VJ systems' },
-        { title: 'Spatial Audio',             url: '/video/spatial-audio/',             description: 'Ambisonics, binaural, and 3D sound' },
-        { title: 'Interactive Installations', url: '/video/interactive-installations/', description: 'Sensor-driven and participatory AV systems' },
-        { title: 'Realtime Graphics',         url: '/video/realtime-graphics/',         description: 'GPU shaders and generative visual rendering' },
-        { title: 'Projection Mapping',        url: '/video/projection-mapping-av/',     description: 'Architectural projection and surface mapping' },
-        { title: 'Generative Universe',       url: '/video/generative-universe/',       description: 'Cosmic-scale procedural and emergent systems' }
+        { title: 'TouchDesigner Signal Flow', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' }
       ]
     },
     {
@@ -69,19 +53,10 @@ module.exports = {
         { title: 'ML & Predictive AI',   url: '/data/ml-predictive-ai/',    description: 'Algorithms, training, deployment' },
         { title: 'Quantum Computing',    url: '/data/quantum-computing/',    description: 'Qubits, gates, quantum advantage' },
         { title: 'Generative AI',        url: '/data/generative-ai/',        description: 'LLMs, transformers, prompting' },
-        { title: 'Automation',           url: '/data/automation/',           description: 'Scripts, orchestration, CI/CD' },
         { title: 'Cloud Computing',      url: '/data/cloud-computing/',      description: 'AWS, Azure, GCP architectures' },
-        { title: 'SOA & Microservices',  url: '/data/soa-microservices/',    description: 'Microservices, patterns, gateways' },
-        { title: 'AI Agents',            url: '/data/ai-agents/',            description: 'Autonomous agents and multi-agent systems' },
-        { title: 'RAG Systems',          url: '/data/rag-systems/',          description: 'Retrieval-augmented generation pipelines' },
-        { title: 'API Design',           url: '/data/api-design/',           description: 'REST, GraphQL, and API architecture' },
-        { title: 'Distributed Systems',  url: '/data/distributed-systems/',  description: 'Consensus, fault tolerance, scaling' },
-        { title: 'Serverless',           url: '/data/serverless/',           description: 'Functions, event-driven, edge compute' },
         // Standard section pages
         { title: 'Web Dev',  url: '/data/webdev/',   description: 'Full-stack development' },
         { title: 'Coding',   url: '/data/coding/',   description: 'Programming projects' },
-        { title: 'Gen AI',   url: '/data/genai/',    description: 'AI and machine learning' },
-        { title: 'Cloud',    url: '/data/cloud/',    description: 'Cloud infrastructure' },
         { title: 'Big Data', url: '/data/big-data/', description: 'Hadoop, Spark, Kafka, pipelines' }
       ]
     },
@@ -96,15 +71,10 @@ module.exports = {
         { title: 'Modelling', url: '/art/modelling/', description: '3D modeling and sculpture' },
         { title: 'Printing',  url: '/art/printing/',  description: '3D printing projects' },
         // World pages
-        { title: 'Generative Art',      url: '/art/generative-art/',      description: 'Code-driven algorithmic art' },
-        { title: 'Shader Art',          url: '/art/shader-art/',          description: 'GLSL shaders and GPU graphics' },
-        { title: 'Creative Coding',     url: '/art/creative-coding/',     description: 'p5.js, Processing, and code as medium' },
-        { title: 'AI Art',              url: '/art/ai-art/',              description: 'Machine learning and generative imagery' },
         { title: 'Diffusion Models',    url: '/art/diffusion-models/',    description: 'Stable Diffusion, DALL-E, and image synthesis' },
         { title: 'WebGL',               url: '/art/webgl/',               description: 'GPU-accelerated browser graphics' },
-        { title: 'Particle Systems',    url: '/art/particle-systems/',    description: 'Simulated particles and emergent patterns' },
-        { title: 'Immersive Galleries', url: '/art/immersive-galleries/', description: 'Virtual and spatial art environments' }
+        { title: 'Particle Systems',    url: '/art/particle-systems/',    description: 'Simulated particles and emergent patterns' }
       ]
-    },
+    }
   ]
 };

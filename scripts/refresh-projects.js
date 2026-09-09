@@ -18,36 +18,10 @@ const OUT = path.join(SRC, "_data", "featuredProjects.json");
 const PROJECTS = [
   { slug: "music/waveform-playground", title: "Waveform Playground", tag: "Audio",
     description: "Real-time waveform visualization and synthesis — sine/saw/square oscillators, harmonic editing, FM controls." },
-  { slug: "video/generative-universe", title: "Generative Universe", tag: "Video",
-    description: "Procedural universe generator with interactive exploration controls." },
-  { slug: "art/shader-systems", title: "Shader Systems", tag: "Art",
-    description: "GLSL shader editor and visualizer — edit code, see results live." },
   { slug: "data/big-data", title: "Big Data Pipelines", tag: "Data",
     description: "Interactive data pipeline visualization with flow diagrams and concept exploration." },
-  { slug: "music/modular-patch-lab", title: "Modular Patch Lab", tag: "Audio",
-    description: "Interactive modular synthesis environment — patch VCOs, VCFs, and LFOs with cable routing." },
   { slug: "art/particle-systems", title: "Particle Systems", tag: "Art",
-    description: "Generative particle effects you can manipulate in real time on canvas." },
-  { slug: "video/audiovisual-ecosystems", title: "Audiovisual Ecosystems", tag: "Video",
-    description: "Audio-reactive visual ecosystems that respond to sound input." },
-  { slug: "music/dj-performance-lab", title: "DJ & Performance Lab", tag: "Audio",
-    description: "DJ mixer simulation with turntables, crossfading, and live performance controls." },
-  { slug: "art/generative-art", title: "Generative Art", tag: "Art",
-    description: "Live algorithmic art generation — code-driven canvas compositions." },
-  { slug: "music/reverb-lab", title: "Reverb Lab", tag: "Audio",
-    description: "Manipulate reverb parameters with real-time audio processing across multiple algorithms." },
-  { slug: "video/realtime-visuals", title: "Realtime Visuals", tag: "Video",
-    description: "Real-time visual effects renderer with parameter knobs." },
-  { slug: "music/delay-echo-lab", title: "Delay & Echo Lab", tag: "Audio",
-    description: "Interactive delay and echo processor with feedback loops and time-based controls." },
-  { slug: "art/creative-coding-canvas", title: "Creative Coding Canvas", tag: "Art",
-    description: "Canvas-based creative coding playground for sketches and experiments." },
-  { slug: "music/sampling-lab", title: "Sampling Lab", tag: "Audio",
-    description: "Audio sampling interface with pitch shifting, manipulation, and playback controls." },
-  { slug: "music/psychoacoustics-lab", title: "Psychoacoustics Lab", tag: "Audio",
-    description: "Explore audio perception with experiments in frequency response and binaural effects." },
-  { slug: "music/algorithmic-composition", title: "Algorithmic Composition", tag: "Audio",
-    description: "Generative music system — rule-based composition that plays itself out." }
+    description: "Generative particle effects you can manipulate in real time on canvas." }
 ];
 
 function getCreationDate(relPath) {

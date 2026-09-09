@@ -3220,6 +3220,7 @@ requestAnimationFrame(_quantumAnimLoop);
 </script>
 
 <script>
+(function(){  // scoped: this block re-uses identifier names from an earlier script
 // ===== EXPERT QUIZ LOGIC =====
 const EXPERT_ANSWERS = { 1:'b', 2:'b', 3:'c', 4:'b', 5:'c', 6:'b', 7:'c', 8:'c' };
 let expertState = {};
@@ -3250,6 +3251,7 @@ function resetExpertQuiz() {
   document.getElementById('eq-correct').textContent = '0';
   document.getElementById('eq-answered').textContent = '0';
 }
+})();  // end scoped block — avoids redeclaring block-2/0 globals
 </script>
 
 </body>
@@ -3429,20 +3431,7 @@ function resetExpertQuiz() {
 </section>
 
 <script>
-// ===== LAG FILTER =====
-class LagFilter {
-  constructor(tau=0.15){this.value=0;this.tau=tau;}
-  update(target,dt){this.value+=(1-Math.exp(-dt/this.tau))*(target-this.value);return this.value;}
-  reset(v=0){this.value=v;return this;}
-}
-const lagHMX=new LagFilter(0.08), lagHMY=new LagFilter(0.08), lagHPulse=new LagFilter(0.3);
-const lagBlochX=new LagFilter(0.12), lagBlochY=new LagFilter(0.12);
-const lagGateHighlight=new LagFilter(0.15), lagCircuitPan=new LagFilter(0.2);
-const lagQubitState=new LagFilter(0.18), lagSuperposition=new LagFilter(0.25);
-const lagEntanglement=new LagFilter(0.15), lagDecoherence=new LagFilter(0.3);
-const lagProbability=new LagFilter(0.2), lagPhaseAngle=new LagFilter(0.14);
-const lagMeasureAnim=new LagFilter(0.22), lagCircuitDepth=new LagFilter(0.16);
-const lagErrorRate=new LagFilter(0.25), lagFidelity=new LagFilter(0.2);
+(function(){  // scoped: this block re-uses identifier names from an earlier script
 
 // roundRect polyfill
 if (!CanvasRenderingContext2D.prototype.roundRect) {
@@ -3732,78 +3721,9 @@ function _quantumAnimLoop(ts){
   requestAnimationFrame(_quantumAnimLoop);
 }
 requestAnimationFrame(_quantumAnimLoop);
+})();  // end scoped block — avoids redeclaring block-2/0 globals
 </script>
 
-<script>
-// ===== EXPERT QUIZ LOGIC =====
-const EXPERT_ANSWERS = { 1:'b', 2:'b', 3:'c', 4:'b', 5:'c', 6:'b', 7:'c', 8:'c' };
-let expertState = {};
-
-function expertAnswer(qNum, choice) {
-  if (expertState[qNum]) return;
-  expertState[qNum] = choice;
-  const correct = EXPERT_ANSWERS[qNum];
-  document.getElementById('eqq'+qNum).querySelectorAll('.quiz-opt').forEach(btn => {
-    btn.disabled = true;
-    const c = btn.getAttribute('onclick').match(/'([a-d])'\)/)[1];
-    if (c === correct) btn.classList.add('correct');
-    else if (c === choice && choice !== correct) btn.classList.add('wrong');
-  });
-  document.getElementById('eexp'+qNum).classList.add('visible');
-  document.getElementById('eqq'+qNum).classList.add('answered');
-  const answered = Object.keys(expertState).length;
-  const correctCount = Object.keys(expertState).filter(k => expertState[k] === EXPERT_ANSWERS[k]).length;
-  document.getElementById('eq-correct').textContent = correctCount;
-  document.getElementById('eq-answered').textContent = answered;
-}
-
-function resetExpertQuiz() {
-  expertState = {};
-  document.querySelectorAll('#expert-quiz .quiz-q').forEach(q => q.classList.remove('answered'));
-  document.querySelectorAll('#expert-quiz .quiz-opt').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong'); });
-  document.querySelectorAll('#expert-quiz .quiz-exp').forEach(e => e.classList.remove('visible'));
-  document.getElementById('eq-correct').textContent = '0';
-  document.getElementById('eq-answered').textContent = '0';
-}
-</script>
-
-</body>
-</html>
-
-</script>
-
-<script>
-// ===== EXPERT QUIZ LOGIC =====
-const EXPERT_ANSWERS = { 1:'b', 2:'b', 3:'c', 4:'b', 5:'c', 6:'b', 7:'c', 8:'c' };
-let expertState = {};
-
-function expertAnswer(qNum, choice) {
-  if (expertState[qNum]) return;
-  expertState[qNum] = choice;
-  const correct = EXPERT_ANSWERS[qNum];
-  document.getElementById('eqq'+qNum).querySelectorAll('.quiz-opt').forEach(btn => {
-    btn.disabled = true;
-    const c = btn.getAttribute('onclick').match(/'([a-d])'\)/)[1];
-    if (c === correct) btn.classList.add('correct');
-    else if (c === choice && choice !== correct) btn.classList.add('wrong');
-  });
-  document.getElementById('eexp'+qNum).classList.add('visible');
-  document.getElementById('eqq'+qNum).classList.add('answered');
-  const answered = Object.keys(expertState).length;
-  const correctCount = Object.keys(expertState).filter(k => expertState[k] === EXPERT_ANSWERS[k]).length;
-  document.getElementById('eq-correct').textContent = correctCount;
-  document.getElementById('eq-answered').textContent = answered;
-}
-
-function resetExpertQuiz() {
-  expertState = {};
-  document.querySelectorAll('#expert-quiz .quiz-q').forEach(q => q.classList.remove('answered'));
-  document.querySelectorAll('#expert-quiz .quiz-opt').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong'); });
-  document.querySelectorAll('#expert-quiz .quiz-exp').forEach(e => e.classList.remove('visible'));
-  document.getElementById('eq-correct').textContent = '0';
-  document.getElementById('eq-answered').textContent = '0';
-}
-</script>
 
 </body>
 </html>
