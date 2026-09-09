@@ -24,7 +24,7 @@ module.exports = {
         // World pages
         { title: 'Signal Flow',              url: '/music/signal-flow/',              description: 'Audio routing and signal chains' },
         { title: 'Waveform Playground',      url: '/music/waveform-playground/',      description: 'Oscillators, waveforms, and synthesis' },
-        { title: 'Granular Synthesis',       url: '/music/granular-synthesis/',       description: 'Granular and microsound techniques' }
+        { title: 'Psychoacoustics Lab',      url: '/music/psychoacoustics-lab/',      description: 'How hearing works — masking, loudness, and spatial perception' }
       ]
     },
     {
@@ -71,7 +71,7 @@ module.exports = {
         { title: 'Modelling', url: '/art/modelling/', description: '3D modeling and sculpture' },
         { title: 'Printing',  url: '/art/printing/',  description: '3D printing projects' },
         // World pages
-        { title: 'Diffusion Models',    url: '/art/diffusion-models/',    description: 'Stable Diffusion, DALL-E, and image synthesis' },
+        { title: 'Typography',          url: '/art/typography/',          description: 'Type anatomy, classification, spacing, and scale' },
         { title: 'WebGL',               url: '/art/webgl/',               description: 'GPU-accelerated browser graphics' },
         { title: 'Particle Systems',    url: '/art/particle-systems/',    description: 'Simulated particles and emergent patterns' }
       ]
