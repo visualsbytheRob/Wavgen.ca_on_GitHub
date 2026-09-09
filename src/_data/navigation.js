@@ -32,15 +32,12 @@ module.exports = {
       url: '/video/',
       icon: 'video',
       children: [
-        // Section pages
-        { title: 'Realtime', url: '/video/realtime/', description: 'Live visual performance' },
-        { title: 'Mapping',  url: '/video/mapping/',  description: 'Projection mapping systems' },
-        { title: 'Mixing',   url: '/video/mixing/',   description: 'Live video composition' },
-        { title: 'Editing',  url: '/video/editing/',  description: 'Post-production workflows' },
-        // World pages
-        { title: 'DaVinci Resolve', url: '/video/davinci-resolve/',   description: 'Professional grading and editing workflows' },
-        { title: 'AI Video',        url: '/video/ai-video/',          description: 'AI-assisted video generation and editing' },
-        // AV worlds (merged from former AV section)
+        { title: 'Mixing',                    url: '/video/mixing/',                    description: 'Live video composition' },
+        { title: 'Editing',                   url: '/video/editing/',                   description: 'Post-production workflows' },
+        { title: 'Mapping',                   url: '/video/mapping/',                   description: 'Projection mapping systems' },
+        { title: 'AI Video',                  url: '/video/ai-video/',                  description: 'AI-assisted video generation and editing' },
+        { title: 'Realtime',                  url: '/video/realtime/',                  description: 'Live visual performance' },
+        { title: 'DaVinci Resolve',           url: '/video/davinci-resolve/',           description: 'Professional grading and editing workflows' },
         { title: 'TouchDesigner Signal Flow', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' }
       ]
     },
@@ -49,15 +46,13 @@ module.exports = {
       url: '/data/',
       icon: 'data',
       children: [
-        // World pages
-        { title: 'ML & Predictive AI',   url: '/data/ml-predictive-ai/',    description: 'Algorithms, training, deployment' },
-        { title: 'Quantum Computing',    url: '/data/quantum-computing/',    description: 'Qubits, gates, quantum advantage' },
-        { title: 'Generative AI',        url: '/data/generative-ai/',        description: 'LLMs, transformers, prompting' },
-        { title: 'Cloud Computing',      url: '/data/cloud-computing/',      description: 'AWS, Azure, GCP architectures' },
-        // Standard section pages
-        { title: 'Web Dev',  url: '/data/webdev/',   description: 'Full-stack development' },
-        { title: 'Repo Constellation', url: '/data/repo-constellation/', description: 'The GitHub repositories behind Wavgen, mapped' },
-        { title: 'Big Data', url: '/data/big-data/', description: 'Hadoop, Spark, Kafka, pipelines' }
+        { title: 'Web Dev',            url: '/data/webdev/',             description: 'Full-stack development' },
+        { title: 'Big Data',           url: '/data/big-data/',           description: 'Hadoop, Spark, Kafka, pipelines' },
+        { title: 'Generative AI',      url: '/data/generative-ai/',      description: 'LLMs, transformers, prompting' },
+        { title: 'Cloud Computing',    url: '/data/cloud-computing/',    description: 'AWS, Azure, GCP architectures' },
+        { title: 'Quantum Computing',  url: '/data/quantum-computing/',  description: 'Qubits, gates, quantum advantage' },
+        { title: 'ML & Predictive AI', url: '/data/ml-predictive-ai/',   description: 'Algorithms, training, deployment' },
+        { title: 'Repo Constellation', url: '/data/repo-constellation/', description: 'The GitHub repositories behind Wavgen, mapped' }
       ]
     },
     {
@@ -65,15 +60,13 @@ module.exports = {
       url: '/art/',
       icon: 'art',
       children: [
-        // Section pages
-        { title: 'Painting',  url: '/art/painting/',  description: 'Digital and traditional painting' },
-        { title: 'Drawing',   url: '/art/drawing/',   description: 'Sketches and illustrations' },
-        { title: 'Modelling', url: '/art/modelling/', description: '3D modeling and sculpture' },
-        { title: 'Printing',  url: '/art/printing/',  description: '3D printing projects' },
-        // World pages
-        { title: 'Typography',          url: '/art/typography/',          description: 'Type anatomy, classification, spacing, and scale' },
-        { title: 'WebGL',               url: '/art/webgl/',               description: 'GPU-accelerated browser graphics' },
-        { title: 'Particle Systems',    url: '/art/particle-systems/',    description: 'Simulated particles and emergent patterns' }
+        { title: 'WebGL',            url: '/art/webgl/',            description: 'GPU-accelerated browser graphics' },
+        { title: 'Drawing',          url: '/art/drawing/',          description: 'Sketches and illustrations' },
+        { title: 'Painting',         url: '/art/painting/',         description: 'Digital and traditional painting' },
+        { title: 'Printing',         url: '/art/printing/',         description: '3D printing projects' },
+        { title: 'Modelling',        url: '/art/modelling/',        description: '3D modeling and sculpture' },
+        { title: 'Typography',       url: '/art/typography/',       description: 'Type anatomy, classification, spacing, and scale' },
+        { title: 'Particle Systems', url: '/art/particle-systems/', description: 'Simulated particles and emergent patterns' }
       ]
     }
   ]
