@@ -3,32 +3,32 @@
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Harvard study predicts most suicide attempts a week in advance",
-      "url": "https://current.fas.harvard.edu/stories/harvard-study-predicts-most-suicide-attempts-week-advance",
-      "source": "Hacker News",
-      "date": "2026-09-09",
-      "summary": "Comments"
-    },
-    {
-      "title": "AI Responsibility – OpenAI and Anthropic",
-      "url": "https://twitter.com/hilbertspaess/status/2097476196791709843",
-      "source": "Hacker News",
-      "date": "2026-09-09",
-      "summary": "Comments"
-    },
-    {
-      "title": "27.5KB language-agnostic WebGPU syntax highlighter",
-      "url": "https://gpu-lexer.vercel.app/",
-      "source": "Hacker News",
-      "date": "2026-09-09",
-      "summary": "Comments"
-    },
-    {
-      "title": "White House takes down ‘Build the Wall’ game after the Tetris Company complains",
-      "url": "https://techcrunch.com/2026/09/08/white-house-takes-down-build-the-wall-game-after-the-tetris-company-complains/",
+      "title": "Viral AI assistant Instinct now has its own email address",
+      "url": "https://techcrunch.com/2026/09/09/viral-ai-assistant-instinct-now-has-its-own-email-address/",
       "source": "TechCrunch",
-      "date": "2026-09-08",
-      "summary": "The Trump administration's short-lived arcade game \"Build the Wall\" is now nowhere to be found after the Tetris Company posted that it takes \"copyright infringement very seriously.\""
+      "date": "2026-09-09",
+      "summary": "Instinct’s new email feature lets the AI agent create and manage accounts, contact businesses, handle support requests, and do more on users' behalf."
+    },
+    {
+      "title": "Uber rival inDrive scales beyond ride-hailing to capture more consumer spending",
+      "url": "https://techcrunch.com/2026/09/09/uber-rival-indrive-scales-beyond-ride-hailing-to-capture-more-consumer-spending/",
+      "source": "TechCrunch",
+      "date": "2026-09-09",
+      "summary": "inDrive's ad business, first piloted in July 2025, has served more than 2 billion impressions and attracted over 2,000 paying advertisers a month."
+    },
+    {
+      "title": "‘Gambling with our lives’: Anthropic researcher quits, warns against self-improving AI",
+      "url": "https://techcrunch.com/2026/09/09/gambling-with-our-lives-anthropic-researcher-quits-warns-against-self-improving-ai/",
+      "source": "TechCrunch",
+      "date": "2026-09-09",
+      "summary": "Anthropic researcher Jacob Coxon resigned over AI extinction fears, calling for pacing agreements between labs."
+    },
+    {
+      "title": "Show HN: Geiger – See every AI agent on your machine and what it can touch",
+      "url": "https://github.com/Atomburstofficial/geiger",
+      "source": "Hacker News",
+      "date": "2026-09-09",
+      "summary": "Comments"
     }
   ]
 }
