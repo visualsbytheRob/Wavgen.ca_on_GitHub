@@ -56,7 +56,7 @@ module.exports = {
         { title: 'Cloud Computing',      url: '/data/cloud-computing/',      description: 'AWS, Azure, GCP architectures' },
         // Standard section pages
         { title: 'Web Dev',  url: '/data/webdev/',   description: 'Full-stack development' },
-        { title: 'Coding',   url: '/data/coding/',   description: 'Programming projects' },
+        { title: 'Repo Constellation', url: '/data/repo-constellation/', description: 'The GitHub repositories behind Wavgen, mapped' },
         { title: 'Big Data', url: '/data/big-data/', description: 'Hadoop, Spark, Kafka, pipelines' }
       ]
     },
