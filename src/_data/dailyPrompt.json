@@ -1,8 +1,8 @@
 {
-  "date": "2026-09-11",
-  "question": "What's the difference between hearing and listening when you're producing?",
+  "date": "2026-09-12",
+  "question": "What's a thing only you can do in your work that no AI will replicate? Why does that matter?",
   "source": "random-with-history",
-  "chosen_index": 64,
+  "chosen_index": 309,
   "bank_size": 409,
-  "recently_used_window": 122
+  "recently_used_window": 123
 }
