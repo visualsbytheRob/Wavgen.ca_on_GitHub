@@ -1,8 +1,8 @@
 {
-  "date": "2026-09-12",
-  "question": "What's a thing only you can do in your work that no AI will replicate? Why does that matter?",
+  "date": "2026-09-13",
+  "question": "What does your work want to be when it grows up?",
   "source": "random-with-history",
-  "chosen_index": 309,
+  "chosen_index": 400,
   "bank_size": 409,
-  "recently_used_window": 123
+  "recently_used_window": 124
 }
