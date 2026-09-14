@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-09-13",
+  "lastUpdated": "2026-09-14",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Waymo pulls over, calls cops on riders with a ghost gun",
-      "url": "https://www.theverge.com/transportation/994405/waymo-pulls-over-calls-cops-on-riders-with-a-ghost-gun",
+      "title": "Fashion app Daydream uses Apple Intelligence to help you shop the outfits in your camera roll",
+      "url": "https://techcrunch.com/2026/09/14/fashion-discovery-app-daydream-uses-apple-intelligence-to-help-you-shop-the-outfits-saved-in-your-camera-roll/",
+      "source": "TechCrunch",
+      "date": "2026-09-14",
+      "summary": "Thanks to the launch of iOS 27, Daydream's app now includes features that can turn saved outfit photos into shoppable results and search for products through Siri without opening the app."
+    },
+    {
+      "title": "The Steam Frame is made for irresponsible hardware nerds like me",
+      "url": "https://www.theverge.com/tech/994267/steam-frame-review",
       "source": "The Verge",
-      "date": "2026-09-13",
-      "summary": "Two people were arrested in San Fransico while riding around in a Waymo robotaxi after the cab pulled over and called the cops on them. The riders were juveniles in possession of a loaded AR-style gho…"
+      "date": "2026-09-14",
+      "summary": "For nearly three weeks, I've been testing the limits of Valve's Steam Frame, the company's new wearable PC. At first glance, it's easy to write it off as a pricey headset that missed the VR craze. At…"
     },
     {
-      "title": "Houthis Used Claude Code to Develop Missile Guidance Software: Anthropic",
-      "url": "https://clashreport.com/world/articles/houthis-used-claude-code-to-develop-missile-guidance-software-anthropic-s52mnx4pwpo",
-      "source": "Hacker News",
-      "date": "2026-09-13",
-      "summary": "Comments"
+      "title": "Valve’s Steam Frame costs $1,059",
+      "url": "https://www.theverge.com/games/994376/valve-steam-frame-vr-headset-price-release-date",
+      "source": "The Verge",
+      "date": "2026-09-14",
+      "summary": "Valve is finally releasing its Steam Frame headset, which can run both flat and VR games locally and stream both kinds of games from your PC. The Steam Frame will start at $1,059. Valve will also offe…"
     },
     {
-      "title": "Paul A. M. Dirac, Interview by Friedrich Hund (1982) [video]",
-      "url": "https://www.youtube.com/watch?v=xJzrU38pGWc",
-      "source": "Hacker News",
-      "date": "2026-09-13",
-      "summary": "Comments"
-    },
-    {
-      "title": "Your car is selling your data",
-      "url": "https://www.theverge.com/column/994172/your-car-is-selling-your-data",
-      "source": "Hacker News",
-      "date": "2026-09-13",
-      "summary": "Comments"
+      "title": "Valve has ported Half-Life: Alyx to ARM, and it’s free with Steam Frame",
+      "url": "https://www.theverge.com/games/994454/valve-half-life-alyx-standalone-arm-port",
+      "source": "The Verge",
+      "date": "2026-09-14",
+      "summary": "Today, Valve is launching its first headset since 2019 - the new Steam Frame - while dodging our questions about whether it'll ever make another VR game to go with it. But buyers of the $1,059 gadget…"
     }
   ]
 }
