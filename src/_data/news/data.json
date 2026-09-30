@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-09-29",
+  "lastUpdated": "2026-09-30",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Can a chatbot fix the government maze? The White House is about to find out",
-      "url": "https://techcrunch.com/2026/09/29/can-a-chatbot-fix-the-government-maze-the-white-house-is-about-to-find-out/",
+      "title": "Asus won’t say how it escaped the US router ban",
+      "url": "https://www.theverge.com/policy/1002504/asus-escape-us-router-ban-us-manufacturing",
+      "source": "The Verge",
+      "date": "2026-09-30",
+      "summary": "This spring, the United States banned all future foreign-made consumer routers - effectively all future routers - unless their makers could 1) convince the US government that they weren't a national s…"
+    },
+    {
+      "title": "‘Xbox is not for sale’ says Microsoft’s gaming chief",
+      "url": "https://www.theverge.com/news/1002736/xbox-not-for-sale-asha-sharma-interview",
+      "source": "The Verge",
+      "date": "2026-09-30",
+      "summary": "Xbox CEO Asha Sharma has denied reports that Microsoft is considering selling off its Xbox business. The Information reported in June that Microsoft CEO Satya Nadella and CFO Amy Hood had been conside…"
+    },
+    {
+      "title": "Meta disputes claim that Muse read a user’s private messages without permission",
+      "url": "https://techcrunch.com/2026/09/30/meta-disputes-claim-that-muse-read-a-users-private-messages-without-permission/",
       "source": "TechCrunch",
-      "date": "2026-09-29",
-      "summary": "America.gov is intended to simplify the process of navigating government bureaucracy, but language models are imperfect and remain prone to hallucinations, which could cause new issues."
+      "date": "2026-09-30",
+      "summary": "Meta says its Muse AI agent cannot access a user’s Messages without explicit permission, disputing a journalist’s account that the agent read his private messages while the required Mac setting was tu…"
     },
     {
-      "title": "DraftKings Is Using AI to Behaviorally Target Chronic Gamblers",
-      "url": "https://www.eff.org/deeplinks/2026/09/draftkings-using-ai-supercharge-harms-online-behavioral-advertising",
-      "source": "Hacker News",
-      "date": "2026-09-29",
-      "summary": "Comments"
-    },
-    {
-      "title": "Xbox’s Mythic Achievements are here and they’re just like PlayStation Platinum trophies",
-      "url": "https://www.theverge.com/news/1002099/xbox-mythic-achievement-announcement-feature",
-      "source": "The Verge",
-      "date": "2026-09-29",
-      "summary": "Microsoft is officially announcing its new Xbox Mythic Achievements today, and they're already available for Xbox Insiders to test. Mythic Achievements work a lot like Sony's PlayStation Platinum trop…"
-    },
-    {
-      "title": "Apple’s new CEO could change when it launches phones and laptops",
-      "url": "https://www.theverge.com/tech/1002107/apple-ceo-john-ternus-product-launch-strategy",
-      "source": "The Verge",
-      "date": "2026-09-29",
-      "summary": "John Ternus, Apple's new CEO, wants Apple to launch products more often than its usual splashy moments in the fall and the spring, according to a Bloomberg report detailing some of Ternus's initial pl…"
+      "title": "DoorDash launches an AI agent you can text to order food",
+      "url": "https://techcrunch.com/2026/09/30/doordash-launches-an-ai-agent-you-can-text-to-order-food/",
+      "source": "TechCrunch",
+      "date": "2026-09-30",
+      "summary": "By launching an AI agent for food ordering, DoorDash is looking to gain an edge over rivals Uber Eats and Grubhub."
     }
   ]
 }
