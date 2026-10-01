@@ -1,26 +1,26 @@
 {
-  "fetched_at": "2026-09-09T02:32:49.228Z",
+  "fetched_at": "2026-10-01T19:16:06.199Z",
   "items": [
     {
       "url": "/music/waveform-playground/",
       "title": "Waveform Playground",
       "description": "Real-time waveform visualization and synthesis — sine/saw/square oscillators, harmonic editing, FM controls.",
       "tag": "Audio",
-      "dateAdded": "2026-07-23T13:04:53+00:00"
+      "dateAdded": "2026-10-01T17:28:12Z"
     },
     {
       "url": "/data/big-data/",
       "title": "Big Data Pipelines",
       "description": "Interactive data pipeline visualization with flow diagrams and concept exploration.",
       "tag": "Data",
-      "dateAdded": "2026-07-23T13:04:53+00:00"
+      "dateAdded": "2026-10-01T17:28:12Z"
     },
     {
       "url": "/art/particle-systems/",
       "title": "Particle Systems",
       "description": "Generative particle effects you can manipulate in real time on canvas.",
       "tag": "Art",
-      "dateAdded": "2026-07-23T13:04:53+00:00"
+      "dateAdded": "2026-10-01T17:28:12Z"
     }
   ]
 }
