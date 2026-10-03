@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-10-02",
+  "lastUpdated": "2026-10-03",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "Nacon’s new PS5 controller can mix audio from your phone and console",
-      "url": "https://www.theverge.com/tech/1004053/nacon-sony-playstation-licensed-revolution-5-unlimited-wireless-controller",
-      "source": "The Verge",
-      "date": "2026-10-02",
-      "summary": "Nacon announced what the company is claiming is the world's first officially licensed PlayStation 5 controller with a built-in screen for adjusting settings like joystick sensitivity or remapping butt…"
-    },
-    {
-      "title": "Paramount and Warner Bros Discovery to become Skydance",
-      "url": "https://techcrunch.com/2026/10/02/paramount-and-warner-bros-discovery-to-become-skydance/",
+      "title": "Jack Dorsey’s Bitchat disappears from app stores in India after government order",
+      "url": "https://techcrunch.com/2026/10/03/jack-dorseys-bitchat-disappears-from-app-stores-in-india-after-government-order/",
       "source": "TechCrunch",
-      "date": "2026-10-02",
-      "summary": "The roughly $110 billion deal is expected to close October 6."
+      "date": "2026-10-03",
+      "summary": "Bitchat has become largely unavailable in India as a result of the restrictions."
     },
     {
-      "title": "Dots get up in Muse’s business",
-      "url": "https://www.theverge.com/podcast/1004059/openai-dots-kindle-homepad-cybercab-vergecast",
+      "title": "Splice CEO Kakul Srivastava thinks AI emails are killing conversations",
+      "url": "https://www.theverge.com/entertainment/1004162/splice-ceo-kakul-srivastava-ai-interview",
       "source": "The Verge",
-      "date": "2026-10-02",
-      "summary": "OpenAI's answer to Muse arrived this week, and it looks a whole lot like Muse dressed up in a suit and tie. Dots is a business-first product - for now, at least - costing a minimum of $100 per month.…"
+      "date": "2026-10-03",
+      "summary": "Kakul Srivastava is the CEO of Splice, the sample platform countless producers rely on for one-shots and melodic loops. Samples pulled from the service have found their way into massive hits like Lisa…"
     },
     {
-      "title": "Pope Leo XIV is not a fan of AI-generated art",
-      "url": "https://techcrunch.com/2026/10/02/pope-leo-xiv-is-not-a-fan-of-ai-generated-art/",
+      "title": "Vessev built an electric ferry that almost flies",
+      "url": "https://techcrunch.com/2026/10/03/vessev-built-an-electric-ferry-that-almost-flies/",
       "source": "TechCrunch",
-      "date": "2026-10-02",
-      "summary": "\"There is an ontological difference, even before an aesthetic one, between art and what a machine can generate through statistical calculation based on millions of images created by others,\" the pope…"
+      "date": "2026-10-03",
+      "summary": "Vessev hopes its electric hydrofoil ferry will change the way people and cities think about boats."
+    },
+    {
+      "title": "An OpenAI safety employee has quit and is sounding the alarm",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1004408/openai-safety-quits-sounding-the-alarm",
+      "source": "The Verge",
+      "date": "2026-10-03",
+      "summary": "David Robinson used to write the safety reports that accompanied every major model release at OpenAI. This week, he resigned from his position and is now speaking out in an editorial in The Atlantic.…"
     }
   ]
 }
