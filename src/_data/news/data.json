@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-10-05",
+  "lastUpdated": "2026-10-06",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "After Factory’s public spat with Khosla, Menlo proudly invests",
-      "url": "https://techcrunch.com/2026/10/05/after-factorys-public-spat-with-khosla-menlo-proudly-invests/",
-      "source": "TechCrunch",
-      "date": "2026-10-05",
-      "summary": "Days after Vinod Khosla called Factory a struggling also-ran, Menlo has shown up with a check and a glowing blog post."
-    },
-    {
-      "title": "Reflection debuts Beam, an open-weight AI model to rival Chinese models at lower compute cost",
-      "url": "https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/",
-      "source": "TechCrunch",
-      "date": "2026-10-05",
-      "summary": "Nvidia-backed Reflection AI unveils Beam, its first open-weight model, which it says rivals GLM-5.2 on reasoning with far less inference compute. Weights are due this month."
-    },
-    {
-      "title": "All the drama around AI’s takeover of mathematics",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/1004933/ai-math-openai-breakthrough-solution",
+      "title": "Apple TV’s great year continues with Small Prophets",
+      "url": "https://www.theverge.com/entertainment/1005781/small-prophets-review-apple-tv",
       "source": "The Verge",
-      "date": "2026-10-05",
-      "summary": "This past year, OpenAI, Anthropic, and other labs have announced breakthroughs on numerous long-standing mathematical problems, in some cases pushing well beyond what researchers expected current syst…"
+      "date": "2026-10-06",
+      "summary": "Apple TV has had a really great run in 2026 - and a cozy new addition is helping expand its lineup even more. As the streaming service has attempted to grow in order to better compete with the likes o…"
     },
     {
-      "title": "Wikipedia operator says OpenAI’s ‘rogue’ bots may be linked to a May outage",
-      "url": "https://www.theverge.com/news/1004929/wikipedia-openai-rogue-bots-wikimedia-foundation-outage",
+      "title": "India’s JioHotstar takes partnership route for Middle East expansion",
+      "url": "https://techcrunch.com/2026/10/06/indias-jiohotstar-takes-partnership-route-for-middle-east-expansion/",
+      "source": "TechCrunch",
+      "date": "2026-10-06",
+      "summary": "JioHotstar will be offered inside Starzplay rather than through a standalone service."
+    },
+    {
+      "title": "Anker’s 100W universal charger is a great travel gadget for $64",
+      "url": "https://www.theverge.com/gadgets/1004339/anker-nano-100w-universal-travel-charger-prime-day-deal-sale",
       "source": "The Verge",
-      "date": "2026-10-05",
-      "summary": "Following many recent disclosures about AI agents accessing third-party websites and services, the Wikimedia Foundation, which hosts Wikipedia, says that it \"can confirm that we have discovered some a…"
+      "date": "2026-10-06",
+      "summary": "For frequent travelers who like to pack light, the Anker Nano 100W universal travel adapter packs multiple USB ports and is equipped with the ability to adapt to outlets in over 200 countries and regi…"
+    },
+    {
+      "title": "Mirror Particle is building a ‘world model’ of human behavior",
+      "url": "https://techcrunch.com/2026/10/06/mirror-particle-is-building-a-world-model-of-human-behavior/",
+      "source": "TechCrunch",
+      "date": "2026-10-06",
+      "summary": "Mirror Particle will launch at TechCrunch Disrupt's Startup Battlefield 200 with a world model built from scratch to predict human behavior, arguing that LLM role-play falls short for market research…"
     }
   ]
 }
