@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-23",
-  "question": "When did you treat Claude as a collaborator instead of a tool? What was gained?",
+  "date": "2026-10-24",
+  "question": "Which font do you trust? Which do you avoid?",
   "source": "random-with-history",
-  "chosen_index": 308,
+  "chosen_index": 209,
   "bank_size": 409,
-  "recently_used_window": 164
+  "recently_used_window": 165
 }
