@@ -1,0 +1,143 @@
+---
+layout: base.njk
+title: Page not found
+description: There's no page at this address on wavgen.ca. Head back home or pick a section.
+permalink: /404.html
+noindex: true
+sitemap: false
+eleventyExcludeFromCollections: true
+---
+{#
+404.njk -> /404.html, the "page not found" page.
+- GitHub Pages serves /404.html, with HTTP status 404, for any path that doesn't
+  exist, at whatever URL was requested (e.g. /music/nope/). So every link and asset
+  here must be root-absolute ("/music/", "/css/style.css"), never relative. base.njk
+  and the nav already follow that rule. `npm run dev` (eleventy --serve) serves it
+  for missing paths too.
+- noindex, sitemap: false and eleventyExcludeFromCollections keep it out of search,
+  the sitemap and every collection-driven listing.
+- The section tiles are built from src/_data/navigation.js, so they follow the menu.
+- Uses only Tailwind classes that already appear elsewhere in src/, so building it
+  doesn't change the committed src/css/style.css. Page-specific styling lives in the
+  <style> block at the bottom.
+#}
+
+{# Icons for the section tiles, keyed by the `icon` field in navigation.js (same glyphs as the home page cards) #}
+{% set sectionIcons = {
+  music: "M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 12a7.971 7.971 0 00-1.343-4.243 1 1 0 010-1.414z",
+  video: "M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4z",
+  data: "M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z",
+  art: "M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z"
+} %}
+
+<!-- Breadcrumb (same bar as the section landing pages) -->
+<nav class="bg-gray-800 py-4" aria-label="Breadcrumb">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center space-x-2 text-sm">
+      <a href="/" class="text-wavgen-yellow hover:text-yellow-300">Home</a>
+      <span class="text-gray-400" aria-hidden="true">></span>
+      <span class="text-gray-300">Page not found</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero: same gradient as the home page; a waveform that decays to a flat line -->
+<section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple overflow-hidden">
+  <div class="container mx-auto px-4 py-20 text-center">
+    <p class="text-wavgen-yellow uppercase tracking-wide text-sm font-semibold mb-4">Error 404</p>
+    <h1 class="hero-text">Signal <span class="text-wavgen-yellow">lost</span></h1>
+
+    <svg class="wg-404-wave" viewBox="0 0 600 120" aria-hidden="true" focusable="false">
+      <path d="M0 60 Q20 -40 40 60 Q60 148 80 60 Q100 -14 120 60 Q140 120 160 60 Q180 14 200 60 Q220 92 240 60 Q260 40 280 60 Q300 70 320 60 Q340 56 360 60 L600 60" pathLength="1" />
+    </svg>
+
+    <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-4">Nothing is broadcasting on this frequency.</p>
+    <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+      There's no page at <code id="wg-404-path" class="wg-404-path bg-black/40 text-wavgen-yellow px-2 py-0.5 rounded">this address</code>.
+      It may have moved, or the link may have a typo.
+    </p>
+    <a href="/" class="wg-404-focus inline-block bg-wavgen-yellow text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300">Back to home</a>
+  </div>
+</section>
+
+<!-- Section tiles: the home page's portfolio cards, one per main-menu section -->
+<section class="py-20 bg-gray-800">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-white text-center mb-10">Or tune in to a section</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {%- for item in navigation.main %}{% if item.url != "/" %}
+      <a href="{{ item.url }}" class="section-card wg-404-focus group block text-center">
+        {% if sectionIcons[item.icon] %}
+        <div class="w-16 h-16 bg-wavgen-yellow rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="{{ sectionIcons[item.icon] }}"></path>
+          </svg>
+        </div>
+        {% endif %}
+        <h3 class="text-xl font-bold text-white mb-2">{{ item.title }}</h3>
+        {% if item.children %}
+        <div class="flex flex-wrap gap-1 justify-center">
+          {% for child in item.children | head(4) %}<span class="bg-wavgen-dark-purple text-wavgen-yellow px-2 py-1 rounded text-xs">{{ child.title }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </a>
+      {% endif %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Show the address that was asked for, so a typo is easy to spot.
+  // textContent (never innerHTML): the path comes from the visitor's URL bar.
+  (function () {
+    var el = document.getElementById('wg-404-path');
+    if (!el) return;
+    var path = window.location.pathname;
+    try { path = decodeURI(path); } catch (e) { /* malformed escape: show it raw */ }
+    el.textContent = path;
+  })();
+</script>
+
+<style>
+  /* Oscilloscope trace: the waveform draws itself left to right, then holds flat. */
+  .wg-404-wave {
+    display: block;
+    width: 100%;
+    max-width: 36rem;
+    height: auto;
+    margin: 0 auto 2.5rem;
+    overflow: visible;
+    filter: drop-shadow(0 0 6px rgba(254, 221, 0, 0.45)); /* wavgen-yellow glow */
+  }
+  .wg-404-wave path {
+    fill: none;
+    stroke: #FEDD00; /* wavgen-yellow */
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: wg-404-trace 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  }
+  @keyframes wg-404-trace {
+    to { stroke-dashoffset: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wg-404-wave path { animation: none; stroke-dashoffset: 0; }
+  }
+
+  /* Long or unbroken paths wrap instead of widening the page on phones. */
+  .wg-404-path {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    overflow-wrap: anywhere;
+  }
+
+  /* Visible keyboard focus on the dark background. Longhand properties on purpose:
+     Tailwind scans this file, and some shorthand words would generate unused utilities. */
+  .wg-404-focus:focus-visible {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: #FEDD00;
+    outline-offset: 4px;
+  }
+</style>

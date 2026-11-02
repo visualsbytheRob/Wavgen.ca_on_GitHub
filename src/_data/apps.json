@@ -1,5 +1,5 @@
 {
-  "_readme": "Single source of truth for Rob's app catalogue. Rendered by src/_includes/components/app-showcase.njk (public cards on /data/) and src/private-apps.njk (unlinked launch page at /private/apps/). Removing an entry here removes its card everywhere. RULES: launchUrl/demoUrl only when verified - never guess a host, port or subdomain. Never put passwords, passphrases, tokens or credentials in this file. Public demos use demo data only - no real personal data, balances or records. visibility 'public' = launchUrl may be shown on the public showcase; 'private' = launchUrl appears ONLY on the private launchpad page.",
+  "_readme": "Single source of truth for Rob's app catalogue. Rendered by src/_includes/components/app-showcase.njk (public cards on /data/) and src/private-apps.njk (unlinked launch page at /private/apps/). Removing an entry here removes its card everywhere. RULES: launchUrl/demoUrl only when verified - never guess a host, port or subdomain. Never put passwords, passphrases, tokens or credentials in this file. Public demos use demo data only - no real personal data, balances or records. visibility 'public' = launchUrl may be shown on the public showcase; 'private' = launchUrl appears ONLY on the private launchpad page. visibility 'public' also lists the app in the schema.org ItemList JSON-LD on /data/ (built by src/_utils/structured-data.js); private apps never appear in structured data, and the build fails if one does.",
   "items": [
     {
       "id": "momentum",
@@ -38,7 +38,7 @@
       ],
       "access": "Sign-in required",
       "visibility": "private",
-      "launchUrl": "",
+      "launchUrl": "https://finops.happygrass-bf30adfd.canadacentral.azurecontainerapps.io",
       "demoUrl": ""
     },
     {
@@ -79,7 +79,7 @@
       ],
       "access": "Tailnet only + sign-in",
       "visibility": "private",
-      "launchUrl": "",
+      "launchUrl": "https://reimagined.tail671849.ts.net",
       "demoUrl": ""
     },
     {

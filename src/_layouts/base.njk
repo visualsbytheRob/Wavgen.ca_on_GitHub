@@ -74,6 +74,13 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <meta name="twitter:image" content="{{ ogImageFull }}" />
 
   <meta name="theme-color" content="#0f172a" />
+  {#- Structured data (schema.org JSON-LD): WebSite + Person on the home page.
+     Built from src/_data/site.json by src/_utils/structured-data.js; never type
+     JSON-LD here. The build validates every emitted block (see .eleventy.js).
+     The "-" whitespace control keeps every other page's HTML byte-identical. -#}
+  {%- if page.url == '/' %}
+  {{ site | siteJsonLd(webManifest) | jsonLdScript | safe }}
+  {%- endif %}
 
   {# Performance: preconnect to fonts and load CSS #}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
