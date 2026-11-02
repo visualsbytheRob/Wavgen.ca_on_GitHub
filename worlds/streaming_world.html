@@ -159,8 +159,12 @@ button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 /* SECTION DIVIDER */
 .sec-div{width:40px;height:2px;background:var(--accent);margin-bottom:32px;}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">WAVGEN</div>
@@ -181,7 +185,7 @@ button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 <!-- SECTION 1: HERO -->
 <section id="hero">
   <div class="section-label">Domain 07 — Video</div>
-  <h1 class="section-title">STREAMING<br><span class="accent-r">WORLD</span></h1>
+  <h1 class="section-title" id="wg-content" tabindex="-1">STREAMING<br><span class="accent-r">WORLD</span></h1>
   <p class="section-sub">encoding · broadcast · live production</p>
   <div class="canvas-wrap">
     <canvas id="hero-canvas"></canvas>
@@ -2041,5 +2045,6 @@ const scrollObs = new IntersectionObserver((entries) => {
 sections.forEach(s => scrollObs.observe(s));
 
 </script>
+</main>
 </body>
 </html>

@@ -92,8 +92,12 @@ section p { color: var(--text-dim); margin-bottom: 1rem; font-family: 'Segoe UI'
 .perf-bar .fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.3s; }
 .perf-bar .val { width: 50px; text-align: right; color: var(--green); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-title">▸ REALTIME GRAPHICS</span>
@@ -111,7 +115,7 @@ section p { color: var(--text-dim); margin-bottom: 1rem; font-family: 'Segoe UI'
 <div id="hero">
   <canvas id="heroCanvas"></canvas>
   <div class="hero-text">
-    <h1>REALTIME GRAPHICS</h1>
+    <h1 id="wg-content" tabindex="-1">REALTIME GRAPHICS</h1>
     <p>// 60fps at 4K — the GPU computes the visible world frame by frame</p>
   </div>
 </div>
@@ -969,5 +973,6 @@ bindSlider('freqSlider',      'freqVal',       v => (v/100).toFixed(2));
 })();
 
 </script>
+</main>
 </body>
 </html>

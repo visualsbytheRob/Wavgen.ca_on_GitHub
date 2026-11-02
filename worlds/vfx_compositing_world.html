@@ -262,8 +262,12 @@ footer span { color: var(--accent); }
   text-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(249,115,22,0.2);
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -287,7 +291,7 @@ footer span { color: var(--accent); }
 <section id="hero" style="padding-top:80px;">
   <div class="section-inner">
     <div class="section-label reveal">Section 01 — The VFX Pipeline</div>
-    <h1 class="glow reveal d1">VFX &amp; COMPOSITING<br>WORLD</h1>
+    <h1 class="glow reveal d1" id="wg-content" tabindex="-1">VFX &amp; COMPOSITING<br>WORLD</h1>
     <p class="subtitle reveal d2">The art of making you believe the impossible.</p>
     <div class="badges reveal d3">
       <span class="badge">Layers</span>
@@ -2315,5 +2319,6 @@ sections.forEach(s => navObs.observe(s));
 })();
 
 </script>
+</main>
 </body>
 </html>

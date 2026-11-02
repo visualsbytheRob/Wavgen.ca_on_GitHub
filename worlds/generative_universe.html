@@ -621,8 +621,12 @@ input[type=range]::-webkit-slider-thumb {
 /* checkbox */
 input[type=checkbox] { accent-color: var(--accent3); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#hero-title-text">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ── NAVIGATION ── -->
 <nav>
@@ -654,7 +658,7 @@ input[type=checkbox] { accent-color: var(--accent3); }
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
     <div class="hero-eyebrow">WAVGEN · AV Convergence</div>
-    <h1 class="hero-title" id="hero-title-text"></h1>
+    <h1 class="hero-title" id="hero-title-text" tabindex="-1"></h1>
     <p class="hero-sub">A living generative intelligence ecosystem.</p>
     <div class="hero-bpm">
       <div class="bpm-pulse"></div>
@@ -2606,5 +2610,6 @@ if (heroCanvas) {
 }
 
 </script>
+</main>
 </body>
 </html>

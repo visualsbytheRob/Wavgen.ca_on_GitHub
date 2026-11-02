@@ -175,8 +175,12 @@ select{padding:6px 10px}
 .sp-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .preset-btns{display:flex;gap:6px;flex-wrap:wrap}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav id="nav">
@@ -197,7 +201,7 @@ select{padding:6px 10px}
 <!-- ═══════════════════════════════════════════ HERO ═══════════════════════════════ -->
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
-  <div class="hero-ui">
+  <div class="hero-ui" id="wg-content" tabindex="-1">
     <div class="hero-title">AUDIOVISUAL<br><span>PERFORMANCE</span></div>
     <div class="hero-sub">All systems active</div>
     <div class="hero-badges">
@@ -2324,5 +2328,6 @@ window.addEventListener('load',()=>{
 });
 </script>
 
+</main>
 </body>
 </html>

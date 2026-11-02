@@ -356,7 +356,7 @@ section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
   border-radius: 12px; padding: 1.25rem 1.5rem; min-height: 80px;
   transition: all 0.3s;
 }
-.pipe-info-box h4 { font-size: 0.9rem; color: var(--teal); margin-bottom: 0.4rem; }
+.pipe-info-box h3 { font-size: 0.9rem; color: var(--teal); margin-bottom: 0.4rem; }
 .pipe-info-box p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
 
 /* ═══════════════════════════════════════════════
@@ -565,7 +565,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
   </ul>
 </nav>
 
-<div class="world-main">
+<main id="world-main" tabindex="-1" class="wg-a11y-main"><div class="world-main">
 
 <!-- ════════════════════════════════════════
      HERO
@@ -633,7 +633,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
      CORE CONCEPTS
 ════════════════════════════════════════ -->
 <section id="concepts">
-  <p class="section-title">Core Concepts</p>
+  <h2 class="section-title">Core Concepts</h2>
   <p class="section-subtitle">Six foundational pillars every big data engineer must master</p>
 
   <div class="cards-grid">
@@ -804,7 +804,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 ════════════════════════════════════════ -->
 <div id="pipeline">
 <div class="inner">
-  <p class="section-title">Pipeline Builder</p>
+  <h2 class="section-title">Pipeline Builder</h2>
   <p class="section-subtitle">Toggle components to see how a real Big Data pipeline comes together</p>
 
   <div class="pipeline-controls" id="pipeControls">
@@ -907,8 +907,8 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
     </div>
   </div><!-- /pipeline-canvas -->
 
-  <div class="pipe-info-box" id="pipeInfoBox">
-    <h4>⚡ Full Lambda Architecture Active</h4>
+  <div class="pipe-info-box" aria-live="polite" id="pipeInfoBox">
+    <h3>⚡ Full Lambda Architecture Active</h3>
     <p>All 7 components enabled. Data flows: Sources → Kafka (stream ingestion) → HDFS/S3 (raw storage) → Spark (ETL/processing) → Hive/DW (serving layer) → Superset (visualization). Airflow orchestrates every stage. Toggle components to explore partial architectures.</p>
   </div>
 
@@ -921,7 +921,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
      ECOSYSTEM GALAXY MAP
 ════════════════════════════════════════ -->
 <section id="ecosystem">
-  <p class="section-title">Ecosystem Galaxy Map</p>
+  <h2 class="section-title">Ecosystem Galaxy Map</h2>
   <p class="section-subtitle">The Big Data tool landscape — organized by layer</p>
 
   <div class="galaxy-wrapper">
@@ -1101,15 +1101,15 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
   </div>
 
   <!-- Galaxy Info Panel -->
-  <div class="pipe-info-box" id="galaxyTip">
-    <h4>🗺️ Big Data Ecosystem Map</h4>
+  <div class="pipe-info-box" aria-live="polite" id="galaxyTip">
+    <h3>🗺️ Big Data Ecosystem Map</h3>
     <p>Click any tool in the map above to see details about it — what it does, who uses it, and where it fits in the stack.</p>
   </div>
 
   <div class="divider" style="margin:3rem 0;"></div>
 
   <!-- ── RESOURCE TABS ── -->
-  <p class="section-title" id="resources">Learning Resources</p>
+  <h2 class="section-title" id="resources">Learning Resources</h2>
   <p class="section-subtitle">Curated videos, courses, books & podcasts to go deep</p>
 
   <div class="tab-bar">
@@ -1333,7 +1333,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 ════════════════════════════════════════ -->
 <div id="roadmap">
 <div class="inner">
-  <p class="section-title">Learning Roadmap</p>
+  <h2 class="section-title">Learning Roadmap</h2>
   <p class="section-subtitle">Your 6-phase journey from data curious to cloud-scale engineer</p>
 
   <div class="roadmap-track">
@@ -1444,87 +1444,87 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
      CHEAT SHEET
 ════════════════════════════════════════ -->
 <section id="cheatsheet">
-  <p class="section-title">Big Data Cheat Sheet</p>
+  <h2 class="section-title">Big Data Cheat Sheet</h2>
   <p class="section-subtitle">20 essential terms — hover a card and click 📋 to copy the definition</p>
 
   <div class="cheat-grid">
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'HDFS: Hadoop Distributed File System — splits files into 128 MB blocks replicated 3x across DataNodes.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'HDFS: Hadoop Distributed File System — splits files into 128 MB blocks replicated 3x across DataNodes.')">📋</button>
       <div class="cheat-term">HDFS</div>
       <div class="cheat-def">Hadoop Distributed File System. 128 MB blocks replicated 3× across DataNodes. NameNode holds block map.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'MapReduce: Input → Map (k/v) → Shuffle (group by key) → Reduce (aggregate). Disk-heavy batch processing.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'MapReduce: Input → Map (k/v) → Shuffle (group by key) → Reduce (aggregate). Disk-heavy batch processing.')">📋</button>
       <div class="cheat-term">MapReduce</div>
       <div class="cheat-def">Batch model: Input→Map(k/v)→Shuffle(group)→Reduce(aggregate). Disk I/O between stages; superseded by Spark.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Spark: in-memory cluster compute, 100x faster than MapReduce. APIs: RDD, DataFrame, Dataset.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Apache Spark: in-memory cluster compute, 100x faster than MapReduce. APIs: RDD, DataFrame, Dataset.')">📋</button>
       <div class="cheat-term">Apache Spark</div>
       <div class="cheat-def">In-memory cluster compute. 100× faster than MapReduce for ML. APIs: RDD, DataFrame, Dataset. Batch &amp; streaming.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'RDD: Resilient Distributed Dataset — Spark low-level immutable partitioned collection. Lazy eval. Transformations + Actions.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'RDD: Resilient Distributed Dataset — Spark low-level immutable partitioned collection. Lazy eval. Transformations + Actions.')">📋</button>
       <div class="cheat-term">RDD</div>
       <div class="cheat-def">Resilient Distributed Dataset. Spark's low-level immutable partitioned abstraction. Lazy evaluation. Transformations + Actions.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Kafka: distributed commit log. Topics→Partitions→Offsets. Replayable, durable, 1M+ msg/sec.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Apache Kafka: distributed commit log. Topics→Partitions→Offsets. Replayable, durable, 1M+ msg/sec.')">📋</button>
       <div class="cheat-term">Apache Kafka</div>
       <div class="cheat-def">Distributed commit log for event streaming. Topics→Partitions→Offsets. Replayable &amp; durable. 1M+ msg/sec.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data Lake: raw data in any format, schema-on-read, cheap object storage. Risk: data swamp without governance.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Data Lake: raw data in any format, schema-on-read, cheap object storage. Risk: data swamp without governance.')">📋</button>
       <div class="cheat-term">Data Lake</div>
       <div class="cheat-def">Raw data in any format, schema-on-read. Cheap object storage (S3/ADLS/GCS). Risk: data swamp without governance.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data Warehouse: structured, SQL, schema-on-write analytical store. Snowflake, BigQuery, Redshift, Synapse.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Data Warehouse: structured, SQL, schema-on-write analytical store. Snowflake, BigQuery, Redshift, Synapse.')">📋</button>
       <div class="cheat-term">Data Warehouse</div>
       <div class="cheat-def">Structured, SQL, schema-on-write analytical store. OLAP workloads. Snowflake, BigQuery, Redshift, Synapse.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Lakehouse: lake storage + warehouse ACID. Delta Lake, Apache Iceberg, Apache Hudi.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Lakehouse: lake storage + warehouse ACID. Delta Lake, Apache Iceberg, Apache Hudi.')">📋</button>
       <div class="cheat-term">Lakehouse</div>
       <div class="cheat-def">Lake storage + warehouse ACID features (Delta Lake, Iceberg, Hudi). Schema enforcement, BI support, time travel.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Apache Airflow: workflow orchestration with Python DAGs. Schedules, monitors, retries pipeline tasks.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Apache Airflow: workflow orchestration with Python DAGs. Schedules, monitors, retries pipeline tasks.')">📋</button>
       <div class="cheat-term">Apache Airflow</div>
       <div class="cheat-def">Python DAG-based orchestration. Schedules, monitors, retries pipeline tasks. 1000+ built-in operators.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'dbt: transform data inside warehouse with SQL SELECT models. Testing, lineage, auto-docs.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'dbt: transform data inside warehouse with SQL SELECT models. Testing, lineage, auto-docs.')">📋</button>
       <div class="cheat-term">dbt</div>
       <div class="cheat-def">Transform data inside warehouse using SQL SELECT models. Auto-generates tests, lineage graphs, and documentation.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Data scale: KB→MB→GB→TB→PB→EB→ZB. Big Data starts at TB. Global internet ~5 ZB/year.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Data scale: KB→MB→GB→TB→PB→EB→ZB. Big Data starts at TB. Global internet ~5 ZB/year.')">📋</button>
       <div class="cheat-term">Scale: KB → ZB</div>
       <div class="cheat-def">KB(10³)→MB(10⁶)→GB(10⁹)→TB(10¹²)→PB(10¹⁵)→EB(10¹⁸)→ZB(10²¹). Big Data at TB+. Internet ~5 ZB/yr.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Parquet: columnar format, 3-10x better compression than CSV. Column pruning + predicate pushdown.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Parquet: columnar format, 3-10x better compression than CSV. Column pruning + predicate pushdown.')">📋</button>
       <div class="cheat-term">Parquet</div>
       <div class="cheat-def">Columnar storage format. 3–10× better compression than CSV/JSON. Column pruning &amp; predicate pushdown for fast queries.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Partitioning: divide data by key (date/region) to reduce files scanned. repartition()/coalesce() in Spark.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Partitioning: divide data by key (date/region) to reduce files scanned. repartition()/coalesce() in Spark.')">📋</button>
       <div class="cheat-term">Partitioning</div>
       <div class="cheat-def">Divide data by key (date, region) to reduce files scanned per query. repartition() / coalesce() in Spark.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Lambda Architecture: Batch layer + Speed layer + Serving layer. Complexity led to simpler Kappa architecture.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Lambda Architecture: Batch layer + Speed layer + Serving layer. Complexity led to simpler Kappa architecture.')">📋</button>
       <div class="cheat-term">Lambda Architecture</div>
       <div class="cheat-def">Batch layer (full recompute) + Speed layer (real-time) + Serving layer (merged). Complexity → Kappa alternative.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'CAP Theorem: only 2 of 3: Consistency, Availability, Partition Tolerance.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'CAP Theorem: only 2 of 3: Consistency, Availability, Partition Tolerance.')">📋</button>
       <div class="cheat-term">CAP Theorem</div>
       <div class="cheat-def">Distributed systems guarantee only 2 of: Consistency (latest write), Availability (always responds), Partition Tolerance.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Delta Lake: ACID on Parquet. Time travel, schema evolution, DML (UPDATE/DELETE) on lake storage.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Delta Lake: ACID on Parquet. Time travel, schema evolution, DML (UPDATE/DELETE) on lake storage.')">📋</button>
       <div class="cheat-term">Delta Lake</div>
       <div class="cheat-def">ACID transactions on Parquet files. Time travel (query history), schema evolution, DML on data lake storage.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Shuffle: most expensive Spark op — redistributes data for groupBy/join. Minimize with broadcast joins.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Shuffle: most expensive Spark op — redistributes data for groupBy/join. Minimize with broadcast joins.')">📋</button>
       <div class="cheat-term">Shuffle</div>
       <div class="cheat-def">Most expensive Spark op — redistributes data across partitions (groupBy, join, distinct). Minimize with broadcast joins.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'Snowflake: cloud DW with separated storage & compute. Time Travel 90 days. Multi-cloud. VARIANT type.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'Snowflake: cloud DW with separated storage & compute. Time Travel 90 days. Multi-cloud. VARIANT type.')">📋</button>
       <div class="cheat-term">Snowflake</div>
       <div class="cheat-def">Cloud DW with separated storage &amp; compute. Virtual warehouses scale independently. Time Travel 90 days. Multi-cloud.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'ETL vs ELT: ETL transforms before loading; ELT loads raw then transforms inside warehouse. Cloud prefers ELT.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'ETL vs ELT: ETL transforms before loading; ELT loads raw then transforms inside warehouse. Cloud prefers ELT.')">📋</button>
       <div class="cheat-term">ETL vs ELT</div>
       <div class="cheat-def">ETL: transform before loading. ELT: load raw then transform inside warehouse. Cloud DWs make ELT preferred &amp; cheaper.</div>
     </div>
-    <div class="cheat-card"><button class="cheat-copy-btn" onclick="copyCheat(this,'YARN: Hadoop cluster resource manager. ResourceManager + NodeManagers. Lets Spark, Hive, MR share a cluster.')">📋</button>
+    <div class="cheat-card"><button aria-label="Copy definition" class="cheat-copy-btn" onclick="copyCheat(this,'YARN: Hadoop cluster resource manager. ResourceManager + NodeManagers. Lets Spark, Hive, MR share a cluster.')">📋</button>
       <div class="cheat-term">YARN</div>
       <div class="cheat-def">Yet Another Resource Negotiator — Hadoop cluster manager. ResourceManager + NodeManagers. Spark, Hive, MR share one cluster.</div>
     </div>
@@ -1617,7 +1617,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 
 <!-- ═══════════ SECTION A: FOUNDATIONAL PAPERS & ARCHITECTURE ═══════════ -->
 <section id="foundations">
-  <p class="section-title">Foundational Papers &amp; Architecture</p>
+  <h2 class="section-title">Foundational Papers &amp; Architecture</h2>
   <p class="section-subtitle">The landmark research and architectural patterns that built the Big Data world</p>
 
   <div class="papers-grid">
@@ -1655,7 +1655,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
     </div>
   </div>
 
-  <p class="section-title" style="margin-top:3rem;font-size:1.25rem;">Lambda vs. Kappa Architecture</p>
+  <h2 class="section-title" style="margin-top:3rem;font-size:1.25rem;">Lambda vs. Kappa Architecture</h2>
   <p class="section-subtitle">Two competing patterns for combining batch and real-time data processing</p>
   <div class="arch-compare">
     <div class="arch-card lambda">
@@ -1694,7 +1694,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
     </div>
   </div>
 
-  <p class="section-title" style="margin-top:3rem;font-size:1.25rem;">The CAP Theorem</p>
+  <h2 class="section-title" style="margin-top:3rem;font-size:1.25rem;">The CAP Theorem</h2>
   <p class="section-subtitle">Eric Brewer's conjecture (PODC 2000) &mdash; formally proven by Gilbert &amp; Lynch, MIT (2002)</p>
   <div class="cap-wrapper">
     <p class="cap-heading">A distributed system can guarantee at most 2 of these 3 properties simultaneously</p>
@@ -1744,7 +1744,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 
 <!-- ═══════════ SECTION B: KEY TERMS ═══════════ -->
 <section id="key-terms">
-  <p class="section-title">Key Terms &mdash; Primary Source Definitions</p>
+  <h2 class="section-title">Key Terms &mdash; Primary Source Definitions</h2>
   <p class="section-subtitle">Authoritative definitions drawn directly from foundational papers, documentation, and original research</p>
   <div class="terms-grid">
 
@@ -1861,7 +1861,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 
 <!-- ═══════════ SECTION C: KNOWLEDGE CHECK ═══════════ -->
 <section id="knowledge-check">
-  <p class="section-title">Knowledge Check</p>
+  <h2 class="section-title">Knowledge Check</h2>
   <p class="section-subtitle">8 questions from foundational papers and primary sources &mdash; click an answer to see the explanation</p>
 
   <div class="quiz-wrap">
@@ -1969,3 +1969,4 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
 
   </div>
 </section>
+</main>

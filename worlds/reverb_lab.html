@@ -316,8 +316,12 @@ select:focus { border-color: var(--accent); }
   display: block;
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav id="nav">
@@ -342,7 +346,7 @@ select:focus { border-color: var(--accent); }
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
     <p class="hero-label">WAVGEN Music World 05</p>
-    <h1 class="hero-title">REVERB LAB</h1>
+    <h1 class="hero-title" id="wg-content" tabindex="-1">REVERB LAB</h1>
     <p class="hero-sub">Space is the final instrument</p>
     <div class="hero-badges">
       <span class="badge">Early Reflections</span>
@@ -2164,5 +2168,6 @@ sections.forEach(s => navObserver.observe(s));
   });
 })();
 </script>
+</main>
 </body>
 </html>

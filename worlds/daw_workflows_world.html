@@ -73,8 +73,12 @@ h2{font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:.2em;color:var(--blue2);mar
 .jump-link{flex-shrink:0;padding:.4rem 1rem;border-radius:20px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);text-decoration:none;font-size:.7rem;letter-spacing:.1em;font-family:monospace;transition:all .2s;background:transparent}
 .jump-link:hover,.jump-link.active{color:#D4AF37;border-color:#D4AF37;background:rgba(212,175,55,.08)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav class="jump-nav" id="jump-nav">
   <a href="#hero" class="jump-link active">HERO</a>
   <a href="#sec-routing" class="jump-link">ROUTING</a>
@@ -101,7 +105,7 @@ h2{font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:.2em;color:var(--blue2);mar
 <!-- ROUTING VISUALIZER -->
 <section class="section-full hidden" id="sec-routing">
   <div>
-    <h2>Signal Routing Visualizer</h2>
+    <h2 id="wg-content" tabindex="-1">Signal Routing Visualizer</h2>
     <div class="sec-sub">Aux busses · Send/Return · Group channels · Master chain</div>
     <div class="divider"></div>
     <div class="panel">
@@ -1210,5 +1214,6 @@ document.querySelectorAll('.hidden').forEach(el=>io.observe(el));
   sections.forEach(s => io2.observe(s));
 })();
 </script>
+</main>
 </body>
 </html>

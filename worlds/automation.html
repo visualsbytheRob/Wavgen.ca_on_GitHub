@@ -494,8 +494,12 @@ footer .f-logo { font-size: 1.5rem; font-weight: 900; color: var(--orange); marg
   .cards-grid { grid-template-columns: 1fr; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ===== NAV ===== -->
 <nav>
@@ -523,7 +527,7 @@ footer .f-logo { font-size: 1.5rem; font-weight: 900; color: var(--orange); marg
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
   <p class="hero-eyebrow">⚡ Enterprise AI &amp; Automation Learning Guide</p>
-  <h1>Automate<br><span>Everything</span></h1>
+  <h1 id="wg-content" tabindex="-1">Automate<br><span>Everything</span></h1>
   <p class="hero-sub">From scripts and RPA bots to AI agents and hyperautomation — master the full automation stack used in enterprise IT and AI programs.</p>
 
   <!-- Workflow Animation -->
@@ -1971,5 +1975,6 @@ document.querySelectorAll('.concept-card, .tool-card, .rm-step, .cheat-card, .re
   observer.observe(el);
 });
 </script>
+</main>
 </body>
 </html>

@@ -543,8 +543,11 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
   .cards-grid { grid-template-columns: 1fr; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-main">Skip to content</a>
 
 <!-- DATA STREAM BACKGROUND -->
 <div class="data-stream-bg" id="streamBg"></div>
@@ -569,7 +572,7 @@ footer .footer-brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); 
   </ul>
 </nav>
 
-<main>
+<main tabindex="-1" id="wg-main">
 
 <!-- ════════════════════════════════════════
      HERO

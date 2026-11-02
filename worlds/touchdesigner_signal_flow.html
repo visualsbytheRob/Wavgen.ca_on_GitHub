@@ -755,8 +755,12 @@ footer {
 }
 footer span { color: var(--accent); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ── NAV ──────────────────────────────────────────────────────── -->
 <nav id="main-nav">
@@ -807,7 +811,7 @@ footer span { color: var(--accent); }
 <section id="nodes">
   <div class="container">
     <div class="section-label hidden">Node Graph Universe</div>
-    <h2 class="section-title hidden">The Node Graph</h2>
+    <h2 class="section-title hidden" id="wg-content" tabindex="-1">The Node Graph</h2>
     <p class="section-sub hidden">Interactive TouchDesigner-inspired network. Drag nodes, connect ports, modify parameters.</p>
 
     <div class="nodegraph-wrap hidden">
@@ -3443,5 +3447,6 @@ window.addEventListener('load', () => {
 });
 
 </script>
+</main>
 </body>
 </html>

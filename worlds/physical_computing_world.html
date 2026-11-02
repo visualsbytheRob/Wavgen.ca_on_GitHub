@@ -252,8 +252,12 @@
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--accent1); border-radius: 2px; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ═══ JUMP NAV ═══ -->
 <nav id="jump-nav">
@@ -285,7 +289,7 @@
 <section id="sensor">
   <div class="section-inner">
     <div class="section-tag reveal">02 · Signal Explorer</div>
-    <h2 class="section-title reveal">Sensor Signal Explorer</h2>
+    <h2 class="section-title reveal" id="wg-content" tabindex="-1">Sensor Signal Explorer</h2>
     <p class="section-sub reveal">Live oscilloscope view of six simulated sensor channels. Each channel uses LagFilter smoothing and distinct waveform behavior. Adjust amplitude and frequency per channel.</p>
     <canvas id="scopeCanvas" height="320" class="reveal"></canvas>
     <div class="scope-controls reveal" id="scopeControls"></div>
@@ -1358,5 +1362,6 @@ const lagGlowIntensity= makeLag(0.22);
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 </script>
+</main>
 </body>
 </html>

@@ -101,8 +101,12 @@ section{padding:5rem 1.5rem;max-width:1200px;margin:0 auto;position:relative}
 .scene-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .1s linear;width:0%}
 .motion-quote{border-left:2px solid var(--accent);padding:.8rem 1.5rem;font-style:italic;color:var(--dim);font-size:.88rem;margin:1.5rem 0}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-brand">WAVGEN / MOTION</span>
@@ -308,7 +312,7 @@ class BPMEngine {
 <!-- SECTION 2 — KINETIC TYPOGRAPHY ENGINE -->
 <section id="typo-section">
   <span class="section-label hidden stagger-1">02 / Kinetic Typography</span>
-  <h2 class="section-title hidden stagger-2">Kinetic Typography Engine</h2>
+  <h2 class="section-title hidden stagger-2" id="wg-content" tabindex="-1">Kinetic Typography Engine</h2>
   <p class="section-desc hidden stagger-3">Type something and watch it come alive. Choose a motion preset, adjust timing, and explore how letterforms move.</p>
   <div class="ctrl-row hidden stagger-3">
     <input type="text" id="typoInput" value="MOTION IS TIME" maxlength="28">
@@ -1516,5 +1520,6 @@ class BPMEngine {
 })();
 </script>
 
+</main>
 </body>
 </html>

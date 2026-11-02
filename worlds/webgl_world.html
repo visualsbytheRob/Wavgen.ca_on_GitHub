@@ -293,8 +293,12 @@ input[type=color] {
   nav { gap: 12px; padding: 0 16px; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ── NAV ── -->
 <nav>
@@ -315,7 +319,7 @@ input[type=color] {
 ════════════════════════════════════ -->
 <section id="s1" class="full-width" style="position:relative; margin-top:48px;">
   <canvas id="heroCanvas"></canvas>
-  <div class="hero-overlay">
+  <div class="hero-overlay" id="wg-content" tabindex="-1">
     <div class="hero-title">WEBGL</div>
     <div class="hero-sub">RAW GPU · THE RENDERING PIPELINE · SHADER LANGUAGE</div>
   </div>
@@ -1910,5 +1914,6 @@ input[type=color] {
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 })();
 </script>
+</main>
 </body>
 </html>

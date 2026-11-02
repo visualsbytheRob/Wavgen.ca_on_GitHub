@@ -71,8 +71,12 @@ select:hover{border-color:var(--accent);}
 .noise-lbl{font-size:9px;color:var(--accent);letter-spacing:.1em;margin-top:5px;text-transform:uppercase;}
 .noise-desc{font-size:9px;color:var(--dim);margin-top:2px;}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="logo">WAVGEN</span>
@@ -89,7 +93,7 @@ select:hover{border-color:var(--accent);}
 <!-- ═══ SECTION 1: HERO ═══ -->
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
-  <div class="hero-ov">
+  <div class="hero-ov" id="wg-content" tabindex="-1">
     <div class="hero-tit">GENERATIVE<br>ART</div>
     <div class="hero-sub">A LIVING ARTWORK THAT EXPLAINS ITSELF THROUGH BEAUTY</div>
   </div>
@@ -1536,5 +1540,6 @@ function hash21(x,y){let h=Math.sin(x*127.1+y*311.7)*43758.5453;return h-Math.fl
 })();
 
 </script>
+</main>
 </body>
 </html>

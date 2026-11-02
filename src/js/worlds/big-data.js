@@ -31,6 +31,7 @@ function toggleAcc(header) {
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
+  document.querySelectorAll('.acc-header').forEach(h => h.setAttribute('aria-expanded', h.closest('.acc-item').classList.contains('open')));
 }
 
 /* ── Pipeline toggle ─────────────────────────────────────────── */
@@ -46,6 +47,7 @@ const pipeInfo = {
 
 function togglePipe(btn) {
   btn.classList.toggle('active');
+  btn.setAttribute('aria-pressed', btn.classList.contains('active'));
   const node = btn.dataset.node;
   const el = document.getElementById('node-' + node);
   if (el) el.classList.toggle('active-node');
@@ -72,16 +74,16 @@ function updatePipeInfo() {
   if (!box) return;
   const active = Array.from(document.querySelectorAll('.pipe-toggle.active')).map(b => b.dataset.node);
   if (active.length === 0) {
-    box.innerHTML = '<h4>⚠️ No Components Active</h4><p>Toggle components above to explore different pipeline architectures.</p>';
+    box.innerHTML = '<h3>⚠️ No Components Active</h3><p>Toggle components above to explore different pipeline architectures.</p>';
     return;
   }
   if (active.length === 7) {
-    box.innerHTML = '<h4>⚡ Full Lambda Architecture Active</h4><p>All 7 components enabled: Source → Kafka → HDFS/S3 → Spark → Hive/DW → Superset, with Airflow orchestrating every stage.</p>';
+    box.innerHTML = '<h3>⚡ Full Lambda Architecture Active</h3><p>All 7 components enabled: Source → Kafka → HDFS/S3 → Spark → Hive/DW → Superset, with Airflow orchestrating every stage.</p>';
     return;
   }
   const last = active[active.length - 1];
   const info = pipeInfo[last];
-  if (info) box.innerHTML = `<h4>${info.title}</h4><p>${info.text}</p>`;
+  if (info) box.innerHTML = `<h3>${info.title}</h3><p>${info.text}</p>`;
 }
 
 /* ── Galaxy / Ecosystem map tips ─────────────────────────────── */
@@ -114,7 +116,7 @@ function showGalaxyTip(tool) {
   const box = document.getElementById('galaxyTip');
   const d = galaxyData[tool];
   if (!box || !d) return;
-  box.innerHTML = `<h4>🔍 ${d.name}</h4><p>${d.desc}</p>`;
+  box.innerHTML = `<h3>🔍 ${d.name}</h3><p>${d.desc}</p>`;
   box.style.borderColor = '#00e5ff';
   setTimeout(() => { if (box) box.style.borderColor = ''; }, 2000);
 }
@@ -237,3 +239,12 @@ function resetQuiz() {
     obs.observe(el);
   });
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.acc-header').forEach((h, i) => {
+    const panel = h.nextElementSibling;
+    h.setAttribute('aria-expanded', h.closest('.acc-item').classList.contains('open'));
+    if (panel) { panel.id ||= 'accordion-panel-' + i; h.setAttribute('aria-controls', panel.id); }
+  });
+  document.querySelectorAll('.pipe-toggle').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('active')));
+});

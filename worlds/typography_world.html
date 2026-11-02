@@ -355,8 +355,12 @@ select:focus { border-color: var(--primary); }
 
 footer { text-align: center; padding: 2.5rem 2rem; color: var(--text-muted); font-family: var(--ff-mono); font-size: 0.74rem; border-top: 1px solid var(--border); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -377,7 +381,7 @@ footer { text-align: center; padding: 2.5rem 2rem; color: var(--text-muted); fon
 <div id="hero-wrapper">
   <canvas id="hero-canvas"></canvas>
   <div id="hero-overlay">
-    <h1>Typography World</h1>
+    <h1 id="wg-content" tabindex="-1">Typography World</h1>
     <p>The Architecture of Language</p>
   </div>
 </div>
@@ -1958,5 +1962,6 @@ footer { text-align: center; padding: 2.5rem 2rem; color: var(--text-muted); fon
 })();
 </script>
 
+</main>
 </body>
 </html>

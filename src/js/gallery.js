@@ -103,6 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
      * Click handler: Open modal showing currently visible slide
      * Integrates with modal system defined later in this file
      */
+    heroSlideshow.setAttribute('role', 'button');
+    heroSlideshow.tabIndex = 0;
+    heroSlideshow.setAttribute('aria-label', 'Open image gallery');
+    heroSlideshow.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); heroSlideshow.click(); } });
     heroSlideshow.addEventListener('click', function(e) {
       e.stopPropagation(); // Prevent event bubbling
       // Call global modal function with current slide index
@@ -626,6 +630,10 @@ document.addEventListener('DOMContentLoaded', function () {
    */
   const marqueeImgs = Array.from(document.querySelectorAll('.marquee-track img')).filter(img => !img.hasAttribute('data-clone'));
   marqueeImgs.forEach((img, idx) => {
+    img.setAttribute('role', 'button');
+    img.tabIndex = 0;
+    img.setAttribute('aria-label', 'Open image: ' + (img.alt || 'gallery image'));
+    img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); img.click(); } });
     img.addEventListener('click', function (e) {
       e.stopPropagation(); // Prevent event bubbling
       // Calculate correct modal index: hero images come first, then marquee images
@@ -707,6 +715,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!modal) return;
     const isOpen = modal.style.display === 'block';
     if (!isOpen) return;
+    if (e.key === 'Tab') {
+      const controls = [span, prevBtn, nextBtn].filter(Boolean);
+      const first = controls[0], last = controls.at(-1);
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === modal)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (document.activeElement === last || document.activeElement === modal)) { e.preventDefault(); first.focus(); }
+    }
     if (e.key === 'Escape') {
       e.preventDefault();
       closeModal();
@@ -756,4 +770,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // End of gallery system initialization
+});
+
+// Preserve the authored close icon while exposing keyboard activation.
+document.addEventListener('DOMContentLoaded', () => {
+  const close = document.querySelector('#myModal .close');
+  close?.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); close.click(); } });
 });

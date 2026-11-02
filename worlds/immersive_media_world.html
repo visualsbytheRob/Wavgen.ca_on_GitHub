@@ -123,8 +123,12 @@
 
   @media(max-width:700px){ #audio-layout{grid-template-columns:1fr;} nav ul{display:none;} }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="brand">WAVGEN · Immersive Media</div>
@@ -164,7 +168,7 @@
      ══════════════════════════════════════════════════════ -->
 <section id="xr-spectrum" class="hidden">
   <div class="sec-label">Section 02 · Reality Continuum</div>
-  <h2>The XR Spectrum</h2>
+  <h2 id="wg-content" tabindex="-1">The XR Spectrum</h2>
   <p class="prose">Paul Milgram's Reality-Virtuality Continuum spans physical reality through Mixed Reality to full Virtual Reality. Augmented Reality overlays digital onto the physical; Mixed Reality anchors digital objects to physical surfaces; VR replaces perception entirely. Move the slider to explore the continuum.</p>
 
   <div class="slider-row">
@@ -1139,5 +1143,6 @@ const observer=new IntersectionObserver(entries=>{
 },{threshold:0.08});
 document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
 </script>
+</main>
 </body>
 </html>

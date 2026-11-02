@@ -861,8 +861,12 @@
     .dim  { color: var(--dim); }
     .center { text-align: center; }
   </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <!-- HERO CANVAS + NAVIGATION                                            -->
@@ -889,7 +893,7 @@
   <section id="hero">
     <div class="hero-content">
       <p class="hero-eyebrow hidden stagger-1">WAVGEN MUSIC WORLD 04</p>
-      <h1 class="hero-h1 hidden stagger-2">AMBIENT <span class="accent">SYSTEMS</span></h1>
+      <h1 class="hero-h1 hidden stagger-2" id="wg-content" tabindex="-1">AMBIENT <span class="accent">SYSTEMS</span></h1>
       <p class="hero-tagline hidden stagger-3">Music as environment. Process as composition.</p>
       <p class="hero-quote">"The role of the composer is that of a gardener — not an architect."<br>
         <span style="font-size:13px; color:var(--muted); margin-top:8px; display:inline-block;">— Brian Eno</span>
@@ -2657,5 +2661,6 @@ window.addEventListener('load',()=>{
   });
 });
 </script>
+</main>
 </body>
 </html>

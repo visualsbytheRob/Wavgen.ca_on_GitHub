@@ -126,8 +126,12 @@ footer a{color:var(--accent);text-decoration:none}
   .badge{font-size:0.6rem;padding:4px 10px}
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-inner">
@@ -177,7 +181,7 @@ footer a{color:var(--accent);text-decoration:none}
     </div>
     <div style="min-width:220px;display:flex;flex-direction:column;gap:1rem">
       <div class="card card-amber hidden stagger-2">
-        <h4>Drive Level</h4>
+        <h4 id="wg-content" tabindex="-1">Drive Level</h4>
         <div class="ctrl-row">
           <input type="range" id="sat-drive" min="-24" max="6" value="-6" step="0.5">
           <span class="val-badge" id="sat-drive-val">-6 dB</span>
@@ -1565,5 +1569,6 @@ resizeAllCanvases();
 console.log('%cWAVGEN TAPE & VINYL LAB — App 12 of 16', 'color:#d97706;font-family:monospace;font-size:14px');
 console.log('%cwavgen.ca | vanilla JS + Canvas2D + WebAudio API', 'color:#64748b;font-family:monospace;font-size:10px');
 </script>
+</main>
 </body>
 </html>

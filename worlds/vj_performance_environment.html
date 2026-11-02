@@ -357,8 +357,12 @@ footer span { color: var(--accent); }
   border: 1px solid var(--dim);
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -396,7 +400,7 @@ footer span { color: var(--accent); }
 <!-- SECTION 2: CLIP LAUNCHER -->
 <section id="s2">
   <div class="section-label">Section 02 — Live Clip Launcher</div>
-  <h2>CLIP LAUNCHER</h2>
+  <h2 id="wg-content" tabindex="-1">CLIP LAUNCHER</h2>
   <p>5×4 grid of 20 animated clip cells. Click to activate layer A (magenta). Shift+click for layer B (cyan). Use CLEAR to deactivate all.</p>
   <div class="clip-grid" id="clipGrid"></div>
   <div class="row" style="margin-top:16px;align-items:flex-start;">
@@ -2103,5 +2107,6 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 </script>
+</main>
 </body>
 </html>

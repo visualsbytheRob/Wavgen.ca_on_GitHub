@@ -232,8 +232,12 @@ section:nth-child(even){background:rgba(17,24,32,0.6)}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--steel);border-radius:3px}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ── JUMP NAV ── -->
 <nav id="jump-nav">
@@ -252,7 +256,7 @@ section:nth-child(even){background:rgba(17,24,32,0.6)}
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
     <p class="hero-eyebrow">WAVGEN · Creative Tools Platform</p>
-    <h1 class="hero-title"><span class="glow">CREATIVE TOOLS</span><br>CONVERGENCE</h1>
+    <h1 class="hero-title" id="wg-content" tabindex="-1"><span class="glow">CREATIVE TOOLS</span><br>CONVERGENCE</h1>
     <p class="hero-sub">Where p5.js, TouchDesigner, WebGL/GLSL, Max/MSP, Processing, and openFrameworks meet, merge, and amplify each other.</p>
     <div class="hero-tags">
       <span class="hero-tag active">p5.js</span>
@@ -1227,5 +1231,6 @@ function updateNav(ts) {
 }
 requestAnimationFrame(updateNav);
 </script>
+</main>
 </body>
 </html>

@@ -354,8 +354,11 @@
   .fade-in.visible { opacity: 1; transform: translateY(0); }
   @media(max-width:768px){ .concepts-grid{grid-template-columns:1fr;} section{padding:60px 1rem;} }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-main">Skip to content</a>
 
 <!-- NAV -->
 <nav>
@@ -380,7 +383,7 @@
   </ul>
 </nav>
 
-<main>
+<main tabindex="-1" id="wg-main">
 
 <!-- HERO -->
 <section id="home">

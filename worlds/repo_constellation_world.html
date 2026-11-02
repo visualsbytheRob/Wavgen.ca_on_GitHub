@@ -251,8 +251,12 @@ section{padding:80px 48px;position:relative}
   nav .nav-link:nth-child(n+5){display:none}
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-root">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">⬡ WAVGEN REPOS</div>
@@ -286,7 +290,7 @@ section{padding:80px 48px;position:relative}
 <section id="constellation">
   <div class="constellation-header">
     <div class="section-label">Interactive Star Map</div>
-    <h2 class="section-title">The Constellation Graph</h2>
+    <h2 class="section-title" id="wg-content" tabindex="-1">The Constellation Graph</h2>
     <p class="section-sub">Each star is a repo. Size = tier importance. Color = domain. Lines = cross-domain relationships.<br>Drag to pan · Scroll to zoom · Hover for info · Click for details</p>
   </div>
   <div class="graph-wrap">
@@ -1369,5 +1373,6 @@ function hexToRgba(hex, alpha){
   return `rgba(${r},${g},${b},${alpha})`;
 }
 </script>
+</main>
 </body>
 </html>

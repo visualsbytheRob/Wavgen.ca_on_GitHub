@@ -122,8 +122,12 @@
     .nav-links { display: none; }
   }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">Drawing World</div>
@@ -328,7 +332,7 @@
 <!-- SECTION 2: GESTURE & LINE -->
 <section id="gesture" class="hidden">
   <div class="section-header">
-    <h2>Gesture &amp; Line</h2>
+    <h2 id="wg-content" tabindex="-1">Gesture &amp; Line</h2>
     <p>The living energy of mark-making — speed, weight, and intention</p>
   </div>
   <div class="gesture-container">
@@ -2164,5 +2168,6 @@
   });
 })();
 </script>
+</main>
 </body>
 </html>

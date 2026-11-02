@@ -197,8 +197,12 @@ footer { border-top:1px solid var(--border); padding:2rem; text-align:center;
   .cheat-grid { grid-template-columns:1fr; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -218,7 +222,7 @@ footer { border-top:1px solid var(--border); padding:2rem; text-align:center;
 <!-- HERO -->
 <div id="hero">
   <canvas id="hero-canvas"></canvas>
-  <div class="hero-content">
+  <div class="hero-content" id="wg-content" tabindex="-1">
     <div class="hero-title">SIGNAL FLOW</div>
     <div class="hero-subtitle">The nervous system of electronic music</div>
     <a href="#signal" class="hero-cta">Enter the Signal →</a>
@@ -1309,5 +1313,6 @@ footer { border-top:1px solid var(--border); padding:2rem; text-align:center;
 })();
 
 </script>
+</main>
 </body>
 </html>

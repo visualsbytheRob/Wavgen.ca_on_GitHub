@@ -234,8 +234,12 @@ input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;cursor:po
 footer{padding:40px 32px;text-align:center;font-size:11px;color:var(--text3);
   letter-spacing:.15em;border-top:1px solid var(--border)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">⬡ WAVGEN / Shader Systems</div>
@@ -255,7 +259,7 @@ footer{padding:40px 32px;text-align:center;font-size:11px;color:var(--text3);
 <!-- ═══════════════════════════════════════════ SECTION 1: HERO ══ -->
 <section id="section-hero">
   <canvas id="hero-canvas"></canvas>
-  <div class="hero-overlay">
+  <div class="hero-overlay" id="wg-content" tabindex="-1">
     <div class="hero-tag">WAVGEN Learning Universe</div>
     <div class="hero-title">SHADER SYSTEMS</div>
     <div class="hero-sub">Fragment shaders · SDF geometry · Ray marching · GPU art</div>
@@ -1847,5 +1851,6 @@ setTimeout(() => {
 console.log('%cSHADER SYSTEMS — WAVGEN Universe loaded', 'color:#7b2fff;font-size:14px;font-weight:bold');
 console.log('%c9 sections · WebGL shaders · Canvas2D · LagFilter · Zero deps', 'color:#00e5ff;font-size:11px');
 </script>
+</main>
 </body>
 </html>

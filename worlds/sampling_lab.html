@@ -598,8 +598,12 @@
       nav a:not(.nav-logo) { display: none; }
     }
   </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <a class="nav-logo" href="#hero">◈ WAVGEN</a>
@@ -619,7 +623,7 @@
 ═════════════════════════════════════════════ -->
 <section id="hero" style="padding:0; max-width:100%; position:relative; height:540px; overflow:hidden;">
   <canvas id="hero-canvas" width="1400" height="540" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;"></canvas>
-  <div class="hero-overlay">
+  <div class="hero-overlay" id="wg-content" tabindex="-1">
     <div class="hero-title">SAMPLING LAB</div>
     <div class="hero-sub">Inside the memory engine of sampled music.</div>
     <div class="hero-bpm">
@@ -2600,5 +2604,6 @@ console.log('%cSAMPLING LAB — WAVGEN', 'color:#c48e48;font-size:1.2rem;font-fa
 console.log('%cInside the memory engine of sampled music.', 'color:#7a6e5e;font-family:monospace;');
 </script>
 
+</main>
 </body>
 </html>

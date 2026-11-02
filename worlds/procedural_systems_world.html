@@ -134,8 +134,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('hero').classList.add('visible')
 });
 </script>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-brand">⬡ Procedural Systems</div>
@@ -157,7 +161,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-overlay">
-    <h1>Procedural Systems</h1>
+    <h1 id="wg-content" tabindex="-1">Procedural Systems</h1>
     <p>Infinite worlds from finite rules</p>
   </div>
 </section>
@@ -1828,5 +1832,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   Infinite worlds from finite rules — vanilla JS + Canvas2D, zero dependencies
 </footer>
 
+</main>
 </body>
 </html>

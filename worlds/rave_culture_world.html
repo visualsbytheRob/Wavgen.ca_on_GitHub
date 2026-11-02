@@ -155,8 +155,12 @@ input[type=range].amber::-webkit-slider-thumb{background:var(--accent2);box-shad
 .drop-btn{padding:0.35rem 0.9rem;}
 .drop-btn.active{background:var(--accent3);border-color:var(--accent3);color:#000;box-shadow:0 0 15px rgba(255,107,0,0.4);}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav>
   <div class="nav-inner">
     <div class="nav-logo">⬡ WAVGEN</div>
@@ -433,7 +437,7 @@ class BPMEngine {
 <!-- ═══════════════════════════════ SECTION 2 — TIMELINE ═══════════════════ -->
 <section id="timeline">
   <div class="hidden stagger-1"><div class="section-label">1985 — 2010</div>
-  <h2>The Rave Timeline</h2>
+  <h2 id="wg-content" tabindex="-1">The Rave Timeline</h2>
   <p>From Acid House in Chicago to UK Jungle, Drum &amp; Bass, and the Hardcore Continuum. Drag to scroll. Hover nodes for detail.</p></div>
   <div class="timeline-outer hidden stagger-2" id="timelineOuter">
     <div class="timeline-track" id="timelineTrack">
@@ -1662,5 +1666,6 @@ class BPMEngine {
   updateNav();
 })();
 </script>
+</main>
 </body>
 </html>

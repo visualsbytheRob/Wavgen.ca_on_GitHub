@@ -337,8 +337,12 @@ footer span { color: var(--accent); }
 .skin-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; text-align: center; }
 .skin-label { font-size: 0.65rem; color: var(--dim); margin-top: 0.4rem; letter-spacing: 0.08em; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <!-- NAV -->
 <nav>
   <div class="nav-logo">WAVGEN LAB</div>
@@ -354,7 +358,7 @@ footer span { color: var(--accent); }
 </nav>
 <!-- SECTION 1: HERO — THE SPECTRUM ROOM -->
 <section id="hero" class="full-bleed">
-  <div class="hero-canvas-wrap">
+  <div class="hero-canvas-wrap" id="wg-content" tabindex="-1">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-overlay">
       <div class="hero-title">COLOR SCIENCE LAB</div>
@@ -2062,5 +2066,6 @@ document.querySelectorAll('.hidden').forEach(el => revealObserver.observe(el));
 })();
 
 </script>
+</main>
 </body>
 </html>

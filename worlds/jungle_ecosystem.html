@@ -269,8 +269,12 @@ section.fw{max-width:none;padding:5rem 0;}
 
 footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.58rem;color:var(--dim);letter-spacing:0.1em;}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-logo">WAVGEN · 08</span>
@@ -314,7 +318,7 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-si
     <div class="amen-track" id="amenTrack"></div>
   </div>
   <div class="bpm-chart-wrap hidden">
-    <h3>BPM Evolution — Amen Break by Era</h3>
+    <h3 id="wg-content" tabindex="-1">BPM Evolution — Amen Break by Era</h3>
     <canvas id="bpmChart"></canvas>
   </div>
 </section>
@@ -1761,5 +1765,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (heroNavLink) heroNavLink.classList.add('active');
 });
 </script>
+</main>
 </body>
 </html>

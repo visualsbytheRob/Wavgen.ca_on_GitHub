@@ -231,8 +231,12 @@ tr:hover td { background: var(--accent-dim); color: var(--text); transition: bac
   section { padding: 3.5rem 1.25rem; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav id="mainNav">
@@ -256,7 +260,7 @@ tr:hover td { background: var(--accent-dim); color: var(--text); transition: bac
 <section id="hero">
   <div class="hero-inner">
     <p class="section-label reveal">WAVGEN Video Universe — App 07 of 12</p>
-    <h1 class="hero-title reveal stagger-1">Projection Mapping Studio</h1>
+    <h1 class="hero-title reveal stagger-1" id="wg-content" tabindex="-1">Projection Mapping Studio</h1>
     <p class="hero-sub reveal stagger-2">Light is the medium. Architecture is the canvas.</p>
     <div class="canvas-wrap reveal stagger-3" style="max-width:800px;">
       <canvas id="heroCanvas" width="800" height="420"></canvas>
@@ -2297,5 +2301,6 @@ GLOSSARY_DATA.forEach(item => {
 })();
 
 </script>
+</main>
 </body>
 </html>
