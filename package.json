@@ -10,7 +10,7 @@
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "test": "node --test src/_utils/*.test.js && node scripts/test-schema-build.cjs",
+    "test": "npm run test:schema && npm run test:theme",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
     "refresh:feeds": "node scripts/refresh-latest-feeds.js",
@@ -20,7 +20,8 @@
     "diary:pick": "node scripts/pick-diary-prompt.js",
     "diary:collect": "node scripts/collect-diary-replies.js",
     "watch-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
-    "test": "node scripts/test-theme.cjs && node scripts/check-contrast.cjs"
+    "test:schema": "node --test src/_utils/*.test.js && node scripts/test-schema-build.cjs",
+    "test:theme": "node scripts/test-theme.cjs && node scripts/check-contrast.cjs"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
