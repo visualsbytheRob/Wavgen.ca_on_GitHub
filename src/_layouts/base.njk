@@ -39,6 +39,9 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
   {% endif %}
 
+  {# Feed autodiscovery: lets browsers and feed readers find the diary's Atom feed (built by src/feed.njk) #}
+  <link rel="alternate" type="application/atom+xml" title="{{ site.feed.title }}" href="{{ site.feed.path }}" />
+
   {#
     Open Graph Image Logic:
     1. Use page-specific ogImage if set in frontmatter

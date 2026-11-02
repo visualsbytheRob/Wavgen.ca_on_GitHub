@@ -24,6 +24,9 @@ Layout for standalone immersive learning worlds integrated into Wavgen.ca.
   <link rel="canonical" href="{{ site.url | default('https://www.wavgen.ca') }}{{ page.url }}" />
   {% endif %}
 
+  {# Feed autodiscovery: lets browsers and feed readers find the diary's Atom feed (built by src/feed.njk) #}
+  <link rel="alternate" type="application/atom+xml" title="{{ site.feed.title }}" href="{{ site.feed.path }}" />
+
   {# Open Graph #}
   {%- set baseUrl = site.url | default('https://www.wavgen.ca') -%}
   {%- set pageUrl = page.url | default('/') -%}

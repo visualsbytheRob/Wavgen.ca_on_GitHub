@@ -76,8 +76,13 @@ npm run build
 This runs:
 
 ```bash
-"build": "npm run build-css && eleventy"
+"build": "npm run build-css && eleventy && npm run validate:feed"
 ```
+
+The last step checks the diary's Atom feed (`_site/feed.xml`, built from
+`src/feed.njk`): it must be well-formed XML and valid Atom 1.0, or the build
+fails with the exact problem listed. Run it on its own with
+`npm run validate:feed` after `eleventy`.
 
 ---
 
@@ -113,6 +118,7 @@ After the push:
    * `npm ci` installs exact dependencies
    * Tailwind compiles CSS (`build-css`)
    * Eleventy builds static site into `_site/`
+   * `validate:feed` checks `_site/feed.xml`; a broken feed stops the deploy
    * Files are uploaded as an artifact
    * GitHub Pages deploys `_site` live
 

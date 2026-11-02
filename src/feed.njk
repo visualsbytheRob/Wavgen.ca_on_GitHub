@@ -1,0 +1,48 @@
+---
+# Atom 1.0 feed of the diary (collections.diary, i.e. src/diary/entries/).
+# Path and title come from src/_data/site.json → site.feed, which the <head>
+# links, the footer link and scripts/validate-feed.js read as well.
+permalink: "{{ site.feed.path }}"
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+{#
+feed.njk
+Atom 1.0 feed of the diary entries in src/diary/entries/, generated at build
+time from their existing front matter (title, date) and Markdown bodies.
+- Escaping: Eleventy runs Nunjucks with autoescape on, so every {{ }} below
+  is emitted with & < > " ' escaped, which is exactly what XML needs. That is
+  also how each entry's rendered HTML lands as escaped text inside
+  <content type="html">. Never add `| safe` in this file.
+- Ids: tag: URIs (RFC 4151) made from each entry's file name. Feed readers
+  tell entries apart by id, so ids must never change once published: keep
+  idPrefix exactly as it is, and renaming an entry file re-sends that entry.
+  (The date is simply a day wavgen.ca was in use: the first diary entry.)
+- Links: entries have no pages of their own (permalink: false) and the Site
+  Log that lists them is gated, so each entry carries its full content and
+  no per-entry link. Relative URLs inside an entry resolve against xml:base,
+  the Site Log, exactly as they do on that page.
+- scripts/validate-feed.js checks the result as the last step of `npm run build`.
+#}
+{%- set idPrefix = "tag:wavgen.ca,2025-08-24:" -%}
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en" xml:base="{{ site.url }}/diary/">
+  <title>{{ site.feed.title }}</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link rel="self" type="application/atom+xml" href="{{ site.url }}{{ site.feed.path }}"/>
+  <link rel="alternate" type="text/html" href="{{ site.url }}/"/>
+  <id>{{ idPrefix }}diary</id>
+  <updated>{{ collections.diary | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <author>
+    <name>{{ site.author }}</name>
+  </author>
+  <icon>{{ site.url }}/icons/icon-192.png</icon>
+  {%- for entry in collections.diary | reverse %}
+  <entry>
+    <title>{{ (entry.data.title or "Untitled") | stripInvalidXmlChars }}</title>
+    <id>{{ idPrefix }}diary/{{ entry.inputPath | fileStem }}</id>
+    <published>{{ entry.date | dateToRfc3339 }}</published>
+    <updated>{{ entry.date | dateToRfc3339 }}</updated>
+    <content type="html">{{ entry.templateContent | stripInvalidXmlChars }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

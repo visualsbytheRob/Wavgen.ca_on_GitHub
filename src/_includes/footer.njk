@@ -14,6 +14,16 @@ This template renders the footer for the site.
                 <p class="text-gray-400 text-sm">
                     &copy; {{ build.currentYear }} Rob McDonald. {{ footerTagline or 'Exploring the intersection of creativity and technology.' }}
                 </p>
+                {# Visible link to the diary's Atom feed (src/feed.njk); base.njk advertises the same URL in <head>. The icon is decorative, so screen readers just hear "Diary feed". #}
+                <p class="mt-4 text-sm">
+                    <a href="{{ site.feed.path }}" type="application/atom+xml" class="inline-flex items-center gap-2 text-gray-300 hover:text-wavgen-yellow transition-colors">
+                        <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+                            <circle cx="3" cy="13" r="1.5" fill="currentColor" />
+                            <path d="M3 8a5 5 0 0 1 5 5M3 3a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        Diary feed
+                    </a>
+                </p>
             </div>
         </div>
     </div>
