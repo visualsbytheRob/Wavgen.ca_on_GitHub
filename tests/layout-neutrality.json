@@ -1,11 +1,11 @@
 {
-  "baseline": "8537eb1aca563ec3b828059e53e80e26f204435e",
   "routes": 103,
   "widths": [
     390,
     1280
   ],
-  "elements": 104104,
+  "elements": 104386,
   "differences": [],
-  "method": "JavaScript disabled; external assets blocked; CSS and SVG animations frozen; equal-date diary groups normalized. Every original element compared by geometry, computed style properties and pseudo styles. Added boxless landmarks and skip links excluded; no existing visual element omitted."
+  "baseline": "435d432fb58bb117697e25e7179af72ac91e6b44",
+  "method": "Integrated merge-train comparison; same deterministic method as the takeover, preserving all previous PR changes."
 }

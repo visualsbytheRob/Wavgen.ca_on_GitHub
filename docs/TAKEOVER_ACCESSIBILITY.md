@@ -22,3 +22,7 @@ Windows Node 24.18.0 / installed Chrome; CI is configured for Node 22. `npm ci`,
 Run `npm ci`, `npx playwright install chromium`, `npm run build`, `npm test`. Set `CHROME_PATH` to use installed Chrome. The suite uses an existing `_site-baseline` initial build when available; otherwise it creates an ignored worktree of exact main `8537eb1` under `.cache/a11y-baseline`, installs locked dependencies and builds it. `node scripts/layoutdiff.js BASELINE_BUILD CURRENT_BUILD` supports explicit build paths. The baseline worktree can be removed later with `git worktree remove .cache/a11y-baseline`.
 
 Evidence summary: `tests/layout-neutrality.json`. Builder verification only; Claude Desktop AAT tomorrow and Rob's acceptance/merge remain outstanding. No merge or deployment. This PR is independent of #11–16; overlapping shell edits may require conflict resolution when Rob chooses merge order.
+
+## Approved merge-train integration
+
+Compared against merged main `435d432` (#11, #12, #14, #15, #16): 103 routes, both widths, 104,386 original elements, zero differences. Full schema, theme, performance and accessibility suites passed. The catalogue and palette scripts are both copied; the diary password keeps its label and gray-400 placeholder. The baseline preparer now pins this integrated parent.
