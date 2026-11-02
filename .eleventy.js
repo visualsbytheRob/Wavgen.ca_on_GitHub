@@ -7,6 +7,8 @@
  */
 
 const fs = require('fs');
+const { toPublicApp } = require('./src/_utils/apps'); // public/private rule for the app catalogue
+const structuredData = require('./src/_utils/structured-data'); // schema.org JSON-LD: builders + build-time validation
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
@@ -139,20 +141,13 @@ module.exports = function(eleventyConfig) {
 
   // App catalogue (src/_data/apps.json): project each entry down to what the
   // PUBLIC showcase may show. A private app's launchUrl (e.g. a tailnet host)
-  // is dropped here so it never reaches public HTML; only the unlinked private
+  // is dropped so it never reaches public HTML; only the unlinked private
   // launchpad page reads launchUrl for every app. publicUrl is the one link a
   // public card may carry: the launch URL of a public app, else its demo URL.
+  // The rule lives in src/_utils/apps.js so the structured data below uses it too.
   eleventyConfig.addFilter("publicApps", function(items) {
     if (!Array.isArray(items)) return [];
-    return items.map(app => ({
-      id: app.id,
-      name: app.name,
-      description: app.description || "",
-      category: app.category || "",
-      tech: Array.isArray(app.tech) ? app.tech : [],
-      access: app.access || "",
-      publicUrl: (app.visibility === "public" && app.launchUrl) ? app.launchUrl : (app.demoUrl || "")
-    }));
+    return items.map(toPublicApp);
   });
 
   // Distinct, non-empty values of `key` across an array (keeps first-seen order)
@@ -201,6 +196,60 @@ module.exports = function(eleventyConfig) {
     const d = date ? new Date(date) : new Date();
     const day = Math.floor(d.getTime() / 86400000);
     return items[((day % items.length) + items.length) % items.length];
+  });
+
+  // ===========================================
+  // STRUCTURED DATA (schema.org JSON-LD)
+  // ===========================================
+  // Built at build time from the data files by src/_utils/structured-data.js;
+  // never type JSON-LD into a template.
+  //   home page: WebSite + Person   <- src/_data/site.json        (src/_layouts/base.njk)
+  //   /data/:    ItemList of public SoftwareApplications
+  //                                 <- src/_data/apps.json        (components/app-showcase.njk)
+
+  // Read a JSON file fresh on every call (no require cache), so watch-mode
+  // rebuilds see edits. Returns `fallback` when the file doesn't exist.
+  function readJsonFile(relativePath, fallback) {
+    const fullPath = path.join(__dirname, relativePath);
+    if (!fs.existsSync(fullPath)) return fallback;
+    return JSON.parse(fs.readFileSync(fullPath, "utf8"));
+  }
+
+  // The web app manifest already names the site ("Wavgen.ca" / "Wavgen"); those
+  // names become WebSite.alternateName instead of being typed out again.
+  eleventyConfig.addGlobalData("webManifest", () => readJsonFile("src/manifest.webmanifest", {}));
+
+  eleventyConfig.addFilter("siteJsonLd", function(site, manifest) {
+    return structuredData.siteGraph(site, manifest);
+  });
+  eleventyConfig.addFilter("appCatalogueJsonLd", function(items, site, pageUrl, catalogue) {
+    return structuredData.appCatalogueList(items, site, pageUrl, catalogue);
+  });
+  // Wraps data in <script type="application/ld+json">, escaped so no value can
+  // close the tag early. Returns "" for null. Use it with `| safe`.
+  eleventyConfig.addFilter("jsonLdScript", function(data) {
+    return structuredData.jsonLdScriptTag(data);
+  });
+
+  // Validate the JSON-LD Eleventy actually wrote. Every block on every page
+  // must match a known shape, no non-public app or private launch URL may
+  // appear, and the home page and the catalogue must carry their blocks. Any
+  // problem fails the build (exit code 1), so the deploy never publishes it.
+  eleventyConfig.on("eleventy.after", function({ results, outputMode, incremental }) {
+    if (outputMode !== "fs") return;
+    const report = structuredData.validateBuild(results, {
+      site: readJsonFile("src/_data/site.json", {}),
+      apps: readJsonFile("src/_data/apps.json", { items: [] }),
+      // Incremental rebuilds re-render only the changed pages, so the
+      // site-wide "is every block present" checks would misfire there.
+      coverage: !incremental && Array.isArray(results) && results.length > 0
+    });
+    if (report.errors.length > 0) {
+      const count = report.errors.length;
+      throw new Error(`JSON-LD validation failed (${count} problem${count === 1 ? "" : "s"}):\n  - ` +
+        report.errors.join("\n  - "));
+    }
+    console.log(`[11ty/json-ld] ${report.summary}`);
   });
 
   // Add a split filter for string manipulation (used in OG image path detection)
