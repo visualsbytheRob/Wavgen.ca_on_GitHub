@@ -41,7 +41,7 @@ time from their existing front matter (title, date) and Markdown bodies.
     <title>{{ (entry.data.title or "Untitled") | stripInvalidXmlChars }}</title>
     <id>{{ idPrefix }}diary/{{ entry.inputPath | fileStem }}</id>
     <published>{{ entry.date | dateToRfc3339 }}</published>
-    <updated>{{ entry.date | dateToRfc3339 }}</updated>
+    <updated>{{ entry | entryUpdated | dateToRfc3339 }}</updated>
     <content type="html">{{ entry.templateContent | stripInvalidXmlChars }}</content>
   </entry>
   {%- endfor %}

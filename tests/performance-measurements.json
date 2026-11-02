@@ -1,0 +1,291 @@
+{
+  "before": {
+    "method": "Uncompressed and gzip level 9 filesystem bytes; page HTML plus distinct directly linked local CSS/JS. Not a network timing or Core Web Vitals claim. External fonts, images and runtime requests excluded from page subtotal; included local files remain in deployment total.",
+    "files": 295,
+    "bytes": 16421494,
+    "gzip": 5375657,
+    "pages": [
+      {
+        "file": "index.html",
+        "assetRequests": 10,
+        "duplicateIncludes": 0,
+        "bytes": 484362,
+        "gzip": 130616
+      },
+      {
+        "file": "data/index.html",
+        "assetRequests": 9,
+        "duplicateIncludes": 0,
+        "bytes": 435051,
+        "gzip": 117604
+      },
+      {
+        "file": "data/webdev/index.html",
+        "assetRequests": 9,
+        "duplicateIncludes": 1,
+        "bytes": 433217,
+        "gzip": 117232
+      },
+      {
+        "file": "data/big-data/index.html",
+        "assetRequests": 5,
+        "duplicateIncludes": 0,
+        "bytes": 333115,
+        "gzip": 91786
+      }
+    ]
+  },
+  "after": {
+    "method": "Uncompressed and gzip level 9 filesystem bytes; page HTML plus distinct directly linked local CSS/JS. Not a network timing or Core Web Vitals claim. External fonts, images and runtime requests excluded from page subtotal; included local files remain in deployment total.",
+    "files": 252,
+    "bytes": 16106279,
+    "gzip": 5272982,
+    "pages": [
+      {
+        "file": "index.html",
+        "assetRequests": 8,
+        "duplicateIncludes": 0,
+        "bytes": 448623,
+        "gzip": 117416
+      },
+      {
+        "file": "data/index.html",
+        "assetRequests": 7,
+        "duplicateIncludes": 0,
+        "bytes": 399312,
+        "gzip": 104403
+      },
+      {
+        "file": "data/webdev/index.html",
+        "assetRequests": 9,
+        "duplicateIncludes": 0,
+        "bytes": 433179,
+        "gzip": 117230
+      },
+      {
+        "file": "data/big-data/index.html",
+        "assetRequests": 5,
+        "duplicateIncludes": 0,
+        "bytes": 333115,
+        "gzip": 91786
+      }
+    ]
+  },
+  "removed": [
+    {
+      "file": "css/input.css",
+      "bytes": 3241,
+      "gzip": 1207
+    },
+    {
+      "file": "css/systems/animations.css",
+      "bytes": 6069,
+      "gzip": 1615
+    },
+    {
+      "file": "css/systems/tokens.css",
+      "bytes": 8378,
+      "gzip": 2294
+    },
+    {
+      "file": "images/README.md",
+      "bytes": 2317,
+      "gzip": 932
+    },
+    {
+      "file": "images/art/drawing/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/art/modelling/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/art/painting/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/art/printing/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/data/cloud/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/data/coding/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/data/genai/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/data/webdev/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/home/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/music/ambient/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/music/breaks/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/music/electro/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/music/melodic/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/video/editing/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/video/mapping/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/video/mixing/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "images/video/realtime/.gitkeep",
+      "bytes": 0,
+      "gzip": 20
+    },
+    {
+      "file": "js/data-app-embed.js",
+      "bytes": 18607,
+      "gzip": 4623
+    },
+    {
+      "file": "js/gsap/CSSRulePlugin.min.js",
+      "bytes": 1810,
+      "gzip": 993
+    },
+    {
+      "file": "js/gsap/CustomEase.min.js",
+      "bytes": 7100,
+      "gzip": 3703
+    },
+    {
+      "file": "js/gsap/Draggable.min.js",
+      "bytes": 35487,
+      "gzip": 13460
+    },
+    {
+      "file": "js/gsap/EasePack.min.js",
+      "bytes": 2503,
+      "gzip": 1364
+    },
+    {
+      "file": "js/gsap/EaselPlugin.min.js",
+      "bytes": 4905,
+      "gzip": 2197
+    },
+    {
+      "file": "js/gsap/MotionPathPlugin.min.js",
+      "bytes": 21685,
+      "gzip": 9686
+    },
+    {
+      "file": "js/gsap/Observer.min.js",
+      "bytes": 9839,
+      "gzip": 4277
+    },
+    {
+      "file": "js/gsap/PixiPlugin.min.js",
+      "bytes": 6501,
+      "gzip": 2839
+    },
+    {
+      "file": "js/gsap/ScrollToPlugin.min.js",
+      "bytes": 4049,
+      "gzip": 1959
+    },
+    {
+      "file": "js/music-player.js",
+      "bytes": 43688,
+      "gzip": 10876
+    },
+    {
+      "file": "js/systems/README.md",
+      "bytes": 6887,
+      "gzip": 2768
+    },
+    {
+      "file": "js/systems/animation/README.md",
+      "bytes": 9061,
+      "gzip": 3171
+    },
+    {
+      "file": "js/systems/animation/orchestrator.js",
+      "bytes": 6107,
+      "gzip": 1953
+    },
+    {
+      "file": "js/systems/animation/presets.js",
+      "bytes": 6809,
+      "gzip": 1822
+    },
+    {
+      "file": "js/video-player.js",
+      "bytes": 31731,
+      "gzip": 8333
+    },
+    {
+      "file": "js/worlds/automation.js",
+      "bytes": 6291,
+      "gzip": 2182
+    },
+    {
+      "file": "js/worlds/cloud-computing.js",
+      "bytes": 8118,
+      "gzip": 2986
+    },
+    {
+      "file": "js/worlds/generative-ai.js",
+      "bytes": 17790,
+      "gzip": 5573
+    },
+    {
+      "file": "js/worlds/ml.js",
+      "bytes": 13340,
+      "gzip": 3756
+    },
+    {
+      "file": "js/worlds/quantum.js",
+      "bytes": 8669,
+      "gzip": 2459
+    },
+    {
+      "file": "js/worlds/soa.js",
+      "bytes": 4645,
+      "gzip": 1397
+    }
+  ]
+}

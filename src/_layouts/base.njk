@@ -19,20 +19,8 @@ This is the main layout template for all pages in the Wavgen.ca site.
   {% if noindex %}
   <meta name="robots" content="noindex,nofollow" />
   {% endif %}
-  {# Early theme init to avoid flash of incorrect theme. Sets 'dark' class on <html> if needed. #}
-  <script>
-    (function() {
-      try {
-        var ls = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (ls === 'dark' || (!ls && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
+  {# Theme: CSS-only. Tailwind `darkMode: 'media'` compiles every `dark:` utility to
+     @media (prefers-color-scheme: dark), so no script, stored preference or <html> class is involved. #}
 
   {# Canonical URL (assumes url filter or global site.url exists; fallback to path) #}
   {% if page and page.url %}
@@ -89,6 +77,13 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <meta name="twitter:image" content="{{ ogImageFull }}" />
 
   <meta name="theme-color" content="#0f172a" />
+  {#- Structured data (schema.org JSON-LD): WebSite + Person on the home page.
+     Built from src/_data/site.json by src/_utils/structured-data.js; never type
+     JSON-LD here. The build validates every emitted block (see .eleventy.js).
+     The "-" whitespace control keeps every other page's HTML byte-identical. -#}
+  {%- if page.url == '/' %}
+  {{ site | siteJsonLd(webManifest) | jsonLdScript | safe }}
+  {%- endif %}
 
   {# Performance: preconnect to fonts and load CSS #}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -114,8 +109,10 @@ This is the main layout template for all pages in the Wavgen.ca site.
   
   <!-- GSAP Plugins for enhanced functionality -->
   <script src="/js/gsap/ScrollTrigger.min.js"></script> <!-- Scroll-based animations -->
+  {% if page.url == "/data/webdev/" %}
   <script src="/js/gsap/Flip.min.js"></script>             <!-- Layout transitions -->
   <script src="/js/gsap/TextPlugin.min.js"></script>        <!-- Text animations -->
+  {% endif %}
   
   <!-- Gallery System: Hero Slideshow + Infinite Marquee + Modal Gallery -->
   <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->
@@ -126,6 +123,9 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Interactive Components: load globally; each module self-initializes only if its container exists -->
   <script src="/js/code-playground.js"></script>
   <script src="/js/main.js"></script>
+  {% if page.url == '/data/' %}
+  <script defer src="/js/data-app-embed.js"></script>
+  {% endif %}
   {% if page.url == '/' %}
   <script defer src="/js/home.js"></script>
   {% endif %}

@@ -1,0 +1,22 @@
+---
+# sitemap.njk -> /sitemap.xml, regenerated on every build from Eleventy's page data.
+# - Which pages are listed is decided by the `sitemapUrls` filter in .eleventy.js:
+#   public HTML pages only. noindex pages, `sitemap: false` pages and anything under
+#   /private/ are never listed, and a build-time check there fails the build if one
+#   ever is. To keep a page out, give it `noindex: true` or `sitemap: false`.
+# - <loc> only. No <lastmod>: Eleventy dates default to file creation time, which is
+#   the checkout time on every CI build, so every page would claim to change daily.
+#   <changefreq> and <priority> are left out too: Google ignores both.
+# - These comments live in front matter so none of this text reaches the public file.
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for loc in collections.all | sitemapUrls(site.url) %}
+  <url>
+    <loc>{{ loc }}</loc>
+  </url>
+{%- endfor %}
+</urlset>

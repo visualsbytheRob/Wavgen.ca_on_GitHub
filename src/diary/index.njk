@@ -498,7 +498,7 @@ but the content is a concise documentary/logbook about the site.
       <div class="bg-gradient-to-br from-wavgen-purple/30 to-black/40 border border-wavgen-yellow/30 rounded-xl p-5">
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs px-2 py-0.5 rounded bg-wavgen-yellow/20 text-wavgen-yellow uppercase tracking-wide font-semibold">Today's prompt</span>
-          <span class="text-xs text-gray-500">{{ dailyPrompt.date }}</span>
+          <span class="text-xs text-gray-400">{{ dailyPrompt.date }}</span>
         </div>
         <p class="text-xl text-white leading-relaxed">{{ dailyPrompt.question }}</p>
         <p class="text-sm text-gray-400 mt-3">Reply to the morning email and it'll land here as an entry within ~2 hours.</p>
@@ -510,12 +510,12 @@ but the content is a concise documentary/logbook about the site.
       <div class="bg-black/30 border border-white/10 rounded-xl p-5">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-lg font-semibold text-white">Manual triggers</h3>
-          <button id="trigger-lock" class="text-xs text-gray-500 hover:text-wavgen-yellow underline hidden">Forget PAT & lock</button>
+          <button id="trigger-lock" class="text-xs text-gray-400 hover:text-wavgen-yellow underline hidden">Forget PAT & lock</button>
         </div>
         <div id="trigger-locked">
           <p class="text-sm text-gray-400 mb-3">🔒 Locked. Enter the password to reveal the launch buttons.</p>
           <div class="flex gap-2">
-            <input id="trigger-pw-input" type="password" placeholder="Password" autocomplete="off" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-wavgen-yellow" />
+            <input id="trigger-pw-input" type="password" placeholder="Password" autocomplete="off" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-wavgen-yellow" />
             <button id="trigger-pw-btn" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">Unlock</button>
           </div>
           <p id="trigger-pw-msg" class="text-sm mt-2 hidden"></p>
@@ -591,7 +591,7 @@ Notes:
         <div class="flex items-end gap-2">
           <button id="copy-entry-md" class="flex-1 control-btn bg-white/10 hover:bg-white/20 text-white px-4 py-3 rounded-md">Copy Markdown</button>
           <button id="save-entry" class="flex-1 control-btn bg-green-500 text-black px-4 py-3 rounded-md font-semibold hover:bg-green-400">Save to site (local)</button>
-          <button id="email-entry-md" class="flex-1 control-btn bg-blue-500 text-white px-4 py-3 rounded-md font-semibold hover:bg-blue-400">Email .md</button>
+          <button id="email-entry-md" class="flex-1 control-btn bg-blue-500 text-black px-4 py-3 rounded-md font-semibold hover:bg-blue-400">Email .md</button>
           <button id="download-entry-md" class="flex-1 control-btn bg-wavgen-yellow text-black px-4 py-3 rounded-md font-semibold hover:bg-yellow-400">Download .md</button>
         </div>
         <p id="save-status" class="mt-2 text-sm text-gray-300"></p>

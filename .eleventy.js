@@ -2,25 +2,32 @@
  * .eleventy.js
  * This is the main configuration file for Eleventy (11ty), the static site generator.
  * - Sets up asset passthroughs, watch targets, and custom filters for navigation.
+ * - Builds the sitemap's page list and checks it never lists private or noindex pages.
  * - Configures input/output directories and template engines.
  * All major sections and lines are commented below for teaching clarity.
  */
 
 const fs = require('fs');
+const { toPublicApp } = require('./src/_utils/apps'); // public/private rule for the app catalogue
+const structuredData = require('./src/_utils/structured-data'); // schema.org JSON-LD: builders + build-time validation
 
 module.exports = function(eleventyConfig) {
+  // Publish only runtime assets. Developer READMEs are still rendered by Eleventy;
+  // changing those public routes is a separate editorial decision.
   eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
-  // Copy static assets from source to output so they're available in the built site
-  eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
-  eleventyConfig.addPassthroughCopy("src/images"); // Copy all images
-  // Map src/js -> /js and src/css -> /css so template paths like /js/foo.js and /css/style.css resolve
-  eleventyConfig.addPassthroughCopy({ "src/js": "js" }); // Copy all JavaScript files to /js
-  eleventyConfig.addPassthroughCopy({ "src/css": "css" }); // Copy all CSS files to /css
-  
-  // Copy GSAP files from root js directory to js/gsap/ to avoid main.js conflict
-  eleventyConfig.addPassthroughCopy({ "js/gsap": "js/gsap" }); // Copy only GSAP directory
-  eleventyConfig.addPassthroughCopy({ "worlds": "worlds" }); // Serve world apps at /worlds/*.html
-  
+  eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/images/**/*.{png,jpg,jpeg,gif,webp,svg,avif,ico,mp4,webm}");
+  eleventyConfig.addPassthroughCopy("src/css/style.css");
+  eleventyConfig.addPassthroughCopy("src/css/systems/worlds.css");
+  for (const name of ["main", "home", "gallery", "placeholder-visuals", "code-playground", "data-app-embed"]) {
+    eleventyConfig.addPassthroughCopy(`src/js/${name}.js`);
+  }
+  eleventyConfig.addPassthroughCopy("src/js/worlds/big-data.js");
+  for (const name of ["gsap", "ScrollTrigger", "Flip", "TextPlugin"]) {
+    eleventyConfig.addPassthroughCopy({ [`js/gsap/${name}.min.js`]: `js/gsap/${name}.min.js` });
+  }
+  eleventyConfig.addPassthroughCopy({ "worlds": "worlds" });
+
   // Tell Eleventy to watch these files for changes and trigger rebuilds
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
   eleventyConfig.addWatchTarget("src/input.css"); // Watch the main input.css
@@ -94,12 +101,12 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter("dateToRfc3339", (date) =>
     new Date(date).toISOString().replace(/\.000Z$/, "Z"));
 
-  // Feed-level <updated>: the newest item's date, so it only moves when an
-  // entry does, not on every daily rebuild. Falls back to the build time when
-  // the collection is empty, because <updated> is required even then.
+  // Modification dates come from full Git history, with local edit support.
+  const updated = require('./src/_utils/feed-dates').createUpdatedResolver(__dirname);
+  eleventyConfig.addFilter("entryUpdated", updated);
   eleventyConfig.addFilter("getNewestCollectionItemDate", (items) => {
-    const times = (items || []).map(item => item.date.getTime());
-    return times.length ? new Date(Math.max(...times)) : new Date();
+    const times = (items || []).map(item => updated(item).getTime());
+    return times.length ? new Date(Math.max(...times)) : new Date(0);
   });
 
   // XML 1.0 cannot carry most control characters at all (escaping doesn't
@@ -171,6 +178,120 @@ module.exports = function(eleventyConfig) {
     return allImages.sort(() => Math.random() - 0.5);
   });
 
+  // App catalogue (src/_data/apps.json): project each entry down to what the
+  // PUBLIC showcase may show. A private app's launchUrl (e.g. a tailnet host)
+  // is dropped so it never reaches public HTML; only the unlinked private
+  // launchpad page reads launchUrl for every app. publicUrl is the one link a
+  // public card may carry: the launch URL of a public app, else its demo URL.
+  // The rule lives in src/_utils/apps.js so the structured data below uses it too.
+  eleventyConfig.addFilter("publicApps", function(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map(toPublicApp);
+  });
+
+  // Distinct, non-empty values of `key` across an array (keeps first-seen order)
+  eleventyConfig.addFilter("uniqueBy", function(items, key) {
+    if (!Array.isArray(items)) return [];
+    return [...new Set(items.map(i => i && i[key]).filter(Boolean))];
+  });
+
+  // Serendipity counts, computed from the app catalogue so they never go stale.
+  // Lines in src/_data/serendipity.json use {N:key} (count as a word) and
+  // {names:key} (matching app names). A line whose count is below 2 is dropped,
+  // since its wording assumes a plural.
+  const estateGroups = {
+    apps:    () => true,
+    desktop: app => (app.tech || []).includes("Desktop"),
+    r2:      app => (app.tech || []).includes("Cloudflare R2"),
+    tailnet: app => (app.access || "").startsWith("Tailnet only")
+  };
+  const numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+    "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+  const listNames = names => names.length < 2 ? names.join("")
+    : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  eleventyConfig.addFilter("estateFacts", function(lines, items) {
+    if (!Array.isArray(lines)) return [];
+    const apps = Array.isArray(items) ? items : [];
+    return lines.map(line => {
+      let ok = true;
+      const out = String(line).replace(/\{(N|names):(\w+)\}/g, (token, kind, key, offset) => {
+        const test = estateGroups[key];
+        if (!test) { ok = false; return token; }
+        const matched = apps.filter(test);
+        if (matched.length < 2) ok = false;
+        if (kind === "names") return listNames(matched.map(a => a.name));
+        const word = numberWords[matched.length] || String(matched.length);
+        return offset === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+      });
+      return ok ? out : "";
+    }).filter(Boolean);
+  });
+
+  // Pick one item from a list by calendar day (UTC), so it rotates daily.
+  // Deterministic: the same day always yields the same item. Defaults to the
+  // build date; the daily scheduled deploy is what makes the live page rotate.
+  eleventyConfig.addFilter("dailyPick", function(items, date) {
+    if (!Array.isArray(items) || items.length === 0) return "";
+    const d = date ? new Date(date) : new Date();
+    const day = Math.floor(d.getTime() / 86400000);
+    return items[((day % items.length) + items.length) % items.length];
+  });
+
+  // ===========================================
+  // STRUCTURED DATA (schema.org JSON-LD)
+  // ===========================================
+  // Built at build time from the data files by src/_utils/structured-data.js;
+  // never type JSON-LD into a template.
+  //   home page: WebSite + Person   <- src/_data/site.json        (src/_layouts/base.njk)
+  //   /data/:    ItemList of public SoftwareApplications
+  //                                 <- src/_data/apps.json        (components/app-showcase.njk)
+
+  // Read a JSON file fresh on every call (no require cache), so watch-mode
+  // rebuilds see edits. Returns `fallback` when the file doesn't exist.
+  function readJsonFile(relativePath, fallback) {
+    const fullPath = path.join(__dirname, relativePath);
+    if (!fs.existsSync(fullPath)) return fallback;
+    return JSON.parse(fs.readFileSync(fullPath, "utf8"));
+  }
+
+  // The web app manifest already names the site ("Wavgen.ca" / "Wavgen"); those
+  // names become WebSite.alternateName instead of being typed out again.
+  eleventyConfig.addGlobalData("webManifest", () => readJsonFile("src/manifest.webmanifest", {}));
+
+  eleventyConfig.addFilter("siteJsonLd", function(site, manifest) {
+    return structuredData.siteGraph(site, manifest);
+  });
+  eleventyConfig.addFilter("appCatalogueJsonLd", function(items, site, pageUrl, catalogue) {
+    return structuredData.appCatalogueList(items, site, pageUrl, catalogue);
+  });
+  // Wraps data in <script type="application/ld+json">, escaped so no value can
+  // close the tag early. Returns "" for null. Use it with `| safe`.
+  eleventyConfig.addFilter("jsonLdScript", function(data) {
+    return structuredData.jsonLdScriptTag(data);
+  });
+
+  // Validate the JSON-LD Eleventy actually wrote. Every live block on every
+  // page must match a known shape, a block inside an HTML comment fails, no
+  // non-public app or private launch URL may appear, and the home page and the
+  // catalogue must carry their live blocks. Any problem fails the build (exit
+  // code 1), so the deploy never publishes it.
+  eleventyConfig.on("eleventy.after", function({ results, outputMode, incremental }) {
+    if (outputMode !== "fs") return;
+    const report = structuredData.validateBuild(results, {
+      site: readJsonFile("src/_data/site.json", {}),
+      apps: readJsonFile("src/_data/apps.json", { items: [] }),
+      // Incremental rebuilds re-render only the changed pages, so the
+      // site-wide "is every block present" checks would misfire there.
+      coverage: !incremental && Array.isArray(results) && results.length > 0
+    });
+    if (report.errors.length > 0) {
+      const count = report.errors.length;
+      throw new Error(`JSON-LD validation failed (${count} problem${count === 1 ? "" : "s"}):\n  - ` +
+        report.errors.join("\n  - "));
+    }
+    console.log(`[11ty/json-ld] ${report.summary}`);
+  });
+
   // Add a split filter for string manipulation (used in OG image path detection)
   eleventyConfig.addFilter("split", function(str, separator) {
     if (!str) return [];
@@ -187,6 +308,66 @@ module.exports = function(eleventyConfig) {
     if (sectionUrl === "/" && pageUrl === "/") return true;
     if (sectionUrl !== "/" && pageUrl.startsWith(sectionUrl)) return true;
     return false;
+  });
+
+  // ===========================================
+  // SITEMAP (src/sitemap.njk -> /sitemap.xml)
+  // ===========================================
+  // The sitemap lists public pages only. A page is listed when every test in
+  // isSitemapPage passes. To keep a page out, give it `noindex: true` (also adds
+  // the robots meta) or `sitemap: false` (sitemap only) in its front matter.
+  // Pages with eleventyExcludeFromCollections are never in collections.all, so
+  // they are never listed either (e.g. /diary/, /404.html).
+  // Private = first path segment is "private": /private/..., /private.html, /private.
+  const isPrivatePath = url => /^\/private(?:[\/.]|$)/i.test(url);
+  function isSitemapPage(item) {
+    const url = item.url;
+    const data = item.data || {};
+    if (typeof url !== "string") return false;                      // permalink: false (diary entries, briefings)
+    if (!url.endsWith("/") && !url.endsWith(".html")) return false; // not an HTML page (xml, txt, json...)
+    if (isPrivatePath(url)) return false;                           // never advertise anything under /private/
+    if (data.noindex) return false;                                 // same test base.njk uses for its robots meta
+    if (data.sitemap === false) return false;                       // explicit opt-out
+    if (!data.layout) return false;                                 // bare fragment, e.g. src/images/README.md -> /images/README/
+    return true;
+  }
+
+  // Absolute URLs of the pages to list, sorted so the file only changes when pages do.
+  // Usage: {% for loc in collections.all | sitemapUrls(site.url) %}
+  eleventyConfig.addFilter("sitemapUrls", function(items, siteUrl) {
+    if (!/^https?:\/\//.test(siteUrl || "")) {
+      throw new Error(`sitemapUrls needs an absolute site URL (site.url in src/_data/site.json), got: ${siteUrl}`);
+    }
+    return (Array.isArray(items) ? items : [])
+      .filter(isSitemapPage)
+      .map(item => new URL(item.url, siteUrl).href)
+      .sort();
+  });
+
+  // Build-time check of the sitemap's hard rule: it must never list a /private/
+  // URL or a page whose rendered HTML carries a robots noindex meta. It reads the
+  // rendered output rather than front matter, so it also catches a noindex meta
+  // typed straight into a template. Throwing here makes `npm run build` exit 1,
+  // so a leak stops the deploy and the last good deploy stays live.
+  const NOINDEX_META = /<meta\b(?=[^>]*\bname\s*=\s*["']?(?:robots|googlebot)["'\s\/>])(?=[^>]*\bcontent\s*=\s*["']?[^"'>]*\b(?:noindex|none)\b)[^>]*>/i;
+  eleventyConfig.on("eleventy.after", function({ results }) {
+    const sitemap = (results || []).find(r => r.url === "/sitemap.xml");
+    if (!sitemap) return; // e.g. an incremental rebuild that didn't re-render it
+    const unescapeXml = s => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+    const listed = new Set(
+      [...String(sitemap.content).matchAll(/<loc>\s*([^<]*?)\s*<\/loc>/g)].map(m => new URL(unescapeXml(m[1])).pathname)
+    );
+    const problems = [...listed].filter(isPrivatePath).map(p => `${p} (under /private/)`);
+    for (const r of results) {
+      if (typeof r.url !== "string" || isPrivatePath(r.url)) continue;
+      if (listed.has(new URL(r.url, "https://example.invalid").pathname) && NOINDEX_META.test(String(r.content))) {
+        problems.push(`${r.url} (noindex, from ${r.inputPath})`);
+      }
+    }
+    if (problems.length > 0) {
+      throw new Error(`sitemap.xml must list public pages only, but it lists: ${problems.join(", ")}. ` +
+        "Give the page `noindex: true` or `sitemap: false` in its front matter, or move it out of /private/.");
+    }
   });
 
   // Return the Eleventy configuration object
