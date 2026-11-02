@@ -1,0 +1,12 @@
+{
+  "_readme": "Public-safe one-line delights about the estate, shown one per day on /private/apps/ (dailyPick filter; the daily 13:00 UTC deploy rotates it). Counts are computed from src/_data/apps.json at build time by the estateFacts filter in .eleventy.js, never hand-typed: {N:key} renders the count as a word (capitalised at the start of a line) and {names:key} lists the matching app names. Keys: apps (all entries), desktop (tech includes 'Desktop'), r2 (tech includes 'Cloudflare R2'), tailnet (access starts with 'Tailnet only'). A line whose count drops below 2 is skipped, because the wording assumes plurals. No real personal data, balances, records or credentials.",
+  "lines": [
+    "{N:apps} apps, three clouds, one desktop in Toronto.",
+    "Every app in this catalogue was built this autumn.",
+    "AWS, Azure and Google Cloud all hold a piece of the estate.",
+    "{N:desktop} apps share one desktop: {names:desktop}.",
+    "Cloudflare R2 keeps the media for {N:r2} apps.",
+    "{N:tailnet} apps answer only on the tailnet.",
+    "One board, seven rooms: Atlas is the front hall."
+  ]
+}

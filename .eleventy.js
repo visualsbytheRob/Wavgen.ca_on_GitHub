@@ -138,6 +138,72 @@ module.exports = function(eleventyConfig) {
     return allImages.sort(() => Math.random() - 0.5);
   });
 
+  // App catalogue (src/_data/apps.json): project each entry down to what the
+  // PUBLIC showcase may show. A private app's launchUrl (e.g. a tailnet host)
+  // is dropped here so it never reaches public HTML; only the unlinked private
+  // launchpad page reads launchUrl for every app. publicUrl is the one link a
+  // public card may carry: the launch URL of a public app, else its demo URL.
+  eleventyConfig.addFilter("publicApps", function(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map(app => ({
+      id: app.id,
+      name: app.name,
+      description: app.description || "",
+      category: app.category || "",
+      tech: Array.isArray(app.tech) ? app.tech : [],
+      access: app.access || "",
+      publicUrl: (app.visibility === "public" && app.launchUrl) ? app.launchUrl : (app.demoUrl || "")
+    }));
+  });
+
+  // Distinct, non-empty values of `key` across an array (keeps first-seen order)
+  eleventyConfig.addFilter("uniqueBy", function(items, key) {
+    if (!Array.isArray(items)) return [];
+    return [...new Set(items.map(i => i && i[key]).filter(Boolean))];
+  });
+
+  // Serendipity counts, computed from the app catalogue so they never go stale.
+  // Lines in src/_data/serendipity.json use {N:key} (count as a word) and
+  // {names:key} (matching app names). A line whose count is below 2 is dropped,
+  // since its wording assumes a plural.
+  const estateGroups = {
+    apps:    () => true,
+    desktop: app => (app.tech || []).includes("Desktop"),
+    r2:      app => (app.tech || []).includes("Cloudflare R2"),
+    tailnet: app => (app.access || "").startsWith("Tailnet only")
+  };
+  const numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+    "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+  const listNames = names => names.length < 2 ? names.join("")
+    : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  eleventyConfig.addFilter("estateFacts", function(lines, items) {
+    if (!Array.isArray(lines)) return [];
+    const apps = Array.isArray(items) ? items : [];
+    return lines.map(line => {
+      let ok = true;
+      const out = String(line).replace(/\{(N|names):(\w+)\}/g, (token, kind, key, offset) => {
+        const test = estateGroups[key];
+        if (!test) { ok = false; return token; }
+        const matched = apps.filter(test);
+        if (matched.length < 2) ok = false;
+        if (kind === "names") return listNames(matched.map(a => a.name));
+        const word = numberWords[matched.length] || String(matched.length);
+        return offset === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+      });
+      return ok ? out : "";
+    }).filter(Boolean);
+  });
+
+  // Pick one item from a list by calendar day (UTC), so it rotates daily.
+  // Deterministic: the same day always yields the same item. Defaults to the
+  // build date; the daily scheduled deploy is what makes the live page rotate.
+  eleventyConfig.addFilter("dailyPick", function(items, date) {
+    if (!Array.isArray(items) || items.length === 0) return "";
+    const d = date ? new Date(date) : new Date();
+    const day = Math.floor(d.getTime() / 86400000);
+    return items[((day % items.length) + items.length) % items.length];
+  });
+
   // Add a split filter for string manipulation (used in OG image path detection)
   eleventyConfig.addFilter("split", function(str, separator) {
     if (!str) return [];

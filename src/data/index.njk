@@ -61,6 +61,9 @@ This file defines the Data & Tech landing page for the site.
     </div>
 </section>
 
+<!-- App catalogue (data: src/_data/apps.json) -->
+{% include "components/app-showcase.njk" %}
+
 <!-- Data news (daily loop) -->
 {% set newsData = news.data %}
 {% set newsTitle = "Data & tech news today" %}
