@@ -335,7 +335,7 @@ createCarouselDemo();
                             <span class="text-white font-medium">👁️ Live Preview</span>
                         </div>
                         <div id="preview-area" class="p-6 overflow-auto min-h-96" aria-live="polite" aria-busy="false">
-                            <div class="text-gray-500 text-center mt-20">
+                            <div class="text-gray-400 text-center mt-20">
                                 Preview will appear here...
                             </div>
                         </div>
@@ -580,7 +580,7 @@ createCarouselDemo();
                     this.updateSnippetsPreview(code, previewArea);
                     break;
                 default:
-                    previewArea.innerHTML = '<div class="text-gray-500 text-center mt-20">Preview not available for this mode</div>';
+                    previewArea.innerHTML = '<div class="text-gray-400 text-center mt-20">Preview not available for this mode</div>';
             }
         } catch (err) {
             console.error('Preview error:', err);
