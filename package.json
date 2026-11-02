@@ -10,7 +10,7 @@
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "test": "node --test src/_utils/*.test.js",
+    "test": "node --test src/_utils/*.test.js && node scripts/test-schema-build.cjs",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
     "refresh:feeds": "node scripts/refresh-latest-feeds.js",
