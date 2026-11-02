@@ -10,7 +10,7 @@
     "build": "npm run build-css && eleventy && npm run validate:feed",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "test": "npm run test:schema && npm run test:theme && npm run test:performance",
+    "test": "npm run test:schema && npm run test:theme && npm run test:performance && npm run test:feed",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
     "refresh:feeds": "node scripts/refresh-latest-feeds.js",
@@ -24,7 +24,8 @@
     "test:theme": "node scripts/test-theme.cjs && node scripts/check-contrast.cjs",
     "test:performance": "node scripts/test-performance.cjs",
     "measure": "node scripts/measure-output.cjs",
-    "validate:feed": "node scripts/validate-feed.js"
+    "validate:feed": "node scripts/validate-feed.js",
+    "test:feed": "node scripts/test-feed.cjs"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",

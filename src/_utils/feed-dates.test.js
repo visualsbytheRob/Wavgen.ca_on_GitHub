@@ -23,5 +23,5 @@ test('edits advance updated while clean rebuilds ignore checkout mtime and prese
     assert.equal(createUpdatedResolver(cwd)(item).toISOString(), '2021-01-01T00:00:00.000Z');
     assert.equal(item.date.toISOString(), '2019-01-01T00:00:00.000Z');
     assert.throws(() => updated({ ...item, data: { updated: 'invalid' } }), /Invalid updated date/);
-  } finally { fs.rmSync(cwd, { recursive: true, force: true }); }
+  } finally { assert.ok(path.resolve(cwd).startsWith(path.resolve(os.tmpdir()) + path.sep + 'wavgen-feed-dates-')); fs.rmSync(cwd, { recursive: true, force: true }); }
 });
