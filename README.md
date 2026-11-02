@@ -89,6 +89,7 @@ The site features fully functional music and video players with real content str
 - **Express.js** — local preview and static serving
 - **GSAP (GreenSock)** — professional animation library for gallery system
 - **Custom JS** — for navigation, animation, and interactivity
+- **schema.org JSON-LD** — structured data generated from `src/_data/` at build time and validated by the build (`src/_utils/structured-data.js`, tests via `npm test`)
 - **GitHub Actions** — for CI/CD and deployment
 
 ---

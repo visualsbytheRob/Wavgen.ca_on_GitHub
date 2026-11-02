@@ -41,7 +41,7 @@ This file defines the Data & Tech landing page for the site.
     <div class="container mx-auto px-4">
         <div class="flex items-baseline justify-between mb-2">
             <h2 class="text-3xl font-bold text-white">Interactive projects</h2>
-            <span class="text-xs text-gray-500">Auto-refreshed monthly · newest first</span>
+            <span class="text-xs text-gray-400">Auto-refreshed monthly · newest first</span>
         </div>
         <p class="text-gray-400 mb-8">Live demos and playgrounds built on the site — synths, shaders, generative systems.</p>
         {% if featuredProjects.items and featuredProjects.items.length > 0 %}
@@ -60,6 +60,9 @@ This file defines the Data & Tech landing page for the site.
         {% endif %}
     </div>
 </section>
+
+<!-- App catalogue (data: src/_data/apps.json) -->
+{% include "components/app-showcase.njk" %}
 
 <!-- Data news (daily loop) -->
 {% set newsData = news.data %}

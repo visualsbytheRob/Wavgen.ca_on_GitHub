@@ -1,0 +1,17 @@
+---
+# robots.njk -> /robots.txt, generated on every build so the Sitemap line follows
+# site.url (src/_data/site.json).
+# Deliberately no Disallow lines:
+# - A noindex page (e.g. /diary/) must stay crawlable. If robots.txt blocks it,
+#   crawlers never see its noindex meta and can still index the bare URL from links.
+# - robots.txt is public, so naming an unlinked path here (e.g. /private/) would
+#   advertise it. Keep such pages out of search with `noindex: true` instead; the
+#   sitemap already skips them.
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+sitemap: false
+---
+User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}/sitemap.xml
