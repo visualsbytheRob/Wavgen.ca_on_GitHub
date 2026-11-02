@@ -2,6 +2,7 @@
  * .eleventy.js
  * This is the main configuration file for Eleventy (11ty), the static site generator.
  * - Sets up asset passthroughs, watch targets, and custom filters for navigation.
+ * - Builds the sitemap's page list and checks it never lists private or noindex pages.
  * - Configures input/output directories and template engines.
  * All major sections and lines are commented below for teaching clarity.
  */
@@ -269,6 +270,66 @@ module.exports = function(eleventyConfig) {
     if (sectionUrl === "/" && pageUrl === "/") return true;
     if (sectionUrl !== "/" && pageUrl.startsWith(sectionUrl)) return true;
     return false;
+  });
+
+  // ===========================================
+  // SITEMAP (src/sitemap.njk -> /sitemap.xml)
+  // ===========================================
+  // The sitemap lists public pages only. A page is listed when every test in
+  // isSitemapPage passes. To keep a page out, give it `noindex: true` (also adds
+  // the robots meta) or `sitemap: false` (sitemap only) in its front matter.
+  // Pages with eleventyExcludeFromCollections are never in collections.all, so
+  // they are never listed either (e.g. /diary/, /404.html).
+  // Private = first path segment is "private": /private/..., /private.html, /private.
+  const isPrivatePath = url => /^\/private(?:[\/.]|$)/i.test(url);
+  function isSitemapPage(item) {
+    const url = item.url;
+    const data = item.data || {};
+    if (typeof url !== "string") return false;                      // permalink: false (diary entries, briefings)
+    if (!url.endsWith("/") && !url.endsWith(".html")) return false; // not an HTML page (xml, txt, json...)
+    if (isPrivatePath(url)) return false;                           // never advertise anything under /private/
+    if (data.noindex) return false;                                 // same test base.njk uses for its robots meta
+    if (data.sitemap === false) return false;                       // explicit opt-out
+    if (!data.layout) return false;                                 // bare fragment, e.g. src/images/README.md -> /images/README/
+    return true;
+  }
+
+  // Absolute URLs of the pages to list, sorted so the file only changes when pages do.
+  // Usage: {% for loc in collections.all | sitemapUrls(site.url) %}
+  eleventyConfig.addFilter("sitemapUrls", function(items, siteUrl) {
+    if (!/^https?:\/\//.test(siteUrl || "")) {
+      throw new Error(`sitemapUrls needs an absolute site URL (site.url in src/_data/site.json), got: ${siteUrl}`);
+    }
+    return (Array.isArray(items) ? items : [])
+      .filter(isSitemapPage)
+      .map(item => new URL(item.url, siteUrl).href)
+      .sort();
+  });
+
+  // Build-time check of the sitemap's hard rule: it must never list a /private/
+  // URL or a page whose rendered HTML carries a robots noindex meta. It reads the
+  // rendered output rather than front matter, so it also catches a noindex meta
+  // typed straight into a template. Throwing here makes `npm run build` exit 1,
+  // so a leak stops the deploy and the last good deploy stays live.
+  const NOINDEX_META = /<meta\b(?=[^>]*\bname\s*=\s*["']?(?:robots|googlebot)["'\s\/>])(?=[^>]*\bcontent\s*=\s*["']?[^"'>]*\b(?:noindex|none)\b)[^>]*>/i;
+  eleventyConfig.on("eleventy.after", function({ results }) {
+    const sitemap = (results || []).find(r => r.url === "/sitemap.xml");
+    if (!sitemap) return; // e.g. an incremental rebuild that didn't re-render it
+    const unescapeXml = s => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+    const listed = new Set(
+      [...String(sitemap.content).matchAll(/<loc>\s*([^<]*?)\s*<\/loc>/g)].map(m => new URL(unescapeXml(m[1])).pathname)
+    );
+    const problems = [...listed].filter(isPrivatePath).map(p => `${p} (under /private/)`);
+    for (const r of results) {
+      if (typeof r.url !== "string" || isPrivatePath(r.url)) continue;
+      if (listed.has(new URL(r.url, "https://example.invalid").pathname) && NOINDEX_META.test(String(r.content))) {
+        problems.push(`${r.url} (noindex, from ${r.inputPath})`);
+      }
+    }
+    if (problems.length > 0) {
+      throw new Error(`sitemap.xml must list public pages only, but it lists: ${problems.join(", ")}. ` +
+        "Give the page `noindex: true` or `sitemap: false` in its front matter, or move it out of /private/.");
+    }
   });
 
   // Return the Eleventy configuration object
