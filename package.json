@@ -18,7 +18,9 @@
     "briefing:generate": "node scripts/generate-briefing.js",
     "diary:pick": "node scripts/pick-diary-prompt.js",
     "diary:collect": "node scripts/collect-diary-replies.js",
-    "watch-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch"
+    "watch-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css --watch",
+    "test": "node scripts/test-performance.cjs",
+    "measure": "node scripts/measure-output.cjs"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "playwright": "1.62.1"
   }
 }

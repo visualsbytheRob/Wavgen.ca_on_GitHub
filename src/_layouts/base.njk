@@ -111,8 +111,10 @@ This is the main layout template for all pages in the Wavgen.ca site.
   
   <!-- GSAP Plugins for enhanced functionality -->
   <script src="/js/gsap/ScrollTrigger.min.js"></script> <!-- Scroll-based animations -->
+  {% if page.url == "/data/webdev/" %}
   <script src="/js/gsap/Flip.min.js"></script>             <!-- Layout transitions -->
   <script src="/js/gsap/TextPlugin.min.js"></script>        <!-- Text animations -->
+  {% endif %}
   
   <!-- Gallery System: Hero Slideshow + Infinite Marquee + Modal Gallery -->
   <!-- Implements GSAP-powered image gallery with slideshow, marquee carousel, and fullscreen modal -->

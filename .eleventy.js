@@ -9,18 +9,22 @@
 const fs = require('fs');
 
 module.exports = function(eleventyConfig) {
+  // Publish only runtime assets. Developer READMEs are still rendered by Eleventy;
+  // changing those public routes is a separate editorial decision.
   eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
-  // Copy static assets from source to output so they're available in the built site
-  eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
-  eleventyConfig.addPassthroughCopy("src/images"); // Copy all images
-  // Map src/js -> /js and src/css -> /css so template paths like /js/foo.js and /css/style.css resolve
-  eleventyConfig.addPassthroughCopy({ "src/js": "js" }); // Copy all JavaScript files to /js
-  eleventyConfig.addPassthroughCopy({ "src/css": "css" }); // Copy all CSS files to /css
-  
-  // Copy GSAP files from root js directory to js/gsap/ to avoid main.js conflict
-  eleventyConfig.addPassthroughCopy({ "js/gsap": "js/gsap" }); // Copy only GSAP directory
-  eleventyConfig.addPassthroughCopy({ "worlds": "worlds" }); // Serve world apps at /worlds/*.html
-  
+  eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/images/**/*.{png,jpg,jpeg,gif,webp,svg,avif,ico,mp4,webm}");
+  eleventyConfig.addPassthroughCopy("src/css/style.css");
+  eleventyConfig.addPassthroughCopy("src/css/systems/worlds.css");
+  for (const name of ["main", "home", "gallery", "placeholder-visuals", "code-playground"]) {
+    eleventyConfig.addPassthroughCopy(`src/js/${name}.js`);
+  }
+  eleventyConfig.addPassthroughCopy("src/js/worlds/big-data.js");
+  for (const name of ["gsap", "ScrollTrigger", "Flip", "TextPlugin"]) {
+    eleventyConfig.addPassthroughCopy({ [`js/gsap/${name}.min.js`]: `js/gsap/${name}.min.js` });
+  }
+  eleventyConfig.addPassthroughCopy({ "worlds": "worlds" });
+
   // Tell Eleventy to watch these files for changes and trigger rebuilds
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
   eleventyConfig.addWatchTarget("src/input.css"); // Watch the main input.css
