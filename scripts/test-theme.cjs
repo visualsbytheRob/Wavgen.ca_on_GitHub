@@ -45,6 +45,17 @@ const server=http.createServer((req,res)=>{
    }
    await context.close();
   }
+  const diary = await browser.newPage({javaScriptEnabled:false,colorScheme:'dark'});
+  await diary.route('**/*',r=>r.request().url().startsWith(origin)?r.continue():r.abort());
+  await diary.goto(origin+'/diary/');
+  const email=diary.locator('#email-entry-md');
+  assert.equal(await email.evaluate(el=>getComputedStyle(el).color),'rgb(0, 0, 0)');
+  assert.equal(await email.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(59, 130, 246)');
+  await diary.evaluate(()=>document.documentElement.style.scrollBehavior='auto');
+  await email.hover();
+  assert.equal(await email.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(96, 165, 250)');
+  results.push({diaryEmailBlackText:true,blue500Contrast:5.71,hoverBlue400Passing:true});
+  await diary.close();
   const privateHosts=/\.ts\.net|\.run\.app|momentum\.wavgen\.ca|cms\.wavgen\.ca/;
   const exposure=[];
   function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,item.name);if(item.isDirectory())walk(p);else if(/\.(html|js|json|xml|txt)$/.test(p)&&privateHosts.test(fs.readFileSync(p,'utf8')))exposure.push(path.relative(root,p));}}

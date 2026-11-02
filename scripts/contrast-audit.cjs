@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const root = path.resolve('_site');
+const root = path.resolve(process.env.AUDIT_ROOT || '_site');
 const pages = fs.readdirSync(root, {recursive:true}).filter(p => p.endsWith('.html') && !p.startsWith('worlds'+path.sep));
 const server = http.createServer((req,res) => {
   let p=path.join(root,decodeURIComponent(new URL(req.url,'http://localhost').pathname));
@@ -29,13 +29,23 @@ const server = http.createServer((req,res) => {
     function inspect(el,pseudo){
      const st=getComputedStyle(el,pseudo), rect=el.getBoundingClientRect();
      if(!rect.width||!rect.height||st.visibility==='hidden'||st.display==='none')return;
-     let bg=[255,255,255], layers=[], uncertain=false;
+     let backgrounds=[[255,255,255]], layers=[], uncertain=false;
      for(let p=el;p;p=p.parentElement){const s=getComputedStyle(p);if(s.display==='none'||s.visibility==='hidden'||Number(s.opacity)===0)return;layers.unshift(s);}
-     for(const s of layers){if(s.backgroundImage!=='none')uncertain=true;bg=over(parse(s.backgroundColor),bg);}
-     // Background imagery/gradients need visual review; do not report a false solid-color ratio.
+     for(const s of layers){
+      const color=parse(s.backgroundColor);
+      if((color[3]??1)===1){backgrounds=[color.slice(0,3)];uncertain=false;}
+      else backgrounds=backgrounds.map(bg=>over(color,bg));
+      if(s.backgroundImage!=='none'){
+       if(s.backgroundClip==='text'){uncertain=true;continue;}
+       const stops=s.backgroundImage.match(/rgba?\([^)]+\)/g);
+       if(!s.backgroundImage.includes('url(')&&stops?.length){backgrounds=backgrounds.flatMap(bg=>stops.map(stop=>over(parse(stop),bg)));}
+       else uncertain=true;
+      }
+     }
+     // Image backgrounds need visual review. Gradient stops are conservatively checked at the worst endpoint.
      if(uncertain){complex++;return;}
-     let fg=over(parse(st.color),bg);if(Number(st.opacity)<1)fg=over([...fg,Number(st.opacity)],bg);
-     const l1=lum(fg),l2=lum(bg),ratio=(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);
+     const samples=backgrounds.map(bg=>{let fg=over(parse(st.color),bg);if(Number(st.opacity)<1)fg=over([...fg,Number(st.opacity)],bg);const l1=lum(fg),l2=lum(bg);return {bg,fg,ratio:(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05)};});
+     const {fg,bg,ratio}=samples.sort((a,b)=>a.ratio-b.ratio)[0];
      const large=parseFloat(st.fontSize)>=24||(parseFloat(st.fontSize)>=18.66&&parseInt(st.fontWeight)>=700);
      const key=JSON.stringify([fg,bg,large,pseudo||'text']);
      if(!pairs.has(key))pairs.set(key,{fg,bg,ratio:+ratio.toFixed(2),required:large?3:4.5,selector:el.tagName.toLowerCase()+(el.id?'#'+el.id:'')+'.'+String(el.className).trim().replaceAll(' ','.'),pseudo:pseudo||null});
@@ -49,7 +59,7 @@ const server = http.createServer((req,res) => {
   }
   const failures=results.flatMap(r=>r.pairs.filter(p=>p.ratio<p.required).map(p=>({page:r.page,...p})));
   if (process.env.CONTRAST_CHECK) { const expected=require('../tests/known-contrast.json'); require('assert/strict').deepEqual(failures,expected); }
-  const report={scope:'All generated shell HTML, dark media, JavaScript off, solid backgrounds; iframe worlds and image/gradient backgrounds require separate visual review. Repeated entries deduplicated by computed foreground/background/size/pseudo pair per page.',pages:results.length,failures,results};
+  const report={scope:'All generated shell HTML, dark media, JavaScript off, solid and gradient-stop backgrounds (worst endpoint); iframe worlds and image backgrounds require separate visual review. Repeated entries deduplicated by computed foreground/background/size/pseudo pair per page.',pages:results.length,failures,results};
   fs.writeFileSync(process.argv[2]||'contrast-results.json',JSON.stringify(report,null,2));
   console.log(JSON.stringify({pages:results.length,failures:failures.length,uniqueFailures:[...new Map(failures.map(f=>[JSON.stringify([f.fg,f.bg,f.required,f.pseudo]),f])).values()]},null,2));
  } finally {await browser.close();server.close();}
