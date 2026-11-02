@@ -161,6 +161,16 @@ module.exports = function(eleventyConfig) {
     return [...new Set(items.map(i => i && i[key]).filter(Boolean))];
   });
 
+  // Pick one item from a list by calendar day (UTC), so it rotates daily.
+  // Deterministic: the same day always yields the same item. Defaults to the
+  // build date; the daily scheduled deploy is what makes the live page rotate.
+  eleventyConfig.addFilter("dailyPick", function(items, date) {
+    if (!Array.isArray(items) || items.length === 0) return "";
+    const d = date ? new Date(date) : new Date();
+    const day = Math.floor(d.getTime() / 86400000);
+    return items[((day % items.length) + items.length) % items.length];
+  });
+
   // Add a split filter for string manipulation (used in OG image path detection)
   eleventyConfig.addFilter("split", function(str, separator) {
     if (!str) return [];

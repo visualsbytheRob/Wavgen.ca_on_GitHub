@@ -17,11 +17,14 @@ private-apps.njk — Rob's private launchpad (spec: Nov 1, 2026).
 - Launch links only. NEVER add any password, passphrase, token or credential here
   or in src/_data/apps.json.
 - Data: src/_data/apps.json (same source as the public showcase).
+- Serendipity line: src/_data/serendipity.json, one per day via the dailyPick filter.
 #}
 <section class="py-16 bg-gray-900 min-h-screen">
   <div class="container mx-auto px-4 max-w-4xl">
     <h1 class="text-3xl font-bold text-white mb-2">Launchpad</h1>
-    <p class="text-gray-400 text-sm mb-8">Launch links for Rob's apps. Each app handles its own access.</p>
+    <p class="text-gray-400 text-sm mb-4">Launch links for Rob's apps. Each app handles its own access.</p>
+    {% set serendipityLine = serendipity.lines | dailyPick %}
+    {% if serendipityLine %}<p class="serendipity text-wavgen-yellow/80 text-sm italic mb-8">✦ {{ serendipityLine }}</p>{% else %}<div class="mb-8"></div>{% endif %}
 
     <ul class="space-y-3">
       {% for app in apps.items %}

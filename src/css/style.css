@@ -3092,6 +3092,10 @@ video {
   color: rgb(254 221 0 / 0.7);
 }
 
+.text-wavgen-yellow\/80 {
+  color: rgb(254 221 0 / 0.8);
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
