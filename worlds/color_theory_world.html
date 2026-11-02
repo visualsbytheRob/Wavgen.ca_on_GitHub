@@ -203,8 +203,12 @@ input[type=color]{
   #glossary .glossary-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV DOTS -->
 <nav class="nav-dots" id="navDots"></nav>
@@ -214,7 +218,7 @@ input[type=color]{
 ═══════════════════════════════════════════════════ -->
 <section id="hero">
   <canvas id="heroCanvas"></canvas>
-  <div class="hero-title">COLOR THEORY</div>
+  <div class="hero-title" id="wg-content" tabindex="-1">COLOR THEORY</div>
   <div class="hero-sub">A WAVGEN Learning World</div>
 </section>
 
@@ -1712,5 +1716,6 @@ window.addEventListener('load',()=>{
   window.dispatchEvent(new Event('resize'));
 });
 </script>
+</main>
 </body>
 </html>

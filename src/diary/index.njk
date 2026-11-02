@@ -515,7 +515,7 @@ but the content is a concise documentary/logbook about the site.
         <div id="trigger-locked">
           <p class="text-sm text-gray-400 mb-3">🔒 Locked. Enter the password to reveal the launch buttons.</p>
           <div class="flex gap-2">
-            <input id="trigger-pw-input" type="password" placeholder="Password" autocomplete="off" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-wavgen-yellow" />
+            <input id="trigger-pw-input" aria-label="Unlock diary controls" type="password" placeholder="Password" autocomplete="off" class="flex-1 bg-black/40 border border-white/10 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-wavgen-yellow" />
             <button id="trigger-pw-btn" class="control-btn bg-wavgen-yellow text-black px-4 py-2 rounded-md font-semibold hover:bg-yellow-400">Unlock</button>
           </div>
           <p id="trigger-pw-msg" class="text-sm mt-2 hidden"></p>
@@ -576,16 +576,16 @@ Notes:
         <h3 class="text-lg font-semibold text-white mb-3">New entry editor</h3>
         <div class="grid md:grid-cols-2 gap-3 mb-3">
           <div>
-            <label class="block text-sm text-gray-400 mb-1">Title</label>
+            <label for="entry-title" class="block text-sm text-gray-400 mb-1">Title</label>
             <input id="entry-title" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="Your title" />
           </div>
           <div>
-            <label class="block text-sm text-gray-400 mb-1">Date</label>
+            <label for="entry-date" class="block text-sm text-gray-400 mb-1">Date</label>
             <input id="entry-date" type="date" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="YYYY-MM-DD" />
           </div>
         </div>
         <div class="mb-3">
-          <label class="block text-sm text-gray-400 mb-1">Body</label>
+          <label for="entry-body" class="block text-sm text-gray-400 mb-1">Body</label>
           <textarea id="entry-body" rows="8" class="w-full bg-black/40 border border-white/10 rounded-md px-3 py-3 text-white text-base" placeholder="- Point one\n- Point two\n\nNotes:\n- Context or links."></textarea>
         </div>
         <div class="flex items-end gap-2">

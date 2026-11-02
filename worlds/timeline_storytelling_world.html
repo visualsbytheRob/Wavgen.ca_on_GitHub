@@ -211,8 +211,12 @@ input[type=range]::-webkit-slider-thumb{
 .amber{color:var(--accent)} .dim{color:var(--dim)}
 .mono{font-family:var(--font-mono)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ── NAV ── -->
 <nav>
@@ -233,7 +237,7 @@ input[type=range]::-webkit-slider-thumb{
 <!-- ── SECTION 1: HERO ── -->
 <section id="hero">
   <div class="section-label">Section 01 — The Story Machine</div>
-  <h1 class="hero-title">TIMELINE<br><span>STORYTELLING</span> WORLD</h1>
+  <h1 class="hero-title" id="wg-content" tabindex="-1">TIMELINE<br><span>STORYTELLING</span> WORLD</h1>
   <p class="hero-sub">Every story is a journey through time. How you arrange that journey determines everything.</p>
   <div class="badge-row">
     <div class="badge amber">Story Beats</div>
@@ -2322,5 +2326,6 @@ if(glossGrid){
 }
 
 </script>
+</main>
 </body>
 </html>

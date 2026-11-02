@@ -152,8 +152,12 @@ footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);
 .vu-bar{width:8px;border-radius:2px 2px 0 0;background:var(--border);
   height:60px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="logo">WAVGEN</span>
@@ -172,7 +176,7 @@ footer{text-align:center;padding:2rem 1rem;border-top:1px solid var(--border);
 <!-- SECTION 1: HERO -->
 <section id="hero" style="max-width:100%;padding:0">
   <canvas id="hero-canvas" height="400"></canvas>
-  <div class="hero-overlay">
+  <div class="hero-overlay" id="wg-content" tabindex="-1">
     <div class="hero-title">MIXING &amp; MASTERING LAB</div>
     <div class="hero-sub">The craft of making sound its best</div>
     <div class="hero-badges">
@@ -1661,6 +1665,7 @@ function resizeAllCanvases() {
 window.addEventListener('resize', resizeAllCanvases);
 
 </script>
+</main>
 </body>
 </html>
     

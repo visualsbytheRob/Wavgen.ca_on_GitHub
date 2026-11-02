@@ -132,8 +132,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.9
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 @media(max-width:700px){.wheels-wrap{grid-template-columns:1fr}.scope-grid{grid-template-columns:1fr}.glossary-grid{grid-template-columns:1fr}#page-nav-wrap{grid-template-columns:1fr}.compare-wrap{grid-template-columns:1fr}.preview-wrap{grid-template-columns:1fr}.film-preview-wrap{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">&#9632; DaVinci Resolve World</div>
@@ -243,7 +247,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.9
     <span id="lut-intensity-val">100%</span>
   </div>
   <div class="compare-wrap hidden stagger-5">
-    <div class="compare-box"><h4>Original (LOG)</h4><canvas id="lut-before" width="500" height="281"></canvas></div>
+    <div class="compare-box"><h4 id="wg-content" tabindex="-1">Original (LOG)</h4><canvas id="lut-before" width="500" height="281"></canvas></div>
     <div class="compare-box"><h4>With LUT Applied</h4><canvas id="lut-after" width="500" height="281"></canvas></div>
   </div>
 </section>
@@ -2172,5 +2176,6 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 console.log('%cDaVinci Resolve World — WAVGEN loaded', 'color:#d97706;font-size:14px;font-weight:bold');
 console.log('%c9 sections · Hero + 8 interactive modules · LagFilter throughout', 'color:#6b6b8a;font-size:11px');
 </script>
+</main>
 </body>
 </html>

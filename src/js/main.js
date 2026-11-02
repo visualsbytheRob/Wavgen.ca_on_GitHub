@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('[DEBUG] openMobileNav() triggered');
       try {
         // Remove the class that hides the mobile nav drawer (slide-in effect)
+        mobileNav.inert = false;
+        mobileMenuBtn.setAttribute('aria-expanded', 'true');
         mobileNav.classList.remove('-translate-x-full');
+        closeMobileNav.focus();
         // Show the overlay behind the navigation drawer
         mobileNavOverlay.classList.remove('hidden');
         // Prevent background page from scrolling while nav is open
@@ -53,12 +56,16 @@ document.addEventListener('DOMContentLoaded', function () {
   
     // Function to close the mobile navigation drawer
     // This function is called when the close button or overlay is clicked
-    function closeMobileNavigation() {
+    function closeMobileNavigation(restoreFocus = true) {
+      if (!mobileNav || mobileNav.classList.contains('-translate-x-full')) return;
       // Log when the closeMobileNavigation function is called
       console.log('[DEBUG] closeMobileNavigation() triggered');
       try {
         // Add the class that hides the mobile nav drawer (slide-out effect)
         mobileNav.classList.add('-translate-x-full');
+        mobileNav.inert = true;
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) mobileMenuBtn.focus();
         // Hide the overlay behind the navigation drawer
         mobileNavOverlay.classList.add('hidden');
         // Restore scrolling to the background page
@@ -106,6 +113,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
     // Escape key
     document.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab' && mobileNav && !mobileNav.inert) {
+        const items = [...mobileNav.querySelectorAll('a[href],button')];
+        const first = items[0], last = items.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
       if (e.key === 'Escape') {
         console.log('[DEBUG] ESC key pressed');
         closeMobileNavigation();
@@ -123,12 +136,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.getElementById(this.getAttribute('href').slice(1));
         if (target) {
           e.preventDefault();
           console.log('[DEBUG] Anchor smooth scroll to:', this.getAttribute('href'));
+          closeMobileNavigation(false);
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          closeMobileNavigation();
         }
       });
     });

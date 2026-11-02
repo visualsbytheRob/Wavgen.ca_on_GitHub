@@ -116,8 +116,12 @@ footer span{color:var(--accent2);}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
 @media(max-width:640px){.two-col{grid-template-columns:1fr;}}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#hero-title">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav id="nav">
   <div class="logo">&#9654; Proj.Feedback.Dim</div>
@@ -137,7 +141,7 @@ footer span{color:var(--accent2);}
 <!-- SECTION 1: HERO -->
 <section id="hero">
   <div class="section-label">App 11 of the Video Universe</div>
-  <h1 id="hero-title">PROJECTION FEEDBACK DIMENSION</h1>
+  <h1 id="hero-title" tabindex="-1">PROJECTION FEEDBACK DIMENSION</h1>
   <p id="hero-sub">The image that feeds on itself. The signal that loops into infinity.</p>
   <div id="hero-canvas-wrap" class="crt-frame">
     <canvas id="heroCanvas" width="800" height="440"></canvas>
@@ -1671,5 +1675,6 @@ document.querySelectorAll('section').forEach(s=>navObs.observe(s));
 })();
 
 </script>
+</main>
 </body>
 </html>

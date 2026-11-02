@@ -88,8 +88,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;heigh
 .out-label{font-size:0.62rem;color:var(--dim);text-align:center;margin-top:0.4rem}
 .preset-chips{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.75rem}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-main">Skip to content</a>
 
 <nav>
   <span class="nav-logo">WAVGEN</span>
@@ -106,7 +109,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;heigh
   </div>
 </nav>
 
-<main>
+<main tabindex="-1" id="wg-main">
 
 <!-- ═══ SECTION 1: HERO ═══ -->
 <section id="hero" class="stagger-1" style="max-width:100%;padding:0;position:relative;height:440px;overflow:hidden">

@@ -162,8 +162,11 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 select{background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:.75rem;padding:.3rem .6rem;border-radius:4px;cursor:pointer;outline:none}
 select:focus{border-color:var(--accent)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-main">Skip to content</a>
 
 <nav>
   <span class="nav-logo">◈ MIDI WORLD</span>
@@ -180,7 +183,7 @@ select:focus{border-color:var(--accent)}
   </div>
 </nav>
 
-<main>
+<main tabindex="-1" id="wg-main">
 
 <!-- ══ SECTION 1: HERO ══ -->
 <section id="hero">

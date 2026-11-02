@@ -19,7 +19,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images/**/*.{png,jpg,jpeg,gif,webp,svg,avif,ico,mp4,webm}");
   eleventyConfig.addPassthroughCopy("src/css/style.css");
   eleventyConfig.addPassthroughCopy("src/css/systems/worlds.css");
-  for (const name of ["main", "home", "gallery", "placeholder-visuals", "code-playground", "data-app-embed"]) {
+  for (const name of ["main", "home", "gallery", "placeholder-visuals", "code-playground", "data-app-embed", "command-palette"]) {
     eleventyConfig.addPassthroughCopy(`src/js/${name}.js`);
   }
   eleventyConfig.addPassthroughCopy("src/js/worlds/big-data.js");

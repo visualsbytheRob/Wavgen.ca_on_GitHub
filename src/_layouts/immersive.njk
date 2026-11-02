@@ -49,8 +49,11 @@ Layout for standalone immersive learning worlds integrated into Wavgen.ca.
   {# Wavgen CSS — world inline styles cascade over these #}
   <link href="/css/style.css" rel="stylesheet" />
   <link href="/css/systems/worlds.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body>
+<a class="wg-skip-link" href="#world-main">Skip to content</a>
   {# World content: includes world CSS, nav, hero, sections, footer #}
   {{ content | safe }}
 

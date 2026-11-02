@@ -1,0 +1,5 @@
+/* No resting-state palette or layout changes. Only keyboard focus UI. */
+.wg-a11y-main { display: contents; }
+.wg-skip-link:not(:focus) { position: fixed; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wg-skip-link:focus { position: fixed; top: 8px; left: 8px; z-index: 2147483647; padding: 8px 12px; background: #111827; color: #fff; }
+[data-wg-keyboard]:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

@@ -90,8 +90,12 @@ section p { color: var(--text-dim); margin-bottom: 1rem; }
 .info-box { background: rgba(255,109,0,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.85rem; color: var(--text-dim); }
 .info-box strong { color: var(--text); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-title">⬡ 3D Printing</span>
@@ -109,7 +113,7 @@ section p { color: var(--text-dim); margin-bottom: 1rem; }
 <div id="hero">
   <canvas id="heroCanvas"></canvas>
   <div class="hero-text">
-    <h1>3D Printing</h1>
+    <h1 id="wg-content" tabindex="-1">3D Printing</h1>
     <p>Additive manufacturing — layer by layer, complexity becomes free</p>
   </div>
 </div>
@@ -960,5 +964,6 @@ bindSlider('finishSlider', 'finishVal', finishNames);
 })();
 
 </script>
+</main>
 </body>
 </html>

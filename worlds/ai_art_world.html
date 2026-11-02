@@ -144,8 +144,12 @@ footer{text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;
 @media(max-width:700px){.two-col{grid-template-columns:1fr}.hero-title{font-size:2.2rem}
   .nav-links{display:none}}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-brand">⬡ AI ART WORLD</div>
@@ -290,7 +294,7 @@ footer{text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;
     <div class="section-sub">Three dimensions of the AI art conversation: authorship, data provenance, and the spectrum from tribute to appropriation.</div>
     <div class="ethics-grid">
       <div class="ethics-card">
-        <h3>Authorship Spectrum</h3>
+        <h3 id="wg-content" tabindex="-1">Authorship Spectrum</h3>
         <div class="spectrum-bar"><div class="spectrum-marker" id="authorMarker" style="left:50%"></div></div>
         <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-bottom:0.5rem">
           <span>Pure Human</span><span>Collaborative</span><span>Pure Machine</span>
@@ -2266,5 +2270,6 @@ function lagStep(current, target, dt, tau) {
   requestAnimationFrame(frame);
 })();
 </script>
+</main>
 </body>
 </html>

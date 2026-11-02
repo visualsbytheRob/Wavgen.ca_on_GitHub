@@ -146,8 +146,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; h
 .layer-bar { flex:1; height:4px; border-radius:2px; background:rgba(59,130,246,0.1); position:relative; overflow:hidden; }
 .layer-fill { height:100%; border-radius:2px; transition:width 0.1s; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav id="main-nav">
@@ -296,7 +300,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; h
 <!-- SECTION 2: FOLEY LAYERING LAB -->
 <section id="foley">
   <div class="section-label">Section 02</div>
-  <h2 class="hidden stagger-1">Foley Layering Lab</h2>
+  <h2 class="hidden stagger-1" id="wg-content" tabindex="-1">Foley Layering Lab</h2>
   <p class="hidden stagger-2">The Foley stage is where films gain their body. Four performance tracks — footsteps, cloth, contact, atmosphere — combine into a single composite waveform.</p>
 
   <div class="hidden stagger-3" style="margin-bottom:1rem;">
@@ -1726,5 +1730,6 @@ class LagFilter {
 })();
 </script>
 
+</main>
 </body>
 </html>

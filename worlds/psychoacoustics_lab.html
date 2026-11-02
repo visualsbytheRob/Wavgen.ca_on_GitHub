@@ -77,8 +77,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
 .canvas-pair{display:flex;gap:12px;flex-wrap:wrap;}
 .canvas-pair canvas{flex:1;min-width:200px;}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav id="nav">
@@ -100,7 +104,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
 <div id="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-overlay">
-    <h1>PSYCHOACOUSTICS LAB</h1>
+    <h1 id="wg-content" tabindex="-1">PSYCHOACOUSTICS LAB</h1>
     <p>THE SCIENCE OF HEARING ITSELF · WAVGEN MUSIC WORLD 09</p>
     <div class="hero-ctrl">
       <label>FREQUENCY PROBE <span id="hero-freq-val" class="val">1000 Hz</span></label>
@@ -2105,5 +2109,6 @@ function phonToSPL(phon, freq){
   updatePhonPanel();
 })();
 </script>
+</main>
 </body>
 </html>

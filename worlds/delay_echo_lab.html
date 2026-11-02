@@ -182,8 +182,12 @@ footer{text-align:center;padding:40px 16px;color:var(--dim);font-size:11px;
 ::-webkit-scrollbar-track{background:var(--black);}
 ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="brand">WAVGEN</span>
@@ -215,7 +219,7 @@ footer{text-align:center;padding:40px 16px;color:var(--dim);font-size:11px;
 <!-- ═══════════════════ 2. BPM CALCULATOR ═══════════════════ -->
 <section id="bpm-calculator">
   <div class="section-label hidden stagger-1">TOOL 01</div>
-  <h2 class="hidden stagger-2">BPM Echo Calculator</h2>
+  <h2 class="hidden stagger-2" id="wg-content" tabindex="-1">BPM Echo Calculator</h2>
   <p class="hidden stagger-3">Tempo-sync your delay to the beat. Every subdivision has an exact delay time in milliseconds. Tap the button to find your BPM by feel.</p>
 
   <div class="card hidden stagger-4" style="margin-top:20px;">
@@ -1864,5 +1868,6 @@ setTimeout(() => {
 console.log('%cWAVGEN DELAY & ECHO LAB%c — App 14 of 16\nKing Tubby\'s studio on Maxfield Avenue, Kingston, Jamaica.',
   'color
 </script>
+</main>
 </body>
 </html>

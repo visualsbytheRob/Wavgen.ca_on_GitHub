@@ -1,0 +1,11 @@
+{
+  "routes": 103,
+  "widths": [
+    390,
+    1280
+  ],
+  "elements": 104386,
+  "differences": [],
+  "baseline": "435d432fb58bb117697e25e7179af72ac91e6b44",
+  "method": "Integrated merge-train comparison; same deterministic method as the takeover, preserving all previous PR changes."
+}

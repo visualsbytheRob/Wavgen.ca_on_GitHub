@@ -168,8 +168,12 @@ button.btn3:hover,button.btn3.active{background:var(--accent3);color:var(--black
 .level-row{display:flex;align-items:center;gap:8px;margin-top:6px}
 .level-label{font-size:9px;color:var(--dim);width:24px;text-align:right}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#hero">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -188,7 +192,7 @@ button.btn3:hover,button.btn3.active{background:var(--accent3);color:var(--black
 </nav>
 
 <!-- SECTION 1: HERO -->
-<section id="hero">
+<section id="hero" tabindex="-1">
   <canvas id="hero-canvas"></canvas>
 </section>
 
@@ -2217,5 +2221,6 @@ function linearToDb(lin) { return lin > 0 ? 20 * Math.log10(lin) : -96; }
 })();
 
 </script>
+</main>
 </body>
 </html>
