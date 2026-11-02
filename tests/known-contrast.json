@@ -1,0 +1,121 @@
+[
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      86.89999999999999,
+      106.8,
+      136.6
+    ],
+    "bg": [
+      5,
+      13,
+      26
+    ],
+    "ratio": 3.58,
+    "required": 4.5,
+    "selector": "a.nav-back",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      124,
+      77,
+      255
+    ],
+    "bg": [
+      5,
+      13,
+      26
+    ],
+    "ratio": 4.04,
+    "required": 4.5,
+    "selector": "div.",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      124,
+      77,
+      255
+    ],
+    "bg": [
+      27.949999999999996,
+      33.65,
+      79.05
+    ],
+    "ratio": 3.15,
+    "required": 4.5,
+    "selector": "span.card-tag",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      124,
+      77,
+      255
+    ],
+    "bg": [
+      11,
+      26,
+      48
+    ],
+    "ratio": 3.62,
+    "required": 4.5,
+    "selector": "div.arch-name-h",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      124,
+      77,
+      255
+    ],
+    "bg": [
+      44.74,
+      43.902499999999996,
+      104.4075
+    ],
+    "ratio": 2.61,
+    "required": 4.5,
+    "selector": "div.arch-layer-icon.lyr-batch",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      124,
+      77,
+      255
+    ],
+    "bg": [
+      18.32,
+      32.87,
+      54.21
+    ],
+    "ratio": 3.37,
+    "required": 4.5,
+    "selector": "div.cap-zone-name",
+    "pseudo": null
+  },
+  {
+    "page": "/data/big-data/index.html",
+    "fg": [
+      92,
+      53,
+      204
+    ],
+    "bg": [
+      18.32,
+      32.87,
+      54.21
+    ],
+    "ratio": 2.19,
+    "required": 4.5,
+    "selector": "div.cap-zone-eg",
+    "pseudo": null
+  }
+]
