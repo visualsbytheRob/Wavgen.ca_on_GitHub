@@ -1,0 +1,158 @@
+{
+  "_readme": "Single source of truth for Rob's app catalogue. Rendered by src/_includes/components/app-showcase.njk (public cards on /data/) and src/private-apps.njk (unlinked launch page at /private/apps/). Removing an entry here removes its card everywhere. RULES: launchUrl/demoUrl only when verified - never guess a host, port or subdomain. Never put passwords, passphrases, tokens or credentials in this file. Public demos use demo data only - no real personal data, balances or records. visibility 'public' = launchUrl may be shown on the public showcase; 'private' = launchUrl appears ONLY on the private launchpad page.",
+  "items": [
+    {
+      "id": "momentum",
+      "name": "Momentum",
+      "description": "Health command centre: food, training, sleep and CPAP in one place.",
+      "category": "Wellness",
+      "tech": [
+        "Google Cloud Run",
+        "Supabase"
+      ],
+      "access": "Sign-in required",
+      "visibility": "private",
+      "launchUrl": "https://momentum.wavgen.ca",
+      "demoUrl": ""
+    },
+    {
+      "id": "momentum-pulse",
+      "name": "Momentum Pulse",
+      "description": "The morning recovery read: sleep, CPAP and readiness at a glance.",
+      "category": "Wellness",
+      "tech": [
+        "Google Cloud Run"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://momentum-pulse-586665853467.northamerica-northeast1.run.app/",
+      "demoUrl": ""
+    },
+    {
+      "id": "finops-command",
+      "name": "FinOps Command",
+      "description": "The cloud cost dashboard across AWS, Azure and Google Cloud.",
+      "category": "Finance",
+      "tech": [
+        "Azure Container Apps"
+      ],
+      "access": "Sign-in required",
+      "visibility": "private",
+      "launchUrl": "https://finops.happygrass-bf30adfd.canadacentral.azurecontainerapps.io",
+      "demoUrl": ""
+    },
+    {
+      "id": "selector-prime",
+      "name": "Selector Prime",
+      "description": "A personal Netflix: your own media, catalogued and streamed.",
+      "category": "Media",
+      "tech": [
+        "AWS",
+        "Cloudflare R2"
+      ],
+      "access": "Sign-in required",
+      "visibility": "private",
+      "launchUrl": "https://cms.wavgen.ca",
+      "demoUrl": ""
+    },
+    {
+      "id": "cashchain",
+      "name": "Cashchain",
+      "description": "Money in one chain: accounts, debts and the snowball in a single view.",
+      "category": "Finance",
+      "tech": [
+        "AWS Fargate"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://cashchain.tail671849.ts.net",
+      "demoUrl": ""
+    },
+    {
+      "id": "reimagined-console",
+      "name": "Reimagined Console",
+      "description": "The studio console rebuilding 40 classic track pairs.",
+      "category": "Creative",
+      "tech": [
+        "AWS ECS",
+        "Cloudflare R2"
+      ],
+      "access": "Tailnet only + sign-in",
+      "visibility": "private",
+      "launchUrl": "https://reimagined.tail671849.ts.net",
+      "demoUrl": ""
+    },
+    {
+      "id": "portfolio-forge",
+      "name": "Portfolio Forge",
+      "description": "The control room for the whole app stack.",
+      "category": "Operations",
+      "tech": [
+        "Azure"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://portfolio-forge.tail671849.ts.net",
+      "demoUrl": ""
+    },
+    {
+      "id": "knowing-rob-vault",
+      "name": "Knowing Rob Vault",
+      "description": "The locked archive of accounts and digital life.",
+      "category": "Archive",
+      "tech": [
+        "Google Cloud Run",
+        "Supabase"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://knowing-rob-vault.tail671849.ts.net",
+      "demoUrl": ""
+    },
+    {
+      "id": "hello-world",
+      "name": "Hello World",
+      "description": "The people map: everyone in your world, and your stance on each.",
+      "category": "People",
+      "tech": [
+        "Desktop",
+        "Tailscale"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://desktop-2jkhavp.tail671849.ts.net/",
+      "demoUrl": ""
+    },
+    {
+      "id": "hello-world-atlas",
+      "name": "Hello World Atlas",
+      "description": "One board, seven rooms: the estate's front hall.",
+      "category": "Portal",
+      "tech": [
+        "Desktop",
+        "Tailscale"
+      ],
+      "access": "Tailnet only",
+      "visibility": "private",
+      "launchUrl": "https://desktop-2jkhavp.tail671849.ts.net:9443/",
+      "demoUrl": ""
+    },
+    {
+      "id": "wavgen-site",
+      "name": "wavgen.ca",
+      "description": "This site: a static creative portfolio with music, video, data and art worlds, a daily site log and automated content loops.",
+      "category": "webdev",
+      "tech": [
+        "Eleventy",
+        "Nunjucks",
+        "Tailwind CSS",
+        "GitHub Actions",
+        "GitHub Pages"
+      ],
+      "access": "Public - no sign-in.",
+      "visibility": "public",
+      "launchUrl": "https://wavgen.ca",
+      "demoUrl": ""
+    }
+  ]
+}

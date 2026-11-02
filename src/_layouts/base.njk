@@ -123,6 +123,9 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Interactive Components: load globally; each module self-initializes only if its container exists -->
   <script src="/js/code-playground.js"></script>
   <script src="/js/main.js"></script>
+  {% if page.url == '/data/' %}
+  <script defer src="/js/data-app-embed.js"></script>
+  {% endif %}
   {% if page.url == '/' %}
   <script defer src="/js/home.js"></script>
   {% endif %}
