@@ -88,7 +88,41 @@ module.exports = function(eleventyConfig) {
       })
       .sort((a, b) => b.date - a.date);
   });
-  
+
+  // ===========================================
+  // ATOM FEED HELPERS (used by src/feed.njk → /feed.xml)
+  // ===========================================
+  // The first two filters share their names with the official
+  // @11ty/eleventy-plugin-rss filters, so the feed template reads like the
+  // Eleventy docs and would keep working if that plugin were ever swapped in.
+
+  // Atom dates must be RFC 3339, e.g. 2026-10-17T00:00:00Z. toISOString()
+  // already is; trimming the ".000" milliseconds just keeps the output tidy.
+  eleventyConfig.addFilter("dateToRfc3339", (date) =>
+    new Date(date).toISOString().replace(/\.000Z$/, "Z"));
+
+  // Modification dates come from full Git history, with local edit support.
+  const updated = require('./src/_utils/feed-dates').createUpdatedResolver(__dirname);
+  eleventyConfig.addFilter("entryUpdated", updated);
+  eleventyConfig.addFilter("getNewestCollectionItemDate", (items) => {
+    const times = (items || []).map(item => updated(item).getTime());
+    return times.length ? new Date(Math.max(...times)) : new Date(0);
+  });
+
+  // XML 1.0 cannot carry most control characters at all (escaping doesn't
+  // help), so one stray byte in an emailed diary reply would invalidate the
+  // whole feed. Keeps only what XML allows: tab, LF, CR, U+0020–U+D7FF,
+  // U+E000–U+FFFD and U+10000–U+10FFFF (lone surrogates are dropped).
+  eleventyConfig.addFilter("stripInvalidXmlChars", (value) =>
+    String(value ?? "").replace(/[^\t\n\r\u{20}-\u{D7FF}\u{E000}-\u{FFFD}\u{10000}-\u{10FFFF}]/gu, ""));
+
+  // File name without folder or extension, e.g.
+  // "./src/diary/entries/2025-08-24-entry.md" → "2025-08-24-entry".
+  // Feed entry ids are built from this. page.fileSlug can't be used: it drops
+  // the YYYY-MM-DD- prefix, so 2025-08-24-entry.md and 2025-08-25-entry.md
+  // would both become "entry" and collide.
+  eleventyConfig.addFilter("fileStem", (filePath) => path.parse(filePath).name);
+
   // Art section collections
   eleventyConfig.addCollection("paintingImages", createImageCollection("art/painting", "art/painting"));
   eleventyConfig.addCollection("drawingImages", createImageCollection("art/drawing", "art/drawing"));

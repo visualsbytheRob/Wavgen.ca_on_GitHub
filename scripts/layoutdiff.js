@@ -17,7 +17,14 @@ const server=http.createServer((req,res)=>{const u=new URL(req.url,'http://local
    const page=await browser.newPage({javaScriptEnabled:false,viewport:{width,height:800},colorScheme:'light'});
    await page.route('**/*',r=>{const url=r.request().url();if(!url.startsWith(origin))return r.abort();const u=new URL(url);if(!/^\/[01]\//.test(u.pathname))return r.continue({url:origin+'/'+i+u.pathname});return r.continue();});
    await page.goto(`${origin}/${i}/${route}`);
-   await page.evaluate(() => { const style=document.createElement('style');style.textContent='*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.append(style);
+   await page.evaluate(addApprovedFeed => {
+    // Compose the original approved feed footer into the baseline only.
+    // Existing elements are still compared; unexpected feed markup/layout fails.
+    if(addApprovedFeed){const footer=document.querySelector('footer.bg-wavgen-dark-purple .border-t');if(footer){
+      const p=document.createElement('p');p.className='mt-4 text-sm';
+      p.innerHTML='<a href="/feed.xml" type="application/atom+xml" class="inline-flex items-center gap-2 text-gray-300 hover:text-wavgen-yellow transition-colors"><svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="13" r="1.5" fill="currentColor" /><path d="M3 8a5 5 0 0 1 5 5M3 3a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg> Diary feed </a>';footer.append(p);
+    }}
+    const style=document.createElement('style');style.textContent='*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.append(style);
     document.querySelectorAll('svg').forEach(svg => { svg.pauseAnimations?.(); svg.setCurrentTime?.(0); });
     // Eleventy preserves nondeterministic read order for entries with equal dates.
     // Normalize only equal-date timeline groups, retaining every original node.
@@ -25,7 +32,7 @@ const server=http.createServer((req,res)=>{const u=new URL(req.url,'http://local
     const groups=new Map();
     for(const article of articles){const date=article.firstElementChild?.firstElementChild?.textContent; if(!groups.has(date))groups.set(date,[]);groups.get(date).push(article);}
     for(const group of groups.values()){if(group.length<2)continue;const slots=group.map(el=>{const marker=document.createComment('timeline slot');el.replaceWith(marker);return marker;});group.sort((a,b)=>a.textContent.localeCompare(b.textContent));slots.forEach((slot,n)=>slot.replaceWith(group[n]));}
-   });
+   }, i===0 && process.env.LAYOUT_APPROVED_FEED==='1');
    snapshots.push(await page.evaluate(()=>[...document.body.querySelectorAll('*')].filter(el=>!el.matches('script,style,link,.wg-skip-link,.wg-a11y-main')).map(el=>{
     const s=getComputedStyle(el),r=el.getBoundingClientRect();
     const data={id:el.id,classes:el.getAttribute('class'),rect:[r.x,r.y,r.width,r.height].map(n=>Math.round(n*100)/100)};

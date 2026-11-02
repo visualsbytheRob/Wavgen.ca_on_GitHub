@@ -7,10 +7,10 @@
     "start": "node server.js",
     "dev": "concurrently \"npm run watch-css\" \"eleventy --serve\" \"node scripts/save-entry-server.js\"",
     "build-css": "tailwindcss -i ./src/input.css -o ./src/css/style.css",
-    "build": "npm run build-css && eleventy",
+    "build": "npm run build-css && eleventy && npm run validate:feed",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "test": "npm run test:schema && npm run test:theme && npm run test:performance && npm run test:accessibility",
+    "test": "npm run test:schema && npm run test:theme && npm run test:performance && npm run test:accessibility && npm run test:feed",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
     "refresh:feeds": "node scripts/refresh-latest-feeds.js",
@@ -24,7 +24,9 @@
     "test:theme": "node scripts/test-theme.cjs && node scripts/check-contrast.cjs",
     "test:performance": "node scripts/test-performance.cjs",
     "measure": "node scripts/measure-output.cjs",
-    "test:accessibility": "node scripts/prepare-a11y-baseline.cjs && node scripts/test-accessibility.cjs && node scripts/layoutdiff.js"
+    "test:accessibility": "node scripts/prepare-a11y-baseline.cjs && node scripts/test-accessibility.cjs && node scripts/test-layout-with-feed.cjs",
+    "validate:feed": "node scripts/validate-feed.js",
+    "test:feed": "node scripts/test-feed.cjs"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
@@ -33,7 +35,8 @@
     "mailparser": "^3.9.8",
     "nodemailer": "^8.0.7",
     "parse5": "^7.3.0",
-    "tailwindcss": "^3.3.0"
+    "tailwindcss": "^3.3.0",
+    "saxes": "^6.0.0"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
