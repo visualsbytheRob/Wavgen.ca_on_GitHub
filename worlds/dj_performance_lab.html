@@ -177,8 +177,12 @@ hr{border:none;border-top:1px solid var(--border);margin:1.75rem 0;}
 .phase-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--dim);margin-right:4px;vertical-align:middle;}
 .phase-dot.synced{background:var(--accent);box-shadow:0 0 6px rgba(132,204,22,0.8);}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav><div class="nav-inner">
   <span class="nav-logo">DJ Lab</span>
   <a href="#hero">Booth</a>
@@ -213,7 +217,7 @@ hr{border:none;border-top:1px solid var(--border);margin:1.75rem 0;}
 <!-- SECTION 2: BEATMATCH TRAINER -->
 <section id="beatmatch-trainer">
   <div class="section-label">Section 02</div>
-  <h2 class="hidden">Beatmatch Trainer</h2>
+  <h2 class="hidden" id="wg-content" tabindex="-1">Beatmatch Trainer</h2>
   <p class="hidden stagger-1">Adjust the pitch faders so both decks play at the same BPM. Watch the phase waveforms align — when locked, the kick drums hit together.</p>
   <div class="diff-tabs hidden stagger-2">
     <button class="diff-tab active" onclick="setBeatDiff('easy')">Easy — BPM shown</button>
@@ -1952,5 +1956,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 </script>
+</main>
 </body>
 </html>

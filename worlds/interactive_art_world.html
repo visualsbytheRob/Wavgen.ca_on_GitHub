@@ -315,8 +315,12 @@ footer {
   letter-spacing: 0.1em; text-transform: uppercase;
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -525,7 +529,7 @@ footer {
 <!-- SECTION 2: PARTICIPATORY ART HISTORY -->
 <section id="history">
   <div class="section-label">Origins &amp; Movements</div>
-  <h2><strong>Participatory</strong> Art History</h2>
+  <h2 id="wg-content" tabindex="-1"><strong>Participatory</strong> Art History</h2>
   <p>From Allan Kaprow's Happenings to teamLab's immersive worlds, art has progressively dissolved the boundary between maker and viewer — placing the audience inside the work itself.</p>
   <div class="divider"></div>
   <div class="timeline" id="timeline-root">
@@ -2152,5 +2156,6 @@ footer {
   });
 })();
 </script>
+</main>
 </body>
 </html>

@@ -280,8 +280,12 @@ footer{
 }
 footer span{color:var(--cyan)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-root">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════════
      NAVIGATION
@@ -305,7 +309,7 @@ footer span{color:var(--cyan)}
   <canvas id="webgl-canvas"></canvas>
   <div class="hero-content">
     <p class="hero-eyebrow">wavgen.ca · immersive universe</p>
-    <h1 class="hero-title">WAVGEN<br>NEXUS</h1>
+    <h1 class="hero-title" id="wg-content" tabindex="-1">WAVGEN<br>NEXUS</h1>
     <p class="hero-sub">The Central Nervous System</p>
     <div class="hero-divider"></div>
     <div class="hero-stats">
@@ -1332,5 +1336,6 @@ resizeConst();
 requestAnimationFrame(loop);
 
 </script>
+</main>
 </body>
 </html>

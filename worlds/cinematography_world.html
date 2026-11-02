@@ -158,8 +158,12 @@ button:hover,button.active{background:rgba(217,119,6,.15);border-color:var(--acc
 footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.62rem;color:var(--dim);letter-spacing:.12em}
 footer span{color:var(--accent)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -180,7 +184,7 @@ footer span{color:var(--accent)}
   <div style="position:relative">
     <canvas id="hero-canvas" height="440"></canvas>
     <div class="film-ref" id="film-ref-card">14mm → Spielberg dramatic wide</div>
-    <div class="hero-controls">
+    <div class="hero-controls" id="wg-content" tabindex="-1">
       <label style="font-size:.6rem;color:var(--dim);letter-spacing:.1em">FOCAL LENGTH</label>
       <input type="range" id="focal-slider" min="14" max="200" value="50" style="width:160px">
       <div style="font-size:.8rem;color:var(--accent);text-align:right" id="focal-val">50mm</div>
@@ -2013,5 +2017,6 @@ sections.forEach(s => ioNav.observe(s));
 })();
 
 </script>
+</main>
 </body>
 </html>

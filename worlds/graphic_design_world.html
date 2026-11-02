@@ -123,8 +123,12 @@ select {
   .nav-links { display: none; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-art">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <a class="nav-logo" href="#hero">Graphic<span>Design</span>World</a>
@@ -143,7 +147,7 @@ select {
 <!-- SECTION 1: HERO -->
 <section id="hero">
   <canvas id="heroCanvas"></canvas>
-  <div class="hero-overlay">
+  <div class="hero-overlay" id="wg-content" tabindex="-1">
     <div class="hero-title">Graphic <span>Design</span></div>
     <div class="hero-sub">The architecture of visual language</div>
   </div>
@@ -2030,5 +2034,6 @@ class LagFilter {
 })();
 </script>
 
+</main>
 </body>
 </html>

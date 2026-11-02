@@ -321,8 +321,12 @@
     nav ul { display: none; }
   }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="brand">WAVGEN · Computer Vision</div>
@@ -362,7 +366,7 @@
      ══════════════════════════════════════════════════════════ -->
 <section id="opencv" class="hidden">
   <div class="sec-label">Section 02 · Image Processing</div>
-  <h2>OpenCV Pipeline</h2>
+  <h2 id="wg-content" tabindex="-1">OpenCV Pipeline</h2>
   <p class="prose">OpenCV's image processing pipeline transforms raw pixel data through sequential operations: color space conversion, filtering, thresholding, morphological operations, and contour extraction. Each stage reveals structural information invisible to the raw image.</p>
 
   <div class="slider-row">
@@ -1830,5 +1834,6 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 </script>
+</main>
 </body>
 </html>

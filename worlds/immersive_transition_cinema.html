@@ -136,8 +136,12 @@ footer span { color: var(--accent); }
   .pacing-stats { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav id="nav">
   <div class="nav-brand">WAVGEN — Transition Cinema</div>
   <div class="nav-links">
@@ -150,7 +154,7 @@ footer span { color: var(--accent); }
 <!-- S1: HERO -->
 <section class="section" id="s1">
   <div class="section-label">Section 01 — Cinematic Sequence</div>
-  <h1 class="hero-title">IMMERSIVE TRANSITION CINEMA</h1>
+  <h1 class="hero-title" id="wg-content" tabindex="-1">IMMERSIVE TRANSITION CINEMA</h1>
   <p class="hero-quote">"The cut is not an interruption. It is the thought itself."</p>
   <div class="badge-row">
     <span class="badge" id="hBadgeCutType">Cut Type: Fade</span>
@@ -1924,5 +1928,6 @@ function rand(a, b) { return a + Math.random() * (b - a); }
 
 // ── END OF SCRIPT ──
 </script>
+</main>
 </body>
 </html>

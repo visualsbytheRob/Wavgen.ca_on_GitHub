@@ -317,8 +317,12 @@ section { padding: 80px 0; }
 }
 .stat-label { font-size: 0.75rem; color: var(--muted); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <canvas id="particle-canvas"></canvas>
 <div class="page-wrap">
 
@@ -350,7 +354,7 @@ section { padding: 80px 0; }
 <!-- HERO -->
 <section id="hero">
   <span class="hero-eyebrow">✦ Visual Learning Guide · 2025 Edition</span>
-  <h1 class="hero-title">
+  <h1 class="hero-title" id="wg-content" tabindex="-1">
     <span class="g-purple">AI that</span><br>
     <span class="g-magenta">Creates.</span>
   </h1>
@@ -2581,5 +2585,6 @@ const lagContextWindow=new LagFilter(0.25), lagInferenceTime=new LagFilter(0.18)
 })();
 </script>
 
+</main>
 </body>
 </html>

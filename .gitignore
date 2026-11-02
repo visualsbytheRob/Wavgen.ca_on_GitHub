@@ -152,3 +152,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Local takeover verification artifacts
+_site-baseline/
+layoutdiff-results.json
+pr-body.txt

@@ -596,8 +596,12 @@
   }
   .glossary-def { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- NAV -->
 <nav>
@@ -631,7 +635,7 @@
   <canvas class="particles-canvas" id="particlesCanvas"></canvas>
 
   <div class="hero-badge">☁️ Visual Learning Guide</div>
-  <h1 class="hero-title">What is <span class="grad">Cloud<br>Computing?</span></h1>
+  <h1 class="hero-title" id="wg-content" tabindex="-1">What is <span class="grad">Cloud<br>Computing?</span></h1>
   <p class="hero-subtitle">Instead of running software on your own computer, you rent computing power, storage, and services from massive data centers around the world — paying only for what you use.</p>
 
   <div class="hero-visual">
@@ -2325,5 +2329,6 @@ function resetQuiz() {
 document.addEventListener('DOMContentLoaded', buildQuiz);
 </script>
 
+</main>
 </body>
 </html>

@@ -187,8 +187,12 @@
     nav a { display: none; }
   }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="logo">WAVGEN</span>
@@ -205,7 +209,7 @@
 <div id="hero-wrap">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-overlay">
-    <h1>PROJECTION MAPPING</h1>
+    <h1 id="wg-content" tabindex="-1">PROJECTION MAPPING</h1>
     <p>ARCHITECTURAL LIGHT / SPATIAL MEDIA / SURFACE TRANSFORMATION</p>
   </div>
 </div>
@@ -1640,5 +1644,6 @@ window.addEventListener('load', () => {
   document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 });
 </script>
+</main>
 </body>
 </html>

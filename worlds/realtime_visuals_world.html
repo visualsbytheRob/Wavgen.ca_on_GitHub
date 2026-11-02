@@ -124,8 +124,12 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:1.5r
   .uv-split,.editor-split,.feedback-split,.bpm-layout,.noise-controls{grid-template-columns:1fr;}
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav id="top-nav">
   <div class="nav-inner">
     <span class="nav-brand">WAVGEN</span>
@@ -149,7 +153,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:1.5r
     </div>
     <div class="hero-info-side">
       <div class="section-label">App 04 — WAVGEN Video Universe</div>
-      <h1><span>REALTIME<br>VISUALS</span><br>WORLD</h1>
+      <h1 id="wg-content" tabindex="-1"><span>REALTIME<br>VISUALS</span><br>WORLD</h1>
       <p class="hero-sub">Every pixel. Every frame. Every nanosecond — decided by code.</p>
       <div class="badge-row">
         <span class="badge">Fragment Shader</span>
@@ -2062,5 +2066,6 @@ void main() {
   sections.forEach(s => io2.observe(s));
 })();
 </script>
+</main>
 </body>
 </html>

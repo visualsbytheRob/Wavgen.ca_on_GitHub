@@ -10,7 +10,7 @@
     "build": "npm run build-css && eleventy",
     "serve": "eleventy --serve",
     "debug": "DEBUG=Eleventy* eleventy",
-    "test": "npm run test:schema && npm run test:theme && npm run test:performance",
+    "test": "npm run test:schema && npm run test:theme && npm run test:performance && npm run test:accessibility",
     "new:diary": "node scripts/new-diary-entry.js",
     "diary:api": "node scripts/save-entry-server.js",
     "refresh:feeds": "node scripts/refresh-latest-feeds.js",
@@ -23,7 +23,8 @@
     "test:schema": "node --test src/_utils/*.test.js && node scripts/test-schema-build.cjs",
     "test:theme": "node scripts/test-theme.cjs && node scripts/check-contrast.cjs",
     "test:performance": "node scripts/test-performance.cjs",
-    "measure": "node scripts/measure-output.cjs"
+    "measure": "node scripts/measure-output.cjs",
+    "test:accessibility": "node scripts/prepare-a11y-baseline.cjs && node scripts/test-accessibility.cjs && node scripts/layoutdiff.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",

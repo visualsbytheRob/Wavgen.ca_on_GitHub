@@ -251,8 +251,12 @@ p { line-height: 1.7; }
   section { padding: 80px 20px 60px; }
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <div class="scanlines"></div>
 <div class="vignette"></div>
 
@@ -285,7 +289,7 @@ p { line-height: 1.7; }
 
     <h1 class="hidden stagger-2"
         style="font-size:clamp(44px,9vw,80px);font-weight:900;text-transform:uppercase;letter-spacing:0.04em;line-height:0.93;margin-bottom:28px;color:var(--green);
-               text-shadow:0 0 40px rgba(34,197,94,0.55),0 0 80px rgba(34,197,94,0.2),0 0 120px rgba(34,197,94,0.1);">
+               text-shadow:0 0 40px rgba(34,197,94,0.55),0 0 80px rgba(34,197,94,0.2),0 0 120px rgba(34,197,94,0.1);" id="wg-content" tabindex="-1">
       WAVEFORM<br>PLAYGROUND
     </h1>
 
@@ -1706,5 +1710,6 @@ document.querySelectorAll('#s01 .hidden').forEach(el => {
 });
 
 </script>
+</main>
 </body>
 </html>

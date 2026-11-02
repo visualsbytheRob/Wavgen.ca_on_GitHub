@@ -126,8 +126,12 @@
 
   @media(max-width:700px){ #sync-layout{grid-template-columns:1fr;} nav ul{display:none;} }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="brand">WAVGEN · Immersive Media Systems</div>
@@ -166,7 +170,7 @@
      ══════════════════════════════════════════════════════ -->
 <section id="signal" class="hidden">
   <div class="sec-label">Section 02 · Signal Flow</div>
-  <h2>AV Signal Routing Matrix</h2>
+  <h2 id="wg-content" tabindex="-1">AV Signal Routing Matrix</h2>
   <p class="prose">A routing matrix maps N inputs to M outputs, allowing any source to feed any destination. Modern AV matrices handle video (SDI, HDMI, NDI), audio (Dante, AES67), and control signals (ArtNet, OSC) simultaneously. Click cells to toggle routing paths.</p>
 
   <div class="slider-row">
@@ -1150,5 +1154,6 @@ const observer=new IntersectionObserver(entries=>{
 },{threshold:0.08});
 document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
 </script>
+</main>
 </body>
 </html>

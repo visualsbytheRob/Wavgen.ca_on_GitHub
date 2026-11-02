@@ -116,8 +116,12 @@
 
   @media(max-width:700px){ #eq-wrap,#pa-layout{grid-template-columns:1fr;} nav ul{display:none;} }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="brand">WAVGEN · AV Ecosystems</div>
@@ -156,7 +160,7 @@
      ══════════════════════════════════════════════════════ -->
 <section id="chain" class="hidden">
   <div class="sec-label">Section 02 · Signal Path</div>
-  <h2>The AV Signal Chain</h2>
+  <h2 id="wg-content" tabindex="-1">The AV Signal Chain</h2>
   <p class="prose">Every audiovisual system is a signal chain from transducer to output device. Audio flows from acoustic energy through microphone, preamp, converter, DAW, processor, amplifier, to loudspeaker. Video flows from photon to sensor, ISP, codec, router, color grade, encoder, to display. Click any stage to inspect it.</p>
 
   <div style="margin-bottom:1rem;">
@@ -1047,5 +1051,6 @@ const observer=new IntersectionObserver(entries=>{
 },{threshold:0.08});
 document.querySelectorAll('.hidden').forEach(el=>observer.observe(el));
 </script>
+</main>
 </body>
 </html>

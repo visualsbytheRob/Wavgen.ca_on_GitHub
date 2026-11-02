@@ -137,8 +137,12 @@
   .badge-gold { background:rgba(255,200,0,0.15); color:#FFC800; }
   .badge-red { background:rgba(255,60,60,0.15); color:#FF6060; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div>
@@ -148,7 +152,7 @@
   <div class="nav-tag">SERVERLESS · EPHEMERAL COMPUTE</div>
 </nav>
 
-<div class="hero-wrap">
+<div class="hero-wrap" id="wg-content" tabindex="-1">
   <canvas id="hero-canvas"></canvas>
 </div>
 
@@ -1706,5 +1710,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 revealEls.forEach(el => observer.observe(el));
 </script>
+</main>
 </body>
 </html>

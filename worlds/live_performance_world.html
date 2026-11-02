@@ -159,8 +159,12 @@ select{background:var(--surface);border:1px solid var(--border);color:var(--text
 /* DIVIDER */
 .section-divider{border:none;border-top:1px solid var(--border);margin:0}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-av">
+<a class="wg-skip-link" href="#hero">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-logo">WAVGEN</div>
@@ -179,7 +183,7 @@ select{background:var(--surface);border:1px solid var(--border);color:var(--text
 </nav>
 
 <!-- ═══════════════ SECTION 1: HERO ═══════════════ -->
-<section id="hero" style="max-width:100%;padding:64px 0 0;margin:0">
+<section id="hero" style="max-width:100%;padding:64px 0 0;margin:0" tabindex="-1">
   <div style="max-width:1100px;margin:0 auto;padding:0 24px 20px">
     <div class="section-label">§ 01 — LIVE STAGE</div>
     <div class="section-title">LIVE PERFORMANCE WORLD</div>
@@ -2010,5 +2014,6 @@ requestAnimationFrame(masterLoop);
 updateSyncScore();
 
 </script>
+</main>
 </body>
 </html>

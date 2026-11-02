@@ -93,8 +93,12 @@ label{font-size:11px;color:var(--dim)}
 .param-label{font-size:9px;color:var(--dim);letter-spacing:.08em;margin-bottom:3px}
 .param-val{font-size:.95rem;color:var(--accent);font-weight:700}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav id="main-nav">
   <a href="#hero" class="active">Hero</a>
@@ -402,7 +406,7 @@ label{font-size:11px;color:var(--dim)}
   <div class="section-title">ALGORITHMIC COMPOSERS</div>
   <div class="four-col" id="artists-grid">
     <div class="card">
-      <h3>John Cage</h3>
+      <h3 id="wg-content" tabindex="-1">John Cage</h3>
       <div class="method">Chance operations via I Ching</div>
       <div class="work">Music of Changes — 1951</div>
       <div class="quote">"I have nothing to say, and I am saying it."</div>
@@ -2217,5 +2221,6 @@ console.log('%c2200+ lines of vanilla JS + WebAudio synthesis','color:#64748b;fo
 })();
 
 </script>
+</main>
 </body>
 </html>

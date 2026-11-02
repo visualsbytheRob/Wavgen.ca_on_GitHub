@@ -214,8 +214,12 @@ footer{
   nav{padding:0 .8rem}
 }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-brand">WAVGEN / VIDEO</span>
@@ -251,7 +255,7 @@ footer{
 <!-- ═══════════════════════════════════════════════════════ MONTAGE -->
 <section id="montage">
   <span class="section-label hidden">Module 02</span>
-  <h2 class="section-title hidden stagger-1">Montage Theory Lab</h2>
+  <h2 class="section-title hidden stagger-1" id="wg-content" tabindex="-1">Montage Theory Lab</h2>
   <p class="section-desc hidden stagger-2">Soviet formalist theory meets interactive demonstration. Context creates meaning — the cut is an argument.</p>
   <div class="tab-row hidden stagger-3">
     <button class="tab-btn active-btn" onclick="switchTab('kuleshov')">Kuleshov Effect</button>
@@ -2473,5 +2477,6 @@ function init() {
 
 window.addEventListener('load', init);
 </script>
+</main>
 </body>
 </html>

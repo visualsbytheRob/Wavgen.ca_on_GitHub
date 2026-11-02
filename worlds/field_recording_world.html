@@ -149,8 +149,12 @@ footer { text-align:center; padding:3rem 1rem; color:var(--dim); font-size:0.8re
   border-top:1px solid var(--border); letter-spacing:0.08em; text-transform:uppercase; }
 footer span { color:var(--accent); }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-brand">⬡ WAVGEN</span>
@@ -175,7 +179,7 @@ footer span { color:var(--accent); }
 </div>
 <section id="hero" class="hero-content">
   <div class="hidden"><div class="section-label">App 13 of 16 — WAVGEN Music Universe</div>
-  <h1>Every Sound<br>Has a Story</h1>
+  <h1 id="wg-content" tabindex="-1">Every Sound<br>Has a Story</h1>
   <p>Field recording is the practice of capturing sound outside the studio — from birdsong to industrial machinery, from ocean trenches to arctic wind. Explore the tools, techniques, environments, and ethics of listening to the world.</p>
   <div class="badge-row">
     <span class="badge" id="badge-sources">⬤ <span id="b-sources">0</span> Sources Detected</span>
@@ -1781,5 +1785,6 @@ document.addEventListener('click', () => {
 }, { once: true });
 
 </script>
+</main>
 </body>
 </html>

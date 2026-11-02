@@ -687,8 +687,12 @@
       font-family: monospace;
     }
   </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
   <!-- NAV -->
   <nav>
@@ -714,7 +718,7 @@
       <p style="font-size:11px;letter-spacing:0.3em;color:var(--cyan);opacity:0.7;font-family:monospace;text-transform:uppercase;margin-bottom:20px;">WAVGEN MUSIC WORLD 03</p>
     </div>
     <div class="hidden stagger-2">
-      <h1 style="font-size:72px;font-weight:700;color:#e2e8f0;letter-spacing:0.04em;line-height:1;text-transform:uppercase;margin-bottom:16px;">GRANULAR <span style="color:var(--cyan);">SYNTHESIS</span></h1>
+      <h1 style="font-size:72px;font-weight:700;color:#e2e8f0;letter-spacing:0.04em;line-height:1;text-transform:uppercase;margin-bottom:16px;" id="wg-content" tabindex="-1">GRANULAR <span style="color:var(--cyan);">SYNTHESIS</span></h1>
     </div>
     <div class="hidden stagger-3">
       <p style="font-size:20px;font-style:italic;color:var(--dim);max-width:560px;line-height:1.6;margin-bottom:32px;">Sound dissolved into particles. Particles dissolved into texture.</p>
@@ -1917,5 +1921,6 @@
   animateParam();
 
   </script>
+</main>
 </body>
 </html>

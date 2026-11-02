@@ -308,8 +308,12 @@ footer p { font-size: 0.85rem; color: var(--text-muted); }
 .def-source-green { font-size: 0.78rem; color: var(--accent-green); margin-top: 0.75rem; font-style: italic; }
 .def-source-red { font-size: 0.78rem; color: var(--accent-red); margin-top: 0.75rem; font-style: italic; }
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <!-- ═══════════════════════════════════════════════
      NAV
@@ -339,7 +343,7 @@ footer p { font-size: 0.85rem; color: var(--text-muted); }
 <section class="hero" id="hero">
   <div class="container">
     <div class="hero-badge">🏗 Architecture Patterns · Visual Learning Guide</div>
-    <h1 class="hero-title">From Monolith<br>to Microservices</h1>
+    <h1 class="hero-title" id="wg-content" tabindex="-1">From Monolith<br>to Microservices</h1>
     <p class="hero-subtitle">A visual, hands-on guide to Service-Oriented Architecture and Microservices — when to use each, how they evolved, and the patterns that make them work.</p>
     <div class="hero-ctas">
       <a href="#timeline" class="btn-primary">Start Learning →</a>
@@ -1997,5 +2001,6 @@ function kcReset() {
   document.getElementById('kc-remaining').textContent = '8';
 }
 </script>
+</main>
 </body>
 </html>

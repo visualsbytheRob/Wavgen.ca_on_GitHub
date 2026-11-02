@@ -70,8 +70,12 @@
   .stat-row .st-val{font-size:10px;color:var(--white);width:80px;text-align:right;}
   @media(max-width:700px){.glossary-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.blend-controls{grid-template-columns:1fr}nav a{display:none}}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-data">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 <nav>
   <span class="logo">WAVGEN</span>
   <a href="#pipeline">Pipeline</a>
@@ -86,7 +90,7 @@
 <div id="hero-wrap">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-overlay">
-    <h1>RAG SYSTEMS</h1>
+    <h1 id="wg-content" tabindex="-1">RAG SYSTEMS</h1>
     <p>RETRIEVAL-AUGMENTED GENERATION / VECTOR SEARCH / SEMANTIC MEMORY / EMBEDDINGS</p>
   </div>
 </div>
@@ -803,5 +807,6 @@ document.addEventListener('mousemove',e=>{mouseX=e.clientX/window.innerWidth;mou
 })();
 window.addEventListener('load',()=>document.querySelectorAll('.hidden').forEach(el=>observer.observe(el)));
 </script>
+</main>
 </body>
 </html>

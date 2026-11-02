@@ -130,8 +130,12 @@ label{font-size:11px;color:var(--dim);letter-spacing:.05em}
 ::-webkit-scrollbar-thumb{background:var(--accent4);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-music">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <span class="nav-brand">WAVGEN</span>
@@ -327,7 +331,7 @@ label{font-size:11px;color:var(--dim);letter-spacing:.05em}
   <div class="section-desc">The composers, artists, and researchers who built the field of generative and algorithmic music.</div>
   <div class="four-col" id="artists-grid">
     <div class="card hidden stagger-1">
-      <h3>Brian Eno</h3>
+      <h3 id="wg-content" tabindex="-1">Brian Eno</h3>
       <div class="card-era">1975 — Present</div>
       <div class="card-work">Music for Airports (1978), Reflection (2017)</div>
       <div class="card-approach">Invented ambient music; defined generative music as "ever-different and ever the same." Overlapping tape loops of differing lengths — the simplest possible generative system.</div>
@@ -1827,5 +1831,6 @@ class BPMEngine {
 })();
 </script>
 
+</main>
 </body>
 </html>

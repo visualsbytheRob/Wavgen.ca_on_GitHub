@@ -127,8 +127,12 @@ footer span{color:var(--accent)}
 .check-num{color:var(--accent);font-weight:700;font-size:0.75rem;min-width:16px}
 .nerf-controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-top:0.85rem}
 </style>
+<link rel="stylesheet" href="/assets/accessibility.css">
+<script defer src="/assets/accessibility.js"></script>
 </head>
 <body class="domain-video">
+<a class="wg-skip-link" href="#wg-content">Skip to content</a>
+<main id="wg-main" class="wg-a11y-main" tabindex="-1">
 
 <nav>
   <div class="nav-inner">
@@ -149,7 +153,7 @@ footer span{color:var(--accent)}
 <!-- ═══ SECTION 1 · HERO ═══ -->
 <section class="sec" id="hero">
   <div class="section-label">App 06 · Video Universe · WAVGEN</div>
-  <h1 class="glow-text" style="margin-bottom:0.35rem">AI VIDEO WORLD</h1>
+  <h1 class="glow-text" style="margin-bottom:0.35rem" id="wg-content" tabindex="-1">AI VIDEO WORLD</h1>
   <p style="font-size:0.95rem;color:var(--dim);margin-bottom:0.15rem">The Frontier of the Moving Image</p>
   <p style="font-size:0.85rem;color:var(--dim);font-style:italic;margin-bottom:0.5rem">The image that never existed. The frame that cannot exist again.</p>
   <div class="badge-row" style="margin-bottom:1.75rem">
@@ -1714,5 +1718,6 @@ window.addEventListener('load', () => {
 });
 
 </script>
+</main>
 </body>
 </html>
