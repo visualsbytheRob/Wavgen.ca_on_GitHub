@@ -147,20 +147,26 @@ test("script tag: no value can close the element early, and it parses back uncha
   const tag = sd.jsonLdScriptTag(data);
   assert.equal(tag.match(/<\/script/gi).length, 1); // only the real closing tag
   assert.ok(!tag.includes("<!--"));
-  const blocks = sd.extractJsonLdBlocks(`<head>${tag}</head>`);
-  assert.equal(blocks.length, 1);
-  assert.deepEqual(JSON.parse(blocks[0]), data);
+  const { live, commentedOut } = sd.findJsonLd(`<head>${tag}</head>`);
+  assert.equal(live.length, 1);
+  assert.deepEqual(commentedOut, []);
+  assert.deepEqual(JSON.parse(live[0]), data);
 });
 
-test("extraction: finds only application/ld+json scripts, in any attribute style", () => {
+test("extraction: finds exactly the JSON-LD script elements the HTML parser builds", () => {
   const html = [
-    "<script>var x = '<script type=\"application/ld+json\">';</script>",
+    "<script>var x = '<script type=\"application/ld+json\">';</script>", // text inside another script
     "<script type=\"module\">import x from './x.js'</script>",
     "<script type='application/ld+json'>{\"a\":1}</script>",
     "<SCRIPT data-x=\"1\" type=application/ld+json>{\"b\":2}</SCRIPT>",
-    "<script type=\"application/ld+jsonx\">{\"c\":3}</script>"
+    "<script type=\" Application/LD+JSON; charset=utf-8 \">{\"c\":3}</script>", // a MIME type, parameters and all
+    "<script type=\"application/ld+jsonx\">{\"d\":4}</script>",
+    "<script type=\"text/plain\" type=\"application/ld+json\">{\"e\":5}</script>", // first duplicate attribute wins
+    "<textarea><script type=\"application/ld+json\">{\"f\":6}</script></textarea>" // textarea content is text
   ].join("\n");
-  assert.deepEqual(sd.extractJsonLdBlocks(html).map((b) => JSON.parse(b)), [{ a: 1 }, { b: 2 }]);
+  const { live, commentedOut } = sd.findJsonLd(html);
+  assert.deepEqual(live.map((b) => JSON.parse(b)), [{ a: 1 }, { b: 2 }, { c: 3 }]);
+  assert.deepEqual(commentedOut, []);
 });
 
 // ---------------------------------------------------------------------------
@@ -212,6 +218,67 @@ test("shapes: @id references must land on a node of the right type on the same p
 test("shapes: a block that isn't JSON is reported, not skipped", () => {
   const html = "<script type=\"application/ld+json\">{ \"@context\": \"https://schema.org\", </script>";
   assert.ok(sd.validatePage(html).errors.some((e) => /block 1 \$: is not valid JSON/.test(e)));
+});
+
+// ---------------------------------------------------------------------------
+// Commented-out JSON-LD: nothing ever reads it, so it must fail, not pass
+// ---------------------------------------------------------------------------
+
+const personBlock = { "@context": CTX, "@type": "Person", name: "Ada Lovelace" };
+const personTag = sd.jsonLdScriptTag(personBlock);
+const doc = (head) => `<!doctype html><html><head><title>t</title>${head}</head><body><p>Hi</p></body></html>`;
+const COMMENTED_OUT = /^commented-out block \d+: JSON-LD inside an HTML comment is never read/;
+
+test("commented-out JSON-LD is rejected, and a live block still validates", () => {
+  // the block, live: valid, and counted
+  const live = sd.validatePage(doc(personTag));
+  assert.deepEqual(live.errors, []);
+  assert.deepEqual(live.nodes.map((n) => n.type), ["Person"]);
+
+  // the same valid block inside a comment: rejected, and not counted as present
+  const commented = sd.validatePage(doc(`<!-- ${personTag} -->`));
+  assert.equal(commented.errors.length, 1, commented.errors.join("\n"));
+  assert.match(commented.errors[0], COMMENTED_OUT);
+  assert.deepEqual(commented.nodes, []);
+
+  // both on one page: only the commented-out copy is reported; the live one still counts
+  const both = sd.validatePage(doc(`${personTag}\n<!--\n${personTag}\n-->`));
+  assert.equal(both.errors.length, 1, both.errors.join("\n"));
+  assert.match(both.errors[0], COMMENTED_OUT);
+  assert.deepEqual(both.nodes.map((n) => n.type), ["Person"]);
+});
+
+test("commented-out JSON-LD is caught in every comment form the HTML parser knows", () => {
+  const cases = {
+    "multi-line comment": `<!--\n  ${personTag}\n-->`,
+    "IE conditional comment": `<!--[if lt IE 9]>${personTag}<![endif]-->`,
+    "comment closed with --!>": `<!-- ${personTag} --!>`,
+    "comment never closed (runs to the end of the page)": `<!-- ${personTag}`,
+    "comment that looks nested": `<!-- <!-- ${personTag} -->`,
+    "upper-case tag, single-quoted type": `<!-- <SCRIPT TYPE='Application/LD+JSON'>${JSON.stringify(personBlock)}</SCRIPT> -->`,
+    "invalid JSON inside the comment": "<!-- <script type=\"application/ld+json\">{ not json</script> -->"
+  };
+  for (const [name, head] of Object.entries(cases)) {
+    const { errors, nodes } = sd.validatePage(doc(head));
+    assert.ok(errors.some((e) => COMMENTED_OUT.test(e)), `${name}: ${JSON.stringify(errors)}`);
+    assert.deepEqual(nodes, [], `${name}: nothing commented out may count as present`);
+  }
+});
+
+test("comment look-alikes don't hide a live block (no over-correction)", () => {
+  // "<!-->" and "<!--->" are complete, empty comments: the block after them is live
+  for (const opener of ["<!-->", "<!--->"]) {
+    const { errors, nodes } = sd.validatePage(doc(`${opener}${personTag}`));
+    assert.deepEqual(errors, [], opener);
+    assert.deepEqual(nodes.map((n) => n.type), ["Person"], opener);
+  }
+  // "<!--" and "-->" inside inline scripts are script text, not a comment around the block
+  const scripts = `<script>var open = "<!--";</script>${personTag}<script>var close = "-->";</script>`;
+  const between = sd.validatePage(doc(scripts));
+  assert.deepEqual(between.errors, []);
+  assert.deepEqual(between.nodes.map((n) => n.type), ["Person"]);
+  // a comment that only mentions JSON-LD in prose is fine
+  assert.deepEqual(sd.validatePage(doc(`<!-- JSON-LD (application/ld+json) is emitted below -->${personTag}`)).errors, []);
 });
 
 // ---------------------------------------------------------------------------
@@ -291,6 +358,16 @@ test("build: blocks that stop rendering fail, except on incremental rebuilds", (
   const elsewhere = page(sd.siteGraph({ ...site, url: "https://elsewhere.test" }, manifest));
   assert.ok(sd.validateBuild(results({ home: elsewhere }), { site, apps }).errors
     .some((e) => /WebSite url must be the canonical home URL https:\/\/example\.test\//.test(e)));
+});
+
+test("build: commenting out the home page's block fails, and it no longer counts as present", () => {
+  const home = page(sd.siteGraph(site, manifest))
+    .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, (tag) => `<!-- ${tag} -->`);
+  assert.match(home, /<!-- <script type="application\/ld\+json">/);
+  const { errors } = sd.validateBuild(results({ home }), { site, apps });
+  assert.ok(errors.some((e) => /^\/ \(\.\/src\/index\.njk\) commented-out block 1: JSON-LD inside an HTML comment/.test(e)), errors.join("\n"));
+  assert.ok(errors.includes("/ (home page): expected exactly 1 WebSite node, found 0"), errors.join("\n"));
+  assert.ok(errors.includes("/ (home page): expected exactly 1 Person node, found 0"));
 });
 
 test("the real data files produce valid structured data", () => {

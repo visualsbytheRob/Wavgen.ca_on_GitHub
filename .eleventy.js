@@ -231,10 +231,11 @@ module.exports = function(eleventyConfig) {
     return structuredData.jsonLdScriptTag(data);
   });
 
-  // Validate the JSON-LD Eleventy actually wrote. Every block on every page
-  // must match a known shape, no non-public app or private launch URL may
-  // appear, and the home page and the catalogue must carry their blocks. Any
-  // problem fails the build (exit code 1), so the deploy never publishes it.
+  // Validate the JSON-LD Eleventy actually wrote. Every live block on every
+  // page must match a known shape, a block inside an HTML comment fails, no
+  // non-public app or private launch URL may appear, and the home page and the
+  // catalogue must carry their live blocks. Any problem fails the build (exit
+  // code 1), so the deploy never publishes it.
   eleventyConfig.on("eleventy.after", function({ results, outputMode, incremental }) {
     if (outputMode !== "fs") return;
     const report = structuredData.validateBuild(results, {

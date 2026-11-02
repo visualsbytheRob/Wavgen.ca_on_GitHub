@@ -12,16 +12,20 @@
  *                                       "visibility": "public"                 app-showcase.njk (/data/)
  *
  * Validation (wired up in .eleventy.js on eleventy.after): validateBuild() reads
- * the HTML Eleventy actually wrote. Every <script type="application/ld+json">
- * block must parse and match SHAPES below. On top of the shapes it checks that
- * no non-public app (or private launch URL) reaches structured data, and that
- * the home page and the public catalogue really carry their blocks.
+ * the HTML Eleventy actually wrote, using parse5 (the WHATWG HTML parser), so it
+ * sees exactly the <script type="application/ld+json"> elements a browser or
+ * search engine sees. Every live block must parse and match SHAPES below, and a
+ * block inside an HTML comment fails: it looks like structured data but nothing
+ * reads it. On top of the shapes it checks that no non-public app (or private
+ * launch URL) reaches structured data, and that the home page and the public
+ * catalogue really carry their (live) blocks.
  *
  * To emit a new @type: add a builder here, a filter in .eleventy.js, AND a
  * shape in SHAPES. An unknown @type fails the build, so nothing ships unchecked.
  */
 "use strict";
 
+const { parse, parseFragment } = require("parse5");
 const { isPublicApp, toPublicApp } = require("./apps");
 
 const SCHEMA_CONTEXT = "https://schema.org";
@@ -185,17 +189,47 @@ function jsonLdScriptTag(data) {
   return `<script type="application/ld+json">\n${json}\n</script>`;
 }
 
-const SCRIPT_ELEMENT = /<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
-const JSON_LD_TYPE = /\btype\s*=\s*(["']?)application\/ld\+json\1(?=[\s/>]|$)/i;
+// The JSON-LD in a page, as the HTML parser sees it. A regex over raw HTML
+// can't tell what sits inside a comment; parse5 follows the HTML parsing spec,
+// so "live" means exactly the script elements a browser or crawler builds.
+//   live          text of every <script type="application/ld+json"> element
+//   commentedOut  text of every JSON-LD script inside an HTML comment, including
+//                 conditional and never-closed comments. Nothing reads these,
+//                 so validatePage fails them instead of skipping them.
+function findJsonLd(html) {
+  const found = { live: [], commentedOut: [] };
+  if (typeof html === "string") collectJsonLd(parse(html), found.live, found.commentedOut);
+  return found;
+}
 
-// The raw text of every <script type="application/ld+json"> in a page.
-function extractJsonLdBlocks(html) {
-  if (typeof html !== "string") return [];
-  const blocks = [];
-  for (const match of html.matchAll(SCRIPT_ELEMENT)) {
-    if (JSON_LD_TYPE.test(match[1])) blocks.push(match[2]);
+// Walk a parse5 tree. A comment's text is parsed as HTML in turn, so a JSON-LD
+// script anywhere inside it (even in a comment that looks nested) is found and
+// filed under commentedOut.
+function collectJsonLd(node, live, commentedOut) {
+  if (node.nodeName === "#comment") {
+    collectJsonLd(parseFragment(node.data), commentedOut, commentedOut);
+    return;
   }
-  return blocks;
+  if (isJsonLdScript(node)) live.push(textOf(node));
+  for (const child of node.childNodes || []) collectJsonLd(child, live, commentedOut);
+}
+
+// type="application/ld+json", compared like a MIME type: case-insensitive, with
+// surrounding spaces and any ";parameters" ignored.
+function isJsonLdScript(node) {
+  if (node.nodeName !== "script" || !Array.isArray(node.attrs)) return false;
+  const type = node.attrs.find((attr) => attr.name === "type");
+  return Boolean(type) && type.value.split(";")[0].trim().toLowerCase() === "application/ld+json";
+}
+
+function textOf(node) {
+  return (node.childNodes || []).filter((c) => c.nodeName === "#text").map((c) => c.value).join("");
+}
+
+// A short one-line excerpt of a block, to help find it in the page.
+function excerpt(raw, max = 60) {
+  const flat = String(raw).replace(/\s+/g, " ").trim();
+  return flat.length > max ? `${flat.slice(0, max)}...` : flat;
 }
 
 // ---------------------------------------------------------------------------
@@ -348,9 +382,19 @@ function validateBlock(value, ctx) {
 
 // Validate every JSON-LD block in one HTML page. Returns { errors, nodes, blocks }:
 // the typed nodes and parsed blocks feed the site-wide checks in validateBuild.
+// Only live blocks are validated and counted. A commented-out block is an error
+// of its own: it looks valid in the source, but nothing ever reads it, and it
+// must not stand in for a block that should be live.
 function validatePage(html) {
   const ctx = { errors: [], nodes: [], blocks: [], ids: new Map(), references: [], block: 0 };
-  extractJsonLdBlocks(html).forEach((raw, index) => {
+  const { live, commentedOut } = findJsonLd(html);
+
+  commentedOut.forEach((raw, index) => {
+    ctx.errors.push(`commented-out block ${index + 1}: JSON-LD inside an HTML comment is never read as ` +
+      `structured data, so it fails validation; delete it, or uncomment it so it is checked (starts: ${excerpt(raw)})`);
+  });
+
+  live.forEach((raw, index) => {
     ctx.block = index + 1;
     let value;
     try {
@@ -503,7 +547,7 @@ module.exports = {
   siteGraph,
   appCatalogueList,
   jsonLdScriptTag,
-  extractJsonLdBlocks,
+  findJsonLd,
   validatePage,
   validateBuild
 };
