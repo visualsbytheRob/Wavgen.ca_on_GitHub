@@ -9,6 +9,7 @@
 const fs = require('fs');
 
 module.exports = function(eleventyConfig) {
+  eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
   // Copy static assets from source to output so they're available in the built site
   eleventyConfig.addPassthroughCopy("src/assets"); // Copy all files from src/assets
   eleventyConfig.addPassthroughCopy("src/images"); // Copy all images
