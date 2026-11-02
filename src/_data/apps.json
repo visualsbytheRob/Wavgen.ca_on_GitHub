@@ -36,7 +36,7 @@
       "tech": [
         "Azure Container Apps"
       ],
-      "access": "",
+      "access": "Sign-in required",
       "visibility": "private",
       "launchUrl": "",
       "demoUrl": ""
@@ -77,7 +77,7 @@
         "AWS ECS",
         "Cloudflare R2"
       ],
-      "access": "",
+      "access": "Tailnet only + sign-in",
       "visibility": "private",
       "launchUrl": "",
       "demoUrl": ""

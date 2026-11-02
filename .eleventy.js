@@ -161,6 +161,38 @@ module.exports = function(eleventyConfig) {
     return [...new Set(items.map(i => i && i[key]).filter(Boolean))];
   });
 
+  // Serendipity counts, computed from the app catalogue so they never go stale.
+  // Lines in src/_data/serendipity.json use {N:key} (count as a word) and
+  // {names:key} (matching app names). A line whose count is below 2 is dropped,
+  // since its wording assumes a plural.
+  const estateGroups = {
+    apps:    () => true,
+    desktop: app => (app.tech || []).includes("Desktop"),
+    r2:      app => (app.tech || []).includes("Cloudflare R2"),
+    tailnet: app => (app.access || "").startsWith("Tailnet only")
+  };
+  const numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+    "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+  const listNames = names => names.length < 2 ? names.join("")
+    : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  eleventyConfig.addFilter("estateFacts", function(lines, items) {
+    if (!Array.isArray(lines)) return [];
+    const apps = Array.isArray(items) ? items : [];
+    return lines.map(line => {
+      let ok = true;
+      const out = String(line).replace(/\{(N|names):(\w+)\}/g, (token, kind, key, offset) => {
+        const test = estateGroups[key];
+        if (!test) { ok = false; return token; }
+        const matched = apps.filter(test);
+        if (matched.length < 2) ok = false;
+        if (kind === "names") return listNames(matched.map(a => a.name));
+        const word = numberWords[matched.length] || String(matched.length);
+        return offset === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+      });
+      return ok ? out : "";
+    }).filter(Boolean);
+  });
+
   // Pick one item from a list by calendar day (UTC), so it rotates daily.
   // Deterministic: the same day always yields the same item. Defaults to the
   // build date; the daily scheduled deploy is what makes the live page rotate.
