@@ -38,7 +38,7 @@
       ],
       "access": "Sign-in required",
       "visibility": "private",
-      "launchUrl": "",
+      "launchUrl": "https://finops.happygrass-bf30adfd.canadacentral.azurecontainerapps.io",
       "demoUrl": ""
     },
     {
@@ -79,7 +79,7 @@
       ],
       "access": "Tailnet only + sign-in",
       "visibility": "private",
-      "launchUrl": "",
+      "launchUrl": "https://reimagined.tail671849.ts.net",
       "demoUrl": ""
     },
     {
