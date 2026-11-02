@@ -1,0 +1,126 @@
+{
+  "_readme": "Single source of truth for Rob's app catalogue. Rendered by src/_includes/components/app-showcase.njk (public cards on /data/) and src/private-apps.njk (unlinked launch page at /private/apps/). Removing an entry here removes its card everywhere. RULES: launchUrl/demoUrl only when verified - never guess a host, port or subdomain. Never put passwords, passphrases, tokens or credentials in this file. Public demos use demo data only - no real personal data, balances or records. visibility 'public' = launchUrl may be shown on the public showcase; 'private' = launchUrl appears ONLY on the private launchpad page.",
+  "items": [
+    {
+      "id": "momentum",
+      "name": "Momentum",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "momentum-pulse",
+      "name": "Momentum Pulse",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "finops-command",
+      "name": "FinOps Command",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "selector-prime",
+      "name": "Selector Prime",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "cashchain",
+      "name": "Cashchain",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "reimagined-console",
+      "name": "Reimagined Console",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "portfolio-forge",
+      "name": "Portfolio Forge",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "knowing-rob-vault",
+      "name": "Knowing Rob Vault",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "hello-world",
+      "name": "Hello World",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "hello-world-atlas",
+      "name": "Hello World Atlas",
+      "description": "",
+      "category": "",
+      "tech": [],
+      "access": "",
+      "visibility": "private",
+      "launchUrl": "",
+      "demoUrl": ""
+    },
+    {
+      "id": "wavgen-site",
+      "name": "wavgen.ca",
+      "description": "This site: a static creative portfolio with music, video, data and art worlds, a daily site log and automated content loops.",
+      "category": "webdev",
+      "tech": ["Eleventy", "Nunjucks", "Tailwind CSS", "GitHub Actions", "GitHub Pages"],
+      "access": "Public - no sign-in.",
+      "visibility": "public",
+      "launchUrl": "https://wavgen.ca",
+      "demoUrl": ""
+    }
+  ]
+}

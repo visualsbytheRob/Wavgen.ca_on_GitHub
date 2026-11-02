@@ -1,0 +1,61 @@
+{#
+app-showcase.njk
+Public app catalogue cards. Every card is rendered from src/_data/apps.json
+(via the `publicApps` filter in .eleventy.js, which strips private launch URLs).
+Removing an entry from apps.json removes its card. /js/data-app-embed.js adds
+the category filter as a progressive enhancement; without JS all cards show.
+Public/private rule: public cards describe apps and link demos (demo data only).
+Private launch links live only on the unlinked launchpad page.
+#}
+{% set showcaseApps = apps.items | publicApps %}
+{% set showcaseCategories = showcaseApps | uniqueBy('category') %}
+<section id="app-catalogue" class="py-20 bg-gray-900">
+  <div class="container mx-auto px-4">
+    <div id="data-app-embed-container" class="data-app-embed bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-purple p-6 shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-3xl font-bold text-white">App catalogue</h2>
+          <p class="text-gray-400 text-sm mt-1">Apps Rob has built and runs. Public demos use demo data only.</p>
+        </div>
+        {% if showcaseCategories.length > 1 %}
+        <label class="text-sm text-gray-300">
+          <span class="sr-only">Filter by category</span>
+          <select id="app-category-select" class="bg-gray-800 text-white border border-wavgen-purple hover:border-wavgen-yellow transition-colors rounded px-3 py-1 text-sm" hidden>
+            <option value="all">All categories</option>
+            {% for cat in showcaseCategories %}<option value="{{ cat }}">{{ cat }}</option>{% endfor %}
+          </select>
+        </label>
+        {% endif %}
+      </div>
+
+      {% if showcaseApps.length > 0 %}
+      <div id="app-grid-container" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {% for app in showcaseApps %}
+        <article class="app-card bg-gray-800/80 border border-white/10 rounded-lg p-4 flex flex-col" data-app-id="{{ app.id }}" data-category="{{ app.category }}">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <h3 class="text-white font-semibold text-lg leading-tight">{{ app.name }}</h3>
+            {% if app.category %}<span class="text-wavgen-yellow text-xs uppercase tracking-wide shrink-0">{{ app.category }}</span>{% endif %}
+          </div>
+          {% if app.description %}<p class="text-gray-300 text-sm mb-3">{{ app.description }}</p>{% endif %}
+          {% if app.tech.length > 0 %}
+          <ul class="flex flex-wrap gap-1.5 mb-3" aria-label="Tech">
+            {% for t in app.tech %}<li class="bg-wavgen-purple text-white px-2 py-0.5 rounded-full text-xs">{{ t }}</li>{% endfor %}
+          </ul>
+          {% endif %}
+          {% if app.access %}<p class="text-gray-400 text-xs mb-3">{{ app.access }}</p>{% endif %}
+          <div class="mt-auto pt-2">
+            {% if app.publicUrl %}
+            <a href="{{ app.publicUrl }}" target="_blank" rel="noopener" class="inline-block bg-wavgen-yellow text-black px-3 py-1 rounded text-xs font-medium hover:bg-yellow-300 transition-colors">Open →</a>
+            {% else %}
+            <span class="text-gray-500 text-xs">Private build · no public demo yet</span>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-gray-400">No apps in the catalogue yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

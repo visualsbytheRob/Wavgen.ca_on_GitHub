@@ -1,0 +1,42 @@
+---
+layout: base.njk
+title: Launchpad
+description: Private launch page.
+permalink: /private/apps/
+noindex: true
+eleventyExcludeFromCollections: true
+sitemap: false
+---
+{#
+private-apps.njk — Rob's private launchpad (spec: Nov 1, 2026).
+- UNLINKED: no nav entry, no index listing, excluded from all collections,
+  `noindex,nofollow` via base.njk. Reachable only by its direct path.
+- `sitemap: false` is a guard for any future sitemap template: skip pages with it.
+- Unlinked is NOT access control: this page is public static HTML on GitHub Pages.
+  Each app enforces its own access (tailnet and/or its own sign-in).
+- Launch links only. NEVER add any password, passphrase, token or credential here
+  or in src/_data/apps.json.
+- Data: src/_data/apps.json (same source as the public showcase).
+#}
+<section class="py-16 bg-gray-900 min-h-screen">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h1 class="text-3xl font-bold text-white mb-2">Launchpad</h1>
+    <p class="text-gray-400 text-sm mb-8">Launch links for Rob's apps. Each app handles its own access.</p>
+
+    <ul class="space-y-3">
+      {% for app in apps.items %}
+      <li class="bg-gray-800 border border-white/10 rounded-lg p-4 flex flex-wrap items-center justify-between gap-3" data-app-id="{{ app.id }}">
+        <div class="min-w-0">
+          <p class="text-white font-semibold">{{ app.name }}</p>
+          {% if app.access %}<p class="text-gray-400 text-xs mt-1">{{ app.access }}</p>{% endif %}
+        </div>
+        {% if app.launchUrl %}
+        <a href="{{ app.launchUrl }}" target="_blank" rel="noopener noreferrer" class="bg-wavgen-yellow text-black px-4 py-1.5 rounded text-sm font-medium hover:bg-yellow-300 transition-colors">Launch →</a>
+        {% else %}
+        <span class="text-gray-500 text-sm">Launch URL not set</span>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>

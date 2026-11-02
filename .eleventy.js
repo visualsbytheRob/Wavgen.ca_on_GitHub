@@ -137,6 +137,30 @@ module.exports = function(eleventyConfig) {
     return allImages.sort(() => Math.random() - 0.5);
   });
 
+  // App catalogue (src/_data/apps.json): project each entry down to what the
+  // PUBLIC showcase may show. A private app's launchUrl (e.g. a tailnet host)
+  // is dropped here so it never reaches public HTML; only the unlinked private
+  // launchpad page reads launchUrl for every app. publicUrl is the one link a
+  // public card may carry: the launch URL of a public app, else its demo URL.
+  eleventyConfig.addFilter("publicApps", function(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map(app => ({
+      id: app.id,
+      name: app.name,
+      description: app.description || "",
+      category: app.category || "",
+      tech: Array.isArray(app.tech) ? app.tech : [],
+      access: app.access || "",
+      publicUrl: (app.visibility === "public" && app.launchUrl) ? app.launchUrl : (app.demoUrl || "")
+    }));
+  });
+
+  // Distinct, non-empty values of `key` across an array (keeps first-seen order)
+  eleventyConfig.addFilter("uniqueBy", function(items, key) {
+    if (!Array.isArray(items)) return [];
+    return [...new Set(items.map(i => i && i[key]).filter(Boolean))];
+  });
+
   // Add a split filter for string manipulation (used in OG image path detection)
   eleventyConfig.addFilter("split", function(str, separator) {
     if (!str) return [];
