@@ -1,20 +1,26 @@
 {#
 app-showcase.njk
 Public app catalogue cards. Every card is rendered from src/_data/apps.json
-(via the `publicApps` filter in .eleventy.js, which strips private launch URLs).
-Removing an entry from apps.json removes its card. /js/data-app-embed.js adds
-the category filter as a progressive enhancement; without JS all cards show.
+(via the `publicApps` filter; the rule is in src/_utils/apps.js, which strips
+private launch URLs). Removing an entry from apps.json removes its card.
+/js/data-app-embed.js adds the category filter as a progressive enhancement;
+without JS all cards show.
 Public/private rule: public cards describe apps and link demos (demo data only).
 Private launch links live only on the unlinked launchpad page.
+Structured data: the end of this component emits a schema.org ItemList
+(JSON-LD) of the apps with "visibility": "public" ONLY, built from the same
+apps.json entries by src/_utils/structured-data.js. Its name and @id reuse
+`catalogue` below, so the heading, section id and JSON-LD can't drift apart.
 #}
+{% set catalogue = { anchor: "app-catalogue", title: "App catalogue" } %}
 {% set showcaseApps = apps.items | publicApps %}
 {% set showcaseCategories = showcaseApps | uniqueBy('category') %}
-<section id="app-catalogue" class="py-20 bg-gray-900">
+<section id="{{ catalogue.anchor }}" class="py-20 bg-gray-900">
   <div class="container mx-auto px-4">
     <div id="data-app-embed-container" class="data-app-embed bg-gradient-to-br from-wavgen-dark-purple to-gray-900 rounded-xl border-2 border-wavgen-purple p-6 shadow-2xl">
       <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
-          <h2 class="text-3xl font-bold text-white">App catalogue</h2>
+          <h2 class="text-3xl font-bold text-white">{{ catalogue.title }}</h2>
           <p class="text-gray-400 text-sm mt-1">Apps Rob has built and runs. Public demos use demo data only.</p>
         </div>
         {% if showcaseCategories.length > 1 %}
@@ -59,3 +65,5 @@ Private launch links live only on the unlinked launchpad page.
     </div>
   </div>
 </section>
+{# schema.org ItemList of the PUBLIC apps only (emits nothing when no app is public) #}
+{{ apps.items | appCatalogueJsonLd(site, page.url, catalogue) | jsonLdScript | safe }}
