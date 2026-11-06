@@ -1,34 +1,34 @@
 {
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-06",
   "note": "Auto-refreshed by RSS aggregator (free-tier backup).",
   "items": [
     {
-      "title": "U.S. government warns of ‘ongoing cyber threat’ amid mass-hacks of industrial retail and military freezers",
-      "url": "https://techcrunch.com/2026/11/05/u-s-government-warns-of-ongoing-cyber-threat-amid-mass-hacks-of-industrial-retail-and-military-freezers/",
-      "source": "TechCrunch",
-      "date": "2026-11-05",
-      "summary": "A joint U.S. government statement says the hacks are affecting the food, transportation, and healthcare industries after reports of global mass-hacks."
-    },
-    {
-      "title": "EA is bringing 25 classic PC games to Steam",
-      "url": "https://www.theverge.com/games/1023553/ea-classic-pc-games-steam-anniversary-edition",
+      "title": "Meta’s Muse AI can create custom ‘spaces’ for the version of the app you need right now",
+      "url": "https://www.theverge.com/tech/1028871/meta-muse-ai-spaces",
       "source": "The Verge",
-      "date": "2026-11-05",
-      "summary": "Electronic Arts is launching 25 classic games on Steam, including \"Anniversary Editions\" of the motorcycle racer Road Rash and six Wing Commander titles. These Anniversary Editions preserve \"the origi…"
+      "date": "2026-11-06",
+      "summary": "Meta will now allow you to build customized, app-like experiences within its Muse AI assistant. The new feature, called \"spaces,\" allows Muse to build things like a shopping hub, school dashboard, mus…"
     },
     {
-      "title": "OpenAI president Greg Brockman says company could be IPO ready in 2027",
-      "url": "https://techcrunch.com/2026/11/05/openai-president-greg-brockman-says-company-could-be-ipo-ready-in-2027/",
-      "source": "TechCrunch",
-      "date": "2026-11-05",
-      "summary": "OpenAI president Greg Brockman says the company could be ready to go public in 2027, pointing to accelerating enterprise revenue and a turnaround in its business."
+      "title": "Amazon is now making a Melania Trump TV series",
+      "url": "https://www.theverge.com/tech/1028854/amazon-melania-the-series-mgm-studios-prime-video",
+      "source": "The Verge",
+      "date": "2026-11-06",
+      "summary": "Following the Melania documentary movie about Melania Trump that premiered earlier this year, Amazon is now planning to release a two-part Prime Video series focusing on the First Lady. The show, Mela…"
     },
     {
-      "title": "The ex-Secret Service agent who flipped a hacker is now raising a second $250M cybersecurity fund",
-      "url": "https://techcrunch.com/2026/11/05/the-ex-secret-service-agent-who-flipped-a-hacker-is-now-raising-a-second-250m-cybersecurity-fund/",
-      "source": "TechCrunch",
-      "date": "2026-11-05",
-      "summary": "Stephen Ward, a former Secret Service agent and Home Depot CISO, is preparing a second fund of roughly $250 million for Brightmind Partners."
+      "title": "Just about anyone can rent access to White House IP addresses",
+      "url": "https://www.theverge.com/tech/1028835/white-house-residential-proxy",
+      "source": "The Verge",
+      "date": "2026-11-06",
+      "summary": "Someone at the White House appears to be running software that could enable outsiders to rent access on the presidential network for just \"a few dollars,\" as reported by Krebs on Security and The Regi…"
+    },
+    {
+      "title": "Kobo will soon let you upload and sync your own ebooks across devices, for a price",
+      "url": "https://www.theverge.com/tech/1028715/kobo-stack-cloud-sync-ebooks-epub-pdf-email-files",
+      "source": "The Verge",
+      "date": "2026-11-06",
+      "summary": "Kobo is launching a new monthly subscription service called Stack that lets you upload your own ebooks and documents to the company's servers where they'll be synced across multiple devices and apps,…"
     }
   ]
 }
