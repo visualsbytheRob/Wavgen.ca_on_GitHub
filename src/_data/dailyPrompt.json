@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-09",
-  "question": "If a stranger landed on wavgen.ca for 30 seconds, what one truth about your work do you want them to leave with?",
+  "date": "2026-11-10",
+  "question": "What would your work look like if you'd had Claude five years ago?",
   "source": "random-with-history",
-  "chosen_index": 156,
+  "chosen_index": 139,
   "bank_size": 409,
-  "recently_used_window": 181
+  "recently_used_window": 182
 }
