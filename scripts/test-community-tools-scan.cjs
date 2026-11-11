@@ -7,7 +7,7 @@ const fs=require('node:fs');const assert=require('node:assert/strict');const vm=
  const portScript=fs.readFileSync('src/assets/community-tools-scan.js','utf8');
 
  const literal=portScript.match(/var ENTRIES\s*=\s*(\[[\s\S]*?\n\]);/)[1];
- const entries=vm.runInNewContext('('+literal+')',{}, {timeout:100});assert.equal(entries.length,25);
+ const entries=vm.runInNewContext('('+literal+')',{}, {timeout:100});assert.equal(entries.length,26);
  const oldEntries=vm.runInNewContext('('+sourceScript.match(/var ENTRIES\s*=\s*(\[[\s\S]*?\n\]);/)[1]+')');
  const expected=JSON.parse(JSON.stringify(oldEntries)).filter(e=>e.creator!=='Okamirufu').map((e,i)=>{
    const oldN=e.n;e.n=i+1;e.anchor='tool-'+oldN;
@@ -19,8 +19,14 @@ const fs=require('node:fs');const assert=require('node:assert/strict');const vm=
    if(e.creator==='Darien Brito')e.lic=e.lic.replace('TDMorph is MIT','TDXMorph is MIT');
    return e;
  });
- assert.deepEqual(JSON.parse(JSON.stringify(entries)),expected,'Only approved catalogue edits; every other field and link preserved');
- assert.deepEqual(Array.from(entries,e=>e.n),Array.from({length:25},(_,i)=>i+1));
+ assert.deepEqual(JSON.parse(JSON.stringify(entries.slice(0,25))),expected,'Only approved catalogue edits; every other field and link preserved');
+ assert.deepEqual(Array.from(entries,e=>e.n),Array.from({length:26},(_,i)=>i+1));
+ const added=entries[25];
+ assert.equal(added.creator,'Spiraldiver — Luka Sladaković');
+ assert.equal(added.anchor,'tool-spiraldiver');
+ assert.equal(entries.filter(e=>e.creator.includes('Spiraldiver')).length,1);
+ assert.equal(new Set(entries.map(e=>e.anchor)).size,26);
+ for(const term of ['97 operators','142 operators','Symmetry','Spiral Tiling','Iterate','Conformal Map','Effect','Perspectra','CVOP','Juggling','4D Polytope','Network','TDXFam'])assert(added.what.includes(term),term);
  assert.equal(entries.find(e=>e.creator==='Derivative (official)').anchor,'tool-24');
  assert(!/Okamirufu|TDFam|\bTDMap\b/.test(portScript));
  assert(!/\bTDMorph\b/.test(portScript.replace('formerly TDMorph','')));
@@ -36,12 +42,12 @@ const fs=require('node:fs');const assert=require('node:assert/strict');const vm=
  correction.parentNode.childNodes=correction.parentNode.childNodes.filter(n=>n!==correction);
  assert(!built.includes('Two corrections from the scan:'),'Corrections note must not appear on the live scan');
  const sourceBody=find(doc,n=>n.tagName==='body');const portBody=find(out,n=>attr(n,'class')==='community-tools-scan');
- const expectedStatic=norm(text(sourceBody)).replaceAll('TDFam','TDXFam').replace('26 Catalogue entries','25 Catalogue entries').replace('10 + 16','10 + 15').replace('26 entries','25 entries').replace(', Okamirufu','').replace('T3D grew into TDXFam',"RayTK was the first custom operator family, inspiring Josef Pelz's T3D and the custom families that followed. T3D grew into TDXFam");
+ const expectedStatic=norm(text(sourceBody)).replaceAll('TDFam','TDXFam').replace(', Okamirufu','').replace('T3D grew into TDXFam',"RayTK was the first custom operator family, inspiring Josef Pelz's T3D and the custom families that followed. T3D grew into TDXFam");
  assert.equal(norm(text(portBody)),expectedStatic,'Only approved static copy edits');
  for(const file of ['_site/video/touchdesigner-signal-flow/index.html','_site/video/touchdesigner-signal-flow/community-tools-scan/index.html']){
    const html=fs.readFileSync(file,'utf8');
-   assert(!/Okamirufu|TDFam|26 catalogue entries|26 entries/.test(html));
-   assert(html.includes('<b>25</b><span>Catalogue entries</span>'));
+   assert(!/Okamirufu|TDFam|25 catalogue entries|25 entries/.test(html));
+   assert(html.includes('<b>26</b><span>Catalogue entries</span>'));
    for(const stat of ['<b>5+</b>','<b>86</b>','<b>1,361</b>'])assert(html.includes(stat));
    assert(html.includes('id="catalogue"'));
  }
@@ -50,5 +56,5 @@ const fs=require('node:fs');const assert=require('node:assert/strict');const vm=
  const sourceMcp=find(doc,n=>attr(n,'id')==='mcp'),portMcp=find(out,n=>attr(n,'id')==='mcp');assert.equal(norm(text(sourceMcp)).replaceAll('TDFam','TDXFam'),norm(text(portMcp)));
  assert(!find(portBody,n=>n.tagName==='iframe'),'Port must be native HTML');
  assert(fs.readFileSync('_site/video/touchdesigner-signal-flow/index.html','utf8').includes('href="/video/touchdesigner-signal-flow/community-tools-scan/"'));
- console.log('PASS: 25 complete entries; approved feedback only; stable anchors, links, badges, MCP table and count surfaces preserved.');
+ console.log('PASS: 26 complete entries; approved feedback only; stable anchors, links, badges, MCP table and count surfaces preserved.');
 })().catch(e=>{console.error(e);process.exitCode=1});
