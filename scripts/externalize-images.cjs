@@ -16,7 +16,7 @@ for(const file of walk(root)){
   s=s.split(local).join(remote);
  }
  // Avoid stale same-origin scripts retaining the old image paths at cutover.
- if(file.endsWith('.html'))s=s.replace(/(<script\b[^>]*\bsrc=["'])(\/[^"'?]+\.js)(["'])/g,'$1$2?media=r2-v1$3');
+ if(file.endsWith('.html'))s=s.replace(/(<script\b[^>]*\bsrc=["'])(\/[^"'?]+\.js)(["'])/g,'$1$2?media=r2-v2$3');
  if(s!==old){fs.writeFileSync(file,s);rewritten++;}
 }
 console.log(`External images: ${manifest.entries.length} paths, ${rewritten} text files rewritten, ${removed} stale output images removed; ${base}`);
