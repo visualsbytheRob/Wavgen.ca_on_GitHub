@@ -32,7 +32,7 @@ footerTagline: Exploring the intersection of creativity and technology.
 <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen">
     <!-- Background Slideshow -->
     <div class="hero-section-bg-slideshow absolute inset-0">
-        {%- for img in approvedImages.home %}
+        {%- for img in collections.homeImages %}
           <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
         {%- endfor %}
     </div>
@@ -45,7 +45,7 @@ footerTagline: Exploring the intersection of creativity and technology.
         <div class="relative animate-fade-in overflow-hidden">
             <!-- Background slideshow behind Hello text -->
             <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-                {%- for img in approvedImages.home %}
+                {%- for img in collections.homeImages %}
                   <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
                 {%- endfor %}
                 {# Placeholder will be injected here by JS if no images #}
@@ -81,20 +81,6 @@ footerTagline: Exploring the intersection of creativity and technology.
             {# Home images #}
             {%- for img in collections.homeImages %}
               <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
-            {%- endfor %}
-            {# Data section images #}
-            {%- for img in collections.codingImages %}
-              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
-            {%- endfor %}
-            {%- for img in collections.genaiImages %}
-              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
-            {%- endfor %}
-            {%- for img in collections.webdevImages %}
-              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
-            {%- endfor %}
-            {# Art section images #}
-            {%- for img in collections.paintingImages %}
-              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
             {%- endfor %}
             {# Ken Burns effect and transitions handled by JS #}
           </a>

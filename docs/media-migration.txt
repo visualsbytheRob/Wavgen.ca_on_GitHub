@@ -1,0 +1,112 @@
+WAVGEN IMAGE MIGRATION — APPROVED NOVEMBER 11, 2026
+
+Current deployed commit: 73b145205388219519c2ca734416588a3ecfd7f9.
+Rob approved the plan. All 76 additional objects are uploaded; the approved read-only CORS policy is applied. Before deployment, all 185 public objects passed SHA-256, Cloudflare-header and CORS verification.
+
+AUDIT
+326 tracked published image files (323 src/images files and 3 src/icons files), 49,406,569 bytes.
+The supplied 3,477-file total does not match the active deployment checkout or its current main commit. The old checkout also does not establish that total.
+196 obsolete, untracked JPEG previews are local-only and excluded from this migration.
+Clean production build: 67,671,545 -> 18,705,487 bytes (about 72% smaller).
+All 326 file paths map to 185 distinct byte-identical objects. Existing 109 approved objects reused; 76 additional objects staged.
+
+PLAN / DEPLOY ORDER
+1. Reuse existing public wavgen-media bucket and existing custom domain https://media.wavgen.ca. No DNS change. wavgen-vault stays private and untouched.
+2. Upload 76 staged files into site-images/ with the SHA-256 filenames listed below. No resizing/recompression; preserve image MIME types. Existing approved objects keep their wavgen-approved-2026-11-11/ paths.
+3. Apply config/r2-cors.json: GET/HEAD only for wavgen.ca, www.wavgen.ca and the two local preview origins. No write permissions or credentials exposed. Refresh cached existing media responses if necessary.
+4. Run python scripts/verify-r2-media.py. Require matching SHA-256, Server: cloudflare and Access-Control-Allow-Origin for every object. Do not publish before this passes.
+5. Commit the reviewed diff, including removal of 326 media files from the current Git tree. Local copies and a separate staged backup are retained. Git history is not rewritten.
+6. Deploy GitHub Pages. The workflow has a public-object/CORS preflight gate. Build URL rewriting covers HTML, runtime JS, CSS, JSON, feeds and the web manifest; no image files are shipped in _site.
+7. Verify live image headers and spot-check Home, Art and TouchDesigner, slideshow links and the Three.js visual feed. Roll back the code commit if validation fails; retained R2 objects are harmless.
+
+GALLERY VARIETY
+Approved child-page images promoted into parent pools; duplicates removed; rows select distinct slices of a shuffled sequence. Destination links preserved. Home 22->109, Music 16->21, Video 10->13, Art 15->27, Data 21->26.
+No text is baked back into the image assets. Catalogue/other page copy and all page URLs/anchors are unchanged.
+
+SCOPE AND LIMITS
+Images only. Existing Bandcamp cover and YouTube thumbnail URLs remain with those providers. No audio/video moved; future R2 audio/ and video/ prefixes remain available.
+Existing raw GitHub /images/... and /icons/... file URLs cease to serve media after removal; all current site references are rewritten. Page URLs and anchors stay intact.
+No new account, paid product, private-vault permission change or Git history rewrite.
+The approval preview used a local cross-origin mirror on port 8090. Production builds use https://media.wavgen.ca. Public R2 verification passed before deployment; live-page acceptance checks follow deployment.
+
+VALIDATION
+Production build, migration tests, catalogue parity, content-snapshot and visual-feed checks passed. Exact visible page-copy comparison passed for Home, Art, TouchDesigner and standalone scan.
+Browser preview: no broken loaded images on Home, Art and TouchDesigner; linked galleries render; slideshow opens with destination links; Three.js engine active using cross-origin images; shuffled image order confirmed.
+
+NEW R2 OBJECTS (76)
+https://media.wavgen.ca/site-images/058e5dc56335d0df4f80b4b7cdd11fc81f9e72c7a64e120368f4036ebb5e1ca1.svg | 57711 bytes | 058e5dc56335d0df4f80b4b7cdd11fc81f9e72c7a64e120368f4036ebb5e1ca1
+https://media.wavgen.ca/site-images/09fee63020ce736c32478083c32f2ec1ec0b42c9f4e12dfc94e21e8cb35fb15d.svg | 174323 bytes | 09fee63020ce736c32478083c32f2ec1ec0b42c9f4e12dfc94e21e8cb35fb15d
+https://media.wavgen.ca/site-images/0e83e89309cf7e14675f8a0582e154e1fc6bedebae27868d22ab5c338b884813.svg | 40475 bytes | 0e83e89309cf7e14675f8a0582e154e1fc6bedebae27868d22ab5c338b884813
+https://media.wavgen.ca/site-images/109fa083442127f13063b7325800ecc2495bd7bd0662204b4a387557c0e1116e.svg | 326887 bytes | 109fa083442127f13063b7325800ecc2495bd7bd0662204b4a387557c0e1116e
+https://media.wavgen.ca/site-images/1576e1457b15e7139de6e5fe5195de12c03c7c58cc6a8236a8790a9449600720.svg | 295883 bytes | 1576e1457b15e7139de6e5fe5195de12c03c7c58cc6a8236a8790a9449600720
+https://media.wavgen.ca/site-images/170403563c54aeab2905eaa62230aee0fef4e2d033b586f0ee3bd14543319c1c.svg | 107159 bytes | 170403563c54aeab2905eaa62230aee0fef4e2d033b586f0ee3bd14543319c1c
+https://media.wavgen.ca/site-images/184c16bf542d0881dde83d43ad27f663aa12d55156078ec734db3d587e769c1d.svg | 216971 bytes | 184c16bf542d0881dde83d43ad27f663aa12d55156078ec734db3d587e769c1d
+https://media.wavgen.ca/site-images/1a152fb5a4be9e9a59b59971c3d9b09ae329daccc01fc6dc55d02d616584110d.svg | 185339 bytes | 1a152fb5a4be9e9a59b59971c3d9b09ae329daccc01fc6dc55d02d616584110d
+https://media.wavgen.ca/site-images/1d9b389773c1e6535f4788af799c94921dab5fd0d61c6338286b6e294170b81d.svg | 54959 bytes | 1d9b389773c1e6535f4788af799c94921dab5fd0d61c6338286b6e294170b81d
+https://media.wavgen.ca/site-images/1e11c032bd708456268168c12802904ef046a5237f76520ac6e72988024e14f8.svg | 82299 bytes | 1e11c032bd708456268168c12802904ef046a5237f76520ac6e72988024e14f8
+https://media.wavgen.ca/site-images/1f4a3c7828873ba823ebff27241eebfe8ad606a9b85751a137d842b2839c5340.webp | 62090 bytes | 1f4a3c7828873ba823ebff27241eebfe8ad606a9b85751a137d842b2839c5340
+https://media.wavgen.ca/site-images/1ff017aa9f9d21a4340e32df80e401b2328523cd8855d00c2fbbc0225b1523ec.svg | 177159 bytes | 1ff017aa9f9d21a4340e32df80e401b2328523cd8855d00c2fbbc0225b1523ec
+https://media.wavgen.ca/site-images/2260d8a357300991889c8e97966333c12dbda090f360fa41005b29ed68c02eeb.webp | 49248 bytes | 2260d8a357300991889c8e97966333c12dbda090f360fa41005b29ed68c02eeb
+https://media.wavgen.ca/site-images/239242885158f11b46c5892fad72e281c182b222b1ed7b655503b6ef2689a392.svg | 76903 bytes | 239242885158f11b46c5892fad72e281c182b222b1ed7b655503b6ef2689a392
+https://media.wavgen.ca/site-images/2828c677f42722fc39abb29b869fe13742d3c2631465cbd23ca73236d9248f12.png | 96387 bytes | 2828c677f42722fc39abb29b869fe13742d3c2631465cbd23ca73236d9248f12
+https://media.wavgen.ca/site-images/2d8447931368ea7a4299c609349d4785989f26833ba0e7727f512b196bbed70e.svg | 50511 bytes | 2d8447931368ea7a4299c609349d4785989f26833ba0e7727f512b196bbed70e
+https://media.wavgen.ca/site-images/34f2ff70d2d9325dbba1b635a9a17af973918a6005f91fd9258f18a3a34f5149.webp | 69146 bytes | 34f2ff70d2d9325dbba1b635a9a17af973918a6005f91fd9258f18a3a34f5149
+https://media.wavgen.ca/site-images/388ce7a82128eaf23a9fe6f5b48a403bc22f012917f98bcf3679f890080e7109.svg | 118007 bytes | 388ce7a82128eaf23a9fe6f5b48a403bc22f012917f98bcf3679f890080e7109
+https://media.wavgen.ca/site-images/39dc1e4da8f2c3b62f6a38c92c2091736f204659a2bd42ead5af398e8e69820d.svg | 196027 bytes | 39dc1e4da8f2c3b62f6a38c92c2091736f204659a2bd42ead5af398e8e69820d
+https://media.wavgen.ca/site-images/47545176266502c38dc0791ad28835e720041418b8741ce441750432688dcfb6.webp | 60272 bytes | 47545176266502c38dc0791ad28835e720041418b8741ce441750432688dcfb6
+https://media.wavgen.ca/site-images/4967b42fd4d3ba398f53ea04e2b885e31f2d0b472d659e1db83416b79dcbeef3.webp | 24362 bytes | 4967b42fd4d3ba398f53ea04e2b885e31f2d0b472d659e1db83416b79dcbeef3
+https://media.wavgen.ca/site-images/4e3003eae51234c0d855377786e1867636cd1acc437911255072f7cf0a26879e.svg | 45647 bytes | 4e3003eae51234c0d855377786e1867636cd1acc437911255072f7cf0a26879e
+https://media.wavgen.ca/site-images/5112800958c92db3b9efafa947bff86b2d59300b4c21abfb3911a462d0dad015.svg | 134107 bytes | 5112800958c92db3b9efafa947bff86b2d59300b4c21abfb3911a462d0dad015
+https://media.wavgen.ca/site-images/535dd4f350d3f1ba69d27f4dfcd9403fdb1fe7ce87acf4707af403cb37c852e5.webp | 66082 bytes | 535dd4f350d3f1ba69d27f4dfcd9403fdb1fe7ce87acf4707af403cb37c852e5
+https://media.wavgen.ca/site-images/556ed72488642b50bac2260b2cca9b081fc580a380a89fa3469f98528e0e51d2.svg | 72787 bytes | 556ed72488642b50bac2260b2cca9b081fc580a380a89fa3469f98528e0e51d2
+https://media.wavgen.ca/site-images/57a544f1de6ee5380d5a8833079211284478e79c8e46ca669b88062d49fcc2ff.svg | 740335 bytes | 57a544f1de6ee5380d5a8833079211284478e79c8e46ca669b88062d49fcc2ff
+https://media.wavgen.ca/site-images/5801eec4bb31e8ee6da99e556c049e94a8c5b58cffb3de076d3c56416dc5280d.svg | 118163 bytes | 5801eec4bb31e8ee6da99e556c049e94a8c5b58cffb3de076d3c56416dc5280d
+https://media.wavgen.ca/site-images/5fe1e90ed830450c7275b275b8d1088f1d3203d389a97f7cb2758d970844b942.webp | 73806 bytes | 5fe1e90ed830450c7275b275b8d1088f1d3203d389a97f7cb2758d970844b942
+https://media.wavgen.ca/site-images/64268a4026a9422d32f1dffba4c7f45d9b8327ceb2825bf8d0a18bd268e0ae04.svg | 16455 bytes | 64268a4026a9422d32f1dffba4c7f45d9b8327ceb2825bf8d0a18bd268e0ae04
+https://media.wavgen.ca/site-images/64b5fb7985c88d506a6ade6964da94f5f1634e27ffaf77e98201ce7af4f574f8.svg | 266443 bytes | 64b5fb7985c88d506a6ade6964da94f5f1634e27ffaf77e98201ce7af4f574f8
+https://media.wavgen.ca/site-images/66813d64b885297b02a8c750331e255a99681466d4cb9ffef0928214570cc320.webp | 248644 bytes | 66813d64b885297b02a8c750331e255a99681466d4cb9ffef0928214570cc320
+https://media.wavgen.ca/site-images/6992728099768178e35a52dff9120eedb7eed7eb63e9b73d2da842b4f9fdb2ff.svg | 170767 bytes | 6992728099768178e35a52dff9120eedb7eed7eb63e9b73d2da842b4f9fdb2ff
+https://media.wavgen.ca/site-images/6b6464b8c53303212914d0b32877b3e32f4d7cf1bde0b84b124a067b0a33cd35.svg | 120903 bytes | 6b6464b8c53303212914d0b32877b3e32f4d7cf1bde0b84b124a067b0a33cd35
+https://media.wavgen.ca/site-images/6c0ccdea72fb9a1c91b72acadd22dacea80e82ec228e9eb41c6ecc9c9f0874cf.svg | 292387 bytes | 6c0ccdea72fb9a1c91b72acadd22dacea80e82ec228e9eb41c6ecc9c9f0874cf
+https://media.wavgen.ca/site-images/6d045873c7501677e96a80f0ed23f7b52b3006fe76fb3e5cde1062501605860f.svg | 64215 bytes | 6d045873c7501677e96a80f0ed23f7b52b3006fe76fb3e5cde1062501605860f
+https://media.wavgen.ca/site-images/7423318ac1bcd474b14d704548cfead76cbff6292ca28140bf2c9b9485c6deaa.svg | 180647 bytes | 7423318ac1bcd474b14d704548cfead76cbff6292ca28140bf2c9b9485c6deaa
+https://media.wavgen.ca/site-images/761d28c8669c4ca6216f7497d173650a22dfe6ba7173044c8133c34442558cb8.svg | 143019 bytes | 761d28c8669c4ca6216f7497d173650a22dfe6ba7173044c8133c34442558cb8
+https://media.wavgen.ca/site-images/772376b1fdd6e8b9219e94e6799fd4d72c57be4cd49486d7f1217dc7f92dbd94.svg | 306231 bytes | 772376b1fdd6e8b9219e94e6799fd4d72c57be4cd49486d7f1217dc7f92dbd94
+https://media.wavgen.ca/site-images/778642782c437822fc1bc9ca979f6b29a16f1f8bdaa57a1a22876487299191dd.svg | 163539 bytes | 778642782c437822fc1bc9ca979f6b29a16f1f8bdaa57a1a22876487299191dd
+https://media.wavgen.ca/site-images/7884a7a60960cc1cacc0ec09b618601e9d1fd5d15339a817e1ff57fe73556783.svg | 23523 bytes | 7884a7a60960cc1cacc0ec09b618601e9d1fd5d15339a817e1ff57fe73556783
+https://media.wavgen.ca/site-images/7b4775ef566bdc2706c34e88e8eb4c833003526ed5dca9f93644f7bbb306ffd3.svg | 31515 bytes | 7b4775ef566bdc2706c34e88e8eb4c833003526ed5dca9f93644f7bbb306ffd3
+https://media.wavgen.ca/site-images/7b8677091343f56163745f54d9a885a1985b7a07524d24d231b03afaa8e2d382.svg | 320187 bytes | 7b8677091343f56163745f54d9a885a1985b7a07524d24d231b03afaa8e2d382
+https://media.wavgen.ca/site-images/7c0ec130c5591a0ae1ded264db1316f0ba0b01fff11daafb0ac09f0cc80f650b.svg | 22899 bytes | 7c0ec130c5591a0ae1ded264db1316f0ba0b01fff11daafb0ac09f0cc80f650b
+https://media.wavgen.ca/site-images/7ce47ef3e217522719238c278834aece8a9c46bf1808724aaf272fc1f7bb5caa.svg | 21127 bytes | 7ce47ef3e217522719238c278834aece8a9c46bf1808724aaf272fc1f7bb5caa
+https://media.wavgen.ca/site-images/820858f12858a538a8e4088fc56ce46aa5d346a6653ccaf4543143c0beedb678.svg | 464219 bytes | 820858f12858a538a8e4088fc56ce46aa5d346a6653ccaf4543143c0beedb678
+https://media.wavgen.ca/site-images/867d7f267ebb6345ab545ea4ca9263c3e6dd6ec7b77b4ca2a5d18bd74dfd1182.webp | 84998 bytes | 867d7f267ebb6345ab545ea4ca9263c3e6dd6ec7b77b4ca2a5d18bd74dfd1182
+https://media.wavgen.ca/site-images/891170ab89093d6ade89f01978bba35015d53de8bbedc3a39c7b47522b5972c1.webp | 103884 bytes | 891170ab89093d6ade89f01978bba35015d53de8bbedc3a39c7b47522b5972c1
+https://media.wavgen.ca/site-images/89453bc3e02841b14e794de4a71f6c0bd59d757458caec6d7b4479b2b3286702.png | 22525 bytes | 89453bc3e02841b14e794de4a71f6c0bd59d757458caec6d7b4479b2b3286702
+https://media.wavgen.ca/site-images/8a5fd69ceb27d1fa4ff28858f6de9337547357996940d8cf9f2d46958246c6c9.webp | 82506 bytes | 8a5fd69ceb27d1fa4ff28858f6de9337547357996940d8cf9f2d46958246c6c9
+https://media.wavgen.ca/site-images/8be316ee265c4cf46340f309bd259b063695bcf323a93532c0e8fa82432a627b.svg | 373275 bytes | 8be316ee265c4cf46340f309bd259b063695bcf323a93532c0e8fa82432a627b
+https://media.wavgen.ca/site-images/91020908e2c79e960b1aef4e3c0bc400018f783935f4a7c73edb40379e14b426.svg | 400739 bytes | 91020908e2c79e960b1aef4e3c0bc400018f783935f4a7c73edb40379e14b426
+https://media.wavgen.ca/site-images/9c24fd758f471d0dfe9eff0436833fe4ab44199a353b157345d1508bb7ca74c7.svg | 44775 bytes | 9c24fd758f471d0dfe9eff0436833fe4ab44199a353b157345d1508bb7ca74c7
+https://media.wavgen.ca/site-images/9f30daa339daf0418f8de6ce1ba9a440f042956a7a4f9c0f2f5fcbb8d689252d.svg | 175815 bytes | 9f30daa339daf0418f8de6ce1ba9a440f042956a7a4f9c0f2f5fcbb8d689252d
+https://media.wavgen.ca/site-images/9fd59dbc52fec0b37df84e3cf0eef9c28ecd4d53d11c7524bc2b8a966f22da38.svg | 403807 bytes | 9fd59dbc52fec0b37df84e3cf0eef9c28ecd4d53d11c7524bc2b8a966f22da38
+https://media.wavgen.ca/site-images/a139ef90723faaf8ea30281f882a3e5d5ae0f8193a22a4d130ed1a9297a2370d.webp | 84832 bytes | a139ef90723faaf8ea30281f882a3e5d5ae0f8193a22a4d130ed1a9297a2370d
+https://media.wavgen.ca/site-images/a142e1d61c05a22b4c232941184d4c5e1a83423098fb6cb5592b5ebe3691a37c.svg | 46243 bytes | a142e1d61c05a22b4c232941184d4c5e1a83423098fb6cb5592b5ebe3691a37c
+https://media.wavgen.ca/site-images/a188e1d47b0e5f8873bb0fd4a35f146eea73fa94468e0eae35554d1954cd7052.svg | 63163 bytes | a188e1d47b0e5f8873bb0fd4a35f146eea73fa94468e0eae35554d1954cd7052
+https://media.wavgen.ca/site-images/a37d6b633aede6ff7768b2d6889836ccb726d1285347e6ae0d520e81685cdeee.webp | 125064 bytes | a37d6b633aede6ff7768b2d6889836ccb726d1285347e6ae0d520e81685cdeee
+https://media.wavgen.ca/site-images/a4b4c260e91e237d06849c53baf52be23f647a1fc382f259f202cd27fda5ede3.svg | 447555 bytes | a4b4c260e91e237d06849c53baf52be23f647a1fc382f259f202cd27fda5ede3
+https://media.wavgen.ca/site-images/acb4e47b1db596ae2218db405d7c49625410571002db8ee7fa48e37de2f7da0c.svg | 97495 bytes | acb4e47b1db596ae2218db405d7c49625410571002db8ee7fa48e37de2f7da0c
+https://media.wavgen.ca/site-images/acfe9cf594a16d8e5b63ff14047018638f75a52c8bd1c43ff65cf9caff3301e3.png | 24715 bytes | acfe9cf594a16d8e5b63ff14047018638f75a52c8bd1c43ff65cf9caff3301e3
+https://media.wavgen.ca/site-images/ad866080fcc0addbf2bf06cf034755e005f0b8f90d47a8a5ca55978a17164c4e.webp | 103380 bytes | ad866080fcc0addbf2bf06cf034755e005f0b8f90d47a8a5ca55978a17164c4e
+https://media.wavgen.ca/site-images/b323863a2f07fe023c39070bad1e948199c3565ef72103c792fbba07afdea6f1.svg | 18971 bytes | b323863a2f07fe023c39070bad1e948199c3565ef72103c792fbba07afdea6f1
+https://media.wavgen.ca/site-images/b76cbbf28aadf4a66a359ffdd74213e35eac847d8ef8e7976539d29b590ee226.svg | 20559 bytes | b76cbbf28aadf4a66a359ffdd74213e35eac847d8ef8e7976539d29b590ee226
+https://media.wavgen.ca/site-images/caa59ac1c2cc874732dbaaf8774f8fb1f9e8e79549c228d70c87f8151dc2ca62.svg | 73487 bytes | caa59ac1c2cc874732dbaaf8774f8fb1f9e8e79549c228d70c87f8151dc2ca62
+https://media.wavgen.ca/site-images/cb975422440a2733c8ebb88355e1fa67314889c534d20debd5db277790be0a69.svg | 342139 bytes | cb975422440a2733c8ebb88355e1fa67314889c534d20debd5db277790be0a69
+https://media.wavgen.ca/site-images/cc3a6e5020709347fe7918b2aaaabfdea54614548a1d496f684e0acd1849510e.svg | 272303 bytes | cc3a6e5020709347fe7918b2aaaabfdea54614548a1d496f684e0acd1849510e
+https://media.wavgen.ca/site-images/ccbc261ad14dd605d443b311e48a0ebc5012a8336a2a895db986e7031b0be3b7.svg | 74571 bytes | ccbc261ad14dd605d443b311e48a0ebc5012a8336a2a895db986e7031b0be3b7
+https://media.wavgen.ca/site-images/d344226a93b6f6738fb1643e13ee28c7a2303384aebf5d69d6df3b2dc60f3229.svg | 150687 bytes | d344226a93b6f6738fb1643e13ee28c7a2303384aebf5d69d6df3b2dc60f3229
+https://media.wavgen.ca/site-images/dd43364f4740200c1341406bc64ff87fcf1b946da06244e1ff95584797482ede.webp | 60688 bytes | dd43364f4740200c1341406bc64ff87fcf1b946da06244e1ff95584797482ede
+https://media.wavgen.ca/site-images/e3bd4f829f7f65406e5db038922efbfb28122d7516b30ac048aee7ba035d475d.svg | 311675 bytes | e3bd4f829f7f65406e5db038922efbfb28122d7516b30ac048aee7ba035d475d
+https://media.wavgen.ca/site-images/e41b62163898fa2d146916c306f5bb5e3548f4f6b2db7ae09e7916b03c2eb044.webp | 172810 bytes | e41b62163898fa2d146916c306f5bb5e3548f4f6b2db7ae09e7916b03c2eb044
+https://media.wavgen.ca/site-images/e79a3b4d5b619a2b4a101c33a0a7293d19e44617034af06a022994fff59762b9.svg | 97043 bytes | e79a3b4d5b619a2b4a101c33a0a7293d19e44617034af06a022994fff59762b9
+https://media.wavgen.ca/site-images/eb1eab5184d79d40d5c06356b329d0095b36fa15503fd9ee86c0077c730a0d7a.webp | 133184 bytes | eb1eab5184d79d40d5c06356b329d0095b36fa15503fd9ee86c0077c730a0d7a
+https://media.wavgen.ca/site-images/f784ee5248fdc15dee7a9f49c39dea06950dd69e41e3e95ca6e377d47f9178a2.webp | 96532 bytes | f784ee5248fdc15dee7a9f49c39dea06950dd69e41e3e95ca6e377d47f9178a2
+https://media.wavgen.ca/site-images/f9b3c213691fbce18babdb110912b7632b003bc0aa309ebf03c3e3f50e1ee21f.svg | 90059 bytes | f9b3c213691fbce18babdb110912b7632b003bc0aa309ebf03c3e3f50e1ee21f

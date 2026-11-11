@@ -157,3 +157,14 @@ $RECYCLE.BIN/
 _site-baseline/
 layoutdiff-results.json
 pr-body.txt
+
+# Published media lives in R2; local generation copies must not return to Git.
+src/images/**/*.png
+src/images/**/*.jpg
+src/images/**/*.jpeg
+src/images/**/*.webp
+src/images/**/*.svg
+src/images/**/*.gif
+src/images/**/*.ico
+src/images/**/*.avif
+src/icons/*.png

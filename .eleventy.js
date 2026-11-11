@@ -11,7 +11,9 @@ const fs = require('fs');
 const { toPublicApp } = require('./src/_utils/apps'); // public/private rule for the app catalogue
 const structuredData = require('./src/_utils/structured-data'); // schema.org JSON-LD: builders + build-time validation
 const contentSnapshots = require('./src/_data/contentSnapshots.json');
+const promoteGalleryImages = require('./src/assets/gallery-variety.js');
 function mixContentImages(key, art) {
+  if (['home','music','video','art','data'].includes(key)) return art;
   const cards = contentSnapshots[key] || [], result = [];
   for (let i=0; i<Math.max(cards.length,art.length); i++) {
     if(cards[i]) result.push(cards[i]);
@@ -27,14 +29,16 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter('snapshotKey', url => String(url).replace(/^\/+|\/+$/g, '') || 'home');
   eleventyConfig.addFilter("approvedForPage", (url, images) => {
     const key = String(url || "/").replace(/^\/+|\/+$/g, "") || "home";
-    return mixContentImages(key, images[key] || images[key.split("/")[0]] || []);
+    const promoted = promoteGalleryImages(images);
+    return mixContentImages(key, promoted[key] || promoted[key.split("/")[0]] || []);
   });
   eleventyConfig.addFilter("pageHeading", value => String(value || "").split("\u2014")[0].replace(/ World$/, "").trim());
   // Publish only runtime assets. Developer READMEs are still rendered by Eleventy;
   // changing those public routes is a separate editorial decision.
-  eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
+  eleventyConfig.addPassthroughCopy({ "src/manifest.webmanifest": "manifest.webmanifest" });
   eleventyConfig.addPassthroughCopy("src/assets");
-  eleventyConfig.addPassthroughCopy("src/images/**/*.{png,jpg,jpeg,gif,webp,svg,avif,ico,mp4,webm}");
+  // Images are served by R2; audio/video migration is a separate task.
+  eleventyConfig.addPassthroughCopy("src/images/**/*.{mp4,webm}");
   eleventyConfig.addPassthroughCopy("src/css/style.css");
   eleventyConfig.addPassthroughCopy("src/css/media.css");
   eleventyConfig.addPassthroughCopy("src/js/media-embeds.js");
@@ -52,7 +56,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
   eleventyConfig.addWatchTarget("src/input.css"); // Watch the main input.css
   
-  const approvedImages = require("./src/_data/approvedImages.json");
+  const approvedImages = promoteGalleryImages(require("./src/_data/approvedImages.json"));
   eleventyConfig.addPassthroughCopy("src/js/approved-images.js");
 
   // Helper function to create image collections from a directory
@@ -63,14 +67,10 @@ module.exports = function(eleventyConfig) {
   function createImageCollection(dirPath, urlPath) {
     return function() {
       if (approvedImages[dirPath]) return mixContentImages(dirPath, approvedImages[dirPath]);
-      const fullPath = path.join(__dirname, "src", "images", dirPath);
-      if (!fs.existsSync(fullPath)) return [];
-      return fs.readdirSync(fullPath)
-        .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-        .map(file => ({
-          url: `/images/${dirPath}/${file}`,
-          fileSlug: file.replace(/\.[^/.]+$/, "")
-        }));
+      const prefix = `/images/${dirPath}/`;
+      return require('./config/media-manifest.json').entries
+        .filter(e => e.path.startsWith(prefix) && !e.path.slice(prefix.length).includes('/') && /\.(jpg|jpeg|png|gif|webp)$/i.test(e.path))
+        .map(e => ({url:e.path,fileSlug:path.parse(e.path).name}));
     };
   }
 

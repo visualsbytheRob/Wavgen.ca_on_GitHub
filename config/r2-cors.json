@@ -1,0 +1,18 @@
+[
+  {
+    "AllowedOrigins": [
+      "https://wavgen.ca",
+      "https://www.wavgen.ca",
+      "http://127.0.0.1:8088",
+      "http://127.0.0.1:8087"
+    ],
+    "AllowedMethods": [
+      "GET",
+      "HEAD"
+    ],
+    "ExposeHeaders": [
+      "ETag"
+    ],
+    "MaxAgeSeconds": 3600
+  }
+]

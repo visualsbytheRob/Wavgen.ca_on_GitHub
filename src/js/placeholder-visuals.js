@@ -1823,7 +1823,7 @@
   function initPlaceholders() {
     // Check for real images in hero slideshow
     const heroSlideshow = document.querySelector('.hero-slideshow');
-    const realImages = heroSlideshow ? heroSlideshow.querySelectorAll('img[src^="/images"]') : [];
+    const realImages = heroSlideshow ? heroSlideshow.querySelectorAll('img.hero-slide[src]') : [];
     const hasRealImages = realImages.length > 0;
 
     // Get page theme for styled placeholders
@@ -1916,7 +1916,7 @@
     
     // Create a card
     const createCard = (rowIndex, cardIndex) => {
-      const reference = realImages.length ? realImages[(rowIndex + cardIndex % cardsPerRow) % realImages.length].dataset.pageHref : '';
+      const reference = realImages.length ? realImages[(rowIndex * cardsPerRow + cardIndex % cardsPerRow) % realImages.length].dataset.pageHref : '';
       const card = document.createElement(reference ? 'a' : 'div');
       if (reference) card.href = reference;
       card.className = 'gallery-card flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';
@@ -1928,7 +1928,7 @@
       // Mix: some animated, some real images
       if (realImages.length > 0) {
         // Real image card
-        const imgIndex = (rowIndex + cardIndex % cardsPerRow) % realImages.length;
+        const imgIndex = (rowIndex * cardsPerRow + cardIndex % cardsPerRow) % realImages.length;
         const img = document.createElement('img');
         img.src = realImages[imgIndex].src;
         img.alt = realImages[imgIndex].alt;
@@ -2449,7 +2449,7 @@
     
     // Create animated card
     const createCard = (rowIndex, cardIndex) => {
-      const reference = realImages.length ? realImages[(rowIndex + cardIndex % cardsPerRow) % realImages.length].dataset.pageHref : '';
+      const reference = '';
       const card = document.createElement(reference ? 'a' : 'div');
       if (reference) card.href = reference;
       card.className = 'gallery-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';

@@ -77,6 +77,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Verify public R2 images before publishing
+      run: python3 scripts/verify-r2-media.py --headers-only
+
     - name: Build Eleventy site
       run: npm run build
 
