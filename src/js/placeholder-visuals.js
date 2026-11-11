@@ -1930,7 +1930,7 @@
         // Real image card
         const imgIndex = (rowIndex * cardsPerRow + cardIndex % cardsPerRow) % realImages.length;
         const img = document.createElement('img');
-        img.src = realImages[imgIndex].src;
+        img.src = realImages[imgIndex].dataset.thumbnail || realImages[imgIndex].src;
         img.alt = realImages[imgIndex].alt;
         img.decoding = 'async';
         img.className = 'absolute inset-0 w-full h-full object-cover';

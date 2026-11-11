@@ -1,0 +1,58 @@
+INSTAGRAM IMPORT — NOVEMBER 11, 2026 — DEPLOY APPROVED BY ROB
+
+SOURCE
+Google Drive folder: Instagram Import for Wavgen
+https://drive.google.com/drive/folders/1FBm_q7cEDZ5pLcbKFj_mkj__O47BQHzX
+The unchanged ZIP and manifest are retained outside the repository in media-review/instagram-import.
+Every ZIP member is matched against the manifest; date, media type and Instagram destination come from that manifest.
+
+COUNTS
+381 received files: 191 image posts, 49 carousel leads, 141 video cover frames.
+381 unique source SHA-256 hashes. No new source or decoded-pixel duplicate matches within this import or against the prior approved library.
+The existing 109 approved paths represent 107 distinct files. Two pre-existing pairs share content: 358/498 and 43/696. Those approvals remain unchanged.
+240 new stills added locally: Home 109 -> 349; Art 27 -> 267.
+Music remains 21; Video remains 13; Data remains 26. TouchDesigner assignments and catalogue content unchanged.
+141 video covers excluded from all site data, galleries, feeds and pages.
+
+WEB COPIES
+WebP quality 85, 320/960/1600 maximum edge, EXIF orientation respected, no upscaling, no added text or captions.
+1,143 requested size outputs deduplicate to 1,034 objects: 686 still-image objects and 348 video-cover objects.
+Identical outputs for small images reuse a single content-hash key. No generated hash matches prior published media.
+Stills: https://media.wavgen.ca/site-images/<SHA256>.webp
+Covers: https://media.wavgen.ca/instagram/video-covers/<SHA256>.webp
+R2 addition: 63,720,062 bytes (52,903,174 stills; 10,816,888 held covers).
+The ZIP and source JPGs are not published. wavgen-vault and originals are untouched.
+
+SITE DIFF
+config/media-manifest.json: 686 additional image variants; all prior mappings retained.
+src/_data/approvedImages.json and src/js/approved-images.js: append 240 stills to Art; existing promotion/shuffle rules include them on Home.
+src/index.njk and shared hero: carry thumbnail addresses for new images without altering layout.
+src/js/placeholder-visuals.js: thumbnail rows use the small variant, preserving full-size viewing and destination links.
+src/_data/visualFeed.js and src/assets/visual-feed.js: Instagram destinations and thumbnail/poster variants; no Instagram captions.
+scripts/externalize-images.cjs: refresh runtime asset cache version so existing visitors receive the new collection.
+Preparation, import regression and R2 verification scripts added. No new media binaries in Git or Pages.
+
+LINKS
+All new destinations are the manifest's exact ig_url.
+11 image entries link to Story Highlights. Held covers include 15 Highlight links and one Story link; none enter the site.
+Generic accessibility labels use the image date, never Instagram captions.
+
+SIZE
+Local production build: 18,705,619 -> 20,540,113 bytes, +1,834,494 bytes (~1.83 MB, 9.81%).
+The increase is HTML/data for the larger galleries, not media files. GitHub Pages still contains zero image files.
+Rob approved this preview and deployment on November 11, 2026.
+
+PREVIEW CHECKS
+All 1,034 optimized copies uploaded to the specified R2 prefixes. Sample response: HTTP 200, Content-Type image/webp, Server cloudflare, Access-Control-Allow-Origin https://wavgen.ca.
+All 1,034 objects passed full SHA-256, byte-length, Cloudflare-header and CORS verification; per-object results are retained in the private r2-verification.json report.
+Home: 349 slides including all 240 Instagram stills; sampled thumbnail rows use 320px copies; no broken loaded images.
+Art: 267 slides including all 240 Instagram stills; gallery and full-screen slideshow link to the manifest destination; no broken loaded images.
+TouchDesigner: 26 catalogue entries and 2 learning resources; no broken loaded images. Both TD pages retain identical text, links and iframe destinations compared with the deployed baseline.
+Build, import regression, media migration, visual-feed, catalogue and content-snapshot tests passed.
+Local preview: http://127.0.0.1:8088/ and http://127.0.0.1:8088/art/
+
+GATE
+Upload only the prepared content-addressed web copies to the existing public wavgen-media bucket.
+Verify checksums, Cloudflare response headers and CORS; preview Home, Art and TouchDesigner locally.
+Show Rob the diff, counts and screenshots before committing/pushing/deploying this site update.
+After approval: rerun the R2 release preflight, deploy, then repeat live image and gallery spot checks.

@@ -25,7 +25,7 @@ Usage:
   {# Background Slideshow Layer #}
   <div class="hero-section-bg-slideshow absolute inset-0">
     {%- for img in _images | rejectattr("contentSnapshot") %}
-      <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
+      <img data-page-href="{{ img.href or img.assignedPage or page.url }}" {% if img.thumbnail %}data-thumbnail="{{ img.thumbnail }}"{% endif %} src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
     {%- endfor %}
   </div>
   
@@ -53,7 +53,7 @@ Usage:
       <div class="hidden lg:block overflow-hidden">
         <a href="#" class="hero-slideshow block relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
           {%- for img in _images %}
-            <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
+            <img data-page-href="{{ img.href or img.assignedPage or page.url }}" {% if img.thumbnail %}data-thumbnail="{{ img.thumbnail }}"{% endif %} src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
           {%- endfor %}
           {# Placeholder visuals injected by JS if no images #}
         </a>
