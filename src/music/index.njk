@@ -47,8 +47,8 @@ Only the first genre card is commented in detail; all following cards are analog
 <!-- Releases (Bandcamp embeds, refreshed monthly from waveformgeneration.bandcamp.com) -->
 <section class="py-20 bg-gray-900">
     <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-white mb-2">Releases</h2>
-        <p class="text-gray-400 mb-8">Auto-refreshed monthly from Bandcamp.</p>
+        <h2 id="releases" class="text-3xl font-bold text-white mb-2">Releases</h2><nav class="media-platforms" aria-label="Listen on your preferred platform"><a href="https://waveformgeneration.bandcamp.com/">Bandcamp</a><a href="https://soundcloud.com/robmcd">SoundCloud</a><a href="https://music.apple.com/ca/artist/the-waveform-generation/1322780552">Apple Music Canada</a><a href="/video/">Music videos & visual experiments →</a></nav>
+        <p class="text-gray-400 mb-8">Six releases from The Waveform Generation. Choose a release to load its player.</p>
         {% if latestTracks.items and latestTracks.items.length > 0 %}
             <div class="grid md:grid-cols-2 gap-6">
                 {% for track in latestTracks.items %}
@@ -61,6 +61,7 @@ Only the first genre card is commented in detail; all following cards are analog
     </div>
 </section>
 
+<section class="py-20 bg-gray-900"><div class="container mx-auto px-4"><h2 class="text-3xl font-bold mb-6">More on SoundCloud</h2><article class="media-card" data-media-player data-title="The Waveform Generation on SoundCloud" data-embed-url="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F9023014&amp;show_artwork=true&amp;auto_play=false"><div class="media-stage"><button type="button" class="media-launch">Load SoundCloud artist player</button></div><button type="button" class="media-close" hidden>Close player</button><div class="media-info"><a href="https://soundcloud.com/robmcd">Open SoundCloud ↗</a> · <a href="https://music.apple.com/ca/album/achieve-satisfaction-single/1459468426">Achieve Satisfaction on Apple Music ↗</a></div></article></div></section>
 <!-- Music news (daily loop) -->
 {% set newsData = news.music %}
 {% set newsTitle = "Music news today" %}

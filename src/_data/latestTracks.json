@@ -1,5 +1,230 @@
 {
-  "fetched_at": "2026-11-01T18:44:17.200Z",
+  "fetched_at": "2026-11-11T03:00:00Z",
   "source": "https://waveformgeneration.bandcamp.com/music",
-  "items": []
+  "items": [
+    {
+      "title": "Seven",
+      "type": "album",
+      "id": "4214917917",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/seven",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/album=4214917917/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "8Bit Trinity",
+          "duration": 371.75,
+          "url": "https://waveformgeneration.bandcamp.com/track/8bit-trinity"
+        },
+        {
+          "title": "Rented 909",
+          "duration": 361.5,
+          "url": "https://waveformgeneration.bandcamp.com/track/rented-909"
+        },
+        {
+          "title": "Best Life",
+          "duration": 547.5,
+          "url": "https://waveformgeneration.bandcamp.com/track/best-life"
+        },
+        {
+          "title": "Clean Break",
+          "duration": 382.25,
+          "url": "https://waveformgeneration.bandcamp.com/track/clean-break"
+        },
+        {
+          "title": "Omni Sunrise",
+          "duration": 369.25,
+          "url": "https://waveformgeneration.bandcamp.com/track/omni-sunrise"
+        },
+        {
+          "title": "Boardrock",
+          "duration": 361.375,
+          "url": "https://waveformgeneration.bandcamp.com/track/boardrock"
+        },
+        {
+          "title": "Seven",
+          "duration": 371.75,
+          "url": "https://waveformgeneration.bandcamp.com/track/seven"
+        }
+      ],
+      "release_year": 2021,
+      "apple_url": "https://music.apple.com/ca/album/seven/1594407697",
+      "video_url": "/video/#video-B-y5r7hWYcM",
+      "artwork_url": "https://f4.bcbits.com/img/a0249944022_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/album/seven"
+    },
+    {
+      "title": "Early Underground",
+      "type": "album",
+      "id": "3621114200",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/early-underground",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/album=3621114200/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "Beauty",
+          "duration": 384.0,
+          "url": "https://waveformgeneration.bandcamp.com/track/beauty"
+        },
+        {
+          "title": "Berlin to Tokyo",
+          "duration": 538.25,
+          "url": "https://waveformgeneration.bandcamp.com/track/berlin-to-tokyo"
+        },
+        {
+          "title": "Industrial Danger",
+          "duration": 241.25,
+          "url": "https://waveformgeneration.bandcamp.com/track/industrial-danger"
+        },
+        {
+          "title": "Voyage",
+          "duration": 324.0,
+          "url": "https://waveformgeneration.bandcamp.com/track/voyage"
+        },
+        {
+          "title": "First Sunrise",
+          "duration": 203.25,
+          "url": "https://waveformgeneration.bandcamp.com/track/first-sunrise"
+        }
+      ],
+      "release_year": 2020,
+      "apple_url": "https://music.apple.com/ca/album/early-underground-ep/1528693293",
+      "artwork_url": "https://f4.bcbits.com/img/a0165758884_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/album/early-underground"
+    },
+    {
+      "title": "INPUT AUX",
+      "type": "track",
+      "id": "1236301276",
+      "page_url": "https://waveformgeneration.bandcamp.com/track/input-aux",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/track=1236301276/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "INPUT AUX",
+          "duration": 429.268,
+          "url": "https://waveformgeneration.bandcamp.com/track/input-aux"
+        }
+      ],
+      "release_year": 2020,
+      "apple_url": "https://music.apple.com/ca/album/input-aux-single/1527399978",
+      "artwork_url": "https://f4.bcbits.com/img/a0824918948_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/track/input-aux"
+    },
+    {
+      "title": "ARP!",
+      "type": "track",
+      "id": "3972987132",
+      "page_url": "https://waveformgeneration.bandcamp.com/track/arp",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/track=3972987132/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "ARP!",
+          "duration": 480.003,
+          "url": "https://waveformgeneration.bandcamp.com/track/arp"
+        }
+      ],
+      "release_year": 2018,
+      "apple_url": "https://music.apple.com/ca/album/arp-single/1476635482",
+      "video_url": "/video/#video-mc3GRkgBps8",
+      "artwork_url": "https://f4.bcbits.com/img/a3005794679_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/track/arp"
+    },
+    {
+      "title": "Sunday Brunch",
+      "type": "album",
+      "id": "2593241968",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/sunday-brunch",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/album=2593241968/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "Achieve Satisfaction",
+          "duration": 492.635,
+          "url": "https://waveformgeneration.bandcamp.com/track/achieve-satisfaction"
+        }
+      ],
+      "release_year": 2017,
+      "artwork_url": "https://f4.bcbits.com/img/a2709318946_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/album/sunday-brunch"
+    },
+    {
+      "title": "Study Break",
+      "type": "album",
+      "id": "2404514063",
+      "page_url": "https://waveformgeneration.bandcamp.com/album/study-break",
+      "embed_url": "https://bandcamp.com/EmbeddedPlayer/album=2404514063/size=large/bgcol=181125/linkcol=f7dc6f/tracklist=true/artwork=small/transparent=true/",
+      "tracks": [
+        {
+          "title": "Love Dub",
+          "duration": 311.808,
+          "url": "https://waveformgeneration.bandcamp.com/track/love-dub"
+        },
+        {
+          "title": "Turntable Cowboy",
+          "duration": 346.368,
+          "url": "https://waveformgeneration.bandcamp.com/track/turntable-cowboy"
+        },
+        {
+          "title": "Cali Soul",
+          "duration": 358.4,
+          "url": "https://waveformgeneration.bandcamp.com/track/cali-soul"
+        },
+        {
+          "title": "Rain Dance",
+          "duration": 308.736,
+          "url": "https://waveformgeneration.bandcamp.com/track/rain-dance"
+        },
+        {
+          "title": "Joy",
+          "duration": 297.728,
+          "url": "https://waveformgeneration.bandcamp.com/track/joy"
+        },
+        {
+          "title": "On The One",
+          "duration": 266.24,
+          "url": "https://waveformgeneration.bandcamp.com/track/on-the-one"
+        },
+        {
+          "title": "Canadian Kid",
+          "duration": 298.155,
+          "url": "https://waveformgeneration.bandcamp.com/track/canadian-kid"
+        },
+        {
+          "title": "Memory",
+          "duration": 276.992,
+          "url": "https://waveformgeneration.bandcamp.com/track/memory"
+        },
+        {
+          "title": "Temple Steps",
+          "duration": 256.597,
+          "url": "https://waveformgeneration.bandcamp.com/track/temple-steps"
+        },
+        {
+          "title": "Maui Sunrise",
+          "duration": 266.496,
+          "url": "https://waveformgeneration.bandcamp.com/track/maui-sunrise"
+        },
+        {
+          "title": "Massive",
+          "duration": 268.459,
+          "url": "https://waveformgeneration.bandcamp.com/track/massive"
+        },
+        {
+          "title": "Purple Noise",
+          "duration": 240.213,
+          "url": "https://waveformgeneration.bandcamp.com/track/purple-noise"
+        },
+        {
+          "title": "Brand New Robot",
+          "duration": 287.232,
+          "url": "https://waveformgeneration.bandcamp.com/track/brand-new-robot"
+        },
+        {
+          "title": "News Report",
+          "duration": 317.269,
+          "url": "https://waveformgeneration.bandcamp.com/track/news-report"
+        }
+      ],
+      "release_year": 2014,
+      "apple_url": "https://music.apple.com/ca/album/study-break/1455578265",
+      "artwork_url": "https://f4.bcbits.com/img/a3080664225_2.jpg",
+      "artwork_source": "https://waveformgeneration.bandcamp.com/album/study-break"
+    }
+  ]
 }

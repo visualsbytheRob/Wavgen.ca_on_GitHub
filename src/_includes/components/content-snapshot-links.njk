@@ -1,0 +1,7 @@
+{% set snapshotKey = page.url | snapshotKey %}
+{% if contentSnapshots[snapshotKey] %}
+<nav class="content-snapshot-links container mx-auto px-4 py-4" aria-label="Explore this page">
+{% for image in contentSnapshots[snapshotKey] %}<a href="{{ image.href }}"><img src="{{ image.url }}" alt="{{ image.fileSlug }} — information preview" loading="lazy" width="1000" height="660"><span>{{ image.fileSlug }}</span></a>{% endfor %}
+</nav>
+<style>.content-snapshot-links{display:flex;gap:16px;overflow-x:auto}.content-snapshot-links a{flex:0 0 220px;color:#fedd00;font-size:14px}.content-snapshot-links img{width:220px;height:145px;object-fit:contain;border:1px solid #6366f1;border-radius:8px}.content-snapshot-links span{display:block;padding-top:8px}</style>
+{% endif %}

@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {number} index - Index of slide to show
      */
     function showSlide(index) {
+      const reference = slides[index]?.dataset.pageHref;
+      heroSlideshow.href = reference || slides[index]?.src || '#';
+      heroSlideshow.setAttribute('role', reference ? 'link' : 'button');
+      heroSlideshow.setAttribute('aria-label', reference ? 'Explore ' + slides[index].alt : 'Open image gallery');
       slides.forEach((slide, i) => {
         // GSAP fade animation: visible slide opacity=1, others opacity=0
         gsap.to(slide, {
@@ -103,12 +107,16 @@ document.addEventListener('DOMContentLoaded', function () {
      * Click handler: Open modal showing currently visible slide
      * Integrates with modal system defined later in this file
      */
-    heroSlideshow.setAttribute('role', 'button');
+    const firstReference = slides[0]?.dataset.pageHref;
+    heroSlideshow.href = firstReference || slides[0]?.src || '#';
+    heroSlideshow.setAttribute('role', firstReference ? 'link' : 'button');
     heroSlideshow.tabIndex = 0;
-    heroSlideshow.setAttribute('aria-label', 'Open image gallery');
+    heroSlideshow.setAttribute('aria-label', firstReference ? 'Explore ' + slides[0].alt : 'Open image gallery');
     heroSlideshow.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); heroSlideshow.click(); } });
     heroSlideshow.addEventListener('click', function(e) {
       e.stopPropagation(); // Prevent event bubbling
+      if (slides[currentSlide]?.dataset.pageHref) return;
+      e.preventDefault();
       // Call global modal function with current slide index
       if (window.showHeroSlideModal) {
         window.showHeroSlideModal(currentSlide);
@@ -636,6 +644,7 @@ document.addEventListener('DOMContentLoaded', function () {
     img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); img.click(); } });
     img.addEventListener('click', function (e) {
       e.stopPropagation(); // Prevent event bubbling
+      if (img.dataset.pageHref) { window.location.assign(img.dataset.pageHref); return; }
       // Calculate correct modal index: hero images come first, then marquee images
       showModal(heroImages.length + idx);
     });

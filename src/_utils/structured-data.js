@@ -524,7 +524,7 @@ function summarize(pages, appItems) {
 //   apps      parsed src/_data/apps.json ({ items: [] } when there is none)
 //   coverage  false on incremental rebuilds, whose results hold only changed pages
 // Returns { errors, summary }; any error should fail the build.
-function validateBuild(results, { site, apps, coverage = true } = {}) {
+function validateBuild(results, { site, apps, coverage = true, catalogueVisible = true } = {}) {
   const errors = [];
   const pages = [];
   for (const result of Array.isArray(results) ? results : []) {
@@ -537,7 +537,7 @@ function validateBuild(results, { site, apps, coverage = true } = {}) {
 
   const appItems = apps && Array.isArray(apps.items) ? apps.items : [];
   errors.push(...checkCatalogueEntries(pages, appItems));
-  if (coverage) errors.push(...checkCoverage(pages, site, appItems));
+  if (coverage) errors.push(...checkCoverage(pages, site, catalogueVisible ? appItems : []));
   return { errors: [...new Set(errors)], summary: summarize(pages, appItems) };
 }
 

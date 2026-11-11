@@ -22,9 +22,7 @@ module.exports = {
         { title: 'Melodic',   url: '/music/melodic/',   description: 'Harmonic compositions' },
         { title: 'Breaks',    url: '/music/breaks/',    description: 'Breakbeat rhythms' },
         // World pages
-        { title: 'Signal Flow',              url: '/music/signal-flow/',              description: 'Audio routing and signal chains' },
         { title: 'Waveform Playground',      url: '/music/waveform-playground/',      description: 'Oscillators, waveforms, and synthesis' },
-        { title: 'Psychoacoustics Lab',      url: '/music/psychoacoustics-lab/',      description: 'How hearing works — masking, loudness, and spatial perception' }
       ]
     },
     {
@@ -35,10 +33,8 @@ module.exports = {
         { title: 'Mixing',                    url: '/video/mixing/',                    description: 'Live video composition' },
         { title: 'Editing',                   url: '/video/editing/',                   description: 'Post-production workflows' },
         { title: 'Mapping',                   url: '/video/mapping/',                   description: 'Projection mapping systems' },
-        { title: 'AI Video',                  url: '/video/ai-video/',                  description: 'AI-assisted video generation and editing' },
         { title: 'Realtime',                  url: '/video/realtime/',                  description: 'Live visual performance' },
-        { title: 'DaVinci Resolve',           url: '/video/davinci-resolve/',           description: 'Professional grading and editing workflows' },
-        { title: 'TouchDesigner Signal Flow', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' }
+        { title: 'TouchDesigner', url: '/video/touchdesigner-signal-flow/', description: 'Node-based visual programming for live media' }
       ]
     },
     {
@@ -60,12 +56,10 @@ module.exports = {
       url: '/art/',
       icon: 'art',
       children: [
-        { title: 'WebGL',            url: '/art/webgl/',            description: 'GPU-accelerated browser graphics' },
         { title: 'Drawing',          url: '/art/drawing/',          description: 'Sketches and illustrations' },
         { title: 'Painting',         url: '/art/painting/',         description: 'Digital and traditional painting' },
         { title: 'Printing',         url: '/art/printing/',         description: '3D printing projects' },
         { title: 'Modelling',        url: '/art/modelling/',        description: '3D modeling and sculpture' },
-        { title: 'Typography',       url: '/art/typography/',       description: 'Type anatomy, classification, spacing, and scale' },
         { title: 'Particle Systems', url: '/art/particle-systems/', description: 'Simulated particles and emergent patterns' }
       ]
     }

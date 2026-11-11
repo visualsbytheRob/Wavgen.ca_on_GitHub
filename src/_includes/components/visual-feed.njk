@@ -1,0 +1,15 @@
+{% set first = visualFeed.items[0] %}
+<section id="visual-feed" class="visual-feed" aria-labelledby="visual-feed-title">
+<div class="container mx-auto px-4">
+  <div class="vf-heading"><div><p class="vf-eyebrow">MUSIC · ART · VIDEO · IDEAS</p><h2 id="visual-feed-title">A moving view of Wavgen.</h2><p>Follow a thread. Find a new sound. Open something unexpected.</p></div><div class="vf-subscribe"><a href="/visual-feed.xml">Subscribe to all work ↗</a><a href="/feed.xml">Diary feed ↗</a></div></div>
+  <div class="vf-toolbar"><div role="group" aria-label="Filter the visual feed"><button data-vf-filter="all" aria-pressed="true">Everything</button><button data-vf-filter="artwork" aria-pressed="false">Artwork & photos</button><button data-vf-filter="releases" aria-pressed="false">Music</button><button data-vf-filter="videos" aria-pressed="false">Video</button><button data-vf-filter="cards" aria-pressed="false">Explore cards</button><button data-vf-filter="guides" aria-pressed="false">Tools & guides</button></div><button id="vf-motion" aria-pressed="true">Pause motion</button></div>
+  <div class="vf-stage" data-vf-stage>
+    <a class="vf-feature" href="{{ first.href }}" aria-label="Explore {{ first.title }}"><img id="vf-fallback" src="{{ first.image }}" alt="{{ first.title }}" loading="lazy"><canvas id="vf-canvas" aria-hidden="true"></canvas><div class="vf-shade"></div><div class="vf-caption"><p id="vf-section">{{ first.section }}</p><h3 id="vf-title">{{ first.title }}</h3><p id="vf-description">{{ first.description }}</p><span>Open this story →</span></div></a>
+    <div class="vf-stage-controls"><button id="vf-prev" aria-label="Previous feed item">←</button><span id="vf-position">1 / {{ visualFeed.items.length }}</span><button id="vf-next" aria-label="Next feed item">→</button></div>
+  </div>
+  <p id="vf-status" class="vf-status" role="status">{{ visualFeed.items.length }} images, releases, videos, and ideas</p>
+  <div class="vf-cards" id="vf-cards">{% for item in visualFeed.items | head(8) %}<a href="{{ item.href }}"><img src="{{ item.image }}" alt="" loading="lazy"><span>{{ item.section }}</span><h3>{{ item.title }}</h3></a>{% endfor %}</div>
+  <div class="vf-pagination"><button id="vf-back">Previous eight</button><button id="vf-more">Next eight</button></div>
+</div></section>
+<link rel="stylesheet" href="/assets/visual-feed.css">
+<script type="module" src="/assets/visual-feed.js"></script>

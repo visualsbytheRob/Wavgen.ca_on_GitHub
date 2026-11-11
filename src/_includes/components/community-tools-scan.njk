@@ -1,0 +1,151 @@
+<div class="community-tools-scan">
+{% raw %}
+
+<div class="scan-hero">
+  <svg class="net" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1200 320" aria-hidden="true">
+    <g stroke="#FEDD00" stroke-opacity=".28" fill="none"><path d="M80 60 L340 110 L620 70 L900 150 L1140 90"/><path d="M200 260 L480 190 L760 250 L1040 200"/><path d="M340 110 L480 190 L760 250"/></g>
+    <g fill="#FEDD00" fill-opacity=".55"><circle cx="80" cy="60" r="4"/><circle cx="340" cy="110" r="4"/><circle cx="620" cy="70" r="4"/><circle cx="900" cy="150" r="4"/><circle cx="480" cy="190" r="4"/><circle cx="760" cy="250" r="4"/><circle cx="1040" cy="200" r="4"/></g>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">Scan · October 2026 · Wavgen research base</p>
+    <h1>TouchDesigner Community Tools Scan</h1>
+    <p class="lede">A sourced catalogue of the community and Patreon tools ecosystem around TouchDesigner — the named creators Rob flagged, plus the wider field found alongside them. This page is the living base for a planned <strong>TouchDesigner Deep Dive 2027</strong> across wavgen.ca, Derivative's channels, and social.</p>
+    <div class="stats">
+      <div class="stat"><b>26</b><span>Catalogue entries</span></div>
+      <div class="stat"><b>10 + 16</b><span>Named + discovered</span></div>
+      <div class="stat"><b>5+</b><span>MCP servers</span></div>
+      <div class="stat"><b>86</b><span>FNSTools packages</span></div>
+      <div class="stat"><b>1,361</b><span>TwoZero ZOP models</span></div>
+    </div>
+    <nav class="toc" aria-label="Sections">
+      <a href="#catalogue">Catalogue</a><a href="#mcp">MCP landscape</a><a href="#diffusion">Real-time AI</a><a href="#directories">Directories</a><a href="#deepdive">Deep Dive 2027</a><a href="#method">Method &amp; caveats</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap scan-body">
+
+<section aria-labelledby="eras-h">
+  <h2 id="eras-h">What changed in 2025–2026</h2>
+  <p class="sub">Two patterns run through almost everything in this scan. They are the spine of the 2027 series.</p>
+  <div class="eras">
+    <div class="era">
+      <span class="tag">Era 01</span>
+      <h3>The custom operator family era</h3>
+      <p>T3D grew into TDFam, and TDFam became the substrate for a wave of new families: GSOPs (Gaussian splats), L2D (2D lighting), MOPs (modular synthesis), POPX, AML (Apple ML), and Function Store's FNS family. Builders are no longer shipping single .tox files — they are shipping operator families with installers, versioning, and docs.</p>
+    </div>
+    <div class="era">
+      <span class="tag">Era 02</span>
+      <h3>The MCP era</h3>
+      <p>At least five distinct TouchDesigner MCP servers exist as of October 2026 — TwoZero, Embody's Envoy, 8beeeaaat's touchdesigner-mcp, Pantani's tdmcp / MindDesigner, and Derivative's own official TDMCP, launched September–October 2026 — plus a same-named package on PyPI. AI agents can now build networks directly inside TouchDesigner.</p>
+    </div>
+  </div>
+{% endraw %}{% if page.url != "/video/touchdesigner-signal-flow/" %}{% raw %}
+  <div class="callout" style="margin-top:14px"><strong>Two corrections from the scan:</strong> the creator is <strong>Darien</strong> Brito, not “Darian.” And TwoZero is not separate from 404zero — <strong>TWOZERO is made by 404.zero (+ setupdesign)</strong>; twozero.ai and the 404zero.com docs are the same product line.</div>
+{% endraw %}{% endif %}{% raw %}
+</section>
+
+<div class="filters" id="catalogue">
+  <div class="row" role="group" aria-label="Filter the catalogue">
+    <input class="search" id="q" type="search" placeholder="Search creator, tool, keyword…" aria-label="Search catalogue">
+    <button class="chipbtn" data-f="all" aria-pressed="true">All</button>
+    <button class="chipbtn" data-f="mcp" aria-pressed="false">MCP / AI</button>
+    <button class="chipbtn" data-f="diffusion" aria-pressed="false">Real-time AI</button>
+    <button class="chipbtn" data-f="operators" aria-pressed="false">Operator families</button>
+    <button class="chipbtn" data-f="workflow" aria-pressed="false">Workflow / UI</button>
+    <button class="chipbtn" data-f="patreon" aria-pressed="false">Patreon</button>
+    <button class="chipbtn" data-f="free" aria-pressed="false">Free / open</button>
+  </div>
+  <p class="countline" id="countline"></p>
+</div>
+
+<section aria-labelledby="cat-h" style="padding-top:18px">
+  <h2 id="cat-h">The catalogue</h2>
+  <p class="sub">Price and licence are stated only where a public page exposed them. Where Patreon did not expose a tier table, the entry says so — those amounts are marked <span class="badge b-unv">Unverified</span> and should be checked on the tier page before quoting them anywhere.</p>
+  <div class="grid" id="grid"></div>
+  <div class="noresults" id="noresults">No entries match that filter. Clear the search or pick “All.”</div>
+
+  <h3 style="margin-top:26px">Also spotted — not full entries</h3>
+  <ul class="plain" style="list-style:none;margin:0">
+    <li><strong>L2D operator family</strong> — TDFam-built family for real-time 2D lighting (Monte Carlo GI, Radiance Cascades, Direct renderers; Windows + Mac). Author name not exposed on the fetched posts — unverified. <a href="https://www.patreon.com/posts/tox-l2d-operator-155965844">Patreon post</a></li>
+    <li><strong>TD-ML</strong> — ML toolkit for CHOPs (MLP/LSTM, VAE, UMAP; scikit-learn / PyTorch), beta/experimental, by “bi.os” / Joel per forum replies. <a href="https://derivative.ca/community-post/asset/td-ml-v02-machine-learning-toolkit-touchdesigner/73917">Derivative Community post</a></li>
+    <li><strong>touchdesigner-mcp on PyPI</strong> — a second, unrelated package with the same name (v0.3.0, Oct 13 2026, MIT; Web Server DAT on port 9980, <span class="mono">uvx touchdesigner-mcp</span>). Do not confuse it with 8beeeaaat's server. <a href="https://pypi.org/project/touchdesigner-mcp/">PyPI</a></li>
+    <li><strong>Cumulus</strong> — multi-camera people tracking with persistent cluster IDs and POP geometry masks; free tier, paid licence “planned at roughly $50–100 at launch” — pre-launch, unverified as a shipping price. <a href="https://cumulustracking.com/">cumulustracking.com</a></li>
+  </ul>
+</section>
+
+<section id="mcp" aria-labelledby="mcp-h">
+  <h2 id="mcp-h">The MCP landscape</h2>
+  <p class="sub">There is no single “the TouchDesigner MCP” in October 2026. A Deep Dive 2027 episode should compare these on tool count, transport, security model, and whether agent changes are undoable.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Tool</th><th>Maker</th><th>Mechanism</th><th>Price basis</th></tr></thead>
+    <tbody>
+      <tr><td data-h="Tool"><strong>TwoZero</strong></td><td data-h="Maker">404.zero + setupdesign</td><td data-h="Mechanism">Built-in MCP server (<span class="mono">localhost:40404/mcp</span>, key <span class="mono">twozero_td</span>) for Claude Code / Cursor / Codex, plus ZOP AI-model adapters</td><td data-h="Price">Plugin + MCP free forever; PRO $19/mo</td></tr>
+      <tr><td data-h="Tool"><strong>Envoy</strong> (in Embody)</td><td data-h="Maker">Dylan Roscover</td><td data-h="Mechanism">Embedded MCP server — 52 tools on the current site; localhost:9870 in the older listing. Generates a CLAUDE.md for the agent; the TDXN text format gives readable project context</td><td data-h="Price">Free, open source</td></tr>
+      <tr><td data-h="Tool"><strong>TDMCP</strong></td><td data-h="Maker">Derivative (official)</td><td data-h="Mechanism">MCP server inside TD on TD's bundled Python — 26 tools, docs-serving tools, agent Skills package; auth on by default, localhost-only, changes land in the undo stack</td><td data-h="Price">Free; Shared Use License</td></tr>
+      <tr><td data-h="Tool"><strong>touchdesigner-mcp</strong></td><td data-h="Maker">8beeeaaat</td><td data-h="Mechanism">MCP ↔ WebServer DAT bridge; 14 tools; Claude Desktop extension</td><td data-h="Price">Free, MIT</td></tr>
+      <tr><td data-h="Tool"><strong>tdmcp / MindDesigner</strong></td><td data-h="Maker">Pantani</td><td data-h="Mechanism">MCP server + in-TD bridge; 179 tools; embedded knowledge base of 629 operators and 68 Python classes</td><td data-h="Price">$0 listing</td></tr>
+      <tr><td data-h="Tool"><strong>touchdesigner-mcp (PyPI)</strong></td><td data-h="Maker">Unnamed author</td><td data-h="Mechanism">MCP via <span class="mono">uvx</span>, Web Server DAT on port 9980</td><td data-h="Price">Free, MIT</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub" style="margin-top:12px">Not MCP, but part of the same shift: DotSimulate's <strong>LOPs</strong> put LLM / language operators inside TD, Mickey van Olst's <strong>AML</strong> includes a Local LLM operator on-device, and the <strong>TDFam / FNSTools</strong> ecosystem is the infrastructure new agent-era tools ship on.</p>
+</section>
+
+<section id="diffusion" aria-labelledby="diff-h">
+  <h2 id="diff-h">Real-time AI generation</h2>
+  <p class="sub">The diffusion cluster, from the reference implementation to the native-operator challengers.</p>
+  <ul class="plain" style="list-style:none;margin:0">
+    <li><strong>StreamDiffusionTD — DotSimulate.</strong> The reference implementation: v0.4.1, SDXL-Turbo with ControlNet / IP-Adapter / FaceID / StreamV2V / live LoRA on TensorRT locally (Windows, NVIDIA 6 GB+ VRAM, 24 GB recommended, Python 3.11.9 exactly, CUDA 12.8), or via the Daydream cloud backend with no local GPU, including on Mac. <a href="https://daydream.live/streamdiffusiontd">Daydream page</a></li>
+    <li><strong>ComfyTD — DotSimulate.</strong> A TOX to control ComfyUI workflows from inside a TD network. Distinct from ComfyUI-TD, a ComfyUI-side node for sending media back to TD — a name collision worth flagging in any catalogue.</li>
+    <li><strong>SD TOP — Unveil Studio / Simo.</strong> Native-operator alternative with no Python or TensorRT model conversion. €15 for a 6-month licence via Lemon Squeezy; RTX 30/40/50 series.</li>
+    <li><strong>TouchDiffusion — CtrlAltCtrl.</strong> Beta real-time diffusion tool announced on Patreon around October 2026; details unverified.</li>
+    <li><strong>TwoZero ZOPs.</strong> Hosted generation as wired operators — 1,361 models at scan time, chat / image / video, cost shown before a run and failed generations not charged. Generation, but cloud-hosted rather than local diffusion.</li>
+    <li><strong>Adjacent AI:</strong> AML's Diffusion and CoreML operators (on-device, macOS), Nurbs' depth + relight .tox (Metric3D v2 via ONNX), TwoZero's Depth AI and Background Removal rudiments, and TD-ML for training and inference on CHOP data.</li>
+  </ul>
+</section>
+
+<section id="directories" aria-labelledby="dir-h">
+  <h2 id="dir-h">Existing roundups &amp; directories</h2>
+  <p class="sub">No single published directory found combines Patreon, Gumroad, and GitHub TouchDesigner tools with prices, licences, and TD-build requirements in one table — that gap is the niche this scan, and the 2027 series, can fill.</p>
+  <ul class="plain" style="list-style:none;margin:0">
+    <li><strong>Derivative Community</strong> — the canonical asset and tutorial feed where most of these tools are announced. Start with Function Store's curated article: <a href="https://derivative.ca/community-post/tools-you-didn%E2%80%99t-know-you-needed/72935">“Tools You Didn't Know You Needed”</a></li>
+    <li><strong>allTD.org</strong> — tutorial aggregation, rebuilt as allTD v2 in April 2026: “5,000+ Tutorials: The largest collection of TouchDesigner content on the web (as of April 2026),” run by Jan Gryczan. <a href="https://alltd.org/">alltd.org</a></li>
+    <li><strong>awesome-touchdesigner (GitHub)</strong> — curated list of resources, community projects, and plugins. <a href="https://github.com/monkeymonk/awesome-touchdesigner">github.com/monkeymonk/awesome-touchdesigner</a></li>
+    <li><strong>Interactive &amp; Immersive HQ — “Top Community Tools for TouchDesigner”</strong> — editorial roundup covering Artio, SOP to SVG, Josef Pelz's Constraint Simulation, Warpa, and more. <a href="https://interactiveimmersive.io/blog/touchdesigner-lessons/top-community-tools-for-touchdesigner/">interactiveimmersive.io</a></li>
+    <li><strong>Derivative — TouchDesigner Deep Dive 2020 resource list</strong> — the direct ancestor of the planned 2027 series, with its author / resource / link table. <a href="https://derivative.ca/community-post/touchdesigner-deep-dive-2020/71536">Deep Dive 2020</a></li>
+    <li><strong>MusicHackspace “Custom Tools for TouchDesigner” meetup (Oct 2026)</strong> — a live roundup event with FNSTools, AVY, and MOPs toolmakers presenting. <a href="https://musichackspace.org/events/touchdesigner-meetup-custom-tools-october-2026">MusicHackspace</a></li>
+    <li><strong>Storefronts as directories:</strong> Function Store's own site (86 searchable packages) and TwoZero's Hub / rudiments library act as de-facto directories for their ecosystems; MCP directories such as mcpservers.org, PulseMCP, and Glama now index the TD MCP servers.</li>
+  </ul>
+</section>
+
+<section id="deepdive" aria-labelledby="dd-h">
+  <h2 id="dd-h">From scan to Deep Dive 2027</h2>
+  <p class="sub">How this page evolves into the series that reintroduces Rob's TouchDesigner work — he authored the original TouchDesigner Deep Dive — across wavgen.ca, Derivative's site, and social.</p>
+  <div class="road">
+    <div class="step"><span class="when">Now — the atlas</span><h3>Keep this scan current</h3><p>This catalogue is the reference layer: 26 entries with distribution, price basis, licence, and TD-build requirements, caveats intact. New tools and version bumps land here first.</p></div>
+    <div class="step"><span class="when">Next — hands-on installs</span><h3>Work the install queue</h3><p>Embody, the DotSimulate harvest, 404zero / TwoZero, and MediaPipe for TD are already queued for install and testing on the Gold Image workstation — first-hand install notes replace index-only claims with tested ones.</p></div>
+    <div class="step"><span class="when">2027 — the series</span><h3>Deep Dive 2027</h3><p>Episodes the scan already outlines: the five-way MCP comparison, the TDFam operator-family wave, a real-time diffusion shootout (StreamDiffusionTD vs SD TOP vs ZOPs), and Patreon toolmaker conversations — published to wavgen.ca and Derivative, cut down for social.</p></div>
+  </div>
+</section>
+
+<section id="method" aria-labelledby="method-h">
+  <h2 id="method-h">Method &amp; caveats</h2>
+  <div class="plain">
+    <ul style="margin:0;padding-left:18px">
+      <li style="margin:10px 0"><strong>Basis:</strong> web-index research as of October 24, 2026. Full primary pages were fetched through the index for TwoZero, Function Store / FNSTools, DotSimulate's StreamDiffusionTD docs, Embody, 404zero's TwoZero docs, and Derivative's TDMCP GitHub. Nothing here is labelled “verified live” — a separate live check could not resolve DNS for twozero.ai or functionstore.tools on Oct 24, which was a research-window failure, not evidence the sites are down.</li>
+      <li style="margin:10px 0"><strong>Pricing rule:</strong> a price appears only where a public page exposed it. Patreon generally does not expose full tier tables to non-members, so most Patreon tier prices are unverified in this scan.</li>
+      <li style="margin:10px 0"><strong>Conflicts carried, not resolved:</strong> TwoZero's minimum build is 2025.33230+ on twozero.ai and 2025.33070+ in the 404zero.com docs. Embody's is 2025.33230+ on the current site versus 2025.32280 on an earlier mirror. Envoy's tool count is 52 on the current site versus 45 in an MCP-repository listing. Resolve each by testing the current .tox.</li>
+      <li style="margin:10px 0"><strong>Licences not found on public pages</strong> for SARV, T3D, RayTK (name), MediaPipe-TD (Torin's repo), Embody (specific name), AML, MOPs, GeoPix (specific name), Pantani's tdmcp, Dewpoint, Nurbs, Okamirufu, AVY, and Warpa / SimpleMixer. Check each repo or maker before redistributing anything.</li>
+      <li style="margin:10px 0"><strong>Spelling variants in sources:</strong> 404zero's Alexander Letcius (Derivative) vs Letsius (Interactive &amp; Immersive HQ). RayTK's author is “Tekt / t3kt” on primary sources; a full name on one course page was not corroborated and is not used here.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<div class="scan-notes"><div class="wrap">TouchDesigner Community Tools Scan — compiled October 2026 from public pages. Prices, builds, and tool counts are as the cited sources stated them at scan time; verify on the maker's page before purchase or publication. Planned home for the series: wavgen.ca · Derivative Community · social cuts.</div></div>
+
+
+{% endraw %}
+</div>
+<script src="/assets/community-tools-scan.js" defer></script>

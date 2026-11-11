@@ -1,8 +1,67 @@
 ---
-layout: world.njk
-title: "TouchDesigner Signal Flow — WAVGEN AV Universe"
-description: "Immersive av world exploring touchdesigner signal flow"
+layout: base.njk
+title: TouchDesigner
+description: "Node-based visual programming, audio-reactive systems, and live visual performance."
 domain: video
 permalink: /video/touchdesigner-signal-flow/
 worldFile: touchdesigner_signal_flow.html
 ---
+<link rel="stylesheet" href="/assets/community-tools-scan.css">
+<nav class="bg-gray-800 py-4" aria-label="Breadcrumb"><div class="container mx-auto px-4"><a href="/" class="text-wavgen-yellow">Home</a> / <a href="/video/" class="text-wavgen-yellow">Video</a> / TouchDesigner</div></nav>
+{% set hero = {title: 'TouchDesigner', subtitle: 'Community Tools Scan · Deep Dive 2027', description: 'A living atlas of community tools, the start of the Deep Dive 2027 series.', theme: 'video', extraTemplate: 'components/touchdesigner-hero-links.njk', gradient: {'from': 'from-gray-900', via: 'via-wavgen-dark-purple', to: 'to-wavgen-purple'} } %}
+{% include "components/hero.njk" %}
+<div class="td-scan-primary">{% include "components/community-tools-scan.njk" %}</div>
+<section id="learn-foundations" class="container mx-auto px-4 py-12" aria-labelledby="learn-foundations-title">
+  <h2 id="learn-foundations-title" class="text-3xl font-bold mb-6">Learn / Foundations</h2>
+  <article id="touchdesigner-book" class="resource-card rounded-xl border-2 border-wavgen-purple p-6 mb-6" aria-labelledby="touchdesigner-book-title">
+    <h3 id="touchdesigner-book-title" class="text-2xl font-bold mb-4">The Interactive &amp; Immersive HQ</h3>
+    <p class="mb-4">The Interactive &amp; Immersive HQ brings together training, workshops and community for TouchDesigner and interactive media.</p>
+    <p class="mb-4">Elburz Sorkhabi is a co-founder and one of the leading authorities on TouchDesigner.</p>
+    <p class="mb-4">He is the author of An Introduction to TouchDesigner, the first book ever written on TouchDesigner (088 era), published open source and free under Creative Commons, with a foreword by Greg Hermanovic, founder of Derivative.</p>
+    <ul class="space-y-4">
+      <li><a class="text-wavgen-yellow underline" href="https://interactiveimmersivehq.github.io/touchdesigner-book/" target="_blank" rel="noopener">An Introduction to TouchDesigner</a> <span class="text-gray-300">— free and open source; read online or download PDF/ePub.</span></li>
+      <li><a class="text-wavgen-yellow underline" href="https://interactiveimmersive.io/" target="_blank" rel="noopener">The Interactive &amp; Immersive HQ</a></li>
+      <li><a class="text-wavgen-yellow underline" href="https://github.com/interactiveimmersivehq/Introduction-to-touchdesigner" target="_blank" rel="noopener">example files and source</a></li>
+    </ul>
+  </article>
+  <article id="hou2touch" class="resource-card rounded-xl border-2 border-wavgen-purple p-6 mb-6" aria-labelledby="hou2touch-title">
+    <h3 id="hou2touch-title" class="text-2xl font-bold mb-4">Hou2Touch</h3>
+    <p class="mb-4">Hou2Touch is Stanislav Glazov's school for learning TouchDesigner together with Houdini through the procedural approach.</p>
+    <p class="mb-4">As its founder and course author, Stanislav Glazov focuses on procedural mentality and pipeline building.</p>
+    <p class="mb-4">It teaches the way of thinking and the workflow, how to structure work and build a clear pipeline, not the programs and buttons.</p>
+    <a class="text-wavgen-yellow underline" href="https://hou2touch.com/" target="_blank" rel="noopener">Hou2Touch</a>
+  </article>
+</section>
+<section class="container mx-auto px-4 py-12 td-archive" aria-labelledby="td-archive-title">
+<h2 id="td-archive-title" class="text-3xl font-bold mb-4">More from the studio & archive</h2>
+<p class="text-gray-300 mb-6">Earlier experiments, the 2020 Deep Dive, and the interactive TouchDesigner guide.</p>
+<details><summary>Studio experiments</summary>
+
+
+
+<section class="container mx-auto px-4 py-12"><h2 class="text-3xl font-bold mb-4">TouchDesigner experiments</h2><p class="mb-6">Explore particle systems, instancing, image-to-point-cloud techniques, and audio-reactive visuals through these studio experiments.</p><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{% for video in latestVideos.items %}{% if video.category == 'TouchDesigner' %}{% include "components/video-embed.njk" %}{% endif %}{% endfor %}</div></section>
+
+</details><details><summary>TouchDesigner Deep Dive · 2020 archive</summary>
+<section class="container mx-auto px-4 py-12 deep-dive" id="deep-dive"><p class="text-wavgen-yellow">FROM THE ARCHIVE / 2020</p><h2 class="text-3xl font-bold mb-4">TouchDesigner Deep Dive</h2>
+<p>This archive revisits my learning journey, from analog VJing in Toronto to the 2012 MUTEK workshop and real-time visual systems. It reflects the tools and resources discussed in the original 2020 deep dive, rather than a current software reference.</p>
+<div class="grid md:grid-cols-2 gap-6 my-8">
+<article><h3>Learning through operators</h3><p>Study operator families, inspect OP Snippets and Palette examples, and build reusable components with clear inputs and outputs.</p></article>
+<article><h3>Real-time performance</h3><p>Explore PBR materials, Substance textures, scene switching, TDAbleton audio reactivity, touchscreen widgets, and MIDI control through the Alpha performance system.</p></article>
+<article><h3>Mapping and spatial work</h3><p>The journey includes Kantan Mapper, CamSchnapper, VR sculpting, and bringing reduced-polygon models into visual experiments.</p></article>
+<article><h3>Connected systems</h3><p>OSC, Touch In/Out, shared memory, and NDI connect machines and creative applications. Python, GLSL, and C++ offer deeper customization.</p></article>
+</div>
+<h3 class="text-2xl font-bold">Community and learning resources</h3><p>The original collection brings together tutorials, community tools, workshops, and people who shaped the journey.</p>
+<ul class="my-6"><li><a href="https://www.simonaa.media/tutorials/noisedisplacement">Simon Alexander Adams: noise displacement</a></li><li><a href="https://www.youtube.com/watch?v=Ty6pCyTIUyM">Jarrett Smith: widget layouts</a></li><li><a href="https://www.youtube.com/watch?v=FImsLtt4Ab4">Markus Heckmann: introduction to GLSL</a></li><li><a href="https://www.youtube.com/watch?v=ref56jIJ5qo">Ivan DelSol: TDAbleton</a></li><li><a href="https://www.youtube.com/playlist?list=PLs0WlHa1rf208I8fyCNIuOtPBocQz8yd-">Matthew Ragan: generative media for live performance</a></li></ul>
+<p><a href="https://derivative.ca/community-post/touchdesigner-deep-dive-2020/71536">Read my complete Deep Dive and original tutorial catalogue on Derivative</a>. Archive links have not all been revalidated.</p>
+</section><style>.deep-dive{max-width:1200px;line-height:1.8}.deep-dive h3{font-weight:bold;color:#fedd00}.deep-dive article{padding:24px;background:#211432;border-radius:12px}.deep-dive a{color:#fedd00;text-decoration:underline}</style>
+
+</details><details><summary>Interactive TouchDesigner guide</summary><p><a href="/worlds/touchdesigner_signal_flow.html" target="_blank" rel="noopener">Open the guide in its own tab →</a></p><iframe src="/worlds/touchdesigner_signal_flow.html" title="TouchDesigner interactive guide" loading="lazy" style="width:100%;height:85vh;min-height:600px;border:0" allowfullscreen></iframe></details></section>
+<style>.td-archive details{border-top:1px solid #475569;padding:24px 0}.td-archive summary{cursor:pointer;color:#fedd00;font-size:1.25rem;font-weight:700}.td-hero-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.td-hero-links a{background:#340093;border:1px solid #6366f1;border-radius:8px;padding:8px 12px;color:#fedd00}.td-hero-stats{color:#fedd00;margin-top:16px;font-weight:700}</style>
+
+
+
+<style>[data-hero-extra="true"]>.container{height:auto!important}[data-hero-extra="true"]>.container>.grid{grid-template-rows:minmax(380px,auto) 180px!important}@media(max-width:1023px){[data-hero-extra="true"]>.container>.grid{grid-template-rows:minmax(430px,auto) 180px!important}}</style>
+<style>.td-scan-primary .scan-hero{display:none}</style>
+
+<link rel="stylesheet" href="/assets/touchdesigner-foundations.css">
+<script src="/assets/touchdesigner-foundations.js" defer></script>

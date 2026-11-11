@@ -1,0 +1,11 @@
+{% set cardKey = page.url | snapshotKey %}
+{% if visualCards[cardKey] %}
+<section class="visual-card-section container mx-auto px-4 py-12" aria-labelledby="more-to-explore">
+  <h2 id="more-to-explore" class="text-3xl font-bold mb-6">More to explore</h2>
+  <div class="visual-card-grid">
+  {% for card in visualCards[cardKey] %}
+    <a class="visual-content-card" href="{{ card.href }}"><img src="{{ card.image }}" alt="{{ card.alt }}" width="640" height="400" loading="lazy" decoding="async"><div><p>{{ card.pageTitle }}</p><h3>{{ card.title }}</h3><span>Explore →</span></div></a>
+  {% endfor %}
+  </div>
+</section>
+{% endif %}

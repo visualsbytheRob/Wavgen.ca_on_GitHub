@@ -1,11 +1,11 @@
-{# Renders one Bandcamp track/album card. Expects `track` in scope (object from latestTracks.items). #}
-<div class="bg-black/30 border border-white/10 rounded-lg overflow-hidden">
-  <iframe
-    loading="lazy"
-    style="border:0; width:100%; height:540px;"
-    src="{{ track.embed_url }}"
-    seamless
-    title="{{ track.title }} on Bandcamp">
-  </iframe>
-  <a class="block px-3 py-2 text-sm text-wavgen-yellow hover:text-white underline" href="{{ track.page_url }}" target="_blank" rel="noopener">{{ track.title }} →</a>
-</div>
+<article class="media-card" data-media-player data-embed-url="{{ track.embed_url | escape }}" data-title="{{ track.title | escape }} on Bandcamp">
+  <div class="media-stage"><button type="button" class="media-launch media-album-launch" aria-label="Load {{ track.title | escape }} player on Bandcamp">{% if track.artwork_url %}<img class="album-art" src="{{ track.artwork_url | escape }}" alt="{{ track.title | escape }} album cover" width="350" height="350" loading="lazy" decoding="async">{% endif %}<span>▶ Listen to {{ track.title }}</span></button></div>
+  <button type="button" class="media-close" hidden>Close player</button>
+  <div class="media-info"><h3>{{ track.title }}</h3>
+    {% if track.release_year %}<p>{{ track.release_year }} · {{ track.tracks | length }} track{% if track.tracks.length != 1 %}s{% endif %}</p>{% endif %}
+    <a href="{{ track.page_url | escape }}" target="_blank" rel="noopener">Open on Bandcamp ↗</a>
+    {% if track.apple_url %} · <a href="{{ track.apple_url | escape }}" target="_blank" rel="noopener">Apple Music ↗</a>{% endif %}
+    {% if track.video_url %}<p><a href="{{ track.video_url | escape }}">Watch the video →</a></p>{% endif %}
+    {% if page.url != '/' and track.tracks.length %}<details class="media-tracklist"><summary>Track list</summary><ol>{% for song in track.tracks %}<li><a href="{{ song.url | escape }}" target="_blank" rel="noopener">{{ song.title }}</a></li>{% endfor %}</ol></details>{% endif %}
+  </div>
+</article>

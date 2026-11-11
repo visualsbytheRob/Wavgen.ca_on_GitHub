@@ -761,7 +761,13 @@ class LagFilter {
       // Wrap at edges
       if (p.x < 0) p.x += cw;
       if (p.x > cw) p.x -= cw;
-      if (p.y < 0) p.y += ch;
+      if (p.y < 0) {
+        if (window.parent !== window && i % 12 === 0) {
+          const rect = canvas.getBoundingClientRect();
+          window.parent.postMessage({type:'wavgen-particle-burst', x:(rect.left+p.x/cw*rect.width)/innerWidth, y:Math.max(0,rect.top/innerHeight), escape:true, vx:p.vx*60, vy:p.vy*60}, location.origin);
+        }
+        p.y += ch;
+      }
       if (p.y > ch) p.y -= ch;
 
       // Draw particle
@@ -2165,5 +2171,13 @@ class LagFilter {
 
 </script>
 </main>
+<script>
+// Let the surrounding Wavgen page continue a burst beyond this frame.
+document.addEventListener('pointerdown', event => {
+  if (window.parent !== window && event.target.tagName === 'CANVAS') {
+    window.parent.postMessage({type:'wavgen-particle-burst', x:event.clientX/innerWidth, y:event.clientY/innerHeight}, location.origin);
+  }
+});
+</script>
 </body>
 </html>

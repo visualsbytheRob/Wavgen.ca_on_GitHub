@@ -1835,7 +1835,7 @@
     if (hasRealImages) {
       // HYBRID MODE: Has real images
       // Ken Burns slideshow between real image and generative animation
-      generateKenBurnsSlideshow(heroSlideshow, Array.from(realImages), theme);
+      // gallery.js owns the real-image slideshow; do not hide or replace it.
       // Gallery with mix of real images and generative animations
       generateHybridGallery(Array.from(realImages), theme);
     } else {
@@ -1916,7 +1916,9 @@
     
     // Create a card
     const createCard = (rowIndex, cardIndex) => {
-      const card = document.createElement('div');
+      const reference = realImages.length ? realImages[(rowIndex + cardIndex % cardsPerRow) % realImages.length].dataset.pageHref : '';
+      const card = document.createElement(reference ? 'a' : 'div');
+      if (reference) card.href = reference;
       card.className = 'gallery-card flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';
       card.style.cssText = 'width: 75px; height: 60px;';
       
@@ -1924,15 +1926,18 @@
       const seed = globalIndex * 73 + 500;
       
       // Mix: some animated, some real images
-      if (cardIndex % 3 === 0 && realImages.length > 0) {
+      if (realImages.length > 0) {
         // Real image card
-        const imgIndex = Math.floor(cardIndex / 3) % realImages.length;
+        const imgIndex = (rowIndex + cardIndex % cardsPerRow) % realImages.length;
         const img = document.createElement('img');
         img.src = realImages[imgIndex].src;
+        img.alt = realImages[imgIndex].alt;
+        img.decoding = 'async';
         img.className = 'absolute inset-0 w-full h-full object-cover';
         card.appendChild(img);
         card.dataset.imageSrc = realImages[imgIndex].src;
         card.addEventListener('click', () => {
+          if (reference) return;
           const modal = document.getElementById('myModal');
           const modalImg = document.getElementById('img01');
           if (modal && modalImg) {
@@ -2055,12 +2060,16 @@
       ];
     } else if (path.includes('/data/')) {
       links = [
-        { title: 'GenAI', href: '/data/genai/' },
+        { title: 'GenAI', href: '/data/generative-ai/' },
         { title: 'WebDev', href: '/data/webdev/' },
-        { title: 'Cloud', href: '/data/cloud/' },
+        { title: 'Cloud', href: '/data/cloud-computing/' },
         { title: 'Coding', href: '/data/coding/' }
       ];
     }
+
+    const contentKey = path.replace(/^\/+|\/+$/g, '') || 'home';
+    const contentCards = (window.wavgenContentSnapshots || {})[contentKey] || [];
+    links = contentCards.map(card => ({title:card.fileSlug, href:card.href, image:card.url})).concat(links);
 
     // Create animated link cards
     const createAnimatedCard = (item, i, offset = 0) => {
@@ -2075,7 +2084,16 @@
       
       // Use subtle animation style
       const subtleStyle = SUBTLE_STYLES[i % SUBTLE_STYLES.length];
-      createAnimatedPlaceholder(canvasContainer, 150, 120, subtleStyle, i * 53 + 2000 + offset);
+      const imageKey = item.href.split('/').filter(Boolean).join('/');
+      const imagePool = (window.wavgenApprovedImages || {})[imageKey] || (window.wavgenApprovedImages || {})[imageKey.split('/')[0]] || [];
+      if (item.image || imagePool.length) {
+        const picture = document.createElement('img');
+        picture.src = item.image || imagePool[i % imagePool.length].url;
+        picture.alt = '';
+        picture.className = 'w-full h-full object-cover';
+        picture.decoding = 'async';
+        canvasContainer.appendChild(picture);
+      }
       
       const overlay = document.createElement('div');
       overlay.className = 'absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-2 z-10';
@@ -2096,23 +2114,20 @@
 
   // Animate subpage links marquee
   function startSubpageLinksMarquee(track) {
-    if (!track || !window.gsap) return;
-    
+    if (!track || !window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const cards = track.querySelectorAll('.subpage-link');
-    if (cards.length === 0) return;
-
-    const cardWidth = cards[0].offsetWidth + 8;
-    const totalWidth = cardWidth * (cards.length / 2);
-
-    gsap.to(track, {
-      x: -totalWidth,
-      duration: 20,
-      ease: 'none',
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
-      }
+    if (!cards.length) return;
+    const totalWidth = (cards[0].offsetWidth + 8) * (cards.length / 2);
+    const motion = gsap.to(track, {
+      x: -totalWidth, duration: Math.max(60, totalWidth / 18), ease: 'none', repeat: -1,
+      modifiers: {x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)}
     });
+    const frame = track.parentElement;
+    const update = () => motion.paused(frame.matches(':hover') || frame.contains(document.activeElement));
+    frame.addEventListener('mouseenter', update);
+    frame.addEventListener('mouseleave', update);
+    frame.addEventListener('focusin', update);
+    frame.addEventListener('focusout', () => requestAnimationFrame(update));
   }
 
   // Generate background slideshow placeholders - ALL ANIMATED with style transitions
@@ -2434,7 +2449,9 @@
     
     // Create animated card
     const createCard = (rowIndex, cardIndex) => {
-      const card = document.createElement('div');
+      const reference = realImages.length ? realImages[(rowIndex + cardIndex % cardsPerRow) % realImages.length].dataset.pageHref : '';
+      const card = document.createElement(reference ? 'a' : 'div');
+      if (reference) card.href = reference;
       card.className = 'gallery-card placeholder-generated flex-shrink-0 relative overflow-hidden rounded-lg border-2 border-wavgen-purple hover:border-wavgen-yellow shadow-lg cursor-pointer transition-all duration-300 hover:scale-105';
       card.style.cssText = 'width: 75px; height: 60px;';
       
@@ -2485,11 +2502,11 @@
       { category: 'Music', title: 'Electro', href: '/music/electro/' },
       { category: 'Video', title: 'Realtime', href: '/video/realtime/' },
       { category: 'Art', title: 'Painting', href: '/art/painting/' },
-      { category: 'Data', title: 'GenAI', href: '/data/genai/' },
+      { category: 'Data', title: 'GenAI', href: '/data/generative-ai/' },
       { category: 'Music', title: 'Ambient', href: '/music/ambient/' },
       { category: 'Video', title: 'Mapping', href: '/video/mapping/' },
       { category: 'Art', title: 'Drawing', href: '/art/drawing/' },
-      { category: 'Data', title: 'Cloud', href: '/data/cloud/' }
+      { category: 'Data', title: 'Cloud', href: '/data/cloud-computing/' }
     ];
 
     // Create animated cards twice for seamless looping
@@ -2505,7 +2522,16 @@
       
       // Use subtle animation style for cards
       const subtleStyle = SUBTLE_STYLES[i % SUBTLE_STYLES.length];
-      createAnimatedPlaceholder(canvasContainer, 150, 120, subtleStyle, i * 53 + 1000 + offset);
+      const imageKey = item.href.split('/').filter(Boolean).join('/');
+      const imagePool = (window.wavgenApprovedImages || {})[imageKey] || (window.wavgenApprovedImages || {})[imageKey.split('/')[0]] || [];
+      if (imagePool.length) {
+        const picture = document.createElement('img');
+        picture.src = imagePool[i % imagePool.length].url;
+        picture.alt = '';
+        picture.className = 'w-full h-full object-cover';
+        picture.decoding = 'async';
+        canvasContainer.appendChild(picture);
+      }
       
       // Overlay with text
       const overlay = document.createElement('div');
@@ -2542,7 +2568,7 @@
     // GSAP infinite scroll
     gsap.to(track, {
       x: -totalWidth,
-      duration: 30,
+      duration: 90,
       ease: 'none',
       repeat: -1,
       modifiers: {

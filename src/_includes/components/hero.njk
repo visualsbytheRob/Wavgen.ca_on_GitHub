@@ -16,16 +16,16 @@ Usage:
 
 {% set _hero = hero or {} %}
 {% set _grad = _hero.gradient or {} %}
-{% set _images = _hero.images or [] %}
+{% set _images = page.url | approvedForPage(approvedImages) %}
 {% set _folder = _hero.folder or 'src/images/' %}
 {% set _theme = _hero.theme or 'default' %}
 
-<section class="relative bg-gradient-to-br {{ _grad.from or 'from-gray-900' }} {{ _grad.via or '' }} {{ _grad.to or 'to-indigo-900' }} overflow-hidden" data-gallery-theme="{{ _theme }}">
+<section class="relative bg-gradient-to-br {{ _grad.from or 'from-gray-900' }} {{ _grad.via or '' }} {{ _grad.to or 'to-indigo-900' }} overflow-hidden" data-gallery-theme="{{ _theme }}" data-hero-extra="{{ true if _hero.extraTemplate else false }}">
   
   {# Background Slideshow Layer #}
   <div class="hero-section-bg-slideshow absolute inset-0">
-    {%- for img in _images %}
-      <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
+    {%- for img in _images | rejectattr("contentSnapshot") %}
+      <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
     {%- endfor %}
   </div>
   
@@ -45,17 +45,18 @@ Usage:
           {% if _hero.description %}
           <p class="text-sm lg:text-base text-gray-300">{{ _hero.description }}</p>
           {% endif %}
+          {% if _hero.extraTemplate %}{% include _hero.extraTemplate %}{% endif %}
         </div>
       </div>
 
       {# TOP RIGHT: Image Gallery Slideshow #}
       <div class="hidden lg:block overflow-hidden">
-        <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+        <a href="#" class="hero-slideshow block relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
           {%- for img in _images %}
-            <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
+            <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
           {%- endfor %}
           {# Placeholder visuals injected by JS if no images #}
-        </div>
+        </a>
       </div>
 
       {# BOTTOM LEFT: Quick Links or Info #}

@@ -78,7 +78,7 @@ Only the first navigation item is commented in detail; all following items are a
               {{ item.title }}
             </a>
             {% if item.children %}
-              <div class="absolute top-full left-0 mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="absolute top-full {{ "right-0" if loop.last else "left-0" }} mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 {% for child in item.children %}
                   <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap{% if child.url | isCurrentPage(page.url) %} bg-wavgen-dark-purple text-wavgen-yellow{% endif %}">
                     {{ child.title }}

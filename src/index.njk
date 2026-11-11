@@ -32,8 +32,8 @@ footerTagline: Exploring the intersection of creativity and technology.
 <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen">
     <!-- Background Slideshow -->
     <div class="hero-section-bg-slideshow absolute inset-0">
-        {%- for img in collections.homeImages %}
-          <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
+        {%- for img in approvedImages.home %}
+          <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
         {%- endfor %}
     </div>
     <div class="absolute inset-0 bg-black opacity-20"></div>
@@ -45,8 +45,8 @@ footerTagline: Exploring the intersection of creativity and technology.
         <div class="relative animate-fade-in overflow-hidden">
             <!-- Background slideshow behind Hello text -->
             <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-                {%- for img in collections.homeImages %}
-                  <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
+                {%- for img in approvedImages.home %}
+                  <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
                 {%- endfor %}
                 {# Placeholder will be injected here by JS if no images #}
             </div>
@@ -64,8 +64,8 @@ footerTagline: Exploring the intersection of creativity and technology.
                     <p>💻 Developer exploring AI, quantum computing, and immersive experiences</p>
                 </div>
                 <div class="flex flex-wrap gap-2 items-center">
-                    <a id="hero-cta" href="#portfolio" class="control-btn bg-wavgen-yellow text-black px-4 py-1.5 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition-colors duration-300">
-                        Explore My Work
+                    <a id="hero-cta" href="#visual-feed" class="control-btn bg-wavgen-yellow text-black px-4 py-1.5 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition-colors duration-300">
+                        Explore the Visual Feed
                     </a>
                     <a href="#about" class="control-btn border-2 border-wavgen-yellow text-wavgen-yellow px-4 py-1.5 rounded-lg font-semibold text-sm hover:bg-wavgen-yellow hover:text-black transition-all duration-300">
                         Learn More
@@ -77,27 +77,27 @@ footerTagline: Exploring the intersection of creativity and technology.
 
         <!-- TOP RIGHT: Image Gallery Slideshow - Uses images from all sections -->
         <div class="hidden lg:block overflow-hidden">
-          <div class="hero-slideshow relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
+          <a href="#" class="hero-slideshow block relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
             {# Home images #}
             {%- for img in collections.homeImages %}
-              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
+              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
             {%- endfor %}
             {# Data section images #}
             {%- for img in collections.codingImages %}
-              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
             {%- endfor %}
             {%- for img in collections.genaiImages %}
-              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
             {%- endfor %}
             {%- for img in collections.webdevImages %}
-              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
             {%- endfor %}
             {# Art section images #}
             {%- for img in collections.paintingImages %}
-              <img src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
+              <img data-page-href="{{ img.href or img.assignedPage or page.url }}" src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: 0;">
             {%- endfor %}
             {# Ken Burns effect and transitions handled by JS #}
-          </div>
+          </a>
         </div>
 
         <!-- BOTTOM LEFT: What's New -->
@@ -125,6 +125,7 @@ footerTagline: Exploring the intersection of creativity and technology.
         </div>
     </div>
 </section>
+{% include "components/visual-feed.njk" %}
 
 <!-- Wider context (daily loop): world, Toronto, good news -->
 {% set newsData = news.world %}
@@ -181,12 +182,12 @@ footerTagline: Exploring the intersection of creativity and technology.
     <div class="mt-12 grid md:grid-cols-2 gap-10">
       <div>
         <div class="flex items-baseline justify-between mb-4">
-          <h4 class="text-2xl font-semibold">Latest tracks</h4>
+          <h4 class="text-2xl font-semibold" id="featured-music">Featured releases</h4>
           <a href="/music/" class="text-sm text-wavgen-yellow underline hover:text-white">See all Music →</a>
         </div>
         {% if latestTracks.items and latestTracks.items.length > 0 %}
           <div class="space-y-4">
-            {% for track in latestTracks.items | head(3) %}
+            {% for track in featuredMedia.releases %}
               {% include "components/track-embed.njk" %}
             {% endfor %}
           </div>
@@ -196,12 +197,12 @@ footerTagline: Exploring the intersection of creativity and technology.
       </div>
       <div>
         <div class="flex items-baseline justify-between mb-4">
-          <h4 class="text-2xl font-semibold">Latest videos</h4>
+          <h4 class="text-2xl font-semibold">Featured videos</h4>
           <a href="/video/" class="text-sm text-wavgen-yellow underline hover:text-white">See all Videos →</a>
         </div>
         {% if latestVideos.items and latestVideos.items.length > 0 %}
           <div class="space-y-4">
-            {% for video in latestVideos.items | head(3) %}
+            {% for video in featuredMedia.videos %}
               {% include "components/video-embed.njk" %}
             {% endfor %}
           </div>

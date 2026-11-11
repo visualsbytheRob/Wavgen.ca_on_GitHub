@@ -1,0 +1,18 @@
+---
+permalink: /visual-feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title>The Waveform Generation — Work &amp; Collections</title>
+<id>{{ site.url }}/visual-feed.xml</id>
+<updated>{{ visualFeed.updated }}</updated>
+<author><name>{{ site.author }}</name></author>
+<link rel="self" type="application/atom+xml" href="{{ site.url }}/visual-feed.xml"/>
+<link rel="alternate" type="text/html" href="{{ site.url }}/#visual-feed"/>
+{% for item in visualFeed.items %}
+<entry><title>{{ item.title }}</title><id>{{ site.url }}/visual-feed.xml#{{ item.id }}</id><updated>{{ item.updated }}</updated><link href="{{ item.href | siteAbsoluteUrl }}"/><category term="{{ item.type }}"/>
+{% set entryContent %}<p>{{ item.description }}</p><p><a href="{{ item.href | siteAbsoluteUrl }}"><img src="{{ item.image | siteAbsoluteUrl }}" alt="{{ item.title }}" width="640"></a></p><p><a href="{{ item.href | siteAbsoluteUrl }}">Explore {{ item.title }}</a></p>{% endset %}
+<content type="html">{{ entryContent }}</content></entry>
+{% endfor %}
+</feed>

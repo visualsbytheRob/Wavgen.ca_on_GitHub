@@ -1,0 +1,14 @@
+.media-card{border:1px solid #71628a;border-radius:14px;overflow:hidden;background:#181125;color:#f6f1ff}
+.media-card[hidden],.media-card [hidden]{display:none!important}
+.media-stage{position:relative;background:#100b18;min-height:190px}
+.media-launch{display:flex;min-height:220px;width:100%;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;background:linear-gradient(130deg,#2e1847,#12111d);color:#ffe275;font-weight:700;text-align:center;border:0;cursor:pointer}
+.media-launch img{width:100%;aspect-ratio:16/9;object-fit:contain;max-height:240px}
+.media-launch:hover{background:#36234e}.media-launch:focus-visible,.media-close:focus-visible{outline:3px solid #ffe275;outline-offset:-4px}
+.media-album-launch{padding:0 0 16px;gap:14px}.media-launch img.album-art{aspect-ratio:1;width:100%;height:auto;max-height:350px;object-fit:contain;background:#100b18}
+.media-frame{display:block;width:100%;height:540px;border:0}.media-video .media-frame{height:auto;aspect-ratio:16/9;min-height:200px}
+.media-info{padding:18px}.media-info h3{font-size:1.2rem;font-weight:700;margin-bottom:8px}.media-info a,.media-platforms a{color:#ffe275;text-decoration:underline;text-underline-offset:4px}
+.media-info p{color:#d6cbe2;font-size:.9rem;margin:8px 0}.media-close{padding:8px 14px;border:1px solid #8b7b9d;border-radius:6px;margin:12px;color:#fff;background:#30243e}
+.media-platforms{display:flex;flex-wrap:wrap;gap:20px;background:#181125;padding:22px;border-radius:12px;margin:24px 0}
+.media-filters{display:flex;flex-wrap:wrap;gap:20px;margin:24px 0}.media-filters label{display:flex;flex-direction:column;gap:8px}.media-filters input,.media-filters select{background:#fff;color:#181125;padding:12px;border:1px solid #71628a;border-radius:8px;max-width:100%}
+.media-tracklist{margin-top:14px}.media-tracklist summary{cursor:pointer;color:#ffe275}.media-tracklist ol{padding-left:22px;list-style:decimal}.media-tracklist li{padding:4px 0}
+@media(max-width:600px){.media-filters{display:block}.media-filters label{margin-bottom:16px}.media-frame{height:480px}}

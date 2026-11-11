@@ -10,14 +10,34 @@
 const fs = require('fs');
 const { toPublicApp } = require('./src/_utils/apps'); // public/private rule for the app catalogue
 const structuredData = require('./src/_utils/structured-data'); // schema.org JSON-LD: builders + build-time validation
+const contentSnapshots = require('./src/_data/contentSnapshots.json');
+function mixContentImages(key, art) {
+  const cards = contentSnapshots[key] || [], result = [];
+  for (let i=0; i<Math.max(cards.length,art.length); i++) {
+    if(cards[i]) result.push(cards[i]);
+    if(art[i]) result.push(art[i]);
+  }
+  return result;
+}
 
 module.exports = function(eleventyConfig) {
+  eleventyConfig.addFilter('siteAbsoluteUrl', value => /^https?:\/\//.test(String(value)) ? value : 'https://wavgen.ca' + value);
+  eleventyConfig.addPassthroughCopy({'node_modules/three/build/three.module.js':'assets/vendor/three.module.js','node_modules/three/build/three.core.js':'assets/vendor/three.core.js','node_modules/three/LICENSE':'assets/vendor/three-LICENSE.txt'});
+  eleventyConfig.addTransform('card-images', require('./src/_utils/card-images.cjs'));
+  eleventyConfig.addFilter('snapshotKey', url => String(url).replace(/^\/+|\/+$/g, '') || 'home');
+  eleventyConfig.addFilter("approvedForPage", (url, images) => {
+    const key = String(url || "/").replace(/^\/+|\/+$/g, "") || "home";
+    return mixContentImages(key, images[key] || images[key.split("/")[0]] || []);
+  });
+  eleventyConfig.addFilter("pageHeading", value => String(value || "").split("\u2014")[0].replace(/ World$/, "").trim());
   // Publish only runtime assets. Developer READMEs are still rendered by Eleventy;
   // changing those public routes is a separate editorial decision.
   eleventyConfig.addPassthroughCopy({ "src/icons": "icons", "src/manifest.webmanifest": "manifest.webmanifest" });
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/images/**/*.{png,jpg,jpeg,gif,webp,svg,avif,ico,mp4,webm}");
   eleventyConfig.addPassthroughCopy("src/css/style.css");
+  eleventyConfig.addPassthroughCopy("src/css/media.css");
+  eleventyConfig.addPassthroughCopy("src/js/media-embeds.js");
   eleventyConfig.addPassthroughCopy("src/css/systems/worlds.css");
   for (const name of ["main", "home", "gallery", "placeholder-visuals", "code-playground", "data-app-embed", "command-palette"]) {
     eleventyConfig.addPassthroughCopy(`src/js/${name}.js`);
@@ -32,6 +52,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("src/css/"); // Watch the CSS directory
   eleventyConfig.addWatchTarget("src/input.css"); // Watch the main input.css
   
+  const approvedImages = require("./src/_data/approvedImages.json");
+  eleventyConfig.addPassthroughCopy("src/js/approved-images.js");
+
   // Helper function to create image collections from a directory
   // Used to generate page-specific image galleries throughout the site
   const fs = require('fs');
@@ -39,6 +62,7 @@ module.exports = function(eleventyConfig) {
   
   function createImageCollection(dirPath, urlPath) {
     return function() {
+      if (approvedImages[dirPath]) return mixContentImages(dirPath, approvedImages[dirPath]);
       const fullPath = path.join(__dirname, "src", "images", dirPath);
       if (!fs.existsSync(fullPath)) return [];
       return fs.readdirSync(fullPath)
@@ -149,33 +173,8 @@ module.exports = function(eleventyConfig) {
 
   // Combined collection of ALL images for homepage
   eleventyConfig.addCollection("allImages", (collectionApi) => {
-    const allImages = [];
-    const folders = [
-      'home', 
-      'art/painting', 'art/drawing', 'art/modelling', 'art/printing',
-      'music/electro', 'music/ambient', 'music/melodic', 'music/breaks',
-      'video/realtime', 'video/mapping', 'video/mixing', 'video/editing',
-      'data/webdev', 'data/cloud', 'data/genai', 'data/coding'
-    ];
-    
-    folders.forEach(folder => {
-      const imgPath = `./src/images/${folder}`;
-      if (fs.existsSync(imgPath)) {
-        const files = fs.readdirSync(imgPath).filter(f => 
-          /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(f)
-        );
-        files.forEach(file => {
-          allImages.push({
-            url: `/images/${folder}/${file}`,
-            fileSlug: file.replace(/\.[^/.]+$/, ''),
-            folder: folder
-          });
-        });
-      }
-    });
-    
-    // Shuffle for variety
-    return allImages.sort(() => Math.random() - 0.5);
+    return ["home", "music", "art", "video", "data"].flatMap(key => approvedImages[key] || []);
+
   });
 
   // App catalogue (src/_data/apps.json): project each entry down to what the
@@ -280,6 +279,7 @@ module.exports = function(eleventyConfig) {
     const report = structuredData.validateBuild(results, {
       site: readJsonFile("src/_data/site.json", {}),
       apps: readJsonFile("src/_data/apps.json", { items: [] }),
+      catalogueVisible: readJsonFile("src/_data/features.json", {}).appCatalogue !== false,
       // Incremental rebuilds re-render only the changed pages, so the
       // site-wide "is every block present" checks would misfire there.
       coverage: !incremental && Array.isArray(results) && results.length > 0

@@ -29,6 +29,7 @@ This is the main layout template for all pages in the Wavgen.ca site.
 
   {# Feed autodiscovery: lets browsers and feed readers find the diary's Atom feed (built by src/feed.njk) #}
   <link rel="alternate" type="application/atom+xml" title="{{ site.feed.title }}" href="{{ site.feed.path }}" />
+  <link rel="alternate" type="application/atom+xml" title="The Waveform Generation — Work & Collections" href="/visual-feed.xml" />
 
   {#
     Open Graph Image Logic:
@@ -90,6 +91,12 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="/css/style.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Arvo:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/media.css">
+  <link rel="stylesheet" href="/assets/visual-cards.css">
+  <script src="/js/media-embeds.js" defer></script>
+  <script src="/assets/card-destinations.js" defer></script>
+  <link rel="stylesheet" href="/assets/slideshow-viewer.css">
+  <script src="/assets/slideshow-viewer.js" defer></script>
 </head>
 <body class="relative z-0 font-roboto bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
 
@@ -99,6 +106,7 @@ This is the main layout template for all pages in the Wavgen.ca site.
 
   <main tabindex="-1" id="main" class="relative z-10" role="main">
     {{ content | safe }}
+    {% include "components/visual-card-grid.njk" %}
   </main>
 
   {% include "footer.njk" %}
@@ -119,6 +127,8 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <!-- Load after GSAP to ensure GSAP is available -->
   <script src="/js/gallery.js"></script>
   <!-- Placeholder Visuals: Procedurally generated images when no real images exist -->
+  <script src="/js/approved-images.js"></script>
+  <script src="/assets/content-snapshots.js"></script>
   <script src="/js/placeholder-visuals.js"></script>
   <!-- Interactive Components: load globally; each module self-initializes only if its container exists -->
   <script src="/js/code-playground.js"></script>

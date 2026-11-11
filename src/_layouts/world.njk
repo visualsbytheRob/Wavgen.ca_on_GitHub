@@ -1,82 +1,27 @@
 ---
+
 layout: base.njk
+
 ---
 
-{# Breadcrumb — fixed below the 64px site header #}
-<nav class="wg-breadcrumb" aria-label="Breadcrumb">
-  <a href="/">Home</a>
-  <span aria-hidden="true">›</span>
-  {% if domain %}
-  <a href="/{{ domain }}/">{{ domain | capitalize }}</a>
-  <span aria-hidden="true">›</span>
-  {% endif %}
-  <span class="wg-breadcrumb-current">{{ title | replace(" — Visual Learning World", "") | replace(" — Interactive Visual Learning Guide", "") | replace(" — Visual Learning Guide", "") | replace(" — WAVGEN Music World", "") | replace(" — WAVGEN World", "") }}</span>
-</nav>
+{% set section = domain or 'data' %}
 
-{# World iframe — fixed to fill viewport below header + breadcrumb #}
-<iframe
-  src="/worlds/{{ worldFile }}"
-  class="wg-world-frame"
-  allowfullscreen
-  title="{{ title }}"
-></iframe>
+{% set heading = title | pageHeading %}
 
-<style>
-/* ── Site header: fixed so it can never scroll away ─────────────────── */
-body > header {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 1000 !important;
-}
+<nav class="bg-gray-800 py-4" aria-label="Breadcrumb"><div class="container mx-auto px-4"><a href="/" class="text-wavgen-yellow">Home</a> <span aria-hidden="true"> / </span><a href="/{{ section }}/" class="text-wavgen-yellow">{{ section | capitalize }}</a> <span aria-hidden="true"> / </span><span>{{ heading }}</span></div></nav>
 
-/* ── Breadcrumb: fixed directly below header ─────────────────────────── */
-.wg-breadcrumb {
-  position: fixed;
-  top: 64px;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0 2rem;
-  height: 36px;
-  background: #2c0077;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.75rem;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.wg-breadcrumb a {
-  color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.wg-breadcrumb a:hover { color: #FEDD00; }
-.wg-breadcrumb span[aria-hidden] { color: rgba(255, 255, 255, 0.55); }
-.wg-breadcrumb-current { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+{% set hero = {title: heading, description: description, images: approvedImages[section], theme: section, gradient: {'from': 'from-gray-900', via: 'via-wavgen-dark-purple', to: 'to-wavgen-purple'} } %}
 
-/* ── World iframe: fixed below header + breadcrumb (64 + 36 = 100px) ── */
-.wg-world-frame {
-  position: fixed;
-  top: 100px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: calc(100vh - 100px);
-  border: none;
-}
+{% include "components/hero.njk" %}
 
-/* ── Hide footer — not relevant inside an immersive world ────────────── */
-body > footer { display: none !important; }
+{{ content | safe }}
 
-/* ── No outer-page scroll — everything that matters is fixed ─────────── */
-html, body {
-  overflow: hidden !important;
-  height: 100% !important;
-  margin: 0;
-}
-</style>
+<section class="world-content-section" aria-label="{{ heading }} interactive guide">
+
+<div class="container mx-auto px-4 py-4"><h2 class="text-2xl font-bold">Explore {{ heading }}</h2><p>Use the interactive guide below, or <a class="text-wavgen-yellow" href="/worlds/{{ worldFile }}" target="_blank" rel="noopener">open it in its own tab</a>.</p></div>
+
+<iframe src="/worlds/{{ worldFile }}" class="wg-world-frame" loading="lazy" allowfullscreen title="{{ heading }} interactive guide"></iframe>
+
+</section>
+
+<style>.world-content-section{background:#100c18;color:#eee8f6}.wg-world-frame{display:block;width:100%;height:85vh;min-height:600px;border:0}</style>
