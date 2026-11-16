@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-15",
-  "question": "When was the last time you watched something work the first time? What was different?",
+  "date": "2026-11-16",
+  "question": "When did a Claude conversation teach you to ask better questions, not just get better answers?",
   "source": "random-with-history",
-  "chosen_index": 8,
+  "chosen_index": 313,
   "bank_size": 409,
-  "recently_used_window": 187
+  "recently_used_window": 188
 }
