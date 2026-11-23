@@ -11,14 +11,14 @@
     <h1>TouchDesigner Community Tools Scan</h1>
     <p class="lede">A sourced catalogue of the community and Patreon tools ecosystem around TouchDesigner — the named creators Rob flagged, plus the wider field found alongside them. This page is the living base for a planned <strong>TouchDesigner Deep Dive 2027</strong> across wavgen.ca, Derivative's channels, and social.</p>
     <div class="stats">
-      <div class="stat"><b>29</b><span>Catalogue entries</span></div>
-      <div class="stat"><b>13 + 16</b><span>Named + discovered</span></div>
+      <div class="stat"><b>30</b><span>Catalogue entries</span></div>
+      <div class="stat"><b>14 + 16</b><span>Named + discovered</span></div>
       <div class="stat"><b>5+</b><span>MCP servers</span></div>
       <div class="stat"><b>86</b><span>FNSTools packages</span></div>
       <div class="stat"><b>1,361</b><span>TwoZero ZOP models</span></div>
     </div>
     <nav class="toc" aria-label="Sections">
-      <a href="#catalogue">Catalogue</a><a href="#mcp">MCP landscape</a><a href="#diffusion">Real-time AI</a><a href="#directories">Directories</a><a href="#deepdive">Deep Dive 2027</a><a href="#method">Method &amp; caveats</a>
+      <a href="#catalogue">Catalogue</a><a href="#realtime">Realtime Shortlist</a><a href="#mcp">MCP landscape</a><a href="#diffusion">Real-time AI</a><a href="#directories">Directories</a><a href="#deepdive">Deep Dive 2027</a><a href="#method">Method &amp; caveats</a>
     </nav>
   </div>
 </div>
@@ -72,6 +72,48 @@
   </ul>
 </section>
 
+<section id="realtime" class="shortlist" aria-labelledby="rt-h">
+  <span class="tag">Highlighted · the curator's list</span>
+  <h2 id="rt-h">The Realtime Shortlist</h2>
+  <p class="sub">Alongside the catalogue, this is the curator's own working shortlist: 309 repositories of public .tox files, custom operators, Python and GLSL for TouchDesigner, plus Unreal Engine exploration, maintained as a public GitHub stars list so it never goes stale. The highlights below are the TouchDesigner core of it; the full list lives on GitHub.</p>
+
+  <h3>TouchDesigner tools and components</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Repository</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td data-h="Repository"><a href="https://github.com/t3kt/raytk" target="_blank" rel="noopener">t3kt/raytk</a></td><td data-h="What it is">Raymarching shader toolkit for TouchDesigner. Python; the list's flagship entry.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/TouchDesigner/CustomOperatorSamples" target="_blank" rel="noopener">TouchDesigner/CustomOperatorSamples</a></td><td data-h="What it is">Derivative's official collection of C++ custom operator samples for learning TD operator development.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/TouchDesigner/TouchEngine-UE" target="_blank" rel="noopener">TouchDesigner/TouchEngine-UE</a></td><td data-h="What it is">Derivative's official plugin for loading TouchDesigner components inside Unreal Engine via the TouchEngine API.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/raganmd/TD-Examples" target="_blank" rel="noopener">raganmd/TD-Examples</a></td><td data-h="What it is">Matthew Ragan's TouchDesigner example files. Python; one of the most-starred TD teaching repos on GitHub.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/raganmd/touchdesigner-sop-to-svg" target="_blank" rel="noopener">raganmd/touchdesigner-sop-to-svg</a></td><td data-h="What it is">SOP to SVG pipeline, for turning procedural geometry into paths for cutting or plotting. Python.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/IntentDev/Luminosity" target="_blank" rel="noopener">IntentDev/Luminosity</a></td><td data-h="What it is">A front-end for TouchDesigner aimed at performing, controlling and distributing realtime media. Python; updated January 2025.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/L05/TouchDesigner" target="_blank" rel="noopener">L05/TouchDesigner</a></td><td data-h="What it is">A collection of TouchDesigner tools and examples, including GLSL and Python. Updated July 2026.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/vinz9/FlexCHOP" target="_blank" rel="noopener">vinz9/FlexCHOP</a></td><td data-h="What it is">NVIDIA FleX physics solver integrated into TouchDesigner as a CHOP. C++.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/Wickedlasers/Laser_OS_TouchDesigner" target="_blank" rel="noopener">Wickedlasers/Laser_OS_TouchDesigner</a></td><td data-h="What it is">Laser control operating system built for TouchDesigner. C++.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/OwenKirby/launchpadpro" target="_blank" rel="noopener">OwenKirby/launchpadpro</a></td><td data-h="What it is">Novation Launchpad Pro component for TouchDesigner; the free GitHub companion to <a href="#tool-owenkirby">catalogue entry 30</a>.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/timgerritsen/refractive-raymarching" target="_blank" rel="noopener">timgerritsen/refractive-raymarching</a></td><td data-h="What it is">TDSW workshop files on refractive raymarching in TouchDesigner (February 2022 workshop).</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/wuestenarchitekten/workshops" target="_blank" rel="noopener">wuestenarchitekten/workshops</a></td><td data-h="What it is">Files from TouchDesigner workshops. Python.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Shader and simulation reference</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Repository</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td data-h="Repository"><a href="https://github.com/dli/waves" target="_blank" rel="noopener">dli/waves</a></td><td data-h="What it is">David Li's ocean wave simulation; a reference for GPU water in any realtime engine.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/dli/flow" target="_blank" rel="noopener">dli/flow</a></td><td data-h="What it is">Volumetric particle flow simulation.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/jamieowen/glsl-blend" target="_blank" rel="noopener">jamieowen/glsl-blend</a></td><td data-h="What it is">GLSL implementations of the Photoshop blend modes, glslify formatted; directly portable into TD GLSL.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/stackgl/glsl-lighting-walkthrough" target="_blank" rel="noopener">stackgl/glsl-lighting-walkthrough</a></td><td data-h="What it is">A walkthrough of Phong shading in GLSL.</td></tr>
+      <tr><td data-h="Repository"><a href="https://github.com/GollyGang/ready" target="_blank" rel="noopener">GollyGang/ready</a></td><td data-h="What it is">Cross-platform reaction-diffusion systems and PDEs; the reference implementation behind many TD reaction-diffusion patches.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="shortlist-cta">
+    <p><strong>Follow visualsbytheRob on GitHub</strong> to track the list as it grows: <a href="https://github.com/visualsbytheRob" target="_blank" rel="noopener">github.com/visualsbytheRob</a> — the Realtime list itself is at <a href="https://github.com/stars/visualsbytheRob/lists/realtime" target="_blank" rel="noopener">github.com/stars/visualsbytheRob/lists/realtime</a> (309 repositories).</p>
+    <p><strong>If a repository belongs on this list or in the scan, suggest it:</strong> reply in the Derivative forum thread or reach out through <a href="https://github.com/visualsbytheRob" target="_blank" rel="noopener">GitHub</a>. Recommendations are how this page has grown so far.</p>
+  </div>
+</section>
+
 <section id="mcp" aria-labelledby="mcp-h">
   <h2 id="mcp-h">The MCP landscape</h2>
   <p class="sub">There is no single “the TouchDesigner MCP” in October 2026. A Deep Dive 2027 episode should compare these on tool count, transport, security model, and whether agent changes are undoable.</p>
@@ -120,7 +162,7 @@
   <h2 id="dd-h">From scan to Deep Dive 2027</h2>
   <p class="sub">How this page evolves into the series that reintroduces Rob's TouchDesigner work — he authored the original TouchDesigner Deep Dive — across wavgen.ca, Derivative's site, and social.</p>
   <div class="road">
-    <div class="step"><span class="when">Now — the atlas</span><h3>Keep this scan current</h3><p>This catalogue is the reference layer: 29 entries with distribution, price basis, licence, and TD-build requirements, caveats intact. New tools and version bumps land here first.</p></div>
+    <div class="step"><span class="when">Now — the atlas</span><h3>Keep this scan current</h3><p>This catalogue is the reference layer: 30 entries with distribution, price basis, licence, and TD-build requirements, caveats intact. New tools and version bumps land here first.</p></div>
     <div class="step"><span class="when">Next — hands-on installs</span><h3>Work the install queue</h3><p>Embody, the DotSimulate harvest, 404zero / TwoZero, and MediaPipe for TD are already queued for install and testing on the Gold Image workstation — first-hand install notes replace index-only claims with tested ones.</p></div>
     <div class="step"><span class="when">2027 — the series</span><h3>Deep Dive 2027</h3><p>Episodes the scan already outlines: the five-way MCP comparison, the TDXFam operator-family wave, a real-time diffusion shootout (StreamDiffusionTD vs SD TOP vs ZOPs), and Patreon toolmaker conversations — published to wavgen.ca and Derivative, cut down for social.</p></div>
   </div>

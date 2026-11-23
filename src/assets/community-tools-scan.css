@@ -96,6 +96,13 @@
 .community-tools-scan .plain p{margin:2px 0;color:var(--muted);font-size:.92rem}
 .community-tools-scan .callout{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);padding:16px 18px;font-size:.92rem}
 .community-tools-scan .callout strong{color:inherit}
+/* Realtime Shortlist highlight */
+.community-tools-scan section.shortlist{background:var(--panel2);border:1px solid var(--line);border-left:5px solid var(--accent);padding:26px 22px 22px;margin-top:34px}
+.community-tools-scan .shortlist .tag{display:inline-block;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-ink);background:var(--accent-bg);padding:3px 8px;font-weight:700;margin-bottom:10px}
+.community-tools-scan .shortlist h3{margin:22px 0 10px}
+.community-tools-scan .shortlist-cta{margin-top:22px;background:var(--accent-bg);color:var(--accent-ink);border:1px solid var(--accent);padding:16px 18px}
+.community-tools-scan .shortlist-cta p{margin:6px 0}
+.community-tools-scan .shortlist-cta a{color:inherit;font-weight:700}
 .community-tools-scan .road{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:820px){.community-tools-scan .road{grid-template-columns:1fr}}
 .community-tools-scan .step{background:var(--panel2);border-top:4px solid var(--accent);padding:16px}
