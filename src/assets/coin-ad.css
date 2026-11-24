@@ -30,9 +30,17 @@
 .wg-coin-ad__banner-player .wg-coin-ad__playback { inset: auto 3px 3px auto; min-width: 27px; min-height: 27px; justify-content: center; padding: 3px; }
 .wg-coin-film-link { display: block; }
 .wg-coin-film-link:focus-visible,.wg-coin-ad__playback:focus-visible { outline: 2px solid #ffdb05; outline-offset: -3px; }
-.wg-coin-film-band { width: 100%; background: #1b1026; border-block-end: 2px solid #ffdb05; }
+.wg-coin-film-band { width: 100%; container-type: inline-size; background: #1b1026; border-block-end: 2px solid #ffdb05; }
 .wg-coin-film-band__player { position: relative; }
-.wg-coin-film-band video { display: block; width: 100%; height: auto; max-height: 70svh; object-fit: contain; }
+.wg-coin-film-band video {
+  --film-height: min(48.5vw, 56svh, 34rem);
+  --film-height: min(48.5cqw, 56svh, 34rem);
+  display: block;
+  width: min(100%, calc(var(--film-height) * 2.06));
+  height: var(--film-height);
+  margin-inline: auto;
+  object-fit: cover;
+}
 .wg-coin-film-band__player > .wg-coin-ad__playback { inset: auto clamp(10px,2vw,24px) clamp(10px,2vw,24px) auto; min-height: 36px; }
 .wg-coin-ad__inner p { margin: 10px 0; color: #f1e7f4; font-size: 13px; }
 .wg-coin-ad__actions { display: flex; align-items: center; gap: 12px; }
