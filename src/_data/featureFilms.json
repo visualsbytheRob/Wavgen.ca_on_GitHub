@@ -16,5 +16,23 @@
     "productUrl": "/#creative-portfolio",
     "film": "/assets/wavgen-site-trailer-v1.mp4",
     "shot": ""
+  },
+  {
+    "motion": "product",
+    "title": "Cloud Computing",
+    "caption": "Cloud Computing",
+    "detail": "Compute · Storage · Networks",
+    "productUrl": "/data/cloud-computing/",
+    "film": "/assets/shelf/cloud-computing-v1.mp4",
+    "shot": "/assets/shelf/cloud-computing.webp"
+  },
+  {
+    "motion": "product",
+    "title": "TouchDesigner",
+    "caption": "TouchDesigner",
+    "detail": "Nodes · Signals · Motion",
+    "productUrl": "/video/touchdesigner-signal-flow/",
+    "film": "/assets/shelf/touchdesigner-banana-v1.mp4",
+    "shot": "/assets/shelf/touchdesigner-banana.webp"
   }
 ]

@@ -2,13 +2,21 @@
 const fs=require('node:fs'),path=require('node:path');
 const manifest=require('../config/media-manifest.json');
 const root=path.resolve(__dirname,'../_site');
+const shelfCutouts = new Set([
+ path.join(root, 'assets', 'shelf', 'cloud-computing.webp'),
+ path.join(root, 'assets', 'shelf', 'touchdesigner-banana.webp'),
+]);
 const base=(process.env.MEDIA_BASE_URL||manifest.baseUrl).replace(/\/$/,'');
 if(!/^https:\/\//.test(base)&&!/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(base))throw Error('Media base must be HTTPS or localhost');
 const replacements=manifest.entries.map(e=>[e.path,base+'/'+e.key]);
 function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(dir,e.name)):[path.join(dir,e.name)]);}
 let rewritten=0,removed=0;
 for(const file of walk(root)){
- if(/\.(png|jpe?g|webp|gif|svg|avif|ico|bmp|tiff?)$/i.test(file)){fs.unlinkSync(file);removed++;continue;}
+ if(/\.(png|jpe?g|webp|gif|svg|avif|ico|bmp|tiff?)$/i.test(file)){
+  // These foreground cutouts are authored and versioned with the shelf.
+  if(!shelfCutouts.has(file)){fs.unlinkSync(file);removed++;}
+  continue;
+ }
  if(!/\.(html|css|js|json|xml|webmanifest)$/i.test(file))continue;
  let s=fs.readFileSync(file,'utf8'),old=s;
  for(const [local,remote] of replacements){
