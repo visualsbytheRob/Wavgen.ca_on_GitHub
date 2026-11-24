@@ -97,11 +97,16 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <script src="/assets/card-destinations.js" defer></script>
   <link rel="stylesheet" href="/assets/slideshow-viewer.css">
   <script src="/assets/slideshow-viewer.js" defer></script>
+{% if page.url == '/' %}<link rel="stylesheet" href="/assets/coin-ad.css">{% endif %}
 </head>
 <body class="relative z-0 font-roboto bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
 
   
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-wavgen-dark-purple text-wavgen-yellow px-3 py-2 rounded">Skip to content</a>
+  {% if page.url == "/" %}
+    {% include "components/coin-ad.njk" %}
+    <script src="/assets/coin-ad.js" defer></script>
+  {% endif %}
   {% include "navigation.njk" %}
 
   <main tabindex="-1" id="main" class="relative z-10" role="main">
