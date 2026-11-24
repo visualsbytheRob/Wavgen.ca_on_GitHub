@@ -13,12 +13,13 @@
       <span hidden data-wg-shelf-slide data-key="{{ loop.index0 }}" data-motion="{{ product.motion }}" data-product-url="{{ product.productUrl }}" data-title="{{ product.title }}" data-caption="{{ product.caption }}" data-detail="{{ product.detail }}" data-film="{{ product.film }}"></span>
     {% endfor %}
     <div class="wg-feature-shelf-dock">
-      {% for product in featureFilms %}
+      {% for product in featureFilms.slice(1).concat(featureFilms.slice(0, 1)) %}
         {% if product.shot %}
-          <div class="wg-feature-shelf-slot" data-wg-shelf-slot="{{ loop.index0 }}">
+          <div class="wg-feature-shelf-slot" data-wg-shelf-slot="{{ 0 if loop.last else loop.index }}">
             <a class="wg-coin-film-frame__coin{% if product.motion == 'coin' %} is-coin{% endif %}" href="{{ product.productUrl }}" aria-label="View {{ product.title }}" title="{{ product.caption }}">
               <img src="{{ product.shot }}" alt="" decoding="async">
             </a>
+            <span class="wg-feature-shelf-slot__label" aria-hidden="true">{{ product.shelfLabel }}</span>
           </div>
         {% endif %}
       {% endfor %}

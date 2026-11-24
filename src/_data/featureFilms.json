@@ -3,36 +3,70 @@
     "motion": "coin",
     "title": "the 1958 Canada silver dollar",
     "caption": "1958 Canada Silver Dollar",
+    "shelfLabel": "Coin",
     "detail": "British Columbia Centennial",
     "productUrl": "https://wavgen.myshopify.com/products/1958-canada-silver-dollar-british-columbia-centennial-totem-pole",
     "film": "https://media.wavgen.ca/1958-canada-silver-dollar-centennial-shelf-v2-local-h3.mp4",
     "shot": "https://wavgen.myshopify.com/cdn/shop/t/6/assets/wg-hero-coin-still.jpg?v=141338447852597863971795493603"
   },
   {
-    "motion": "none",
+    "motion": "product",
     "title": "the Wavgen creative portfolio",
-    "caption": "Explore Wavgen",
+    "caption": "Wavgen",
+    "shelfLabel": "Home",
     "detail": "Music · Art · Video · Technology",
     "productUrl": "/#creative-portfolio",
-    "film": "/assets/wavgen-site-trailer-v1.mp4",
-    "shot": ""
+    "film": "/assets/shelf/home-shelf-v3.mp4",
+    "shot": "/assets/shelf/home.webp"
   },
   {
     "motion": "product",
-    "title": "Cloud Computing",
-    "caption": "Cloud Computing",
-    "detail": "Compute · Storage · Networks",
-    "productUrl": "/data/cloud-computing/",
-    "film": "/assets/shelf/cloud-computing-v1.mp4",
-    "shot": "/assets/shelf/cloud-computing.webp"
+    "title": "Music",
+    "caption": "Music",
+    "shelfLabel": "Music",
+    "detail": "Electronic music and sound design",
+    "productUrl": "/music/",
+    "film": "/assets/shelf/music-shelf-v3.mp4",
+    "shot": "/assets/shelf/music.webp"
   },
   {
     "motion": "product",
     "title": "TouchDesigner",
     "caption": "TouchDesigner",
+    "shelfLabel": "Video",
     "detail": "Nodes · Signals · Motion",
     "productUrl": "/video/touchdesigner-signal-flow/",
-    "film": "/assets/shelf/touchdesigner-banana-v1.mp4",
+    "film": "/assets/shelf/touchdesigner-banana-shelf-v3.mp4",
     "shot": "/assets/shelf/touchdesigner-banana.webp"
+  },
+  {
+    "motion": "product",
+    "title": "Cloud Computing",
+    "caption": "Cloud Computing",
+    "shelfLabel": "Tech",
+    "detail": "Compute · Storage · Networks",
+    "productUrl": "/data/cloud-computing/",
+    "film": "/assets/shelf/cloud-computing-shelf-v3.mp4",
+    "shot": "/assets/shelf/cloud-computing.webp"
+  },
+  {
+    "motion": "product",
+    "title": "Art",
+    "caption": "Art",
+    "shelfLabel": "Art",
+    "detail": "Drawing · Painting · Digital work",
+    "productUrl": "/art/",
+    "film": "/assets/shelf/art-shelf-v3.mp4",
+    "shot": "/assets/shelf/art.webp"
+  },
+  {
+    "motion": "product",
+    "title": "About Wavgen",
+    "caption": "About Wavgen",
+    "shelfLabel": "About",
+    "detail": "Rob McDonald · Creative practice in Toronto",
+    "productUrl": "/#about",
+    "film": "/assets/shelf/about-shelf-v3.mp4",
+    "shot": "/assets/shelf/about.webp"
   }
 ]

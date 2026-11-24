@@ -3,6 +3,10 @@ const fs=require('node:fs'),path=require('node:path');
 const manifest=require('../config/media-manifest.json');
 const root=path.resolve(__dirname,'../_site');
 const shelfCutouts = new Set([
+ path.join(root, 'assets', 'shelf', 'home.webp'),
+ path.join(root, 'assets', 'shelf', 'music.webp'),
+ path.join(root, 'assets', 'shelf', 'art.webp'),
+ path.join(root, 'assets', 'shelf', 'about.webp'),
  path.join(root, 'assets', 'shelf', 'cloud-computing.webp'),
  path.join(root, 'assets', 'shelf', 'touchdesigner-banana.webp'),
 ]);
