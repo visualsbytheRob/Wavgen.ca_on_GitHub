@@ -1,6 +1,6 @@
   .wg-coin-film-band--framed {
     --coin-frame: clamp(12px, 3vw, 38px);
-    --coin-escape: clamp(76px, 15vw, 168px);
+    --coin-escape: clamp(48px, 13vw, 168px);
     background: var(--wg-brand-purple);
     border: 0;
   }
@@ -17,16 +17,32 @@
   }
   .wg-coin-film-frame .wg-coin-ad__playback {
     inset: 12px 12px auto auto;
-    z-index: 3;
+    z-index: 5;
+  }
+  .wg-feature-shelf-dock {
+    position: absolute;
+    inset: 100% clamp(10px, 8cqw, 180px) auto auto;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: clamp(2px, 1.2vw, 24px);
+    width: min(58%, calc(3 * var(--coin-escape) + 48px));
+    z-index: 2;
+  }
+  .wg-feature-shelf-slot {
+    position: relative;
+    flex: 0 1 var(--coin-escape);
+    min-width: 0;
+  }
+  .wg-feature-shelf-slot.is-playing {
+    z-index: 1;
   }
   .wg-coin-film-frame__coin {
     position: absolute;
-    z-index: 2;
     display: block;
-    left: 82%;
-    bottom: 0;
-    width: var(--coin-escape);
-    transform: translate(-50%, 50%);
+    left: 50%;
+    top: 0;
+    width: 100%;
+    transform: translate(-50%, -50%);
     filter: drop-shadow(0 5px 9px rgb(8 4 10 / .55));
   }
   .wg-coin-film-frame__coin img {
@@ -49,7 +65,7 @@
     inset: auto auto calc(var(--coin-frame) + 12px) calc(var(--coin-frame) + 12px);
     display: flex;
     gap: 6px;
-    z-index: 3;
+    z-index: 5;
   }
   [data-wg-shelf-controls] button {
     min-width: 44px;
@@ -64,7 +80,7 @@
     display: grid;
     align-content: center;
     min-height: max(74px, calc(var(--coin-escape) * .58));
-    padding: 10px 27% 10px clamp(18px, 5vw, 80px);
+    padding: 10px 54% 10px clamp(18px, 5vw, 80px);
     color: #e5d6eb;
     background: linear-gradient(#120b27, #17112d);
     border-bottom: 3px solid #2b1a4a;
@@ -78,4 +94,9 @@
   }
   .wg-feature-shelf-caption a:hover {
     text-decoration: underline;
+  }
+  @media (min-width: 900px) {
+    .wg-feature-shelf-dock {
+      right: clamp(10px, 13cqw, 280px);
+    }
   }
