@@ -4,7 +4,7 @@
 .media-video-poster{display:block;background:#100b18}
 .media-video-poster img{display:block;width:100%;height:auto;aspect-ratio:16/9;max-height:240px;object-fit:contain}
 .media-video .media-launch{min-height:44px;padding:8px 16px}
-.media-video-link{position:absolute;z-index:1;inset:0 0 max(60px,22%)}
+.media-video .media-stage > a.media-video-link{position:absolute;display:block;z-index:1;inset:0 0 max(60px,22%)}
 .media-video-poster:focus-visible,.media-video-link:focus-visible{outline:3px solid #ffe275;outline-offset:-4px}
 .media-launch{display:flex;min-height:220px;width:100%;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;background:linear-gradient(130deg,#2e1847,#12111d);color:#ffe275;font-weight:700;text-align:center;border:0;cursor:pointer}
 .media-launch img{width:100%;aspect-ratio:16/9;object-fit:contain;max-height:240px}
