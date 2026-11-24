@@ -1,10 +1,27 @@
-<section class="wg-coin-film-band" aria-label="The Wavgen Shop commercial">
-  <div class="wg-coin-film-band__player" data-coin-film-player>
-    <a class="wg-coin-film-link" href="https://wavgen.myshopify.com/products/1958-canada-silver-dollar-british-columbia-centennial-totem-pole" aria-label="View the 1958 Canada silver dollar">
-      <video autoplay muted loop playsinline preload="metadata" width="1920" height="1060" aria-hidden="true">
-        <source src="https://media.wavgen.ca/one-only-deep-purple-escapes-local-h3.mp4" type="video/mp4">
-      </video>
+{% set first = featureFilms[0] %}
+<section class="wg-coin-film-band wg-coin-film-band--framed" aria-label="Featured product films">
+  <div class="wg-coin-film-frame" data-wg-shelf>
+    <div class="wg-coin-film-frame__aperture">
+      <div class="wg-coin-film-band__player" data-coin-film-player>
+        <a class="wg-coin-film-link" href="{{ first.productUrl }}" aria-label="View {{ first.title }}">
+          <video src="{{ first.film }}" autoplay muted loop playsinline preload="metadata" width="1920" height="1060" aria-hidden="true"></video>
+        </a>
+        <button type="button" data-coin-ad-playback class="wg-coin-ad__playback"><span data-coin-ad-playback-label>Pause film</span></button>
+      </div>
+    </div>
+    <a class="wg-coin-film-frame__coin is-coin" href="{{ first.productUrl }}" aria-label="View {{ first.title }}">
+      <img src="{{ first.shot }}" width="308" height="304" alt="" decoding="async">
     </a>
-    <button type="button" data-coin-ad-playback class="wg-coin-ad__playback"><span data-coin-ad-playback-label>Pause film</span></button>
+    {% for product in featureFilms %}
+      <span hidden data-wg-shelf-slide data-motion="{{ product.motion }}" data-product-url="{{ product.productUrl }}" data-title="{{ product.title }}" data-caption="{{ product.caption }}" data-detail="{{ product.detail }}" data-shot="{{ product.shot }}" data-film="{{ product.film }}"></span>
+    {% endfor %}
+    <div data-wg-shelf-controls hidden role="group" aria-label="Featured products">
+      <button type="button" data-wg-shelf-previous aria-label="Previous featured product">←</button>
+      <button type="button" data-wg-shelf-next aria-label="Next featured product">→</button>
+    </div>
+  </div>
+  <div class="wg-feature-shelf-caption">
+    <a href="{{ first.productUrl }}" data-wg-shelf-caption>{{ first.caption }}</a>
+    <span data-wg-shelf-detail>{{ first.detail }}</span>
   </div>
 </section>

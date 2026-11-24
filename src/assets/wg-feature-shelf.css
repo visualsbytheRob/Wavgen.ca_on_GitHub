@@ -1,0 +1,81 @@
+  .wg-coin-film-band--framed {
+    --coin-frame: clamp(12px, 3vw, 38px);
+    --coin-escape: clamp(76px, 15vw, 168px);
+    background: var(--wg-brand-purple);
+    border: 0;
+  }
+  .wg-coin-film-frame {
+    position: relative;
+    padding: var(--coin-frame);
+    background: var(--wg-brand-purple);
+  }
+  .wg-coin-film-frame__aperture {
+    container-type: inline-size;
+    overflow: hidden;
+    border: 1px solid #c6a261;
+    background: var(--wg-brand-purple);
+  }
+  .wg-coin-film-frame .wg-coin-ad__playback {
+    inset: 12px 12px auto auto;
+    z-index: 3;
+  }
+  .wg-coin-film-frame__coin {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    left: 82%;
+    bottom: 0;
+    width: var(--coin-escape);
+    transform: translate(-50%, 50%);
+    filter: drop-shadow(0 5px 9px rgb(8 4 10 / .55));
+  }
+  .wg-coin-film-frame__coin img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .wg-coin-film-frame__coin.is-coin img {
+    clip-path: ellipse(49% 49% at 50% 50%);
+  }
+  .wg-coin-film-frame__coin:focus-visible {
+    outline: 2px solid #ffdb05;
+    outline-offset: 4px;
+  }
+  [data-wg-shelf] [hidden] {
+    display: none !important;
+  }
+  [data-wg-shelf-controls] {
+    position: absolute;
+    inset: auto auto calc(var(--coin-frame) + 12px) calc(var(--coin-frame) + 12px);
+    display: flex;
+    gap: 6px;
+    z-index: 3;
+  }
+  [data-wg-shelf-controls] button {
+    min-width: 44px;
+    min-height: 44px;
+    color: #ffdb05;
+    background: #180b39;
+    border: 1px solid #c6a261;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .wg-feature-shelf-caption {
+    display: grid;
+    align-content: center;
+    min-height: max(74px, calc(var(--coin-escape) * .58));
+    padding: 10px 27% 10px clamp(18px, 5vw, 80px);
+    color: #e5d6eb;
+    background: linear-gradient(#120b27, #17112d);
+    border-bottom: 3px solid #2b1a4a;
+  }
+  .wg-feature-shelf-caption a {
+    width: fit-content;
+    color: #fff3da;
+    font-size: clamp(16px, 2.2vw, 25px);
+    font-weight: 650;
+    text-decoration: none;
+  }
+  .wg-feature-shelf-caption a:hover {
+    text-decoration: underline;
+  }
