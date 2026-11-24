@@ -14,9 +14,9 @@
     "title": "the Wavgen creative portfolio",
     "caption": "Wavgen",
     "shelfLabel": "Home",
-    "detail": "Music · Art · Video · Technology",
+    "detail": "Music · Video · Tech · Art",
     "productUrl": "/#creative-portfolio",
-    "film": "/assets/shelf/home-shelf-v3.mp4",
+    "film": "/assets/shelf/home-shelf-v4.mp4",
     "shot": "/assets/shelf/home.webp"
   },
   {
@@ -26,7 +26,7 @@
     "shelfLabel": "Music",
     "detail": "Electronic music and sound design",
     "productUrl": "/music/",
-    "film": "/assets/shelf/music-shelf-v3.mp4",
+    "film": "/assets/shelf/music-shelf-v4.mp4",
     "shot": "/assets/shelf/music.webp"
   },
   {
@@ -56,7 +56,7 @@
     "shelfLabel": "Art",
     "detail": "Drawing · Painting · Digital work",
     "productUrl": "/art/",
-    "film": "/assets/shelf/art-shelf-v3.mp4",
+    "film": "/assets/shelf/art-shelf-v4.mp4",
     "shot": "/assets/shelf/art.webp"
   },
   {
@@ -66,7 +66,7 @@
     "shelfLabel": "About",
     "detail": "Rob McDonald · Creative practice in Toronto",
     "productUrl": "/#about",
-    "film": "/assets/shelf/about-shelf-v3.mp4",
+    "film": "/assets/shelf/about-shelf-v4.mp4",
     "shot": "/assets/shelf/about.webp"
   }
 ]
