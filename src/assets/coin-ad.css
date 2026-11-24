@@ -30,7 +30,7 @@
 .wg-coin-ad__banner-player .wg-coin-ad__playback { inset: auto 3px 3px auto; min-width: 27px; min-height: 27px; justify-content: center; padding: 3px; }
 .wg-coin-film-link { display: block; }
 .wg-coin-film-link:focus-visible,.wg-coin-ad__playback:focus-visible { outline: 2px solid #ffdb05; outline-offset: -3px; }
-.wg-coin-film-band { width: 100%; container-type: inline-size; background: #1b1026; border-block-end: 2px solid #ffdb05; }
+.wg-coin-film-band { --wg-brand-purple: #340093; width: 100%; container-type: inline-size; background: var(--wg-brand-purple); border-block-end: 2px solid #ffdb05; }
 .wg-coin-film-band__player { position: relative; }
 .wg-coin-film-band video {
   --film-height: min(48.5vw, 56svh, 34rem);
