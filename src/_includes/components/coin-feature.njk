@@ -1,5 +1,5 @@
 {% set first = featureFilms[0] %}
-<section class="wg-coin-film-band wg-coin-film-band--framed" aria-label="Featured product films">
+<section class="wg-coin-film-band wg-coin-film-band--framed" aria-label="Featured films">
   <div class="wg-coin-film-frame" data-wg-shelf>
     <div class="wg-coin-film-frame__aperture">
       <div class="wg-coin-film-band__player" data-coin-film-player>
@@ -15,9 +15,9 @@
     {% for product in featureFilms %}
       <span hidden data-wg-shelf-slide data-motion="{{ product.motion }}" data-product-url="{{ product.productUrl }}" data-title="{{ product.title }}" data-caption="{{ product.caption }}" data-detail="{{ product.detail }}" data-shot="{{ product.shot }}" data-film="{{ product.film }}"></span>
     {% endfor %}
-    <div data-wg-shelf-controls hidden role="group" aria-label="Featured products">
-      <button type="button" data-wg-shelf-previous aria-label="Previous featured product">←</button>
-      <button type="button" data-wg-shelf-next aria-label="Next featured product">→</button>
+    <div data-wg-shelf-controls hidden role="group" aria-label="Featured films">
+      <button type="button" data-wg-shelf-previous aria-label="Previous film">←</button>
+      <button type="button" data-wg-shelf-next aria-label="Next film">→</button>
     </div>
   </div>
   <div class="wg-feature-shelf-caption">

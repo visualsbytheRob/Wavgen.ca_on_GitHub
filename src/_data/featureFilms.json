@@ -6,6 +6,15 @@
     "detail": "British Columbia Centennial",
     "productUrl": "https://wavgen.myshopify.com/products/1958-canada-silver-dollar-british-columbia-centennial-totem-pole",
     "film": "https://media.wavgen.ca/1958-canada-silver-dollar-centennial-shelf-v2-local-h3.mp4",
-    "shot": "/assets/wg-hero-coin-still.jpg"
+    "shot": "https://wavgen.myshopify.com/cdn/shop/t/6/assets/wg-hero-coin-still.jpg?v=141338447852597863971795493603"
+  },
+  {
+    "motion": "none",
+    "title": "the Wavgen creative portfolio",
+    "caption": "Explore Wavgen",
+    "detail": "Music · Art · Video · Technology",
+    "productUrl": "/#creative-portfolio",
+    "film": "/assets/wavgen-site-trailer-v1.mp4",
+    "shot": ""
   }
 ]

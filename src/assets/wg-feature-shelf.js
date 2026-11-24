@@ -20,6 +20,10 @@
 
     function position() {
       const slide = slides[active];
+      if (!slide.shot) {
+        shotLink.hidden = true;
+        return;
+      }
       const coin = slide.motion === 'coin';
       const t = video.currentTime;
       const openingEnd = coin ? 30 / 24 : Math.min(1.25, video.duration / 4);
@@ -63,17 +67,19 @@
       detail.textContent = slide.detail;
       pictureLink.setAttribute('aria-label', 'View ' + slide.title);
       shotLink.setAttribute('aria-label', 'View ' + slide.title);
-      shot.src = slide.shot;
+      if (slide.shot) shot.src = slide.shot;
       shotLink.classList.toggle('is-coin', slide.motion === 'coin');
       shotLink.removeAttribute('style');
-      shotLink.hidden = false;
+      shotLink.hidden = !slide.shot;
       video.autoplay = false;
+      video.muted = true;
       video.src = slide.film;
       if (play) video.play().catch(() => {});
       position();
     }
 
     video.loop = slides.length === 1;
+    video.muted = true;
     video.addEventListener('ended', () => openSlide(active + 1, true));
     video.addEventListener('loadedmetadata', position);
     video.addEventListener('seeked', position);

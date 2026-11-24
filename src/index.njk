@@ -7,6 +7,7 @@ footerTagline: Exploring the intersection of creativity and technology.
 ---
 
 {% include "components/storefront-home.njk" %}
+{% set homeHeroImages = collections.homeImages.slice(0, 24) %}
 
 <!-- Hero Section -->
 {# 
@@ -34,7 +35,7 @@ footerTagline: Exploring the intersection of creativity and technology.
 <section class="relative bg-gradient-to-br from-gray-900 via-wavgen-dark-purple to-wavgen-purple min-h-screen">
     <!-- Background Slideshow -->
     <div class="hero-section-bg-slideshow absolute inset-0">
-        {%- for img in collections.homeImages %}
+        {%- for img in homeHeroImages %}
           <img data-page-href="{{ img.href or img.assignedPage or page.url }}" {% if img.thumbnail %}data-thumbnail="{{ img.thumbnail }}"{% endif %} src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-section-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.3{% else %}0{% endif %};">
         {%- endfor %}
     </div>
@@ -47,7 +48,7 @@ footerTagline: Exploring the intersection of creativity and technology.
         <div class="relative animate-fade-in overflow-hidden">
             <!-- Background slideshow behind Hello text -->
             <div class="hero-bg-slideshow absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
-                {%- for img in collections.homeImages %}
+                {%- for img in homeHeroImages %}
                   <img data-page-href="{{ img.href or img.assignedPage or page.url }}" {% if img.thumbnail %}data-thumbnail="{{ img.thumbnail }}"{% endif %} src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-bg-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" style="opacity: {% if loop.first %}0.1{% else %}0{% endif %};">
                 {%- endfor %}
                 {# Placeholder will be injected here by JS if no images #}
@@ -81,7 +82,7 @@ footerTagline: Exploring the intersection of creativity and technology.
         <div class="hidden lg:block overflow-hidden">
           <a href="#" class="hero-slideshow block relative w-full h-full rounded-lg shadow-xl border-2 border-wavgen-purple hover:border-wavgen-yellow transition-colors overflow-hidden cursor-pointer bg-wavgen-dark-purple">
             {# Home images #}
-            {%- for img in collections.homeImages %}
+            {%- for img in homeHeroImages %}
               <img data-page-href="{{ img.href or img.assignedPage or page.url }}" {% if img.thumbnail %}data-thumbnail="{{ img.thumbnail }}"{% endif %} src="{{ img.url }}" alt="{{ img.fileSlug }}" loading="lazy" decoding="async" class="hero-slide gallery-img absolute inset-0 w-full h-full object-contain transition-opacity duration-1000" style="opacity: {% if loop.first %}1{% else %}0{% endif %};">
             {%- endfor %}
             {# Ken Burns effect and transitions handled by JS #}
