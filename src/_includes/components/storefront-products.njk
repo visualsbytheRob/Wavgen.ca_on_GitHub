@@ -1,0 +1,39 @@
+{% set coin = featureFilms[0] %}
+<section class="wg-home-coin-film" aria-label="1958 Canada Silver Dollar film">
+  <h2><a href="{{ coin.productUrl }}">{{ coin.caption }}</a></h2>
+  <div class="wg-coin-film-band__player" data-coin-film-player>
+    <a class="wg-coin-film-link" href="{{ coin.productUrl }}" aria-label="View {{ coin.title }}">
+      <video autoplay muted loop playsinline preload="none" aria-label="1958 silver dollar film showing both faces of the coin" poster="https://cdn.shopify.com/s/files/1/0822/5429/9247/files/preview_images/c394882af62748a39b01c4ba81d74f98.thumbnail.0000000000.jpg?v=1795483680">
+        <source src="https://cdn.shopify.com/videos/c/vp/c394882af62748a39b01c4ba81d74f98/c394882af62748a39b01c4ba81d74f98.SD-480p-1.5Mbps-102493048.mp4" type="video/mp4">
+      </video>
+    </a>
+    <button type="button" data-coin-ad-playback class="wg-coin-ad__playback"><span data-coin-ad-playback-label>Pause film</span></button>
+  </div>
+</section>
+
+<section class="wg wg-band wg-products" id="shop-catalog">
+  <div class="wg-container">
+    <div class="wg-head">
+      <div>
+        <p class="wg-eyebrow">Fresh listings</p>
+        <h2 class="wg-h2">Now available</h2>
+        <p class="wg-lead">Pieces from Rob's own collection.</p>
+      </div>
+      <a class="wg-link" href="https://wavgen.myshopify.com/collections/all">See all &rarr;</a>
+    </div>
+    <div class="wg-grid wg-grid--products">
+      <article class="wg-card wg-pcard">
+        <a class="wg-pcard__media" href="{{ coin.productUrl }}">
+          <img src="https://cdn.shopify.com/s/files/1/0822/5429/9247/files/IMG_8546.jpg?v=1794271755&amp;width=800" alt="1958 Canada silver dollar" width="800" height="800" loading="lazy" decoding="async">
+        </a>
+        <div class="wg-pcard__body">
+          <p class="wg-tag">From the collection</p>
+          <h3 class="wg-pcard__title"><a href="{{ coin.productUrl }}">1958 Canada Silver Dollar, British Columbia Centennial, Totem Pole</a></h3>
+          <div class="wg-pcard__actions">
+            <a class="wg-link" href="{{ coin.productUrl }}">View item &rarr;</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

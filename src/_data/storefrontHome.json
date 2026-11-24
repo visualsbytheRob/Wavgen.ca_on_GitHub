@@ -1,0 +1,424 @@
+{
+  "hero": {
+    "settings": {
+      "eyebrow": "The Waveform Generation · Shop",
+      "heading": "Hello, welcome to the <strong>Wavgen Shop</strong>",
+      "subheading": "Gear, art and collectables from a creative life in Toronto, each looking for its next home.",
+      "cta_label": "Shop now",
+      "cta_link": "https://wavgen.myshopify.com/collections/all",
+      "cta2_label": "Explore Wavgen",
+      "cta2_link": "#creative-portfolio",
+      "bg_image": "",
+      "bg_image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/13.webp",
+      "interval": 7,
+      "gallery_label": "Gallery"
+    },
+    "slides": [
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/01.webp",
+          "category": "Studio",
+          "caption": "Analog music production studio",
+          "link": "#creative-portfolio"
+        }
+      },
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/12.webp",
+          "category": "Music",
+          "caption": "Electronic music studio workspace",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/41.webp",
+          "category": "Art",
+          "caption": "Studio drawing",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/46.webp",
+          "category": "Video",
+          "caption": "Electronic music concert stage",
+          "link": "/video/"
+        }
+      },
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/14.webp",
+          "category": "Art",
+          "caption": "Abstract geometric composition",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "slide",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/33.webp",
+          "category": "Studio",
+          "caption": "Recording studio equipment shelf",
+          "link": "/music/"
+        }
+      }
+    ],
+    "tiles": [
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/02.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/07.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/13.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/16.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/17.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/45.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/243.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/202.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/722.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/736.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/286.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/video/"
+        }
+      },
+      {
+        "type": "tile",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/35.webp",
+          "alt": "Artwork and studio photography by Rob McDonald",
+          "link": "/music/"
+        }
+      }
+    ],
+    "points": [
+      {
+        "type": "point",
+        "settings": {
+          "text": "Based in Toronto, Ontario. Local pickup preferred"
+        }
+      },
+      {
+        "type": "point",
+        "settings": {
+          "text": "Each item comes from Rob's own collection"
+        }
+      },
+      {
+        "type": "point",
+        "settings": {
+          "text": "Shipping can be arranged on request"
+        }
+      },
+      {
+        "type": "point",
+        "settings": {
+          "text": "Questions about an item? Ask before you buy"
+        }
+      }
+    ]
+  },
+  "steps": {
+    "settings": {
+      "eyebrow": "Simple and local",
+      "heading": "How buying works"
+    },
+    "blocks": [
+      {
+        "type": "step",
+        "settings": {
+          "title": "Browse",
+          "text": "Each listing is a real item from Rob's own collection, with its own photos and description.",
+          "link_label": "",
+          "link": ""
+        }
+      },
+      {
+        "type": "step",
+        "settings": {
+          "title": "Ask anything",
+          "text": "Curious about condition or history? Send a message before you buy.",
+          "link_label": "Contact",
+          "link": "https://wavgen.myshopify.com/pages/contact"
+        }
+      },
+      {
+        "type": "step",
+        "settings": {
+          "title": "Pick up or ship",
+          "text": "Local pickup in Toronto is preferred. Shipping can be arranged for most items.",
+          "link_label": "",
+          "link": ""
+        }
+      }
+    ]
+  },
+  "studio": {
+    "settings": {
+      "eyebrow": "Music · Art · Video · Ideas",
+      "heading": "A moving view of Wavgen.",
+      "text": "The creative world these pieces come from.",
+      "link_label": "Explore the portfolio",
+      "link": "#creative-portfolio",
+      "interval": 8
+    },
+    "slides": [
+      {
+        "type": "feature",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/01.webp",
+          "category": "Studio",
+          "title": "Analog music production studio",
+          "text": "From the approved artwork and photography collection.",
+          "link_label": "Open this story",
+          "link": "#creative-portfolio"
+        }
+      },
+      {
+        "type": "feature",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/25.webp",
+          "category": "Studio",
+          "title": "Professional recording studio",
+          "text": "Where the sounds of The Waveform Generation take shape.",
+          "link_label": "Listen on wavgen.ca",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "feature",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/45.webp",
+          "category": "Art",
+          "title": "Abstract geometric composition",
+          "text": "Visual art made with TouchDesigner and real-time graphics.",
+          "link_label": "See the art",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "feature",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/286.webp",
+          "category": "Video",
+          "title": "Digital space render",
+          "text": "Projection mapping and immersive visual experiences.",
+          "link_label": "Watch",
+          "link": "/video/"
+        }
+      }
+    ],
+    "cards": [
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/08.webp",
+          "category": "Electro",
+          "title": "Listen",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/253.webp",
+          "category": "Mixing",
+          "title": "Watch",
+          "link": "/video/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/40.webp",
+          "category": "Drawing",
+          "title": "Drawing techniques",
+          "link": "/art/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/516.webp",
+          "category": "Data & Tech",
+          "title": "Big data pipelines",
+          "link": "/data/"
+        }
+      }
+    ]
+  },
+  "portfolio": {
+    "settings": {
+      "heading": "Creative Portfolio",
+      "text": "Exploring the boundaries between traditional artistry and cutting-edge technology through music, visual art, and interactive experiences."
+    },
+    "blocks": [
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/02.webp",
+          "category": "Audio",
+          "title": "Music",
+          "text": "Electronic music production and sound design.",
+          "link_label": "Explore",
+          "link": "/music/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/46.webp",
+          "category": "Visual",
+          "title": "Video",
+          "text": "Real-time graphics, projection mapping and live visuals.",
+          "link_label": "Explore",
+          "link": "/video/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/722.webp",
+          "category": "Data",
+          "title": "Data & Tech",
+          "text": "Interactive data pipelines, AI and emerging technology.",
+          "link_label": "Explore",
+          "link": "/data/"
+        }
+      },
+      {
+        "type": "card",
+        "settings": {
+          "image": "",
+          "image_url": "https://media.wavgen.ca/wavgen-approved-2026-11-11/41.webp",
+          "category": "Art",
+          "title": "Art",
+          "text": "Drawing, painting and generative particle systems.",
+          "link_label": "Explore",
+          "link": "/art/"
+        }
+      }
+    ]
+  },
+  "quote": {
+    "settings": {
+      "heading": "What people say"
+    },
+    "blocks": [
+      {
+        "type": "quote",
+        "settings": {
+          "quote": "Great things are done by a series of small things brought together.",
+          "author": "Vincent van Gogh",
+          "link_label": "Explore Art Modelling",
+          "link": "/art/"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{% set section = storefrontHome.hero %}
+{% set slides = section.slides %}
+{% set tiles = section.tiles %}
+{% set points = section.points %}
+<section class="wg wg-hero" id="wg-hero-hero">
+  <div class="wg-hero__bg" aria-hidden="true">
+    <img src="{{ section.settings.bg_image_url }}" alt="{{ '' }}" class="wg-hero__bg-img" loading="eager" decoding="async">
+  </div>
+  <div class="wg-container wg-hero__grid">
+    <div class="wg-panel wg-hero__intro wg-reveal">
+      {%- if section.settings.eyebrow -%}<p class="wg-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="wg-hero__title">{{ section.settings.heading | safe }}</h1>
+      {%- if section.settings.subheading -%}<p class="wg-hero__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+      {%- if points.length > 0 -%}
+        <ul class="wg-hero__points">
+          {%- for block in points -%}
+            <li><span class="wg-dot" aria-hidden="true"></span>{{ block.settings.text }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <div class="wg-actions">
+        {%- if section.settings.cta_label -%}
+          <a class="wg-btn wg-btn--primary" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_label -%}
+          <a class="wg-btn wg-btn--outline" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="wg-panel wg-hero__show wg-reveal" data-wg-slideshow data-interval="{{ section.settings.interval * 1000 }}">
+      <div class="wg-show__stage">
+        {%- for block in slides -%}
+          <a class="wg-show__slide{% if loop.first %} is-active{% endif %}" href="{{ block.settings.link or '#' }}" data-wg-slide aria-label="{{ block.settings.caption | escape }}">
+            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.caption }}" class="wg-kenburns" loading="{{ 'eager' if loop.first else 'lazy' }}" decoding="async">
+            {%- if block.settings.caption -%}<span class="wg-show__caption"><span class="wg-tag">{{ block.settings.category }}</span>{{ block.settings.caption }}</span>{%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- if slides.length > 1 -%}
+        <div class="wg-show__controls">
+          <button type="button" class="wg-ctrl" data-wg-prev aria-label="Previous image">&larr;</button>
+          <span class="wg-show__count" data-wg-count>1 / {{ slides.length }}</span>
+          <button type="button" class="wg-ctrl" data-wg-pause aria-pressed="false">Pause</button>
+          <button type="button" class="wg-ctrl" data-wg-next aria-label="Next image">&rarr;</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if tiles.length > 0 -%}
+      <div class="wg-panel wg-hero__gallery wg-reveal">
+        <p class="wg-panel__label">{{ section.settings.gallery_label }}</p>
+        <div class="wg-mosaic">
+          {%- for block in tiles -%}
+            <a class="wg-mosaic__tile" href="{{ block.settings.link or '#' }}">
+              <img src="{{ block.settings.image_url }}" alt="{{ block.settings.alt }}" class="" loading="lazy" decoding="async">
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{% include "components/storefront-products.njk" %}
+
+{% set section = storefrontHome.steps %}
+<section class="wg wg-band wg-band--purple wg-steps" id="wg-steps-steps">
+  <div class="wg-container">
+    <div class="wg-head wg-reveal">
+      <div>
+        {%- if section.settings.eyebrow -%}<p class="wg-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="wg-h2 wg-h2--yellow">{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+    <ol class="wg-grid wg-grid--3 wg-steps__list">
+      {%- for block in section.blocks -%}
+        <li class="wg-card wg-step wg-reveal">
+          <span class="wg-step__num">{{ '0' if loop.index < 10 }}{{ loop.index }}</span>
+          <h3 class="wg-step__title">{{ block.settings.title }}</h3>
+          <p class="wg-step__text">{{ block.settings.text }}</p>
+          {%- if block.settings.link_label -%}<a class="wg-link" href="{{ block.settings.link }}">{{ block.settings.link_label }} &rarr;</a>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% set section = storefrontHome.studio %}
+{% set slides = section.slides %}
+{% set cards = section.cards %}
+<section class="wg wg-band wg-band--gradient wg-studio" id="wg-studio-studio">
+  <div class="wg-container">
+    <div class="wg-head wg-reveal">
+      <div>
+        {%- if section.settings.eyebrow -%}<p class="wg-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="wg-h2 wg-h2--xl">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text -%}<p class="wg-lead">{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.link_label -%}
+        <a class="wg-link wg-link--u" href="{{ section.settings.link }}">{{ section.settings.link_label }} &#8599;</a>
+      {%- endif -%}
+    </div>
+
+    {%- if slides.length > 0 -%}
+      <div class="wg-feature wg-reveal" data-wg-slideshow data-interval="{{ section.settings.interval * 1000 }}">
+        <div class="wg-show__stage wg-feature__stage">
+          {%- for block in slides -%}
+            <div class="wg-show__slide{% if loop.first %} is-active{% endif %}" data-wg-slide>
+              <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title }}" class="wg-kenburns" loading="lazy" decoding="async">
+              <div class="wg-feature__copy">
+                <p class="wg-eyebrow">{{ block.settings.category }}</p>
+                <h3 class="wg-feature__title">{{ block.settings.title }}</h3>
+                {%- if block.settings.text -%}<p class="wg-feature__text">{{ block.settings.text }}</p>{%- endif -%}
+                {%- if block.settings.link_label -%}<a class="wg-link" href="{{ block.settings.link }}">{{ block.settings.link_label }} &rarr;</a>{%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if slides.length > 1 -%}
+          <div class="wg-show__controls">
+            <button type="button" class="wg-ctrl" data-wg-prev aria-label="Previous">&larr;</button>
+            <span class="wg-show__count" data-wg-count>1 / {{ slides.length }}</span>
+            <button type="button" class="wg-ctrl" data-wg-pause aria-pressed="false">Pause</button>
+            <button type="button" class="wg-ctrl" data-wg-next aria-label="Next">&rarr;</button>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if cards.length > 0 -%}
+      <div class="wg-grid wg-grid--4 wg-studio__cards">
+        {%- for block in cards -%}
+          <a class="wg-card wg-vcard wg-reveal" href="{{ block.settings.link or '#' }}">
+            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title }}" class="wg-vcard__img" loading="lazy" decoding="async">
+            <span class="wg-vcard__body">
+              <span class="wg-tag">{{ block.settings.category }}</span>
+              <span class="wg-vcard__title">{{ block.settings.title }}</span>
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% set section = storefrontHome.portfolio %}
+<section class="wg wg-band wg-band--surface wg-portfolio" id="creative-portfolio">
+  <div class="wg-container">
+    <div class="wg-center wg-reveal">
+      <h2 class="wg-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text -%}<p class="wg-lead wg-lead--center">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="wg-grid wg-grid--4">
+      {%- for block in section.blocks -%}
+        <a class="wg-card wg-vcard wg-vcard--tall wg-reveal" href="{{ block.settings.link or '#' }}">
+          <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title }}" class="wg-vcard__img" loading="lazy" decoding="async">
+          <span class="wg-vcard__body">
+            <span class="wg-tag">{{ block.settings.category }}</span>
+            <span class="wg-vcard__title">{{ block.settings.title }}</span>
+            {%- if block.settings.text -%}<span class="wg-vcard__text">{{ block.settings.text }}</span>{%- endif -%}
+            <span class="wg-link">{{ block.settings.link_label }} &rarr;</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% set section = storefrontHome.quote %}
+<section class="wg wg-band wg-band--purple wg-quote" id="wg-quote-quote">
+  <div class="wg-container wg-quote__inner wg-reveal">
+    <h2 class="wg-h2 wg-h2--yellow">{{ section.settings.heading }}</h2>
+    {%- for block in section.blocks -%}
+      <blockquote class="wg-quote__item">
+        <p>&ldquo;{{ block.settings.quote }}&rdquo; <cite>&mdash; {{ block.settings.author }}</cite>
+        {% if block.settings.link_label %} &middot; <a class="wg-link wg-link--u" href="{{ block.settings.link }}">{{ block.settings.link_label }}</a>{% endif %}</p>
+      </blockquote>
+    {%- endfor -%}
+  </div>
+</section>
