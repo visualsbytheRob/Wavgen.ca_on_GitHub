@@ -53,6 +53,7 @@ jobs:
 
     permissions:
       contents: read
+      actions: read
       pages: write
       id-token: write
 
@@ -90,6 +91,20 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         path: '_site'
+
+      - name: Wait for the Pages artifact to be visible
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          endpoint="repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=github-pages"
+          for attempt in {1..12}; do
+            if count=$(gh api "$endpoint" --jq '[.artifacts[] | select(.expired == false)] | length') && [[ "$count" -gt 0 ]]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'The uploaded github-pages artifact did not become visible.' >&2
+          exit 1
 
     - name: Deploy to GitHub Pages
       id: deployment
