@@ -99,6 +99,8 @@ jobs:
         endpoint="repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=github-pages"
         for attempt in {1..12}; do
           if count=$(gh api "$endpoint" --jq '[.artifacts[] | select(.expired == false)] | length') && [[ "$count" -gt 0 ]]; then
+            # Pages uses a separate artifact list that can lag the Actions API.
+            sleep 10
             exit 0
           fi
           sleep 5
