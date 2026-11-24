@@ -31,12 +31,12 @@
   },
   {
     "motion": "product",
-    "title": "TouchDesigner",
-    "caption": "TouchDesigner",
+    "title": "TouchDesigner & Video",
+    "caption": "TouchDesigner & Video",
     "shelfLabel": "Video",
-    "detail": "Nodes · Signals · Motion",
+    "detail": "Audio-reactive POPs · Live visuals · Projection mapping",
     "productUrl": "/video/touchdesigner-signal-flow/",
-    "film": "/assets/shelf/touchdesigner-banana-shelf-v3.mp4",
+    "film": "/assets/shelf/touchdesigner-banana-shelf-v4.mp4",
     "shot": "/assets/shelf/touchdesigner-banana.webp"
   },
   {
@@ -44,9 +44,9 @@
     "title": "Cloud Computing",
     "caption": "Cloud Computing",
     "shelfLabel": "Tech",
-    "detail": "Compute · Storage · Networks",
+    "detail": "AI and Automation Architecture",
     "productUrl": "/data/cloud-computing/",
-    "film": "/assets/shelf/cloud-computing-shelf-v3.mp4",
+    "film": "/assets/shelf/cloud-computing-shelf-v4.mp4",
     "shot": "/assets/shelf/cloud-computing.webp"
   },
   {
