@@ -110,6 +110,7 @@ This is the main layout template for all pages in the Wavgen.ca site.
   {% include "navigation.njk" %}
 
   <main tabindex="-1" id="main" class="relative z-10" role="main">
+    {% if page.url == "/" %}{% include "components/coin-feature.njk" %}{% endif %}
     {{ content | safe }}
     {% include "components/visual-card-grid.njk" %}
   </main>

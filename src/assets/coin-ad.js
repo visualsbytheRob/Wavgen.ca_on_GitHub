@@ -32,6 +32,29 @@
     });
   }
 
+  function bindPlayback(player) {
+    const video = player.querySelector('video');
+    const playback = player.querySelector('[data-coin-ad-playback]');
+    if (!video || !playback || playback.dataset.bound) return;
+    playback.dataset.bound = 'true';
+
+    function update() {
+      const label = video.paused ? 'Play film' : 'Pause film';
+      playback.setAttribute('aria-label', label);
+      const visibleLabel = playback.querySelector('[data-coin-ad-playback-label]');
+      if (visibleLabel) visibleLabel.textContent = label;
+      playback.dataset.playing = String(!video.paused);
+    }
+
+    video.addEventListener('play', update);
+    video.addEventListener('pause', update);
+    playback.addEventListener('click', () => {
+      if (video.paused) video.play().catch(update);
+      else video.pause();
+    });
+    update();
+  }
+
   function initialize(root) {
     if (root.dataset.coinAdInitialized) return;
     root.dataset.coinAdInitialized = 'true';
@@ -39,8 +62,7 @@
     const banner = root.querySelector('[data-coin-ad-banner]');
     const popup = root.querySelector('[data-coin-ad-popup]');
     const video = popup?.querySelector('video');
-    const playback = popup?.querySelector('[data-coin-ad-playback]');
-    if (!banner || !popup || !video || !playback) return;
+    if (!banner || !popup || !video) return;
 
     try {
       banner.hidden = sessionStorage.getItem(bannerKey) === '1';
@@ -59,24 +81,6 @@
         // The banner remains hidden in this document.
       }
     });
-    const updatePlayback = () => {
-      const label = video.paused ? 'Play film' : 'Pause film';
-      playback.setAttribute('aria-label', label);
-      const visibleLabel = playback.querySelector('[data-coin-ad-playback-label]');
-      if (visibleLabel) visibleLabel.textContent = label;
-      playback.dataset.playing = String(!video.paused);
-    };
-
-    video.addEventListener('play', updatePlayback);
-    video.addEventListener('pause', updatePlayback);
-    playback.addEventListener('click', () => {
-      if (!video.paused) {
-        video.pause();
-        return;
-      }
-      video.play().catch(updatePlayback);
-    });
-    updatePlayback();
 
     function dismiss() {
       const moveFocus = popup.contains(document.activeElement);
@@ -100,12 +104,13 @@
       if (wasDismissed() || !popup.isConnected) return;
       popup.hidden = false;
       video.muted = true;
-      video.play().catch(updatePlayback);
+      video.play().catch(() => {});
       animateIn(popup, 18, 'back.out(1.5)');
     }, delay);
   }
 
   function initializeAll() {
+    document.querySelectorAll('[data-coin-film-player]').forEach(bindPlayback);
     document.querySelectorAll('[data-coin-ad]').forEach(initialize);
   }
 

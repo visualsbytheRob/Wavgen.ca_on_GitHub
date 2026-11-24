@@ -1,11 +1,18 @@
 /* Create players only on request. Keep one active player across the page. */
 (() => {
   let active = null;
+  function toggleVideoLinks(card, playing) {
+    const poster = card.querySelector('[data-media-poster]');
+    const film = card.querySelector('[data-media-film-link]');
+    if (poster) poster.hidden = playing;
+    if (film) film.hidden = !playing;
+  }
   function closePlayer() {
     if (!active) return;
     active.querySelector('iframe')?.remove();
     active.querySelector('.media-launch').hidden = false;
     active.querySelector('.media-close').hidden = true;
+    toggleVideoLinks(active, false);
     active = null;
   }
   document.addEventListener('click', event => {
@@ -20,16 +27,19 @@
     const url = new URL(card.dataset.embedUrl);
     if (!['bandcamp.com', 'www.youtube-nocookie.com', 'www.youtube.com', 'w.soundcloud.com', 'embed.music.apple.com'].includes(url.hostname)) return;
     closePlayer();
+    const isVideo = card.hasAttribute('data-video-card');
+    if (isVideo) url.searchParams.set('autoplay', '1');
     const frame = document.createElement('iframe');
     frame.src = url.href;
     frame.title = card.dataset.title;
-    frame.allow = 'encrypted-media; fullscreen; picture-in-picture';
+    frame.allow = isVideo ? 'autoplay; encrypted-media; fullscreen; picture-in-picture' : 'encrypted-media; fullscreen; picture-in-picture';
     frame.allowFullscreen = true;
     frame.referrerPolicy = 'strict-origin-when-cross-origin';
     frame.className = 'media-frame';
     card.querySelector('.media-stage').append(frame);
     button.hidden = true;
     card.querySelector('.media-close').hidden = false;
+    toggleVideoLinks(card, true);
     active = card;
     frame.focus();
   });

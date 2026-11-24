@@ -1,7 +1,10 @@
 <article id="video-{{ video.video_id }}" class="media-card media-video" data-video-card data-media-player data-category="{{ video.category | escape }}" data-embed-url="{{ video.embed_url | escape }}" data-title="{{ video.title | escape }}">
-  <div class="media-stage"><button type="button" class="media-launch" aria-label="Load {{ video.title | escape }} on YouTube">
-    {% if video.thumbnail %}<img src="{{ video.thumbnail | escape }}" alt="" loading="lazy" decoding="async" width="480" height="360">{% endif %}<span>▶ Watch video</span>
-  </button></div><button type="button" class="media-close" hidden>Close player</button>
+  {% set coinProduct = 'https://wavgen.myshopify.com/products/1958-canada-silver-dollar-british-columbia-centennial-totem-pole' %}
+  <div class="media-stage">
+    {% if video.thumbnail %}<a class="media-video-poster" data-media-poster href="{{ coinProduct }}" aria-label="View the 1958 Canada silver dollar"><img src="{{ video.thumbnail | escape }}" alt="" loading="lazy" decoding="async" width="480" height="360"></a>{% endif %}
+    <button type="button" class="media-launch" aria-label="Load {{ video.title | escape }} on YouTube"><span>▶ Watch video</span></button>
+    <a class="media-video-link" data-media-film-link href="{{ coinProduct }}" aria-label="View the 1958 Canada silver dollar" hidden></a>
+  </div><button type="button" class="media-close" hidden>Close player</button>
   <div class="media-info"><h3>{{ video.title }}</h3><p>{{ video.category }}{% if video.short %} · Short{% endif %}{% if video.duration %} · {{ video.duration }}{% endif %}</p>
     <a href="{{ video.page_url | escape }}" target="_blank" rel="noopener">Open on YouTube ↗</a>
     {% if video.related_url %}<p><a href="{{ video.related_url | escape }}">{{ video.related_label }} →</a></p>{% endif %}
