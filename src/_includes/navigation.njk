@@ -10,10 +10,10 @@ Each navigation item uses the same structure:
 Only the first navigation item is commented in detail; all following items are analogous.
 #}
 <!-- Mobile Navigation Overlay -->
-<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[9999] hidden lg:hidden"></div>
+<div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[9999] hidden"></div>
 
 <!-- Mobile Navigation Drawer -->
-<nav id="mobile-nav" aria-label="Mobile navigation" inert class="fixed top-0 left-0 h-full w-80 bg-wavgen-purple z-[10000] transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+<nav id="mobile-nav" aria-label="Mobile navigation" inert class="fixed top-0 left-0 h-full w-80 max-w-full bg-wavgen-purple z-[10000] transform -translate-x-full transition-transform duration-300 ease-in-out">
   <div class="h-full flex flex-col">
     <!-- Header -->
     <div class="flex justify-between items-center p-4 border-b border-wavgen-dark-purple">
@@ -31,9 +31,9 @@ Only the first navigation item is commented in detail; all following items are a
     <div class="flex-1 overflow-y-auto py-2">
       <nav class="flex flex-col space-y-1 px-4">
         {% if navigation.main and navigation.main.length > 0 %}
-          {% for item in navigation.main %}
-            <a href="{{ item.url }}" class="block font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200{% if item.url | isActiveSection(page.url) %} bg-wavgen-dark-purple{% endif %}">
-              {{ item.title }}
+          {% for item in navigation.main.concat(navigation.utility) %}
+            <a href="{{ item.url }}" class="wg-mobile-nav-object font-bold text-white hover:text-wavgen-yellow py-2 px-2 rounded transition-all duration-200{% if item.url | isActiveSection(page.url) %} bg-wavgen-dark-purple{% endif %}">
+              <img class="wg-nav-object" src="{{ item.object }}" width="32" height="32" alt=""> {{ item.title }}
             </a>
             {% if item.children %}
               {% for child in item.children %}
@@ -46,52 +46,12 @@ Only the first navigation item is commented in detail; all following items are a
         {% else %}
           <span class="block text-red-400 py-4">Navigation data not found!</span>
         {% endif %}
-        <!-- Theme toggle and command palette hint removed per request -->
+        <a href="https://wavgen.myshopify.com/search" class="block text-white hover:text-wavgen-yellow py-2 px-2">Search the store</a>
+        <a href="https://wavgen.myshopify.com/account" class="block text-white hover:text-wavgen-yellow py-2 px-2">Shop account</a>
+        <a href="https://wavgen.myshopify.com/cart" class="block text-white hover:text-wavgen-yellow py-2 px-2">Shopping cart</a>
       </nav>
     </div>
   </div>
 </nav>
 
-<!-- Desktop Navigation -->
-<header class="bg-wavgen-dark-purple shadow-lg sticky top-0 z-30">
-  <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center py-4">
-      <!-- Logo -->
-      <div class="flex items-center">
-        <a href="/" class="text-2xl font-bold text-wavgen-yellow hover:text-yellow-300 transition-colors">
-          <img src="/icons/icon-192.png" width="40" height="40" alt="" style="display:inline-block;vertical-align:middle;margin-right:8px" /> The Waveform Generation
-        </a>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" aria-label="Open navigation" aria-controls="mobile-nav" aria-expanded="false" class="control-btn lg:hidden text-white hover:text-wavgen-yellow">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-
-      <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-8">
-        {% for item in navigation.main %}
-          <div class="relative group">
-            <a href="{{ item.url }}" class="text-white hover:text-wavgen-yellow transition-colors px-4 py-2 rounded-md font-semibold whitespace-nowrap flex items-center{% if item.url | isActiveSection(page.url) %} text-wavgen-yellow bg-wavgen-dark-purple{% endif %}">
-              {{ item.title }}
-            </a>
-            {% if item.children %}
-              <div class="absolute top-full {{ "right-0" if loop.last else "left-0" }} mt-2 w-56 bg-wavgen-purple rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                {% for child in item.children %}
-                  <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-white hover:bg-wavgen-dark-purple hover:text-wavgen-yellow transition-colors whitespace-nowrap{% if child.url | isCurrentPage(page.url) %} bg-wavgen-dark-purple text-wavgen-yellow{% endif %}">
-                    {{ child.title }}
-                  </a>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-        <!-- Subtle easter egg: tiny dot linking to hidden Site Log (/diary/) placed to the right of the nav links -->
-        <a href="/diary/" aria-label="Open Site Log" title=" " class="ml-2 inline-flex items-center justify-center w-2.5 h-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors" onclick="try{sessionStorage.setItem('siteLogUnlocked','1');}catch(e){}"></a>
-        <!-- Theme toggle and Ctrl+K buttons removed per request -->
-      </nav>
-    </div>
-  </div>
-</header>
+{% include "components/storefront-header.njk" %}

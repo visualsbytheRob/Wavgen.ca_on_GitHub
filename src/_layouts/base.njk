@@ -96,6 +96,7 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <script src="/js/media-embeds.js" defer></script>
   <script src="/assets/card-destinations.js" defer></script>
   <link rel="stylesheet" href="/assets/slideshow-viewer.css">
+  <link rel="stylesheet" href="/assets/site-navigation.css">
   <script src="/assets/slideshow-viewer.js" defer></script>
 {% if page.url == '/' %}
   <link rel="stylesheet" href="/assets/coin-ad.css?v=deep-purple-escapes">
@@ -112,10 +113,8 @@ This is the main layout template for all pages in the Wavgen.ca site.
     <script src="/assets/coin-ad.js" defer></script>
     <script src="/assets/wg-feature-shelf.js?v=3" defer></script>
     <script src="/assets/storefront-home.js?v=1" defer></script>
-    {% include "components/storefront-header.njk" %}
-  {% else %}
-    {% include "navigation.njk" %}
   {% endif %}
+  {% include "navigation.njk" %}
 
   <main tabindex="-1" id="main" class="relative z-10" role="main">
     {% if page.url == "/" %}{% include "components/coin-feature.njk" %}{% endif %}

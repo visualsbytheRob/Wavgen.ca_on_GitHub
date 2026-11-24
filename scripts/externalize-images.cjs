@@ -6,6 +6,8 @@ const shelfCutouts = new Set([
  path.join(root, 'assets', 'shelf', 'cloud-computing.webp'),
  path.join(root, 'assets', 'shelf', 'touchdesigner-banana.webp'),
 ]);
+const navigationObjects = new Set(['home', 'music', 'art', 'about']
+ .map(name => path.join(root, 'assets', 'navigation', name + '.webp')));
 const base=(process.env.MEDIA_BASE_URL||manifest.baseUrl).replace(/\/$/,'');
 if(!/^https:\/\//.test(base)&&!/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(base))throw Error('Media base must be HTTPS or localhost');
 const replacements=manifest.entries.map(e=>[e.path,base+'/'+e.key]);
@@ -14,7 +16,7 @@ let rewritten=0,removed=0;
 for(const file of walk(root)){
  if(/\.(png|jpe?g|webp|gif|svg|avif|ico|bmp|tiff?)$/i.test(file)){
   // These foreground cutouts are authored and versioned with the shelf.
-  if(!shelfCutouts.has(file)){fs.unlinkSync(file);removed++;}
+  if(!shelfCutouts.has(file) && !navigationObjects.has(file)){fs.unlinkSync(file);removed++;}
   continue;
  }
  if(!/\.(html|css|js|json|xml|webmanifest)$/i.test(file))continue;

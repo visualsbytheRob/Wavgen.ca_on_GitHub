@@ -5,15 +5,28 @@
  */
 
 module.exports = {
+  utility: [
+    {
+      title: 'About',
+      url: '/#about',
+      object: '/assets/navigation/about.webp',
+      children: [
+        { title: 'Catalog', url: 'https://wavgen.myshopify.com/collections/all' },
+        { title: 'Contact', url: 'https://wavgen.myshopify.com/pages/contact' },
+      ],
+    },
+  ],
   main: [
     {
       title: 'Home',
       url: '/',
+      object: '/assets/navigation/home.webp',
       icon: 'home'
     },
     {
       title: 'Music',
       url: '/music/',
+      object: '/assets/navigation/music.webp',
       icon: 'music',
       children: [
         // Genre pages
@@ -28,6 +41,7 @@ module.exports = {
     {
       title: 'Video',
       url: '/video/',
+      object: '/assets/shelf/touchdesigner-banana.webp',
       icon: 'video',
       children: [
         { title: 'Mixing',                    url: '/video/mixing/',                    description: 'Live video composition' },
@@ -38,8 +52,9 @@ module.exports = {
       ]
     },
     {
-      title: 'Data',
+      title: 'Tech',
       url: '/data/',
+      object: '/assets/shelf/cloud-computing.webp',
       icon: 'data',
       children: [
         { title: 'Web Dev',            url: '/data/webdev/',             description: 'Full-stack development' },
@@ -54,6 +69,7 @@ module.exports = {
     {
       title: 'Art',
       url: '/art/',
+      object: '/assets/navigation/art.webp',
       icon: 'art',
       children: [
         { title: 'Drawing',          url: '/art/drawing/',          description: 'Sketches and illustrations' },

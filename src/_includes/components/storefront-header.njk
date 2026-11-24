@@ -1,21 +1,42 @@
-<header class="wg-storefront-header">
-  <a class="wg-storefront-header__brand" href="/">
+<div class="wg-site-header-shell">
+<header class="wg-site-header">
+  <a class="wg-site-header__brand" href="/">
     <img src="https://media.wavgen.ca/site-images/acfe9cf594a16d8e5b63ff14047018638f75a52c8bd1c43ff65cf9caff3301e3.png" width="40" height="40" alt="">
     The Waveform Generation
   </a>
-  <nav aria-label="Main navigation">
-    <a href="/" aria-current="page">Home</a>
-    <a href="https://wavgen.myshopify.com/collections/all">Catalog</a>
-    <a href="#about">About</a>
-    <a href="https://wavgen.myshopify.com/pages/contact">Contact</a>
-    <a class="wg-storefront-header__icon" href="https://wavgen.myshopify.com/search" aria-label="Search the store">
+  <button id="mobile-menu-btn" class="wg-site-header__mobile control-btn" type="button" aria-label="Open navigation" aria-controls="mobile-nav" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <nav aria-label="Main navigation" class="wg-site-header__nav">
+    {% for item in navigation.main.concat(navigation.utility) %}
+      <div class="wg-site-header__item">
+        <a href="{{ item.url }}"{% if item.url == page.url %} aria-current="page"{% elseif item.url | isActiveSection(page.url) %} aria-current="location"{% endif %}>
+          <img class="wg-nav-object" src="{{ item.object }}" width="32" height="32" alt=""> {{ item.title }}
+        </a>
+        {% if item.children %}
+          <details class="wg-site-header__menu" name="wavgen-sections">
+            <summary aria-label="{{ item.title }} pages"></summary>
+            <ul>
+              {% for child in item.children %}
+                <li><a href="{{ child.url }}"{% if child.url == page.url %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+      </div>
+    {% endfor %}
+    {% if page.url == '/' %}
+    <a class="wg-site-header__icon" href="https://wavgen.myshopify.com/search" aria-label="Search the store">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
     </a>
-    <a class="wg-storefront-header__icon" href="https://wavgen.myshopify.com/account" aria-label="Shop account">
+    <a class="wg-site-header__icon" href="https://wavgen.myshopify.com/account" aria-label="Shop account">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="7" r="3.5"/><path d="M4 21a8 8 0 0 1 16 0Z"/></svg>
     </a>
-    <a class="wg-storefront-header__icon" href="https://wavgen.myshopify.com/cart" aria-label="Shopping cart">
+    <a class="wg-site-header__icon" href="https://wavgen.myshopify.com/cart" aria-label="Shopping cart">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16l1 13H3L4 8Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
     </a>
+    {% endif %}
+    <a href="/diary/" aria-label="Open Site Log" class="wg-site-header__diary" onclick="try{sessionStorage.setItem('siteLogUnlocked','1');}catch(e){}"></a>
   </nav>
 </header>
+</div>
