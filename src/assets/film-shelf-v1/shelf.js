@@ -8,7 +8,7 @@ async function read(path, kind) {
 }
 const assets = () => Promise.all([
   read('./shelf-data.json', 'json'), read('./model-review.json', 'json'),
-  read('./shelf.html', 'text'), read('./shelf.css', 'text'),
+  read('./shelf.html?v=2', 'text'), read('./shelf.css?v=2', 'text'),
 ]);
 let pending;
 
@@ -20,14 +20,14 @@ class WavgenFilmShelf extends HTMLElement {
     root.append(slot);
     const restore = () => {
       root.getElementById('shelf')?.setAttribute('hidden', '');
-      slot.hidden = false;
+      if (!slot.parentNode) root.prepend(slot);
       this.removeAttribute('data-enhanced');
       this.querySelector('video')?.play().catch(() => {});
     };
     const reveal = () => {
-      if (slot.hidden) return;
+      if (!slot.parentNode) return;
       this.querySelectorAll('video').forEach(video => video.pause());
-      slot.hidden = true;
+      slot.remove();
       root.getElementById('shelf').hidden = false;
       this.setAttribute('data-enhanced', '');
     };
@@ -53,6 +53,12 @@ class WavgenFilmShelf extends HTMLElement {
 async function mount(root, host, data, review, reveal, restore) {
   const el = id => root.getElementById(id);
   const film = el('film');
+  const picture = el('film-picture');
+  film.muted = true;
+  // On iOS, present the decoded frame with the same compositor as the foreground.
+  const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const pictureContext = ios ? picture.getContext('2d', {alpha: false}) : null;
   const scene = el('scene');
   const stage = el('stage');
   const dock = el('dock');
@@ -395,8 +401,25 @@ async function mount(root, host, data, review, reveal, restore) {
       quaternion: screenPose.orientation.toArray(), copies: Number(!raster.hidden) + Number(!view.canvas.hidden)};
   }
 
+  function drawPicture() {
+    if (!pictureContext || film.readyState < 2 || !film.videoWidth || !film.videoHeight) return;
+    const width = Math.min(960, film.videoWidth);
+    const height = Math.round(width * film.videoHeight / film.videoWidth);
+    if (picture.width !== width || picture.height !== height) {
+      picture.width = width;
+      picture.height = height;
+    }
+    try {
+      pictureContext.drawImage(film, 0, 0, width, height);
+      picture.hidden = false;
+    } catch {
+      picture.hidden = true;
+    }
+  }
+
   function sync() {
     film.requestVideoFrameCallback(() => {
+      drawPicture();
       // Only a presented video frame can advance the foreground.
       if (!film.seeking && !grab?.dragged && film.currentTime !== drawnTime) {
         drawnTime = film.currentTime;
@@ -447,6 +470,7 @@ async function mount(root, host, data, review, reveal, restore) {
         if (release !== version) return;
       }
     }
+    picture.hidden = true;
     film.src = model ? item.film : item.plain;
     const status = model ? '3D foreground available.' : 'Film and image shelf.';
     el('mode').textContent = status;
@@ -522,7 +546,11 @@ async function mount(root, host, data, review, reveal, restore) {
   film.addEventListener('ended', () => {
     if (wantsPlay && !grab) select(index + 1);
   });
-  film.addEventListener('seeked', () => paint());
+  film.addEventListener('loadeddata', drawPicture);
+  film.addEventListener('seeked', () => {
+    drawPicture();
+    paint();
+  });
   film.addEventListener('pause', () => paint());
   film.addEventListener('error', restore);
   reduced.addEventListener('change', () => {
@@ -535,7 +563,10 @@ async function mount(root, host, data, review, reveal, restore) {
     slots.forEach(drawParked);
   }).observe(scene);
   if ('requestVideoFrameCallback' in film) sync();
-  else film.addEventListener('timeupdate', () => paint());
+  else film.addEventListener('timeupdate', () => {
+    drawPicture();
+    paint();
+  });
 
 
   await select(items.findIndex(item => item.id === 'coin'));

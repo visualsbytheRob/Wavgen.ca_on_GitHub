@@ -2,7 +2,8 @@
       <div id="scene">
         <div id="stage">
           <a id="film-link" aria-label="Open the featured page">
-            <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
+            <video id="film" muted playsinline webkit-playsinline preload="auto" aria-hidden="true"></video>
+            <canvas id="film-picture" aria-hidden="true" hidden></canvas>
           </a>
           <div class="controls">
             <button type="button" id="previous" aria-label="Previous film">←</button>
