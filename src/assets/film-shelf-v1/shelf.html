@@ -1,11 +1,13 @@
 <section id="shelf" hidden aria-label="Featured films">
       <div id="scene">
-        <div id="stage">
-          <a id="film-link" aria-label="Open the featured page">
-            <video id="film" muted playsinline webkit-playsinline preload="auto" aria-hidden="true"></video>
-            <canvas id="film-picture" aria-hidden="true" hidden></canvas>
-          </a>
-          <div class="controls">
+        <div id="screen">
+          <div id="stage">
+            <a id="film-link" aria-label="Open the featured page">
+              <video id="film" muted playsinline webkit-playsinline preload="auto" aria-hidden="true"></video>
+              <canvas id="film-picture" aria-hidden="true" hidden></canvas>
+            </a>
+          </div>
+          <div class="controls" role="group" aria-label="Film controls">
             <button type="button" id="previous" aria-label="Previous film">←</button>
             <button type="button" id="playback">Pause film</button>
             <button type="button" id="next" aria-label="Next film">→</button>

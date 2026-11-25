@@ -77,7 +77,7 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <meta name="twitter:description" content="{{ description or site.description or 'Rob McDonald - Creative technologist exploring music, video, data, and art in Toronto, Canada.' }}" />
   <meta name="twitter:image" content="{{ ogImageFull }}" />
 
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="{% if page.url == '/' %}#180b39{% else %}#0f172a{% endif %}" />
   {#- Structured data (schema.org JSON-LD): WebSite + Person on the home page.
      Built from src/_data/site.json by src/_utils/structured-data.js; never type
      JSON-LD here. The build validates every emitted block (see .eleventy.js).
@@ -99,18 +99,18 @@ This is the main layout template for all pages in the Wavgen.ca site.
   <link rel="stylesheet" href="/assets/site-navigation.css">
   <script src="/assets/slideshow-viewer.js" defer></script>
 {% if page.url == '/' %}
-  <link rel="stylesheet" href="/assets/coin-ad.css?v=deep-purple-escapes">
+  <link rel="stylesheet" href="/assets/coin-ad.css?v=quiet-offer">
   <link rel="stylesheet" href="/assets/wg-feature-shelf.css?v=4">
   <link rel="stylesheet" href="/assets/storefront-home.css?v=1">
 {% endif %}
 </head>
-<body class="relative z-0 font-roboto bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+<body class="relative z-0 font-roboto bg-white text-gray-900 dark:bg-gray-900 dark:text-white{% if page.url == '/' %} wavgen-home{% endif %}">
 
   
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-wavgen-dark-purple text-wavgen-yellow px-3 py-2 rounded">Skip to content</a>
   {% if page.url == "/" %}
     {% include "components/coin-ad.njk" %}
-    <script src="/assets/coin-ad.js" defer></script>
+    <script src="/assets/coin-ad.js?v=quiet-offer" defer></script>
     <script src="/assets/wg-feature-shelf.js?v=3" defer></script>
     <script src="/assets/storefront-home.js?v=1" defer></script>
   {% endif %}

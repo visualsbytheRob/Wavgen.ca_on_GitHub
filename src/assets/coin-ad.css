@@ -1,9 +1,10 @@
-.wg-coin-ad { --ad-gold: #ffdb05; --ad-cream: #fdf4ff; color: var(--ad-cream); font: 14px/1.35 system-ui,sans-serif; }
+html:has(> body.wavgen-home), body.wavgen-home { background: #180b39; color: #fdf4ff; }
+.wg-coin-ad { --ad-gold: #ffdb05; --ad-cream: #fdf4ff; --ad-plum: #180b39; color: var(--ad-cream); font: 14px/1.35 system-ui,sans-serif; }
 .wg-coin-ad [hidden] { display: none !important; }
 .wg-coin-ad__banner { background: linear-gradient(110deg,#240858,#180b39 72%); border-bottom: 2px solid var(--ad-gold); }
 .wg-coin-ad__row { display: grid; grid-template-columns: auto 106px minmax(0,1fr) auto auto auto; gap: 14px; align-items: center; padding: 8px clamp(12px,3.5vw,42px); max-width: 1560px; margin: 0 auto; }
 .wg-coin-ad video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; background: #201026; border: 1px solid #634084; border-radius: 5px; }
-.wg-coin-ad__badge,.wg-coin-ad__only,.wg-coin-ad__chrome,.wg-coin-ad__retro { font: 600 10px/1.3 ui-monospace,monospace; letter-spacing: .08em; }
+.wg-coin-ad__badge,.wg-coin-ad__only { font: 600 10px/1.3 ui-monospace,monospace; letter-spacing: .08em; }
 .wg-coin-ad__badge,.wg-coin-ad__only { border-radius: 4px; padding: 4px 6px; white-space: nowrap; width: max-content; }
 .wg-coin-ad__badge { align-self: start; color: var(--ad-gold); border: 1px solid var(--ad-gold); }
 .wg-coin-ad__only { color: #21142b; background: var(--ad-gold); }
@@ -18,10 +19,12 @@
 .wg-coin-ad button:focus-visible,.wg-coin-ad a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .wg-coin-ad__close { display: grid; place-items: center; min-width: 32px; min-height: 32px; border: 0; border-radius: 5px; background: transparent; color: #e2d2f4; font-size: 20px; line-height: 1; }
 .wg-coin-ad__close:hover,.wg-coin-ad__chrome .wg-coin-ad__close { background: #54258c; color: white; }
-.wg-coin-ad__popup { box-sizing: border-box; width: min(310px,calc(100% - 24px)); margin: 12px 12px 12px auto; background: #1c1036; border: 1px solid #6c339b; border-radius: 8px; overflow: hidden; box-shadow: 0 19px 55px #0f071c73; }
-.wg-coin-ad__chrome { display: flex; align-items: center; gap: 9px; padding: 4px 6px 4px 11px; background: linear-gradient(110deg,#3e0a83,#381278 65%,#4d1992); color: #eadbf5; }
-.wg-coin-ad__chrome .wg-coin-ad__close { margin-inline-start: auto; min-width: 28px; min-height: 28px; font-size: 17px; }
-.wg-coin-ad__lights { width: 7px; height: 7px; border-radius: 50%; background: var(--ad-gold); box-shadow: 12px 0 #a351dc,24px 0 #7045a0; margin-inline-end: 24px; flex: 0 0 7px; }
+.wg-coin-ad__tab,.wg-coin-ad__popup { position: fixed; inset: auto max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) auto; z-index: 30; background: var(--ad-plum); }
+.wg-coin-ad__tab { min-height: 44px; padding: 0 13px; border: 1px solid #a68955; border-radius: 22px; color: var(--ad-gold); font-size: 12px; font-weight: 600; box-shadow: 0 4px 14px #0f071c59; }
+.wg-coin-ad__tab:hover { background: #351567; }
+.wg-coin-ad__popup { box-sizing: border-box; width: min(285px,calc(100% - 24px)); max-height: calc(100dvh - 30px); margin: 0; border: 1px solid #6c339b; border-radius: 10px; overflow: auto; box-shadow: 0 12px 35px #0f071c73; }
+.wg-coin-ad__chrome { display: flex; align-items: center; gap: 9px; padding: 4px 6px 4px 11px; background: #351567; color: #eadbf5; font-size: 12px; font-weight: 600; }
+.wg-coin-ad__chrome .wg-coin-ad__close { margin-inline-start: auto; min-width: 44px; min-height: 36px; font-size: 17px; }
 .wg-coin-ad__inner { padding: 10px; }
 .wg-coin-ad__player { position: relative; }
 .wg-coin-ad__playback { display: flex; gap: 4px; align-items: center; position: absolute; inset: auto 8px 8px auto; border: 1px solid #6e5590; border-radius: 30px; background: #150d2bea; color: #fff; padding: 5px 9px; font: 600 11px/1.3 system-ui,sans-serif; cursor: pointer; }
@@ -45,11 +48,6 @@
 .wg-coin-ad__inner p { margin: 10px 0; color: #f1e7f4; font-size: 13px; }
 .wg-coin-ad__actions { display: flex; align-items: center; gap: 12px; }
 .wg-coin-ad__no { border: 0; padding: 7px 2px; background: transparent; color: #edddf4; font-size: 12px; text-decoration: underline; }
-.wg-coin-ad__retro { margin-top: 11px; color: #c8b7d5; font-size: 9px; }
-@media (min-width: 1050px) {
-  body:has(.wg-coin-ad__popup:not([hidden])) { padding-inline-end: 334px; }
-  .wg-coin-ad__popup { position: fixed; inset: auto 12px 12px auto; z-index: 4; margin: 0; max-height: calc(100dvh - 24px); overflow: auto; }
-}
 @media (max-width: 680px) {
   .wg-coin-ad__row { grid-template-columns: 68px minmax(0,1fr) auto; gap: 7px 10px; padding: 8px 10px; }
   .wg-coin-ad__banner-player { grid-column: 1; grid-row: 1 / 3; }

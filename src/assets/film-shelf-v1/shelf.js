@@ -8,7 +8,7 @@ async function read(path, kind) {
 }
 const assets = () => Promise.all([
   read('./shelf-data.json', 'json'), read('./model-review.json', 'json'),
-  read('./shelf.html?v=2', 'text'), read('./shelf.css?v=2', 'text'),
+  read('./shelf.html?v=3', 'text'), read('./shelf.css?v=3', 'text'),
 ]);
 let pending;
 

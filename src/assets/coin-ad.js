@@ -61,6 +61,7 @@
 
     const banner = root.querySelector('[data-coin-ad-banner]');
     const popup = root.querySelector('[data-coin-ad-popup]');
+    const opener = root.querySelector('[data-coin-ad-open]');
     const video = popup?.querySelector('video');
     if (!banner || !popup || !video) return;
 
@@ -82,31 +83,44 @@
       }
     });
 
-    function dismiss() {
-      const moveFocus = popup.contains(document.activeElement);
-      rememberDismissal();
+    function close(restoreFocus = false) {
       window.gsap?.killTweensOf(popup);
       popup.hidden = true;
       video.pause();
-      if (moveFocus && !banner.hidden) banner.querySelector('a')?.focus({ preventScroll: true });
+      if (opener) {
+        opener.setAttribute('aria-expanded', 'false');
+        opener.hidden = wasDismissed();
+      }
+      if (restoreFocus) {
+        const next = opener && !opener.hidden ? opener : banner.querySelector('.wg-coin-ad__link');
+        next?.focus({ preventScroll: true });
+      }
     }
 
     for (const button of popup.querySelectorAll('[data-coin-ad-dismiss]')) {
-      button.addEventListener('click', dismiss);
+      button.addEventListener('click', () => {
+        rememberDismissal();
+        close(popup.contains(document.activeElement));
+      });
     }
     popup.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') dismiss();
+      if (event.key === 'Escape') close(true);
     });
 
-    if (wasDismissed()) return;
-    const delay = Number(popup.dataset.delay) || 0;
-    window.setTimeout(() => {
-      if (wasDismissed() || !popup.isConnected) return;
+    if (!opener || wasDismissed()) return;
+    opener.hidden = false;
+    opener.addEventListener('click', () => {
       popup.hidden = false;
+      opener.setAttribute('aria-expanded', 'true');
+      opener.hidden = true;
       video.muted = true;
       video.play().catch(() => {});
-      animateIn(popup, 18, 'back.out(1.5)');
-    }, delay);
+      popup.querySelector('[data-coin-ad-dismiss]')?.focus({ preventScroll: true });
+      animateIn(popup, 6);
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (!popup.hidden && !popup.contains(event.target) && event.target !== opener) close();
+    });
   }
 
   function initializeAll() {
