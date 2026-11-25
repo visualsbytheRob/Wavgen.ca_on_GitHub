@@ -9,6 +9,9 @@ const shelfCutouts = new Set([
  path.join(root, 'assets', 'shelf', 'about.webp'),
  path.join(root, 'assets', 'shelf', 'cloud-computing.webp'),
  path.join(root, 'assets', 'shelf', 'touchdesigner-banana.webp'),
+ ...['home.webp', 'music.webp', 'banana.webp', 'cloud.webp', 'art.webp', 'about.webp',
+     'coin.jpg', 'coin-totem.jpg', 'coin-portrait.jpg']
+  .map(name => path.join(root, 'assets', 'film-shelf-v1', 'media', name)),
 ]);
 const navigationObjects = new Set(['home', 'music', 'art', 'about']
  .map(name => path.join(root, 'assets', 'navigation', name + '.webp')));

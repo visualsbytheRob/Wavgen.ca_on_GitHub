@@ -1,0 +1,72 @@
+[
+  {
+    "id": "home",
+    "label": "Home",
+    "title": "Wavgen",
+    "detail": "Music · Video · Tech · Art",
+    "href": "https://wavgen.ca/#creative-portfolio",
+    "icon": "./media/home.webp",
+    "plain": "../shelf/home-shelf-v4.mp4",
+    "film": "./media/home-realism-shelf.mp4"
+  },
+  {
+    "id": "music",
+    "label": "Music",
+    "title": "Music",
+    "detail": "Electronic music and sound design",
+    "href": "https://wavgen.ca/music/",
+    "icon": "./media/music.webp",
+    "plain": "../shelf/music-shelf-v4.mp4",
+    "film": "./media/music-realism-shelf.mp4"
+  },
+  {
+    "id": "banana",
+    "label": "Video",
+    "title": "TouchDesigner & Video",
+    "detail": "Audio-reactive POPs · Live visuals · Projection mapping",
+    "href": "https://wavgen.ca/video/touchdesigner-signal-flow/",
+    "icon": "./media/banana.webp",
+    "plain": "../shelf/touchdesigner-banana-shelf-v4.mp4",
+    "film": "./media/touchdesigner-realism-shelf.mp4"
+  },
+  {
+    "id": "cloud",
+    "label": "Tech",
+    "title": "Cloud Computing",
+    "detail": "AI and Automation Architecture",
+    "href": "https://wavgen.ca/data/cloud-computing/",
+    "icon": "./media/cloud.webp",
+    "plain": "../shelf/cloud-computing-shelf-v4.mp4",
+    "film": "./media/cloud-computing-realism-shelf.mp4"
+  },
+  {
+    "id": "art",
+    "label": "Art",
+    "title": "Art",
+    "detail": "Drawing · Painting · Digital work",
+    "href": "https://wavgen.ca/art/",
+    "icon": "./media/art.webp",
+    "plain": "../shelf/art-shelf-v4.mp4",
+    "film": "./media/art-realism-shelf.mp4"
+  },
+  {
+    "id": "about",
+    "label": "About",
+    "title": "About Wavgen",
+    "detail": "Rob McDonald · Creative practice in Toronto",
+    "href": "https://wavgen.ca/#about",
+    "icon": "./media/about.webp",
+    "plain": "../shelf/about-shelf-v4.mp4",
+    "film": "./media/about-realism-shelf.mp4"
+  },
+  {
+    "id": "coin",
+    "label": "Coin",
+    "title": "1958 Canada Silver Dollar",
+    "detail": "British Columbia Centennial",
+    "href": "https://wavgen.myshopify.com/products/1958-canada-silver-dollar-british-columbia-centennial-totem-pole",
+    "icon": "./media/coin.jpg",
+    "plain": "https://media.wavgen.ca/1958-canada-silver-dollar-centennial-shelf-v2-local-h3.mp4",
+    "film": "./media/coin-stage.mp4"
+  }
+]

@@ -1,0 +1,34 @@
+<section id="shelf" hidden aria-label="Featured films">
+      <div id="scene">
+        <div id="stage">
+          <a id="film-link" aria-label="Open the featured page">
+            <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
+          </a>
+          <div class="controls">
+            <button type="button" id="previous" aria-label="Previous film">←</button>
+            <button type="button" id="playback">Pause film</button>
+            <button type="button" id="next" aria-label="Next film">→</button>
+          </div>
+        </div>
+        <nav id="dock" aria-label="Shelf objects"></nav>
+        <img id="flat-object" alt="" aria-hidden="true" hidden>
+        <div id="foreground" hidden>
+          <canvas id="film-object" aria-hidden="true"></canvas>
+          <a id="object" aria-label="Open the featured page" hidden></a>
+        </div>
+      </div>
+      <div class="caption">
+        <div><a id="caption"></a><p id="detail"></p></div>
+        <button type="button" id="replay">Replay film</button>
+      </div>
+      <p class="hint">Hover over the shelf to spin the objects or open the folio. Drag the featured object as it leaves the frame. Click or tap to open its page.</p>
+      <p id="mode" role="status"></p>
+      <details class="studies">
+        <summary>Film studies</summary>
+        <ul>
+          <li><a href="./film-studies/wavgen-studio-objects.mp4">Studio Objects</a></li>
+          <li><a href="./film-studies/wavgen-live-visuals-and-tech.mp4">TouchDesigner and Cloud</a></li>
+          <li><a href="./film-studies/wavgen-art-archive-and-coin.mp4">Art, Archive and Coin</a></li>
+        </ul>
+      </details>
+    </section>

@@ -1,4 +1,5 @@
 {% set first = featureFilms[0] %}
+<wavgen-film-shelf style="display:block">
 <section class="wg-coin-film-band wg-coin-film-band--framed" aria-label="Featured films">
   <div class="wg-coin-film-frame" data-wg-shelf>
     <div class="wg-coin-film-frame__aperture">
@@ -34,3 +35,5 @@
     <span data-wg-shelf-detail>{{ first.detail }}</span>
   </div>
 </section>
+</wavgen-film-shelf>
+<script type="module" src="/assets/film-shelf-v1/shelf.js"></script>

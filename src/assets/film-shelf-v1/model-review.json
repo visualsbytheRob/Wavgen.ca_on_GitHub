@@ -1,0 +1,37 @@
+{
+  "banana": {
+    "use": true,
+    "asset": "./models/banana-flux-4k.glb",
+    "yaw": 0
+  },
+  "cloud": {
+    "use": true,
+    "asset": "./models/cloud-smoothed.glb",
+    "yaw": 0
+  },
+  "home": {
+    "use": true,
+    "asset": "./models/home-balanced.glb",
+    "yaw": 0
+  },
+  "music": {
+    "use": true,
+    "asset": "./models/music-balanced.glb",
+    "yaw": 0.17
+  },
+  "art": {
+    "use": true,
+    "asset": "./models/art-balanced.glb",
+    "yaw": 0
+  },
+  "coin": {
+    "use": true,
+    "asset": "procedural:coin",
+    "yaw": 0
+  },
+  "about": {
+    "use": true,
+    "asset": "procedural:folio",
+    "yaw": -0.22
+  }
+}
