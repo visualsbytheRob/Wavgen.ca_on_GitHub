@@ -8,7 +8,7 @@ async function read(path, kind) {
 }
 const assets = () => Promise.all([
   read('./shelf-data.json', 'json'), read('./model-review.json', 'json'),
-  read('./shelf.html?v=3', 'text'), read('./shelf.css?v=3', 'text'),
+  read('./shelf.html?v=3', 'text'), read('./shelf.css?v=4', 'text'),
 ]);
 let pending;
 
@@ -53,6 +53,7 @@ class WavgenFilmShelf extends HTMLElement {
 async function mount(root, host, data, review, reveal, restore) {
   const el = id => root.getElementById(id);
   const film = el('film');
+  const filmLink = el('film-link');
   const picture = el('film-picture');
   film.muted = true;
   // On iOS, present the decoded frame with the same compositor as the foreground.
@@ -342,7 +343,8 @@ async function mount(root, host, data, review, reveal, restore) {
       const {home} = bounds;
       const sceneRect = scene.getBoundingClientRect();
       const picture = film.getBoundingClientRect();
-      const scale = Math.min(picture.width / film.videoWidth, picture.height / film.videoHeight);
+      const fit = getComputedStyle(film).objectFit === 'cover' ? Math.max : Math.min;
+      const scale = fit(picture.width / film.videoWidth, picture.height / film.videoHeight);
       if (!Number.isFinite(scale)) return;
       const progress = t < opening ? ease((t - .08) / (opening - .08)) : 1 - ease((t - closing) / Math.max(.1, end - closing));
       const position = {
@@ -451,7 +453,7 @@ async function mount(root, host, data, review, reveal, restore) {
     model = undefined;
     silhouette = undefined;
     layer.hidden = flat.hidden = true;
-    [el('film-link'), target, el('caption')].forEach(link => { link.href = item.href; });
+    [filmLink, target, el('caption')].forEach(link => { link.href = item.href; });
     target.setAttribute('aria-label', `Open ${item.title}`);
     el('caption').textContent = item.title;
     el('detail').textContent = item.detail;
@@ -471,6 +473,7 @@ async function mount(root, host, data, review, reveal, restore) {
       }
     }
     picture.hidden = true;
+    filmLink.toggleAttribute('data-stage-cut', Boolean(model));
     film.src = model ? item.film : item.plain;
     const status = model ? '3D foreground available.' : 'Film and image shelf.';
     el('mode').textContent = status;

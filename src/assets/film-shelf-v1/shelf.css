@@ -35,7 +35,12 @@ a:focus-visible,button:focus-visible{outline:2px solid #ffdf91;outline-offset:3p
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 [hidden]{display:none!important}
 
-@media(min-width:760px){#stage{height:clamp(310px,55vh,630px);aspect-ratio:auto}}
+@media(min-width:760px){
+  #stage{aspect-ratio:2/1}
+  #film-link{overflow:hidden}
+  #film,#film-picture{object-fit:cover}
+  #film-link[data-stage-cut] :is(video,canvas){transform:scale(1.05263)}
+}
 @media(max-width:759px){
   .controls{position:relative;inset:auto;gap:0;width:max-content;margin:1px 0 0 -3px}
   .controls button{position:relative;isolation:isolate;min-width:44px;min-height:44px;padding:0 12px;border:0;background:none;font-size:11px}
